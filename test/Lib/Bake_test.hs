@@ -12,7 +12,7 @@
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
 
-module Lib.OpenClass_test  -- (openMain, htf_thisModuelsTests)
+module Lib.Bake_test  -- (openMain, htf_thisModuelsTests)
      where
 
 

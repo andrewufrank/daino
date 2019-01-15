@@ -4,6 +4,11 @@ packages:
 - '.'
 - ../uniform/uniform-strings
 - ../uniform/uniform-algebras
+- ../uniform/uniform-convenience
+- ../uniform/uniform-fileio
+- ../uniform/uniform-error
 
-extra-deps: []
-resolver: lts-8.13
+extra-deps:
+- test-invariant-0.4.5.0
+
+resolver: lts-12.26  # 26 seems to have a problem with pandoc
