@@ -1,0 +1,9 @@
+flags: {}
+extra-package-dbs: []
+packages:
+- '.'
+- ../uniform/uniform-strings
+- ../uniform/uniform-algebras
+
+extra-deps: []
+resolver: lts-8.13

@@ -1,0 +1,23 @@
+name:           ThemeEngine
+version:        0.1.0
+
+ghc-options: -Wall
+
+dependencies:
+  - base == 4.*
+  - uniform-strings
+library:
+  source-dirs: Lib
+
+#executables:
+#  foo:
+#    main: ClassMain.hs
+#    source-dirs: src
+
+tests:
+  g2:
+    main: ExampleTesting.hs
+    source-dirs: test
+    dependencies:
+      - HTF
+      - QuickCheck

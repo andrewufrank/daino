@@ -1,0 +1,41 @@
+-- This file has been generated from package.yaml by hpack version 0.28.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: e79d5aea9d8b4709817950a5a6bfcbe7bf3109d3aa7ff6d31f563fbcb25e592b
+
+name:           ThemeEngine
+version:        0.1.1
+license-file:   LICENSE
+build-type:     Simple
+cabal-version:  >= 1.10
+
+library
+  exposed-modules:
+      Lib.OpenClass
+  other-modules:
+      Paths_ThemeEngine
+  hs-source-dirs:
+      .
+  ghc-options: -Wall
+  build-depends:
+      base ==4.*
+    , uniform-strings
+  default-language: Haskell2010
+
+test-suite g2
+  type: exitcode-stdio-1.0
+  main-is: ExampleTesting.hs
+  other-modules:
+      Lib.OpenClass_test
+      Paths_ThemeEngine
+  hs-source-dirs:
+      test
+  ghc-options: -Wall
+  build-depends:
+      HTF
+    , QuickCheck
+    , base ==4.*
+    , uniform-strings
+    , ThemeEngine
+  default-language: Haskell2010
