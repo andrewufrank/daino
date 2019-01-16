@@ -1,7 +1,7 @@
 
 ------------------------------------------------------------------------------
 --
--- Module      :   the main process to convert
+-- Module      :   the  process to convert
 --              files in any input format to html
 --              orginals are found in dire doughDir and go to bakeDir
 
@@ -21,10 +21,6 @@ import Uniform.Strings
 import Uniform.Filenames
 import Uniform.FileStrings
 
---import qualified Text.Pandoc as Pan
-----        (writeHtml5String, readMarkdown, runIOorExplode)
---import Text.Pandoc.Highlighting
---import Text.Pandoc.Shared
 import Slick.Pandoc (markdownToHTML)   -- with a simplified Action ~ ErrIO
 
 import Control.Lens
@@ -64,10 +60,9 @@ bakeOneFile fp = do
     intext <- readFile2 fpi
     putIOwords ["bakeOne infile\n", intext]
 
---    outhtml :: Text <-  callIO $ mdToHtml5 intext
     val <- markdownToHTML intext
---    let outhtml = -- maybe (fail "no conten") s2t $
-    let v1 =            val ^.  key "content" . _String
+
+   let v1 =            val ^.  key "content" . _String
     writeFile2 fpo v1
     putIOwords ["bakeOne outhtml\n", v1]
     putIOwords ["bakeOne result\n", showPretty val]
@@ -75,46 +70,3 @@ bakeOneFile fp = do
 showPretty :: ToJSON a => a -> Text
 showPretty = bb2t . bl2b . encodePretty
 
-----import Data.Text (Text)
-----import qualified Data.Text.IO as T
---
-----mdToRST :: Text -> IO Text
-----mdToRST txt = runIOorExplode $
-----  readMarkdown def txt
-----    >>= writeRST def{ writerReferenceLinks = True }
---
----- writeHtml5String :: PandocMonad m => WriterOptions -> Pandoc -> m Text
---
---mdToHtml5errio :: Text -> ErrIO a
----- do the md to html conversion in the ErrIO
---mdToHtml5errio txt = do
---    res <- callIO $   do
---               Pan.Pandoc meta a :: Pan.Pandoc
---                        <- Pan.runIO $ Pan.readMarkdown markdownOptions  txt
---               txt <-  Pan.runIO $ Pan.writeHtml5String Pan.def
---               return (meta, txt)
---    return (either (fail . show)  res)
---
---mdToHtml5 :: Text -> IO Text
---mdToHtml5 txt = runIOorExplode $
---  readMarkdown markdownOptions  txt
---    >>= writeHtml5String def
---
----- | Reasonable options for reading a markdown file
---markdownOptions :: Pan.ReaderOptions
---markdownOptions = def { Pan.readerExtensions = exts }
--- where
---  exts = mconcat
---    [ extensionsFromList
---      [ Ext_yaml_metadata_block
---      , Ext_fenced_code_attributes
---      , Ext_auto_identifiers
---      ]
---    , githubMarkdownExtensions
---    ]
---
----- | Reasonable options for rendering to HTML
---html5Options :: Pan.WriterOptions
---html5Options = def { Pan.writerHighlightStyle = Just tango
---                   , Pan.writerExtensions     = Pan.writerExtensions def
---                   }
