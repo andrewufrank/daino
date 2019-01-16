@@ -32,7 +32,7 @@ import Text.Pandoc.Shared
 import Uniform.Error hiding (Meta, at)
 --import Uniform.Strings hiding (Meta, at)
 
-type Action = ErrIO
+type Action = ErrIO   -- the actual Action Monad in Shake is more elaborate.
 
 -- | Reasonable options for reading a markdown file
 markdownOptions :: ReaderOptions

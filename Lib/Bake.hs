@@ -25,7 +25,7 @@ import Uniform.FileStrings
 ----        (writeHtml5String, readMarkdown, runIOorExplode)
 --import Text.Pandoc.Highlighting
 --import Text.Pandoc.Shared
-import Slick.Pandoc
+import Slick.Pandoc (markdownToHTML)   -- with a simplified Action ~ ErrIO
 
 import Control.Lens
 import Data.Aeson.Lens
