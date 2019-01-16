@@ -18,13 +18,17 @@ module Lib.Bake_test  -- (openMain, htf_thisModuelsTests)
 
 import           Test.Framework
 import Uniform.Strings
-import Lib.OpenClass
+import Lib.Bake
+import Uniform.Filenames
 
 
+post1 = makeRelFile "postwk.md" :: Path Rel File
 -- show produces the "xx"
-test_1 = assertEqual 7 (lengthChar $ op1 d1)
-test_2 = assertEqual 6 (lengthChar $ op1 d2)
-
+test_1 = assertEqual  () ()
+--                (do
+--                    r <- runErr $ bakeOneFile post1
+--                    return (r:: ErrOrVal ())
+--                    )
 
 
 
