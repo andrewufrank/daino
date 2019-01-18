@@ -56,7 +56,7 @@ instance TypedFiles7 Text  MarkdownText    where
     wrap7 = MarkdownText
     unwrap7 (MarkdownText a) = a
     read7 fp fn tp   = do
-        putIOwords ["TypedFiles7 read7 Text MarkdownText", showT fp, showT fn]
+--        putIOwords ["TypedFiles7 read7 Text MarkdownText", showT fp, showT fn]
         let fn2 = fn <.> tpext5 tp
         ares :: Text <- readFile2 $ fp </> fn2
         return . wrap7 $ ares
@@ -81,10 +81,10 @@ instance TypedFiles7 Text HTMLout  where
         let parent = getParentDir fn2
         createDirIfMissing' parent
         t <- doesDirExist' fp
-        putIOwords ["TypedFiles7 write7 Text parent", showT parent, "exists", showT t]
+--        putIOwords ["TypedFiles7 write7 Text parent", showT parent, "exists", showT t]
 
         writeFile2 fn2 (unwrap7 ct :: Text )
-        putIOwords ["TypedFiles7 write7 Text HTMLout", showT fn2]
+--        putIOwords ["TypedFiles7 write7 Text HTMLout", showT fn2]
 --        putIOwords ["TypedFiles7 write7 Text HTMLout text \n", unwrap7 ct]
 
     read7 f = errorT ["TypedFiles - no implementation for read7", showT f]

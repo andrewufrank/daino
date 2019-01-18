@@ -44,12 +44,20 @@ import qualified Path  as Path
 
 --import Text.Pandoc
 
-bake :: Path Rel File -> ErrIO ()
-bake fp = do
-    putIOwords ["\nbake for " , showT fp]
+bake ::   ErrIO ()
+bake   = do
+    putIOwords ["\nbake start"]
 --    msg <- bakeOneFile2 (addDir doughPath fp)
 --    putIOwords ["bake simple for " , showT fp]
     msg <- bakeAllInSiteMD bakeOneFile2   doughPath  reportFile
+    putIOwords ["\nbake all msg " , msg]
+
+    return ()
+
+bake4test :: Path Rel File -> ErrIO ()
+bake4test fp = do
+    putIOwords ["\nbake     for " , showT fp]
+    msg <- bakeOneFile2 (addDir doughPath fp)
     putIOwords ["\nbake all msg " , msg]
 
     return ()
@@ -121,7 +129,7 @@ bakeOneFile fp = do
 
             putIOwords ["bakeOneFile resultFile", showT bakedPath, showT fnn, "\n"]
             write7 bakedPath fnn htmloutFileType html2
-            putIOwords ["bakeOneFile outhtml (which was just written) \n", unHTMLout html2, "\n"]
+--            putIOwords ["bakeOneFile outhtml (which was just written) \n", unHTMLout html2, "\n"]
 
             putIOwords ["\n......................"]
 

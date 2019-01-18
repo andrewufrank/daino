@@ -4,8 +4,8 @@ author: auf
 date: 2010-07-29
 keywords: homepage
 abstract: |
-    What are the objects ontologists talk about.
-    These.
+    What are the objects of
+    ontologists .
 
 bibliography: "/home/frank/Workspace8/SSG/site/resources/BibTexLatex.bib"
 bib2 : "/home/frank/Workspace8/SSG/site/resources/BibTexExample.bib"

@@ -68,11 +68,11 @@ html5Options = def { writerHighlightStyle = Just tango
 
 -- | Handle possible pandoc failure within the Action Monad
 unPandocM :: PandocIO a -> ErrIO a
-unPandocM op = do
-        res   <- callIO $ runIO (do  liftIO $putStrLn "unPandocM op"
-                                     a <- op
+unPandocM op1 = do
+        res   <- callIO $ runIO (do  -- liftIO $putStrLn "unPandocM op"
+                                     a <- op1
 --                                     error "xx"
-                                     liftIO $putStrLn "error xx"
+                                     -- liftIO $putStrLn "error xx"
                                      return a)
 --                    `catchError` (\e -> throwError . showT $  (e))
         either (\e -> do
@@ -106,9 +106,8 @@ markdownToHTML3 t = do
     _ -> do
                 putIOwords ["markdownToHTML3 bibliography is", showT bib]
                 res <- processCites2 pandoc --  :: Pandoc -> IO Pandoc
-                putIOwords ["markdownToHTML3 bibliography result", showT res]
+--                putIOwords ["markdownToHTML3 bibliography result", showT res]
                 return res
- --           `catch` ->
 
   htmltex <- writeHtml5String2  pandoc2
 
@@ -120,11 +119,11 @@ getMeta (Pandoc m _) = m
 
 readMarkdown2 :: Text -> ErrIO (Pandoc, DocValue)
 readMarkdown2 text1 = do
-    putIOwords ["readMarkdown2 1"]
+--    putIOwords ["readMarkdown2 1"]
     pdoc <-  unPandocM $ readMarkdown markdownOptions text1
-    putIOwords ["readMarkdown2 2"]
+--    putIOwords ["readMarkdown2 2"]
     let meta2 = flattenMeta (getMeta pdoc)
-    putIOwords ["readMarkdown2 3", showNice meta2]
+--    putIOwords ["readMarkdown2 3", showNice meta2]
 --    meta3 :: Value <- convert (meta2  :: Value)
 --
 --    putIOwords ["markdownToHTML3 4", showT $ meta3 == meta2]
@@ -138,9 +137,9 @@ writeHtml5String2 pandocRes = do
 
 processCites2 :: Pandoc -> ErrIO Pandoc
 processCites2 p = do
-                putIOwords ["processCites2 1", showT p]
+--                putIOwords ["processCites2 1", showT p]
                 r <- callIO $ processCites' p
-                putIOwords ["processCites2 2", showT r]
+                when (p==r) $ putIOwords ["processCites2 not changed !", showT (p==r)]
                 return r
 
 ---- | Attempt to convert between two JSON serializable objects (or 'Value's).

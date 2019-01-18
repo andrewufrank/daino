@@ -24,13 +24,15 @@ progTitle = "constructing a static site generator" :: Text
 --siteBakedPath makeRelDir "site/baked" :: Path Rel Dir
 
 post1 = makeRelFile "postwk.md" :: Path Rel File
+postWithRef = makeRelFile "PublicationList/postWithReference.md" :: Path Rel File
 
 main :: IO ()
 main = startProg programName progTitle
             ( do
-                 putIOwords ["do bake for ", showT post1]
-                 bake -- siteDoughPath siteBakedPath
-                        post1
+                 let p = postWithRef
+                 putIOwords ["do bake for ", showT p]
+                 bake4test p -- siteDoughPath siteBakedPath
+
 
 
             )
