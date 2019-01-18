@@ -25,16 +25,30 @@ module Lib.FileMgt
 import Uniform.Filenames
 import Uniform.FileStrings
 import Uniform.TypedFile
+import Data.Aeson (Value, ToJSON)
+import Data.Aeson.Encode.Pretty (encodePretty)
+import  Path.IO (ensureDir)
 
-import qualified Path.IO (ensureDir)
+instance NiceStrings Value where
+    showNice = bb2t . bl2b . encodePretty
 
 
-newtype MarkdownText = MarkdownText Text
+newtype DocValue = DocValue Value  deriving (Show,  Eq, Read)
+-- ^ a value type with "content" is a html translation
+-- and all the other keys
+unDocValue (DocValue v) = v
+
+instance NiceStrings DocValue where
+    showNice = showNice .  unDocValue
+
+-------------
+
+newtype MarkdownText = MarkdownText Text deriving (Show, Read, Eq, Ord)
 -- a wrapper around Markdonw text
 unMT (MarkdownText a) = a   --needed for other ops
 
 markdownFileType = TypedFile5 {tpext5 = extMD} :: TypedFile5   Text MarkdownText
-instance FileHandles MarkdownText
+--instance FileHandles MarkdownText
 -- what is missing here?
 
 instance TypedFiles7 Text  MarkdownText    where
@@ -48,7 +62,7 @@ instance TypedFiles7 Text  MarkdownText    where
         return . wrap7 $ ares
     write7 f = errorT ["TypedFiles - no implementation for write7", showT f]
 
-newtype HTMLout = HTMLout Text
+newtype HTMLout = HTMLout Text deriving (Show, Read, Eq, Ord)
 -- a wrapper around html ready to publish
 unHTMLout (HTMLout a) = a
 

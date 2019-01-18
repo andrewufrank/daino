@@ -26,12 +26,12 @@ import Uniform.Piped
 import           Uniform.FileIO as FN hiding ((<>), (</>), (<.>))
 import Uniform.Error
 
-import Slick.Pandoc (markdownToHTML)   -- with a simplified Action ~ ErrIO
+import Slick.Pandoc (markdownToHTML3)   -- with a simplified Action ~ ErrIO
 --import Text.Pandoc.Templates (applyTemplate)
 
 import Control.Lens
 import Data.Aeson.Lens
---import Data.Aeson.Encode.Pretty
+--import Data.Aeson.Encode.Pretty (showPretty)
 --import Data.Aeson
 
 import Lib.Templating
@@ -39,7 +39,7 @@ import Lib.FileMgt
 
 import qualified Pipes as Pipe
 import qualified Pipes.Prelude as Pipe
---import Pipes ((>->), (~>))
+import Pipes ((>->), (~>))
 import qualified Path  as Path
 
 --import Text.Pandoc
@@ -111,7 +111,7 @@ bakeOneFile fp = do
 --    let html1  =  HTMLout $  val ^.  key "content" . _String
 
 --    putIOwords ["bakeOneFile html1\n\n", unHTMLout html1]
-    putIOwords ["bakeOneFile val\n\n", showPretty val]
+    putIOwords ["bakeOneFile val\n\n", showNice val]
 
 --     apply template before writing
     let templateFN = makeAbsFile

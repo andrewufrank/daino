@@ -25,21 +25,18 @@ import Text.Pandoc.Templates (applyTemplate)
 
 --import Control.Lens
 --import Data.Aeson.Lens
-import Data.Aeson.Encode.Pretty
 import Data.Aeson
 
 import Lib.FileMgt
 
 
-showPretty :: ToJSON a => a -> Text
-showPretty = bb2t . bl2b . encodePretty
 
 
-applyTemplate2 :: Path Abs File -> Value -> ErrIO HTMLout
+applyTemplate2 :: Path Abs File -> DocValue -> ErrIO HTMLout
 -- apply the template in the file to the text
 applyTemplate2 templateFN val = do
      templText <- readFile2 templateFN
-     case applyTemplate templText val of
+     case applyTemplate templText  (unDocValue val) of
                     Left msg -> throwError  . s2t $ msg
                     Right val2 -> return  . HTMLout $  (val2 :: Text)
 
