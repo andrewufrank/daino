@@ -35,13 +35,14 @@ import Data.Aeson.Lens
 import Text.Pandoc as Pandoc
 import Text.Pandoc.Highlighting
 import Text.Pandoc.Shared
+import Text.CSL.Pandoc (processCites')
 
 import Uniform.Error hiding (Meta, at)
 --import Uniform.Strings hiding (Meta, at)
 import Lib.FileMgt (MarkdownText(..), unMT, HTMLout(..), unHTMLout
             , unDocValue, DocValue (..) )
 
-type Action = ErrIO   -- the actual Action Monad in Shake is more elaborate.
+--type Action = ErrIO   -- the actual Action Monad in Shake is more elaborate.
 
 -- | Reasonable options for reading a markdown file
 markdownOptions :: ReaderOptions
@@ -66,10 +67,27 @@ html5Options = def { writerHighlightStyle = Just tango
                    }
 
 -- | Handle possible pandoc failure within the Action Monad
-unPandocM :: PandocIO a -> Action a
-unPandocM p = do
-  result <- liftIO $ runIO p
-  either (fail . show) return result
+unPandocM :: PandocIO a -> ErrIO a
+unPandocM op = do
+        res   <- callIO $ runIO (do  liftIO $putStrLn "unPandocM op"
+                                     a <- op
+--                                     error "xx"
+                                     liftIO $putStrLn "error xx"
+                                     return a)
+--                    `catchError` (\e -> throwError . showT $  (e))
+        either (\e -> do
+                        putIOwords ["unPandocM error", showT e ]
+                        throwError . showT $ e
+                ) return res
+
+     `catchError` (\e -> do
+                        putIOwords ["unPandocM catchError", showT e ]
+                        throwError . showT $  e)
+
+
+--unPandocM p = do
+--  result <- liftIO $ runIO p
+--  either (fail . show) return result
 
 
 -- | Convert markdown text into a 'Value';
@@ -77,98 +95,60 @@ unPandocM p = do
 -- Metadata is assigned on the respective keys in the 'Value'
 markdownToHTML3 :: MarkdownText -> ErrIO DocValue
 markdownToHTML3 t = do
+  putIOwords ["markdownToHTML3 start"]
   (pandoc, meta3)  <- readMarkdown2 (unMT t)
---  let meta1 = getMeta pandoc
-----  let (Meta meta1x) = meta1
---  putIOwords ["markdownToHTML3 meta1", showNice meta1, "-----------\n"]
---  meta2 <- fmap DocValue $   convert . unDocValue $ meta1
   putIOwords ["markdownToHTML3 meta3", showNice meta3]
-  htmltex <- writeHtml5String2  pandoc
+  -- test if biblio is present
+--  let bib = Just "/resources/BibTexExample.bib"
+  let bib = Just $ (unDocValue meta3) ^? key "bibliography" . _String
+  pandoc2 <- case bib of
+    Nothing -> return pandoc
+    _ -> do
+                putIOwords ["markdownToHTML3 bibliography is", showT bib]
+                res <- processCites2 pandoc --  :: Pandoc -> IO Pandoc
+                putIOwords ["markdownToHTML3 bibliography result", showT res]
+                return res
+ --           `catch` ->
+
+  htmltex <- writeHtml5String2  pandoc2
 
   let withContent = (unDocValue meta3) & _Object . at "contentHtml" ?~ String (unHTMLout htmltex)
   return . DocValue $ withContent
 
 getMeta :: Pandoc -> Meta
-getMeta (Pandoc m b) = m
+getMeta (Pandoc m _) = m
 
 readMarkdown2 :: Text -> ErrIO (Pandoc, DocValue)
 readMarkdown2 text1 = do
-    pdoc@(Pandoc meta1 _) <-  unPandocM $ readMarkdown markdownOptions text1
-    let meta2 = flattenMeta meta1
-    meta3 <- convert meta2
+    putIOwords ["readMarkdown2 1"]
+    pdoc <-  unPandocM $ readMarkdown markdownOptions text1
+    putIOwords ["readMarkdown2 2"]
+    let meta2 = flattenMeta (getMeta pdoc)
+    putIOwords ["readMarkdown2 3", showNice meta2]
+--    meta3 :: Value <- convert (meta2  :: Value)
+--
+--    putIOwords ["markdownToHTML3 4", showT $ meta3 == meta2]
 
-    return (pdoc, DocValue meta3)
+    return (pdoc, DocValue meta2)
 
 writeHtml5String2 :: Pandoc -> ErrIO HTMLout
 writeHtml5String2 pandocRes = do
     p <-  unPandocM $ writeHtml5String html5Options pandocRes
     return . HTMLout $ p
 
---
----- | Convert markdown text into a 'Value';
----- The 'Value'  has a "content" key containing rendered HTML
----- Metadata is assigned on the respective keys in the 'Value'
---markdownToHTML :: MarkdownText -> Action Value
---markdownToHTML t =
---  loadUsing   readMarkdown2 (writeHtml5String html5Options) (unMT t)
---
----- | Like 'markdownToHTML' but allows returning any JSON serializable object
---markdownToHTML' :: (FromJSON a) => MarkdownText -> Action a
---markdownToHTML' t = do
---            val  <- markdownToHTML t
---            res <- convert val
---            return res
---
---type PandocReader textType = textType -> PandocIO Pandoc
---
---type PandocWriter = Pandoc -> PandocIO Text
---
----- | Given a reader from 'Text.Pandoc.Readers' this creates a loader which
----- given the source document will read its metadata into a 'Value'
----- returning both the 'Pandoc' object and the metadata within an 'Action'
---makePandocReader :: PandocReader textType -> textType -> Action (Pandoc, Value)
---makePandocReader readerFunc text = do
---  pdoc@(Pandoc meta _) <- unPandocM $ readerFunc text
---  return (pdoc, flattenMeta meta)
---
----- | Like 'makePandocReader' but will deserialize the metadata into any object
----- which implements 'FromJSON'. Failure to deserialize will fail the Shake
----- build.
---makePandocReader'
---  :: (FromJSON a) => PandocReader textType -> textType -> Action (Pandoc, a)
---makePandocReader' readerFunc text = do
---  (pdoc, meta)  <- makePandocReader readerFunc text
---  convertedMeta <- convert meta
---  return (pdoc, convertedMeta)
---
----- | Load in a source document using the given 'PandocReader', then render the 'Pandoc'
----- into text using the given 'PandocWriter'.
----- Returns a 'Value' wherein the rendered text is set to the "content" key and
----- any metadata is set to its respective key in the 'Value'
---loadUsing :: PandocReader textType -> PandocWriter -> textType -> Action Value
---loadUsing reader writer text = do
---  (pdoc, meta) <- makePandocReader reader text
---  outText      <- unPandocM $ writer pdoc
---  let withContent = meta & _Object . at "content" ?~ String outText
---  return withContent
---
----- | Like 'loadUsing' but allows also deserializes the 'Value' into any object
----- which implements 'FromJSON'.  Failure to deserialize will fail the Shake
----- build.
---loadUsing'
---  :: (FromJSON a)
---  => PandocReader textType
---  -> PandocWriter
---  -> textType
---  -> Action a
---loadUsing' reader writer text = loadUsing reader writer text >>= convert
+processCites2 :: Pandoc -> ErrIO Pandoc
+processCites2 p = do
+                putIOwords ["processCites2 1", showT p]
+                r <- callIO $ processCites' p
+                putIOwords ["processCites2 2", showT r]
+                return r
 
--- | Attempt to convert between two JSON serializable objects (or 'Value's).
--- Failure to deserialize fails the Shake build.
-convert :: (FromJSON a, ToJSON a, FromJSON b) => a -> Action b
-convert a = case fromJSON (toJSON a) of
-  Success r   -> pure r
-  Error   err -> fail $ "json conversion error:" ++ err
+---- | Attempt to convert between two JSON serializable objects (or 'Value's).
+---- Failure to deserialize fails the Shake build.
+--convert :: (FromJSON a, ToJSON a, FromJSON b) => a -> Action b
+--convert a = case fromJSON (toJSON a) of
+--  Success r   -> pure r
+--  Error   err -> fail $ "json conversion error:" ++ err
 
 -- | Flatten a Pandoc 'Meta' into a well-structured JSON object, rendering Pandoc
 -- text objects into plain strings along the way.
