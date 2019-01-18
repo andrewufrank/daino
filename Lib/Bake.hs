@@ -4,6 +4,7 @@
 -- Module      :   the  process to convert
 --              files in any input format to html
 --              orginals are found in dire doughDir and go to bakeDir
+--
 
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
@@ -19,54 +20,111 @@ module Lib.Bake  -- (openMain, htf_thisModuelsTests)
 
 import Uniform.Strings
 import Uniform.Filenames
-import Uniform.FileStrings
+import Uniform.FileStrings () -- for instances
+import Uniform.TypedFile
+import Uniform.Piped
+import           Uniform.FileIO as FN hiding ((<>), (</>), (<.>))
+import Uniform.Error
 
 import Slick.Pandoc (markdownToHTML)   -- with a simplified Action ~ ErrIO
+--import Text.Pandoc.Templates (applyTemplate)
 
 import Control.Lens
 import Data.Aeson.Lens
-import Data.Aeson.Encode.Pretty
-import Data.Aeson
+--import Data.Aeson.Encode.Pretty
+--import Data.Aeson
 
+import Lib.Templating
+import Lib.FileMgt
+
+import qualified Pipes as Pipe
+import qualified Pipes.Prelude as Pipe
+--import Pipes ((>->), (~>))
+import qualified Path  as Path
+
+--import Text.Pandoc
 
 bake :: Path Rel File -> ErrIO ()
 bake fp = do
     putIOwords ["bake for " , showT fp]
-    bakeOneFile fp
+--    msg <- bakeOneFile2 (addDir doughPath fp)
+--    putIOwords ["bake simple for " , showT fp]
+    msg <- bakeAllInSiteMD bakeOneFile2   doughPath  reportFile
+    putIOwords ["bake all msg " , msg]
 
     return ()
 
-doughDir = makeRelDir "dough" :: Path Rel Dir
-bakedDir = makeRelDir "baked" :: Path Rel Dir
-siteDir = makeAbsDir "/home/frank/Workspace8/SSG/site" :: Path Abs Dir
+reportFile :: Path Abs File
+reportFile = makeAbsFile "/home/frank/reportBakeAll.txt"
 
-doughPath = addDir siteDir doughDir :: Path Abs Dir
-bakedPath = addDir siteDir bakedDir :: Path Abs Dir
+bakeAllInSiteMD :: (Path Abs File -> ErrIO Text)-> Path Abs Dir
+                -> Path Abs File -> ErrIO Text
+-- convert all markdonw in site with ops
+bakeAllInSiteMD ops siteDough   reportFile1 = do
+    putIOwords ["bakeAllInSiteMD", "site", showT siteDough, "reportFile", showT reportFile1]
+--    let path = toFilePath site
+--    resFile :: Path Abs File <- makeAbsoluteFile' file
+    bracketErrIO (FN.openFile2handle reportFile1 WriteMode)
+                (\hand -> do
+                    putIOwords ["bakeAllInSiteMD close"]
+                    closeFile2 hand -- not with transaction tmp
+                    )
+                (\hand ->
+                      Pipe.runEffect $
+                        getRecursiveContents siteDough
+--                        >-> Pipe.filter test--  filter is in bakeOneFile2 as a case
+                        >-> Pipe.mapM (fmap t2s . ops)
+                            --  putOneFile2xx debug forceFlag server db mgraph)
+                    --    >-> P.stdoutLn
+                        >-> Pipe.toHandle hand
+                )
+    return $ unwords' ["bakeAllInSiteMD end", showT siteDough, showT reportFile1
+            , "..........................", "ok"]
 
-extMD = Extension "md"
-extHTML = Extension "html"
+testMD :: Path Abs File -> Bool
+testMD = hasExtension extMD
+
+bakeOneFile2 :: Path Abs File -> ErrIO Text
+-- a version which makes the path first  to use in Pipe
+bakeOneFile2 fp2 =  do
+    fpath :: Path Rel File  <- stripProperPrefix' doughPath fp2
+--        : MonadThrow m => Path b Dir -> Path b t -> m (Path Rel t)
+--    let   fnn = removeExtension fpath
+    bakeOneFile fpath
+
 
 bakeOneFile :: -- Path Rel Dir - Path Rel Dir ->
-            Path Rel File -> ErrIO ()
+            Path Rel File -> ErrIO Text
 -- convert a file (path relative to dough) and put in baked
 bakeOneFile fp = do
     let   fnn = removeExtension fp :: Path Rel File
-    putIOwords ["fn", showT fnn]
-    let   fpi = addFileName doughPath fp  :: Path Abs File
-    putIOwords ["fpi", showT fpi]
-    let   fpo = addExtension extHTML $
-                        addFileName bakedPath fnn :: Path Abs File
-    putIOwords ["fpo", showT fpo]
-    intext <- readFile2 fpi
-    putIOwords ["bakeOne infile\n", intext]
+    putIOwords ["--------------------------------", "bakeOneFile fn", showT fnn, "\n\n"]
+    -- currently only for md files, add static next
 
-    val <- markdownToHTML intext
+    intext :: MarkdownText <- read7 doughPath fnn markdownFileType
 
-   let v1 =            val ^.  key "content" . _String
-    writeFile2 fpo v1
-    putIOwords ["bakeOne outhtml\n", v1]
-    putIOwords ["bakeOne result\n", showPretty val]
 
-showPretty :: ToJSON a => a -> Text
-showPretty = bb2t . bl2b . encodePretty
 
+--
+-- convert to html
+    val  <- markdownToHTML3 intext
+--    let html1  =  HTMLout $  val ^.  key "content" . _String
+
+--    putIOwords ["bakeOneFile html1\n\n", unHTMLout html1]
+    putIOwords ["bakeOneFile val\n\n", showPretty val]
+
+--     apply template before writing
+    let templateFN = makeAbsFile
+                      "/home/frank/Workspace8/SSG/theme/templates/pandocDefault.html"
+                      :: Path Abs File
+    html2 <-  applyTemplate2 templateFN val
+
+    putIOwords ["bakeOneFile resultFile", showT bakedPath, showT fnn, "\n"]
+    write7 bakedPath fnn htmloutFileType html2
+    putIOwords ["bakeOneFile outhtml (which was just written) \n", unHTMLout html2, "\n"]
+
+    return . unwords' $  ["bakeOneFile outhtml ", showT fnn, "done", "\n\n"]
+
+
+stripProperPrefix' ::  Path b Dir -> Path b t -> ErrIO (Path Rel t)
+stripProperPrefix' dir fn = fmap Path $ Path.stripProperPrefix (unPath dir) (unPath fn)

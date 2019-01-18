@@ -13,6 +13,8 @@ cabal-version:  >= 1.10
 library
   exposed-modules:
       Lib.Bake
+      Lib.FileMgt
+      Lib.Templating
       Slick.Pandoc
   other-modules:
 
@@ -30,11 +32,13 @@ library
     , lens-aeson
     , lens
     , aeson-pretty
+    , pipes
+    , path , path-io
 
   default-language: Haskell2010
 
-executable sgg10
-  main-is: sgg10.hs
+executable ssg10
+  main-is: ssg10.hs
   other-modules:
 
   build-depends:

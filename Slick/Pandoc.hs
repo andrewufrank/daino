@@ -1,9 +1,16 @@
 -- Module copied from Slick
 
 -- i use it because it concentrates all funny pandoc stuff here (including the
--- writing of the json
+-- writing of the json, cannot be imported, because it fixes there the Action monad
+-- which i use here as a synonym to ErrIO
 
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE FlexibleContexts      #-}
+{-# LANGUAGE FlexibleInstances     #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE ScopedTypeVariables   #-}
+{-# LANGUAGE TypeFamilies          #-}
+{-# LANGUAGE TypeSynonymInstances  #-}
+{-# LANGUAGE OverloadedStrings     #-}
 
 module Slick.Pandoc
   ( markdownToHTML
@@ -20,7 +27,7 @@ module Slick.Pandoc
   ) where
 
 import Control.Lens
-import Control.Monad
+--import Control.Monad
 import Data.Aeson
 import Data.Aeson.Lens
 --import qualified Data.Text as T
@@ -31,6 +38,7 @@ import Text.Pandoc.Shared
 
 import Uniform.Error hiding (Meta, at)
 --import Uniform.Strings hiding (Meta, at)
+import Lib.FileMgt (MarkdownText, unMT)
 
 type Action = ErrIO   -- the actual Action Monad in Shake is more elaborate.
 
@@ -51,6 +59,9 @@ markdownOptions = def { readerExtensions = exts }
 html5Options :: WriterOptions
 html5Options = def { writerHighlightStyle = Just tango
                    , writerExtensions     = writerExtensions def
+--                   , writerTemplate = Just "/home/frank/Workspace8/SSG/theme/templates/pandocDefault.html"
+-- applying a template here not a good idea
+-- process in two steps
                    }
 
 -- | Handle possible pandoc failure within the Action Monad
@@ -59,16 +70,38 @@ unPandocM p = do
   result <- liftIO $ runIO p
   either (fail . show) return result
 
+newtype DocValue = DocValue Value  deriving (Show, Ord, Eq, Read)
+-- ^ a value type with "content" is a html translation
+-- and all the other keys
+unDocValue (DocValue v) = v
+
+
 -- | Convert markdown text into a 'Value';
 -- The 'Value'  has a "content" key containing rendered HTML
 -- Metadata is assigned on the respective keys in the 'Value'
-markdownToHTML :: Text -> Action Value
-markdownToHTML =
-  loadUsing (readMarkdown markdownOptions) (writeHtml5String html5Options)
+markdownToHTML3 :: MarkdownText -> ErrIO Value
+markdownToHTML3 t = do
+  loadUsing   readMarkdown2 (writeHtml5String html5Options) (unMT t)
+
+readMarkdown2 :: Text -> ErrIO Pandoc
+readMarkdown2 text1 = do
+    p <-  unPandocM $ readMarkdown markdownOptions text1
+    return p
+
+
+-- | Convert markdown text into a 'Value';
+-- The 'Value'  has a "content" key containing rendered HTML
+-- Metadata is assigned on the respective keys in the 'Value'
+markdownToHTML :: MarkdownText -> Action Value
+markdownToHTML t =
+  loadUsing   readMarkdown2 (writeHtml5String html5Options) (unMT t)
 
 -- | Like 'markdownToHTML' but allows returning any JSON serializable object
-markdownToHTML' :: (FromJSON a) => Text -> Action a
-markdownToHTML' = markdownToHTML >=> convert
+markdownToHTML' :: (FromJSON a) => MarkdownText -> Action a
+markdownToHTML' t = do
+            val  <- markdownToHTML t
+            res <- convert val
+            return res
 
 type PandocReader textType = textType -> PandocIO Pandoc
 
