@@ -21,18 +21,10 @@ module Lib.Bake  -- (openMain, htf_thisModuelsTests)
 import Uniform.Strings
 import Uniform.Filenames
 import Uniform.FileStrings () -- for instances
---import Uniform.TypedFile
 import Uniform.Piped
 import           Uniform.FileIO as FN hiding ( (</>), (<.>))  -- (<>),
---import Uniform.Error
 
-import Lib.Pandoc (markdownToHTML4x, markdownToHTML4a)   -- with a simplified Action ~ ErrIO
---import Text.Pandoc.Templates (applyTemplate)
-
---import Control.Lens
---import Data.Aeson.Lens
---import Data.Aeson.Encode.Pretty (showPretty)
---import Data.Aeson
+import Lib.Pandoc (markdownToHTML4x)   -- with a simplified Action ~ ErrIO
 
 import Lib.Templating
 import Lib.FileMgt
@@ -42,13 +34,10 @@ import qualified Pipes.Prelude as Pipe
 import Pipes ((>->)) -- , (~>)
 import qualified Path  as Path
 
---import Text.Pandoc
 
 bake ::   ErrIO ()
 bake   = do
     putIOwords ["\nbake start"]
---    msg <- bakeOneFile2 (addDir doughPath fp)
---    putIOwords ["bake simple for " , showT fp]
     msg <- bakeAllInSiteMD bakeOneFile2   doughPath  reportFile
     putIOwords ["\nbake all msg " , msg]
 

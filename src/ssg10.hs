@@ -28,12 +28,10 @@ postWithRef = makeRelFile "PublicationList/postWithReference.md" :: Path Rel Fil
 
 main :: IO ()
 main = startProg programName progTitle
-            ( do
+            bake
+
+baketest =  do
                  let p = postWithRef
                  putIOwords ["do bake for ", showT p]
                  bake4test p -- siteDoughPath siteBakedPath
-
-
-
-            )
 
