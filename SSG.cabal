@@ -28,7 +28,8 @@ library
     , uniform-error
 
     , pandoc
-    , pandoc-citeproc
+--    , pandoc-citeproc
+    , process
     , aeson
     , lens-aeson
     , lens

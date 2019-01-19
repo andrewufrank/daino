@@ -26,7 +26,7 @@ import Uniform.Piped
 import           Uniform.FileIO as FN hiding ( (</>), (<.>))  -- (<>),
 --import Uniform.Error
 
-import Lib.Pandoc (markdownToHTML3)   -- with a simplified Action ~ ErrIO
+import Lib.Pandoc (markdownToHTML4x)   -- with a simplified Action ~ ErrIO
 --import Text.Pandoc.Templates (applyTemplate)
 
 --import Control.Lens
@@ -115,7 +115,7 @@ bakeOneFile fp = do
 
         --
         -- convert to html
-            val  <- markdownToHTML3 intext
+            val  <- markdownToHTML4x intext
         --    let html1  =  HTMLout $  val ^.  key "content" . _String
 
         --    putIOwords ["bakeOneFile html1\n\n", unHTMLout html1]
