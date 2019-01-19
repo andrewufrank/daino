@@ -1,4 +1,4 @@
--- Module copied from Slick and changed
+-- Module copied from Slick
 
 -- i use it because it concentrates all funny pandoc stuff here (including the
 -- writing of the json, cannot be imported, because it fixes there the Action monad
@@ -84,63 +84,71 @@ unPandocM op1 = do
                         putIOwords ["unPandocM catchError", showT e ]
                         throwError . showT $  e)
 
+markdownToHTML3 :: MarkdownText -> ErrIO DocValue
+markdownToHTML3 t = do
+    r <- unPandocM $ markdownToHTML4 (unMT t)
+    putIOwords ["markdownToHTML3 ", "result", showT r]
+    return . DocValue $ r
 
---unPandocM p = do
---  result <- liftIO $ runIO p
---  either (fail . show) return result
 
 
 -- | Convert markdown text into a 'Value';
 -- The 'Value'  has a "content" key containing rendered HTML
 -- Metadata is assigned on the respective keys in the 'Value'
-markdownToHTML3 :: MarkdownText -> ErrIO DocValue
-markdownToHTML3 t = do
+-- includes reference replacement (pandoc-citeproc)
+-- runs in the pandoc monad!
+markdownToHTML4 :: Text -> PandocIO Value
+markdownToHTML4 t = do
   putIOwords ["markdownToHTML3 start"]
-  (pandoc, meta3)  <- readMarkdown2 (unMT t)
-  putIOwords ["markdownToHTML3 meta3", showNice meta3]
+  pandoc   <- readMarkdown markdownOptions  t
+
+
+  let meta2 = flattenMeta (getMeta pandoc)
+  putIOwords ["markdownToHTML3 meta3", showNice meta2]
   -- test if biblio is present
---  let bib = Just "/resources/BibTexExample.bib"
-  let bib = Just $ (unDocValue meta3) ^? key "bibliography" . _String
+  let bib = Just $ ( meta2) ^? key "bibliography" . _String
   pandoc2 <- case bib of
     Nothing -> return pandoc
     _ -> do
                 putIOwords ["markdownToHTML3 bibliography is", showT bib]
-                res <- processCites2 pandoc --  :: Pandoc -> IO Pandoc
---                putIOwords ["markdownToHTML3 bibliography result", showT res]
+                putIOwords ["markdownToHTML3 bibliography result", showT pandoc]
+                res <- liftIO $ processCites' pandoc --  :: Pandoc -> IO Pandoc
+                when (res == pandoc) $
+                    putIOwords ["*** markdownToHTML3 result without references ***", showT res]
                 return res
 
-  htmltex <- writeHtml5String2  pandoc2
+  htmltex <- writeHtml5String html5Options pandoc2
 
-  let withContent = (unDocValue meta3) & _Object . at "contentHtml" ?~ String (unHTMLout htmltex)
-  return . DocValue $ withContent
+  let withContent = ( meta2) & _Object . at "contentHtml" ?~ String ( htmltex)
+  return  withContent
 
 getMeta :: Pandoc -> Meta
 getMeta (Pandoc m _) = m
 
-readMarkdown2 :: Text -> ErrIO (Pandoc, DocValue)
-readMarkdown2 text1 = do
---    putIOwords ["readMarkdown2 1"]
-    pdoc <-  unPandocM $ readMarkdown markdownOptions text1
---    putIOwords ["readMarkdown2 2"]
-    let meta2 = flattenMeta (getMeta pdoc)
---    putIOwords ["readMarkdown2 3", showNice meta2]
---    meta3 :: Value <- convert (meta2  :: Value)
+--readMarkdown2 :: Text -> ErrIO (Pandoc, DocValue)
+--readMarkdown2 text1 = do
+----    putIOwords ["readMarkdown2 1"]
+--    pdoc <-  unPandocM $ readMarkdown markdownOptions text1
+----    putIOwords ["readMarkdown2 2"]
+--    let meta2 = flattenMeta (getMeta pdoc)
+----    putIOwords ["readMarkdown2 3", showNice meta2]
+----    meta3 :: Value <- convert (meta2  :: Value)
+----
+----    putIOwords ["markdownToHTML3 4", showT $ meta3 == meta2]
 --
---    putIOwords ["markdownToHTML3 4", showT $ meta3 == meta2]
+--    return (pdoc, DocValue meta2)
 
-    return (pdoc, DocValue meta2)
+--writeHtml5String2 :: Pandoc -> ErrIO HTMLout
+--writeHtml5String2 pandocRes = do
+--    p <-  unPandocM $ writeHtml5String html5Options pandocRes
+--    return . HTMLout $ p
 
-writeHtml5String2 :: Pandoc -> ErrIO HTMLout
-writeHtml5String2 pandocRes = do
-    p <-  unPandocM $ writeHtml5String html5Options pandocRes
-    return . HTMLout $ p
-
-processCites2 :: Pandoc -> ErrIO Pandoc
-processCites2 p = do
---                putIOwords ["processCites2 1", showT p]
-                r <- callIO $ processCites' p
-                when (p==r) $ putIOwords ["processCites2 not changed !", showT (p==r)]
-                return r
+--processCites2 :: Pandoc -> ErrIO Pandoc
+--processCites2 p = do
+----                putIOwords ["processCites2 1", showT p]
+--                r <- callIO $ processCites' p
+--                when (p==r) $ putIOwords ["processCites2 not changed !", showT (p==r)]
+--                return r
 
 ---- | Attempt to convert between two JSON serializable objects (or 'Value's).
 ---- Failure to deserialize fails the Shake build.
