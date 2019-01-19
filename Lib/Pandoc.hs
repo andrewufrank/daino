@@ -13,7 +13,7 @@
 {-# LANGUAGE OverloadedStrings     #-}
 
 module Lib.Pandoc
-  ( markdownToHTML4x
+  ( markdownToHTML4x, markdownToHTML4a
 --  , markdownToHTML'
 --  , makePandocReader
 --  , makePandocReader'
@@ -37,10 +37,10 @@ import Text.Pandoc.Highlighting
 import Text.Pandoc.Shared
 
 import System.Process  as System (readProcess)
---import Text.CSL.Pandoc (processCites', processCites)
---import Text.CSL (readCSLFile)
-----import Text.CSL (readBiblioFile)
---import Text.CSL.Input.Bibtex (readBibtex)
+import Text.CSL.Pandoc (processCites', processCites)
+import Text.CSL (readCSLFile)
+--import Text.CSL (readBiblioFile)
+import Text.CSL.Input.Bibtex (readBibtex)
 
 import Uniform.Error hiding (Meta, at)
 --import Uniform.Strings hiding (Meta, at)
@@ -95,6 +95,37 @@ unPandocM op1 = do
 --    putIOwords ["markdownToHTML3 ", "result", showT r]
 --    return . DocValue $ r
 
+markdownToHTML4a :: MarkdownText -> ErrIO DocValue
+markdownToHTML4a md = unPandocM $ markdownToHTML4b md
+
+-- | Convert markdown text into a 'Value';
+-- The 'Value'  has a "content" key containing rendered HTML
+-- Metadata is assigned on the respective keys in the 'Value'
+-- includes reference replacement (pandoc-citeproc)
+-- runs in the pandoc monad!
+markdownToHTML4b :: MarkdownText -> PandocIO DocValue
+markdownToHTML4b (MarkdownText t) = do
+  pandoc   <- readMarkdown markdownOptions  t
+  let meta2 = flattenMeta (getMeta pandoc)
+
+  -- test if biblio is present and apply
+  let bib = fmap t2s $  ( meta2) ^? key "bibliography" . _String :: Maybe FilePath
+  let csl = fmap t2s $  ( meta2) ^? key "csl" . _String :: Maybe FilePath
+  pandoc2 <- case bib of
+    Nothing -> return pandoc
+    Just _ -> do
+--                res <- liftIO $ processCites' pandoc --  :: Pandoc -> IO Pandoc
+                res <- processCites2a csl bib t pandoc
+                        -- :: Style -> [Reference] -> Pandoc -> Pandoc
+
+                when (res == pandoc) $
+                    liftIO $ putStrLn "\n*** markdownToHTML3 result without references ***\n"
+                return res
+
+  htmltex <- writeHtml5String html5Options pandoc2
+
+  let withContent = ( meta2) & _Object . at "contentHtml" ?~ String ( htmltex)
+  return  . DocValue $ withContent
 
 
 -- | Convert markdown text into a 'Value';
@@ -157,35 +188,31 @@ processCites2x cslfn bibfn  t  = do
         return . s2t $ res
 
 
---processCites2 :: Maybe FilePath -> Maybe FilePath -> Text -> Pandoc -> PandocIO Pandoc
+processCites2a :: Maybe FilePath -> Maybe FilePath -> Text -> Pandoc -> PandocIO Pandoc
 -- porcess the cites in the parsed pandoc, filepath is cls and bibfile name
---processCites2 cslfn bibfn  t pandoc1 = do
---        let styleFn2 = maybe apaCSL id cslfn
---            bibfn2 = fromJust bibfn
---        putIOwords ["processCite2 - filein\n", showT styleFn2, "\n", showT bibfn2]
+processCites2a cslfn bibfn  t pandoc1 = do
+        let styleFn2 = maybe apaCSL id cslfn
+            bibfn2 = fromJust bibfn
+        putIOwords ["processCite2 - filein\n", showT styleFn2, "\n", showT bibfn2]
 --        styleIn <- readFile2 styleFn2
---        style1 <- liftIO $ readCSLFile Nothing   styleFn2
+        style1 <- liftIO $ readCSLFile Nothing   styleFn2
 --        putIOwords ["processCite2 - style1", showT style1]
---
---        bibReferences <- liftIO $ readBibtex (const True) False False bibfn2
---        putIOwords ["processCite2 - bibReferences", showT bibReferences]
+
+        bibReferences <- liftIO $ readBibtex (const True) False False bibfn2
+        putIOwords ["processCite2 - bibReferences", showT bibReferences]
 --        :: (String -> Bool) -> Bool -> Bool -> FilePath -> IO [Reference]
---
+
 --Parse a BibTeX or BibLaTeX file into a list of References.
 --The first parameter is a predicate to filter identifiers.
 --If the second parameter is true, the file will be treated as BibTeX;
 --otherwse as BibLaTeX.
 --If the third parameter is true, an "untitlecase" transformation will be performed.
---
---        pandoc3   <- readMarkdown markdownOptions  t
---
---        let pandoc4 = processCites style1 bibReferences pandoc3
---        putIOwords ["processCite2 - result pandoc2", showT pandoc4]
---        return pandoc4
---    where
---        meta2 = getMeta pandoc1 :: Meta
---        stylefn =  fmap t2s $ meta2 ^? key "csl" . _String  :: Maybe FilePath
---        bibfn =  fmap t2s $ meta2 ^? key "bibliography" . _String  :: Maybe FilePath
+
+        pandoc3   <- readMarkdown markdownOptions  t
+
+        let pandoc4 = processCites style1 bibReferences pandoc3
+        putIOwords ["processCite2 - result pandoc2", showT pandoc4]
+        return pandoc4
 
 readMarkdown2 :: Text -> ErrIO Pandoc
 readMarkdown2 text1 =  unPandocM $ readMarkdown markdownOptions text1
