@@ -15,7 +15,7 @@ library
       Lib.Bake
       Lib.FileMgt
       Lib.Templating
-      Slick.Pandoc
+      Lib.Pandoc
   other-modules:
 
   hs-source-dirs:

@@ -26,7 +26,7 @@ import Uniform.Piped
 import           Uniform.FileIO as FN hiding ( (</>), (<.>))  -- (<>),
 --import Uniform.Error
 
-import Slick.Pandoc (markdownToHTML3)   -- with a simplified Action ~ ErrIO
+import Lib.Pandoc (markdownToHTML3)   -- with a simplified Action ~ ErrIO
 --import Text.Pandoc.Templates (applyTemplate)
 
 --import Control.Lens

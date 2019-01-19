@@ -1,4 +1,4 @@
--- Module copied from Slick
+-- Module copied from Slick and changed
 
 -- i use it because it concentrates all funny pandoc stuff here (including the
 -- writing of the json, cannot be imported, because it fixes there the Action monad
@@ -12,7 +12,7 @@
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
 
-module Slick.Pandoc
+module Lib.Pandoc
   ( markdownToHTML3
 --  , markdownToHTML'
 --  , makePandocReader
