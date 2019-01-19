@@ -99,19 +99,14 @@ markdownToHTML3 t = do
 -- runs in the pandoc monad!
 markdownToHTML4 :: Text -> PandocIO Value
 markdownToHTML4 t = do
-  putIOwords ["markdownToHTML3 start"]
   pandoc   <- readMarkdown markdownOptions  t
-
-
   let meta2 = flattenMeta (getMeta pandoc)
-  putIOwords ["markdownToHTML3 meta3", showNice meta2]
-  -- test if biblio is present
+
+  -- test if biblio is present and apply
   let bib = Just $ ( meta2) ^? key "bibliography" . _String
   pandoc2 <- case bib of
     Nothing -> return pandoc
     _ -> do
-                putIOwords ["markdownToHTML3 bibliography is", showT bib]
-                putIOwords ["markdownToHTML3 bibliography result", showT pandoc]
                 res <- liftIO $ processCites' pandoc --  :: Pandoc -> IO Pandoc
                 when (res == pandoc) $
                     liftIO $ putStrLn "*** markdownToHTML3 result without references ***"
