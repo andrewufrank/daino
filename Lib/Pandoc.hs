@@ -114,7 +114,7 @@ markdownToHTML4 t = do
                 putIOwords ["markdownToHTML3 bibliography result", showT pandoc]
                 res <- liftIO $ processCites' pandoc --  :: Pandoc -> IO Pandoc
                 when (res == pandoc) $
-                    putIOwords ["*** markdownToHTML3 result without references ***", showT res]
+                    liftIO $ putStrLn "*** markdownToHTML3 result without references ***"
                 return res
 
   htmltex <- writeHtml5String html5Options pandoc2
