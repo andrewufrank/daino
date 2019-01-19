@@ -11,10 +11,24 @@ nocite: |
   @navratil08
 
 bibliography: "/home/frank/Workspace8/SSG/site/resources/BibTexLatex.bib"
-csl: "/home/frank/Workspace8/SSG/site/resources/chicago-fullnote-bibliography-bb.csl"
+
+references:
+- id: fenner2012a
+  title: One-click science marketing
+  author:
+  - family: Fenner
+    given: Martin
+  container-title: Nature Materials
+  volume: 11
+  publisher: Nature Publishing Group
+  page: 261-263
+  type: article-journal
+  issued:
+    year: 2012
+    month: 3
 ---
 
-An example post. With a reference to [@Frank2010a] given.
+An example post [@fenner2012a]. With a reference to [@Frank2010a] given.
 
 ## References
 

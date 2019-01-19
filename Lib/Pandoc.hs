@@ -113,9 +113,8 @@ markdownToHTML4 t = do
     Nothing -> return pandoc
     Just _ -> do
 --                res <- liftIO $ processCites' pandoc --  :: Pandoc -> IO Pandoc
-                res <- liftIO $ processCites2 csl bib pandoc
+                res <- processCites2 csl bib t pandoc
                         -- :: Style -> [Reference] -> Pandoc -> Pandoc
-
 
                 when (res == pandoc) $
                     liftIO $ putStrLn "\n*** markdownToHTML3 result without references ***\n"
@@ -133,17 +132,17 @@ cslDefault, apaCSL :: FilePath
 cslDefault = "/home/frank/Workspace8/SSG/site/resources/chicago-fullnote-bibliography-bb.csl"
 apaCSL = "/home/frank/Workspace8/SSG/site/resources/apa-x.csl"
 
-processCites2 :: Maybe FilePath -> Maybe FilePath -> Pandoc -> IO Pandoc
+processCites2 :: Maybe FilePath -> Maybe FilePath -> Text -> Pandoc -> PandocIO Pandoc
 -- porcess the cites in the parsed pandoc, filepath is cls and bibfile name
-processCites2 cslfn bibfn  pandoc1 = do
+processCites2 cslfn bibfn  t pandoc1 = do
         let styleFn2 = maybe apaCSL id cslfn
             bibfn2 = fromJust bibfn
         putIOwords ["processCite2 - filein\n", showT styleFn2, "\n", showT bibfn2]
 --        styleIn <- readFile2 styleFn2
-        style1 <- readCSLFile Nothing   styleFn2
+        style1 <- liftIO $ readCSLFile Nothing   styleFn2
 --        putIOwords ["processCite2 - style1", showT style1]
 
-        bibReferences <- readBibtex (const True) False False bibfn2
+        bibReferences <- liftIO $ readBibtex (const True) False False bibfn2
         putIOwords ["processCite2 - bibReferences", showT bibReferences]
 --        :: (String -> Bool) -> Bool -> Bool -> FilePath -> IO [Reference]
 
@@ -153,9 +152,11 @@ processCites2 cslfn bibfn  pandoc1 = do
 --otherwse as BibLaTeX.
 --If the third parameter is true, an "untitlecase" transformation will be performed.
 
-        let pandoc2 = processCites style1 bibReferences pandoc1
-        putIOwords ["processCite2 - result pandoc2", showT pandoc2]
-        return pandoc2
+        pandoc3   <- readMarkdown markdownOptions  t
+
+        let pandoc4 = processCites style1 bibReferences pandoc3
+        putIOwords ["processCite2 - result pandoc2", showT pandoc4]
+        return pandoc4
 --    where
 --        meta2 = getMeta pandoc1 :: Meta
 --        stylefn =  fmap t2s $ meta2 ^? key "csl" . _String  :: Maybe FilePath
