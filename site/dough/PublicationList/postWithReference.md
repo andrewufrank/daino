@@ -7,7 +7,7 @@ abstract: |
     What are the objects of
     ontologists .
 
-nocite: | 
+nocite: |
   @navratil08
 
 bibliography: "/home/frank/Workspace8/SSG/site/resources/BibTexLatex.bib"
