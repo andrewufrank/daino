@@ -17,16 +17,21 @@
 module Lib.Foundation  -- (openMain, htf_thisModuelsTests)
      where
 
---import Uniform.Strings
+import Uniform.Strings
 import Uniform.Filenames
 --import Uniform.FileStrings
+
+progName = "SSG" :: Text
 
 data Defaults = Defaults
     { siteDir, themeDir :: Path Abs Dir -- ^ the place of the site and the theme files
     , doughDir, bakedDir :: Path Rel Dir -- ^ the names of the two dir, under siteDir
     , templateDir :: Path Rel Dir -- ^ where the templates are
     , reportFile :: Path Abs File  -- ^ the report from processing baked with pipe
-    }
+    } deriving (Show, Ord, Eq, Read)
+
+instance NiceStrings Defaults where
+    showNice d = replace' ", " ",\n " (showT d)
 
 defaults :: Defaults
 defaults = Defaults{ siteDir = makeAbsDir "/home/frank/Workspace8/SSG/site"

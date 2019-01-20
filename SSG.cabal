@@ -75,22 +75,23 @@ executable serversg
     src
   default-language: Haskell2010
 
---test-suite g2
---  type: exitcode-stdio-1.0
---  main-is: ExampleTesting.hs
---  other-modules:
---      Lib.Bake_test
---
---  hs-source-dirs:
---      test
---  ghc-options: -Wall
---  build-depends:
---      HTF
---    , QuickCheck
---    , base ==4.*
---    , uniform-strings
---    , uniform-convenience
---    , uniform-fileio
---    , uniform-error
---    , SSG
---  default-language: Haskell2010
+test-suite g2
+  type: exitcode-stdio-1.0
+  main-is: ExampleTesting.hs
+  other-modules:
+      Lib.Bake_test
+      Lib.Foundation_test
+
+  hs-source-dirs:
+      test
+  ghc-options: -Wall
+  build-depends:
+      HTF
+    , QuickCheck
+    , base ==4.*
+    , uniform-strings
+    , uniform-convenience
+    , uniform-fileio
+    , uniform-error
+    , SSG
+  default-language: Haskell2010

@@ -12,14 +12,15 @@ module Main     where      -- must have Main (main) or Main where
 
 import           Test.Framework
 --import {-@ HTF_TESTS @-} ClosedClass   -- pay attention to HTF_TESTS !
-import {-@ HTF_TESTS @-} Lib.Bake_test   -- pay attention to HTF_TESTS !
+--import {-@ HTF_TESTS @-} Lib.Bake_test   -- pay attention to HTF_TESTS !
+import {-@ HTF_TESTS @-} Lib.Foundation_test   -- pay attention to HTF_TESTS !
 
 -- main =  do  -- the local tests only
 --     putStrLn "HTF ExampleTest.hs:\n"
 --     r <- htfMain htf_thisModulesTests
 --     putStrLn ("HTF end ExampleTesting.hs test:\n" ++ show r)
 --     return ()
-
+main ::  IO ()
 main =  do  -- with tests in other modules
     putStrLn "HTF ExampleTest.hs:\n"
     p <- htfMain htf_importedTests
