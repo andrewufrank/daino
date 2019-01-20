@@ -62,8 +62,8 @@ showLandingPage :: ActionM ()
 showLandingPage   = do
   setHeader "Content-Type" "text/html"
   txt <-  liftIO $ readFile (toFilePath $ addFileName bakedPath (makeRelFile "index.html"))
-  let x = " Sdsf" :: _
-  html x -- (s2t txt)
+--  let x = " Sdsf" :: _
+  html . t2tl . s2t  $ txt
 
 --showBakedPage :: ActionM ()
 ---- get the page asked for
