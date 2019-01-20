@@ -30,5 +30,5 @@ references:
 
 An example post [@fenner2012a]. With a reference to [@Frank2010a] given.
 
-## References
+# References
 
