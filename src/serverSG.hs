@@ -40,7 +40,7 @@ site :: ScottyM  ()
 -- for get, return the page from baked
 -- for post return error
 site = do
-    get "/" showLandingPage
+    get "/" $ file landingPage  -- showLandingPage
     middleware $ staticPolicy $ addBase (toFilePath bakedPath)
 --    does not open the index for /
 -- should the baked be included or not - included or not in relative path
@@ -58,10 +58,12 @@ TTdata {ttwf = "einfacher", ttpos = "ADJA", ttlemma = "einfach"}
 TTdata {ttwf = "Satz.", ttpos = "NN", ttlemma = "<unknown>"}
 -}
 
+landingPage = toFilePath $ addFileName bakedPath (makeRelFile "index.html")
+
 showLandingPage :: ActionM ()
 showLandingPage   = do
   setHeader "Content-Type" "text/html"
-  txt <-  liftIO $ readFile (toFilePath $ addFileName bakedPath (makeRelFile "index.html"))
+  txt <-  liftIO $ readFile landingPage
 --  let x = " Sdsf" :: _
   html . t2tl . s2t  $ txt
 
