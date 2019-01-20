@@ -26,7 +26,7 @@ import Uniform.Filenames
 test_Defaults_1_A :: IO ()
 
 test_Defaults_1_A
-        =   testVar0File progName defaults  "resultB1" showNice
+        =   testVar0File progName defaults  "resultA1" showNice
 
 
 

@@ -17,19 +17,23 @@ module Lib.Bake_test  -- (openMain, htf_thisModuelsTests)
 
 
 import           Test.Framework
-import Uniform.Strings
+import Uniform.Test.TestHarness
+
+--import Uniform.Strings
+--import Uniform.Filenames
+import Lib.Foundation (progName)
 import Lib.Bake
-import Uniform.Filenames
+
+test11, test12 ::  Path Rel File
+test11 = makeRelFile "Blog/postwk.md"
+test12 = makeRelFile "PublicationList/postWithReference.md"
 
 
-post1 = makeRelFile "postwk.md" :: Path Rel File
+test_bake_11_A_M, test_bake_12_A_M :: IO ()
+test_bake_11_A_M = testVar0FileIO progName  test11 "resultAM11" bakeOneFile
+test_bake_12_A_M = testVar0FileIO progName  test12 "resultAM12" bakeOneFile
 
--- show produces the "xx"
-test_1 = assertEqual  () ()
---                (do
---                    r <- runErr $ bakeOneFile post1
---                    return (r:: ErrOrVal ())
---                    )
-
-
+test_bake_11_A_L, test_bake_12_A_L :: IO ()
+test_bake_11_A_L = testVar0File progName  test11 "resultAL11" showT
+test_bake_12_A_L = testVar0File progName  test12 "resultAL12" showT
 
