@@ -127,10 +127,11 @@ bakeOneFile fp = do
             return . unwords' $  ["bakeOneFile outhtml ", showT fnn, "done", "\n\n"]
 
      `catchError` (\e -> do
-                        putIOwords ["\n****************"
+                        let errmsg2 =  ["\n****************"
                                     , "bakeOneFile catchError", showT e , "for ", showT fp
                                     , "\n****************"]
-                        return . unwords' $  ["bakeOneFile outhtml ", showT fp, "failed", "\n\n"]
+                        putIOwords errmsg2
+                        return . unwords' $ errmsg2
                     )
 
 stripProperPrefix' ::  Path b Dir -> Path b t -> ErrIO (Path Rel t)

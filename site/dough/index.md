@@ -7,11 +7,9 @@ date: 2010-07-29
 keywords: homepage
 abstract: | 
     The index page for all. 
-   
-bibliography:  
 ---
 
 My test page start: 
 
-- [page1](/baked/Blog/postwk.html) 
-- [page2](/baked/PublicationList/postWithReference.html)
+- [page1](/Blog/postwk.html) 
+- [page2](/PublicationList/postWithReference.html)

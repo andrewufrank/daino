@@ -130,7 +130,7 @@ processCites2x :: Maybe FilePath -> Maybe FilePath -> Text ->   ErrIO Text
 processCites2x _ _  t  = do
 --        let styleFn2 = maybe apaCSL id cslfn
 --            bibfn2 = fromJustNote "processCites2x ew224" bibfn   -- tested befire
-        putIOwords ["processCite2" ] -- - filein\n", showT styleFn2, "\n", showT bibfn2]
+        putIOwords ["processCite2x" ] -- - filein\n", showT styleFn2, "\n", showT bibfn2]
 
         let cmd = "pandoc"
         let cmdargs = ["--from=markdown", "--to=html5", "--filter=pandoc-citeproc" ]

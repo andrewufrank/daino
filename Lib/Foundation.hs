@@ -17,9 +17,9 @@
 module Lib.Foundation  -- (openMain, htf_thisModuelsTests)
      where
 
-import Uniform.Strings
+--import Uniform.Strings
 import Uniform.Filenames
-import Uniform.FileStrings
+--import Uniform.FileStrings
 
 data Defaults = Defaults
     { siteDir, themeDir :: Path Abs Dir -- ^ the place of the site and the theme files
@@ -28,11 +28,12 @@ data Defaults = Defaults
     , reportFile :: Path Abs File  -- ^ the report from processing baked with pipe
     }
 
+defaults :: Defaults
 defaults = Defaults{ siteDir = makeAbsDir "/home/frank/Workspace8/SSG/site"
             , doughDir = makeRelDir "dough"
             , bakedDir = makeRelDir "baked"
             , reportFile = makeAbsFile "/home/frank/reportBakeAll.txt"
-            , templateDir = makeRelDir "template"
+            , templateDir = makeRelDir "templates"
             , themeDir = makeAbsDir "/home/frank/Workspace8/SSG/theme"
 }
 
@@ -51,5 +52,7 @@ doughPath, bakedPath :: Path Abs Dir
 doughPath = addDir (siteDir defaults) (doughDir defaults) :: Path Abs Dir
 bakedPath = addDir (siteDir defaults) (bakedDir defaults) :: Path Abs Dir
 
-templatePath = addDir (themeDir defaults) (templateDir defaults) :: Path Abs Dir
+templatePath :: Path Abs Dir
+reportFilePath :: Path Abs File
+templatePath = addDir (themeDir defaults) (templateDir defaults)
 reportFilePath = reportFile defaults
