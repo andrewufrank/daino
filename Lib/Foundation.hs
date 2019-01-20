@@ -33,6 +33,7 @@ defaults = Defaults{ siteDir = makeAbsDir "/home/frank/Workspace8/SSG/site"
             , bakedDir = makeRelDir "baked"
             , reportFile = makeAbsFile "/home/frank/reportBakeAll.txt"
             , templateDir = makeRelDir "template"
+            , themeDir = makeAbsDir "/home/frank/Workspace8/SSG/theme"
 }
 
 --doughDir, bakedDir :: Path Rel Dir
@@ -44,6 +45,7 @@ defaults = Defaults{ siteDir = makeAbsDir "/home/frank/Workspace8/SSG/site"
 ---- ^ the path to the siteDir (absolute - need not inside package
 --siteDir = makeAbsDir "/home/frank/Workspace8/SSG/site"
 
+-- all Path will become functions with Default as argument
 doughPath, bakedPath :: Path Abs Dir
 -- the path (absolute) to dough an baked
 doughPath = addDir (siteDir defaults) (doughDir defaults) :: Path Abs Dir
