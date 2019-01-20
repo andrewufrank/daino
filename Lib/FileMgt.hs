@@ -21,11 +21,11 @@
 module Lib.FileMgt
      where
 
---import Uniform.Strings
+import Uniform.Zero
 import Uniform.Filenames
 import Uniform.FileStrings
 import Uniform.TypedFile
-import Data.Aeson (Value, ToJSON)
+import Data.Aeson (Value, ToJSON, Value (..))
 import Data.Aeson.Encode.Pretty (encodePretty)
 import  Path.IO (ensureDir)
 
@@ -38,6 +38,8 @@ newtype DocValue = DocValue Value  deriving (Show,  Eq, Read)
 -- and all the other keys
 unDocValue (DocValue v) = v
 
+instance Zeros DocValue where zero = DocValue Null
+
 instance NiceStrings DocValue where
     showNice = showNice .  unDocValue
 
@@ -47,9 +49,12 @@ newtype MarkdownText = MarkdownText Text deriving (Show, Read, Eq, Ord)
 -- a wrapper around Markdonw text
 unMT (MarkdownText a) = a   --needed for other ops
 
+instance Zeros MarkdownText where zero = MarkdownText zero
+
 markdownFileType = TypedFile5 {tpext5 = extMD} :: TypedFile5   Text MarkdownText
 --instance FileHandles MarkdownText
 -- what is missing here?
+
 
 instance TypedFiles7 Text  MarkdownText    where
 -- handling Markdown and read them into MarkdownText

@@ -90,6 +90,9 @@ bakeOneFile2 fp2 =  do
 --    let   fnn = removeExtension fpath
     bakeOneFile fpath
 
+readMarkdownFile :: Path Rel File -> ErrIO MarkdownText
+-- read one file
+readMarkdownFile fnn = read7 doughPath fnn markdownFileType
 
 bakeOneFile :: -- Path Rel Dir - Path Rel Dir ->
             Path Rel File -> ErrIO Text
@@ -99,7 +102,7 @@ bakeOneFile fp = do
             putIOwords ["\n--------------------------------", "bakeOneFile fn", showT fnn, "\n\n"]
             -- currently only for md files, add static next
 
-            intext :: MarkdownText <- read7 doughPath fnn markdownFileType
+            intext :: MarkdownText <- readMarkdownFile fnn
 
 
 

@@ -14,6 +14,7 @@ import           Test.Framework
 --import {-@ HTF_TESTS @-} ClosedClass   -- pay attention to HTF_TESTS !
 import {-@ HTF_TESTS @-} Lib.Bake_test   -- pay attention to HTF_TESTS !
 import {-@ HTF_TESTS @-} Lib.Foundation_test   -- pay attention to HTF_TESTS !
+import {-@ HTF_TESTS @-} Lib.Pandoc_test   -- pay attention to HTF_TESTS !
 
 -- main =  do  -- the local tests only
 --     putStrLn "HTF ExampleTest.hs:\n"
