@@ -89,19 +89,6 @@ instance TypedFiles7 Text HTMLout  where
 
     read7 f = errorT ["TypedFiles - no implementation for read7", showT f]
 
-doughDir, bakedDir :: Path Rel Dir
--- ^ the names of the two dir, under siteDir
-doughDir = makeRelDir "dough"
-bakedDir = makeRelDir "baked"
-
-siteDir :: Path Abs Dir
--- ^ the path to the siteDir (absolute - need not inside package
-siteDir = makeAbsDir "/home/frank/Workspace8/SSG/site"
-
-doughPath, bakedPath :: Path Abs Dir
--- the path (absolute) to dough an baked
-doughPath = addDir siteDir doughDir :: Path Abs Dir
-bakedPath = addDir siteDir bakedDir :: Path Abs Dir
 
 extMD, extHTML :: Extension
 extMD = Extension "md"

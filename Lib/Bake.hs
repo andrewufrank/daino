@@ -28,6 +28,7 @@ import Lib.Pandoc (markdownToHTML4x)   -- with a simplified Action ~ ErrIO
 
 import Lib.Templating
 import Lib.FileMgt
+import Lib.Foundation
 
 import qualified Pipes as Pipe
 import qualified Pipes.Prelude as Pipe
@@ -38,7 +39,7 @@ import qualified Path  as Path
 bake ::   ErrIO ()
 bake   = do
     putIOwords ["\nbake start"]
-    msg <- bakeAllInSiteMD bakeOneFile2   doughPath  reportFile
+    msg <- bakeAllInSiteMD bakeOneFile2   doughPath  reportFilePath
     putIOwords ["\nbake all msg " , msg]
 
     return ()
@@ -51,8 +52,8 @@ bake4test fp = do
 
     return ()
 
-reportFile :: Path Abs File
-reportFile = makeAbsFile "/home/frank/reportBakeAll.txt"
+--reportFile :: Path Abs File
+--reportFile = makeAbsFile "/home/frank/reportBakeAll.txt"
 
 bakeAllInSiteMD :: (Path Abs File -> ErrIO Text)-> Path Abs Dir
                 -> Path Abs File -> ErrIO Text
@@ -112,10 +113,10 @@ bakeOneFile fp = do
             putIOwords ["bakeOneFile val\n\n", showNice val]
 
         --     apply template before writing
-            let templateFN = makeAbsFile
-                              "/home/frank/Workspace8/SSG/theme/templates/pandocDefault.html"
+            let templateFileName =  addDir templatePath
+                            (makeRelFile "pandocDefault.html"::Path Rel File)
                               :: Path Abs File
-            html2 <-  applyTemplate2 templateFN val
+            html2 <-  applyTemplate2 templateFileName val
 
             putIOwords ["bakeOneFile resultFile", showT bakedPath, showT fnn, "\n"]
             write7 bakedPath fnn htmloutFileType html2

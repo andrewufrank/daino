@@ -16,6 +16,8 @@ library
       Lib.FileMgt
       Lib.Templating
       Lib.Pandoc
+      Lib.Foundation
+
   other-modules:
 
   hs-source-dirs:
