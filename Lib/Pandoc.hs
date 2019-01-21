@@ -71,8 +71,8 @@ unPandocM op1 = do
 -- Metadata is assigned on the respective keys in the 'Value'
 -- includes reference replacement (pandoc-citeproc)
 -- runs in the pandoc monad!
-markdownToHTML4x :: MarkdownText -> ErrIO DocValue
-markdownToHTML4x (MarkdownText t)  = do
+markdownToHTML4x :: Bool -> MarkdownText -> ErrIO DocValue
+markdownToHTML4x debug (MarkdownText t)  = do
   pandoc   <- readMarkdown2   t
   let meta2 = flattenMeta (getMeta pandoc)
 
@@ -84,7 +84,7 @@ markdownToHTML4x (MarkdownText t)  = do
                     htmltext <- writeHtml5String2  pandoc
                     return htmltext
     Just _ -> do
-                res <- processCites2x csl bib t
+                res <- processCites2x debug csl bib t
                 when (res == t) $
                     liftIO $ putStrLn "\n*** markdownToHTML3 result without references ***\n"
                 return . HTMLout $ res
@@ -100,16 +100,16 @@ cslDefault, apaCSL :: FilePath
 cslDefault = "/home/frank/Workspace8/SSG/site/resources/chicago-fullnote-bibliography-bb.csl"
 apaCSL = "/home/frank/Workspace8/SSG/site/resources/apa-x.csl"
 
-processCites2x :: Maybe FilePath -> Maybe FilePath -> Text ->   ErrIO Text
+processCites2x :: Bool -> Maybe FilePath -> Maybe FilePath -> Text ->   ErrIO Text
 -- porcess the cites in the text
 -- using systemcall because the standalone pandoc works
 -- call is: pandoc -f markdown -t html  --filter=pandoc-citeproc
 -- the csl and bib file are used from text, not from what is passed
 
-processCites2x _ _  t  = do
+processCites2x debug _ _  t  = do
 --        let styleFn2 = maybe apaCSL id cslfn
 --            bibfn2 = fromJustNote "processCites2x ew224" bibfn   -- tested befire
-        putIOwords ["processCite2x" ] -- - filein\n", showT styleFn2, "\n", showT bibfn2]
+        when debug $ putIOwords ["processCite2x" ] -- - filein\n", showT styleFn2, "\n", showT bibfn2]
 
         let cmd = "pandoc"
         let cmdargs = ["--from=markdown", "--to=html5", "--filter=pandoc-citeproc" ]

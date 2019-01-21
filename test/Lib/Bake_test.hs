@@ -30,10 +30,11 @@ test11, test12 ::  Path Rel File
 test11 = makeRelFile "Blog/postwk.md"
 test12 = makeRelFile "PublicationList/postWithReference.md"
 
+bakeOneFileDebug = bakeOneFile False
 
 test_bake_11_A_M, test_bake_12_A_M :: IO ()
-test_bake_11_A_M = testVar0FileIO progName  test11 "resultAM11" bakeOneFile
-test_bake_12_A_M = testVar0FileIO progName  test12 "resultAM12" bakeOneFile
+test_bake_11_A_M = testVar0FileIO progName  test11 "resultAM11" bakeOneFileDebug
+test_bake_12_A_M = testVar0FileIO progName  test12 "resultAM12" bakeOneFileDebug
 
 test_bake_11_A_L, test_bake_12_A_L :: IO ()
 test_bake_11_A_L = testVar0File progName  test11 "resultAL11" showT

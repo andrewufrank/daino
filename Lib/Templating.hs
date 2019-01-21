@@ -19,13 +19,8 @@ module Lib.Templating  -- (openMain, htf_thisModuelsTests)
 import Uniform.Strings
 import Uniform.Filenames
 import Uniform.FileStrings
-
---import Slick.Pandoc (markdownToHTML)   -- with a simplified Action ~ ErrIO
 import Text.Pandoc.Templates (applyTemplate)
-
---import Control.Lens
---import Data.Aeson.Lens
-import Data.Aeson
+--import Data.Aeson
 
 import Lib.FileMgt
 

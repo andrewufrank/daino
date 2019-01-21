@@ -36,10 +36,10 @@ import Pipes ((>->)) -- , (~>)
 import qualified Path  as Path
 
 
-bake ::   ErrIO ()
+bake ::    ErrIO ()
 bake   = do
     putIOwords ["\nbake start"]
-    msg <- bakeAllInSiteMD bakeOneFile2   doughPath  reportFilePath
+    msg <- bakeAllInSiteMD (bakeOneFile2 False)  doughPath  reportFilePath
     putIOwords ["\nbake all msg " , msg]
 
     return ()
@@ -47,7 +47,7 @@ bake   = do
 bake4test :: Path Rel File -> ErrIO ()
 bake4test fp = do
     putIOwords ["\nbake     for " , showT fp]
-    msg <- bakeOneFile2 (addDir doughPath fp)
+    msg <- bakeOneFile2 True (addDir doughPath fp)
     putIOwords ["\nbake all msg " , msg]
 
     return ()
@@ -82,60 +82,55 @@ bakeAllInSiteMD ops siteDough   reportFile1 = do
 testMD :: Path Abs File -> Bool
 testMD = hasExtension extMD
 
-bakeOneFile2 :: Path Abs File -> ErrIO Text
--- a version which makes the path first  to use in Pipe
-bakeOneFile2 fp2 =  do
+bakeOneFile2 :: Bool -> Path Abs File -> ErrIO Text
+-- bakes one file - first true gives lots of debug info
+bakeOneFile2 debug fp2 =  do
     fpath :: Path Rel File  <- stripProperPrefix' doughPath fp2
 --        : MonadThrow m => Path b Dir -> Path b t -> m (Path Rel t)
 --    let   fnn = removeExtension fpath
-    bakeOneFile fpath
+    bakeOneFile debug fpath
 
 readMarkdownFile :: Path Rel File -> ErrIO MarkdownText
 -- read one file
 readMarkdownFile fnn = read7 doughPath fnn markdownFileType
 
-bakeOneFile :: -- Path Rel Dir - Path Rel Dir ->
-            Path Rel File -> ErrIO Text
+bakeOneFile :: Bool -> Path Rel File -> ErrIO Text
 -- convert a file (path relative to dough) and put in baked
-bakeOneFile fp = do
-            let   fnn = removeExtension fp :: Path Rel File
-            putIOwords ["\n--------------------------------", "bakeOneFile fn", showT fnn, "\n\n"]
-            -- currently only for md files, add static next
+bakeOneFile debug fp = do
+        let   fnn = removeExtension fp :: Path Rel File
+        when debug $ putIOwords ["\n--------------------------------", "bakeOneFile fn", showT fnn, "\n\n"]
+        -- currently only for md files, add static next
 
-            intext :: MarkdownText <- readMarkdownFile fnn
-
-
-
-        --
-        -- convert to html
-            val  <- markdownToHTML4x intext
+        intext :: MarkdownText <- readMarkdownFile fnn
+    -- convert to html
+        val  <- markdownToHTML4x debug intext
 --            val  <- markdownToHTML4a intext
-        --    let html1  =  HTMLout $  val ^.  key "content" . _String
+    --    let html1  =  HTMLout $  val ^.  key "content" . _String
 
-        --    putIOwords ["bakeOneFile html1\n\n", unHTMLout html1]
-            putIOwords ["bakeOneFile val\n\n", showNice val]
+    --    putIOwords ["bakeOneFile html1\n\n", unHTMLout html1]
+        when debug $ putIOwords ["bakeOneFile val\n\n", showNice val]
 
-        --     apply template before writing
-            let templateFileName =  addDir templatePath
-                            (makeRelFile "pandocDefault.html"::Path Rel File)
-                              :: Path Abs File
-            html2 <-  applyTemplate2 templateFileName val
+    --     apply template before writing
+        let templateFileName =  addDir templatePath
+                        (makeRelFile "pandocDefault.html"::Path Rel File)
+                          :: Path Abs File
+        html2 <-  applyTemplate2 templateFileName val
 
-            putIOwords ["bakeOneFile resultFile", showT bakedPath, showT fnn, "\n"]
-            write7 bakedPath fnn htmloutFileType html2
+        when debug $ putIOwords ["bakeOneFile resultFile", showT bakedPath, showT fnn, "\n"]
+        write7 bakedPath fnn htmloutFileType html2
 --            putIOwords ["bakeOneFile outhtml (which was just written) \n", unHTMLout html2, "\n"]
 
-            putIOwords ["\n......................"]
+        when debug $ putIOwords ["\n......................"]
 
-            return . unwords' $  ["bakeOneFile outhtml ", showT fnn, "done", "\n\n"]
+        return . unwords' $  ["bakeOneFile outhtml ", showT fnn, "done", "\n\n"]
 
-     `catchError` (\e -> do
-                        let errmsg2 =  ["\n****************"
-                                    , "bakeOneFile catchError", showT e , "for ", showT fp
-                                    , "\n****************"]
-                        putIOwords errmsg2
-                        return . unwords' $ errmsg2
-                    )
+ `catchError` (\e -> do
+                    let errmsg2 =  ["\n****************"
+                                , "bakeOneFile catchError", showT e , "for ", showT fp
+                                , "\n****************"]
+                    putIOwords errmsg2
+                    return . unwords' $ errmsg2
+                )
 
 stripProperPrefix' ::  Path b Dir -> Path b t -> ErrIO (Path Rel t)
 stripProperPrefix' dir fn = fmap Path $ Path.stripProperPrefix (unPath dir) (unPath fn)
