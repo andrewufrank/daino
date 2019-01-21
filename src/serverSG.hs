@@ -43,10 +43,11 @@ main :: IO ()
 --main = quickHttpServe site
 main = startProg programName progTitle
         $ do
-                wd <- inotifyTest
-                getLine
-                removeWatch wd
-                putIOwords ["remved watch", showT wd]
+--                wd <- inotifyTest
+--                getLine
+--                removeWatch wd
+--                putIOwords ["remved watch", showT wd]
+            return ()
 
 --            bake
 --            putIOwords ["serverSG started", "for dir", showT bakedPath, "on port", showT bakedPort, "\n"]

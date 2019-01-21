@@ -23,12 +23,70 @@ import Data.Aeson.Lens
 import Text.Pandoc as Pandoc
 import Text.Pandoc.Highlighting
 import Text.Pandoc.Shared
-
+import Text.CSL.Pandoc (processCites')
 import System.Process  as System (readProcess)
 
 import Uniform.Error hiding (Meta, at)
 import Lib.FileMgt (MarkdownText(..), unMT, HTMLout(..), unHTMLout
             , unDocValue, DocValue (..) )
+
+--main :: IO ()
+--main = do
+--    page <- T.readFile "page.markdown"  -- biblio line
+--    bibString <-  readFile "refs.bib"
+--    bibReferences :: [Reference] <-  readBibtexString (const True) True False bibString
+--
+--    styleString <- liftIO $ readFile   "chicago.csl"
+--    let style1 = parseCSL  styleString :: Style
+--
+--    -- process with my code
+--    html1 <- unPandocM $    processCites2 style1 bibReferences page
+--
+--    -- process with system call to pandoc
+--    html2 <- processCites2x page
+--
+--
+--    T.putStrLn "The two results should be very close: \n With haskell code : \n"
+--    T.putStrLn html1
+--    putStrLn "\nwith pandoc cmd : \n"
+--    T.putStrLn html2
+--
+--    return ()
+
+-- | Convert markdown text into a 'Value';
+-- The 'Value'  has a "content" key containing rendered HTML
+-- Metadata is assigned on the respective keys in the 'Value'
+-- includes reference replacement (pandoc-citeproc)
+-- runs in the pandoc monad!
+markdownToHTML4x :: Bool -> MarkdownText -> ErrIO DocValue
+markdownToHTML4x debug (MarkdownText t)  = do
+  pandoc   <- readMarkdown2   t
+  let meta2 = flattenMeta (getMeta pandoc)
+
+  -- test if biblio is present and apply
+  let bib = fmap t2s $  ( meta2) ^? key "bibliography" . _String :: Maybe FilePath
+--  let csl = fmap t2s $  ( meta2) ^? key "csl" . _String :: Maybe FilePath
+
+  text2 <- case bib of
+    Nothing ->   writeHtml5String2  pandoc
+
+    Just _ ->   processCites2a pandoc
+--                        (fromJustNote "markdownToHTML4x no csl file" csl)
+--                        (fromJustNote "markdownToHTML4x no bib file" bib)
+
+
+
+  let withContent = ( meta2) & _Object . at "contentHtml" ?~ String (unHTMLout text2)
+  return  . DocValue $ withContent
+
+processCites2a ::    Pandoc ->  ErrIO HTMLout
+-- process the citations, with biblio and csl in the file
+processCites2a  pandoc3  =  do
+
+        pandoc4 <- callIO $ processCites'  pandoc3
+
+        writeHtml5String2 pandoc4
+
 
 
 -- | Reasonable options for reading a markdown file
@@ -40,9 +98,11 @@ markdownOptions = def { readerExtensions = exts }
       [ Ext_yaml_metadata_block
       , Ext_fenced_code_attributes
       , Ext_auto_identifiers
+      , Ext_citations           -- <-- this is the important extension
       ]
     , githubMarkdownExtensions
     ]
+
 
 -- | Reasonable options for rendering to HTML
 html5Options :: WriterOptions
@@ -66,32 +126,32 @@ unPandocM op1 = do
                         throwError . showT $  e)
 
 
--- | Convert markdown text into a 'Value';
--- The 'Value'  has a "content" key containing rendered HTML
--- Metadata is assigned on the respective keys in the 'Value'
--- includes reference replacement (pandoc-citeproc)
--- runs in the pandoc monad!
-markdownToHTML4x :: Bool -> MarkdownText -> ErrIO DocValue
-markdownToHTML4x debug (MarkdownText t)  = do
-  pandoc   <- readMarkdown2   t
-  let meta2 = flattenMeta (getMeta pandoc)
-
-  -- test if biblio is present and apply
-  let bib = fmap t2s $  ( meta2) ^? key "bibliography" . _String :: Maybe FilePath
-  let csl = fmap t2s $  ( meta2) ^? key "csl" . _String :: Maybe FilePath
-  text2 <- case bib of
-    Nothing -> do
-                    htmltext <- writeHtml5String2  pandoc
-                    return htmltext
-    Just _ -> do
-                res <- processCites2x debug csl bib t
-                when (res == t) $
-                    liftIO $ putStrLn "\n*** markdownToHTML3 result without references ***\n"
-                return . HTMLout $ res
-
-
-  let withContent = ( meta2) & _Object . at "contentHtml" ?~ String (unHTMLout text2)
-  return  . DocValue $ withContent
+---- | Convert markdown text into a 'Value';
+---- The 'Value'  has a "content" key containing rendered HTML
+---- Metadata is assigned on the respective keys in the 'Value'
+---- includes reference replacement (pandoc-citeproc)
+---- runs in the pandoc monad!
+--markdownToHTML4x :: Bool -> MarkdownText -> ErrIO DocValue
+--markdownToHTML4x debug (MarkdownText t)  = do
+--  pandoc   <- readMarkdown2   t
+--  let meta2 = flattenMeta (getMeta pandoc)
+--
+--  -- test if biblio is present and apply
+--  let bib = fmap t2s $  ( meta2) ^? key "bibliography" . _String :: Maybe FilePath
+--  let csl = fmap t2s $  ( meta2) ^? key "csl" . _String :: Maybe FilePath
+--  text2 <- case bib of
+--    Nothing -> do
+--                    htmltext <- writeHtml5String2  pandoc
+--                    return htmltext
+--    Just _ -> do
+--                res <- processCites2x debug csl bib t
+--                when (res == t) $
+--                    liftIO $ putStrLn "\n*** markdownToHTML3 result without references ***\n"
+--                return . HTMLout $ res
+--
+--
+--  let withContent = ( meta2) & _Object . at "contentHtml" ?~ String (unHTMLout text2)
+--  return  . DocValue $ withContent
 
 getMeta :: Pandoc -> Meta
 getMeta (Pandoc m _) = m
