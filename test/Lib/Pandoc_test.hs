@@ -33,19 +33,19 @@ test_bake_12_B_E = test1FileIO progName   "resultAK12" "resultBE12" markdownToHT
 
 
 instance  ShowTestHarness MarkdownText where
-    -- to avoid the additional "" added when show text
-    -- but the read must compensate!
-    -- this is necessary that json files (and other with "") can be read
-    showTestH = show -- t2s . unMarkdownText
---    readTestH = readNote "showTestHarness Text" . show
-    readTestH2 msg = readNote (  msg) . show
-    readTestH2e msg = readEither . show
+--    -- to avoid the additional "" added when show text
+--    -- but the read must compensate!
+--    -- this is necessary that json files (and other with "") can be read
+--    showTestH = show -- t2s . unMarkdownText
+----    readTestH = readNote "showTestHarness Text" . show
+--    readTestH2 msg = readNote (  msg) . show
+--    readTestH2e msg = readEither . show
 
 instance  ShowTestHarness DocValue where
-    -- to avoid the additional "" added when show text
-    -- but the read must compensate!
-    -- this is necessary that json files (and other with "") can be read
-    showTestH = show -- t2s . unMarkdownText
---    readTestH = readNote "showTestHarness Text" . show
-    readTestH2 msg = readNote (  msg) . show
-    readTestH2e msg = readEither . show
+--    -- to avoid the additional "" added when show text
+--    -- but the read must compensate!
+--    -- this is necessary that json files (and other with "") can be read
+--    showTestH = show -- t2s . unMarkdownText
+----    readTestH = readNote "showTestHarness Text" . show
+--    readTestH2 msg = readNote (  msg) . show
+--    readTestH2e msg = readEither . show

@@ -82,7 +82,7 @@ test-suite g2
   other-modules:
       Lib.Bake_test
       Lib.Foundation_test
-
+      Lib.Pandoc_test
   hs-source-dirs:
       test
   ghc-options: -Wall
