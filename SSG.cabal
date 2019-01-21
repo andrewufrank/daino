@@ -71,6 +71,8 @@ executable serversg
     , SSG
     , scotty
     , wai-middleware-static
+    , hinotify
+    , directory
 
   hs-source-dirs:
     src

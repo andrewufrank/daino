@@ -76,7 +76,9 @@ bakeAllInSiteMD ops siteDough   reportFile1 = do
                     --    >-> P.stdoutLn
                         >-> Pipe.toHandle hand
                 )
+    report <- readFile2 reportFile1
     return $ unwords' ["\nbakeAllInSiteMD end", showT siteDough, showT reportFile1
+            , "\n", report
             , "..........................", "ok"]
 
 testMD :: Path Abs File -> Bool
@@ -122,7 +124,7 @@ bakeOneFile debug fp = do
 
         when debug $ putIOwords ["\n......................"]
 
-        return . unwords' $  ["bakeOneFile outhtml ", showT fnn, "done", "\n\n"]
+        return . unwords' $  ["bakeOneFile outhtml ", showT fnn, "done"]
 
  `catchError` (\e -> do
                     let errmsg2 =  ["\n****************"

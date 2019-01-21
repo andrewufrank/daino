@@ -25,6 +25,11 @@ import Uniform.Convenience.StartApp
 import Web.Scotty
 import Network.Wai.Middleware.Static
 
+import System.Directory
+import System.IO
+
+import System.INotify
+
 import Lib.Foundation
 import Lib.Bake (bake)
 
@@ -38,9 +43,14 @@ main :: IO ()
 --main = quickHttpServe site
 main = startProg programName progTitle
         $ do
-            bake
-            putIOwords ["serverSG started", "for dir", showT bakedPath, "on port", showT bakedPort, "\n"]
-            callIO $ scotty bakedPort site
+                wd <- inotifyTest
+                getLine
+                removeWatch wd
+                putIOwords ["remved watch", showT wd]
+
+--            bake
+--            putIOwords ["serverSG started", "for dir", showT bakedPath, "on port", showT bakedPort, "\n"]
+--            callIO $ scotty bakedPort site
 
 
 site :: ScottyM  ()
@@ -61,7 +71,18 @@ showLandingPage   = do
   html . t2tl . s2t  $ txt
 
 
-
-
-
+inotifyTest = do
+    wdx <- do
+              inotify <- initINotify
+              print inotify
+              wd <- addWatch
+                      inotify
+                      [Close,Modify,Move]
+                      (s2b . toFilePath $ doughPath)
+                      print
+              return wd
+    print wdx
+    putIOwords ["Listens to your directory", showT doughPath, "with watch", showT wdx
+                    , " Hit enter to terminate."]
+    return wdx
 
