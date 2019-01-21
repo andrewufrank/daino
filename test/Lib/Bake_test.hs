@@ -56,12 +56,4 @@ compareRead fn t = do
 test_bake_11_A_X :: IO ()
 test_bake_11_A_X = testVar1FileIO progName  test11 "resultAK11" "resultAX11"  compareRead
 
-instance  ShowTestHarness MarkdownText where
---    -- to avoid the additional "" added when show text
---    -- but the read must compensate!
---    -- this is necessary that json files (and other with "") can be read
---    showTestH = show  -- t2s . unMarkdownText
-----    readTestH = readNote "showTestHarness Text" . show
---    readTestH2 msg = readNote (  msg) . show
---    readTestH2e msg = readEither . show
-
+instance  ShowTestHarness MarkdownText

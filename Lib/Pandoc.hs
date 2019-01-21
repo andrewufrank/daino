@@ -14,37 +14,19 @@
 
 module Lib.Pandoc
   ( markdownToHTML4x
---  , markdownToHTML4a
---  , markdownToHTML'
---  , makePandocReader
---  , makePandocReader'
---  , loadUsing
---  , loadUsing'
---  , convert
---  , html5Options
---  , markdownOptions
---  , PandocReader
---  , PandocWriter
+
   ) where
 
 import Control.Lens
---import Control.Monad
 import Data.Aeson
 import Data.Aeson.Lens
---import qualified Data.Text as T
---import Development.Shake hiding (Resource)
 import Text.Pandoc as Pandoc
 import Text.Pandoc.Highlighting
 import Text.Pandoc.Shared
 
 import System.Process  as System (readProcess)
---import Text.CSL.Pandoc (processCites', processCites)
---import Text.CSL (readCSLFile)
-----import Text.CSL (readBiblioFile)
---import Text.CSL.Input.Bibtex (readBibtex)
 
 import Uniform.Error hiding (Meta, at)
---import Uniform.Strings hiding (Meta, at)
 import Lib.FileMgt (MarkdownText(..), unMT, HTMLout(..), unHTMLout
             , unDocValue, DocValue (..) )
 
@@ -72,16 +54,13 @@ html5Options = def { writerHighlightStyle = Just tango
 unPandocM :: PandocIO a -> ErrIO a
 unPandocM op1 = do
         res   <- callIO $ runIO (do  -- liftIO $putStrLn "unPandocM op"
-                                     a <- op1
---                                     error "xx"
+                                     a <- op1 --       error "xx"
                                      -- liftIO $putStrLn "error xx"
                                      return a)
---                    `catchError` (\e -> throwError . showT $  (e))
         either (\e -> do
                         putIOwords ["unPandocM error", showT e ]
                         throwError . showT $ e
                 ) return res
-
      `catchError` (\e -> do
                         putIOwords ["unPandocM catchError", showT e ]
                         throwError . showT $  e)
