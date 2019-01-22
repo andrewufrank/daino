@@ -37,7 +37,7 @@ import Lib.Bake (bake)
 
 programName = "SSG" :: Text
 progTitle = unwords' ["continuously constructing a static site generator"
-                , "on port ", showT bakedPort]  :: Text
+                ]  :: Text
 
 
 mydef = Twitch.Options

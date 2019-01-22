@@ -41,46 +41,10 @@ progTitle = unwords' ["constructing a static site generator"
 
 bakedPort = 3099
 
-mydef = Twitch.Options
-    { Twitch.log                       = NoLogger
-    , logFile                   = Nothing
-    , root                      = Nothing
-    , recurseThroughDirectories = True
-    , debounce                  = DebounceDefault
-    , debounceAmount            = 0
-    , pollInterval              = 10^(6 :: Int) -- 1 second
-    , usePolling                = False
-    }
-main = do
---    (logger, mhandle) <- Twitch.toLogger   "log.txt"  "LogToStdout"
 
-     -- Twitch.defaultMain  $ do
-    Twitch.defaultMainWithOptions (mydef
-                    {Twitch.root = Just . toFilePath $ doughPath
-                     , Twitch.log = Twitch.NoLogger
-
-                    }) $ do
---            Twitch.addModify (\filePath -> runErrorRepl filePath) "*.md"     -- add and modify event
-            Twitch.addModify (\filePath -> runErrorVoid bake) "*.md"     -- add and modify event
-                --  "*.html" |> \_ -> system $ "osascript refreshSafari.AppleScript"
-
-
-runErrorRepl :: (Show a) => a -> IO ()
-runErrorRepl a = do
-                    putIOwords ["runErrorVoid", "input is", showT a]
-                    return ()
-
-runErrorVoid :: ErrIO () -> IO ()
-runErrorVoid a = do
-                    res <- runErr a
-                    putIOwords ["runErrorVoid", showT res]
-                    case res of
-                        Left msg -> error (t2s msg)
-                        Right _ -> return ()
-
-main2 :: IO ()
+main :: IO ()
 --main = quickHttpServe site
-main2 = startProg programName progTitle
+main = startProg programName progTitle
         $ bracketErrIO
             (do  -- first
                 callIO $ scotty bakedPort site
@@ -91,6 +55,7 @@ main2 = startProg programName progTitle
                 )
             (\x -> do   -- during
                         putIOwords ["main2 run"]
+                        -- could here the watch for bake be included ?
                         return ()
                 )
 --                wd <- inotifyTest

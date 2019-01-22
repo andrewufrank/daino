@@ -9,7 +9,7 @@ abstract: |
     The index page for all. 
 ---
 
-My test page start mine for every  : 
+My test page start mine for every person here : 
 
 - [page1](/Blog/postwk.html) 
 - [page2](/PublicationList/postWithReference.html)
