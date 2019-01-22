@@ -9,7 +9,7 @@ abstract: |
     The index page for all. 
 ---
 
-My test page start (instead of a menu): 
+My test page start (TODO instead of a menu): 
 
 - [page1](/Blog/postwk.html) 
 - [page2](/PublicationList/postWithReference.html)

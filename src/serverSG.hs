@@ -33,7 +33,7 @@ import qualified Twitch
 --import Control.Concurrent.Spawn
 import Control.Concurrent
 import Lib.Foundation
-import Lib.Bake (bakeOneFileVoid)
+import Lib.Bake (bake, bakeOneFileVoid)
 
 programName = "SSG" :: Text
 progTitle = unwords' ["constructing a static site generator"
@@ -111,19 +111,24 @@ mainWatch =  do
                      , Twitch.log = Twitch.NoLogger
                     }) $ do
             Twitch.addModify (\filepath -> runErrorVoid $ bakeOneFileVoid  filepath) "**/*.md"     -- add and modify event
+    Twitch.defaultMainWithOptions (mydef
+                    {Twitch.root = Just . toFilePath $ templatePath
+                     , Twitch.log = Twitch.NoLogger
+                    }) $ do
+            Twitch.addModify (\filepath -> runErrorVoid $ bake) "*.html"     -- add and modify event
                 --  "*.html" |> \_ -> system $ "osascript refreshSafari.AppleScript"
 
 
 runErrorRepl :: (Show a) => a -> IO ()
 -- just for testing when an event is triggered
 runErrorRepl a = do
-                    putIOwords ["runErrorVoid", "input is", showT a]
+                    putIOwords ["runErrorRepl", "input is", showT a]
                     return ()
 
 runErrorVoid :: ErrIO () -> IO ()
 runErrorVoid a = do
                     res <- runErr a
-                    putIOwords ["runErrorVoid", showT res]
+                    putIOwords ["runErrorVoid", "result", showT res]
                     case res of
                         Left msg -> error (t2s msg)
                         Right _ -> return ()

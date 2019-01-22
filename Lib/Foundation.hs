@@ -57,6 +57,7 @@ doughPath, bakedPath :: Path Abs Dir
 doughPath = addDir (siteDir defaults) (doughDir defaults) :: Path Abs Dir
 bakedPath = addDir (siteDir defaults) (bakedDir defaults) :: Path Abs Dir
 
+sitePath = siteDir defaults
 templatePath :: Path Abs Dir
 reportFilePath :: Path Abs File
 templatePath = addDir (themeDir defaults) (templateDir defaults)
