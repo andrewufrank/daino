@@ -3,6 +3,11 @@
 --
 -- Module      :   the defintion at the bottom
 --              there will be command line args to override these
+
+--            all the  content must be in the site and the resources
+--            not clear what role the resources play
+--            the bibliographies could go with the blog
+--            all themes in the theme dir (templates and css, possibly images
 --
 
 -----------------------------------------------------------------------------

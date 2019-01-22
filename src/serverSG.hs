@@ -65,15 +65,6 @@ main = startProg programName progTitle
                         putIOwords ["main2 run end "]
                         return ()
                 )
---                wd <- inotifyTest
---                getLine
---                removeWatch wd
---                putIOwords ["remved watch", showT wd]
---            return ()
-
---            bake
---            putIOwords ["serverSG started", "for dir", showT bakedPath, "on port", showT bakedPort, "\n"]
---            callIO $ scotty bakedPort site
 
 
 site :: ScottyM  ()
@@ -105,9 +96,6 @@ mydef = Twitch.Options
     , usePolling                = False
     }
 
---sggFP = "/home/frank/Workspace8/SSG/"
---doughFP = addDir "site" (toFilePath $ doughDir  defaults)
---templateFP = toFilePath $  templatePath
 
 mainWatchDough, mainWatchTemplates :: IO ()
 

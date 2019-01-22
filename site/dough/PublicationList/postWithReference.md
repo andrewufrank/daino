@@ -10,14 +10,14 @@ abstract: |
 nocite: |
   @navratil08
 
-bibliography: "/home/frank/Workspace8/SSG/site/resources/BibTexLatex.bib"
+bibliography: "site/resources/BibTexLatex.bib"
 
 references:
 - id: fenner2012a
   title: One-click science marketing
   author:
   - family: Fenner
-    given: Martin B.
+    given: Martin Beat
   container-title: Nature Materials
   volume: 11
   publisher: Nature Publishing Group
