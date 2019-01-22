@@ -42,12 +42,21 @@ bakedPort = 3099
 main :: IO ()
 --main = quickHttpServe site
 main = startProg programName progTitle
-        $ do
+        $ bracketErrIO
+            (do  -- first
+                callIO $ scotty bakedPort site
+                return "X")
+            (\x -> do -- last
+                        return ()
+                )
+            (\x -> do   -- during
+                        return ()
+                )
 --                wd <- inotifyTest
 --                getLine
 --                removeWatch wd
 --                putIOwords ["remved watch", showT wd]
-            return ()
+--            return ()
 
 --            bake
 --            putIOwords ["serverSG started", "for dir", showT bakedPath, "on port", showT bakedPort, "\n"]
@@ -72,18 +81,18 @@ showLandingPage   = do
   html . t2tl . s2t  $ txt
 
 
-inotifyTest = do
-    wdx <- do
-              inotify <- initINotify
-              print inotify
-              wd <- addWatch
-                      inotify
-                      [Close,Modify,Move]
-                      (s2b . toFilePath $ doughPath)
-                      print
-              return wd
-    print wdx
-    putIOwords ["Listens to your directory", showT doughPath, "with watch", showT wdx
-                    , " Hit enter to terminate."]
-    return wdx
+--inotifyTest = do
+--    wdx <- do
+--              inotify <- initINotify
+--              print inotify
+--              wd <- addWatch
+--                      inotify
+--                      [Close,Modify,Move]
+--                      (s2b . toFilePath $ doughPath)
+--                      print
+--              return wd
+--    print wdx
+--    putIOwords ["Listens to your directory", showT doughPath, "with watch", showT wdx
+--                    , " Hit enter to terminate."]
+--    return wdx
 
