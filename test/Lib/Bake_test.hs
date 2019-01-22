@@ -24,7 +24,7 @@ import Uniform.Test.TestHarness
 import Lib.Foundation (progName)
 import Lib.Bake
 import Lib.FileMgt
-import Text.Read
+--import Text.Read
 
 test11, test12 ::  Path Rel File
 test11 = makeRelFile "Blog/postwk.md"

@@ -96,11 +96,25 @@ readMarkdownFile :: Path Rel File -> ErrIO MarkdownText
 -- read one file
 readMarkdownFile fnn = read7 doughPath fnn markdownFileType
 
+bakeOneFileVoid ::  FilePath  -> ErrIO ()
+-- convert a file (path relative to dough) and put in baked
+bakeOneFileVoid fp = do
+
+        putIOwords ["\n--------------------------------", "bakeOneFileVoid fn", showT fp, "\n"]
+        let fp2 = makeAbsFile fp
+        fpath :: Path Rel File  <- stripProperPrefix' doughPath fp2
+        -- produces errror if not a prefix?
+
+        r <- bakeOneFile False fpath
+        putIOwords ["\n--------------------------------", "done"]
+        return ()
+
 bakeOneFile :: Bool -> Path Rel File -> ErrIO Text
 -- convert a file (path relative to dough) and put in baked
 bakeOneFile debug fp = do
         let   fnn = removeExtension fp :: Path Rel File
-        when debug $ putIOwords ["\n--------------------------------", "bakeOneFile fn", showT fnn, "\n\n"]
+--        when debug $
+        putIOwords ["\n--------------------------------", "bakeOneFile fn", showT fnn, "\n\n"]
         -- currently only for md files, add static next
 
         intext :: MarkdownText <- readMarkdownFile fnn

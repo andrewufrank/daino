@@ -33,7 +33,7 @@ import qualified Twitch
 --import Filesystem.Path.CurrentOS
 
 import Lib.Foundation
-import Lib.Bake (bake)
+import Lib.Bake (bake, bakeOneFileVoid)
 
 programName = "SSG" :: Text
 progTitle = unwords' ["continuously constructing a static site generator"
@@ -56,7 +56,7 @@ main = do
                     {Twitch.root = Just . toFilePath $ doughPath
                      , Twitch.log = Twitch.NoLogger
                     }) $ do
-            Twitch.addModify (\filePath -> runErrorVoid bake) "*.md"     -- add and modify event
+            Twitch.addModify (\filepath -> runErrorVoid $ bakeOneFileVoid  filepath) "**/*.md"     -- add and modify event
                 --  "*.html" |> \_ -> system $ "osascript refreshSafari.AppleScript"
 
 

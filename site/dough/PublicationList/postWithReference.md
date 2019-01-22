@@ -21,7 +21,7 @@ references:
   container-title: Nature Materials
   volume: 11
   publisher: Nature Publishing Group
-  page: 261-10263
+  page: 261-263
   type: article-journal
   issued:
     year: 2012
