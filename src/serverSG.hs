@@ -60,8 +60,10 @@ main = do
                      , Twitch.log = Twitch.NoLogger
 
                     }) $ do
-            Twitch.addModify (\filePath -> runErrorRepl filePath) "*.md"     -- add and modify event
---  "*.html" |> \_ -> system $ "osascript refreshSafari.AppleScript"
+--            Twitch.addModify (\filePath -> runErrorRepl filePath) "*.md"     -- add and modify event
+            Twitch.addModify (\filePath -> runErrorVoid bake) "*.md"     -- add and modify event
+                --  "*.html" |> \_ -> system $ "osascript refreshSafari.AppleScript"
+
 
 runErrorRepl :: (Show a) => a -> IO ()
 runErrorRepl a = do
@@ -84,9 +86,11 @@ main2 = startProg programName progTitle
                 callIO $ scotty bakedPort site
                 return "X")
             (\x -> do -- last
+                        putIOwords ["main2 end"]
                         return ()
                 )
             (\x -> do   -- during
+                        putIOwords ["main2 run"]
                         return ()
                 )
 --                wd <- inotifyTest
