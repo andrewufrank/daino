@@ -30,10 +30,10 @@ import System.IO
 
 import  Twitch hiding (Options, log)
 import qualified Twitch
---import Filesystem.Path.CurrentOS
-
+--import Control.Concurrent.Spawn
+import Control.Concurrent
 import Lib.Foundation
-import Lib.Bake (bake)
+import Lib.Bake (bakeOneFileVoid)
 
 programName = "SSG" :: Text
 progTitle = unwords' ["constructing a static site generator"
@@ -47,15 +47,20 @@ main :: IO ()
 main = startProg programName progTitle
         $ bracketErrIO
             (do  -- first
+--                callIO $ spawn mainWatch
+                watch <- callIO $ forkIO mainWatch
                 callIO $ scotty bakedPort site
-                return "X")
-            (\x -> do -- last
+                return watch )
+            (\watch -> do -- last
                         putIOwords ["main2 end"]
+                        callIO $ killThread watch
                         return ()
                 )
-            (\x -> do   -- during
+            (\watch -> do   -- during
                         putIOwords ["main2 run"]
+--                        mainWatch
                         -- could here the watch for bake be included ?
+                        putIOwords ["main2 run end "]
                         return ()
                 )
 --                wd <- inotifyTest
@@ -87,18 +92,40 @@ showLandingPage   = do
   html . t2tl . s2t  $ txt
 
 
---inotifyTest = do
---    wdx <- do
---              inotify <- initINotify
---              print inotify
---              wd <- addWatch
---                      inotify
---                      [Close,Modify,Move]
---                      (s2b . toFilePath $ doughPath)
---                      print
---              return wd
---    print wdx
---    putIOwords ["Listens to your directory", showT doughPath, "with watch", showT wdx
---                    , " Hit enter to terminate."]
---    return wdx
+mydef = Twitch.Options
+    { Twitch.log                       = NoLogger
+    , logFile                   = Nothing
+    , root                      = Nothing
+    , recurseThroughDirectories = True
+    , debounce                  = DebounceDefault
+    , debounceAmount            = 0
+    , pollInterval              = 10^(6 :: Int) -- 1 second
+    , usePolling                = False
+    }
+
+mainWatch :: IO ()
+mainWatch =  do
+    putIOwords [programName, progTitle]
+    Twitch.defaultMainWithOptions (mydef
+                    {Twitch.root = Just . toFilePath $ doughPath
+                     , Twitch.log = Twitch.NoLogger
+                    }) $ do
+            Twitch.addModify (\filepath -> runErrorVoid $ bakeOneFileVoid  filepath) "**/*.md"     -- add and modify event
+                --  "*.html" |> \_ -> system $ "osascript refreshSafari.AppleScript"
+
+
+runErrorRepl :: (Show a) => a -> IO ()
+-- just for testing when an event is triggered
+runErrorRepl a = do
+                    putIOwords ["runErrorVoid", "input is", showT a]
+                    return ()
+
+runErrorVoid :: ErrIO () -> IO ()
+runErrorVoid a = do
+                    res <- runErr a
+                    putIOwords ["runErrorVoid", showT res]
+                    case res of
+                        Left msg -> error (t2s msg)
+                        Right _ -> return ()
+
 

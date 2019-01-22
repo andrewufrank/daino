@@ -74,6 +74,7 @@ executable serversg
 --    , hinotify
     , directory
     , twitch
+    , spawn
 
   hs-source-dirs:
     src
