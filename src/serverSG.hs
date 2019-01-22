@@ -28,6 +28,7 @@ import Network.Wai.Middleware.Static
 import System.Directory
 import System.IO
 
+import  Twitch hiding (Options, log)
 import qualified Twitch
 --import Filesystem.Path.CurrentOS
 
@@ -40,10 +41,26 @@ progTitle = unwords' ["constructing a static site generator"
 
 bakedPort = 3099
 
+mydef = Twitch.Options
+    { Twitch.log                       = NoLogger
+    , logFile                   = Nothing
+    , root                      = Nothing
+    , recurseThroughDirectories = True
+    , debounce                  = DebounceDefault
+    , debounceAmount            = 0
+    , pollInterval              = 10^(6 :: Int) -- 1 second
+    , usePolling                = False
+    }
+main = do
+--    (logger, mhandle) <- Twitch.toLogger   "log.txt"  "LogToStdout"
 
-main = Twitch.defaultMain  $ do
---        WithOptions (Twitch.Options {Twitch.root = Just . toFilePath $ doughPath}) $ do
-  Twitch.addModify (\filePath -> runErrorRepl filePath) "*.md"     -- add and modify event
+     -- Twitch.defaultMain  $ do
+    Twitch.defaultMainWithOptions (mydef
+                    {Twitch.root = Just . toFilePath $ doughPath
+                     , Twitch.log = Twitch.NoLogger
+
+                    }) $ do
+            Twitch.addModify (\filePath -> runErrorRepl filePath) "*.md"     -- add and modify event
 --  "*.html" |> \_ -> system $ "osascript refreshSafari.AppleScript"
 
 runErrorRepl :: (Show a) => a -> IO ()
