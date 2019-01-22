@@ -71,8 +71,9 @@ executable serversg
     , SSG
     , scotty
     , wai-middleware-static
-    , hinotify
+--    , hinotify
     , directory
+    , twitch
 
   hs-source-dirs:
     src

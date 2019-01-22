@@ -28,7 +28,8 @@ import Network.Wai.Middleware.Static
 import System.Directory
 import System.IO
 
-import System.INotify
+import qualified Twitch
+--import Filesystem.Path.CurrentOS
 
 import Lib.Foundation
 import Lib.Bake (bake)
@@ -39,9 +40,28 @@ progTitle = unwords' ["constructing a static site generator"
 
 bakedPort = 3099
 
-main :: IO ()
+
+main = Twitch.defaultMain  $ do
+--        WithOptions (Twitch.Options {Twitch.root = Just . toFilePath $ doughPath}) $ do
+  Twitch.addModify (\filePath -> runErrorRepl filePath) "*.md"     -- add and modify event
+--  "*.html" |> \_ -> system $ "osascript refreshSafari.AppleScript"
+
+runErrorRepl :: (Show a) => a -> IO ()
+runErrorRepl a = do
+                    putIOwords ["runErrorVoid", "input is", showT a]
+                    return ()
+
+runErrorVoid :: ErrIO () -> IO ()
+runErrorVoid a = do
+                    res <- runErr a
+                    putIOwords ["runErrorVoid", showT res]
+                    case res of
+                        Left msg -> error (t2s msg)
+                        Right _ -> return ()
+
+main2 :: IO ()
 --main = quickHttpServe site
-main = startProg programName progTitle
+main2 = startProg programName progTitle
         $ bracketErrIO
             (do  -- first
                 callIO $ scotty bakedPort site
