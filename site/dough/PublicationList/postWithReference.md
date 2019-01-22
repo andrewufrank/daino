@@ -17,7 +17,7 @@ references:
   title: One-click science marketing
   author:
   - family: Fenner
-    given: Martin
+    given: Martin B.
   container-title: Nature Materials
   volume: 11
   publisher: Nature Publishing Group

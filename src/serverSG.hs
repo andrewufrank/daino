@@ -48,12 +48,14 @@ main = startProg programName progTitle
         $ bracketErrIO
             (do  -- first
 --                callIO $ spawn mainWatch
-                watch <- callIO $ forkIO mainWatch
+                watchDough <- callIO $ forkIO mainWatchDough
+                watchTemplates <- callIO $ forkIO mainWatchTemplates
                 callIO $ scotty bakedPort site
-                return watch )
-            (\watch -> do -- last
+                return (watchDough,watchTemplates) )
+            (\(watchDough,watchTemplates) -> do -- last
                         putIOwords ["main2 end"]
-                        callIO $ killThread watch
+                        callIO $ killThread watchDough
+                        callIO $ killThread watchTemplates
                         return ()
                 )
             (\watch -> do   -- during
@@ -103,19 +105,26 @@ mydef = Twitch.Options
     , usePolling                = False
     }
 
-mainWatch :: IO ()
-mainWatch =  do
+--sggFP = "/home/frank/Workspace8/SSG/"
+--doughFP = addDir "site" (toFilePath $ doughDir  defaults)
+--templateFP = toFilePath $  templatePath
+
+mainWatchDough, mainWatchTemplates :: IO ()
+
+mainWatchDough =  do
     putIOwords [programName, progTitle]
     Twitch.defaultMainWithOptions (mydef
                     {Twitch.root = Just . toFilePath $ doughPath
                      , Twitch.log = Twitch.NoLogger
                     }) $ do
             Twitch.addModify (\filepath -> runErrorVoid $ bakeOneFileVoid  filepath) "**/*.md"     -- add and modify event
+mainWatchTemplates =  do
+    putIOwords [programName, progTitle]
     Twitch.defaultMainWithOptions (mydef
                     {Twitch.root = Just . toFilePath $ templatePath
                      , Twitch.log = Twitch.NoLogger
                     }) $ do
-            Twitch.addModify (\filepath -> runErrorVoid $ bake) "*.html"     -- add and modify event
+            Twitch.addModify (\filepath -> runErrorVoid $ bake) "**/*.html"     -- add and modify event
                 --  "*.html" |> \_ -> system $ "osascript refreshSafari.AppleScript"
 
 
