@@ -17,7 +17,7 @@ trying to observe everything "to provide us with a better service" are exclude
 - If the command language (or the GUI) is complex I prefer to work in 
 the language I know already and not to learn a new set of obscure quirks (WordPress, sprinkles),
 - Small and build from components which are relatively independent (excludes approaches 
-"batteries included" like Jekyll and Hakyll)
+"batteries included" like Jekyll and Hakyll; similar [comment](http://hackage.haskell.org/package/slick-0.2.0.0))
 - I was very impressed with SSG which demonstrated how much functionality is available as packages (e.g. from Hackage).
 
 ## Goals

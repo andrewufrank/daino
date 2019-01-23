@@ -18,7 +18,19 @@ BibTex file, which includes the details.
 Only bake uses pandoc for conversion. 
 
 ## Templates
-Pandoc includes a template system, but it is not extensible
+Pandoc includes a template system, but it is not extensible, which makes it tempting 
+to use [ginger](), which is a Haskell implementation of [Jinja2](). 
+
+## Watching file change : Twitch
+[Twitch]() uses FSnotify to connect programmed actions to activities with files
+
+## Server 
+[Scotty]() 
+
+## Caching
+[Shake](http://hackage.haskell.org/package/shake) is a Haskell version of `make` and can
+be used to convert a static site (idee in [Slick](http://hackage.haskell.org/package/slick)
+
 
 
 
