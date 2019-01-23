@@ -18,9 +18,10 @@
 module Lib.Shake
      where
 
-import Uniform.Strings
-import Uniform.Filenames
+import Uniform.Strings (putIOwords) -- hiding ((<.>), (</>))
+import Uniform.Filenames (toFilePath) -- hiding ((<.>))
 import Uniform.FileStrings () -- for instances
+import Uniform.Error
 
 --import Uniform.Piped
 --import           Uniform.FileIO as FN hiding ( (</>), (<.>))  -- (<>),
@@ -29,21 +30,47 @@ import Uniform.FileStrings () -- for instances
 --
 --import Lib.Templating
 --import Lib.FileMgt
---import Lib.Foundation
+import Lib.Foundation
+import Lib.Bake
 
 --import qualified Pipes as Pipe
 --import qualified Pipes.Prelude as Pipe
 --import Pipes ((>->)) -- , (~>)
 --import qualified Path  as Path
 
+import Development.Shake
+import Development.Shake.Command
+import Development.Shake.FilePath
+import Development.Shake.Util
 
 shake ::    ErrIO ()
-shake   = callIO $ do
+shake   = do
     putIOwords ["\nshake start"]
-    msg <- return "ok" -- bakeAllInSiteMD (bakeOneFile2 False)  doughPath  reportFilePath
-    putIOwords ["\nshake done msg " , msg, "\n"]
+    shakeWrapped-- bakeAllInSiteMD (bakeOneFile2 False)  doughPath  reportFilePath
+    putIOwords ["\nshake done", "\n"]
 
     return ()
 
+bakedD  = toFilePath bakedPath
+
+shakeWrapped :: ErrIO  ()
+shakeWrapped = callIO $ shakeArgs shakeOptions {shakeFiles=bakedD } $
+    do
+        want ["index"<.> "html"]
+
+        "index"<.>"html" %> \out ->
+            do
+                mds <- getDirectoryFiles (toFilePath doughPath) ["//*.md"] -- markdown ext ??
+                let htmlFile = [bakedD </> md -<.> "md" | md <- mds]
+                need htmlFile
+                liftIO $ bakeOneFileIO  out
 
 
+instance Exception Text
+
+bakeOneFileIO :: FilePath -> IO ()
+bakeOneFileIO fp = do
+            et <- runErr $ bakeOneFileVoid fp
+            case et of
+                Left msg -> throw msg
+                Right _ -> return ()
