@@ -23,4 +23,11 @@ The `dough` folder includes the `SSGdesign` folder where the documentation for S
 
 ## the baked folder (in site)
 Baked includes the static site with an index ready to be served; it has the same file structure as `dough`.
+
+## code
+The code is in three directories: src, test and Lib. Additionally there are files
+- SSG.cabal
+- stack.yaml
+- LICENSE
+
  
