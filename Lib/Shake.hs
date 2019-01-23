@@ -19,7 +19,7 @@ module Lib.Shake
      where
 
 import Uniform.Strings (putIOwords) -- hiding ((<.>), (</>))
-import Uniform.Filenames (toFilePath) -- hiding ((<.>))
+import Uniform.Filenames (toFilePath, makeAbsFile) -- hiding ((<.>))
 import Uniform.FileStrings () -- for instances
 import Uniform.Error
 
@@ -61,16 +61,27 @@ shakeWrapped = callIO $ shakeArgs shakeOptions {shakeFiles=bakedD } $
         "index"<.>"html" %> \out ->
             do
                 mds <- getDirectoryFiles (toFilePath doughPath) ["//*.md"] -- markdown ext ??
-                let htmlFile = [bakedD </> md -<.> "md" | md <- mds]
+                let htmlFile = [bakedD </> md -<.> "html" | md <- mds]
                 need htmlFile
-                liftIO $ bakeOneFileIO  out
+--                liftIO $ mapM_ bakeOneFileIO  c
+
+        (bakedD <> "//*.html") %> \out ->
+            do
+                let c = dropDirectory1 $ out -<.> "md"
+                liftIO $  bakeOneFileIO  c
 
 
 instance Exception Text
 
 bakeOneFileIO :: FilePath -> IO ()
 bakeOneFileIO fp = do
-            et <- runErr $ bakeOneFileVoid fp
+            et <- runErr $ do
+                            putIOwords ["bakeOneFileIO - from shake xx", s2t fp]
+                            let fp1 = "/"<>fp
+                            putIOwords ["bakeOneFileIO - gp1", s2t fp1]
+                            let fp2 = makeAbsFile fp1
+                            putIOwords ["bakeOneFileIO - next run shake", showT fp2]
+--                            bakeOneFileVoid fp
             case et of
                 Left msg -> throw msg
                 Right _ -> return ()
