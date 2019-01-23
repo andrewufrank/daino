@@ -19,7 +19,8 @@ module Lib.Shake
      where
 
 import Uniform.Strings (putIOwords) -- hiding ((<.>), (</>))
-import Uniform.Filenames (toFilePath, makeAbsFile) -- hiding ((<.>))
+import Uniform.Filenames -- (toFilePath, makeAbsFile, makeRelFile, makeRelDir, stripProperPrefix')
+         hiding ((<.>), (</>))
 import Uniform.FileStrings () -- for instances
 import Uniform.Error
 
@@ -46,7 +47,7 @@ import Development.Shake.Util
 shake ::    ErrIO ()
 shake   = do
     putIOwords ["\nshake start"]
-    shakeWrapped-- bakeAllInSiteMD (bakeOneFile2 False)  doughPath  reportFilePath
+    callIO $ shakeWrapped-- bakeAllInSiteMD (bakeOneFile2 False)  doughPath  reportFilePath
     putIOwords ["\nshake done", "\n"]
 
     return ()
@@ -54,18 +55,23 @@ shake   = do
 bakedD  = "site/baked" -- toFilePath bakedPath
 doughD = "site/dough"
 
-shakeWrapped :: ErrIO  ()
-shakeWrapped = callIO $ shakeArgs shakeOptions {shakeFiles=bakedD } $
+shakeWrapped :: IO  ()
+shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
+                , shakeVerbosity=Loud
+                , shakeLint=Just LintBasic
+                } $
     do
         want ["index"<.>"html"]
 
         "index"<.>"html" %> \out ->
             do
                 mds <- getDirectoryFiles  doughD ["//*.md"] -- markdown ext ??
-                let htmlFile = [bakedD </> md -<.> "html" | md <- mds]
-                putIOwords ["shakeWrapped - htmlFile", showT htmlFile]
-                need htmlFile
---                liftIO $ mapM_ bakeOneFileIO  c
+                let htmlFiles = [bakedD </> md -<.> "html" | md <- mds]
+                liftIO $ putIOwords ["shakeWrapped - htmlFile", showT htmlFiles]
+--                shakeWrapped - htmlFile ["site/baked/index.html","site/baked/Blog/postwk.html","site/baked/PublicationList/postWithReference.html","site/baked/SGGdesign/DefaultFileLayout.html","site/baked/SGGdesign/Functionality.html","site/baked/SGGdesign/PackagesUsed.html","site/baked/SGGdesign/Principles.html"]
+
+                need htmlFiles
+                liftIO $  bakeOneFileIO  "baked/index.html"
 
         (bakedD <> "//*.html") %> \out ->
             do
@@ -79,12 +85,16 @@ bakeOneFileIO :: FilePath -> IO ()
 bakeOneFileIO fp = do
             et <- runErr $ do
                     putIOwords ["bakeOneFileIO - from shake xx", s2t fp] --baked/SGGdesign/Principles.md
-
+                    let fp1 = fp
 --                            let fp1 = "/"<>fp
                     putIOwords ["bakeOneFileIO - gp1", s2t fp1]
                     let fp2 = makeRelFile fp1
+                    fp3 :: Path Rel File  <- stripProperPrefix' (makeRelDir "baked") fp2
                     putIOwords ["bakeOneFileIO - next run shake", showT fp2]
-                    bakeOneFileVoid fp1
+--                            bakeOneFileIO - next run shake "baked/SGGdesign/Principles.md"
+
+                    res <- bakeOneFile False fp3
+                    putIOwords ["bakeOneFileIO - done", showT fp3, res]
             case et of
                 Left msg -> throw msg
                 Right _ -> return ()
