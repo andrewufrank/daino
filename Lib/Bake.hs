@@ -148,5 +148,3 @@ bakeOneFile debug fp = do
                     return . unwords' $ errmsg2
                 )
 
-stripProperPrefix' ::  Path b Dir -> Path b t -> ErrIO (Path Rel t)
-stripProperPrefix' dir fn = fmap Path $ Path.stripProperPrefix (unPath dir) (unPath fn)
