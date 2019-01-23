@@ -13,6 +13,7 @@ cabal-version:  >= 1.10
 library
   exposed-modules:
       Lib.Bake
+      Lib.Shake
       Lib.FileMgt
       Lib.Templating
       Lib.Pandoc
@@ -39,6 +40,7 @@ library
     , aeson-pretty
     , pipes
     , path , path-io
+    , shake
 
   default-language: Haskell2010
 

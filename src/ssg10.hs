@@ -16,6 +16,7 @@ import Uniform.Convenience.StartApp
 import Uniform.Filenames
 
 import Lib.Bake
+import Lib.Shake
 
 programName = "SSG" :: Text
 progTitle = "constructing a static site generator" :: Text
@@ -28,7 +29,8 @@ postWithRef = makeRelFile "PublicationList/postWithReference.md" :: Path Rel Fil
 
 main :: IO ()
 main = startProg programName progTitle
-            bake
+--            bake
+             shake
 
 baketest =  do
                  let p = postWithRef
