@@ -24,20 +24,9 @@ import Uniform.Filenames -- (toFilePath, makeAbsFile, makeRelFile, makeRelDir, s
 import Uniform.FileStrings () -- for instances
 import Uniform.Error
 
---import Uniform.Piped
---import           Uniform.FileIO as FN hiding ( (</>), (<.>))  -- (<>),
---
---import Lib.Pandoc (markdownToHTML4x)   -- with a simplified Action ~ ErrIO
---
---import Lib.Templating
---import Lib.FileMgt
+
 import Lib.Foundation
 import Lib.Bake
-
---import qualified Pipes as Pipe
---import qualified Pipes.Prelude as Pipe
---import Pipes ((>->)) -- , (~>)
---import qualified Path  as Path
 
 import Development.Shake
 import Development.Shake.Command

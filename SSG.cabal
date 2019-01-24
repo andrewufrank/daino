@@ -44,21 +44,21 @@ library
 
   default-language: Haskell2010
 
-executable ssg10
-  main-is: ssg10.hs
-  other-modules:
-
-  build-depends:
-      base ==4.*
-    , uniform-strings
-    , uniform-convenience
-    , uniform-fileio
-    , uniform-error
-    , SSG
-
-  hs-source-dirs:
-    src
-  default-language: Haskell2010
+--executable ssg10
+--  main-is: ssg10.hs
+--  other-modules:
+--
+--  build-depends:
+--      base ==4.*
+--    , uniform-strings
+--    , uniform-convenience
+--    , uniform-fileio
+--    , uniform-error
+--    , SSG
+--
+--  hs-source-dirs:
+--    src
+--  default-language: Haskell2010
 
 executable serversg
   main-is: serverSG.hs
