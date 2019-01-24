@@ -8,6 +8,8 @@ packages:
 - ../uniform/uniform-fileio
 - ../uniform/uniform-error
 
+- ../fromOthers/glabrous
+
 extra-deps:
 - test-invariant-0.4.5.0
 - twitch-0.1.7.2

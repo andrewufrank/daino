@@ -68,12 +68,13 @@ instance TypedFiles7 Text  MarkdownText    where
     write7 f = errorT ["TypedFiles - no implementation for write7", showT f]
 
 newtype HTMLout = HTMLout Text deriving (Show, Read, Eq, Ord)
+
 -- a wrapper around html ready to publish
 unHTMLout (HTMLout a) = a
 
 htmloutFileType = TypedFile5 {tpext5 = extHTML} :: TypedFile5 Text HTMLout
 
---instance FileHandles HTMLout
+instance Zeros HTMLout where zero = HTMLout zero
 
 instance TypedFiles7 Text HTMLout  where
 

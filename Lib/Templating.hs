@@ -23,9 +23,12 @@ import Text.Pandoc.Templates (applyTemplate)
 --import Data.Aeson
 
 import Lib.FileMgt
+import qualified Text.Glabrous as G
 
+temp1 = "some start {{template2}} and some more text."
+temp2 = "xxx and yyy"
 
-
+--t1 = fromRight . G.fromText $ t1
 
 applyTemplate2 :: Path Abs File -> DocValue -> ErrIO HTMLout
 -- apply the template in the file to the text
