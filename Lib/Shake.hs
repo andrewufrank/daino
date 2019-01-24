@@ -61,9 +61,11 @@ shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
                 , shakeLint=Just LintBasic
                 } $
     do
-        want [bakedD</> "index"<.>"html"]
+--        want [bakedD</> "index"<.>"html"]
+        want ["allMarkdownConversion"]
 
-        bakedD </> "index"<.>"html" %> \out ->
+--        bakedD </> "index"<.>"html" %> \out ->
+        phony "allMarkdownConversion" $
             do
                 mds <- getDirectoryFiles  doughD ["//*.md"] -- markdown ext ??
                 let htmlFiles = [bakedD </> md -<.> "html" | md <- mds]
