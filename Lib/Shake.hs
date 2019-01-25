@@ -23,6 +23,7 @@ import Uniform.Filenames -- (toFilePath, makeAbsFile, makeRelFile, makeRelDir, s
          hiding ((<.>), (</>))
 import Uniform.FileStrings () -- for instances
 import Uniform.Error
+import Lib.Templating
 
 
 import Lib.Foundation
@@ -43,6 +44,7 @@ shake   = do
 
 bakedD  = "site/baked" -- toFilePath bakedPath
 doughD = "site/dough"
+templatesD = "theme/templates"
 
 shakeWrapped :: IO  ()
 shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
@@ -57,14 +59,27 @@ shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
                 let htmlFiles = [bakedD </> md -<.> "html" | md <- mds]
 --                liftIO $ putIOwords ["shakeWrapped - htmlFile", showT htmlFiles]
                 need htmlFiles
+--                need [templatesD</>"page33.dtpl"]
 
         (bakedD <> "//*.html") %> \out ->
             do
                 let c = dropDirectory1 $ out -<.> "md"
                 liftIO $  bakeOneFileIO  c
 
+--        (templatesD</>"page33.dtpl") %> \out ->
+--            do
+--                liftIO $ makeOneMaster
+
 
 instance Exception Text
+
+makeOneMaster :: IO ()
+makeOneMaster = do
+           res <- runErrorVoid $ putDocInMaster templatePath
+                     (makeRelFile "Page3") (makeRelFile "Master3")
+                    "body" (makeRelFile "page33")
+           return ()
+
 
 bakeOneFileIO :: FilePath -> IO ()
 bakeOneFileIO fp = do

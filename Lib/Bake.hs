@@ -127,7 +127,7 @@ bakeOneFile debug fp = do
         when debug $ putIOwords ["bakeOneFile val\n\n", showNice val]
 
     --     apply template before writing
-        let templateFileName =   makeRelFile "Master2_Page2"::Path Rel File
+        let templateFileName =   makeRelFile "page33"::Path Rel File
 
         html2 <-  applyTemplate2 templatePath templateFileName val
 
