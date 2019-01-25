@@ -70,21 +70,25 @@ shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
                 let c =   dropDirectory1 . dropDirectory1 $ out -<.> "md"
                 liftIO $ putIOwords ["shakeWrapped - bakedD html - c ", showT c]
                 need [doughD </> c]
-                liftIO $  bakeOneFileIO  c
+                liftIO $  bakeOneFileIO  c  -- c relative to dough/
 
---        (templatesD</>"page33.dtpl") %> \out ->
---            do
---                liftIO $ makeOneMaster
+        (templatesD</>"page33.dtpl") %> \out ->
+            do
+                liftIO $ putIOwords ["shakeWrapped - templatesD dtpl -  out ", showT out]
+                liftIO $ makeOneMaster out
 
 
 instance Exception Text
 
-makeOneMaster :: IO ()
-makeOneMaster = do
-           res <- runErrorVoid $ putDocInMaster templatePath
+makeOneMaster :: FilePath -> IO ()
+makeOneMaster fp = do
+    putIOwords ["makeOneMaster", showT fp]
+
+    res <- runErrorVoid $ putDocInMaster templatePath
                      (makeRelFile "Page3") (makeRelFile "Master3")
                     "body" (makeRelFile "page33")
-           return ()
+    putIOwords ["makeOneMaster done"]
+    return ()
 
 
 bakeOneFileIO :: FilePath -> IO ()
