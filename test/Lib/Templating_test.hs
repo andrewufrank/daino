@@ -20,7 +20,7 @@ import           Test.Framework
 import Uniform.Test.TestHarness
 import Lib.Foundation (progName, templatePath)
 import Uniform.Strings
-import Lib.Templating (applyTemplate2)
+import Lib.Templating -- (applyTemplate2, convGmaster)
 import Uniform.Filenames
 import Lib.FileMgt
 import qualified Text.Glabrous as G
@@ -59,6 +59,21 @@ test_glab2 = do
 
 rx2 = "<!DOCTYPE html>\n<!-- a master page for the pandoc templating mechanis -->\n<html lang=\"$lang$\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=yes\" />\n    $for(author)$\n      <meta name=\"author\" content=\"$author$\" />\n    $endfor$\n    $if(date)$\n      <meta name=\"dcterms.date\" content=\"$date$\" />\n    $endif$\n    $if(keywords)$\n      <meta name=\"keywords\" content=\"$for(keywords)$$keywords$$sep$, $endfor$\" />\n    $endif$\n    <title>$if(title-prefix)$$title-prefix$ \8211 $endif$$pagetitle$</title>\n  </head>\n \n    <body>\n    <!-- AF - my template for pandoc (from the default) -->\n        $for(include-before)$\n        $include-before$\n        $endfor$\n\n        $if(title)$\n        <header>\n        <h1 class=\"title\">$title$</h1>\n        $if(subtitle)$\n        <p class=\"subtitle\">$subtitle$</p>\n        $endif$\n\n        $for(author)$\n        <p class=\"author\">$author$</p>\n        $endfor$\n        $if(date)$\n        <p class=\"date\">$date$</p>\n        $endif$\n        </header>\n        $endif$\n\n        $if(contentHtml)$\n        $contentHtml$\n        $endif$\n\n        $if(toc)$\n        <nav id=\"$idprefix$TOC\">\n        $table-of-contents$\n        </nav>\n        $endif$\n        \n        $body$\n    \n        $for(include-after)$\n        $include-after$\n        $endfor$\n    </body>\n\n\n \n</html>\n"
 
+testPage2 = (makeRelFile "Page2")
+testMaster2 = makeRelFile "Master2"
+test_convMaster = do
+           res <- runErrorVoid $ putDocInMaster templatePath
+                     testPage2 testMaster2
+                    "template2" (makeRelFile "Master2_Page2")
+           assertEqual () res
+
+test_readPage2 = do
+            res <- (runErrorVoid $ do
+                            fp :: Dtemplate <- read7 templatePath testPage2 dtmplFileType
+                            return ()
+                    )
+            assertEqual () res
+
 applyTemplate0 :: Text -> DocValue -> ErrIO HTMLout
 -- apply the template in the file to the text
 applyTemplate0 text val =
@@ -81,8 +96,8 @@ test_templating_12_E_F = test1FileIO progName   "resultBE12" "resultEF12" applyT
 
 instance  ShowTestHarness DocValue where
 instance ShowTestHarness HTMLout
-
-
+--
+--
 fromRightNoteString ::   Text -> Either String b -> b
 fromRightNoteString msg (Left a) = errorT ["fromRight", showT a, msg]
 fromRightNoteString _ (Right a) = a

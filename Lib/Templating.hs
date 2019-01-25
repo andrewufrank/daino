@@ -28,11 +28,50 @@ import Text.DocTemplates (applyTemplate)
 import Lib.FileMgt
 import qualified Text.Glabrous as G
 
+-- the final application
+applyTemplate2 :: Path Abs File -> DocValue -> ErrIO HTMLout
+-- apply the template in the file to the text
+applyTemplate2 templateFN val = do
+     templText <- readFile2 templateFN
+     case applyTemplate templText  (unDocValue val) of
+                    Left msg -> throwError  . s2t $ msg
+                    Right val2 -> return  . HTMLout $  (val2 :: Text)
+
+-- combine a doctype template in a glabrous master
+
+putDocInMaster :: Path Abs Dir -> Path Rel File -> Path Rel File -> Text -> Path Rel File -> ErrIO ()
+-- ^ insert the first doctype template into the (master) glabrous template at the tag
+-- result is a doctype (clean) template
+putDocInMaster templateDir page master tag full = do
+    putIOwords ["putDocInMaster put", showT page, "into", showT master
+                        , "\n\tat",  tag, "giving", showT full]
+
+    fm :: Gtemplate <- read7 templateDir master gtmplFileType -- must have correct extension
+    putIOwords ["putDocInMaster", "fm read"]
+    fp :: Dtemplate <- read7 templateDir page dtmplFileType
+    putIOwords ["putDocInMaster", "fpread"]
+
+    let master2 = compileGlabrous fm :: G.Template
+    let temp2 = unwrap7 fp  :: Text -- the text of the page (doctemplate)
+
+    let replaceList = G.fromList [(tag,temp2)] :: G.Context
+
+    let resTemp = G.process master2 replaceList :: Text
+
+    write7 templateDir full dtmplFileType (wrap7 resTemp :: Dtemplate)
+
+    return ()
+
+compileGlabrous :: Gtemplate -> G.Template
+-- compile a glabrous template from text
+compileGlabrous t = either (\msg -> errorT ["glabrous master not ok", s2t msg]) id
+                    $ G.fromText . unwrap7 $ t
+
 -- handling the glabrous templates gtpl
 extGtemplate = Extension "gtpl"
 
 newtype Gtemplate = Gtemplate Text deriving (Show, Read, Eq, Ord)
-
+-- ^ a template which contains variables in glabrous {{xx}} format
 -- a wrapper around html ready to publish
 --unGtemplate (Gtemplate a) = a
 
@@ -46,17 +85,27 @@ instance TypedFiles7 Text Gtemplate  where
     wrap7 = Gtemplate
     unwrap7 (Gtemplate a) = a
 
+-- handling the doctype templates dtpl
+extDtemplate = Extension "dtpl"
+
+newtype Dtemplate = Dtemplate Text deriving (Show, Read, Eq, Ord)
+-- ^ a template which contains variables in doctype  $x$  format
+
+-- a wrapper around html ready to publish
+--unDtemplate (Dtemplate a) = a
+
+dtmplFileType = makeTyped extDtemplate :: TypedFile5 Text Dtemplate
+
+instance Zeros Dtemplate where zero = Dtemplate zero
+
+instance TypedFiles5 Text Dtemplate  where
+instance TypedFiles7 Text Dtemplate  where
+
+    wrap7 = Dtemplate
+    unwrap7 (Dtemplate a) = a
 
 
 
 
--- the final application
-applyTemplate2 :: Path Abs File -> DocValue -> ErrIO HTMLout
--- apply the template in the file to the text
-applyTemplate2 templateFN val = do
-     templText <- readFile2 templateFN
-     case applyTemplate templText  (unDocValue val) of
-                    Left msg -> throwError  . s2t $ msg
-                    Right val2 -> return  . HTMLout $  (val2 :: Text)
 
 
