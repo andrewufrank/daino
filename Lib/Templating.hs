@@ -34,7 +34,7 @@ extGtemplate = Extension "gtpl"
 newtype Gtemplate = Gtemplate Text deriving (Show, Read, Eq, Ord)
 
 -- a wrapper around html ready to publish
-unGtemplate (Gtemplate a) = a
+--unGtemplate (Gtemplate a) = a
 
 gtmplFileType = makeTyped extGtemplate :: TypedFile5 Text Gtemplate
 
@@ -45,21 +45,6 @@ instance TypedFiles7 Text Gtemplate  where
 
     wrap7 = Gtemplate
     unwrap7 (Gtemplate a) = a
-
---    write7 fp fn tp ct = do
---
---        let fn2 = fp </> fn <.> tpext5 tp -- :: Path ar File
-----        write8 (fp </> fn  ) tp ct
---        let parent = getParentDir fn2
---        createDirIfMissing' parent
---        t <- doesDirExist' fp
-----        putIOwords ["TypedFiles7 write7 Text parent", showT parent, "exists", showT t]
---
---        writeFile2 fn2 (unwrap7 ct :: Text )
-----        putIOwords ["TypedFiles7 write7 Text Gtemplate", showT fn2]
-----        putIOwords ["TypedFiles7 write7 Text Gtemplate text \n", unwrap7 ct]
---
---    read7 f = errorT ["TypedFiles - no implementation for read7", showT f]
 
 
 

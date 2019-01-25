@@ -29,24 +29,4 @@ main =  do  -- with tests in other modules
     putStrLn ("HTF end StringConversion.hs test:\n" ++ show p)
     return ()
 
---myReverse :: [a] -> [a]
---myReverse []     = []
---myReverse [x]    = [x]
---myReverse (x:xs) = myReverse xs ++ [x]
---
----- start function name with test for a tests with given results
---test_nonEmpty = do assertEqual [1] (myReverse [1])
---                   assertEqual [3,2,1] (myReverse [1,2,3])
---
---test_empty = assertEqual ([] :: [Int]) (myReverse [])
---
----- start function name with prop for testing with random generated values
---prop_reverse :: [Int] -> Bool
---prop_reverse xs = xs == myReverse (myReverse xs)
---
----- a test which failed can be repeated
---prop_reverseReplay =
---  withQCArgs (\a -> a { replay = read
---    "Just (TFGenR 000034A28CA0BA65000000003B9ACA00000000000000E1F70000000000\
---        \000000 0 127 7 0,6)" })
---  prop_reverse
+

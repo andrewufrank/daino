@@ -61,12 +61,6 @@ instance TypedFiles7 Text  MarkdownText    where
 -- handling Markdown and read them into MarkdownText
     wrap7 = MarkdownText
     unwrap7 (MarkdownText a) = a
---    read7 fp fn tp   = do
-----        putIOwords ["TypedFiles7 read7 Text MarkdownText", showT fp, showT fn]
---        let fn2 = fn <.> tpext5 tp
---        ares :: Text <- readFile2 $ fp </> fn2
---        return . wrap7 $ ares
---    write7 f = errorT ["TypedFiles - no implementation for write7", showT f]
 
 newtype HTMLout = HTMLout Text deriving (Show, Read, Eq, Ord)
 
@@ -81,20 +75,6 @@ instance TypedFiles7 Text HTMLout  where
 
     wrap7 = HTMLout
     unwrap7 (HTMLout a) = a
---    write7 fp fn tp ct = do
---
---        let fn2 = fp </> fn <.> tpext5 tp -- :: Path ar File
-----        write8 (fp </> fn  ) tp ct
---        let parent = getParentDir fn2
---        createDirIfMissing' parent
---        t <- doesDirExist' fp
-----        putIOwords ["TypedFiles7 write7 Text parent", showT parent, "exists", showT t]
---
---        writeFile2 fn2 (unwrap7 ct :: Text )
-----        putIOwords ["TypedFiles7 write7 Text HTMLout", showT fn2]
-----        putIOwords ["TypedFiles7 write7 Text HTMLout text \n", unwrap7 ct]
---
---    read7 f = errorT ["TypedFiles - no implementation for read7", showT f]
 
 
 extMD, extHTML :: Extension
@@ -132,30 +112,5 @@ instance TypedFiles7 Text b => TypedFiles7a Text b where
         ares :: Text <- readFile2 $ fp </> fn2
         return . wrap7 $ ares
 
---    write8 ::  FileHandles a =>  Path Abs File -> TypedFile5 a b -> b -> ErrIO ()
---    -- write a file, directory is created if not exist
---    -- file, if exist, is replaced
---    write8 fp  tp ct = do
-----        when rdfGraphDebug $
---        putIOwords ["write8", showT fp]
-----        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
---        let fn2 = setExtension (tpext5 tp)  fp
---        createDirIfMissing' (getParentDir fp)  -- add everywhere?
---        when rdfGraphDebug $ putIOwords ["sparql Turtle createDIrIfMissing' "
---                , showT (getParentDir fp)]
---        hand <- openFile2handle fn2 WriteMode
-----        when rdfGraphDebug $ putIOwords ["sparql Turtle write6", showT fn2]
---
---        write2handle  hand   (unwrap7 ct) -- changed for Text not []
---
-----        when rdfGraphDebug $ putIOwords ["sparql Turtle write6", showT fn2]
---        closeFile2  hand
---        when rdfGraphDebug $ putIOwords ["sparql Turtle write6", showT fn2]
 
---                      "/home/frank/Workspace8/SSG/theme/templates/pandocDefault.html"
---                      :: Path Abs File
---    html2 <-  applyTemplate2 templateFN val
---
---    writeFile2 fpo html2
---    putIOwords ["bakeOne outhtml\n", html2]
 

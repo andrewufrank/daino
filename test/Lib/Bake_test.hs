@@ -19,12 +19,9 @@ module Lib.Bake_test  -- (openMain, htf_thisModuelsTests)
 import           Test.Framework
 import Uniform.Test.TestHarness
 
---import Uniform.Strings
---import Uniform.Filenames
 import Lib.Foundation (progName)
 import Lib.Bake
 import Lib.FileMgt
---import Text.Read
 
 test11, test12 ::  Path Rel File
 test11 = makeRelFile "Blog/postwk.md"
