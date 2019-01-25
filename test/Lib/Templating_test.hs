@@ -61,10 +61,12 @@ rx2 = "<!DOCTYPE html>\n<!-- a master page for the pandoc templating mechanis --
 
 testPage2 = (makeRelFile "Page2")
 testMaster2 = makeRelFile "Master2"
+testMaster2_Page2 = makeRelFile "Master2_Page2"
+
 test_convMaster = do
            res <- runErrorVoid $ putDocInMaster templatePath
                      testPage2 testMaster2
-                    "template2" (makeRelFile "Master2_Page2")
+                    "body" testMaster2_Page2
            assertEqual () res
 
 test_readPage2 = do
@@ -87,8 +89,9 @@ test_templating_12_E_G = test1FileIO progName   "resultBE12" "resultEG12"  (appl
 
 
 applyTemplate2x :: DocValue -> ErrIO HTMLout
-applyTemplate2x = applyTemplate2 (addDir templatePath
-                        (makeRelFile "pandocDefault.html"::Path Rel File))
+applyTemplate2x = applyTemplate2   templatePath testMaster2_Page2
+--                        (makeRelFile "pandocDefault.html"::Path Rel File)
+
 
 test_templating_11_E_F, test_templating_12_E_F :: IO ()
 test_templating_11_E_F = test1FileIO progName   "resultBE11" "resultEF11"  applyTemplate2x

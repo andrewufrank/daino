@@ -33,7 +33,7 @@ import Lib.Foundation
 import qualified Pipes as Pipe
 import qualified Pipes.Prelude as Pipe
 import Pipes ((>->)) -- , (~>)
-import qualified Path  as Path
+--import qualified Path  as Path
 
 
 bake ::    ErrIO ()
@@ -106,7 +106,7 @@ bakeOneFileVoid fp = do
         -- produces errror if not a prefix?
 
         r <- bakeOneFile False fpath
-        putIOwords ["\n--------------------------------", "done"]
+        putIOwords ["\n--------------------------------", "done", r ]
         return ()
 
 bakeOneFile :: Bool -> Path Rel File -> ErrIO Text
@@ -127,10 +127,9 @@ bakeOneFile debug fp = do
         when debug $ putIOwords ["bakeOneFile val\n\n", showNice val]
 
     --     apply template before writing
-        let templateFileName =  addDir templatePath
-                        (makeRelFile "pandocDefault.html"::Path Rel File)
-                          :: Path Abs File
-        html2 <-  applyTemplate2 templateFileName val
+        let templateFileName =   makeRelFile "Master2_Page2"::Path Rel File
+
+        html2 <-  applyTemplate2 templatePath templateFileName val
 
         when debug $ putIOwords ["bakeOneFile resultFile", showT bakedPath, showT fnn, "\n"]
         write7 bakedPath fnn htmloutFileType html2

@@ -29,11 +29,11 @@ import Lib.FileMgt
 import qualified Text.Glabrous as G
 
 -- the final application
-applyTemplate2 :: Path Abs File -> DocValue -> ErrIO HTMLout
+applyTemplate2 :: Path Abs Dir -> Path Rel File -> DocValue -> ErrIO HTMLout
 -- apply the template in the file to the text
-applyTemplate2 templateFN val = do
-     templText <- readFile2 templateFN
-     case applyTemplate templText  (unDocValue val) of
+applyTemplate2 templateDir templateFn val = do
+     templText <- read7 templateDir templateFn  dtmplFileType
+     case applyTemplate (unwrap7 templText)  (unDocValue val) of
                     Left msg -> throwError  . s2t $ msg
                     Right val2 -> return  . HTMLout $  (val2 :: Text)
 
@@ -56,9 +56,15 @@ putDocInMaster templateDir page master tag full = do
 
     let replaceList = G.fromList [(tag,temp2)] :: G.Context
 
-    let resTemp = G.process master2 replaceList :: Text
+    let resTempl = G.partialProcess master2 replaceList :: G.Template
 
-    write7 templateDir full dtmplFileType (wrap7 resTemp :: Dtemplate)
+    let tags = G.tagsOf resTempl -- should be zero
+    if null tags
+        then do
+                let resTempl2 = G.toText resTempl
+                write7 templateDir full dtmplFileType (wrap7 resTempl2 :: Dtemplate)
+        else throwErrorT ["putDocInMaster", "template not completely replaced"
+                    , "tags open", showT tags]
 
     return ()
 
