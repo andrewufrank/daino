@@ -1,0 +1,53 @@
+    <body>
+    <!-- AF - my template for pandoc (from the default) -->
+        $for(include-before)$
+        $include-before$
+        $endfor$
+
+        $if(title)$
+        <header>
+        <h1 class="title">$title$</h1>
+        $if(subtitle)$
+        <p class="subtitle">$subtitle$</p>
+        $endif$
+
+        $for(author)$
+        <p class="author">$author$</p>
+        $endfor$
+        $if(date)$
+        <p class="date">$date$</p>
+        $endif$
+        </header>
+        $endif$
+
+    <section class="hero">
+            <h1><br><br><a href="/">$settings.sitename$</a></h1>
+            <h3>$settings.byline$</h3>
+    </section>
+    <section class="header">
+            <section class="menu">
+            $menu$ 
+    </section>
+        
+    <section class="content">
+        $if(contentHtml)$
+        $contentHtml$
+        $endif$
+    </section>
+
+        $if(toc)$
+        <nav id="$idprefix$TOC">
+        $table-of-contents$
+        </nav>
+        $endif$
+        
+        $body$
+     <p class="meta tiny">
+        Produced with SGG on $datetime.date.today$.
+    </p>
+    
+        $for(include-after)$
+        $include-after$
+        $endfor$
+    </body>
+
