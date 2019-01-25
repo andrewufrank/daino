@@ -48,22 +48,28 @@ templatesD = "theme/templates"
 
 shakeWrapped :: IO  ()
 shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
-                , shakeVerbosity=Loud
+                , shakeVerbosity=Chatty -- Loud
                 , shakeLint=Just LintBasic
+                , shakeRebuild=[(RebuildNow,bakedD</>"//*.html")]
                 } $
     do
         want ["allMarkdownConversion"]
+
         phony "allMarkdownConversion" $
             do
                 mds <- getDirectoryFiles  doughD ["//*.md"] -- markdown ext ??
                 let htmlFiles = [bakedD </> md -<.> "html" | md <- mds]
---                liftIO $ putIOwords ["shakeWrapped - htmlFile", showT htmlFiles]
+                liftIO $ putIOwords ["shakeWrapped - htmlFile", showT htmlFiles]
+--           shakeWrapped - htmlFile ["site/baked/index.html","site/baked/Blog/postwk.html"...
                 need htmlFiles
 --                need [templatesD</>"page33.dtpl"]
 
         (bakedD <> "//*.html") %> \out ->
             do
-                let c = dropDirectory1 $ out -<.> "md"
+                liftIO $ putIOwords ["shakeWrapped - bakedD html -  out ", showT out]
+                let c =   dropDirectory1 . dropDirectory1 $ out -<.> "md"
+                liftIO $ putIOwords ["shakeWrapped - bakedD html - c ", showT c]
+                need [doughD </> c]
                 liftIO $  bakeOneFileIO  c
 
 --        (templatesD</>"page33.dtpl") %> \out ->
@@ -82,6 +88,7 @@ makeOneMaster = do
 
 
 bakeOneFileIO :: FilePath -> IO ()
+-- bake one file (relative to dough)
 bakeOneFileIO fp = do
             et <- runErr $ do
                     putIOwords ["bakeOneFileIO - from shake xx", s2t fp] --baked/SGGdesign/Principles.md
@@ -89,10 +96,10 @@ bakeOneFileIO fp = do
 --                            let fp1 = "/"<>fp
                     putIOwords ["bakeOneFileIO - gp1", s2t fp1]
                     let fp2 = makeRelFile fp1
-                    fp3 :: Path Rel File  <- stripProperPrefix' (makeRelDir "baked") fp2
+--                    fp3 :: Path Rel File  <- stripProperPrefix' (makeRelDir doughD) fp2
                     putIOwords ["bakeOneFileIO - next run shake", showT fp2]
 --                            bakeOneFileIO - next run shake "baked/SGGdesign/Principles.md"
-
+                    let fp3 = fp2
                     res <- bakeOneFile False fp3
                     putIOwords ["bakeOneFileIO - done", showT fp3, res]
             case et of

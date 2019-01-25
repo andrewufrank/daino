@@ -38,6 +38,7 @@ import Lib.Shake
 
 programName = "SSG" :: Text
 progTitle = unwords' ["continuously constructing a static site generator"
+            , "with shake", "on port" ,,
                 ]  :: Text
 
 
