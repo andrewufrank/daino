@@ -19,17 +19,53 @@ module Lib.Templating  -- (openMain, htf_thisModuelsTests)
 import Uniform.Strings
 import Uniform.Filenames
 import Uniform.FileStrings
-import Text.Pandoc.Templates (applyTemplate)
+import Uniform.TypedFile
+
+import Text.Glabrous (Template, insert) -- , insertMany)
+import Text.DocTemplates (applyTemplate)
 --import Data.Aeson
 
 import Lib.FileMgt
 import qualified Text.Glabrous as G
 
-temp1 = "some start {{template2}} and some more text."
-temp2 = "xxx and yyy"
+-- handling the glabrous templates gtpl
+extGtemplate = Extension "gtpl"
 
---t1 = fromRight . G.fromText $ t1
+newtype Gtemplate = Gtemplate Text deriving (Show, Read, Eq, Ord)
 
+-- a wrapper around html ready to publish
+unGtemplate (Gtemplate a) = a
+
+gtmplFileType = makeTyped extGtemplate :: TypedFile5 Text Gtemplate
+
+instance Zeros Gtemplate where zero = Gtemplate zero
+
+instance TypedFiles5 Text Gtemplate  where
+instance TypedFiles7 Text Gtemplate  where
+
+    wrap7 = Gtemplate
+    unwrap7 (Gtemplate a) = a
+
+--    write7 fp fn tp ct = do
+--
+--        let fn2 = fp </> fn <.> tpext5 tp -- :: Path ar File
+----        write8 (fp </> fn  ) tp ct
+--        let parent = getParentDir fn2
+--        createDirIfMissing' parent
+--        t <- doesDirExist' fp
+----        putIOwords ["TypedFiles7 write7 Text parent", showT parent, "exists", showT t]
+--
+--        writeFile2 fn2 (unwrap7 ct :: Text )
+----        putIOwords ["TypedFiles7 write7 Text Gtemplate", showT fn2]
+----        putIOwords ["TypedFiles7 write7 Text Gtemplate text \n", unwrap7 ct]
+--
+--    read7 f = errorT ["TypedFiles - no implementation for read7", showT f]
+
+
+
+
+
+-- the final application
 applyTemplate2 :: Path Abs File -> DocValue -> ErrIO HTMLout
 -- apply the template in the file to the text
 applyTemplate2 templateFN val = do
