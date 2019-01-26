@@ -41,7 +41,7 @@
       <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
     $endif$
 
-	<title>$page-title$$if($page-title-postfix$)$--$page-title-postfix$</title>
+	<title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$</title>
 
 <!--    <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
 	$if(math)$

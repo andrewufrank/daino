@@ -25,8 +25,13 @@
             <h3>$settings.byline$</h3>
     </section>
     <section class="header">
-            <section class="menu">
-            $menu$ 
+            my menu test 1: 
+            <section class="menu"> 
+		<ul>
+            		$for(menu)$
+				<li><a href=$menu.link$>$menu.text$</a></li>
+            		$endfor$ 
+		</ul>
     </section>
         
     <section class="content">

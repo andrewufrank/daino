@@ -14,7 +14,7 @@ header-includes :
 page-title : MyBlog
 page-title-postfix : landingPage.md
 # included page
-# ------------------------------------------- values for page3 
+# ------------------------------------------- values for page3   
 #title : title3 
 #subtitle : subtitle3
 author : author3 author31
@@ -22,9 +22,9 @@ date : 2019-01-03
 settings : 
     sitename : siteNameExample
     byline : siteByLineExample
-menu: 
-    - Blog/postwk.html
-    - PublicationList/postWithReference.html
+menu : 
+    - first example menu
+    - a second 
 contentHtml : the text for the landing page 
 table-of-content : example table of content
 datetime : 
@@ -43,6 +43,12 @@ date: 2010-07-29
 keywords: homepage
 abstract: | 
     The index page for all. 
+menu: 
+     - link: Blog/postwk.html
+       text: postwk
+     - link : PublicationList/postWithReference.html
+       text : with reference
+#    - three
 ---
 
 My landing page (TODO instead of a menu) 1 : 

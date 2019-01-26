@@ -114,7 +114,11 @@ mainWatchTemplates =  do
                     {Twitch.root = Just . toFilePath $ templatePath
                      , Twitch.log = Twitch.NoLogger
                     }) $ do
-            Twitch.addModify (\filepath -> runErrorVoid $ shake) "**/*.html"     -- add and modify event
+            Twitch.addModify (\filepath -> runErrorVoid $ shake) "**/*.html"
+            Twitch.addModify (\filepath -> runErrorVoid $ shake) "**/*.*tpl"
+            Twitch.addModify (\filepath -> runErrorVoid $ shake) "**/*.css"
+            Twitch.addModify (\filepath -> runErrorVoid $ shake) "**/*.jpg"
+            -- add and modify event
                 --  "*.html" |> \_ -> system $ "osascript refreshSafari.AppleScript"
 
 

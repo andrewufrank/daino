@@ -41,7 +41,7 @@
       <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
     $endif$
 
-	<title>$page-title$$if($page-title-postfix$)--$page-title-postfix$</title>
+	<title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$</title>
 
 <!--    <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
 	$if(math)$
@@ -80,8 +80,13 @@
             <h3>$settings.byline$</h3>
     </section>
     <section class="header">
-            <section class="menu">
-            $menu$ 
+            my menu test 1: 
+            <section class="menu"> 
+		<ul>
+            		$for(menu)$
+				<li><a href=$menu.link$>$menu.text$</a></li>
+            		$endfor$ 
+		</ul>
     </section>
         
     <section class="content">
