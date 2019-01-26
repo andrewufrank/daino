@@ -1,4 +1,5 @@
 ---
+# the old index 
 title: index.md
 subtitle: subtitle text
 title-prefix: MyBlog
@@ -9,7 +10,7 @@ abstract: |
     The index page for all. 
 ---
 
-My test page start (TODO instead of a menu) TEST : 
+My test page start (TODO instead of a menu) : 
 
 - [page1](/Blog/postwk.html) 
 - [page2](/PublicationList/postWithReference.html)
