@@ -2,7 +2,9 @@
 # values for the master3
 quotes: True 
 highlighting-css :    
-css :  static/style.css  ## works 
+css :  
+    - static/style.css  ## works 
+    - static/menu.css 
 author : the name of the author
 date: 2019-01-01
 keywords : landingPage

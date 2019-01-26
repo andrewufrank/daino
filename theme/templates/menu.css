@@ -1,0 +1,26 @@
+/* the menu stuff */
+/* assumes style.css */
+
+menu>li {
+    list-style: none;
+    display: inline-block;
+    vertical-align: top;
+    padding: 0;
+    margin: 0;
+    text-indent: 0;
+}
+
+menu span {
+    padding: 0 1rem;
+}
+
+menu {
+    padding: 0;
+    margin: 0;
+    text-indent: 0;
+    font-weight: bold;
+}
+
+menu menu {
+    font-size: 12px;
+}
