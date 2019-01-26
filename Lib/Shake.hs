@@ -50,7 +50,7 @@ shakeWrapped :: IO  ()
 shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
                 , shakeVerbosity=Chatty -- Loud
                 , shakeLint=Just LintBasic
---                , shakeRebuild=[(RebuildNow,bakedD</>"//*.html")]
+                , shakeRebuild=[(RebuildNow,"allMarkdownConversion")]
 --                  seems not to produce an effect
                 } $
     do
@@ -58,6 +58,7 @@ shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
 
         phony "allMarkdownConversion" $
             do
+                liftIO $ putIOwords ["shakeWrapped phony allMarkdonwConversion" ]
                 mds <- getDirectoryFiles  doughD ["//*.md"] -- markdown ext ??
                 let htmlFiles = [bakedD </> md -<.> "html" | md <- mds]
                 liftIO $ putIOwords ["shakeWrapped - htmlFile", showT htmlFiles]

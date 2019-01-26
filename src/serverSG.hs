@@ -48,7 +48,7 @@ main :: IO ()
 main = startProg programName progTitle
         $ bracketErrIO
             (do  -- first
---                callIO $ spawn mainWatch
+                shake
                 watchDough <- callIO $ forkIO mainWatchDough
                 watchTemplates <- callIO $ forkIO mainWatchTemplates
                 callIO $ scotty bakedPort site
@@ -76,7 +76,7 @@ site = do
     middleware $ staticPolicy $ addBase (toFilePath bakedPath)
 
 
-landingPage = toFilePath $ addFileName bakedPath (makeRelFile "index.html")
+landingPage = toFilePath $ addFileName bakedPath (makeRelFile "landingPage.html")
 
 showLandingPage :: ActionM ()
 showLandingPage   = do
