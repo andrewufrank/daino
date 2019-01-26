@@ -76,7 +76,7 @@ shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
 --           shakeWrapped - htmlFile ["site/baked/index.html","site/baked/Blog/postwk.html"...
                 need htmlFiles2
                 need cssFiles2
-                need [templatesD</>"page33.dtpl"]
+                need [staticD</>"page33.dtpl"]
 
         (bakedD <> "//*.html") %> \out ->
             do
@@ -86,12 +86,16 @@ shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
                 need [doughD </> c]
                 liftIO $  bakeOneFileIO  c  -- c relative to dough/
 
-        (templatesD</>"page33.dtpl") %> \out ->
+        (staticD</>"page33.dtpl") %> \out ->     -- construct the template from pieces
             do
                 liftIO $ putIOwords ["shakeWrapped - templatesD dtpl -  out ", showT out]
                 liftIO $ makeOneMaster out
+                let mf = templatesD</>"Master3.gtpl"
+                let pf = templatesD</>"Page3.dtpl"
+                need [mf, pf]
+                copyFileChanged (replaceDirectory out templatesD) out
 
-        (staticD </> "*.css") %> \out ->
+        (staticD </> "*.css") %> \out ->            -- insert css
             do
                 liftIO $ putIOwords ["shakeWrapped - staticD - *.css", showT out]
                 copyFileChanged (replaceDirectory out templatesD) out
@@ -123,7 +127,7 @@ bakeOneFileIO fp = do
                     putIOwords ["bakeOneFileIO - next run shake", showT fp2]
 --                            bakeOneFileIO - next run shake "baked/SGGdesign/Principles.md"
                     let fp3 = fp2
-                    res <- bakeOneFile False fp3
+                    res <- bakeOneFile True fp3
                     putIOwords ["bakeOneFileIO - done", showT fp3, res]
             case et of
                 Left msg -> throw msg

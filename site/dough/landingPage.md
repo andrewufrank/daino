@@ -1,42 +1,43 @@
 ---
 # values for the master3
 quotes: True 
-highlighting-css : True 
-#css : /../../theme/templates/style.css
-#css : /../theme/templates/style.css
-#css :  stylex.css  # works in same dir 
-#css :  ../styley.css
+highlighting-css :    
 css :  static/style.css  ## works 
-#css :  ../../stylez.css
-#css :  ../../theme/stylea.css
-#css :  ../../theme/templates/style.css  # this is the value in page33
 author : the name of the author
 date: 2019-01-01
 keywords : landingPage
-title-prefix : the title prefix
-title : default title
+#title-prefix : "the title prefix"
+#pagetitle : default pagetitle 
 body : the landing page text 
-math : math-example
-header-includes : header-includes example 
-# values for page3 
-title : title3 
-subtitle : subtitle3
+math : 
+header-includes : 
+page-title : MyBlog
+page-title-postfix : landingPage.md
+# included page
+# ------------------------------------------- values for page3 
+#title : title3 
+#subtitle : subtitle3
 author : author3 author31
 date : 2019-01-03
 settings : 
     sitename : siteNameExample
     byline : siteByLineExample
-menu: an example menu
+menu: 
+    - Blog/postwk.html
+    - PublicationList/postWithReference.html
 contentHtml : the text for the landing page 
 table-of-content : example table of content
 datetime : 
     date : 
         today : Today example
 include-after : example of include after
+# -----------------------------------------the page itself
 # values for the page individually 
-title: landingPage.md
-subtitle: subtitle text
-title-prefix: MyBlog
+page-title : MyBlog
+page-title-postfix : landingPage.md
+#pagetitle : landingPage  # the same as title 
+#subtitle : subtitle text
+#title-prefix : MyBlog
 author: auf 
 date: 2010-07-29
 keywords: homepage

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <!-- a master page for the pandoc templating mechanism includes a body page 
-	expects body inserted from second template
-	needs title
+	expects body inserted from second template using the glabrous templating mechanis
+	needs page-title, page-title-postfix
+		author date and keywords for indexing
 	uses style.css as default, other can be loaded 
 	-->
 <html lang="$lang$">
@@ -9,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
 
-    <link rel="stylesheet" type="text/css" href="../../theme/templates/style.css">
+    <link rel="stylesheet" type="text/css" href=static/style.css">
 
   <style type="text/css">
       code{white-space: pre-wrap;}
@@ -40,13 +41,16 @@
       <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
     $endif$
 
-    <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
+	<title>$page-title$$if($page-title-postfix$)$--$page-title-postfix$</title>
+
+<!--    <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
 	$if(math)$
 	  $math$
 	$endif$
 	$for(header-includes)$
 	  $header-includes$
 	$endfor$
+-->
   </head>
  
 {{body}}
