@@ -6,9 +6,10 @@ highlighting-css : True
 #css : /../theme/templates/style.css
 #css :  stylex.css  # works in same dir 
 #css :  ../styley.css
+css :  static/styleb.css  ## works 
 #css :  ../../stylez.css
 #css :  ../../theme/stylea.css
-#css :  ../../theme/templates/style.css
+#css :  ../../theme/templates/style.css  # this is the value in page33
 author : the name of the author
 date: 2019-01-01
 keywords : landingPage
