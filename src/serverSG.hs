@@ -101,14 +101,15 @@ mydef = Twitch.Options
 mainWatchDough, mainWatchTemplates :: IO ()
 
 mainWatchDough =  do
-    putIOwords [programName, progTitle]
+    putIOwords [programName, progTitle, "mainWatchDough"]
     Twitch.defaultMainWithOptions (mydef
                     {Twitch.root = Just . toFilePath $ doughPath
                      , Twitch.log = Twitch.NoLogger
                     }) $ do
             Twitch.addModify (\filepath -> runErrorVoid $ shake) "**/*.md"     -- add and modify event
+
 mainWatchTemplates =  do
-    putIOwords [programName, progTitle]
+    putIOwords [programName, progTitle,"mainWatchTemplates"]
     Twitch.defaultMainWithOptions (mydef
                     {Twitch.root = Just . toFilePath $ templatePath
                      , Twitch.log = Twitch.NoLogger

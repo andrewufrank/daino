@@ -6,7 +6,7 @@ highlighting-css : True
 #css : /../theme/templates/style.css
 #css :  stylex.css  # works in same dir 
 #css :  ../styley.css
-css :  static/styleb.css  ## works 
+css :  static/style.css  ## works 
 #css :  ../../stylez.css
 #css :  ../../theme/stylea.css
 #css :  ../../theme/templates/style.css  # this is the value in page33

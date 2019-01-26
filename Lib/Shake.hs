@@ -45,6 +45,7 @@ shake   = do
 bakedD  = "site/baked" -- toFilePath bakedPath
 doughD = "site/dough"
 templatesD = "theme/templates"
+staticD = "site/baked/static"  -- where all the static files go
 
 shakeWrapped :: IO  ()
 shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
@@ -59,11 +60,22 @@ shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
         phony "allMarkdownConversion" $
             do
                 liftIO $ putIOwords ["shakeWrapped phony allMarkdonwConversion" ]
-                mds <- getDirectoryFiles  doughD ["//*.md"] -- markdown ext ??
-                let htmlFiles = [bakedD </> md -<.> "html" | md <- mds]
-                liftIO $ putIOwords ["shakeWrapped - htmlFile", showT htmlFiles]
+                -- get markdown files
+                mdFiles1 <- getDirectoryFiles  doughD ["//*.md", "//*.markdown"]
+                let htmlFiles2 = [bakedD </> md -<.> "html" | md <- mdFiles1]
+                liftIO $ putIOwords ["shakeWrapped - htmlFile", showT htmlFiles2]
+                -- get css
+                cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs
+                liftIO $ putIOwords ["shakeWrapped - phony cssFiles1", showT cssFiles1]
+                let cssFiles2 = [replaceDirectory c staticD  | c <- cssFiles1]
+--                let cssFiles2 = [dropDirectory1 staticD </> c  | c <- cssFiles1]
+                liftIO $ putIOwords ["shakeWrapped - phony cssFiles2", showT cssFiles2]
+--                mapM_ (\fn -> copyFileChanged (templatesD </> fn) (staticD </> fn)) cssFiles1
+
+--                liftIO $ putIOwords ["shakeWrapped - htmlFile", showT htmlFiles2]
 --           shakeWrapped - htmlFile ["site/baked/index.html","site/baked/Blog/postwk.html"...
-                need htmlFiles
+                need htmlFiles2
+                need cssFiles2
                 need [templatesD</>"page33.dtpl"]
 
         (bakedD <> "//*.html") %> \out ->
@@ -78,6 +90,11 @@ shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
             do
                 liftIO $ putIOwords ["shakeWrapped - templatesD dtpl -  out ", showT out]
                 liftIO $ makeOneMaster out
+
+        (staticD </> "*.css") %> \out ->
+            do
+                liftIO $ putIOwords ["shakeWrapped - staticD - *.css", showT out]
+                copyFileChanged (replaceDirectory out templatesD) out
 
 
 instance Exception Text
