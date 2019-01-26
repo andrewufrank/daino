@@ -2,7 +2,13 @@
 # values for the master3
 quotes: True 
 highlighting-css : True 
-css : ../../theme/templates/style.css
+#css : /../../theme/templates/style.css
+#css : /../theme/templates/style.css
+#css :  stylex.css  # works in same dir 
+#css :  ../styley.css
+#css :  ../../stylez.css
+#css :  ../../theme/stylea.css
+#css :  ../../theme/templates/style.css
 author : the name of the author
 date: 2019-01-01
 keywords : landingPage
@@ -27,7 +33,7 @@ datetime :
         today : Today example
 include-after : example of include after
 # values for the page individually 
-title: index.md
+title: landingPage.md
 subtitle: subtitle text
 title-prefix: MyBlog
 author: auf 
