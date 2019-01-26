@@ -50,7 +50,8 @@ shakeWrapped :: IO  ()
 shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
                 , shakeVerbosity=Chatty -- Loud
                 , shakeLint=Just LintBasic
-                , shakeRebuild=[(RebuildNow,bakedD</>"//*.html")]
+--                , shakeRebuild=[(RebuildNow,bakedD</>"//*.html")]
+--                  seems not to produce an effect
                 } $
     do
         want ["allMarkdownConversion"]
@@ -62,7 +63,7 @@ shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
                 liftIO $ putIOwords ["shakeWrapped - htmlFile", showT htmlFiles]
 --           shakeWrapped - htmlFile ["site/baked/index.html","site/baked/Blog/postwk.html"...
                 need htmlFiles
---                need [templatesD</>"page33.dtpl"]
+                need [templatesD</>"page33.dtpl"]
 
         (bakedD <> "//*.html") %> \out ->
             do
