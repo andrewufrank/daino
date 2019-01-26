@@ -1,7 +1,7 @@
 /* the menu stuff */
 /* assumes style.css */
 
-menu>li {
+.menu>li {
     list-style: none;
     display: inline-block;
     vertical-align: top;
@@ -10,17 +10,56 @@ menu>li {
     text-indent: 0;
 }
 
-menu span {
+.menu span {
     padding: 0 1rem;
 }
 
-menu {
+.menu {
     padding: 0;
     margin: 0;
     text-indent: 0;
     font-weight: bold;
 }
 
-menu menu {
+.menu menu {
     font-size: 12px;
+}
+
+.menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+/* example https://www.w3schools.com/css/css_navbar.asp */
+.menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+
+.menu li {
+  float: left;
+}
+
+.menu li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.menu li a:hover {
+  background-color: #111;
+}
+
+.menu .active {
+  background-color: #4CAF50;
+  color: white;
 }

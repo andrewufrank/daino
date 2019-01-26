@@ -75,7 +75,7 @@ shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
 --                liftIO $ putIOwords ["shakeWrapped - htmlFile", showT htmlFiles2]
 --           shakeWrapped - htmlFile ["site/baked/index.html","site/baked/Blog/postwk.html"...
                 need cssFiles2
-                need [staticD</>"page33.dtpl"]
+--                need [staticD</>"page33.dtpl"]
                 need htmlFiles2
 
         (bakedD <> "//*.html") %> \out ->
@@ -84,6 +84,7 @@ shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
                 let c =   dropDirectory1 . dropDirectory1 $ out -<.> "md"
                 liftIO $ putIOwords ["shakeWrapped - bakedD html - c ", showT c]
                 need [doughD </> c]
+                need [staticD</>"page33.dtpl"]
                 liftIO $  bakeOneFileIO  c  -- c relative to dough/
 
         (staticD</>"page33.dtpl") %> \out ->     -- construct the template from pieces
