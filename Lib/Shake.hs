@@ -60,10 +60,12 @@ shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
         phony "allMarkdownConversion" $
             do
                 liftIO $ putIOwords ["shakeWrapped phony allMarkdonwConversion" ]
+
                 -- get markdown files
                 mdFiles1 <- getDirectoryFiles  doughD ["//*.md", "//*.markdown"]
                 let htmlFiles2 = [bakedD </> md -<.> "html" | md <- mdFiles1]
                 liftIO $ putIOwords ["shakeWrapped - htmlFile", showT htmlFiles2]
+
                 -- get css
                 cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs
                 liftIO $ putIOwords ["shakeWrapped - phony cssFiles1", showT cssFiles1]
@@ -84,17 +86,17 @@ shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
                 let c =   dropDirectory1 . dropDirectory1 $ out -<.> "md"
                 liftIO $ putIOwords ["shakeWrapped - bakedD html - c ", showT c]
                 need [doughD </> c]
-                need [staticD</>"page33.dtpl"]
+                need [templatesD</>"page33.dtpl"]
                 liftIO $  bakeOneFileIO  c  -- c relative to dough/
 
-        (staticD</>"page33.dtpl") %> \out ->     -- construct the template from pieces
+        (templatesD</>"page33.dtpl") %> \out ->     -- construct the template from pieces
             do
                 liftIO $ putIOwords ["shakeWrapped - templatesD dtpl -  out ", showT out]
-                liftIO $ makeOneMaster out
                 let mf = templatesD</>"Master3.gtpl"
                 let pf = templatesD</>"Page3.dtpl"
                 need [mf, pf]
-                copyFileChanged (replaceDirectory out templatesD) out
+                liftIO $ makeOneMaster out
+--                copyFileChanged (replaceDirectory out templatesD) out
 
         (staticD </> "*.css") %> \out ->            -- insert css
             do
@@ -105,6 +107,7 @@ shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
 instance Exception Text
 
 makeOneMaster :: FilePath -> IO ()
+-- makes the master plus page style in template
 makeOneMaster fp = do
     putIOwords ["makeOneMaster", showT fp]
 
