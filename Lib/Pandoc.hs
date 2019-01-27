@@ -30,28 +30,7 @@ import Uniform.Error hiding (Meta, at)
 import Lib.FileMgt (MarkdownText(..), unMT, HTMLout(..), unHTMLout
             , unDocValue, DocValue (..) )
 
---main :: IO ()
---main = do
---    page <- T.readFile "page.markdown"  -- biblio line
---    bibString <-  readFile "refs.bib"
---    bibReferences :: [Reference] <-  readBibtexString (const True) True False bibString
---
---    styleString <- liftIO $ readFile   "chicago.csl"
---    let style1 = parseCSL  styleString :: Style
---
---    -- process with my code
---    html1 <- unPandocM $    processCites2 style1 bibReferences page
---
---    -- process with system call to pandoc
---    html2 <- processCites2x page
---
---
---    T.putStrLn "The two results should be very close: \n With haskell code : \n"
---    T.putStrLn html1
---    putStrLn "\nwith pandoc cmd : \n"
---    T.putStrLn html2
---
---    return ()
+
 
 -- | Convert markdown text into a 'Value';
 -- The 'Value'  has a "content" key containing rendered HTML
@@ -71,8 +50,6 @@ markdownToHTML4x debug (MarkdownText t)  = do
         Nothing ->  return pandoc
 
         Just _ ->   callIO $ processCites'  pandoc
-        --                        (fromJustNote "markdownToHTML4x no csl file" csl)
-        --                        (fromJustNote "markdownToHTML4x no bib file" bib)
 
     text2 <-  writeHtml5String2 pandoc2
 
@@ -80,13 +57,8 @@ markdownToHTML4x debug (MarkdownText t)  = do
     let withContent = ( meta2) & _Object . at "contentHtml" ?~ String (unHTMLout text2)
     return  . DocValue $ withContent
 
---processCites2a ::    Pandoc ->  ErrIO HTMLout
----- process the citations, with biblio and csl in the file
---processCites2a  pandoc3  =  do
---
---        pandoc4 <- callIO $ processCites'  pandoc3
---
-
+markdownToPandoc :: Bool -> MarkdownText -> ErrIO Pandoc
+markdownToPandoc = debug
 
 
 -- | Reasonable options for reading a markdown file
@@ -98,7 +70,7 @@ markdownOptions = def { readerExtensions = exts }
       [ Ext_yaml_metadata_block
       , Ext_fenced_code_attributes
       , Ext_auto_identifiers
-      , Ext_citations           -- <-- this is the important extension
+      , Ext_citations           -- <-- this is the important extension for bibTex
       ]
     , githubMarkdownExtensions
     ]
