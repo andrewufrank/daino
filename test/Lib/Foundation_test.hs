@@ -20,7 +20,7 @@ module Lib.Foundation_test  -- (openMain, htf_thisModuelsTests)
 import           Test.Framework
 import Uniform.Test.TestHarness
 
---import Uniform.Strings
+import Uniform.Strings
 import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)
 --import Uniform.Filenames
 
@@ -32,11 +32,22 @@ testLayout = layoutDefaults {
             , themeDir = makeAbsDir "/home/frank/.SSG/theme"
             }
 
+templateFile = addDir (themeDir testLayout) ("Templates/page33.dtpl" :: FilePath)
 
 test_Defaults_1_A :: IO ()
 
 test_Defaults_1_A
         =   testVar0File progName testLayout  "resultA1" showNice
+
+test11, test12 ::  Path Rel File
+test11 = makeRelFile "Blog/postwk.md"
+test12 = makeRelFile "PublicationList/postWithReference.md"
+
+showAbsFile ::  Path Rel File -> Text
+showAbsFile f = shownice $ addDir (doughDir testLayout) f
+
+test_foundation_1_AA = testVar0File progName test11 "resultAA1" showAbsFile
+test_foundation_2_AA = testVar0File progName test12 "resultAA2" showAbsFile
 
 
 

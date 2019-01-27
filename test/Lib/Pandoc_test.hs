@@ -23,6 +23,8 @@ import Lib.FileMgt
 import Lib.Pandoc
 --import Text.Read
 
+markdownToHTML4xdebug ::  MarkdownText -> ErrIO DocValue
+
 markdownToHTML4xdebug = markdownToHTML4x False
 
 test_bake_11_B_E, test_bake_12_B_E :: IO ()
