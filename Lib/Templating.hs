@@ -18,10 +18,10 @@ module Lib.Templating  -- (openMain, htf_thisModuelsTests)
 
 import Uniform.Strings
 import Uniform.Filenames
-import Uniform.FileStrings
+--import Uniform.FileStrings
 import Uniform.TypedFile
 
-import Text.Glabrous (Template, insert) -- , insertMany)
+--import Text.Glabrous (Template, insert) -- , insertMany)
 import Text.DocTemplates (applyTemplate)
 --import Data.Aeson
 
@@ -29,26 +29,26 @@ import Lib.FileMgt
 import qualified Text.Glabrous as G
 
 -- the final application
-applyTemplate2 :: Path Abs Dir -> Path Rel File -> DocValue -> ErrIO HTMLout
+applyTemplate2 :: Path Abs  File -> DocValue -> ErrIO HTMLout
 -- apply the template in the file to the text
-applyTemplate2 templateDir templateFn val = do
-     templText <- read7 templateDir templateFn  dtmplFileType
+applyTemplate2  templateFn val = do
+     templText <- read8  templateFn  dtmplFileType
      case applyTemplate (unwrap7 templText)  (unDocValue val) of
                     Left msg -> throwError  . s2t $ msg
                     Right val2 -> return  . HTMLout $  (val2 :: Text)
 
 -- combine a doctype template in a glabrous master
 
-putPageInMaster :: Path Abs Dir -> Path Rel File -> Path Rel File -> Text -> Path Rel File -> ErrIO ()
+putPageInMaster ::  Path Abs File -> Path Abs File -> Text -> Path Abs File -> ErrIO ()
 -- ^ insert the first doctype template into the (master) glabrous template at the tag
 -- result is a doctype (clean) template
-putPageInMaster templateDir page master tag full = do
+putPageInMaster  page master tag full = do
     putIOwords ["putPageInMaster put", showT page, "into", showT master
                         , "\n\tat",  tag, "giving", showT full]
 
-    fm :: Gtemplate <- read7 templateDir master gtmplFileType -- must have correct extension
+    fm :: Gtemplate <- read8 master gtmplFileType -- must have correct extension
     putIOwords ["putPageInMaster", "fm read"]
-    fp :: Dtemplate <- read7 templateDir page dtmplFileType
+    fp :: Dtemplate <- read8 page dtmplFileType
     putIOwords ["putPageInMaster", "fpread"]
 
     let master2 = compileGlabrous fm :: G.Template
@@ -62,7 +62,7 @@ putPageInMaster templateDir page master tag full = do
     if null tags
         then do
                 let resTempl2 = G.toText resTempl
-                write7 templateDir full dtmplFileType (wrap7 resTempl2 :: Dtemplate)
+                write8 full dtmplFileType (wrap7 resTempl2 :: Dtemplate)
         else throwErrorT ["putPageInMaster", "template not completely replaced"
                     , "tags open", showT tags]
 

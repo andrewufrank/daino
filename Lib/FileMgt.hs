@@ -31,7 +31,7 @@ import Data.Aeson.Encode.Pretty (encodePretty)
 import  Path.IO (ensureDir)
 
 instance NiceStrings Value where
-    showNice = bb2t . bl2b . encodePretty
+    shownice = bb2t . bl2b . encodePretty
 
 
 newtype DocValue = DocValue Value  deriving (Show,  Eq, Read)
@@ -42,7 +42,7 @@ unDocValue (DocValue v) = v
 instance Zeros DocValue where zero = DocValue Null
 
 instance NiceStrings DocValue where
-    showNice = showNice .  unDocValue
+    shownice = showNice .  unDocValue
 
 -------------
 
@@ -89,27 +89,47 @@ class FileHandles a => TypedFiles7 a b where
 class FileHandles a => TypedFiles7a a b where
 
     read7 :: Path Abs Dir -> Path Rel File -> TypedFile5 a b ->   ErrIO b
-
     write7 :: Path Abs Dir -> Path Rel File -> TypedFile5 a b -> b -> ErrIO ()
+
+    read8 :: Path Abs File -> TypedFile5 a b ->   ErrIO b
+    write8 :: Path Abs File -> TypedFile5 a b -> b -> ErrIO ()
 
 instance TypedFiles7 Text b => TypedFiles7a Text b where
 -- an instance for all what has text as underlying rep
     write7 fp fn tp ct = do
-        let fn2 = fp </> fn <.> tpext5 tp -- :: Path ar File
+--        let fn2 = fp </> fn <.> tpext5 tp -- :: Path ar File
+        write8 (fp </> fn  ) tp ct
+--        let parent = getParentDir fn2
+--        createDirIfMissing' parent
+--        t <- doesDirExist' fp
+----        putIOwords ["TypedFiles7 write7 Text parent", showT parent, "exists", showT t]
+--
+--        writeFile2 fn2 (unwrap7 ct :: Text )
+----        putIOwords ["TypedFiles7 write7 Text Gtemplate", showT fn2]
+----        putIOwords ["TypedFiles7 write7 Text Gtemplate text \n", unwrap7 ct]
+
+    read7 fp fn tp   = do
+--        putIOwords ["TypedFiles7 read7 Text MarkdownText", showT fp, showT fn]
+--        let fn2 = fn <.> tpext5 tp
+        read8 (fp </> fn) tp
+--        return . wrap7 $ ares
+
+    write8 fp   tp ct = do
+        let fn2 = fp   <.> tpext5 tp -- :: Path ar File
 --        write8 (fp </> fn  ) tp ct
         let parent = getParentDir fn2
         createDirIfMissing' parent
-        t <- doesDirExist' fp
+--        t <- doesDirExist' fp
 --        putIOwords ["TypedFiles7 write7 Text parent", showT parent, "exists", showT t]
 
         writeFile2 fn2 (unwrap7 ct :: Text )
 --        putIOwords ["TypedFiles7 write7 Text Gtemplate", showT fn2]
 --        putIOwords ["TypedFiles7 write7 Text Gtemplate text \n", unwrap7 ct]
 
-    read7 fp fn tp   = do
+    read8 fp  tp   = do
 --        putIOwords ["TypedFiles7 read7 Text MarkdownText", showT fp, showT fn]
-        let fn2 = fn <.> tpext5 tp
-        ares :: Text <- readFile2 $ fp </> fn2
+        let fp2 = fp <.> tpext5 tp
+        ares :: Text <- readFile2 $ fp2
         return . wrap7 $ ares
 
 

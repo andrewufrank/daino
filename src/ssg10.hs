@@ -17,30 +17,20 @@ import Uniform.Filenames
 
 import Lib.Bake
 import Lib.Shake
-import Lib.Foundation
+import Lib.Foundation (layoutDefaults, SiteLayout (..))
 
-programName = "SSG" :: Text
+programName = "SSG10" :: Text
 progTitle = "constructing a static site generator" :: Text
 
---siteDoughPath  makeRelDir "site/dough" :: Path Rel Dir
---siteBakedPath makeRelDir "site/baked" :: Path Rel Dir
-
-post1 = makeRelFile "postwk.md" :: Path Rel File
-postWithRef = makeRelFile "PublicationList/postWithReference.md" :: Path Rel File
+--post1 = makeRelFile "postwk.md" :: Path Rel File
+--postWithRef = makeRelFile "PublicationList/postWithReference.md" :: Path Rel File
 
 main :: IO ()
 main = startProg programName progTitle
---            bake
-             shake
---        baketest
-
---baketest =  do
---                 let p = postWithRef
---                 putIOwords ["do bake for ", showT p]
---                 bake4test layout p -- siteDoughPath siteBakedPath
+             (shake layout)
 
 layout :: SiteLayout
 layout = layoutDefaults {reportFile=reportfn}
 
 reportfn :: Path Abs File
-reportfn = addFileName bakedPath (makeRelFile "reportBake.txt")
+reportfn = addFileName (bakedDir layoutDefaults) (makeRelFile "reportBake.txt")

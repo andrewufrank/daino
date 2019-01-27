@@ -28,7 +28,7 @@ import Lib.Pandoc (markdownToHTML4x)   -- with a simplified Action ~ ErrIO
 
 import Lib.Templating
 import Lib.FileMgt
-import Lib.Foundation
+--import Lib.Foundation
 
 --import qualified Pipes as Pipe
 --import qualified Pipes.Prelude as Pipe
@@ -92,9 +92,9 @@ import Lib.Foundation
 ----    let   fnn = removeExtension fpath
 --    bakeOneFile debug fpath
 --
-readMarkdownFile :: Path Rel File -> ErrIO MarkdownText
+readMarkdownFile :: Path Abs File -> ErrIO MarkdownText
 -- read one file
-readMarkdownFile fnn = read7 doughPath fnn markdownFileType
+readMarkdownFile fnn = read8  fnn markdownFileType
 --
 --bakeOneFileVoid ::  FilePath  -> ErrIO ()
 ---- convert a file (path relative to dough) and put in baked
@@ -109,15 +109,15 @@ readMarkdownFile fnn = read7 doughPath fnn markdownFileType
 --        putIOwords ["\n--------------------------------", "done", r ]
 --        return ()
 
-bakeOneFile :: Bool -> Path Rel File -> ErrIO Text
--- convert a file (path relative to dough) and put in baked
-bakeOneFile debug fp = do
-        let   fnn = removeExtension fp :: Path Rel File
+bakeOneFile :: Bool -> Path Abs File -> Path Abs File -> Path Abs File -> ErrIO Text
+-- convert a file md2, put in template2 and produce th2
+bakeOneFile debug md2 template2 ht2 = do
+--        let   fnn = removeExtension fp :: Path Rel File
 --        when debug $
-        putIOwords ["\n--------------------------------", "bakeOneFile fn", showT fnn, "\n\n"]
+        putIOwords ["\n--------------------------------", "bakeOneFile fn", showT md2, "\n\n"]
         -- currently only for md files, add static next
 
-        intext :: MarkdownText <- readMarkdownFile fnn
+        intext :: MarkdownText <- readMarkdownFile md2
     -- convert to html
         val  <- markdownToHTML4x debug intext
 --            val  <- markdownToHTML4a intext
@@ -129,19 +129,19 @@ bakeOneFile debug fp = do
     --     apply template before writing
         let templateFileName =   makeRelFile "page33"::Path Rel File
 
-        html2 <-  applyTemplate2 templatesPath templateFileName val
+        html2 <-  applyTemplate2 template2 val
 
-        when debug $ putIOwords ["bakeOneFile resultFile", showT bakedPath, showT fnn, "\n"]
-        write7 bakedPath fnn htmloutFileType html2
+        when debug $ putIOwords ["bakeOneFile resultFile", showT ht2, "from",  showT md2, "\n"]
+        write8   ht2 htmloutFileType html2
 --            putIOwords ["bakeOneFile outhtml (which was just written) \n", unHTMLout html2, "\n"]
 
         when debug $ putIOwords ["\n......................"]
 
-        return . unwords' $  ["bakeOneFile outhtml ", showT fnn, "done"]
+        return . unwords' $  ["bakeOneFile outhtml ", showT md2, "done"]
 
  `catchError` (\e -> do
                     let errmsg2 =  ["\n****************"
-                                , "bakeOneFile catchError", showT e , "for ", showT fp
+                                , "bakeOneFile catchError", showT e , "for ", showT md2
                                 , "\n****************"]
                     putIOwords errmsg2
                     return . unwords' $ errmsg2

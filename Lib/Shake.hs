@@ -27,7 +27,7 @@ import Uniform.FileStrings () -- for instances
 import Lib.Templating
 
 
-import Lib.Foundation
+import Lib.Foundation (SiteLayout (..))
 import Lib.Bake
 
 import Development.Shake
@@ -35,29 +35,34 @@ import Development.Shake
 import Development.Shake.FilePath
 --import Development.Shake.Util
 
-shake ::    ErrIO ()
-shake   = do
-    putIOwords ["\nshake start"]
-    callIO $ shakeWrapped-- bakeAllInSiteMD (bakeOneFile2 False)  doughPath  reportFilePath
+shake :: SiteLayout ->    ErrIO ()
+shake layout   = do
+    putIOwords ["\nshake start", shownice layout]
+    callIO $ shakeWrapped
+                (toFilePath . doughDir $ layout)
+                (toFilePath . doughDir $ layout)
+                (toFilePath . doughDir $ layout)
+
     putIOwords ["\nshake done", "\n"]
 
     return ()
 
-bakedD, doughD, templatesD, staticD :: FilePath
-bakedD  =   toFilePath bakedPath
-doughD = toFilePath doughPath
-templatesD =  toFilePath templatesPath
+--bakedD, doughD, templatesD, staticD :: FilePath
+--bakedD  =   toFilePath bakedPath
+--doughD = toFilePath doughPath
+--templatesD =  toFilePath templatesPath
 
-staticD = bakedD </>"static"  -- where all the static files go
 
-shakeWrapped :: IO  ()
-shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
+shakeWrapped :: FilePath -> FilePath -> FilePath ->  IO  ()
+shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=bakedD
                 , shakeVerbosity=Chatty -- Loud
                 , shakeLint=Just LintBasic
 --                , shakeRebuild=[(RebuildNow,"allMarkdownConversion")]
 --                  seems not to produce an effect
                 } $
     do
+        let staticD = bakedD </>"static"  -- where all the static files go
+
         want ["allMarkdownConversion"]
 
         phony "allMarkdownConversion" $
@@ -86,11 +91,12 @@ shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
         (bakedD <> "//*.html") %> \out ->
             do
                 liftIO $ putIOwords ["shakeWrapped - bakedD html -  out ", showT out]
-                let c =   makeRelative bakedD $ out -<.> "md"
-                liftIO $ putIOwords ["shakeWrapped - bakedD html - c ", showT c]
-                need [doughD </> c]
-                need [templatesD</>"page33.dtpl"]
-                liftIO $  bakeOneFileIO  c  -- c relative to dough/
+                let md =   doughD </> ( makeRelative bakedD $ out -<.> "md")
+                liftIO $ putIOwords ["shakeWrapped - bakedD html - c ", showT md]
+                let template = templatesD</>"page33.dtpl"
+                need [md]
+                need [template]
+                liftIO $  bakeOneFileIO  md  template out  -- c relative to dough/
 
         (templatesD</>"page33.dtpl") %> \out ->     -- construct the template from pieces
             do
@@ -98,7 +104,7 @@ shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
                 let mf = templatesD</>"Master3.gtpl"
                 let pf = templatesD</>"Page3.dtpl"
                 need [mf, pf]
-                liftIO $ makeOneMaster out
+                liftIO $ makeOneMaster mf pf out
 --                copyFileChanged (replaceDirectory out templatesD) out
 
         (staticD </> "*.css") %> \out ->            -- insert css
@@ -109,33 +115,36 @@ shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
 
 instance Exception Text
 
-makeOneMaster :: FilePath -> IO ()
+makeOneMaster :: FilePath -> FilePath -> FilePath -> IO ()
 -- makes the master plus page style in template
-makeOneMaster fp = do
-    putIOwords ["makeOneMaster", showT fp]
+makeOneMaster master page result = do
+    putIOwords ["makeOneMaster", showT result]
 
-    res <- runErrorVoid $ putPageInMaster templatesPath
-                     (makeRelFile "Page3") (makeRelFile "Master3")
-                    "body" (makeRelFile "page33")
+    res <- runErrorVoid $ putPageInMaster
+                     (makeAbsFile page) (makeAbsFile master)
+                    "body" (makeAbsFile result)
     putIOwords ["makeOneMaster done", showT res ]
     return ()
 
 
-bakeOneFileIO :: FilePath -> IO ()
--- bake one file (relative to dough)
-bakeOneFileIO fp = do
+bakeOneFileIO :: FilePath -> FilePath -> FilePath -> IO ()
+-- bake one file absolute fp , page template and result html
+bakeOneFileIO md template ht = do
             et <- runErr $ do
-                    putIOwords ["bakeOneFileIO - from shake xx", s2t fp] --baked/SGGdesign/Principles.md
-                    let fp1 = fp
---                            let fp1 = "/"<>fp
-                    putIOwords ["bakeOneFileIO - gp1", s2t fp1]
-                    let fp2 = makeRelFile fp1
+                    putIOwords ["bakeOneFileIO - from shake xx", s2t md] --baked/SGGdesign/Principles.md
+--                    let fp1 = fp
+----                            let fp1 = "/"<>fp
+                    let md2 = makeAbsFile md
+                    let template2 = makeAbsFile template
+                    let ht2 = makeAbsFile ht
+                    putIOwords ["bakeOneFileIO - files", showT md2, "\n", showT template2, "\n", showT ht2]
+--                    let fp2 = makeRelFile fp1
 --                    fp3 :: Path Rel File  <- stripProperPrefix' (makeRelDir doughD) fp2
-                    putIOwords ["bakeOneFileIO - next run shake", showT fp2]
+--                    putIOwords ["bakeOneFileIO - next run shake", showT fp2]
 --                            bakeOneFileIO - next run shake "baked/SGGdesign/Principles.md"
-                    let fp3 = fp2
-                    res <- bakeOneFile True fp3
-                    putIOwords ["bakeOneFileIO - done", showT fp3, res]
+--                    let fp3 = fp2
+                    res <- bakeOneFile True md2 template2 ht2
+                    putIOwords ["bakeOneFileIO - done", showT ht2, res]
             case et of
                 Left msg -> throw msg
                 Right _ -> return ()
