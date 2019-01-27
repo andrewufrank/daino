@@ -8,7 +8,7 @@ packages:
 - ../uniform/uniform-fileio
 - ../uniform/uniform-error
 
-- ../fromOthers/glabrous
+# - ../fromOthers/glabrous
 
 extra-deps:
 - test-invariant-0.4.5.0
