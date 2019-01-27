@@ -28,22 +28,25 @@ import Uniform.Filenames
 
 progName = "SSG" :: Text
 
-data Defaults = Defaults
-    { siteDir, themeDir :: Path Abs Dir -- ^ the place of the site and the theme files
-    , doughDir, bakedDir :: Path Rel Dir -- ^ the names of the two dir, under siteDir
-    , templateDir :: Path Rel Dir -- ^ where the templates are
+data SiteLayout = SiteLayout
+    { themeDir :: Path Abs Dir -- ^ the place of the  theme files (includes templates)
+    , doughDir                  -- ^ where the content is originally (includes resources)
+    , bakedDir :: Path Abs Dir -- ^ where all the files serving are
+--    , templateDir :: Path Rel Dir -- ^ where the templates are
     , reportFile :: Path Abs File  -- ^ the report from processing baked with pipe
+                        -- not important
     } deriving (Show, Ord, Eq, Read)
 
-instance NiceStrings Defaults where
+instance NiceStrings SiteLayout where
     showNice d = replace' ", " ",\n " (showT d)
 
-defaults :: Defaults
-defaults = Defaults{ siteDir = makeAbsDir "/home/frank/Workspace8/SSG/site"
-            , doughDir = makeRelDir "dough"
-            , bakedDir = makeRelDir "baked"
+--siteDir = makeAbsDir "/home/frank/Workspace8/SSG/site"
+
+layoutDefaults :: SiteLayout
+layoutDefaults = SiteLayout{  doughDir = makeAbsDir "/home/frank/Workspace8/SSG/site/dough"
+            , bakedDir = makeAbsDir "/home/frank/Workspace8/SSG/site/baked"
             , reportFile = makeAbsFile "/home/frank/reportBakeAll.txt"
-            , templateDir = makeRelDir "templates"
+--            , templateDir = makeAbsDir "templates"
             , themeDir = makeAbsDir "/home/frank/Workspace8/SSG/theme"
 }
 
@@ -59,11 +62,13 @@ defaults = Defaults{ siteDir = makeAbsDir "/home/frank/Workspace8/SSG/site"
 -- all Path will become functions with Default as argument
 doughPath, bakedPath :: Path Abs Dir
 -- the path (absolute) to dough an baked
-doughPath = addDir (siteDir defaults) (doughDir defaults) :: Path Abs Dir
-bakedPath = addDir (siteDir defaults) (bakedDir defaults) :: Path Abs Dir
+doughPath =  (doughDir layoutDefaults) :: Path Abs Dir
+bakedPath =   (bakedDir layoutDefaults) :: Path Abs Dir
 
-sitePath = siteDir defaults
+--sitePath = siteDir layoutDefaults
 templatePath :: Path Abs Dir
 reportFilePath :: Path Abs File
-templatePath = addDir (themeDir defaults) (templateDir defaults)
-reportFilePath = reportFile defaults
+templateDir :: Path Rel Dir
+templateDir = makeRelDir "templates"
+templatePath = addDir (themeDir layoutDefaults) (templateDir)
+reportFilePath = reportFile layoutDefaults
