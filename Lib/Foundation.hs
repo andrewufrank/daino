@@ -51,6 +51,8 @@ layoutDefaults = SiteLayout{  doughDir = makeAbsDir "/home/frank/Workspace8/SSG/
             , themeDir = makeAbsDir "/home/frank/Workspace8/SSG/theme"
             }
 
+templatesDirName = (makeRelDir "templates")
+
 --doughDir, bakedDir :: Path Rel Dir
 ---- ^ the names of the two dir, under siteDir
 --doughDir = makeRelDir "dough"

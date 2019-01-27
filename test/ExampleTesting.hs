@@ -15,11 +15,14 @@ import           Test.Framework
 import {-@ HTF_TESTS @-} Lib.Foundation_test
     -- writes A : testLayout
     --  AA :: abs pandoc filenames
-import {-@ HTF_TESTS @-} Lib.Bake_test
 import {-@ HTF_TESTS @-} Lib.Pandoc_test
     -- AA -> AK : MarkdownText
     -- AK :: MarkdownText -> BE  DocValue
-import {-@ HTF_TESTS @-} Lib.Templating_test   -- pay attention to HTF_TESTS !
+--import {-@ HTF_TESTS @-} Lib.Bake_test
+--
+import {-@ HTF_TESTS @-} Lib.Templating_test
+--     page33
+--      BE -> EF ::HTMLout
 
 -- main =  do  -- the local tests only
 --     putStrLn "HTF ExampleTest.hs:\n"

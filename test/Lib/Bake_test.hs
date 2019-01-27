@@ -25,16 +25,6 @@ import Lib.Bake
 import Lib.FileMgt
 import Lib.Foundation_test (testLayout)
 
-readMarkdownFile8 :: Path Abs File -> ErrIO MarkdownText
-readMarkdownFile8 fnn = read8 fnn markdownFileType
---    do
---        r :: ErrOrVal MarkdownText <- runErr $
---        let r2 = fromRightNote "wewr" r :: MarkdownText
---        return r2
---
-test_bake_11_A_K, test_bake_12_A_K :: IO ()
-test_bake_11_A_K = test1FileIO progName  "resultAA1" "resultAK1" readMarkdownFile8
-test_bake_12_A_K = test1FileIO progName  "resultAA2" "resultAK2" readMarkdownFile8
 
 --test11, test12 ::  Path Rel File
 --test11 = makeRelFile "Blog/postwk.md"
@@ -42,7 +32,7 @@ test_bake_12_A_K = test1FileIO progName  "resultAA2" "resultAK2" readMarkdownFil
 
 --test_bake
 --bakeOneFileDebug md = bakeOneFile False md templateFile
-    where fn =
+--    where fn =
 --
 --test_bake_11_A_M, test_bake_12_A_M :: IO ()
 --test_bake_11_A_M = testVar0FileIO progName  test11 "resultAM11" bakeOneFileDebug

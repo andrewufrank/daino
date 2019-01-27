@@ -27,7 +27,7 @@ import Uniform.FileStrings () -- for instances
 import Lib.Templating
 
 
-import Lib.Foundation (SiteLayout (..))
+import Lib.Foundation (SiteLayout (..), templatesDirName)
 import Lib.Bake
 
 import Development.Shake
@@ -40,7 +40,7 @@ shake layout   = do
     putIOwords ["\nshake start", shownice layout]
     callIO $ shakeWrapped
                 (toFilePath . doughDir $ layout)
-                ((toFilePath . themeDir $ layout) </> "templates")
+                ((toFilePath . themeDir $ layout) </> (toFilePath templatesDirName))
                 (toFilePath . bakedDir $ layout)
 
     putIOwords ["\nshake done", "\n"]

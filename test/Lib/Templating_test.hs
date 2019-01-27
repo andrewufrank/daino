@@ -11,7 +11,7 @@
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
-{-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans #-}
+{-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-unused-imports #-}
 
 module Lib.Templating_test
      where
@@ -19,7 +19,7 @@ module Lib.Templating_test
 
 import           Test.Framework
 import Uniform.Test.TestHarness
-import Lib.Foundation (progName, SiteLayout(..))
+import Lib.Foundation (progName, SiteLayout(..), templatesDirName)
 import Lib.Foundation_test (testLayout)
 
 --import Uniform.Strings
@@ -46,18 +46,19 @@ test_convMaster3 = do
                      page3 master3 "body" page33
            assertEqual () res
 
-page3  = addDir (themeDir testLayout) (makeRelFile "Page3")
-master3 = addDir (themeDir testLayout) (makeRelFile "Master3")
-page33 = addDir (themeDir testLayout) (makeRelFile "page33")
+templateDir = addDir (themeDir testLayout) templatesDirName
+page3  = addDir templateDir (makeRelFile "Page3")
+master3 = addDir templateDir (makeRelFile "Master3")
+page33 = addDir templateDir(makeRelFile "page33")
 --
---applyTemplate2x :: DocValue -> ErrIO HTMLout
---applyTemplate2x = applyTemplate2   templatesPath (makeRelFile "page33")
+applyTemplate2x :: DocValue -> ErrIO HTMLout
+applyTemplate2x = applyTemplate2   page33
 ----                        (makeRelFile "pandocDefault.html"::Path Rel File)
 --
 --
---test_templating_11_E_F, test_templating_12_E_F :: IO ()
---test_templating_11_E_F = test1FileIO progName   "resultBE11" "resultEF11"  applyTemplate2x
---test_templating_12_E_F = test1FileIO progName   "resultBE12" "resultEF12" applyTemplate2x
+test_templating_11_E_F, test_templating_12_E_F :: IO ()
+test_templating_11_E_F = test1FileIO progName   "resultBE1" "resultEF1"  applyTemplate2x
+test_templating_12_E_F = test1FileIO progName     "resultBE2" "resultEF2" applyTemplate2x
 
 instance  ShowTestHarness DocValue where
 instance ShowTestHarness HTMLout

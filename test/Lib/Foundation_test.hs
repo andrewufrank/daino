@@ -20,7 +20,7 @@ module Lib.Foundation_test  -- (openMain, htf_thisModuelsTests)
 import           Test.Framework
 import Uniform.Test.TestHarness
 
-import Uniform.Strings
+--import Uniform.Strings
 import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)
 --import Uniform.Filenames
 
@@ -42,6 +42,7 @@ test_Defaults_1_A
 test11, test12 ::  Path Rel File
 test11 = makeRelFile "Blog/postwk.md"
 test12 = makeRelFile "PublicationList/postWithReference.md"
+-- these files must be copied to .SSG/dough !!
 
 showAbsFile ::  Path Rel File -> Text
 showAbsFile f = shownice $ addDir (doughDir testLayout) f
