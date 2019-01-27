@@ -51,14 +51,16 @@ page3  = addDir templateDir (makeRelFile "Page3")
 master3 = addDir templateDir (makeRelFile "Master3")
 page33 = addDir templateDir(makeRelFile "page33")
 --
-applyTemplate2x :: DocValue -> ErrIO HTMLout
-applyTemplate2x = applyTemplate2   page33
+applyTemplate3x :: DocValue -> ErrIO HTMLout
+applyTemplate3x dval = do
+                        template <- read8  page33  dtmplFileType
+                        applyTemplate3   template dval
 ----                        (makeRelFile "pandocDefault.html"::Path Rel File)
 --
 --
 test_templating_11_E_F, test_templating_12_E_F :: IO ()
-test_templating_11_E_F = test1FileIO progName   "resultBE1" "resultEF1"  applyTemplate2x
-test_templating_12_E_F = test1FileIO progName     "resultBE2" "resultEF2" applyTemplate2x
+test_templating_11_E_F = test1FileIO progName   "resultBE1" "resultEF1"  applyTemplate3x
+test_templating_12_E_F = test1FileIO progName     "resultBE2" "resultEF2" applyTemplate3x
 
 instance  ShowTestHarness DocValue where
 instance ShowTestHarness HTMLout

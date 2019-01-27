@@ -29,13 +29,21 @@ import Lib.FileMgt
 import qualified Text.Glabrous as G
 
 -- the final application
-applyTemplate2 :: Path Abs  File -> DocValue -> ErrIO HTMLout
+applyTemplate3 :: Dtemplate -> DocValue -> ErrIO HTMLout
 -- apply the template in the file to the text
-applyTemplate2  templateFn val = do
-     templText <- read8  templateFn  dtmplFileType
+applyTemplate3  templText val = do
      case applyTemplate (unwrap7 templText)  (unDocValue val) of
                     Left msg -> throwError  . s2t $ msg
                     Right val2 -> return  . HTMLout $  (val2 :: Text)
+
+---- the final application
+--applyTemplate2 :: Path Abs  File -> DocValue -> ErrIO HTMLout
+---- apply the template in the file to the text
+--applyTemplate2  templateFn val = do
+--     templText <- read8  templateFn  dtmplFileType
+--     case applyTemplate (unwrap7 templText)  (unDocValue val) of
+--                    Left msg -> throwError  . s2t $ msg
+--                    Right val2 -> return  . HTMLout $  (val2 :: Text)
 
 -- combine a doctype template in a glabrous master
 
