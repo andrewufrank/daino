@@ -111,7 +111,7 @@ mainWatchDough =  do
 mainWatchTemplates =  do
     putIOwords [programName, progTitle,"mainWatchTemplates"]
     Twitch.defaultMainWithOptions (mydef
-                    {Twitch.root = Just . toFilePath $ templatePath
+                    {Twitch.root = Just . toFilePath $ templatesPath
                      , Twitch.log = Twitch.NoLogger
                     }) $ do
             Twitch.addModify (\filepath -> runErrorVoid $ shake) "**/*.html"

@@ -11,6 +11,7 @@
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
+{-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans #-}
 
 module Lib.Foundation_test  -- (openMain, htf_thisModuelsTests)
      where

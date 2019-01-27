@@ -129,7 +129,7 @@ bakeOneFile debug fp = do
     --     apply template before writing
         let templateFileName =   makeRelFile "page33"::Path Rel File
 
-        html2 <-  applyTemplate2 templatePath templateFileName val
+        html2 <-  applyTemplate2 templatesPath templateFileName val
 
         when debug $ putIOwords ["bakeOneFile resultFile", showT bakedPath, showT fnn, "\n"]
         write7 bakedPath fnn htmloutFileType html2

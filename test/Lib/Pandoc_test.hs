@@ -11,6 +11,7 @@
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
+{-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans #-}
 
 module Lib.Pandoc_test  -- (openMain, htf_thisModuelsTests)
      where
@@ -20,7 +21,7 @@ import Uniform.Test.TestHarness
 import Lib.Foundation (progName)
 import Lib.FileMgt
 import Lib.Pandoc
-import Text.Read
+--import Text.Read
 
 markdownToHTML4xdebug = markdownToHTML4x False
 

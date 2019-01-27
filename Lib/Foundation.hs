@@ -26,7 +26,8 @@ import Uniform.Strings
 import Uniform.Filenames
 --import Uniform.FileStrings
 
-progName = "SSG" :: Text
+progName :: Text
+progName = "SSG"
 
 data SiteLayout = SiteLayout
     { themeDir :: Path Abs Dir -- ^ the place of the  theme files (includes templates)
@@ -38,7 +39,7 @@ data SiteLayout = SiteLayout
     } deriving (Show, Ord, Eq, Read)
 
 instance NiceStrings SiteLayout where
-    showNice d = replace' ", " ",\n " (showT d)
+    shownice d = replace' ", " ",\n " (showT d)
 
 --siteDir = makeAbsDir "/home/frank/Workspace8/SSG/site"
 
@@ -66,9 +67,9 @@ doughPath =  (doughDir layoutDefaults) :: Path Abs Dir
 bakedPath =   (bakedDir layoutDefaults) :: Path Abs Dir
 
 --sitePath = siteDir layoutDefaults
-templatePath :: Path Abs Dir
+templatesPath :: Path Abs Dir
 reportFilePath :: Path Abs File
-templateDir :: Path Rel Dir
-templateDir = makeRelDir "templates"
-templatePath = addDir (themeDir layoutDefaults) (templateDir)
+templatesDir :: Path Rel Dir
+templatesDir = makeRelDir "templates"
+templatesPath = addDir (themeDir layoutDefaults) (templatesDir)
 reportFilePath = reportFile layoutDefaults

@@ -14,6 +14,7 @@
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
+{-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans #-}
 
 module Lib.Shake
      where
@@ -22,7 +23,7 @@ import Uniform.Strings (putIOwords) -- hiding ((<.>), (</>))
 import Uniform.Filenames -- (toFilePath, makeAbsFile, makeRelFile, makeRelDir, stripProperPrefix')
          hiding ((<.>), (</>))
 import Uniform.FileStrings () -- for instances
-import Uniform.Error
+--import Uniform.Error
 import Lib.Templating
 
 
@@ -30,9 +31,9 @@ import Lib.Foundation
 import Lib.Bake
 
 import Development.Shake
-import Development.Shake.Command
+--import Development.Shake.Command
 import Development.Shake.FilePath
-import Development.Shake.Util
+--import Development.Shake.Util
 
 shake ::    ErrIO ()
 shake   = do
@@ -42,10 +43,12 @@ shake   = do
 
     return ()
 
-bakedD  = "site/baked" -- toFilePath bakedPath
-doughD = "site/dough"
-templatesD = "theme/templates"
-staticD = "site/baked/static"  -- where all the static files go
+bakedD, doughD, templatesD, staticD :: FilePath
+bakedD  =   toFilePath bakedPath
+doughD = toFilePath doughPath
+templatesD =  toFilePath templatesPath
+
+staticD = bakedD </>"static"  -- where all the static files go
 
 shakeWrapped :: IO  ()
 shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
@@ -83,7 +86,7 @@ shakeWrapped = shakeArgs shakeOptions {shakeFiles=bakedD
         (bakedD <> "//*.html") %> \out ->
             do
                 liftIO $ putIOwords ["shakeWrapped - bakedD html -  out ", showT out]
-                let c =   dropDirectory1 . dropDirectory1 $ out -<.> "md"
+                let c =   makeRelative bakedD $ out -<.> "md"
                 liftIO $ putIOwords ["shakeWrapped - bakedD html - c ", showT c]
                 need [doughD </> c]
                 need [templatesD</>"page33.dtpl"]
@@ -111,10 +114,10 @@ makeOneMaster :: FilePath -> IO ()
 makeOneMaster fp = do
     putIOwords ["makeOneMaster", showT fp]
 
-    res <- runErrorVoid $ putPageInMaster templatePath
+    res <- runErrorVoid $ putPageInMaster templatesPath
                      (makeRelFile "Page3") (makeRelFile "Master3")
                     "body" (makeRelFile "page33")
-    putIOwords ["makeOneMaster done"]
+    putIOwords ["makeOneMaster done", showT res ]
     return ()
 
 

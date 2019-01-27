@@ -11,6 +11,7 @@
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
+{-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans #-}
 
 module Lib.Templating_test  -- (openMain, htf_thisModuelsTests)
      where
@@ -18,7 +19,7 @@ module Lib.Templating_test  -- (openMain, htf_thisModuelsTests)
 
 import           Test.Framework
 import Uniform.Test.TestHarness
-import Lib.Foundation (progName, templatePath)
+import Lib.Foundation (progName, templatesPath)
 import Uniform.Strings
 import Lib.Templating -- (applyTemplate2, convGmaster)
 import Uniform.Filenames
@@ -43,7 +44,7 @@ res1 = G.process  t1 c1  :: Text
 ------------- test with actual doc templates
 --
 --test2 = do
---    fm   <- readFile  (addDir templatePath testMaster :: Path Abs File)
+--    fm   <- readFile  (addDir templatesPath testMaster :: Path Abs File)
 --    fp   <- readFile  "/home/frank/Workspace8/SSG/theme/templates/Page2.html"
 --
 --    let
@@ -64,20 +65,20 @@ res1 = G.process  t1 c1  :: Text
 --testMaster_Page = makeRelFile "Master2_Page2"
 --
 --test_convMaster2 = do
---           res <- runErrorVoid $ putPageInMaster templatePath
+--           res <- runErrorVoid $ putPageInMaster templatesPath
 --                     testPage2 testMaster
 --                    "body" testMaster_Page
 --           assertEqual () res
 
 test_convMaster3 = do
-           res <- runErrorVoid $ putPageInMaster templatePath
+           res <- runErrorVoid $ putPageInMaster templatesPath
                      (makeRelFile "Page3") (makeRelFile "Master3")
                     "body" (makeRelFile "page33")
            assertEqual () res
 
 --test_readPage2 = do
 --            res <- (runErrorVoid $ do
---                            fp :: Dtemplate <- read7 templatePath testPage2 dtmplFileType
+--                            fp :: Dtemplate <- read7 templatesPath testPage2 dtmplFileType
 --                            return ()
 --                    )
 --            assertEqual () res
@@ -85,7 +86,7 @@ test_convMaster3 = do
 --applyTemplate2x :: DocValue -> ErrIO HTMLout
 ---- apply the template in the file to the text
 --applyTemplate2x val =
---     case applyTemplate2 (addDir templatePath (makeRelFile "page33"))  (unDocValue val) of
+--     case applyTemplate2 (addDir templatesPath (makeRelFile "page33"))  (unDocValue val) of
 --                    Left msg -> throwError  . s2t $ msg
 --                    Right val2 -> return  . HTMLout $  (val2 :: Text)
 --
@@ -95,7 +96,7 @@ test_convMaster3 = do
 
 
 applyTemplate2x :: DocValue -> ErrIO HTMLout
-applyTemplate2x = applyTemplate2   templatePath (makeRelFile "page33")
+applyTemplate2x = applyTemplate2   templatesPath (makeRelFile "page33")
 --                        (makeRelFile "pandocDefault.html"::Path Rel File)
 
 
