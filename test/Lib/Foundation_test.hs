@@ -20,9 +20,9 @@ module Lib.Foundation_test  -- (openMain, htf_thisModuelsTests)
 import           Test.Framework
 import Uniform.Test.TestHarness
 
-import Uniform.Strings
+--import Uniform.Strings
 import Lib.Foundation
-import Uniform.Filenames
+--import Uniform.Filenames
 
 test_Defaults_1_A :: IO ()
 

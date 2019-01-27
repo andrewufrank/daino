@@ -17,6 +17,7 @@ import Uniform.Filenames
 
 import Lib.Bake
 import Lib.Shake
+import Lib.Foundation
 
 programName = "SSG" :: Text
 progTitle = "constructing a static site generator" :: Text
@@ -31,9 +32,15 @@ main :: IO ()
 main = startProg programName progTitle
 --            bake
              shake
+--        baketest
 
-baketest =  do
-                 let p = postWithRef
-                 putIOwords ["do bake for ", showT p]
-                 bake4test p -- siteDoughPath siteBakedPath
+--baketest =  do
+--                 let p = postWithRef
+--                 putIOwords ["do bake for ", showT p]
+--                 bake4test layout p -- siteDoughPath siteBakedPath
 
+layout :: SiteLayout
+layout = layoutDefaults {reportFile=reportfn}
+
+reportfn :: Path Abs File
+reportfn = addFileName bakedPath (makeRelFile "reportBake.txt")

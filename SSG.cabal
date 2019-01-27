@@ -38,7 +38,7 @@ library
     , lens-aeson
     , lens
     , aeson-pretty
-    , pipes
+--    , pipes
     , path , path-io
     , shake
     , glabrous==1.0.1.1
@@ -84,26 +84,7 @@ executable serversg
     src
   default-language: Haskell2010
 
---executable watch4bake
---  main-is: watch4bake.hs
---  other-modules:
---
---  build-depends:
---      base ==4.*
---    , uniform-strings
---    , uniform-convenience
---    , uniform-fileio
---    , uniform-error
---    , SSG
---    , scotty
---    , wai-middleware-static
-----    , hinotify
---    , directory
---    , twitch
---
---  hs-source-dirs:
---    src
---  default-language: Haskell2010
+
 
 test-suite g2
   type: exitcode-stdio-1.0

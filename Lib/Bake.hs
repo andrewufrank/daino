@@ -21,8 +21,8 @@ module Lib.Bake  -- (openMain, htf_thisModuelsTests)
 import Uniform.Strings
 import Uniform.Filenames
 import Uniform.FileStrings () -- for instances
-import Uniform.Piped
-import           Uniform.FileIO as FN hiding ( (</>), (<.>))  -- (<>),
+--import Uniform.Piped
+--import           Uniform.FileIO as FN hiding ( (</>), (<.>))  -- (<>),
 
 import Lib.Pandoc (markdownToHTML4x)   -- with a simplified Action ~ ErrIO
 
@@ -30,84 +30,84 @@ import Lib.Templating
 import Lib.FileMgt
 import Lib.Foundation
 
-import qualified Pipes as Pipe
-import qualified Pipes.Prelude as Pipe
-import Pipes ((>->)) -- , (~>)
+--import qualified Pipes as Pipe
+--import qualified Pipes.Prelude as Pipe
+--import Pipes ((>->)) -- , (~>)
 --import qualified Path  as Path
 
-
-bake ::    ErrIO ()
-bake   = do
-    putIOwords ["\nbake start"]
-    msg <- bakeAllInSiteMD (bakeOneFile2 False)  doughPath  reportFilePath
-    putIOwords ["\nbake all msg " , msg]
-
-    return ()
-
-bake4test :: Path Rel File -> ErrIO ()
-bake4test fp = do
-    putIOwords ["\nbake     for " , showT fp]
-    msg <- bakeOneFile2 True (addDir doughPath fp)
-    putIOwords ["\nbake all msg " , msg]
-
-    return ()
-
---reportFile :: Path Abs File
---reportFile = makeAbsFile "/home/frank/reportBakeAll.txt"
-
-bakeAllInSiteMD :: (Path Abs File -> ErrIO Text)-> Path Abs Dir
-                -> Path Abs File -> ErrIO Text
--- convert all markdonw in site with ops
-bakeAllInSiteMD ops siteDough   reportFile1 = do
-    putIOwords ["\nbakeAllInSiteMD", "site", showT siteDough, "reportFile", showT reportFile1]
---    let path = toFilePath site
---    resFile :: Path Abs File <- makeAbsoluteFile' file
-    bracketErrIO (FN.openFile2handle reportFile1 WriteMode)
-                (\hand -> do
-                    putIOwords ["bakeAllInSiteMD close"]
-                    closeFile2 hand -- not with transaction tmp
-                    )
-                (\hand ->
-                      Pipe.runEffect $
-                        getRecursiveContents siteDough
---                        >-> Pipe.filter test--  filter is in bakeOneFile2 as a case
-                        >-> Pipe.mapM (fmap t2s . ops)
-                            --  putOneFile2xx debug forceFlag server db mgraph)
-                    --    >-> P.stdoutLn
-                        >-> Pipe.toHandle hand
-                )
-    report <- readFile2 reportFile1
-    return $ unwords' ["\nbakeAllInSiteMD end", showT siteDough, showT reportFile1
-            , "\n", report
-            , "..........................", "ok"]
-
-testMD :: Path Abs File -> Bool
-testMD = hasExtension extMD
-
-bakeOneFile2 :: Bool -> Path Abs File -> ErrIO Text
--- bakes one file - first true gives lots of debug info
-bakeOneFile2 debug fp2 =  do
-    fpath :: Path Rel File  <- stripProperPrefix' doughPath fp2
---        : MonadThrow m => Path b Dir -> Path b t -> m (Path Rel t)
---    let   fnn = removeExtension fpath
-    bakeOneFile debug fpath
-
+--
+--bake ::    ErrIO ()
+--bake   = do
+--    putIOwords ["\nbake start"]
+--    msg <- bakeAllInSiteMD (bakeOneFile2 False)  doughPath  reportFilePath
+--    putIOwords ["\nbake all msg " , msg]
+--
+--    return ()
+--
+--bake4test :: SiteLayout -> Path Rel File -> ErrIO ()
+--bake4test layout fp = do
+--    putIOwords ["\nbake     for " , showT fp]
+--    msg <- bakeOneFile2 True (addDir doughPath fp)
+--    putIOwords ["\nbake all msg " , msg]
+--
+--    return ()
+--
+----reportFile :: Path Abs File
+----reportFile = makeAbsFile "/home/frank/reportBakeAll.txt"
+--
+--bakeAllInSiteMD :: (Path Abs File -> ErrIO Text)-> Path Abs Dir
+--                -> Path Abs File -> ErrIO Text
+---- convert all markdonw in site with ops
+--bakeAllInSiteMD ops siteDough   reportFile1 = do
+--    putIOwords ["\nbakeAllInSiteMD", "site", showT siteDough, "reportFile", showT reportFile1]
+----    let path = toFilePath site
+----    resFile :: Path Abs File <- makeAbsoluteFile' file
+--    bracketErrIO (FN.openFile2handle reportFile1 WriteMode)
+--                (\hand -> do
+--                    putIOwords ["bakeAllInSiteMD close"]
+--                    closeFile2 hand -- not with transaction tmp
+--                    )
+--                (\hand ->
+--                      Pipe.runEffect $
+--                        getRecursiveContents siteDough
+----                        >-> Pipe.filter test--  filter is in bakeOneFile2 as a case
+--                        >-> Pipe.mapM (fmap t2s . ops)
+--                            --  putOneFile2xx debug forceFlag server db mgraph)
+--                    --    >-> P.stdoutLn
+--                        >-> Pipe.toHandle hand
+--                )
+--    report <- readFile2 reportFile1
+--    return $ unwords' ["\nbakeAllInSiteMD end", showT siteDough, showT reportFile1
+--            , "\n", report
+--            , "..........................", "ok"]
+--
+--testMD :: Path Abs File -> Bool
+--testMD = hasExtension extMD
+--
+--bakeOneFile2 :: Bool -> Path Abs File -> ErrIO Text
+---- bakes one file - first true gives lots of debug info
+--bakeOneFile2 debug fp2 =  do
+--    fpath :: Path Rel File  <- stripProperPrefix' doughPath fp2
+----        : MonadThrow m => Path b Dir -> Path b t -> m (Path Rel t)
+----    let   fnn = removeExtension fpath
+--    bakeOneFile debug fpath
+--
 readMarkdownFile :: Path Rel File -> ErrIO MarkdownText
 -- read one file
 readMarkdownFile fnn = read7 doughPath fnn markdownFileType
-
-bakeOneFileVoid ::  FilePath  -> ErrIO ()
--- convert a file (path relative to dough) and put in baked
-bakeOneFileVoid fp = do
-
-        putIOwords ["\n--------------------------------", "bakeOneFileVoid fn", showT fp, "\n"]
-        let fp2 = makeAbsFile fp
-        fpath :: Path Rel File  <- stripProperPrefix' doughPath fp2
-        -- produces errror if not a prefix?
-
-        r <- bakeOneFile False fpath
-        putIOwords ["\n--------------------------------", "done", r ]
-        return ()
+--
+--bakeOneFileVoid ::  FilePath  -> ErrIO ()
+---- convert a file (path relative to dough) and put in baked
+--bakeOneFileVoid fp = do
+--
+--        putIOwords ["\n--------------------------------", "bakeOneFileVoid fn", showT fp, "\n"]
+--        let fp2 = makeAbsFile fp
+--        fpath :: Path Rel File  <- stripProperPrefix' doughPath fp2
+--        -- produces errror if not a prefix?
+--
+--        r <- bakeOneFile False fpath
+--        putIOwords ["\n--------------------------------", "done", r ]
+--        return ()
 
 bakeOneFile :: Bool -> Path Rel File -> ErrIO Text
 -- convert a file (path relative to dough) and put in baked
