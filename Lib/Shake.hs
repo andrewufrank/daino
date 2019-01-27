@@ -47,10 +47,6 @@ shake layout   = do
 
     return ()
 
---bakedD, doughD, templatesD, staticD :: FilePath
---bakedD  =   toFilePath bakedPath
---doughD = toFilePath doughPath
---templatesD =  toFilePath templatesPath
 
 
 shakeWrapped :: FilePath -> FilePath -> FilePath ->  IO  ()
