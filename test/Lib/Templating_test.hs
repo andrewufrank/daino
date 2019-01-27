@@ -64,13 +64,13 @@ res1 = G.process  t1 c1  :: Text
 --testMaster_Page = makeRelFile "Master2_Page2"
 --
 --test_convMaster2 = do
---           res <- runErrorVoid $ putDocInMaster templatePath
+--           res <- runErrorVoid $ putPageInMaster templatePath
 --                     testPage2 testMaster
 --                    "body" testMaster_Page
 --           assertEqual () res
 
 test_convMaster3 = do
-           res <- runErrorVoid $ putDocInMaster templatePath
+           res <- runErrorVoid $ putPageInMaster templatePath
                      (makeRelFile "Page3") (makeRelFile "Master3")
                     "body" (makeRelFile "page33")
            assertEqual () res

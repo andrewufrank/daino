@@ -39,17 +39,17 @@ applyTemplate2 templateDir templateFn val = do
 
 -- combine a doctype template in a glabrous master
 
-putDocInMaster :: Path Abs Dir -> Path Rel File -> Path Rel File -> Text -> Path Rel File -> ErrIO ()
+putPageInMaster :: Path Abs Dir -> Path Rel File -> Path Rel File -> Text -> Path Rel File -> ErrIO ()
 -- ^ insert the first doctype template into the (master) glabrous template at the tag
 -- result is a doctype (clean) template
-putDocInMaster templateDir page master tag full = do
-    putIOwords ["putDocInMaster put", showT page, "into", showT master
+putPageInMaster templateDir page master tag full = do
+    putIOwords ["putPageInMaster put", showT page, "into", showT master
                         , "\n\tat",  tag, "giving", showT full]
 
     fm :: Gtemplate <- read7 templateDir master gtmplFileType -- must have correct extension
-    putIOwords ["putDocInMaster", "fm read"]
+    putIOwords ["putPageInMaster", "fm read"]
     fp :: Dtemplate <- read7 templateDir page dtmplFileType
-    putIOwords ["putDocInMaster", "fpread"]
+    putIOwords ["putPageInMaster", "fpread"]
 
     let master2 = compileGlabrous fm :: G.Template
     let temp2 = unwrap7 fp  :: Text -- the text of the page (doctemplate)
@@ -63,7 +63,7 @@ putDocInMaster templateDir page master tag full = do
         then do
                 let resTempl2 = G.toText resTempl
                 write7 templateDir full dtmplFileType (wrap7 resTempl2 :: Dtemplate)
-        else throwErrorT ["putDocInMaster", "template not completely replaced"
+        else throwErrorT ["putPageInMaster", "template not completely replaced"
                     , "tags open", showT tags]
 
     return ()

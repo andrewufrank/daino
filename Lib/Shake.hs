@@ -108,7 +108,7 @@ makeOneMaster :: FilePath -> IO ()
 makeOneMaster fp = do
     putIOwords ["makeOneMaster", showT fp]
 
-    res <- runErrorVoid $ putDocInMaster templatePath
+    res <- runErrorVoid $ putPageInMaster templatePath
                      (makeRelFile "Page3") (makeRelFile "Master3")
                     "body" (makeRelFile "page33")
     putIOwords ["makeOneMaster done"]
