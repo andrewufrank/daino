@@ -21,13 +21,22 @@ import           Test.Framework
 import Uniform.Test.TestHarness
 
 --import Uniform.Strings
-import Lib.Foundation
+import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)
 --import Uniform.Filenames
+
+testLayout = layoutDefaults {
+            doughDir = makeAbsDir "/home/frank/.SSG/dough"
+            , bakedDir = makeAbsDir "/home/frank/.SSG/baked"
+            , reportFile = makeAbsFile "/home/frank/.SSG/reportBakeAll.txt"
+--            , templateDir = makeAbsDir "templates"
+            , themeDir = makeAbsDir "/home/frank/.SSG/theme"
+            }
+
 
 test_Defaults_1_A :: IO ()
 
 test_Defaults_1_A
-        =   testVar0File progName layoutDefaults  "resultA1" showNice
+        =   testVar0File progName testLayout  "resultA1" showNice
 
 
 

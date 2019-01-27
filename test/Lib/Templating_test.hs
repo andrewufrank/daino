@@ -19,7 +19,9 @@ module Lib.Templating_test
 
 import           Test.Framework
 import Uniform.Test.TestHarness
-import Lib.Foundation (progName, templatesPath)
+import Lib.Foundation (progName, SiteLayout(..))
+import Lib.Foundation_test (testLayout)
+
 --import Uniform.Strings
 import Lib.Templating -- (applyTemplate2, convGmaster)
 --import Uniform.Filenames
@@ -40,21 +42,22 @@ res1 = G.process  t1 c1  :: Text
 
 
 test_convMaster3 = do
-           res <- runErrorVoid $ putPageInMaster templatesPath
-                     (makeRelFile "Page3") (makeRelFile "Master3")
-                    "body" (makeRelFile "page33")
+           res <- runErrorVoid $ putPageInMaster
+                     page3 master3 "body" page33
            assertEqual () res
 
-
-
-applyTemplate2x :: DocValue -> ErrIO HTMLout
-applyTemplate2x = applyTemplate2   templatesPath (makeRelFile "page33")
---                        (makeRelFile "pandocDefault.html"::Path Rel File)
-
-
-test_templating_11_E_F, test_templating_12_E_F :: IO ()
-test_templating_11_E_F = test1FileIO progName   "resultBE11" "resultEF11"  applyTemplate2x
-test_templating_12_E_F = test1FileIO progName   "resultBE12" "resultEF12" applyTemplate2x
+page3  = addDir (themeDir testLayout) (makeRelFile "Page3")
+master3 = addDir (themeDir testLayout) (makeRelFile "Master3")
+page33 = addDir (themeDir testLayout) (makeRelFile "page33")
+--
+--applyTemplate2x :: DocValue -> ErrIO HTMLout
+--applyTemplate2x = applyTemplate2   templatesPath (makeRelFile "page33")
+----                        (makeRelFile "pandocDefault.html"::Path Rel File)
+--
+--
+--test_templating_11_E_F, test_templating_12_E_F :: IO ()
+--test_templating_11_E_F = test1FileIO progName   "resultBE11" "resultEF11"  applyTemplate2x
+--test_templating_12_E_F = test1FileIO progName   "resultBE12" "resultEF12" applyTemplate2x
 
 instance  ShowTestHarness DocValue where
 instance ShowTestHarness HTMLout

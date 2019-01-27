@@ -20,29 +20,30 @@ module Lib.Bake_test  -- (openMain, htf_thisModuelsTests)
 import           Test.Framework
 import Uniform.Test.TestHarness
 
-import Lib.Foundation (progName)
+import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)
 import Lib.Bake
 import Lib.FileMgt
+import Lib.Foundation_test (testLayout)
 
 test11, test12 ::  Path Rel File
 test11 = makeRelFile "Blog/postwk.md"
 test12 = makeRelFile "PublicationList/postWithReference.md"
 
-bakeOneFileDebug = bakeOneFile False
-
-test_bake_11_A_M, test_bake_12_A_M :: IO ()
-test_bake_11_A_M = testVar0FileIO progName  test11 "resultAM11" bakeOneFileDebug
-test_bake_12_A_M = testVar0FileIO progName  test12 "resultAM12" bakeOneFileDebug
-
-test_bake_11_A_L, test_bake_12_A_L :: IO ()
-test_bake_11_A_L = testVar0File progName  test11 "resultAL11" showT
-test_bake_12_A_L = testVar0File progName  test12 "resultAL12" showT
-
---readMarkdownFile fnn = read7 doughPath fnn markdownFileType
-
-test_bake_11_A_K, test_bake_12_A_K :: IO ()
-test_bake_11_A_K = testVar0FileIO progName  test11 "resultAK11" readMarkdownFile
-test_bake_12_A_K = testVar0FileIO progName  test12 "resultAK12" readMarkdownFile
+--bakeOneFileDebug md = bakeOneFile False md template ht
+--
+--test_bake_11_A_M, test_bake_12_A_M :: IO ()
+--test_bake_11_A_M = testVar0FileIO progName  test11 "resultAM11" bakeOneFileDebug
+--test_bake_12_A_M = testVar0FileIO progName  test12 "resultAM12" bakeOneFileDebug
+--
+--test_bake_11_A_L, test_bake_12_A_L :: IO ()
+--test_bake_11_A_L = testVar0File progName  test11 "resultAL11" showT
+--test_bake_12_A_L = testVar0File progName  test12 "resultAL12" showT
+--
+----readMarkdownFile fnn = read7 doughPath fnn markdownFileType
+--
+--test_bake_11_A_K, test_bake_12_A_K :: IO ()
+--test_bake_11_A_K = testVar0FileIO progName  test11 "resultAK11" readMarkdownFile
+--test_bake_12_A_K = testVar0FileIO progName  test12 "resultAK12" readMarkdownFile
 
 
 -- just testing read/write
@@ -52,7 +53,7 @@ compareRead fn t = do
                 let res = if v then "ok" else (unwords' ["read t \n", showT t, "\nreread t2\n", showT t2])
                 return res
 
-test_bake_11_A_X :: IO ()
-test_bake_11_A_X = testVar1FileIO progName  test11 "resultAK11" "resultAX11"  compareRead
+--test_bake_11_A_X :: IO ()
+--test_bake_11_A_X = testVar1FileIO progName  test11 "resultAK11" "resultAX11"  dscompareRead
 
 instance  ShowTestHarness MarkdownText

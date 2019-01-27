@@ -49,7 +49,7 @@ layoutDefaults = SiteLayout{  doughDir = makeAbsDir "/home/frank/Workspace8/SSG/
             , reportFile = makeAbsFile "/home/frank/reportBakeAll.txt"
 --            , templateDir = makeAbsDir "templates"
             , themeDir = makeAbsDir "/home/frank/Workspace8/SSG/theme"
-}
+            }
 
 --doughDir, bakedDir :: Path Rel Dir
 ---- ^ the names of the two dir, under siteDir
@@ -60,16 +60,16 @@ layoutDefaults = SiteLayout{  doughDir = makeAbsDir "/home/frank/Workspace8/SSG/
 ---- ^ the path to the siteDir (absolute - need not inside package
 --siteDir = makeAbsDir "/home/frank/Workspace8/SSG/site"
 
--- all Path will become functions with Default as argument
-doughPath, bakedPath :: Path Abs Dir
--- the path (absolute) to dough an baked
-doughPath =  (doughDir layoutDefaults) :: Path Abs Dir
-bakedPath =   (bakedDir layoutDefaults) :: Path Abs Dir
-
---sitePath = siteDir layoutDefaults
-templatesPath :: Path Abs Dir
-reportFilePath :: Path Abs File
-templatesDir :: Path Rel Dir
-templatesDir = makeRelDir "templates"
-templatesPath = addDir (themeDir layoutDefaults) (templatesDir)
-reportFilePath = reportFile layoutDefaults
+---- all Path will become functions with Default as argument
+--doughPath, bakedPath :: Path Abs Dir
+---- the path (absolute) to dough an baked
+--doughPath =  (doughDir layoutDefaults) :: Path Abs Dir
+--bakedPath =   (bakedDir layoutDefaults) :: Path Abs Dir
+--
+----sitePath = siteDir layoutDefaults
+--templatesPath :: Path Abs Dir
+--reportFilePath :: Path Abs File
+--templatesDir :: Path Rel Dir
+--templatesDir = makeRelDir "templates"
+--templatesPath = addDir (themeDir layoutDefaults) (templatesDir)
+--reportFilePath = reportFile layoutDefaults
