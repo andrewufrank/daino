@@ -60,32 +60,32 @@ import Lib.FileMgt (MarkdownText(..), unMT, HTMLout(..), unHTMLout
 -- runs in the pandoc monad!
 markdownToHTML4x :: Bool -> MarkdownText -> ErrIO DocValue
 markdownToHTML4x debug (MarkdownText t)  = do
-  pandoc   <- readMarkdown2   t
-  let meta2 = flattenMeta (getMeta pandoc)
+    pandoc   <- readMarkdown2   t
+    let meta2 = flattenMeta (getMeta pandoc)
 
-  -- test if biblio is present and apply
-  let bib = fmap t2s $  ( meta2) ^? key "bibliography" . _String :: Maybe FilePath
---  let csl = fmap t2s $  ( meta2) ^? key "csl" . _String :: Maybe FilePath
+    -- test if biblio is present and apply
+    let bib = fmap t2s $  ( meta2) ^? key "bibliography" . _String :: Maybe FilePath
+    --  let csl = fmap t2s $  ( meta2) ^? key "csl" . _String :: Maybe FilePath
 
-  text2 <- case bib of
-    Nothing ->   writeHtml5String2  pandoc
+    pandoc2 <- case bib of
+        Nothing ->  return pandoc
 
-    Just _ ->   processCites2a pandoc
---                        (fromJustNote "markdownToHTML4x no csl file" csl)
---                        (fromJustNote "markdownToHTML4x no bib file" bib)
+        Just _ ->   callIO $ processCites'  pandoc
+        --                        (fromJustNote "markdownToHTML4x no csl file" csl)
+        --                        (fromJustNote "markdownToHTML4x no bib file" bib)
+
+    text2 <-  writeHtml5String2 pandoc2
 
 
+    let withContent = ( meta2) & _Object . at "contentHtml" ?~ String (unHTMLout text2)
+    return  . DocValue $ withContent
 
-  let withContent = ( meta2) & _Object . at "contentHtml" ?~ String (unHTMLout text2)
-  return  . DocValue $ withContent
-
-processCites2a ::    Pandoc ->  ErrIO HTMLout
--- process the citations, with biblio and csl in the file
-processCites2a  pandoc3  =  do
-
-        pandoc4 <- callIO $ processCites'  pandoc3
-
-        writeHtml5String2 pandoc4
+--processCites2a ::    Pandoc ->  ErrIO HTMLout
+---- process the citations, with biblio and csl in the file
+--processCites2a  pandoc3  =  do
+--
+--        pandoc4 <- callIO $ processCites'  pandoc3
+--
 
 
 
