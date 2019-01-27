@@ -40,8 +40,8 @@ shake layout   = do
     putIOwords ["\nshake start", shownice layout]
     callIO $ shakeWrapped
                 (toFilePath . doughDir $ layout)
-                (toFilePath . doughDir $ layout)
-                (toFilePath . doughDir $ layout)
+                ((toFilePath . themeDir $ layout) </> "templates")
+                (toFilePath . bakedDir $ layout)
 
     putIOwords ["\nshake done", "\n"]
 
@@ -84,6 +84,7 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
 
 --                liftIO $ putIOwords ["shakeWrapped - htmlFile", showT htmlFiles2]
 --           shakeWrapped - htmlFile ["site/baked/index.html","site/baked/Blog/postwk.html"...
+
                 need cssFiles2
 --                need [staticD</>"page33.dtpl"]
                 need htmlFiles2
