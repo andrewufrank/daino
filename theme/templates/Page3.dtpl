@@ -45,9 +45,12 @@
         $table-of-contents$
         </nav>
         $endif$
-        
-        $body$
-     <p class="meta tiny">
+    <section class="header">
+        <h3> $title$ </h3>
+        <p> $body$  </p>
+    </section>
+    
+    <p class=meta tiny">
         Produced with SGG on $datetime.date.today$.
     </p>
     
