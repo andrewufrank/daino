@@ -13,8 +13,7 @@
 {-# LANGUAGE OverloadedStrings     #-}
 
 module Lib.Pandoc
-  ( markdownToHTML4x
-
+  ( markdownToPandoc, pandocToContentHtml
   ) where
 
 import Control.Lens
@@ -37,28 +36,51 @@ import Lib.FileMgt (MarkdownText(..), unMT, HTMLout(..), unHTMLout
 -- Metadata is assigned on the respective keys in the 'Value'
 -- includes reference replacement (pandoc-citeproc)
 -- runs in the pandoc monad!
-markdownToHTML4x :: Bool -> MarkdownText -> ErrIO DocValue
-markdownToHTML4x debug (MarkdownText t)  = do
+--markdownToHTML4x :: Bool -> MarkdownText -> ErrIO DocValue
+--markdownToHTML4x debug (MarkdownText t)  = do
+--    pandoc   <- readMarkdown2   t
+--    let meta2 = flattenMeta (getMeta pandoc)
+--
+--    -- test if biblio is present and apply
+--    let bib = fmap t2s $  ( meta2) ^? key "bibliography" . _String :: Maybe FilePath
+--    --  let csl = fmap t2s $  ( meta2) ^? key "csl" . _String :: Maybe FilePath
+--
+--    pandoc2 <- case bib of
+--        Nothing ->  return pandoc
+--
+--        Just _ ->   callIO $ processCites'  pandoc
+--
+--    text2 <-  writeHtml5String2 pandoc2
+--
+--
+--    let withContent = ( meta2) & _Object . at "contentHtml" ?~ String (unHTMLout text2)
+--    return  . DocValue $ withContent
+
+markdownToPandoc :: Bool -> MarkdownText -> ErrIO Pandoc
+-- process the markdown (including if necessary the BibTex treatment)
+-- the bibliography must be in the metadata
+-- the settings are in the markdownText (at end - to let page specific have precedence)
+markdownToPandoc debug (MarkdownText t)  = do
     pandoc   <- readMarkdown2   t
     let meta2 = flattenMeta (getMeta pandoc)
 
     -- test if biblio is present and apply
     let bib = fmap t2s $  ( meta2) ^? key "bibliography" . _String :: Maybe FilePath
-    --  let csl = fmap t2s $  ( meta2) ^? key "csl" . _String :: Maybe FilePath
 
     pandoc2 <- case bib of
         Nothing ->  return pandoc
-
         Just _ ->   callIO $ processCites'  pandoc
 
+    return pandoc2
+
+pandocToContentHtml :: Bool -> Pandoc ->  ErrIO DocValue
+-- convert the pandoc to html in the contentHtml key
+-- the settings are initially put into the pandoc
+pandocToContentHtml debug pandoc2 = do
     text2 <-  writeHtml5String2 pandoc2
-
-
+    let meta2 = flattenMeta (getMeta pandoc2)
     let withContent = ( meta2) & _Object . at "contentHtml" ?~ String (unHTMLout text2)
     return  . DocValue $ withContent
-
-markdownToPandoc :: Bool -> MarkdownText -> ErrIO Pandoc
-markdownToPandoc = debug
 
 
 -- | Reasonable options for reading a markdown file
@@ -128,9 +150,9 @@ unPandocM op1 = do
 getMeta :: Pandoc -> Meta
 getMeta (Pandoc m _) = m
 
-cslDefault, apaCSL :: FilePath
-cslDefault = "/home/frank/Workspace8/SSG/site/resources/chicago-fullnote-bibliography-bb.csl"
-apaCSL = "/home/frank/Workspace8/SSG/site/resources/apa-x.csl"
+--cslDefault, apaCSL :: FilePath
+--cslDefault = "/home/frank/Workspace8/SSG/site/resources/chicago-fullnote-bibliography-bb.csl"
+--apaCSL = "/home/frank/Workspace8/SSG/site/resources/apa-x.csl"
 
 processCites2x :: Bool -> Maybe FilePath -> Maybe FilePath -> Text ->   ErrIO Text
 -- porcess the cites in the text

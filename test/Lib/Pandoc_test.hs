@@ -33,7 +33,9 @@ test_pandoc_12_A_K = test1FileIO progName  "resultAA2" "resultAK2" readMarkdownF
 
 markdownToHTML4xdebug ::  MarkdownText -> ErrIO DocValue
 
-markdownToHTML4xdebug = markdownToHTML4x False
+markdownToHTML4xdebug intext = do
+    pandoc <- markdownToPandoc False intext
+    pandocToContentHtml False pandoc
 
 test_pandoc_11_B_E, test_pandoc_12_B_E :: IO ()
 test_pandoc_11_B_E = test1FileIO progName   "resultAK1" "resultBE1"  markdownToHTML4xdebug

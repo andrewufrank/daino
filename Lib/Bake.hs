@@ -22,7 +22,7 @@ import Uniform.Strings
 import Uniform.Filenames
 import Uniform.FileStrings () -- for instances
 
-import Lib.Pandoc (markdownToHTML4x)   -- with a simplified Action ~ ErrIO
+import Lib.Pandoc  (markdownToPandoc, pandocToContentHtml)   -- with a simplified Action ~ ErrIO
 
 import Lib.Templating
 import Lib.FileMgt
@@ -41,9 +41,13 @@ bakeOneFile debug md2 templateFn ht2 = do
         -- currently only for md files, add static next
 
         intext :: MarkdownText <- readMarkdownFile md2
+        preface :: MarkdownText <- readMarkdownFile (makeAbsFile "/home/frank/Workspace8/SSG/theme/preface.md")
+
+        let intext2 = MarkdownText (unMT intext <> unMT preface )
+        putIOwords ["bakeOneFile spliced", showT intext2, "\n"]
         templText :: Dtemplate <- read8  templateFn  dtmplFileType
 
-        html2 :: HTMLout <- bakeOneFileCore debug intext templText
+        html2 :: HTMLout <- bakeOneFileCore debug intext2 templText
 
         write8   ht2 htmloutFileType html2
 --            putIOwords ["bakeOneFile outhtml (which was just written) \n", unHTMLout html2, "\n"]
@@ -63,10 +67,13 @@ bakeOneFile debug md2 templateFn ht2 = do
 
 bakeOneFileCore :: Bool -> MarkdownText -> Dtemplate -> ErrIO HTMLout
 bakeOneFileCore debug intext templText = do
-    -- convert to html
-        val :: DocValue <- markdownToHTML4x debug intext
---            val  <- markdownToHTML4a intext
-    --    let html1  =  HTMLout $  val ^.  key "content" . _String
+        pandoc <- markdownToPandoc debug intext
+        val <- pandocToContentHtml debug pandoc
+--
+--    -- convert to html
+--        val :: DocValue <- markdownToHTML4x debug intext
+----            val  <- markdownToHTML4a intext
+--    --    let html1  =  HTMLout $  val ^.  key "content" . _String
 
     --    putIOwords ["bakeOneFile html1\n\n", unHTMLout html1]
         when debug $ putIOwords ["bakeOneFile val\n\n", showNice val]
