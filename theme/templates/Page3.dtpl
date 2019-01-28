@@ -1,5 +1,5 @@
     <body>
-    <!-- AF - my template for pandoc (from the default) -->
+    <!-- AF - my template for pandoc page (from the default) -->
         $for(include-before)$
         $include-before$
         $endfor$
@@ -34,12 +34,12 @@
 		</ul>
     </section>
         
-    <section class="content">
+<!--    <section class="content">
         $if(contentHtml)$
         $contentHtml$
         $endif$
     </section>
-
+-->
         $if(toc)$
         <nav id="$idprefix$TOC">
         $table-of-contents$
@@ -47,7 +47,7 @@
         $endif$
     <section class="header">
         <h3> $title$ </h3>
-        <p> $body$  </p>
+        <p> $contentHtml$  </p>
     </section>
     
     <p class=meta tiny">

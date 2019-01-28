@@ -36,25 +36,6 @@ import Lib.FileMgt (MarkdownText(..), unMT, HTMLout(..), unHTMLout
 -- Metadata is assigned on the respective keys in the 'Value'
 -- includes reference replacement (pandoc-citeproc)
 -- runs in the pandoc monad!
---markdownToHTML4x :: Bool -> MarkdownText -> ErrIO DocValue
---markdownToHTML4x debug (MarkdownText t)  = do
---    pandoc   <- readMarkdown2   t
---    let meta2 = flattenMeta (getMeta pandoc)
---
---    -- test if biblio is present and apply
---    let bib = fmap t2s $  ( meta2) ^? key "bibliography" . _String :: Maybe FilePath
---    --  let csl = fmap t2s $  ( meta2) ^? key "csl" . _String :: Maybe FilePath
---
---    pandoc2 <- case bib of
---        Nothing ->  return pandoc
---
---        Just _ ->   callIO $ processCites'  pandoc
---
---    text2 <-  writeHtml5String2 pandoc2
---
---
---    let withContent = ( meta2) & _Object . at "contentHtml" ?~ String (unHTMLout text2)
---    return  . DocValue $ withContent
 
 markdownToPandoc :: Bool -> MarkdownText -> ErrIO Pandoc
 -- process the markdown (including if necessary the BibTex treatment)
@@ -92,6 +73,9 @@ markdownOptions = def { readerExtensions = exts }
       [ Ext_yaml_metadata_block
       , Ext_fenced_code_attributes
       , Ext_auto_identifiers
+      ,  Ext_raw_html   -- three extension give markdown_strict
+      , Ext_shortcut_reference_links
+      , Ext_spaced_reference_links
       , Ext_citations           -- <-- this is the important extension for bibTex
       ]
     , githubMarkdownExtensions

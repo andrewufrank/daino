@@ -48,7 +48,6 @@ shake layout   = do
     return ()
 
 
-
 shakeWrapped :: FilePath -> FilePath -> FilePath ->  IO  ()
 shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=bakedD
                 , shakeVerbosity=Chatty -- Loud
@@ -78,8 +77,8 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
                 liftIO $ putIOwords ["shakeWrapped - phony cssFiles2", showT cssFiles2]
 --                mapM_ (\fn -> copyFileChanged (templatesD </> fn) (staticD </> fn)) cssFiles1
 
---                liftIO $ putIOwords ["shakeWrapped - htmlFile", showT htmlFiles2]
---           shakeWrapped - htmlFile ["site/baked/index.html","site/baked/Blog/postwk.html"...
+                -- get the settings (yaml) files
+                -- only one "doughD/settings.yaml" for master
 
                 need cssFiles2
 --                need [staticD</>"page33.dtpl"]
@@ -90,10 +89,12 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
                 liftIO $ putIOwords ["shakeWrapped - bakedD html -  out ", showT out]
                 let md =   doughD </> ( makeRelative bakedD $ out -<.> "md")
                 liftIO $ putIOwords ["shakeWrapped - bakedD html - c ", showT md]
-                let template = templatesD</>"page33.dtpl"
+                let masterTemplate = templatesD</>"page33.dtpl"
+                    masterSettings_yaml = doughD </> "settings.yaml"
                 need [md]
-                need [template]
-                liftIO $  bakeOneFileIO  md  template out  -- c relative to dough/
+                need [masterSettings_yaml]
+                need [masterTemplate]
+                liftIO $  bakeOneFileIO  md  masterSettings_yaml masterTemplate out  -- c relative to dough/
 
         (templatesD</>"page33.dtpl") %> \out ->     -- construct the template from pieces
             do
@@ -124,9 +125,9 @@ makeOneMaster master page result = do
     return ()
 
 
-bakeOneFileIO :: FilePath -> FilePath -> FilePath -> IO ()
+bakeOneFileIO :: FilePath -> FilePath -> FilePath -> FilePath -> IO ()
 -- bake one file absolute fp , page template and result html
-bakeOneFileIO md template ht = do
+bakeOneFileIO md masterSettingsFn template ht = do
             et <- runErr $ do
                     putIOwords ["bakeOneFileIO - from shake xx", s2t md] --baked/SGGdesign/Principles.md
 --                    let fp1 = fp
@@ -140,7 +141,8 @@ bakeOneFileIO md template ht = do
 --                    putIOwords ["bakeOneFileIO - next run shake", showT fp2]
 --                            bakeOneFileIO - next run shake "baked/SGGdesign/Principles.md"
 --                    let fp3 = fp2
-                    res <- bakeOneFile True md2 template2 ht2
+                    let masterSettings = makeAbsFile masterSettingsFn
+                    res <- bakeOneFile True md2 masterSettings template2 ht2
                     putIOwords ["bakeOneFileIO - done", showT ht2, res]
             case et of
                 Left msg -> throw msg

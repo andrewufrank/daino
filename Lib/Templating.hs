@@ -36,13 +36,21 @@ applyTemplate3  templText val = do
                     Left msg -> throwError  . s2t $ msg
                     Right val2 -> return  . HTMLout $  (val2 :: Text)
 
-
 putPageInMaster ::  Path Abs File -> Path Abs File -> Text -> Path Abs File -> ErrIO ()
 -- ^ insert the first doctype template into the (master) glabrous template at the tag
 -- result is a doctype (clean) template
 putPageInMaster  page master tag full = do
-    putIOwords ["putPageInMaster put", showT page, "into", showT master
+        putIOwords ["putPageInMaster put", showT page, "into", showT master
                         , "\n\tat",  tag, "giving", showT full]
+        resTempl2 <- putPageInMaster2  page master tag
+        write8 full dtmplFileType ( resTempl2 :: Dtemplate)
+
+putPageInMaster2 ::  Path Abs File -> Path Abs File -> Text ->  ErrIO Dtemplate
+-- ^ insert the first doctype template into the (master) glabrous template at the tag
+-- result is a doctype (clean) template
+putPageInMaster2  page master tag  = do
+    putIOwords ["putPageInMaster2 put", showT page, "into", showT master
+                        , "\n\tat",  tag]
 
     fm :: Gtemplate <- read8 master gtmplFileType -- must have correct extension
     putIOwords ["putPageInMaster", "fm read"]
@@ -56,15 +64,11 @@ putPageInMaster  page master tag full = do
 
     let resTempl = G.partialProcess master2 replaceList :: G.Template
 
-    let tags = G.tagsOf resTempl -- should be zero
-    if null tags
-        then do
-                let resTempl2 = G.toText resTempl
-                write8 full dtmplFileType (wrap7 resTempl2 :: Dtemplate)
-        else throwErrorT ["putPageInMaster", "template not completely replaced"
+    let tags = G.tagsOf resTempl -- should be null
+    when (null tags) $
+        throwErrorT ["putPageInMaster", "template not completely replaced"
                     , "tags open", showT tags]
-
-    return ()
+    return . Dtemplate $ G.toText resTempl
 
 compileGlabrous :: Gtemplate -> G.Template
 -- compile a glabrous template from text
