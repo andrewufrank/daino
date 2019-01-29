@@ -90,10 +90,11 @@ test-suite g2
   type: exitcode-stdio-1.0
   main-is: ExampleTesting.hs
   other-modules:
-      Lib.Bake_test
-      Lib.Foundation_test
-      Lib.Pandoc_test
-      Lib.Templating_test
+        ShakeStartTests
+--      Lib.Bake_test
+--      Lib.Foundation_test
+--      Lib.Pandoc_test
+--      Lib.Templating_test
   hs-source-dirs:
       test
   ghc-options: -Wall
@@ -109,5 +110,6 @@ test-suite g2
     , glabrous
     , doctemplates
     , pandoc-types
+    , shake
 
   default-language: Haskell2010
