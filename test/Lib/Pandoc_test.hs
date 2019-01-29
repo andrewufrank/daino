@@ -27,31 +27,31 @@ readMarkdownFile8 :: String  -> ErrIO MarkdownText
 readMarkdownFile8 fnn = read8 (makeAbsFile fnn) markdownFileType
 -- uses files to be copied to dough
 --
-test_pandoc_11_A_K, test_pandoc_12_A_K :: IO ()
-test_pandoc_11_A_K = test1FileIO progName  "resultAA1" "resultAK1" readMarkdownFile8
-test_pandoc_12_A_K = test1FileIO progName  "resultAA2" "resultAK2" readMarkdownFile8
+test_pandoc_pageFn_pageMd_1, test_pandoc_pageFn_pageMd_2 :: IO ()
+test_pandoc_pageFn_pageMd_1 = test1FileIO progName  "pageFn1" "pageMd1" readMarkdownFile8
+test_pandoc_pageFn_pageMd_2 = test1FileIO progName  "pageFn2" "pageMd2" readMarkdownFile8
 
-
-test_pandoc_11_A_D, test_pandoc_12_A_D :: IO ()
-test_pandoc_11_A_D = test1FileIO progName  "resultAK1" "resultAD1" (markdownToPandoc False)
-test_pandoc_12_A_D = test1FileIO progName  "resultAK2" "resultAD2" (markdownToPandoc False)
-
-test_pandoc_11_A_F, test_pandoc_12_A_F :: IO ()
-test_pandoc_11_A_F = test1FileIO progName  "resultAD1" "resultAF1" (pandocToContentHtml False)
-test_pandoc_12_A_F = test1FileIO progName  "resultAD2" "resultAF2" (pandocToContentHtml False)
-
-instance Zeros Pandoc where zero = Pandoc mempty zero
---instance Zeros PD.Meta where zero = PD.Meta []
-
-markdownToHTML4xdebug ::  MarkdownText -> ErrIO DocValue
-
-markdownToHTML4xdebug intext = do
-    pandoc <- markdownToPandoc False intext
-    pandocToContentHtml False pandoc
-
-test_pandoc_11_B_E, test_pandoc_12_B_E :: IO ()
-test_pandoc_11_B_E = test1FileIO progName   "resultAK1" "resultBE1"  markdownToHTML4xdebug
-test_pandoc_12_B_E = test1FileIO progName   "resultAK2" "resultBE2" markdownToHTML4xdebug
+--
+--test_pandoc_11_A_D, test_pandoc_12_A_D :: IO ()
+--test_pandoc_11_A_D = test1FileIO progName  "resultAG1" "resultAD1" (markdownToPandoc False)
+--test_pandoc_12_A_D = test1FileIO progName  "resultAG2" "resultAD2" (markdownToPandoc False)
+--
+--test_pandoc_11_A_F, test_pandoc_12_A_F :: IO ()
+--test_pandoc_11_A_F = test1FileIO progName  "resultAD1" "resultAF1" (pandocToContentHtml False)
+--test_pandoc_12_A_F = test1FileIO progName  "resultAD2" "resultAF2" (pandocToContentHtml False)
+--
+--instance Zeros Pandoc where zero = Pandoc mempty zero
+----instance Zeros PD.Meta where zero = PD.Meta []
+--
+--markdownToHTML4xdebug ::  MarkdownText -> ErrIO DocValue
+--
+--markdownToHTML4xdebug intext = do
+--    pandoc <- markdownToPandoc False intext
+--    pandocToContentHtml False pandoc
+--
+--test_pandoc_11_B_E, test_pandoc_12_B_E :: IO ()
+--test_pandoc_11_B_E = test1FileIO progName   "resultB1" "resultBE1"  markdownToHTML4xdebug
+--test_pandoc_12_B_E = test1FileIO progName   "resultB2" "resultBE2" markdownToHTML4xdebug
 
 
 instance  ShowTestHarness MarkdownText where

@@ -34,9 +34,10 @@ import Data.Aeson.Lens
 
 
 bakeOneFile :: Bool -> Path Abs File -> Path Abs File -> Path Abs File -> Path Abs File -> ErrIO Text
--- this is called from shake
+-- this is called from shake and produce the final html
 -- files exist
 -- convert a file md2, append  masterSettings and put result in masterTemplate2 and produce th2
+--test in bake_tests:
 bakeOneFile debug md2 masterSettings masterTemplName ht2 = do
         putIOwords ["\n--------------------------------", "bakeOneFile fn", showT md2, "\n\n"]
         -- currently only for md files, add static next
@@ -44,6 +45,7 @@ bakeOneFile debug md2 masterSettings masterTemplName ht2 = do
         intext :: MarkdownText <- read8 md2 markdownFileType
         preface :: YamlText <- read8 masterSettings yamlFileType
         masterTmpl :: Gtemplate <- read8  masterTemplName  gtmplFileType
+
         html2 :: HTMLout <- bakeOneFileCore debug preface intext masterTmpl
 
         write8   ht2 htmloutFileType html2
@@ -65,9 +67,11 @@ bakeOneFile debug md2 masterSettings masterTemplName ht2 = do
 bakeOneFileCore :: Bool -> YamlText -> MarkdownText  -> Gtemplate  -> ErrIO HTMLout
 -- the template can only be combined here,
 -- because the page template name is only accessible in the pandoc
+-- this is teh complete processing (above is only read and write)
+-- AK (markdow) ->  R (HTMLout)
 bakeOneFileCore debug preface intext masterTempl  = do
-        let intext2 = spliceMarkdown preface intext
-        pandoc <- markdownToPandoc debug intext2
+        let intext2 = spliceMarkdown preface intext  --  AK -> AG
+        pandoc <- markdownToPandoc debug intext2  -- AG -> AD
         val <- pandocToContentHtml debug pandoc
 
         let ptemplate = fmap t2s $  (unDocValue val) ^? key "pageTemplate" . _String :: Maybe FilePath

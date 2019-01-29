@@ -14,9 +14,9 @@ import           Test.Framework
 
 import {-@ HTF_TESTS @-} Lib.Foundation_test
     -- writes A : testLayout
-    --  AA :: abs pandoc filenames
+    --  pageFn :: abs pandoc filenames
 import {-@ HTF_TESTS @-} Lib.Pandoc_test
-    -- AA -> AK : MarkdownText
+    -- test_pandoc_pageFn_pageMd_1 - pageFn -> pageMd : MarkdownText
     -- AK :: MarkdownText -> BE  DocValue
     -- AK ->AD :: Pandoc
     -- AD -> AF ::
@@ -28,9 +28,9 @@ import {-@ HTF_TESTS @-} Lib.Bake_test  -- final E
     -- test_bakeCore1 = test3FileIO progName "resultMasterYaml"  "resultAG1" "resultMasterTemplate"
 --                                         "resultAE1" bakeOneFileCoreT
 --          test_bake_11_A_H = test2FileIO progName  "resultAF1" "resultMasterTemplate" "resultAH1" spliceTemplates
-import {-@ HTF_TESTS @-} Lib.Templating_test
---      BE -> EF ::HTMLout
---          test_templating_11_E_F = test1FileIO progName   "resultBE1" "resultEF1"  applyTemplate3x
+--import {-@ HTF_TESTS @-} Lib.Templating_test
+----      BE -> EF ::HTMLout
+----          test_templating_11_E_F = test1FileIO progName   "resultBE1" "resultEF1"  applyTemplate3x
 
 -- main =  do  -- the local tests only
 --     putStrLn "HTF ExampleTest.hs:\n"
