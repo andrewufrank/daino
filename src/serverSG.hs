@@ -95,7 +95,7 @@ landingPage bakedPath = toFilePath $ addFileName bakedPath (makeRelFile "landing
 --  html . t2tl . s2t  $ txt
 
 
-mydef = Twitch.Options
+twichDefault4ssg = Twitch.Options
     { Twitch.log                       = NoLogger
     , logFile                   = Nothing
     , root                      = Nothing
@@ -112,7 +112,7 @@ mainWatchDough, mainWatchThemes :: SiteLayout  ->  IO ()
 mainWatchDough layout  =  do
     let doughPath =  (doughDir layout) :: Path Abs Dir
     putIOwords [programName, progTitle, "mainWatchDough"]
-    Twitch.defaultMainWithOptions (mydef
+    Twitch.defaultMainWithOptions (twichDefault4ssg
                     {Twitch.root = Just . toFilePath $ doughPath
                      , Twitch.log = Twitch.NoLogger
                     }) $ do
@@ -121,7 +121,7 @@ mainWatchDough layout  =  do
 mainWatchThemes layout =  do
     let themePath =  (themeDir layout) :: Path Abs Dir
     putIOwords [programName, progTitle,"mainWatchThemes"]
-    Twitch.defaultMainWithOptions (mydef
+    Twitch.defaultMainWithOptions (twichDefault4ssg
                     {Twitch.root = Just . toFilePath $ themePath
                      , Twitch.log = Twitch.NoLogger
                     }) $ do

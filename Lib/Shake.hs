@@ -62,23 +62,20 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
 
         phony "allMarkdownConversion" $
             do
-                liftIO $ putIOwords ["shakeWrapped phony allMarkdonwConversion" ]
+                liftIO $ putIOwords ["\nshakeWrapped phony allMarkdonwConversion" ]
 
                 -- get markdown files
                 mdFiles1 <- getDirectoryFiles  doughD ["//*.md", "//*.markdown"]
                 let htmlFiles2 = [bakedD </> md -<.> "html" | md <- mdFiles1]
-                liftIO $ putIOwords ["shakeWrapped - htmlFile", showT htmlFiles2]
+                liftIO $ putIOwords ["\nshakeWrapped - htmlFile", showT htmlFiles2]
 
                 -- get css
                 cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs
-                liftIO $ putIOwords ["shakeWrapped - phony cssFiles1", showT cssFiles1]
+--                liftIO $ putIOwords ["\nshakeWrapped - phony cssFiles1", showT cssFiles1]
                 let cssFiles2 = [replaceDirectory c staticD  | c <- cssFiles1]
 --                let cssFiles2 = [dropDirectory1 staticD </> c  | c <- cssFiles1]
-                liftIO $ putIOwords ["shakeWrapped - phony cssFiles2", showT cssFiles2]
+--                liftIO $ putIOwords ["\nshakeWrapped - phony cssFiles2", showT cssFiles2]
 --                mapM_ (\fn -> copyFileChanged (templatesD </> fn) (staticD </> fn)) cssFiles1
-
-                -- get the settings (yaml) files
-                -- only one "doughD/settings.yaml" for master
 
                 need cssFiles2
 --                need [staticD</>"page33.dtpl"]
@@ -86,11 +83,11 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
 
         (bakedD <> "//*.html") %> \out ->
             do
-                liftIO $ putIOwords ["shakeWrapped - bakedD html -  out ", showT out]
+                liftIO $ putIOwords ["\nshakeWrapped - bakedD html -  out ", showT out]
                 let md =   doughD </> ( makeRelative bakedD $ out -<.> "md")
-                liftIO $ putIOwords ["shakeWrapped - bakedD html - c ", showT md]
+                liftIO $ putIOwords ["\nshakeWrapped - bakedD html - c ", showT md]
                 let masterTemplate = templatesD</>"page33.dtpl"
-                    masterSettings_yaml = doughD </> "settings.yaml"
+                    masterSettings_yaml = doughD </> "master.yaml"
                 need [md]
                 need [masterSettings_yaml]
                 need [masterTemplate]
@@ -98,7 +95,7 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
 
         (templatesD</>"page33.dtpl") %> \out ->     -- construct the template from pieces
             do
-                liftIO $ putIOwords ["shakeWrapped - templatesD dtpl -  out ", showT out]
+                liftIO $ putIOwords ["\nshakeWrapped - templatesD dtpl -  out ", showT out]
                 let mf = templatesD</>"Master3.gtpl"
                 let pf = templatesD</>"Page3.dtpl"
                 need [mf, pf]
@@ -107,7 +104,7 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
 
         (staticD </> "*.css") %> \out ->            -- insert css
             do
-                liftIO $ putIOwords ["shakeWrapped - staticD - *.css", showT out]
+                liftIO $ putIOwords ["\nshakeWrapped - staticD - *.css", showT out]
                 copyFileChanged (replaceDirectory out templatesD) out
 
 
