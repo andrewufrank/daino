@@ -33,7 +33,7 @@ test_bake_MasterYaml =
                         "resultMasterYaml"
                         (\fn -> do
                                    preface :: YamlText <- read8 fn yamlFileType
-                                   return . unYAML $ preface
+                                   return . showT $ preface
                                )
 
 test_bake_MasterTmpl =
@@ -46,18 +46,20 @@ test_bake_MasterTmpl =
                                    return . showT $ templ
                                )
 
-spliceX :: Text -> MarkdownText -> Text
-spliceX y m =  unMT $ spliceMarkdown (YamlText  y) m
-test_Splice1 = test2File progName "resultMasterYaml" "resultAK1" "resultAG1" spliceX
-test_Splice2 = test2File progName "resultMasterYaml" "resultAK2" "resultAG2" spliceX
+spliceMarkdownT :: Text -> MarkdownText -> Text
+spliceMarkdownT y m =  unMT $ spliceMarkdown (YamlText  y) m
+test_Splice1 = test2File progName "resultMasterYaml" "resultAK1" "resultAG1" spliceMarkdownT
+test_Splice2 = test2File progName "resultMasterYaml" "resultAK2" "resultAG2" spliceMarkdownT
 
 bakeOneFileCoreT ::   YamlText -> Text  -> Gtemplate ->  ErrIO Text
 bakeOneFileCoreT preface md gtpl = do
                     res <- bakeOneFileCore False preface (MarkdownText md) gtpl
                     return . unHTMLout $ res
 
-test_bakeCore1 = test3FileIO progName "resultMasterYaml"  "resultAG1" "resultMasterTemplate" "resultAE1" bakeOneFileCoreT
-test_bakeCore2 = test3FileIO progName "resultMasterYaml"  "resultAG2" "resultMasterTemplate" "resultAE2" bakeOneFileCoreT
+test_bakeCore1 = test3FileIO progName "resultMasterYaml"  "resultAG1" "resultMasterTemplate"
+                                        "resultAE1" bakeOneFileCoreT
+test_bakeCore2 = test3FileIO progName "resultMasterYaml"  "resultAG2" "resultMasterTemplate"
+                                        "resultAE2" bakeOneFileCoreT
 
 test_bake_11_A_H, test_bake_12_A_H :: IO ()
 test_bake_11_A_H = test2FileIO progName  "resultAF1" "resultMasterTemplate" "resultAH1" spliceTemplates
