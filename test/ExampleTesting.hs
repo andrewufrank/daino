@@ -18,10 +18,14 @@ import {-@ HTF_TESTS @-} Lib.Foundation_test
 import {-@ HTF_TESTS @-} Lib.Pandoc_test
     -- AA -> AK : MarkdownText
     -- AK :: MarkdownText -> BE  DocValue
---import {-@ HTF_TESTS @-} Lib.Bake_test
---
+    -- AK ->AD :: Pandoc
+    -- AD -> AF ::
+import {-@ HTF_TESTS @-} Lib.Bake_test
+        --   -> resultMasterYaml
+    -- -> resultMasterTemplate
+    -- ..-> masterYaml -> AK -> AG :: Markdown
+    -- AG + masterTemplate -> AE :: HTMLout
 import {-@ HTF_TESTS @-} Lib.Templating_test
---     page33
 --      BE -> EF ::HTMLout
 
 -- main =  do  -- the local tests only

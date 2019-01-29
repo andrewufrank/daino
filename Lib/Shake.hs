@@ -74,9 +74,16 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
 --                liftIO $ putIOwords ["\nshakeWrapped - phony cssFiles1", showT cssFiles1]
                 let cssFiles2 = [replaceDirectory c staticD  | c <- cssFiles1]
 --                let cssFiles2 = [dropDirectory1 staticD </> c  | c <- cssFiles1]
---                liftIO $ putIOwords ["\nshakeWrapped - phony cssFiles2", showT cssFiles2]
+                liftIO $ putIOwords ["\nshakeWrapped - phony cssFiles2", showT cssFiles2]
 --                mapM_ (\fn -> copyFileChanged (templatesD </> fn) (staticD </> fn)) cssFiles1
 
+                -- pages templates
+                pageTemplates <- getDirectoryFiles templatesD ["/*.gtpl", "/*.dtpl"]
+                let pageTemplates2 = [templatesD </> tpl | tpl <- pageTemplates]
+                liftIO $ putIOwords ["\nshakeWrapped - phony pageTemplates", showT pageTemplates2]
+
+
+                need pageTemplates2
                 need cssFiles2
 --                need [staticD</>"page33.dtpl"]
                 need htmlFiles2
@@ -86,25 +93,28 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
                 liftIO $ putIOwords ["\nshakeWrapped - bakedD html -  out ", showT out]
                 let md =   doughD </> ( makeRelative bakedD $ out -<.> "md")
                 liftIO $ putIOwords ["\nshakeWrapped - bakedD html - c ", showT md]
-                let masterTemplate = templatesD</>"page33.dtpl"
+
+                let masterTemplate = templatesD</>"Master3.gtpl"
                     masterSettings_yaml = doughD </> "master.yaml"
                 need [md]
                 need [masterSettings_yaml]
                 need [masterTemplate]
                 liftIO $  bakeOneFileIO  md  masterSettings_yaml masterTemplate out  -- c relative to dough/
 
-        (templatesD</>"page33.dtpl") %> \out ->     -- construct the template from pieces
-            do
-                liftIO $ putIOwords ["\nshakeWrapped - templatesD dtpl -  out ", showT out]
-                let mf = templatesD</>"Master3.gtpl"
-                let pf = templatesD</>"Page3.dtpl"
-                need [mf, pf]
-                liftIO $ makeOneMaster mf pf out
---                copyFileChanged (replaceDirectory out templatesD) out
+--        (templatesD</>"page33.dtpl") %> \out ->     -- construct the template from pieces
+--            do
+--                liftIO $ putIOwords ["\nshakeWrapped - templatesD dtpl -  out ", showT out]
+--                let mf = templatesD</>"Master3.gtpl"
+--                let pf = templatesD</>"Page3.dtpl"
+--                need [mf, pf]
+--                liftIO $ makeOneMaster mf pf out
+----                copyFileChanged (replaceDirectory out templatesD) out
 
         (staticD </> "*.css") %> \out ->            -- insert css
             do
                 liftIO $ putIOwords ["\nshakeWrapped - staticD - *.css", showT out]
+                let etFont = staticD</>"et-book"  -- the directory with the fonts
+                copyFileChanged (replaceDirectory etFont templatesD) etFont
                 copyFileChanged (replaceDirectory out templatesD) out
 
 

@@ -30,6 +30,11 @@ import qualified Text.Glabrous as G
 --import Text.Glabrous (Template, insert) -- , insertMany)
 --import Text.DocTemplates
 
+--putInT :: Pandoc -> Gtemplate -> Dtemplate
+--putInT ht tpl = do
+
+--test_templating_put1 = test2FileIO progName "resultAF1"
+
 temp1 = "some start {{template2}} and some more text."
 temp2 = "xxx and yyy"
 

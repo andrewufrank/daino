@@ -21,7 +21,7 @@ import Uniform.Test.TestHarness
 import Lib.Foundation (progName)
 import Lib.FileMgt
 import Lib.Pandoc
---import Text.Read
+import Text.Pandoc.Definition as PD
 
 readMarkdownFile8 :: String  -> ErrIO MarkdownText
 readMarkdownFile8 fnn = read8 (makeAbsFile fnn) markdownFileType
@@ -30,6 +30,18 @@ readMarkdownFile8 fnn = read8 (makeAbsFile fnn) markdownFileType
 test_pandoc_11_A_K, test_pandoc_12_A_K :: IO ()
 test_pandoc_11_A_K = test1FileIO progName  "resultAA1" "resultAK1" readMarkdownFile8
 test_pandoc_12_A_K = test1FileIO progName  "resultAA2" "resultAK2" readMarkdownFile8
+
+
+test_pandoc_11_A_D, test_pandoc_12_A_D :: IO ()
+test_pandoc_11_A_D = test1FileIO progName  "resultAK1" "resultAD1" (markdownToPandoc False)
+test_pandoc_12_A_D = test1FileIO progName  "resultAK2" "resultAD2" (markdownToPandoc False)
+
+test_pandoc_11_A_F, test_pandoc_12_A_F :: IO ()
+test_pandoc_11_A_F = test1FileIO progName  "resultAD1" "resultAF1" (pandocToContentHtml False)
+test_pandoc_12_A_F = test1FileIO progName  "resultAD2" "resultAF2" (pandocToContentHtml False)
+
+instance Zeros Pandoc where zero = Pandoc mempty zero
+--instance Zeros PD.Meta where zero = PD.Meta []
 
 markdownToHTML4xdebug ::  MarkdownText -> ErrIO DocValue
 
@@ -45,3 +57,4 @@ test_pandoc_12_B_E = test1FileIO progName   "resultAK2" "resultBE2" markdownToHT
 instance  ShowTestHarness MarkdownText where
 
 instance  ShowTestHarness DocValue where
+instance  ShowTestHarness Pandoc where

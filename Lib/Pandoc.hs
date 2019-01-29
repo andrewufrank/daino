@@ -104,39 +104,10 @@ unPandocM op1 = do
                         throwError . showT $  e)
 
 
----- | Convert markdown text into a 'Value';
----- The 'Value'  has a "content" key containing rendered HTML
----- Metadata is assigned on the respective keys in the 'Value'
----- includes reference replacement (pandoc-citeproc)
----- runs in the pandoc monad!
---markdownToHTML4x :: Bool -> MarkdownText -> ErrIO DocValue
---markdownToHTML4x debug (MarkdownText t)  = do
---  pandoc   <- readMarkdown2   t
---  let meta2 = flattenMeta (getMeta pandoc)
---
---  -- test if biblio is present and apply
---  let bib = fmap t2s $  ( meta2) ^? key "bibliography" . _String :: Maybe FilePath
---  let csl = fmap t2s $  ( meta2) ^? key "csl" . _String :: Maybe FilePath
---  text2 <- case bib of
---    Nothing -> do
---                    htmltext <- writeHtml5String2  pandoc
---                    return htmltext
---    Just _ -> do
---                res <- processCites2x debug csl bib t
---                when (res == t) $
---                    liftIO $ putStrLn "\n*** markdownToHTML3 result without references ***\n"
---                return . HTMLout $ res
---
---
---  let withContent = ( meta2) & _Object . at "contentHtml" ?~ String (unHTMLout text2)
---  return  . DocValue $ withContent
 
 getMeta :: Pandoc -> Meta
 getMeta (Pandoc m _) = m
 
---cslDefault, apaCSL :: FilePath
---cslDefault = "/home/frank/Workspace8/SSG/site/resources/chicago-fullnote-bibliography-bb.csl"
---apaCSL = "/home/frank/Workspace8/SSG/site/resources/apa-x.csl"
 
 processCites2x :: Bool -> Maybe FilePath -> Maybe FilePath -> Text ->   ErrIO Text
 -- porcess the cites in the text

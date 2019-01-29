@@ -42,22 +42,23 @@ putPageInMaster ::  Path Abs File -> Path Abs File -> Text -> Path Abs File -> E
 putPageInMaster  page master tag full = do
         putIOwords ["putPageInMaster put", showT page, "into", showT master
                         , "\n\tat",  tag, "giving", showT full]
-        resTempl2 <- putPageInMaster2  page master tag
+        fm :: Gtemplate <- read8 master gtmplFileType -- must have correct extension
+        resTempl2 <- putPageInMaster2  page fm tag
         write8 full dtmplFileType ( resTempl2 :: Dtemplate)
 
-putPageInMaster2 ::  Path Abs File -> Path Abs File -> Text ->  ErrIO Dtemplate
+putPageInMaster2 ::  Path Abs File -> Gtemplate -> Text ->  ErrIO Dtemplate
 -- ^ insert the first doctype template into the (master) glabrous template at the tag
 -- result is a doctype (clean) template
 putPageInMaster2  page master tag  = do
     putIOwords ["putPageInMaster2 put", showT page, "into", showT master
                         , "\n\tat",  tag]
 
-    fm :: Gtemplate <- read8 master gtmplFileType -- must have correct extension
+--    fm :: Gtemplate <- read8 master gtmplFileType -- must have correct extension
     putIOwords ["putPageInMaster", "fm read"]
     fp :: Dtemplate <- read8 page dtmplFileType
     putIOwords ["putPageInMaster", "fpread"]
 
-    let master2 = compileGlabrous fm :: G.Template
+    let master2 = compileGlabrous master :: G.Template
     let temp2 = unwrap7 fp  :: Text -- the text of the page (doctemplate)
 
     let replaceList = G.fromList [(tag,temp2)] :: G.Context
@@ -65,7 +66,7 @@ putPageInMaster2  page master tag  = do
     let resTempl = G.partialProcess master2 replaceList :: G.Template
 
     let tags = G.tagsOf resTempl -- should be null
-    when (null tags) $
+    when (not $ null tags) $
         throwErrorT ["putPageInMaster", "template not completely replaced"
                     , "tags open", showT tags]
     return . Dtemplate $ G.toText resTempl

@@ -41,7 +41,7 @@ library
 --    , pipes
     , path , path-io
     , shake
-    , glabrous 
+    , glabrous
     , doctemplates
 
   default-language: Haskell2010
@@ -108,4 +108,6 @@ test-suite g2
     , SSG
     , glabrous
     , doctemplates
+    , pandoc-types
+
   default-language: Haskell2010

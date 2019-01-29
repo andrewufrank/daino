@@ -32,7 +32,7 @@ testLayout = layoutDefaults {
             , themeDir = makeAbsDir "/home/frank/.SSG/theme"
             }
 
-templateFile = addDir (themeDir testLayout) ("Templates/page33.dtpl" :: FilePath)
+--templateFile = addDir (themeDir testLayout) ("Templates/page33.dtpl" :: FilePath)
 
 test_Defaults_1_A :: IO ()
 
