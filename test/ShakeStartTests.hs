@@ -59,23 +59,13 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles="/home/frank/.SSG"
         phony "allTests" $
             do
                 need [staticD</>"Master3.gtpl", staticD</>"master.yaml"]
---                need [staticD</>"et-book"]
-
---                -- font directories
---                fontFiles1 <- getDirectoryFiles (templatesD</>"et-book" ) ["/**/*"]
-------                let fontFiles2 = map (makeRelative templatesD</>"et-book") fontFiles1
-------                putIOwords ["font dirs", showT . take 3 $ fontFiles2]
-------                let fontFiles = map (staticD</>"et_book"</>) fontFiles2
-----                putIOwords ["font dirs", showT . take 3 $ fontFiles1]
-----
---                need $ map (\f -> staticD</>"et-book"</>f) fontFiles1 -- the font for tufte book
-
-
                 -- get css
                 cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs
 --                liftIO $ putIOwords ["\nshakeWrapped - phony cssFiles1", showT cssFiles1]
                 let cssFiles = [replaceDirectory c staticD  | c <- cssFiles1]
                 need cssFiles
+
+
 
         (staticD</>"Master3.gtpl") %> \out ->
             copyFileChanged  (replaceDirectory out templatesD) out
@@ -83,20 +73,8 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles="/home/frank/.SSG"
         (staticD</>"master.yaml") %> \out ->
             copyFileChanged  (replaceDirectory out doughD) out
 
---        (staticD</>"et-book/**") %> \out ->
-----            let etDir = replaceDirectory out templatesD)
-----            let etFiles = getDirectoryFiles etDir ["**/*"]
---            copyFileChanged  (replaceDirectory out (templatesD</>"et-book"))  out
-
-
         (staticD </> "*.css") %> \out ->            -- insert css
             do
                 liftIO $ putIOwords ["\nshakeWrapped - staticD - *.css", showT out]
---                let etFont = staticD</>"et-book"  -- the directory with the fonts
---                copyFileChanged (replaceDirectory etFont templatesD) etFont
                 copyFileChanged (replaceDirectory out templatesD) out
 
---        (staticD</>"et-book") %> \out ->
---            do
---                let sourceDir = replaceDirectory out templatesD
---                copyDir sourceDir out
