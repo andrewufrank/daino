@@ -30,8 +30,9 @@ import Control.Lens
 --import Data.Aeson
 import Data.Aeson.Lens
 import Data.Aeson
-import Data.Aeson.Encode.Pretty (encodePretty)
-import Data.ByteString.Lazy as BS (putStrLn)
+--import Data.Aeson.Encode.Pretty (encodePretty)
+--import Data.ByteString.Lazy as BS (putStrLn)
+
 test_findTemplate =
     do
         res <-  runErr $ do
@@ -39,14 +40,14 @@ test_findTemplate =
                     val :: DocValue <- read8 (makeAbsFile source)  docValueFileType
                     let val2 = unDocValue val  ::Value
 
-                    putIOwords ["test_findTemplate", "val2\n" ,  shownice $ val2]
-                    liftIO $ BS.putStrLn ( encodePretty$ val2)
+                    putIOwords ["test_findTemplate", "val2\n" ] -- ,  shownice $ val2]
+--                    liftIO $ BS.putStrLn ( encodePretty$ val2)
                     let ptemplate = (val2) ^? key "pageTemplate" . _String
 --                                :: Maybe FilePath
                     putIOwords ["test_findTemplate", "found", showT ptemplate]
-                    return . showT $ ptemplate
+                    return   ptemplate
 
-        assertEqual (Right (""::Text))  res
+        assertEqual (Right (Just "Page3"::Maybe Text))  res
 
 --test_bake_MasterYaml =
 --        testVar0FileIO progName

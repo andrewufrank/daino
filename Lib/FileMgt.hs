@@ -61,7 +61,6 @@ newtype MarkdownText = MarkdownText Text deriving (Show, Read, Eq, Ord)
 unMT (MarkdownText a) = a   --needed for other ops
 
 instance Zeros MarkdownText where zero = MarkdownText zero
-
 markdownFileType = TypedFile5 {tpext5 = extMD} :: TypedFile5   Text MarkdownText
 --instance FileHandles MarkdownText
 -- what is missing here?

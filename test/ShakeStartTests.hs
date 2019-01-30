@@ -86,6 +86,7 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles="/home/frank/.SSG"
                 need [testD </> md -<.> "content.docval" | md <- mdFiles1]  -- pandocToContentHtml
                 need [testD </> md -<.> "dtpl" | md <- mdFiles1]  -- spliceTemplates
                 need [testD </> md -<.> "inTemplate.html" | md <- mdFiles1]  -- applyTemplate3
+
                 need [testD </> md -<.> "a.html" | md <- mdFiles1]  -- bakeOneFile
 
         (testD <> "//*inTemplate.html") %> \out ->
@@ -136,13 +137,6 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles="/home/frank/.SSG"
                             p <- markdownToPandoc True intext
                             writeFile2 (makeAbsFile out) (showT p)
 
---                    let  -- mdSource1 =
---                         mdSource2 = doughD </> makeRelative testD  (out  -<.> "md")
---                    yml <- read8 (makeAbsFile masterSettings) yamlFileType
---                    source  <-read8 (makeAbsFile mdSource2) markdownFileType
---                    let spliced = spliceMarkdown yml source
---                    write8 (makeAbsFile out)  markdownFileType spliced
-
         (testD <> "//*.withSettings.md") %> \out ->
             do
                 let mdSource2 = doughD </> makeRelative testD  ((out -<.> "")  -<.> "md")
@@ -154,11 +148,6 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles="/home/frank/.SSG"
                         let spliced = spliceMarkdown yml source
                         write8 (makeAbsFile out)  markdownFileType spliced
 
---                    (True (makeAbsFile mdSource2)
---                                (makeAbsFile masterSettings) (makeAbsFile masterTemplate)
---                                (makeAbsFile out)
-
-
         (testD <> "//*.a.html") %> \out ->
             do
                 let  mdSource1 =  (out -<.> "")
@@ -169,28 +158,6 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles="/home/frank/.SSG"
                         bakeOneFile True (makeAbsFile mdSource2)
                                     (makeAbsFile masterSettings) (makeAbsFile masterTemplate)
                                     (makeAbsFile out)
-
-
-
-
-                -- a bakeOneFileCore
---bakeOneFile :: Bool -> Path Abs File -> Path Abs File -> Path Abs File -> Path Abs File -> ErrIO Text
----- files exist
----- convert a file md2, append  masterSettings and put result in masterTemplate2 and produce th2
-----test in bake_tests:
---bakeOneFile debug md2 masterSettings masterTemplName ht2 = do
-
-
---        (staticD</>"Master3.gtpl") %> \out ->
---            copyFileChanged  (replaceDirectory out templatesD) out
-----
---        (staticD</>"master.yaml") %> \out ->
---            copyFileChanged  (replaceDirectory out doughD) out
---
---        (staticD </> "*.css") %> \out ->            -- insert css
---            do
---                liftIO $ putIOwords ["\nshakeWrapped - staticD - *.css", showT out]
---                copyFileChanged (replaceDirectory out templatesD) out
 
         (testD <> "//*.z.html") %> \out ->
             do
@@ -205,13 +172,6 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles="/home/frank/.SSG"
                 need [masterTemplate]
                 runErr2action $   bakeOneFileIO  md  masterSettings_yaml masterTemplate out  -- c relative to dough/
 
---bakeOneFileIO2 :: FilePath -> FilePath -> FilePath -> FilePath -> IO ()
----- bake one file absolute fp , page template and result html
---bakeOneFileIO2 md masterSettingsFn template ht = do
---            et <- runErr $ bakeOneFileIO md masterSettingsFn template ht
---            case et of
---                Left msg -> throw msg
---                Right _ -> return ()
 
 instance Exception Text
 
