@@ -76,42 +76,7 @@ compileGlabrous :: Gtemplate -> G.Template
 compileGlabrous t = either (\msg -> errorT ["glabrous master not ok", s2t msg]) id
                     $ G.fromText . unwrap7 $ t
 
--- handling the glabrous templates gtpl
-extGtemplate = Extension "gtpl"
 
-newtype Gtemplate = Gtemplate Text deriving (Show, Read, Eq, Ord)
--- ^ a template which contains variables in glabrous {{xx}} format
--- a wrapper around html ready to publish
---unGtemplate (Gtemplate a) = a
-
-gtmplFileType = makeTyped extGtemplate :: TypedFile5 Text Gtemplate
-
-instance Zeros Gtemplate where zero = Gtemplate zero
-
-instance TypedFiles5 Text Gtemplate  where
-instance TypedFiles7 Text Gtemplate  where
-
-    wrap7 = Gtemplate
-    unwrap7 (Gtemplate a) = a
-
--- handling the doctype templates dtpl
-extDtemplate = Extension "dtpl"
-
-newtype Dtemplate = Dtemplate Text deriving (Show, Read, Eq, Ord)
--- ^ a template which contains variables in doctype  $x$  format
-
--- a wrapper around html ready to publish
---unDtemplate (Dtemplate a) = a
-
-dtmplFileType = makeTyped extDtemplate :: TypedFile5 Text Dtemplate
-
-instance Zeros Dtemplate where zero = Dtemplate zero
-
-instance TypedFiles5 Text Dtemplate  where
-instance TypedFiles7 Text Dtemplate  where
-
-    wrap7 = Dtemplate
-    unwrap7 (Dtemplate a) = a
 
 
 

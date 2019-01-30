@@ -12,7 +12,9 @@ module Main     where      -- must have Main (main) or Main where
 
 import           Test.Framework
 
---import {-@ HTF_TESTS @-} ShakeStartTests
+import {-@ HTF_TESTS @-} ShakeStartTests
+-- must run first because it produces the test values used later
+
 import {-@ HTF_TESTS @-} Lib.FileMgt_test
 
 --import {-@ HTF_TESTS @-} Lib.Foundation_test

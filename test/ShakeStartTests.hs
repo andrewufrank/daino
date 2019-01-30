@@ -31,10 +31,10 @@ import Lib.Bake
 import Lib.FileMgt
 import Lib.Foundation_test (testLayout)
 import Lib.Foundation (templatesDirName)
-import Lib.Templating (Gtemplate(..), gtmplFileType, Dtemplate(..))
+--import Lib.Templating (Gtemplate(..), gtmplFileType, Dtemplate(..))
 import Lib.Pandoc  (markdownToPandoc, pandocToContentHtml)   -- with a simplified Action ~ ErrIO
 import Text.Pandoc (Pandoc)
-import Lib.Templating (applyTemplate3, dtmplFileType, gtmplFileType )
+import Lib.Templating (applyTemplate3 )
 
 test_shake =  do
                 startTesting layoutDefaults
@@ -92,7 +92,7 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles="/home/frank/.SSG"
         (testD <> "//*inTemplate.html") %> \out ->
             do
                 let source = (out -<.> "") -<.> "content.docval"
-                let tpl = (out -<.> "") -<.> "dtemplate"
+                let tpl = (out -<.> "") -<.> "dtpl"
                 need [source, tpl]
                 runErr2action $   -- applyTemplate3
                     do
@@ -165,12 +165,12 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles="/home/frank/.SSG"
                 let md =   doughD </> ( makeRelative testD $ out -<.> "md")
                 liftIO $ putIOwords ["\nshakeWrapped - testD html - c ", showT md]
 
-                let masterTemplate = templatesD</>"Master3.gtpl"
-                    masterSettings_yaml = doughD </> "master.yaml"
+--                let masterTemp = templatesD</>"Master3.gtpl"
+--                    masterSettings_yaml = doughD </> "master.yaml"
                 need [md]
-                need [masterSettings_yaml]
+                need [masterSettings]
                 need [masterTemplate]
-                runErr2action $   bakeOneFileIO  md  masterSettings_yaml masterTemplate out  -- c relative to dough/
+                runErr2action $   bakeOneFileIO  md  masterSettings masterTemplate out  -- c relative to dough/
 
 
 instance Exception Text
@@ -180,6 +180,6 @@ runErr2action op = liftIO $ do
     res <- runErr  op
     case res of
         Left msg -> throw msg
-        Right a -> do
+        Right _ -> do
 --                        putIOwords ["runErr2action", "got return", showT a] --
                         return ()

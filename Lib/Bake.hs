@@ -120,7 +120,7 @@ spliceTemplates :: DocValue  -> Gtemplate -> ErrIO Dtemplate
             --is the product of a gtempl and a page template
             -- but is produced for each page (wasteful)
 spliceTemplates val masterTempl = do
-        putIOwords ["spliceTemplates", "val", shownice val, "\nmasterTempl", showT masterTempl]
+--        putIOwords ["spliceTemplates", "val", shownice val, "\nmasterTempl", showT masterTempl]
         let ptemplate = fmap t2s $  (unDocValue val) ^? key "pageTemplate" . _String :: Maybe FilePath
 --
         templ2 <- case ptemplate of

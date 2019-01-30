@@ -25,7 +25,7 @@ import Lib.Bake
 import Lib.FileMgt
 import Lib.Foundation_test (testLayout)
 import Lib.Foundation (templatesDirName)
-import Lib.Templating (Gtemplate(..), gtmplFileType, Dtemplate(..))
+--import Lib.Templating (Gtemplate(..), gtmplFileType, Dtemplate(..))
 import Control.Lens
 --import Data.Aeson
 import Data.Aeson.Lens

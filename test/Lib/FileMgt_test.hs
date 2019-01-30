@@ -21,6 +21,7 @@ import           Test.Framework
 import Uniform.Strings hiding ((</>))
 import Lib.Bake
 import Uniform.Filenames
+import Uniform.TypedFile
 import Lib.Foundation (layoutDefaults, SiteLayout (..))
 import Lib.FileMgt
 
@@ -65,6 +66,16 @@ testHTMLout = makeAbsFile "/home/frank/.SSG/Blog/postwk.a.html"
 testHTMLout2 = makeAbsFile "/home/frank/.SSG/Blog/postwk.a2.html"
 
 test_htmlout = testFileReadWrite testHTMLout testHTMLout2 htmloutFileType
+
+testGtemp = makeAbsFile "/home/frank/Workspace8/SSG/theme/templates/Master3.gtpl"
+testGtemp2 = makeAbsFile "/home/frank/Workspace8/SSG/theme/templates/Master32.gtpl"
+
+test_gtemp = testFileReadWrite testGtemp testGtemp2 gtmplFileType
+
+testDtemp = makeAbsFile "/home/frank/Workspace8/SSG/theme/templates/Page3.dtpl"
+testDtemp2 = makeAbsFile "/home/frank/Workspace8/SSG/theme/templates/Page32.dtpl"
+
+test_dtemp = testFileReadWrite testDtemp testDtemp2 dtmplFileType
 
 testFileReadWrite file1 file2 filetype = do
             res <- runErr $
