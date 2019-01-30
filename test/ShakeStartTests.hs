@@ -59,14 +59,14 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles="/home/frank/.SSG"
             do
                 need [staticD</>"Master3.gtpl", staticD</>"master.yaml"]
 
-                -- font directories
-                fontFiles1 <- getDirectoryFiles (templatesD</>"et-book" ) ["/**/*"]
---                let fontFiles2 = map (makeRelative templatesD</>"et-book") fontFiles1
---                putIOwords ["font dirs", showT . take 3 $ fontFiles2]
---                let fontFiles = map (staticD</>"et_book"</>) fontFiles2
-                putIOwords ["font dirs", showT . take 3 $ fontFiles1]
-
-                need $ map (\f -> staticD</>"et-book"</>f) fontFiles1 -- the font for tufte book
+--                -- font directories
+--                fontFiles1 <- getDirectoryFiles (templatesD</>"et-book" ) ["/**/*"]
+----                let fontFiles2 = map (makeRelative templatesD</>"et-book") fontFiles1
+----                putIOwords ["font dirs", showT . take 3 $ fontFiles2]
+----                let fontFiles = map (staticD</>"et_book"</>) fontFiles2
+--                putIOwords ["font dirs", showT . take 3 $ fontFiles1]
+--
+--                need $ map (\f -> staticD</>"et-book"</>f) fontFiles1 -- the font for tufte book
 
 
                 -- get css
@@ -81,10 +81,10 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles="/home/frank/.SSG"
         (staticD</>"master.yaml") %> \out ->
             copyFileChanged  (replaceDirectory out doughD) out
 
-        (staticD</>"et-book/**") %> \out ->
---            let etDir = replaceDirectory out templatesD)
---            let etFiles = getDirectoryFiles etDir ["**/*"]
-            copyFileChanged  (replaceDirectory out (templatesD</>"et-book"))  out
+--        (staticD</>"et-book/**") %> \out ->
+----            let etDir = replaceDirectory out templatesD)
+----            let etFiles = getDirectoryFiles etDir ["**/*"]
+--            copyFileChanged  (replaceDirectory out (templatesD</>"et-book"))  out
 
 
         (staticD </> "*.css") %> \out ->            -- insert css
