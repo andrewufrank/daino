@@ -21,6 +21,7 @@ module Lib.Bake  -- (openMain, htf_thisModuelsTests)
 import Uniform.Strings
 import Uniform.Filenames
 import Uniform.FileStrings () -- for instances
+import Uniform.TypedFile
 
 import Lib.Pandoc  (markdownToPandoc, pandocToContentHtml)   -- with a simplified Action ~ ErrIO
 
