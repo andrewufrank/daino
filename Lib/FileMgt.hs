@@ -26,7 +26,7 @@ import Uniform.Zero
 import Uniform.Filenames
 import Uniform.FileStrings
 import Uniform.TypedFile
-import Data.Aeson (Value, ToJSON, Value (..))
+import Data.Aeson (Value, ToJSON (..), Value (..), decode)
 import Data.Aeson.Encode.Pretty (encodePretty)
 import  Path.IO (ensureDir)
 
@@ -43,6 +43,16 @@ instance Zeros DocValue where zero = DocValue Null
 
 instance NiceStrings DocValue where
     shownice = showNice .  unDocValue
+
+docValueFileType = TypedFile5 {tpext5 = Extension "docval"} :: TypedFile5   Text DocValue
+--instance FileHandles MarkdownText
+-- what is missing here?
+
+
+instance TypedFiles7 Text  DocValue    where
+-- handling Markdown and read them into DocValue
+    wrap7 = DocValue . fromJustNote "wrap7 docvalue decode" . decode . b2bl . t2b
+    unwrap7 (DocValue a) = shownice a
 
 -------------
 

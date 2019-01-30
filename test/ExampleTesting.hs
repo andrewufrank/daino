@@ -21,7 +21,9 @@ import {-@ HTF_TESTS @-} ShakeStartTests
 --    -- AK :: MarkdownText -> BE  DocValue
 --    -- AK ->AD :: Pandoc
 --    -- AD -> AF ::
---import {-@ HTF_TESTS @-} Lib.Bake_test  -- final E
+import {-@ HTF_TESTS @-} Lib.Bake_test
+
+     -- final E
 --        --   -> resultMasterYaml  test_bake_MasterYaml
 --    -- -> resultMasterTemplate  test_bake_MasterTmpl
 --    -- ..-> masterYaml -> AK -> AG :: Markdown   test_Splice1

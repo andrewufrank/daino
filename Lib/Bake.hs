@@ -32,14 +32,33 @@ import Control.Lens
 --import Data.Aeson
 import Data.Aeson.Lens
 
+bakeOneFileIO :: FilePath -> FilePath -> FilePath -> FilePath -> ErrIO ()
+-- this is called from shake and produce the final html
+-- bake one file absolute fp , page template and result html
+bakeOneFileIO md masterSettingsFn template ht = do
+                    putIOwords ["bakeOneFileIO - from shake xx", s2t md] --baked/SGGdesign/Principles.md
+--                    let fp1 = fp
+----                            let fp1 = "/"<>fp
+                    let md2 = makeAbsFile md
+                    let template2 = makeAbsFile template
+                    let ht2 = makeAbsFile ht
+                    putIOwords ["bakeOneFileIO - files", showT md2, "\n", showT template2, "\n", showT ht2]
+--                    let fp2 = makeRelFile fp1
+--                    fp3 :: Path Rel File  <- stripProperPrefix' (makeRelDir doughD) fp2
+--                    putIOwords ["bakeOneFileIO - next run shake", showT fp2]
+--                            bakeOneFileIO - next run shake "baked/SGGdesign/Principles.md"
+--                    let fp3 = fp2
+                    let masterSettings = makeAbsFile masterSettingsFn
+                    res <- bakeOneFile True md2 masterSettings template2 ht2
+                    putIOwords ["bakeOneFileIO - done", showT ht2, res]
+
 
 bakeOneFile :: Bool -> Path Abs File -> Path Abs File -> Path Abs File -> Path Abs File -> ErrIO Text
--- this is called from shake and produce the final html
 -- files exist
 -- convert a file md2, append  masterSettings and put result in masterTemplate2 and produce th2
 --test in bake_tests:
 bakeOneFile debug md2 masterSettings masterTemplName ht2 = do
-        putIOwords ["\n--------------------------------", "bakeOneFile fn", showT md2, "\n\n"]
+        putIOwords ["\n-----------------", "bakeOneFile fn", showT md2, "\n\n"]
         -- currently only for md files, add static next
         -- read all files
         intext :: MarkdownText <- read8 md2 markdownFileType
@@ -72,16 +91,17 @@ bakeOneFileCore :: Bool -> YamlText -> MarkdownText  -> Gtemplate  -> ErrIO HTML
 bakeOneFileCore debug preface intext masterTempl  = do
         let intext2 = spliceMarkdown preface intext  --  AK -> AG
         pandoc <- markdownToPandoc debug intext2  -- AG -> AD
-        val <- pandocToContentHtml debug pandoc
+        val :: DocValue <- pandocToContentHtml debug pandoc
 
-        let ptemplate = fmap t2s $  (unDocValue val) ^? key "pageTemplate" . _String :: Maybe FilePath
---
-        templ2 <- case ptemplate of
-            Nothing -> throwErrorT ["bakeOneFileCore", "no page template in markdown"]
-            Just tfn -> do
-                            let tfn2 = addFileName (themeDir layoutDefaults)
-                                    (addFileName templatesDirName (makeRelFile tfn))
-                            putPageInMaster2 tfn2 masterTempl "body"
+        templ2 <- spliceTemplates val masterTempl
+--        let ptemplate = fmap t2s $  (unDocValue val) ^? key "pageTemplate" . _String :: Maybe FilePath
+----
+--        templ2 <- case ptemplate of
+--            Nothing -> throwErrorT ["bakeOneFileCore", "no page template in markdown"]
+--            Just tfn -> do
+--                            let tfn2 = addFileName (themeDir layoutDefaults)
+--                                    (addFileName templatesDirName (makeRelFile tfn))
+--                            putPageInMaster2 tfn2 masterTempl "body"
 
         html2 <-  applyTemplate3 templ2 val
 --        when debug $
@@ -94,10 +114,12 @@ spliceMarkdown :: YamlText -> MarkdownText -> MarkdownText
 -- postfix the master yaml text to a markdown text
 spliceMarkdown (YamlText y) (MarkdownText m) = MarkdownText $ m <> y
 
---spliceTemplates :: DocValue  -> Gtemplate -> ErrIO Dtemplate
+spliceTemplates :: DocValue  -> Gtemplate -> ErrIO Dtemplate
 -- splice the desired page template with the master template
---
+            --is the product of a gtempl and a page template
+            -- but is produced for each page (wasteful)
 spliceTemplates val masterTempl = do
+        putIOwords ["spliceTemplates", "val", shownice val, "\nmasterTempl", showT masterTempl]
         let ptemplate = fmap t2s $  (unDocValue val) ^? key "pageTemplate" . _String :: Maybe FilePath
 --
         templ2 <- case ptemplate of
@@ -107,3 +129,4 @@ spliceTemplates val masterTempl = do
                                     (addFileName templatesDirName (makeRelFile tfn))
                             putPageInMaster2 tfn2 masterTempl "body"
         return templ2
+
