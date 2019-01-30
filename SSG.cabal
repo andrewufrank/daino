@@ -111,5 +111,6 @@ test-suite g2
     , doctemplates
     , pandoc-types
     , shake
+--    , fsutils
 
   default-language: Haskell2010

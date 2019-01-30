@@ -24,6 +24,7 @@ import Development.Shake
 --import Development.Shake.Command
 import Development.Shake.FilePath
 --import Development.Shake.Util
+--import System.Path (copyDir)
 
 import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)
 import Lib.Bake
@@ -58,14 +59,15 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles="/home/frank/.SSG"
         phony "allTests" $
             do
                 need [staticD</>"Master3.gtpl", staticD</>"master.yaml"]
+--                need [staticD</>"et-book"]
 
 --                -- font directories
 --                fontFiles1 <- getDirectoryFiles (templatesD</>"et-book" ) ["/**/*"]
-----                let fontFiles2 = map (makeRelative templatesD</>"et-book") fontFiles1
-----                putIOwords ["font dirs", showT . take 3 $ fontFiles2]
-----                let fontFiles = map (staticD</>"et_book"</>) fontFiles2
---                putIOwords ["font dirs", showT . take 3 $ fontFiles1]
---
+------                let fontFiles2 = map (makeRelative templatesD</>"et-book") fontFiles1
+------                putIOwords ["font dirs", showT . take 3 $ fontFiles2]
+------                let fontFiles = map (staticD</>"et_book"</>) fontFiles2
+----                putIOwords ["font dirs", showT . take 3 $ fontFiles1]
+----
 --                need $ map (\f -> staticD</>"et-book"</>f) fontFiles1 -- the font for tufte book
 
 
@@ -91,7 +93,10 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles="/home/frank/.SSG"
             do
                 liftIO $ putIOwords ["\nshakeWrapped - staticD - *.css", showT out]
 --                let etFont = staticD</>"et-book"  -- the directory with the fonts
-                                    -- not checked for changes
 --                copyFileChanged (replaceDirectory etFont templatesD) etFont
                 copyFileChanged (replaceDirectory out templatesD) out
 
+--        (staticD</>"et-book") %> \out ->
+--            do
+--                let sourceDir = replaceDirectory out templatesD
+--                copyDir sourceDir out
