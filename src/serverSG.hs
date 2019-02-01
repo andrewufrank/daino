@@ -16,7 +16,7 @@
 module Main
      where
 
-import Uniform.Strings
+import Uniform.Strings hiding ((</>))
 import Uniform.Filenames
 import Uniform.FileStrings
 import Uniform.Error
@@ -32,9 +32,13 @@ import  Twitch hiding (Options, log)
 import qualified Twitch
 --import Control.Concurrent.Spawn
 import Control.Concurrent
-import Lib.Foundation (layoutDefaults, SiteLayout (..) )
---import Lib.Bake (bake, bakeOneFileVoid)
+import Lib.Foundation (SiteLayout (..), layoutDefaults, templatesDirName, staticDirName)
+
+
 import Lib.Shake (shake)
+
+import Distribution.Simple.Utils (copyDirectoryRecursive)
+import Distribution.Verbosity (Verbosity(..), normal)
 
 programName = "SSG" :: Text
 progTitle = unwords' ["constructing a static site generator"
@@ -120,11 +124,16 @@ mainWatchDough layout  =  do
 
 mainWatchThemes layout =  do
     let themePath =  (themeDir layout) :: Path Abs Dir
+    let bakedPath = bakedDir layout
     putIOwords [programName, progTitle,"mainWatchThemes"]
+    -- copy the static files, not done by shake yet
+    copyDirectoryRecursive normal
+                         (toFilePath themePath) (toFilePath $ bakedPath </> staticDirName )
     Twitch.defaultMainWithOptions (twichDefault4ssg
                     {Twitch.root = Just . toFilePath $ themePath
                      , Twitch.log = Twitch.NoLogger
                     }) $ do
+--            verbosity from Cabal
             Twitch.addModify (\filepath -> runErrorVoid $ shake layout) "**/*.html"
             Twitch.addModify (\filepath -> runErrorVoid $ shake layout) "**/*.*tpl"
             Twitch.addModify (\filepath -> runErrorVoid $ shake layout) "**/*.css"

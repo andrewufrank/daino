@@ -75,6 +75,7 @@ bakeOneFile debug md2 masterSettings masterTemplName ht2 = do
  `catchError` (\e -> do
                     let errmsg2 =  ["\n****************"
                                 , "bakeOneFile catchError", showT e , "for ", showT md2
+
                                 , "\n****************"]
                     putIOwords errmsg2
                     return . unwords' $ errmsg2

@@ -27,7 +27,7 @@ import Uniform.FileStrings () -- for instances
 import Lib.Templating
 
 
-import Lib.Foundation (SiteLayout (..), templatesDirName)
+import Lib.Foundation (SiteLayout (..), templatesDirName, staticDirName)
 import Lib.Bake
 
 import Development.Shake
@@ -56,7 +56,12 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
 --                  seems not to produce an effect
                 } $ do
 
-    let staticD = bakedD </>"static"  -- where all the static files go
+    let staticD = bakedD </> (toFilePath staticDirName)  -- where all the static files go
+
+--    phony "clean" $ do
+--        putNormal "delete all files in "
+--        removeFiles bakedD<>"*"
+            -- need one for ssg and one for baked
 
     want ["allMarkdownConversion"]
 
@@ -86,8 +91,8 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
 
         need pageTemplates2
         need cssFiles2
-    --                need [staticD</>"page33.dtpl"]
         need htmlFiles2
+        -- the templates static files are copied with watch
 
     (bakedD <> "//*.html") %> \out -> do
 
@@ -113,8 +118,10 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
 
     (staticD </> "*.css") %> \out ->  do           -- insert css
         liftIO $ putIOwords ["\nshakeWrapped - staticD - *.css", showT out]
-        let etFont = staticD</>"et-book"  -- the directory with the fonts
-        copyFileChanged (replaceDirectory etFont templatesD) etFont
+--        let etFont = staticD</>"et-book"  -- the directory with the fonts
+--        copyFileChanged (replaceDirectory etFont templatesD) etFont
+--          gives need on dir - all static files are copied_
+--           with watch
         copyFileChanged (replaceDirectory out templatesD) out
 
 

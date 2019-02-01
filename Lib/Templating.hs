@@ -50,13 +50,13 @@ putPageInMaster2 ::  Path Abs File -> Gtemplate -> Text ->  ErrIO Dtemplate
 -- ^ insert the first doctype template into the (master) glabrous template at the tag
 -- result is a doctype (clean) template
 putPageInMaster2  page master tag  = do
-    putIOwords ["putPageInMaster2 put", showT page, "into", showT master
-                        , "\n\tat",  tag]
+--    putIOwords ["putPageInMaster2 put", showT page, "into", showT master
+--                        , "\n\tat",  tag]
 
 --    fm :: Gtemplate <- read8 master gtmplFileType -- must have correct extension
-    putIOwords ["putPageInMaster", "fm read"]
+--    putIOwords ["putPageInMaster", "fm read"]
     fp :: Dtemplate <- read8 page dtmplFileType
-    putIOwords ["putPageInMaster", "fpread"]
+--    putIOwords ["putPageInMaster", "fpread"]
 
     let master2 = compileGlabrous master :: G.Template
     let temp2 = unwrap7 fp  :: Text -- the text of the page (doctemplate)

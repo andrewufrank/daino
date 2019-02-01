@@ -78,6 +78,7 @@ executable serversg
 --    , hinotify
     , directory
     , twitch
+    , Cabal
 --    , spawn
 
   hs-source-dirs:

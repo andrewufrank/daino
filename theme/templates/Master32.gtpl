@@ -43,7 +43,7 @@
     $endif$
 
 	<title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$</title>
-
+	
 <!--    <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
 	$if(math)$
 	  $math$
@@ -52,7 +52,8 @@
 	  $header-includes$
 	$endfor$
 -->
-  </head>
+
+<!-- end master - start page --> 
  
 {{body}}
  

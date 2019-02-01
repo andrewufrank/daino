@@ -1,3 +1,5 @@
+    </head>
+    
     <body>
     <!-- AF - my template for pandoc page (from the default) -->
         $for(include-before)$
@@ -25,10 +27,10 @@
             <h3>$settings.byline$</h3>
     </section>
     <section class="header">
-            my menu test 1: 
+           
             <section class="menu"> 
 		<ul>
-            		$for(menu)$
+            	$for(menu)$
 				<li><a href=$menu.link$>$menu.text$</a></li>
             		$endfor$ 
 		</ul>
