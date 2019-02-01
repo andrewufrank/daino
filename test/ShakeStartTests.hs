@@ -167,13 +167,15 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles="/home/frank/.SSG"
             let md =   doughD </> ( makeRelative testD $ out -<.> "md")
             liftIO $ putIOwords ["\nshakeWrapped - testD html - c ", showT md]
 
-    --                let masterTemp = templatesD</>"Master3.gtpl"
-    --                    masterSettings_yaml = doughD </> "master.yaml"
             need [md]
             need [masterSettings]
             need [masterTemplate]
-            runErr2action $
-                bakeOneFileIO  md  masterSettings masterTemplate out  -- c relative to dough/
+
+            runErr2action $ bakeOneFile True
+                (makeAbsFile md)
+                (makeAbsFile masterSettings)
+                (makeAbsFile masterTemplate)
+                (makeAbsFile out)
 
 
 instance Exception Text

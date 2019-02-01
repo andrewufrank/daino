@@ -54,52 +54,52 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
                 , shakeLint=Just LintBasic
 --                , shakeRebuild=[(RebuildNow,"allMarkdownConversion")]
 --                  seems not to produce an effect
-                } $
-    do
-        let staticD = bakedD </>"static"  -- where all the static files go
+                } $ do
 
-        want ["allMarkdownConversion"]
+    let staticD = bakedD </>"static"  -- where all the static files go
 
-        phony "allMarkdownConversion" $
-            do
-                liftIO $ putIOwords ["\nshakeWrapped phony allMarkdonwConversion" ]
+    want ["allMarkdownConversion"]
 
-                -- get markdown files
-                mdFiles1 <- getDirectoryFiles  doughD ["//*.md", "//*.markdown"]
-                let htmlFiles2 = [bakedD </> md -<.> "html" | md <- mdFiles1]
-                liftIO $ putIOwords ["\nshakeWrapped - htmlFile", showT htmlFiles2]
+    phony "allMarkdownConversion" $ do
 
-                -- get css
-                cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs
---                liftIO $ putIOwords ["\nshakeWrapped - phony cssFiles1", showT cssFiles1]
-                let cssFiles2 = [replaceDirectory c staticD  | c <- cssFiles1]
---                let cssFiles2 = [dropDirectory1 staticD </> c  | c <- cssFiles1]
-                liftIO $ putIOwords ["\nshakeWrapped - phony cssFiles2", showT cssFiles2]
---                mapM_ (\fn -> copyFileChanged (templatesD </> fn) (staticD </> fn)) cssFiles1
+        liftIO $ putIOwords ["\nshakeWrapped phony allMarkdonwConversion" ]
 
-                -- pages templates
-                pageTemplates <- getDirectoryFiles templatesD ["/*.gtpl", "/*.dtpl"]
-                let pageTemplates2 = [templatesD </> tpl | tpl <- pageTemplates]
-                liftIO $ putIOwords ["\nshakeWrapped - phony pageTemplates", showT pageTemplates2]
+        -- get markdown files
+        mdFiles1 <- getDirectoryFiles  doughD ["//*.md", "//*.markdown"]
+        let htmlFiles2 = [bakedD </> md -<.> "html" | md <- mdFiles1]
+        liftIO $ putIOwords ["\nshakeWrapped - htmlFile", showT htmlFiles2]
+
+        -- get css
+        cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs
+    --                liftIO $ putIOwords ["\nshakeWrapped - phony cssFiles1", showT cssFiles1]
+        let cssFiles2 = [replaceDirectory c staticD  | c <- cssFiles1]
+    --                let cssFiles2 = [dropDirectory1 staticD </> c  | c <- cssFiles1]
+        liftIO $ putIOwords ["\nshakeWrapped - phony cssFiles2", showT cssFiles2]
+    --                mapM_ (\fn -> copyFileChanged (templatesD </> fn) (staticD </> fn)) cssFiles1
+
+        -- pages templates
+        pageTemplates <- getDirectoryFiles templatesD ["/*.gtpl", "/*.dtpl"]
+        let pageTemplates2 = [templatesD </> tpl | tpl <- pageTemplates]
+        liftIO $ putIOwords ["\nshakeWrapped - phony pageTemplates", showT pageTemplates2]
 
 
-                need pageTemplates2
-                need cssFiles2
---                need [staticD</>"page33.dtpl"]
-                need htmlFiles2
+        need pageTemplates2
+        need cssFiles2
+    --                need [staticD</>"page33.dtpl"]
+        need htmlFiles2
 
-        (bakedD <> "//*.html") %> \out ->
-            do
-                liftIO $ putIOwords ["\nshakeWrapped - bakedD html -  out ", showT out]
-                let md =   doughD </> ( makeRelative bakedD $ out -<.> "md")
-                liftIO $ putIOwords ["\nshakeWrapped - bakedD html - c ", showT md]
+    (bakedD <> "//*.html") %> \out -> do
 
-                let masterTemplate = templatesD</>"Master3.gtpl"
-                    masterSettings_yaml = doughD </> "master.yaml"
-                need [md]
-                need [masterSettings_yaml]
-                need [masterTemplate]
-                runErr2action $ bakeOneFileIO  md  masterSettings_yaml masterTemplate out  -- c relative to dough/
+        liftIO $ putIOwords ["\nshakeWrapped - bakedD html -  out ", showT out]
+        let md =   doughD </> ( makeRelative bakedD $ out -<.> "md")
+        liftIO $ putIOwords ["\nshakeWrapped - bakedD html - c ", showT md]
+
+        let masterTemplate = templatesD</>"Master3.gtpl"
+            masterSettings_yaml = doughD </> "master.yaml"
+        need [md]
+        need [masterSettings_yaml]
+        need [masterTemplate]
+        runErr2action $ bakeOneFileFPs  md  masterSettings_yaml masterTemplate out  -- c relative to dough/
 
 --        (templatesD</>"page33.dtpl") %> \out ->     -- construct the template from pieces
 --            do
@@ -110,12 +110,11 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
 --                liftIO $ makeOneMaster mf pf out
 ----                copyFileChanged (replaceDirectory out templatesD) out
 
-        (staticD </> "*.css") %> \out ->            -- insert css
-            do
-                liftIO $ putIOwords ["\nshakeWrapped - staticD - *.css", showT out]
-                let etFont = staticD</>"et-book"  -- the directory with the fonts
-                copyFileChanged (replaceDirectory etFont templatesD) etFont
-                copyFileChanged (replaceDirectory out templatesD) out
+    (staticD </> "*.css") %> \out ->  do           -- insert css
+        liftIO $ putIOwords ["\nshakeWrapped - staticD - *.css", showT out]
+        let etFont = staticD</>"et-book"  -- the directory with the fonts
+        copyFileChanged (replaceDirectory etFont templatesD) etFont
+        copyFileChanged (replaceDirectory out templatesD) out
 
 
 instance Exception Text

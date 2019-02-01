@@ -33,27 +33,21 @@ import Control.Lens
 --import Data.Aeson
 import Data.Aeson.Lens
 
-bakeOneFileIO :: FilePath -> FilePath -> FilePath -> FilePath -> ErrIO ()
+bakeOneFileFPs :: FilePath -> FilePath -> FilePath -> FilePath -> ErrIO ()
 -- this is called from shake and produce the final html
 -- bake one file absolute fp , page template and result html
 -- exceptionally calls with FilePath (usually the files are read in shake and
 -- passed the values)
-bakeOneFileIO md masterSettingsFn template ht = do
-                    putIOwords ["bakeOneFileIO - from shake xx", s2t md] --baked/SGGdesign/Principles.md
---                    let fp1 = fp
-----                            let fp1 = "/"<>fp
-                    let md2 = makeAbsFile md
-                    let template2 = makeAbsFile template
-                    let ht2 = makeAbsFile ht
-                    putIOwords ["bakeOneFileIO - files", showT md2, "\n", showT template2, "\n", showT ht2]
---                    let fp2 = makeRelFile fp1
---                    fp3 :: Path Rel File  <- stripProperPrefix' (makeRelDir doughD) fp2
---                    putIOwords ["bakeOneFileIO - next run shake", showT fp2]
---                            bakeOneFileIO - next run shake "baked/SGGdesign/Principles.md"
---                    let fp3 = fp2
-                    let masterSettings = makeAbsFile masterSettingsFn
-                    res <- bakeOneFile True md2 masterSettings template2 ht2
-                    putIOwords ["bakeOneFileIO - done", showT ht2, res]
+bakeOneFileFPs md masterSettingsFn template ht = do
+        putIOwords ["bakeOneFileFPs - from shake xx", s2t md] --baked/SGGdesign/Principles.md
+        let md2 = makeAbsFile md
+        let template2 = makeAbsFile template
+        let ht2 = makeAbsFile ht
+        when False $ putIOwords ["bakeOneFileIO - files", showT md2
+                        , "\n", showT template2, "\n", showT ht2]
+        let masterSettings = makeAbsFile masterSettingsFn
+        res <- bakeOneFile True md2 masterSettings template2 ht2
+        putIOwords ["bakeOneFileFPs - done", showT ht2, res]
 
 
 bakeOneFile :: Bool -> Path Abs File -> Path Abs File -> Path Abs File -> Path Abs File -> ErrIO Text
