@@ -171,7 +171,7 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles="/home/frank/.SSG"
             need [masterSettings]
             need [masterTemplate]
 
-            runErr2action $ bakeOneFile True
+            runErr2action $ bakeOneFile False
                 (makeAbsFile md)
                 (makeAbsFile masterSettings)
                 (makeAbsFile masterTemplate)

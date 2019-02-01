@@ -67,7 +67,8 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
         -- get markdown files
         mdFiles1 <- getDirectoryFiles  doughD ["//*.md", "//*.markdown"]
         let htmlFiles2 = [bakedD </> md -<.> "html" | md <- mdFiles1]
-        liftIO $ putIOwords ["\nshakeWrapped - htmlFile", showT htmlFiles2]
+        liftIO $ putIOwords ["\nshakeWrapped - htmlFile"
+                ,  showT (map (makeRelative doughD) htmlFiles2)]
 
         -- get css
         cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs

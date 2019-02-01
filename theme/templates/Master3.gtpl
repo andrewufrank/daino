@@ -21,6 +21,7 @@
       	q { quotes: "“" "”" "‘" "’"; }
 	$endif$
   </style>
+  
 	$if(highlighting-css)$
 	  <style type="text/css">
 	$highlighting-css$
