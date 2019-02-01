@@ -36,6 +36,8 @@ import Data.Aeson.Lens
 bakeOneFileIO :: FilePath -> FilePath -> FilePath -> FilePath -> ErrIO ()
 -- this is called from shake and produce the final html
 -- bake one file absolute fp , page template and result html
+-- exceptionally calls with FilePath (usually the files are read in shake and
+-- passed the values)
 bakeOneFileIO md masterSettingsFn template ht = do
                     putIOwords ["bakeOneFileIO - from shake xx", s2t md] --baked/SGGdesign/Principles.md
 --                    let fp1 = fp
@@ -95,18 +97,10 @@ bakeOneFileCore debug preface intext masterTempl  = do
         val :: DocValue <- pandocToContentHtml debug pandoc
 
         templ2 <- spliceTemplates val masterTempl
---        let ptemplate = fmap t2s $  (unDocValue val) ^? key "pageTemplate" . _String :: Maybe FilePath
-----
---        templ2 <- case ptemplate of
---            Nothing -> throwErrorT ["bakeOneFileCore", "no page template in markdown"]
---            Just tfn -> do
---                            let tfn2 = addFileName (themeDir layoutDefaults)
---                                    (addFileName templatesDirName (makeRelFile tfn))
---                            putPageInMaster2 tfn2 masterTempl "body"
 
         html2 <-  applyTemplate3 templ2 val
---        when debug $
-        putIOwords ["bakeOneFile val\n\n", showT html2]
+        when debug $
+            putIOwords ["bakeOneFile val\n\n", showT html2]
 
         return html2
 

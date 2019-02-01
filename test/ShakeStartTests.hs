@@ -50,19 +50,19 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles="/home/frank/.SSG"
                 , shakeLint=Just LintBasic
 --                , shakeRebuild=[(RebuildNow,"allMarkdownConversion")]
 --                  seems not to produce an effect
-                } $
-    do
-        let
-              doughD      =   (toFilePath . doughDir $ layout)  -- the regular dough
-              templatesD =   ((toFilePath . themeDir $ layout) </> (toFilePath templatesDirName))
-              testD = "/home/frank/.SSG" :: FilePath
---              staticD = testD </>"static"  -- where all the static files go
-              masterSettings = doughD</>"master.yaml"
-              masterTemplate = templatesD</>"Master3.gtpl"
+                } $ do
 
-        want ["allTests"]
-        phony "allTests" $
-            do
+    let
+          doughD      =   (toFilePath . doughDir $ layout)  -- the regular dough
+          templatesD =   ((toFilePath . themeDir $ layout) </> (toFilePath templatesDirName))
+          testD = "/home/frank/.SSG" :: FilePath
+--              staticD = testD </>"static"  -- where all the static files go
+          masterSettings = doughD</>"master.yaml"
+          masterTemplate = templatesD</>"Master3.gtpl"
+
+    want ["allTests"]
+    phony "allTests" $ do
+
 --                need [staticD</>"Master3.gtpl", staticD</>"master.yaml"]
 --                -- get css
 --                cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs
@@ -70,107 +70,110 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles="/home/frank/.SSG"
 --                let cssFiles = [replaceDirectory c staticD  | c <- cssFiles1]
 --                need cssFiles
 
-                need [masterSettings, masterTemplate]
+        need [masterSettings, masterTemplate]
 
-                mdFiles1 <- getDirectoryFiles doughD ["**/*.md", "**/*.markdown"]
-                liftIO $ putIOwords ["\nshakeWrapped - md files to work on\n", showT mdFiles1]
-
-                -- overall test
-                let htmlFiles2 = [testD </> md -<.> "html" | md <- mdFiles1]
-                liftIO $ putIOwords ["\nshakeWrapped - htmlFile", showT htmlFiles2]
+        mdFiles1 <- getDirectoryFiles doughD ["**/*.md", "**/*.markdown"]
+        let mdFiles3 =  map dropExtension mdFiles1
+        liftIO $ putIOwords ["\nshakeWrapped - makrdown and md files to work on\n"
+                        , showT mdFiles3]
+        -- overall test
+        let htmlFiles2 = [testD </> md <.> "html" | md <- mdFiles3]
+        liftIO $ putIOwords ["\nshakeWrapped - htmlFile", showT htmlFiles2]
 
 --                need [testD </> md -<.> "z.html" | md <- mdFiles1]
 
-                need [testD </> md -<.> "withSettings.md" | md <- mdFiles1]  -- spliceMarkdown
-                need [testD </> md -<.> "withSettings.pandoc" | md <- mdFiles1]  -- markdownToPandoc
-                need [testD </> md -<.> "content.docval" | md <- mdFiles1]  -- pandocToContentHtml
-                need [testD </> md -<.> "dtpl" | md <- mdFiles1]  -- spliceTemplates
-                need [testD </> md -<.> "inTemplate.html" | md <- mdFiles1]  -- applyTemplate3
+        need [testD </> md <.> "withSettings.md" | md <- mdFiles3]  -- spliceMarkdown
+        need [testD </> md <.> "withSettings.pandoc" | md <- mdFiles3]  -- markdownToPandoc
+        need [testD </> md <.> "content.docval" | md <- mdFiles3]  -- pandocToContentHtml
+        need [testD </> md <.> "dtpl" | md <- mdFiles3]  -- spliceTemplates
+        need [testD </> md <.> "inTemplate.html" | md <- mdFiles3]  -- applyTemplate3
 
-                need [testD </> md -<.> "a.html" | md <- mdFiles1]  -- bakeOneFile
+        need [testD </> md <.> "a.html" | md <- mdFiles3]  -- bakeOneFile
 
-        (testD <> "//*inTemplate.html") %> \out ->
-            do
-                let source = (out -<.> "") -<.> "content.docval"
-                let tpl = (out -<.> "") -<.> "dtpl"
-                need [source, tpl]
-                runErr2action $   -- applyTemplate3
+    (testD <> "//*inTemplate.html") %> \out ->
+        do
+            let source = out --<.>   "content.docval"
+            let tpl =  out --<.>  "dtpl"
+            need [source, tpl]
+            runErr2action $   -- applyTemplate3
+                do
+                    valText :: DocValue  <-   read8 (makeAbsFile source )
+                                                    docValueFileType
+                    dtempl :: Dtemplate  <- read8 (makeAbsFile tpl ) dtmplFileType
+                    p :: HTMLout <- applyTemplate3  dtempl valText
+                    write8 (makeAbsFile out) htmloutFileType p
+
+
+    (testD <> "//*dtpl") %> \out ->
+        do
+            let source = out -<.>  "content.docval"
+            need [source, masterTemplate]
+            runErr2action $   -- spliceTemplates
+        --is the product of a gtempl and a page template
+        -- but is produced for each page (wasteful)
+                do
+                    putIOwords ["testD - dtpl", showT source]
+                    valText  <- read8 (makeAbsFile source)  docValueFileType
+                    gtempl <- read8 (makeAbsFile masterTemplate) gtmplFileType
+                    p :: Dtemplate <- spliceTemplates (valText :: DocValue)  (gtempl :: Gtemplate)
+                    write8 (makeAbsFile out) dtmplFileType p
+
+    (testD <> "//*content.docval") %> \out ->
+        do
+--            let source = (out -<.> "") -<.> "withSettings.pandoc"
+            let source = out --<.>   "withSettings.pandoc"
+            need [source]
+            runErr2action $   -- pandocToContentHtml
+                do
+                    pandocText  <- readFile2 (makeAbsFile source)
+                    p :: DocValue <- pandocToContentHtml True (readNote "we23" pandocText :: Pandoc)
+                    write8 (makeAbsFile out) docValueFileType p
+
+    (testD <> "//*.withSettings.pandoc") %> \out ->
+        do
+            let source =  (out -<.> "md")
+            need [source]
+            runErr2action $
                     do
-                        valText :: DocValue  <-   read8 (makeAbsFile source )
-                                                        docValueFileType
-                        dtempl :: Dtemplate  <- read8 (makeAbsFile tpl ) dtmplFileType
-                        p :: HTMLout <- applyTemplate3  dtempl valText
-                        write8 (makeAbsFile out) htmloutFileType p
+                        intext <- read8 (makeAbsFile source) markdownFileType
+                        p <- markdownToPandoc True intext
+                        writeFile2 (makeAbsFile out) (showT p)
 
+    (testD <> "//*.withSettings.md") %> \out ->
+        do
+            let mdSource2 = doughD </> makeRelative testD  ((out -<.> "")  -<.> "md")
+            need [mdSource2, masterSettings, masterTemplate]
+            runErr2action $ -- spliceMarkdown
+                do
+                    yml <- read8 (makeAbsFile masterSettings) yamlFileType
+                    source  <-read8 (makeAbsFile mdSource2) markdownFileType
+                    let spliced = spliceMarkdown yml source
+                    write8 (makeAbsFile out)  markdownFileType spliced
 
-        (testD <> "//*dtpl") %> \out ->
-            do
-                let source = out -<.>  "content.docval"
-                need [source, masterTemplate]
-                runErr2action $   -- spliceTemplates
-            --is the product of a gtempl and a page template
-            -- but is produced for each page (wasteful)
-                    do
-                        putIOwords ["testD - dtpl", showT source]
-                        valText  <- read8 (makeAbsFile source)  docValueFileType
-                        gtempl <- read8 (makeAbsFile masterTemplate) gtmplFileType
-                        p :: Dtemplate <- spliceTemplates (valText :: DocValue)  (gtempl :: Gtemplate)
-                        write8 (makeAbsFile out) dtmplFileType p
+    (testD <> "//*.a.html") %> \out ->
+        do
+            let  mdSource1 =  (out -<.> "")
+                 mdSource2 = doughD </> makeRelative testD  (mdSource1 -<.> "md")
+            need [mdSource2, masterSettings, masterTemplate]
+            runErr2action $
+                do
+                    bakeOneFile True (makeAbsFile mdSource2)
+                                (makeAbsFile masterSettings) (makeAbsFile masterTemplate)
+                                (makeAbsFile out)
 
-        (testD <> "//*content.docval") %> \out ->
-            do
-                let source = (out -<.> "") -<.> "withSettings.pandoc"
-                need [source]
-                runErr2action $   -- pandocToContentHtml
-                    do
-                        pandocText  <- readFile2 (makeAbsFile source)
-                        p :: DocValue <- pandocToContentHtml True (readNote "we23" pandocText :: Pandoc)
-                        write8 (makeAbsFile out) docValueFileType p
+    (testD <> "//*.z.html") %> \out ->
+        do
+            liftIO $ putIOwords ["\nshakeWrapped - testD html -  out ", showT out]
+            let md =   doughD </> ( makeRelative testD $ out -<.> "md")
+            liftIO $ putIOwords ["\nshakeWrapped - testD html - c ", showT md]
 
-        (testD <> "//*.withSettings.pandoc") %> \out ->
-            do
-                let source =  (out -<.> "md")
-                need [source]
-                runErr2action $
-                        do
-                            intext <- read8 (makeAbsFile source) markdownFileType
-                            p <- markdownToPandoc True intext
-                            writeFile2 (makeAbsFile out) (showT p)
-
-        (testD <> "//*.withSettings.md") %> \out ->
-            do
-                let mdSource2 = doughD </> makeRelative testD  ((out -<.> "")  -<.> "md")
-                need [mdSource2, masterSettings, masterTemplate]
-                runErr2action $ -- spliceMarkdown
-                    do
-                        yml <- read8 (makeAbsFile masterSettings) yamlFileType
-                        source  <-read8 (makeAbsFile mdSource2) markdownFileType
-                        let spliced = spliceMarkdown yml source
-                        write8 (makeAbsFile out)  markdownFileType spliced
-
-        (testD <> "//*.a.html") %> \out ->
-            do
-                let  mdSource1 =  (out -<.> "")
-                     mdSource2 = doughD </> makeRelative testD  (mdSource1 -<.> "md")
-                need [mdSource2, masterSettings, masterTemplate]
-                runErr2action $
-                    do
-                        bakeOneFile True (makeAbsFile mdSource2)
-                                    (makeAbsFile masterSettings) (makeAbsFile masterTemplate)
-                                    (makeAbsFile out)
-
-        (testD <> "//*.z.html") %> \out ->
-            do
-                liftIO $ putIOwords ["\nshakeWrapped - testD html -  out ", showT out]
-                let md =   doughD </> ( makeRelative testD $ out -<.> "md")
-                liftIO $ putIOwords ["\nshakeWrapped - testD html - c ", showT md]
-
---                let masterTemp = templatesD</>"Master3.gtpl"
---                    masterSettings_yaml = doughD </> "master.yaml"
-                need [md]
-                need [masterSettings]
-                need [masterTemplate]
-                runErr2action $   bakeOneFileIO  md  masterSettings masterTemplate out  -- c relative to dough/
+    --                let masterTemp = templatesD</>"Master3.gtpl"
+    --                    masterSettings_yaml = doughD </> "master.yaml"
+            need [md]
+            need [masterSettings]
+            need [masterTemplate]
+            runErr2action $
+                bakeOneFileIO  md  masterSettings masterTemplate out  -- c relative to dough/
 
 
 instance Exception Text
@@ -183,3 +186,7 @@ runErr2action op = liftIO $ do
         Right _ -> do
 --                        putIOwords ["runErr2action", "got return", showT a] --
                         return ()
+
+(--<.>) :: FilePath -> FilePath -> FilePath
+-- take away two extensions and replace with a new oneLine
+f --<.> ext =  (f -<.> "") -<.> ext
