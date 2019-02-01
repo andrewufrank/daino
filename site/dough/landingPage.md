@@ -13,11 +13,11 @@ abstract: |
     The index page for all. 
 menu: 
      - link: Blog/postwk.html
-       text: postwk4
+       text: postwk
      - link : PublicationList/postWithReference.html
        text : with reference
      - link : Blog/postwkTufte.html
-       withTufteCSS: 
+       text: withTufteCSS 
      
 ---
 
