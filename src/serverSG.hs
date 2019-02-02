@@ -123,14 +123,14 @@ mainWatchDough layout  =  do
             Twitch.addModify (\filepath -> runErrorVoid $ shake layout) "**/*.md"     -- add and modify event
 
 mainWatchThemes layout =  do
-    let themePath =  (themeDir layout) :: Path Abs Dir
+    let templatesPath =  (themeDir layout) </> templatesDirName :: Path Abs Dir
     let bakedPath = bakedDir layout
     putIOwords [programName, progTitle,"mainWatchThemes"]
     -- copy the static files, not done by shake yet
     copyDirectoryRecursive normal
-                         (toFilePath themePath) (toFilePath $ bakedPath </> staticDirName )
+                         (toFilePath templatesPath) (toFilePath $ bakedPath </> staticDirName )
     Twitch.defaultMainWithOptions (twichDefault4ssg
-                    {Twitch.root = Just . toFilePath $ themePath
+                    {Twitch.root = Just . toFilePath $ templatesPath
                      , Twitch.log = Twitch.NoLogger
                     }) $ do
 --            verbosity from Cabal

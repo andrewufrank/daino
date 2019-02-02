@@ -44,7 +44,7 @@ hr {
 
 .hero {
     padding: 0 1rem;
-    background-image: url('cropped-DSC05127-1024x330.jpg');
+    background-image: url('/static/img/cropped-DSC05127-1024x330.jpg');
     background-size: cover;
     background-position: 50% 40%;
     color: white;
