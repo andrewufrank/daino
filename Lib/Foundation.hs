@@ -35,6 +35,7 @@ data SiteLayout = SiteLayout
     , bakedDir :: Path Abs Dir -- ^ where all the files serving are
 --    , templateDir :: Path Rel Dir -- ^ where the templates are
     , reportFile :: Path Abs File  -- ^ the report from processing baked with pipe
+--    , testDir :: Path Abs Dir -- ^ the directory the test results go
                         -- not important
     } deriving (Show, Ord, Eq, Read)
 
@@ -44,6 +45,7 @@ instance NiceStrings SiteLayout where
 sourceDir :: Path Abs Dir
 sourceDir = makeAbsDir "/home/frank/Workspace8/ssg"
 
+testDir = makeAbsDir $ ("/home/frank" :: FilePath)   </> (t2s progName)
 
 layoutDefaults :: SiteLayout
 layoutDefaults = SiteLayout{  doughDir = sourceDir </> makeRelDir "site/dough"
@@ -58,25 +60,4 @@ templatesDirName = (makeRelDir "templates")
 staticDirName = makeRelDir "static"
 
 
---doughDir, bakedDir :: Path Rel Dir
----- ^ the names of the two dir, under siteDir
---doughDir = makeRelDir "dough"
---bakedDir = makeRelDir "baked"
---
---siteDir :: Path Abs Dir
----- ^ the path to the siteDir (absolute - need not inside package
---siteDir = makeAbsDir "/home/frank/Workspace8/SSG/site"
 
----- all Path will become functions with Default as argument
---doughPath, bakedPath :: Path Abs Dir
----- the path (absolute) to dough an baked
---doughPath =  (doughDir layoutDefaults) :: Path Abs Dir
---bakedPath =   (bakedDir layoutDefaults) :: Path Abs Dir
---
-----sitePath = siteDir layoutDefaults
---templatesPath :: Path Abs Dir
---reportFilePath :: Path Abs File
---templatesDir :: Path Rel Dir
---templatesDir = makeRelDir "templates"
---templatesPath = addDir (themeDir layoutDefaults) (templatesDir)
---reportFilePath = reportFile layoutDefaults

@@ -18,18 +18,17 @@ module Lib.FileMgt_test  -- (openMain, htf_thisModuelsTests)
 
 
 import           Test.Framework
-import Uniform.Strings hiding ((</>))
-import Lib.Bake
+--import Uniform.Strings hiding ((</>))
+--import Lib.Bake
 import Uniform.Filenames
 import Uniform.TypedFile
-import Lib.Foundation (layoutDefaults, SiteLayout (..))
+import Lib.Foundation   (layoutDefaults, SiteLayout (..), sourceDir, testDir)
 import Lib.FileMgt
 
 doughD = doughDir layoutDefaults
-testD = makeAbsDir "/home/frank/.SSG" :: Path Abs Dir
 
-post1 = makeAbsFile "/home/frank/Workspace8/SSG/site/dough/Blog/postwk.md" :: Path Abs File
-post2 = makeAbsFile "/home/frank/Workspace8/SSG/site/dough/Blog/postwk2.md" :: Path Abs File
+post1 = sourceDir </> makeRelFile "site/dough/Blog/postwk.md" :: Path Abs File
+post2 = testDir </> makeRelFile "site/dough/Blog/postwk2.md" :: Path Abs File
 
 test_md2 = testFileReadWrite post1 post2 markdownFileType
 -- show produces the "xx"
@@ -42,8 +41,8 @@ test_md2 = testFileReadWrite post1 post2 markdownFileType
 --                    return (mdf == mdf2)
 --            assertEqual  (Right True) res
 
-testDocVal = makeAbsFile "/home/frank/.SSG/Blog/postwk.content.docval"
-testDocVal2 = makeAbsFile "/home/frank/.SSG/Blog/postwkTest.content.docval"
+testDocVal = testDir </> makeRelFile "Blog/postwk.content.docval"
+testDocVal2 = testDir </> makeRelFile "Blog/postwkTest.content.docval"
 
 test_docvalue2 = testFileReadWrite testDocVal testDocVal2 docValueFileType
 
@@ -56,24 +55,24 @@ test_docvalue2 = testFileReadWrite testDocVal testDocVal2 docValueFileType
 --                    return (inf == f2)
 --            assertEqual  (Right True) res
 
-testYAML = makeAbsFile "/home/frank/Workspace8/SSG/site/dough/master.yaml"
-testYAML2 = makeAbsFile "/home/frank/Workspace8/SSG/site/dough/masterTest.yaml"
+testYAML = sourceDir </> makeRelFile "site/dough/master.yaml"
+testYAML2 = testDir </> makeRelFile "site/dough/masterTest.yaml"
 
 
 test_YAMLue = testFileReadWrite testYAML testYAML2 yamlFileType
 
-testHTMLout = makeAbsFile "/home/frank/.SSG/Blog/postwk.a.html"
-testHTMLout2 = makeAbsFile "/home/frank/.SSG/Blog/postwk.a2.html"
+testHTMLout = testDir </> makeRelFile "Blog/postwk.a.html"
+testHTMLout2 = testDir </> makeRelFile "Blog/postwk.a2.html"
 
 test_htmlout = testFileReadWrite testHTMLout testHTMLout2 htmloutFileType
 
-testGtemp = makeAbsFile "/home/frank/Workspace8/SSG/theme/templates/Master3.gtpl"
-testGtemp2 = makeAbsFile "/home/frank/Workspace8/SSG/theme/templates/Master32.gtpl"
+testGtemp = sourceDir </> makeRelFile "theme/templates/Master3.gtpl"
+testGtemp2 = testDir </> makeRelFile "theme/templates/Master32.gtpl"
 
 test_gtemp = testFileReadWrite testGtemp testGtemp2 gtmplFileType
 
-testDtemp = makeAbsFile "/home/frank/Workspace8/SSG/theme/templates/Page3.dtpl"
-testDtemp2 = makeAbsFile "/home/frank/Workspace8/SSG/theme/templates/Page32.dtpl"
+testDtemp = sourceDir </> makeRelFile "theme/templates/Page3.dtpl"
+testDtemp2 =testDir </> makeRelFile "theme/templates/Page32.dtpl"
 
 test_dtemp = testFileReadWrite testDtemp testDtemp2 dtmplFileType
 

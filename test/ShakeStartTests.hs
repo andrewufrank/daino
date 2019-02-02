@@ -26,7 +26,7 @@ import Development.Shake.FilePath
 --import Development.Shake.Util
 --import System.Path (copyDir)
 
-import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)
+import Lib.Foundation -- (progName, SiteLayout (..), layoutDefaults)
 import Lib.Bake
 import Lib.FileMgt
 import Lib.Foundation_test (testLayout)
@@ -45,7 +45,7 @@ test_shake =  do
 startTesting :: SiteLayout -> IO ()
 -- start the testing by executing the tests and building teh
 -- intermediate results
-startTesting layout = shakeArgs shakeOptions {shakeFiles="/home/frank/.SSG"
+startTesting layout = shakeArgs shakeOptions {shakeFiles= toFilePath testDir
                 , shakeVerbosity=Chatty -- Loud
                 , shakeLint=Just LintBasic
 --                , shakeRebuild=[(RebuildNow,"allMarkdownConversion")]
@@ -54,8 +54,8 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles="/home/frank/.SSG"
 
     let
           doughD      =   (toFilePath . doughDir $ layout)  -- the regular dough
-          templatesD =   ((toFilePath . themeDir $ layout) </> (toFilePath templatesDirName))
-          testD = "/home/frank/.SSG" :: FilePath
+          templatesD =   (toFilePath . themeDir $ layout) </> (toFilePath templatesDirName)
+          testD = toFilePath testDir
 --              staticD = testD </>"static"  -- where all the static files go
           masterSettings = doughD</>"master.yaml"
           masterTemplate = templatesD</>"Master3.gtpl"
