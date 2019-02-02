@@ -22,7 +22,7 @@
 module Lib.Foundation  -- (openMain, htf_thisModuelsTests)
      where
 
-import Uniform.Strings
+import Uniform.Strings hiding ((</>))
 import Uniform.Filenames
 --import Uniform.FileStrings
 
@@ -41,16 +41,19 @@ data SiteLayout = SiteLayout
 instance NiceStrings SiteLayout where
     shownice d = replace' ", " ",\n " (showT d)
 
---siteDir = makeAbsDir "/home/frank/Workspace8/SSG/site"
+sourceDir :: Path Abs Dir
+sourceDir = makeAbsDir "/home/frank/Workspace8/ssg"
+
 
 layoutDefaults :: SiteLayout
-layoutDefaults = SiteLayout{  doughDir = makeAbsDir "/home/frank/Workspace8/SSG/site/dough"
-            , bakedDir = makeAbsDir "/home/frank/Workspace8/SSG/site/baked"
+layoutDefaults = SiteLayout{  doughDir = sourceDir </> makeRelDir "site/dough"
+            , bakedDir = sourceDir </> makeRelDir "site/baked"
             , reportFile = makeAbsFile "/home/frank/reportBakeAll.txt"
 --            , templateDir = makeAbsDir "templates"
-            , themeDir = makeAbsDir "/home/frank/Workspace8/SSG/theme"
+            , themeDir = sourceDir </> makeRelDir "theme"
             }
 
+templatesDirName, staticDirName :: Path Rel Dir
 templatesDirName = (makeRelDir "templates")
 staticDirName = makeRelDir "static"
 
