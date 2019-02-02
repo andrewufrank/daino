@@ -46,7 +46,7 @@ bakeOneFileFPs md masterSettingsFn template ht = do
         when False $ putIOwords ["bakeOneFileIO - files", showT md2
                         , "\n", showT template2, "\n", showT ht2]
         let masterSettings = makeAbsFile masterSettingsFn
-        res <- bakeOneFile True md2 masterSettings template2 ht2
+        res <- bakeOneFile False md2 masterSettings template2 ht2
         putIOwords ["bakeOneFileFPs - done", showT ht2, res]
 
 

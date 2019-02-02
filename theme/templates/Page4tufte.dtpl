@@ -25,7 +25,7 @@
             <h3>$settings.byline$</h3>
     </section>
     <section class="header">
-            my menu test 1: 
+             
             <section class="menu"> 
 		<ul>
             		$for(menu)$

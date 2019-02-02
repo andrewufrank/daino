@@ -104,7 +104,7 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles="/home/frank/.SSG"
                 write8 (makeAbsFile out) htmloutFileType p
 
 
-    (testD <> "//*dtpl") %> \out -> do  -- produce the
+    (testD <> "//*dtpl") %> \out -> do  -- produce the combined template
         let source = out -<.>  "content.docval"
         need [source, masterTemplate]
         runErr2action $   -- spliceTemplates
