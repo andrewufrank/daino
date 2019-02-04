@@ -57,7 +57,7 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles= toFilePath $ testDir l
           templatesD =   (toFilePath . themeDir $ layout) </> (toFilePath templatesDirName)
           testD = toFilePath  $  testDir layout
 --              staticD = testD </>"static"  -- where all the static files go
-          masterSettings = doughD</>"master.yaml"
+          masterSettings = doughD</>"settings2.yaml"
           masterTemplate = templatesD</>"Master3.gtpl"
 
     want ["allTests"]

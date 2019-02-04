@@ -86,6 +86,7 @@ bakeOneFileCore :: Bool -> YamlText -> MarkdownText  -> Gtemplate  -> ErrIO HTML
 -- because the page template name is only accessible in the pandoc
 -- this is teh complete processing (above is only read and write)
 -- AK (markdow) ->  R (HTMLout)
+-- the yaml text needs --- before and ofter to separate from doc text value
 bakeOneFileCore debug preface intext masterTempl  = do
         let intext2 = spliceMarkdown preface intext  --  AK -> AG
         pandoc <- markdownToPandoc debug intext2  -- AG -> AD
@@ -102,7 +103,11 @@ bakeOneFileCore debug preface intext masterTempl  = do
 
 spliceMarkdown :: YamlText -> MarkdownText -> MarkdownText
 -- postfix the master yaml text to a markdown text
-spliceMarkdown (YamlText y) (MarkdownText m) = MarkdownText $ m <> y
+spliceMarkdown (YamlText y) (MarkdownText m) = MarkdownText $ m <> yamlSep1 <> y <> yamlSep2
+    where
+        yamlSep1 = "\n---"
+        yamlSep2 = "\n---\n"
+    -- assumes that the is spliced aftera a newline and text ends with newline
 
 spliceTemplates :: DocValue  -> Gtemplate -> ErrIO Dtemplate
 -- splice the desired page template with the master template
