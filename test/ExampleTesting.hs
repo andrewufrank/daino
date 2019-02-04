@@ -12,10 +12,10 @@ module Main     where      -- must have Main (main) or Main where
 
 import           Test.Framework
 
-import {-@ HTF_TESTS @-} ShakeStartTests
+--import {-@ HTF_TESTS @-} ShakeStartTests
 -- must run first because it produces the test values used later
 
-import {-@ HTF_TESTS @-} Lib.FileMgt_test
+--import {-@ HTF_TESTS @-} Lib.FileMgt_test
 
 --import {-@ HTF_TESTS @-} Lib.Foundation_test
 --    -- writes A : testLayout
@@ -25,7 +25,8 @@ import {-@ HTF_TESTS @-} Lib.FileMgt_test
 --    -- AK :: MarkdownText -> BE  DocValue
 --    -- AK ->AD :: Pandoc
 --    -- AD -> AF ::
-import {-@ HTF_TESTS @-} Lib.Bake_test
+--import {-@ HTF_TESTS @-} Lib.Bake_test
+import {-@ HTF_TESTS @-} Lib.ReadSetting_test
 
      -- final E
 --        --   -> resultMasterYaml  test_bake_MasterYaml

@@ -44,6 +44,7 @@ library
     , shake
     , glabrous
     , doctemplates
+    , yaml
 
   default-language: Haskell2010
 
