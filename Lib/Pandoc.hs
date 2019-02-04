@@ -13,7 +13,8 @@
 {-# LANGUAGE OverloadedStrings     #-}
 
 module Lib.Pandoc
-  ( markdownToPandoc, pandocToContentHtml
+  ( markdownToPandoc, pandocToContentHtml, getMeta
+  , Pandoc, flattenMeta, readMarkdown2, _String, key, (^?)
   ) where
 
 import Control.Lens
