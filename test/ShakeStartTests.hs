@@ -45,7 +45,7 @@ test_shake =  do
 startTesting :: SiteLayout -> IO ()
 -- start the testing by executing the tests and building teh
 -- intermediate results
-startTesting layout = shakeArgs shakeOptions {shakeFiles= toFilePath testDir
+startTesting layout = shakeArgs shakeOptions {shakeFiles= toFilePath $ testDir layout
                 , shakeVerbosity=Chatty -- Loud
                 , shakeLint=Just LintBasic
 --                , shakeRebuild=[(RebuildNow,"allMarkdownConversion")]
@@ -55,7 +55,7 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles= toFilePath testDir
     let
           doughD      =   (toFilePath . doughDir $ layout)  -- the regular dough
           templatesD =   (toFilePath . themeDir $ layout) </> (toFilePath templatesDirName)
-          testD = toFilePath testDir
+          testD = toFilePath  $  testDir layout
 --              staticD = testD </>"static"  -- where all the static files go
           masterSettings = doughD</>"master.yaml"
           masterTemplate = templatesD</>"Master3.gtpl"

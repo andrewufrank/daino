@@ -35,7 +35,7 @@ data SiteLayout = SiteLayout
     , bakedDir :: Path Abs Dir -- ^ where all the files serving are
 --    , templateDir :: Path Rel Dir -- ^ where the templates are
     , reportFile :: Path Abs File  -- ^ the report from processing baked with pipe
---    , testDir :: Path Abs Dir -- ^ the directory the test results go
+    , testDir :: Path Abs Dir -- ^ the directory the test results go
                         -- not important
     } deriving (Show, Ord, Eq, Read)
 
@@ -45,7 +45,7 @@ instance NiceStrings SiteLayout where
 sourceDir :: Path Abs Dir
 sourceDir = makeAbsDir "/home/frank/Workspace8/ssg"
 
-testDir = makeAbsDir $ ("/home/frank" :: FilePath)   </> (t2s progName)
+--testDir = makeAbsDir $ ("/home/frank" :: FilePath)   </> (t2s progName)
 
 layoutDefaults :: SiteLayout
 layoutDefaults = SiteLayout{  doughDir = sourceDir </> makeRelDir "site/dough"
@@ -53,6 +53,7 @@ layoutDefaults = SiteLayout{  doughDir = sourceDir </> makeRelDir "site/dough"
             , reportFile = makeAbsFile "/home/frank/reportBakeAll.txt"
 --            , templateDir = makeAbsDir "templates"
             , themeDir = sourceDir </> makeRelDir "theme"
+            , testDir = makeAbsDir $ ("/home/frank" :: FilePath)   </> (t2s progName)
             }
 
 templatesDirName, staticDirName :: Path Rel Dir
