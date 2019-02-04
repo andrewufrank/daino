@@ -1,5 +1,5 @@
     <body>
-    <!-- AF - my template for pandoc page (from the default) -->
+    <!-- AF - my template for pandoc page (from the default) page4tufte.dtpl-->
         $for(include-before)$
         $include-before$
         $endfor$
@@ -34,22 +34,15 @@
 		</ul>
     </section>
         
-<!--    <section class="content">
         $if(contentHtml)$
         $contentHtml$
         $endif$
-    </section>
--->
         $if(toc)$
         <nav id="$idprefix$TOC">
         $table-of-contents$
         </nav>
         $endif$
-    <section class="header">
-        <h3> $title$ </h3>
-        <p> $contentHtml$  </p>
-    </section>
-    
+     
     <p class=meta tiny">
         Produced with SGG on $datetime.date.today$.
     </p>

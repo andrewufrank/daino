@@ -1,7 +1,7 @@
     </head>
     
     <body>
-    <!-- AF - my template for pandoc page (from the default) -->
+    <!-- AF - my template for pandoc page (from the default) page3.dtpl -->
         $for(include-before)$
         $include-before$
         $endfor$
