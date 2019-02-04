@@ -33,10 +33,14 @@
             		$endfor$ 
 		</ul>
     </section>
-        
+<!-- start tufte with article tag --> 
+    <article>    
         $if(contentHtml)$
         $contentHtml$
         $endif$
+    </article>
+<!-- end article tag from tufte  --> 
+
         $if(toc)$
         <nav id="$idprefix$TOC">
         $table-of-contents$

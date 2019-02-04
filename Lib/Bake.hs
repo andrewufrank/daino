@@ -113,15 +113,16 @@ spliceTemplates :: DocValue  -> Gtemplate -> ErrIO Dtemplate
 -- splice the desired page template with the master template
             --is the product of a gtempl and a page template
             -- but is produced for each page (wasteful)
+            -- stored as "body"
 spliceTemplates val masterTempl = do
 --        putIOwords ["spliceTemplates", "val", shownice val, "\nmasterTempl", showT masterTempl]
-        let ptemplate = fmap t2s $  (unDocValue val) ^? key "pageTemplate" . _String :: Maybe FilePath
+    let ptemplate = fmap t2s $  unDocValue val ^? key "pageTemplate" . _String :: Maybe FilePath
 --
-        templ2 <- case ptemplate of
-            Nothing -> throwErrorT ["bakeOneFileCore", "no page template in markdown"]
-            Just tfn -> do
-                            let tfn2 = addFileName (themeDir layoutDefaults)
-                                    (addFileName templatesDirName (makeRelFile tfn))
-                            putPageInMaster2 tfn2 masterTempl "body"
-        return templ2
+    templ2 <- case ptemplate of
+        Nothing -> throwErrorT ["bakeOneFileCore", "no page template in markdown"]
+        Just tfn -> do
+                        let tfn2 = addFileName (themeDir layoutDefaults)
+                                (addFileName templatesDirName (makeRelFile tfn))
+                        putPageInMaster2 tfn2 masterTempl "body"
+    return templ2
 

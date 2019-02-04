@@ -119,7 +119,8 @@ processCites2x :: Bool -> Maybe FilePath -> Maybe FilePath -> Text ->   ErrIO Te
 processCites2x debug _ _  t  = do
 --        let styleFn2 = maybe apaCSL id cslfn
 --            bibfn2 = fromJustNote "processCites2x ew224" bibfn   -- tested befire
-        when debug $ putIOwords ["processCite2x" ] -- - filein\n", showT styleFn2, "\n", showT bibfn2]
+        when debug $ putIOwords ["processCite2x" ]
+                    -- - filein\n", showT styleFn2, "\n", showT bibfn2]
 
         let cmd = "pandoc"
         let cmdargs = ["--from=markdown", "--to=html5", "--filter=pandoc-citeproc" ]

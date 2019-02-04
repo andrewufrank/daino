@@ -20,7 +20,8 @@ module Lib.Shake
      where
 
 import Uniform.Strings (putIOwords) -- hiding ((<.>), (</>))
-import Uniform.Filenames -- (toFilePath, makeAbsFile, makeRelFile, makeRelDir, stripProperPrefix')
+import Uniform.Filenames -- (toFilePath, makeAbsFile
+, makeRelFile, makeRelDir, stripProperPrefix')
          hiding ((<.>), (</>))
 import Uniform.FileStrings () -- for instances
 --import Uniform.Error
@@ -56,7 +57,8 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
 --                  seems not to produce an effect
                 } $ do
 
-    let staticD = bakedD </> (toFilePath staticDirName)  -- where all the static files go
+    let staticD = bakedD </> (toFilePath staticDirName)
+        -- where all the static files go
 
 --    phony "clean" $ do
 --        putNormal "delete all files in "
@@ -77,11 +79,13 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
 
         -- get css
         cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs
-    --                liftIO $ putIOwords ["\nshakeWrapped - phony cssFiles1", showT cssFiles1]
+    --                liftIO $ putIOwords
+--                    ["\nshakeWrapped - phony cssFiles1", showT cssFiles1]
         let cssFiles2 = [replaceDirectory c staticD  | c <- cssFiles1]
     --                let cssFiles2 = [dropDirectory1 staticD </> c  | c <- cssFiles1]
         liftIO $ putIOwords ["\nshakeWrapped - phony cssFiles2", showT cssFiles2]
-    --                mapM_ (\fn -> copyFileChanged (templatesD </> fn) (staticD </> fn)) cssFiles1
+    --                mapM_ (\fn -> copyFileChanged (templatesD </> fn)
+--                    (staticD </> fn)) cssFiles1
 
         -- pages templates
         pageTemplates <- getDirectoryFiles templatesD ["/*.gtpl", "/*.dtpl"]
@@ -105,7 +109,8 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
         need [md]
         need [masterSettings_yaml]
         need [masterTemplate]
-        runErr2action $ bakeOneFileFPs  md  masterSettings_yaml masterTemplate out  -- c relative to dough/
+        runErr2action $ bakeOneFileFPs  md  masterSettings_yaml masterTemplate out
+            -- c relative to dough/
 
 --        (templatesD</>"page33.dtpl") %> \out ->     -- construct the template from pieces
 --            do
@@ -145,27 +150,3 @@ makeOneMaster master page result = do
     putIOwords ["makeOneMaster done", showT res ]
     return ()
 
-
---bakeOneFileIO2 :: FilePath -> FilePath -> FilePath -> FilePath -> IO ()
----- bake one file absolute fp , page template and result html
---bakeOneFileIO2 md masterSettingsFn template ht = do
---            et <- runErr $ bakeOneFileIO md masterSettingsFn template ht
-----            do
-----                    putIOwords ["bakeOneFileIO - from shake xx", s2t md] --baked/SGGdesign/Principles.md
-------                    let fp1 = fp
---------                            let fp1 = "/"<>fp
-----                    let md2 = makeAbsFile md
-----                    let template2 = makeAbsFile template
-----                    let ht2 = makeAbsFile ht
-----                    putIOwords ["bakeOneFileIO - files", showT md2, "\n", showT template2, "\n", showT ht2]
-------                    let fp2 = makeRelFile fp1
-------                    fp3 :: Path Rel File  <- stripProperPrefix' (makeRelDir doughD) fp2
-------                    putIOwords ["bakeOneFileIO - next run shake", showT fp2]
-------                            bakeOneFileIO - next run shake "baked/SGGdesign/Principles.md"
-------                    let fp3 = fp2
-----                    let masterSettings = makeAbsFile masterSettingsFn
-----                    res <- bakeOneFile True md2 masterSettings template2 ht2
-----                    putIOwords ["bakeOneFileIO - done", showT ht2, res]
---            case et of
---                Left msg -> throw msg
---                Right _ -> return ()
