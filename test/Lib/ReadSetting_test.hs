@@ -37,7 +37,7 @@ test_readSettings2 =
     do
         res <-  runErr $ do
                 wd <- return $  makeAbsDir "/home/frank/Workspace8/ssg/site/dough/"
-                settingsTxt <- read8 (wd </> makeRelFile "settingsTest") yamlFileType
+                settingsTxt <- read8 (wd </> makeRelFile "settings2") yamlFileType
 
                 layout <- readSettings2 True settingsTxt
                 return . showT $ layout

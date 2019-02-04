@@ -31,7 +31,7 @@ readSettings :: ErrIO SiteLayout
 readSettings = do
     putIOwords ["readSettings start"]
     wd <- return $  makeAbsDir "/home/frank/Workspace8/ssg/site/dough/"
-    settingsTxt <- read8 (wd </> makeRelFile "settings") yamlFileType
+    settingsTxt <- read8 (wd </> makeRelFile "settings2") yamlFileType
     putIOwords ["readSettings text", showT settingsTxt]
     layout3 <- readSettings2 True settingsTxt
 --    putIOwords ["readSettings layout3", showT layout3]
