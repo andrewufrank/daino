@@ -11,7 +11,7 @@ abstract: |
 nocite: |
   @navratil08
 
-bibliography: "site/resources/BibTexLatex.bib"
+bibliography: "resources/BibTexLatex.bib"
 
 references:
 - id: fenner2012a

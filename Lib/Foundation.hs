@@ -60,6 +60,6 @@ layoutDefaults = SiteLayout{  doughDir = sourceDir </> makeRelDir "site/dough"
 templatesDirName, staticDirName :: Path Rel Dir
 templatesDirName = (makeRelDir "templates")
 staticDirName = makeRelDir "static"
-
+resourcesDirName = makeRelDir "resources"
 
 

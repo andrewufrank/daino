@@ -34,14 +34,17 @@ import  Twitch hiding (Options, log)
 import qualified Twitch
 --import Control.Concurrent.Spawn
 import Control.Concurrent
-import Lib.Foundation (SiteLayout (..), layoutDefaults, templatesDirName, staticDirName)
+import Lib.Foundation
+        (SiteLayout (..), layoutDefaults
+        , templatesDirName, staticDirName, resourcesDirName)
 
 
 import Lib.Shake (shake)
 import  Lib.ReadSettingFile
 
-import Distribution.Simple.Utils (copyDirectoryRecursive)
-import Distribution.Verbosity (Verbosity(..), normal)
+import qualified Path.IO as Pathio
+--import Distribution.Simple.Utils (copyDirectoryRecursive)
+--import Distribution.Verbosity (Verbosity(..), normal)
 
 programName = "SSG" :: Text
 progTitle = unwords' ["constructing a static site generator"
@@ -58,12 +61,20 @@ main = startProg programName progTitle
 
 main2 :: ErrIO ()
 main2 = do
-            (layout2, port)  <- readSettings
-            let bakedPath =   (bakedDir layout2) :: Path Abs Dir
-            mainWatch layout2 port bakedPath
-    where      --  layout = layoutDefaults
---                doughPath =  (doughDir layout) :: Path Abs Dir
---                bakedPath =   (bakedDir layout2) :: Path Abs Dir
+    (layout, port)  <- readSettings
+    let bakedPath = bakedDir layout :: Path Abs Dir
+    let templatesPath =  (themeDir layout) </> templatesDirName :: Path Abs Dir
+    let resourcesPath = (doughDir layout) </> resourcesDirName :: Path Abs Dir
+    -- copy static resources (templates and dough)
+    Pathio.copyDirRecur
+                         (unPath resourcesPath) (unPath $ bakedPath </> staticDirName )
+    putIOwords [programName, "copied all templates  files"]
+    -- resources in dough are not needed for baked
+--    let templatesPath =  (themeDir layout) </> templatesDirName :: Path Abs Dir
+--    Pathio.copyDirRecur
+--                         (unPath templatesPath) (unPath $ bakedPath </> staticDirName )
+--    putIOwords [programName, "copied all templates  files"]
+    mainWatch layout port bakedPath
 
 mainWatch :: SiteLayout -> Port -> Path Abs Dir ->  ErrIO ()
 mainWatch layout  bakedPort bakedPath = bracketErrIO
@@ -134,8 +145,9 @@ mainWatchThemes layout =  do
     let bakedPath = bakedDir layout
     putIOwords [programName, progTitle,"mainWatchThemes"]
     -- copy the static files, not done by shake yet
-    copyDirectoryRecursive normal
-                         (toFilePath templatesPath) (toFilePath $ bakedPath </> staticDirName )
+    Pathio.copyDirRecur
+                         (unPath templatesPath) (unPath $ bakedPath </> staticDirName )
+    putIOwords [programName, "copied templates all files"]
     Twitch.defaultMainWithOptions (twichDefault4ssg
                     {Twitch.root = Just . toFilePath $ templatesPath
                      , Twitch.log = Twitch.NoLogger

@@ -83,6 +83,7 @@ executable serversg
     , twitch
     , Cabal
 --    , spawn
+    , path-io
 
   hs-source-dirs:
     src
