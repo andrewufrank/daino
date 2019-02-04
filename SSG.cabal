@@ -18,6 +18,7 @@ library
       Lib.Templating
       Lib.Pandoc
       Lib.Foundation
+      Lib.ReadSettingFile
 
   other-modules:
 

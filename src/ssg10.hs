@@ -17,7 +17,8 @@ import Uniform.Filenames
 
 import Lib.Bake
 import Lib.Shake
-import Lib.Foundation (layoutDefaults, SiteLayout (..))
+--import Lib.Foundation (layoutDefaults, SiteLayout (..))
+import Lib.ReadSettingFile
 
 programName = "SSG10" :: Text
 progTitle = "constructing a static site generator" :: Text
@@ -27,10 +28,12 @@ progTitle = "constructing a static site generator" :: Text
 
 main :: IO ()
 main = startProg programName progTitle
-             (shake layout)
+             (do
+                layout2 <- readSettings
+                shake layout2)
 
-layout :: SiteLayout
-layout = layoutDefaults {reportFile=reportfn}
-
-reportfn :: Path Abs File
-reportfn = addFileName (bakedDir layoutDefaults) (makeRelFile "reportBake.txt")
+--layout :: SiteLayout
+--layout = layoutDefaults {reportFile=reportfn}
+--
+--reportfn :: Path Abs File
+--reportfn = addFileName (bakedDir layoutDefaults) (makeRelFile "reportBake.txt")
