@@ -25,6 +25,7 @@ import Uniform.Convenience.StartApp
 
 import Web.Scotty
 import Network.Wai.Middleware.Static
+import Network.Wai.Handler.Warp   -- .Warp.Types
 
 import System.Directory
 import System.IO
@@ -44,9 +45,10 @@ import Distribution.Verbosity (Verbosity(..), normal)
 
 programName = "SSG" :: Text
 progTitle = unwords' ["constructing a static site generator"
-                , "on port ", showT bakedPort]  :: Text
+--                , "on port ", showT bakedPort
+                ]  :: Text
 
-bakedPort = 3099
+--bakedPort = 3099
 
 
 main :: IO ()
@@ -56,15 +58,15 @@ main = startProg programName progTitle
 
 main2 :: ErrIO ()
 main2 = do
-            layout2 <- readSettings
+            (layout2, port)  <- readSettings
             let bakedPath =   (bakedDir layout2) :: Path Abs Dir
-            mainWatch layout2 bakedPath
+            mainWatch layout2 port bakedPath
     where      --  layout = layoutDefaults
 --                doughPath =  (doughDir layout) :: Path Abs Dir
 --                bakedPath =   (bakedDir layout2) :: Path Abs Dir
 
-mainWatch :: SiteLayout -> Path Abs Dir ->  ErrIO ()
-mainWatch layout  bakedPath = bracketErrIO
+mainWatch :: SiteLayout -> Port -> Path Abs Dir ->  ErrIO ()
+mainWatch layout  bakedPort bakedPath = bracketErrIO
         (do  -- first
             shake layoutDefaults
             watchDough <- callIO $ forkIO (mainWatchDough layout)

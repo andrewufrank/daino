@@ -29,7 +29,7 @@ progTitle = "constructing a static site generator" :: Text
 main :: IO ()
 main = startProg programName progTitle
              (do
-                layout2 <- readSettings
+                (layout2, _)  <- readSettings
                 shake layout2
                 return ()
                 )

@@ -76,6 +76,7 @@ executable serversg
     , uniform-error
     , SSG
     , scotty
+    , warp
     , wai-middleware-static
 --    , hinotify
     , directory

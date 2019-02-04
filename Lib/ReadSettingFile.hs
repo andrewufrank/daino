@@ -26,8 +26,9 @@ import Lib.FileMgt
 import Lib.Pandoc -- (getMeta)
 --import Text.Pandoc.Definition
 import Data.Yaml
+import Data.Aeson.Lens
 
-readSettings :: ErrIO SiteLayout
+readSettings :: ErrIO (SiteLayout, Int)
 readSettings = do
     let debug = False
     when debug $ putIOwords ["readSettings start"]
@@ -40,7 +41,7 @@ readSettings = do
     return layout3
 
 
-readSettings2 :: Bool ->  YamlText ->  ErrIO SiteLayout
+readSettings2 :: Bool ->  YamlText ->  ErrIO (SiteLayout, Int)
 -- ^ process the settings file
 readSettings2 debug (YamlText t)  = do
     meta2 :: Value <- decodeThrow   . t2b $ t
@@ -56,6 +57,8 @@ readSettings2 debug (YamlText t)  = do
     let bakedDir2 = meta2 ^? key "storage". key "bakedDir" . _String :: Maybe  Text
     let reportFile2 = meta2 ^? key "storage". key "reportFile" . _String :: Maybe  Text
     let testDir2 =  meta2 ^? key "storage". key "testDir" . _String :: Maybe Text
+    let port =  meta2 ^?   key "localhostPort" . _Integral :: Maybe Integer
+
 
     let layout3 = SiteLayout { themeDir = makeAbsDir . t2s $ fromJustNote "themedir xxdwe" themeDir2
                     , doughDir = makeAbsDir . t2s $  fromJustNote "doughdir xxdwe"  doughDir2
@@ -64,9 +67,13 @@ readSettings2 debug (YamlText t)  = do
                     ,testDir = makeAbsDir . t2s $  fromJustNote "testdir xxdwe" testDir2
                     }
 --    let layout3 = F.layoutDefaults
-    when debug $ putIOwords ["readSettings2", showT layout3 ]
+    let port2 = fromInteger . fromJustNote "port wrwer" $ port
 
-    return  layout3
+    when debug $ putIOwords ["readSettings2", showT layout3 ]
+--    when debug $
+    putIOwords ["readSettings2 port", showT port2 ]
+
+    return  (layout3, port2 )
 
 --instance FromJSON Settings
 --

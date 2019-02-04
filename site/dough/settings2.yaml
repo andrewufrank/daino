@@ -5,6 +5,7 @@ storage:
     bakedDir: /home/frank/Workspace8/ssg/site/baked
     reportFile: /home/frank/SSGreport.txt
     testDir: /home/frank/SSGtest
+localhostPort: 3000
 
 # master yaml - applies to all pages
 quotes: True 
