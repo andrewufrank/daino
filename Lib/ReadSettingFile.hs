@@ -31,13 +31,9 @@ readSettings = do
     settingsTxt <- read8 (wd </> makeRelFile "settings") markdownFileType
     putIOwords ["readSettings text", showT settingsTxt]
     layout3 <- readSettings2 True settingsTxt
-    putIOwords ["readSettings d", showT layout3]
-
-
-
-    layout2 <- return layoutDefaults
-    putIOwords ["readSettings end", showT layout2]
-    return layout2
+--    putIOwords ["readSettings layout3", showT layout3]
+    putIOwords ["readSettings end", showT layout3]
+    return layout3
 
 
 readSettings2 :: Bool ->  MarkdownText ->  ErrIO SiteLayout

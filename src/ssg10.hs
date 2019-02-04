@@ -30,8 +30,7 @@ main :: IO ()
 main = startProg programName progTitle
              (do
                 layout2 <- readSettings
---                error "sdwer"
---                shake layout2
+                shake layout2
                 return ()
                 )
 
