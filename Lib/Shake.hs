@@ -101,7 +101,7 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
         liftIO $ putIOwords ["\nshakeWrapped - bakedD html - c ", showT md]
 
         let masterTemplate = templatesD</>"Master3.gtpl"
-            masterSettings_yaml = doughD </> "master.yaml"
+            masterSettings_yaml = doughD </> "settings2.yaml"
         need [md]
         need [masterSettings_yaml]
         need [masterTemplate]

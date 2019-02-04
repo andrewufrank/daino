@@ -29,11 +29,12 @@ import Data.Yaml
 
 readSettings :: ErrIO SiteLayout
 readSettings = do
-    putIOwords ["readSettings start"]
+    let debug = False
+    when debug $ putIOwords ["readSettings start"]
     wd <- return $  makeAbsDir "/home/frank/Workspace8/ssg/site/dough/"
     settingsTxt <- read8 (wd </> makeRelFile "settings2") yamlFileType
-    putIOwords ["readSettings text", showT settingsTxt]
-    layout3 <- readSettings2 True settingsTxt
+    when debug $ putIOwords ["readSettings text", showT settingsTxt]
+    layout3 <- readSettings2 debug settingsTxt
 --    putIOwords ["readSettings layout3", showT layout3]
     putIOwords ["readSettings end", showT layout3]
     return layout3
@@ -44,11 +45,11 @@ readSettings2 :: Bool ->  YamlText ->  ErrIO SiteLayout
 readSettings2 debug (YamlText t)  = do
     meta2 :: Value <- decodeThrow   . t2b $ t
 
-    putIOwords ["readSettings2 settings", showT meta2]
+    when debug $ putIOwords ["readSettings2 settings", showT meta2]
 --    let meta2 = flattenMeta (getMeta pandoc)
 
-    let themeDir2 = meta2 ^?   key "themeDir" . _String :: Maybe Text
-    putIOwords ["readSettings2 settings", showT themeDir2]
+--    let themeDir2 = meta2 ^?   key "themeDir" . _String :: Maybe Text
+--    when debug $ putIOwords ["readSettings2 themedir", showT themeDir2]
 
     let themeDir2 = meta2 ^? key "storage". key "themeDir" . _String :: Maybe Text
     let doughDir2 = meta2 ^? key "storage". key "doughDir" . _String :: Maybe Text
@@ -63,7 +64,7 @@ readSettings2 debug (YamlText t)  = do
                     ,testDir = makeAbsDir . t2s $  fromJustNote "testdir xxdwe" testDir2
                     }
 --    let layout3 = F.layoutDefaults
-    putIOwords ["readSettings2", showT layout3 ]
+    when debug $ putIOwords ["readSettings2", showT layout3 ]
 
     return  layout3
 
