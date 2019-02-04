@@ -99,6 +99,7 @@ test-suite g2
         Lib.Foundation_test
         Lib.Pandoc_test
         Lib.Templating_test
+        Lib.ReadSettingFile_test
   hs-source-dirs:
       test
   ghc-options: -Wall

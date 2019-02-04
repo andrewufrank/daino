@@ -2,7 +2,8 @@
 ------------------------------------------------------------------------------
 --
 -- Module      :   serving the baked site
-        -- started from treetagger where i used it with post -
+        -- must be in the dough directory - uses current directory to find
+        -- the settings.yaml file
 
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
@@ -36,6 +37,7 @@ import Lib.Foundation (SiteLayout (..), layoutDefaults, templatesDirName, static
 
 
 import Lib.Shake (shake)
+import  Lib.ReadSettingFile
 
 import Distribution.Simple.Utils (copyDirectoryRecursive)
 import Distribution.Verbosity (Verbosity(..), normal)
@@ -53,10 +55,13 @@ main = startProg programName progTitle
                 main2
 
 main2 :: ErrIO ()
-main2 = mainWatch layout bakedPath
-    where       layout = layoutDefaults
+main2 = do
+            layout2 <- readSettings
+            let bakedPath =   (bakedDir layout2) :: Path Abs Dir
+            mainWatch layout2 bakedPath
+    where      --  layout = layoutDefaults
 --                doughPath =  (doughDir layout) :: Path Abs Dir
-                bakedPath =   (bakedDir layoutDefaults) :: Path Abs Dir
+--                bakedPath =   (bakedDir layout2) :: Path Abs Dir
 
 mainWatch :: SiteLayout -> Path Abs Dir ->  ErrIO ()
 mainWatch layout  bakedPath = bracketErrIO

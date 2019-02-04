@@ -13,7 +13,7 @@
 {-# LANGUAGE OverloadedStrings     #-}
 {-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-unused-imports#-}
 
-module Lib.ReadSetting_test  -- (openMain, htf_thisModuelsTests)
+module Lib.ReadSettingFile_test  -- (openMain, htf_thisModuelsTests)
      where
 
 
@@ -32,6 +32,13 @@ import Data.Aeson.Lens
 import Data.Aeson
 --import Data.Aeson.Encode.Pretty (encodePretty)
 --import Data.ByteString.Lazy as BS (putStrLn)
+
+test_currentDir = do
+        res <- runErr $ do
+                cd <- currentDir
+                putIOwords ["currentDir test", showT cd]
+                return . toFilePath $ cd
+        assertEqual (Right "/home/frank/Workspace8/ssg/") res
 
 test_readSettings2 =
     do

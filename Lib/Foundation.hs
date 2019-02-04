@@ -50,10 +50,11 @@ sourceDir = makeAbsDir "/home/frank/Workspace8/ssg"
 layoutDefaults :: SiteLayout
 layoutDefaults = SiteLayout{  doughDir = sourceDir </> makeRelDir "site/dough"
             , bakedDir = sourceDir </> makeRelDir "site/baked"
-            , reportFile = makeAbsFile "/home/frank/reportBakeAll.txt"
+            , reportFile = makeAbsFile "/home/frank/SSGreport.txt"
 --            , templateDir = makeAbsDir "templates"
             , themeDir = sourceDir </> makeRelDir "theme"
-            , testDir = makeAbsDir $ ("/home/frank" :: FilePath)   </> (t2s progName)
+            , testDir = makeAbsDir
+                $ ("/home/frank" :: FilePath)   </> (t2s progName <> "test")
             }
 
 templatesDirName, staticDirName :: Path Rel Dir
