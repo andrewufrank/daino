@@ -30,8 +30,8 @@ readSettings = do
     wd <- return $  makeAbsDir "/home/frank/Workspace8/ssg/site/dough/"
     settingsTxt <- read8 (wd </> makeRelFile "settings") markdownFileType
     putIOwords ["readSettings text", showT settingsTxt]
-    d <- readSettings2 True settingsTxt
-    putIOwords ["readSettings d", d]
+    layout3 <- readSettings2 True settingsTxt
+    putIOwords ["readSettings d", showT layout3]
 
 
 
@@ -40,16 +40,28 @@ readSettings = do
     return layout2
 
 
-readSettings2 :: Bool ->  MarkdownText ->  ErrIO Text
+readSettings2 :: Bool ->  MarkdownText ->  ErrIO SiteLayout
 -- ^ process the settings file
 readSettings2 debug (MarkdownText t)  = do
     pandoc :: Pandoc  <- readMarkdown2   t
     let meta2 = flattenMeta (getMeta pandoc)
 
-    -- test if biblio is present and apply
-    let dough2 = fmap t2s $  ( meta2) ^? key "doughDir" . _String :: Maybe FilePath
+    let themeDir2 = meta2 ^? key "storage". key "themeDir" . _String :: Maybe Text
+    let doughDir2 = meta2 ^? key "storage". key "doughDir" . _String :: Maybe Text
+    let bakedDir2 = meta2 ^? key "storage". key "bakedDir" . _String :: Maybe  Text
+    let reportFile2 = meta2 ^? key "storage". key "reportFile" . _String :: Maybe  Text
+    let testDir2 =  meta2 ^? key "storage". key "testDir" . _String :: Maybe Text
 
-    return . showT $ dough2
+    let layout3 = SiteLayout { themeDir = makeAbsDir . t2s $ fromJustNote "themedir xxdwe" themeDir2
+                    , doughDir = makeAbsDir . t2s $  fromJustNote "doughdir xxdwe"  doughDir2
+                    , bakedDir = makeAbsDir . t2s $  fromJustNote "bakedir xxdwe"bakedDir2
+                    , reportFile = makeAbsFile . t2s $  fromJustNote "testfile xxdwe"  reportFile2
+                    ,testDir = makeAbsDir . t2s $  fromJustNote "testdir xxdwe" testDir2
+                    }
+
+    putIOwords ["readSettings2", showT layout3]
+
+    return  layout3
 
 
 

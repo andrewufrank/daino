@@ -30,7 +30,10 @@ main :: IO ()
 main = startProg programName progTitle
              (do
                 layout2 <- readSettings
-                shake layout2)
+--                error "sdwer"
+--                shake layout2
+                return ()
+                )
 
 --layout :: SiteLayout
 --layout = layoutDefaults {reportFile=reportfn}
