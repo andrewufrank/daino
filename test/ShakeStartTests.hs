@@ -37,29 +37,34 @@ import Text.Pandoc (Pandoc)
 import Lib.Templating (applyTemplate3 )
 import Path.IO (setCurrentDir)
 test_shake =  do
-                startTesting layoutDefaults
+                shakeTesting layoutDefaults
                 return ()
 
 -- bake errors are reported
 
-startTesting :: SiteLayout -> IO ()
+shakeTesting :: SiteLayout -> IO ()
 -- start the testing by executing the tests and building teh
 -- intermediate results
-startTesting layout = do
+shakeTesting layout = do
   let
       doughD      =   toFilePath . doughDir $ layout  -- the regular dough
       templatesD =   (toFilePath . themeDir $ layout) </> (toFilePath templatesDirName)
       testD = toFilePath  $  testDir layout
     --              staticD = testD </>"static"  -- where all the static files go
-      masterSettings = doughD</>"settings2.yaml"
-      masterTemplate = templatesD</>"master4.dtpl"
   setCurrentDir (unPath $ doughDir layout)
-  shakeArgs shakeOptions {shakeFiles= toFilePath $ testDir layout
+  shakeTestWrapped doughD templatesD testD
+
+shakeTestWrapped :: FilePath -> FilePath -> FilePath ->  IO  ()
+shakeTestWrapped doughD templatesD testD =
+    shakeArgs shakeOptions {shakeFiles= testD
             , shakeVerbosity=Chatty -- Loud
             , shakeLint=Just LintBasic
     --                , shakeRebuild=[(RebuildNow,"allMarkdownConversion")]
     --                  seems not to produce an effect
                     } $ do
+      let
+        masterSettings = doughD</>"settings2.yaml"
+        masterTemplate = templatesD</>"master4.dtpl"
       want ["allTests"]
       phony "allTests" $ do
     --                need [staticD</>"Master3.gtpl", staticD</>"master.yaml"]

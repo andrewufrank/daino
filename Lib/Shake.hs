@@ -36,14 +36,24 @@ import Development.Shake
 import Development.Shake.FilePath
 --import Development.Shake.Util
 import Development.Shake.Linters (yamllint)
+import Path.IO (setCurrentDir)
 
 shake :: SiteLayout ->    ErrIO ()
 shake layout   = do
     putIOwords ["\nshake start", shownice layout]
-    callIO $ shakeWrapped
-                (toFilePath . doughDir $ layout)
-                ((toFilePath . themeDir $ layout) </> (toFilePath templatesDirName))
-                (toFilePath . bakedDir $ layout)
+    let
+      doughD      =   toFilePath . doughDir $ layout  -- the regular dough
+      templatesD =   (toFilePath . themeDir $ layout) </> (toFilePath templatesDirName)
+--      testD = toFilePath  $  testDir layout
+      bakedD = toFilePath . bakedDir $ layout
+    --              staticD = testD </>"static"  -- where all the static files go
+      masterSettings = doughD</>"settings2.yaml"
+      masterTemplate = templatesD</>"master4.dtpl"
+    setCurrentDir (unPath $ doughDir layout)
+    callIO $ shakeWrapped doughD templatesD bakedD
+--                (toFilePath . doughDir $ layout)
+--                ((toFilePath . themeDir $ layout) </> (toFilePath templatesDirName))
+--                (toFilePath . bakedDir $ layout)
 
     putIOwords ["\nshake done", "\n"]
 
