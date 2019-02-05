@@ -27,9 +27,9 @@ readMarkdownFile8 :: String  -> ErrIO MarkdownText
 readMarkdownFile8 fnn = read8 (makeAbsFile fnn) markdownFileType
 -- uses files to be copied to dough
 --
-test_pandoc_pageFn_pageMd_1, test_pandoc_pageFn_pageMd_2 :: IO ()
-test_pandoc_pageFn_pageMd_1 = test1FileIO progName  "pageFn1" "pageMd1" readMarkdownFile8
-test_pandoc_pageFn_pageMd_2 = test1FileIO progName  "pageFn2" "pageMd2" readMarkdownFile8
+--test_pandoc_pageFn_pageMd_1, test_pandoc_pageFn_pageMd_2 :: IO ()
+--test_pandoc_pageFn_pageMd_1 = test1FileIO progName  "pageFn1" "pageMd1" readMarkdownFile8
+--test_pandoc_pageFn_pageMd_2 = test1FileIO progName  "pageFn2" "pageMd2" readMarkdownFile8
 
 --
 --test_pandoc_11_A_D, test_pandoc_12_A_D :: IO ()

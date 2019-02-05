@@ -124,5 +124,6 @@ test-suite g2
     , aeson
     , aeson-pretty
     , bytestring
+    , path-io
 
   default-language: Haskell2010

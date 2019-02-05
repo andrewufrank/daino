@@ -26,16 +26,16 @@ import Development.Shake.FilePath
 --import Development.Shake.Util
 --import System.Path (copyDir)
 
-import Lib.Foundation -- (progName, SiteLayout (..), layoutDefaults)
+import Lib.Foundation -- (progName, SiteLayout (..), layoutDefaults, templatesDirName)
 import Lib.Bake
 import Lib.FileMgt
 import Lib.Foundation_test (testLayout)
-import Lib.Foundation (templatesDirName)
+--import Lib.Foundation (templatesDirName)
 --import Lib.Templating (Gtemplate(..), gtmplFileType, Dtemplate(..))
 import Lib.Pandoc  (markdownToPandoc, pandocToContentHtml)   -- with a simplified Action ~ ErrIO
 import Text.Pandoc (Pandoc)
 import Lib.Templating (applyTemplate3 )
-
+import Path.IO (setCurrentDir)
 test_shake =  do
                 startTesting layoutDefaults
                 return ()
@@ -45,31 +45,29 @@ test_shake =  do
 startTesting :: SiteLayout -> IO ()
 -- start the testing by executing the tests and building teh
 -- intermediate results
-startTesting layout = shakeArgs shakeOptions {shakeFiles= toFilePath $ testDir layout
-                , shakeVerbosity=Chatty -- Loud
-                , shakeLint=Just LintBasic
---                , shakeRebuild=[(RebuildNow,"allMarkdownConversion")]
---                  seems not to produce an effect
-                } $ do
-
-    let
-          doughD      =   (toFilePath . doughDir $ layout)  -- the regular dough
-          templatesD =   (toFilePath . themeDir $ layout) </> (toFilePath templatesDirName)
-          testD = toFilePath  $  testDir layout
---              staticD = testD </>"static"  -- where all the static files go
-          masterSettings = doughD</>"settings2.yaml"
-          masterTemplate = templatesD</>"Master3.gtpl"
-
-    want ["allTests"]
-    phony "allTests" $ do
-
---                need [staticD</>"Master3.gtpl", staticD</>"master.yaml"]
---                -- get css
---                cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs
-----                liftIO $ putIOwords ["\nshakeWrapped - phony cssFiles1", showT cssFiles1]
---                let cssFiles = [replaceDirectory c staticD  | c <- cssFiles1]
---                need cssFiles
-
+startTesting layout = do
+  let
+      doughD      =   toFilePath . doughDir $ layout  -- the regular dough
+      templatesD =   (toFilePath . themeDir $ layout) </> (toFilePath templatesDirName)
+      testD = toFilePath  $  testDir layout
+    --              staticD = testD </>"static"  -- where all the static files go
+      masterSettings = doughD</>"settings2.yaml"
+      masterTemplate = templatesD</>"Master3.gtpl"
+  setCurrentDir (unPath $ doughDir layout)
+  shakeArgs shakeOptions {shakeFiles= toFilePath $ testDir layout
+            , shakeVerbosity=Chatty -- Loud
+            , shakeLint=Just LintBasic
+    --                , shakeRebuild=[(RebuildNow,"allMarkdownConversion")]
+    --                  seems not to produce an effect
+                    } $ do
+      want ["allTests"]
+      phony "allTests" $ do
+    --                need [staticD</>"Master3.gtpl", staticD</>"master.yaml"]
+    --                -- get css
+    --                cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs
+    ----                liftIO $ putIOwords ["\nshakeWrapped - phony cssFiles1", showT cssFiles1]
+    --                let cssFiles = [replaceDirectory c staticD  | c <- cssFiles1]
+    --                need cssFiles
         need [masterSettings, masterTemplate]
 
         mdFiles1 <- getDirectoryFiles doughD ["**/*.md", "**/*.markdown"]
@@ -80,7 +78,7 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles= toFilePath $ testDir l
         let htmlFiles2 = [testD </> md <.> "html" | md <- mdFiles3]
         liftIO $ putIOwords ["\nshakeWrapped - htmlFile", showT htmlFiles2]
 
---                need [testD </> md -<.> "z.html" | md <- mdFiles1]
+    --                need [testD </> md -<.> "z.html" | md <- mdFiles1]
 
         need [testD </> md <.> "withSettings.md" | md <- mdFiles3]  -- spliceMarkdown
         need [testD </> md <.> "withSettings.pandoc" | md <- mdFiles3]  -- markdownToPandoc
@@ -90,7 +88,7 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles= toFilePath $ testDir l
 
         need [testD </> md <.> "a.html" | md <- mdFiles3]  -- bakeOneFile
 
-    (testD <> "//*inTemplate.html") %> \out -> do --    apply the (completed) template to values
+      (testD <> "//*inTemplate.html") %> \out -> do --    apply the (completed) template to values
 
         let source = out --<.>   "content.docval"
         let tpl =  out --<.>  "dtpl"
@@ -104,7 +102,7 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles= toFilePath $ testDir l
                 write8 (makeAbsFile out) htmloutFileType p
 
 
-    (testD <> "//*dtpl") %> \out -> do  -- produce the combined template
+      (testD <> "//*dtpl") %> \out -> do  -- produce the combined template
         let source = out -<.>  "content.docval"
         need [source, masterTemplate]
         runErr2action $   -- spliceTemplates
@@ -117,7 +115,7 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles= toFilePath $ testDir l
                 p :: Dtemplate <- spliceTemplates (valText :: DocValue)  (gtempl :: Gtemplate)
                 write8 (makeAbsFile out) dtmplFileType p
 
-    (testD <> "//*content.docval") %> \out -> do
+      (testD <> "//*content.docval") %> \out -> do
 
 --            let source = (out -<.> "") -<.> "withSettings.pandoc"
         let source = out --<.>   "withSettings.pandoc"
@@ -128,8 +126,8 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles= toFilePath $ testDir l
                 p :: DocValue <- pandocToContentHtml True (readNote "we23" pandocText :: Pandoc)
                 write8 (makeAbsFile out) docValueFileType p
 
-    (testD <> "//*.withSettings.pandoc") %> \out -> do
-        let source =  (out -<.> "md")
+      (testD <> "//*.withSettings.pandoc") %> \out -> do
+        let source =  out -<.> "md"
         need [source]
         runErr2action $
                 do
@@ -137,7 +135,7 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles= toFilePath $ testDir l
                     p <- markdownToPandoc True intext
                     writeFile2 (makeAbsFile out) (showT p)
 
-    (testD <> "//*.withSettings.md") %> \out -> do
+      (testD <> "//*.withSettings.md") %> \out -> do
         let mdSource2 = doughD </> makeRelative testD  ((out -<.> "")  -<.> "md")
         need [mdSource2, masterSettings, masterTemplate]
         runErr2action $ -- spliceMarkdown
@@ -147,8 +145,8 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles= toFilePath $ testDir l
                 let spliced = spliceMarkdown yml source
                 write8 (makeAbsFile out)  markdownFileType spliced
 
-    (testD <> "//*.a.html") %> \out -> do
-        let  mdSource1 =  (out -<.> "")
+      (testD <> "//*.a.html") %> \out -> do
+        let  mdSource1 =  out -<.> ""
              mdSource2 = doughD </> makeRelative testD  (mdSource1 -<.> "md")
         need [mdSource2, masterSettings, masterTemplate]
         runErr2action $
@@ -157,7 +155,7 @@ startTesting layout = shakeArgs shakeOptions {shakeFiles= toFilePath $ testDir l
                             (makeAbsFile masterSettings) (makeAbsFile masterTemplate)
                             (makeAbsFile out)
 
-    (testD <> "//*.z.html") %> \out -> do
+      (testD <> "//*.z.html") %> \out -> do
         liftIO $ putIOwords ["\nshakeWrapped - testD html -  out ", showT out]
         let md =   doughD </> ( makeRelative testD $ out -<.> "md")
         liftIO $ putIOwords ["\nshakeWrapped - testD html - c ", showT md]

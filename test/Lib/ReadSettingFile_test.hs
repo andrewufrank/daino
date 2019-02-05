@@ -38,7 +38,7 @@ test_currentDir = do
                 cd <- currentDir
                 putIOwords ["currentDir test", showT cd]
                 return . toFilePath $ cd
-        assertEqual (Right ("/home/frank/Workspace8/ssg/")) res
+        assertEqual (Right ("/home/frank/Workspace8/ssg/site/dough/")) res
 
 test_readSettings2 =
     do
