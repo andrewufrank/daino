@@ -69,9 +69,9 @@ bakeOneFile debug pageFn dough2 template2 ht2 = do
         pageMd :: MarkdownText <- read8 pageFn markdownFileType -- pageFn -> pageMd
         -- process the md file (including bibtex citations)
         pandoc <- markdownToPandoc debug pageMd  -- AG -> AD
-                                -- withSettings.pandoc
+                                                        -- withSettings.pandoc
         -- produce html and put into contentHtml key
-        docval <- pandocToContentHtml debug pandoc  -- with settings.pandoc
+        docval <- pandocToContentHtml debug pandoc  -- content.docval
 
         let mpt = getMaybeStringAtKey docval "pageTemplate"
         let pageType = maybe "page3" id mpt

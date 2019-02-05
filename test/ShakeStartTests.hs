@@ -88,7 +88,7 @@ shakeTestWrapped doughD templatesD testD =
 
 --        need [testD </> md <.> "withSettings.md" | md <- mdFiles3]  -- spliceMarkdown
         need [testD </> md <.> "withSettings.pandoc" | md <- mdFiles3]  -- markdownToPandoc
---        need [testD </> md <.> "content.docval" | md <- mdFiles3]  -- pandocToContentHtml
+        need [testD </> md <.> "content.docval" | md <- mdFiles3]  -- pandocToContentHtml
 --        need [testD </> md <.> "dtpl" | md <- mdFiles3]  -- spliceTemplates
 --        need [testD </> md <.> "inTemplate.html" | md <- mdFiles3]  -- applyTemplate3
 --
@@ -107,6 +107,16 @@ shakeTestWrapped doughD templatesD testD =
                     p <- markdownToPandoc True intext
                     writeFile2 (makeAbsFile out) (showT p)
 
+      (testD <> "//*content.docval") %> \out -> do
+        let source = out --<.>   "withSettings.pandoc"
+        need [source]
+        runErr2action $   -- pandocToContentHtml
+            do
+                pandocText  <- readFile2 (makeAbsFile source)
+                p :: DocValue <- pandocToContentHtml True
+                                (readNote "we23" pandocText :: Pandoc)
+                write8 (makeAbsFile out) docValueFileType p
+
 --      (testD <> "//*dtpl") %> \out -> do  -- produce the combined template
 --        let source = out -<.>  "content.docval"
 --        need [source, masterTemplate]
@@ -120,17 +130,6 @@ shakeTestWrapped doughD templatesD testD =
 --                p :: Dtemplate <- spliceTemplates (valText :: DocValue)  (gtempl :: Gtemplate)
 --                write8 (makeAbsFile out) dtmplFileType p
 
-      (testD <> "//*content.docval") %> \out -> do
-
---            let source = (out -<.> "") -<.> "withSettings.pandoc"
-        let source = out --<.>   "withSettings.pandoc"
-        need [source]
-        runErr2action $   -- pandocToContentHtml
-            do
-                pandocText  <- readFile2 (makeAbsFile source)
-                p :: DocValue <- pandocToContentHtml True
-                                (readNote "we23" pandocText :: Pandoc)
-                write8 (makeAbsFile out) docValueFileType p
 
       (testD <> "//*inTemplate.html") %> \out -> do --    apply the (completed) template to values
         let source = out --<.>   "content.docval"
