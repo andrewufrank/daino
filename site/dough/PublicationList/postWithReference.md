@@ -3,7 +3,7 @@ title: postWithReference
 author: auf
 date: 2010-07-29
 keywords: homepage
-pageTemplate: Page3.yaml
+pageTemplate: page3.yaml
 abstract: |
     What are the objects of
     ontologists .

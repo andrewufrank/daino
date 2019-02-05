@@ -1,5 +1,6 @@
 masterTemplate: master4.dtpl
-
+beforeContent: "<section class=header>"
+afterContent: "</section>"
 
 
 

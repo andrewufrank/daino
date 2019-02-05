@@ -4,7 +4,7 @@ author: auf
 date: Jan. 4, 2019
 keywords: test
 abstract: A silly text not needing an abstract updated.
-pageTemplate: Page4tufte.yaml
+pageTemplate: page4tufte.yaml
 css :
     - /static/tufte.css  # relative to root of site - so called absolute
 ---

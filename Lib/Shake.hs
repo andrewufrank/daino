@@ -81,7 +81,9 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
 
         liftIO $ putIOwords ["\nshakeWrapped phony allMarkdonwConversion" ]
 
-        yamllint
+--        yamllint  -- issue with create process
+--        yamllint: createProcess: runInteractiveProcb
+
 
         -- get markdown files
         mdFiles1 <- getDirectoryFiles  doughD ["//*.md", "//*.markdown"]

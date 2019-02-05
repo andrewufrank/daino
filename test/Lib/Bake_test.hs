@@ -47,6 +47,6 @@ test_findTemplate =
                     putIOwords ["test_findTemplate", "found", showT ptemplate]
                     return   ptemplate
 
-        assertEqual (Right (Just "Page3"::Maybe Text))  res
+        assertEqual (Right (Just "page3"::Maybe Text))  res
 
 

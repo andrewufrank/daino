@@ -52,7 +52,7 @@ temp2 = "xxx and yyy"
 --           assertEqual () res
 
 templateDir = addDir (themeDir testLayout) templatesDirName
-page3  = addDir templateDir (makeRelFile "Page3")
+page3  = addDir templateDir (makeRelFile "page3")
 master3 = addDir templateDir (makeRelFile "Master3")
 page33 = addDir templateDir(makeRelFile "page33")
 --

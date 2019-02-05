@@ -30,7 +30,7 @@ import Lib.Templating
 import Lib.FileMgt
 --import Lib.Foundation
 
-import Data.Yaml (decodeThrow)
+--import Data.Yaml (decodeThrow)
 --import Control.Lens
 import Data.Aeson
 --import Data.Aeson.Lens
@@ -76,7 +76,7 @@ bakeOneFile debug md2 dough2 template2 ht2 = do
         let pageType = maybe "page3" id mpt
         -- TODO where is default page set?
         yaml <- read8  ( template2 </> (pageType)) yamlFileType
-        ptype :: Value <- decodeThrow   . t2b . unYAML $ yaml
+--        ptype :: Value <- decodeThrow   . t2b . unYAML $ yaml
 
         let mmt = getMaybeStringAtKey docval "masterTemplate"
 
@@ -84,8 +84,8 @@ bakeOneFile debug md2 dough2 template2 ht2 = do
 --        svalue <- decodeThrow . t2b . unYAML $ settings
 
         -- TODO where is settings2 file name fixed
-        let masterfn = maybe "master4.html" id mmt
-        template <- read8 (dough2 </> masterfn) dtmplFileType
+        let masterfn = maybe "master4.dtpl" id mmt
+        template <- read8 (template2 </> masterfn) dtmplFileType
 
         let val = DocValue . fromJustNote "decoded union 2r2e"
                       . decodeBytestrings
