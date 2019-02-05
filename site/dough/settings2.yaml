@@ -13,7 +13,7 @@ css :
     - /static/style.css  # relative to root of site - so called absolute
     - /static/menu.css 
 
-author : NN
+author : Author of Settings 
 date: 2019-01-01
 settings : 
     sitename : siteNameExample

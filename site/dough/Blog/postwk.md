@@ -1,6 +1,6 @@
 ---
 title: postwk.md
-author: auf
+author: AUF
 date: Jan. 4, 2019
 keywords: test
 abstract: A silly text not needing an abstract.

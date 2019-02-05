@@ -29,7 +29,7 @@ import Lib.Bake
 import Lib.FileMgt
 import Lib.Foundation_test (testLayout)
 --import Lib.Foundation (templatesDirName)
-import Lib.Pandoc  (markdownToPandoc, pandocToContentHtml)
+import Lib.Pandoc  (markdownToPandoc, pandocToContentHtml,docValToAllVal)
         -- with a simplified Action ~ ErrIO
 import Text.Pandoc (Pandoc)
 import Lib.Templating (applyTemplate3 )
@@ -89,6 +89,7 @@ shakeTestWrapped doughD templatesD testD =
 --        need [testD </> md <.> "withSettings.md" | md <- mdFiles3]  -- spliceMarkdown
         need [testD </> md <.> "withSettings.pandoc" | md <- mdFiles3]  -- markdownToPandoc
         need [testD </> md <.> "content.docval" | md <- mdFiles3]  -- pandocToContentHtml
+        need [testD </> md <.> "allyaml.docval" | md <- mdFiles3]  -- pandocToContentHtml
 --        need [testD </> md <.> "dtpl" | md <- mdFiles3]  -- spliceTemplates
 --        need [testD </> md <.> "inTemplate.html" | md <- mdFiles3]  -- applyTemplate3
 --
@@ -115,6 +116,18 @@ shakeTestWrapped doughD templatesD testD =
                 pandocText  <- readFile2 (makeAbsFile source)
                 p :: DocValue <- pandocToContentHtml True
                                 (readNote "we23" pandocText :: Pandoc)
+                write8 (makeAbsFile out) docValueFileType p
+
+      (testD <> "//*allyaml.docval") %> \out -> do
+        let source = out --<.>   "content.docval"
+        need [source]
+        -- does not track the settingss and the pageN.yaml
+        runErr2action $   -- docValToAllVal
+            do
+                valText :: DocValue  <-   read8 (makeAbsFile source )
+                                                docValueFileType
+                p :: DocValue <- docValToAllVal True
+                                valText (makeAbsDir doughD) (makeAbsDir templatesD)
                 write8 (makeAbsFile out) docValueFileType p
 
 --      (testD <> "//*dtpl") %> \out -> do  -- produce the combined template

@@ -34,7 +34,7 @@ import Lib.FileMgt
 --import Control.Lens
 import Data.Aeson
 --import Data.Aeson.Lens
-import  Data.Yaml.Union
+--import  Data.Yaml.Union
 
 bakeOneFileFPs :: FilePath -> FilePath -> FilePath -> FilePath -> ErrIO ()
 -- this is called from shake and produce the final html
@@ -73,25 +73,27 @@ bakeOneFile debug pageFn dough2 template2 ht2 = do
         -- produce html and put into contentHtml key
         docval <- pandocToContentHtml debug pandoc  -- content.docval
 
-        let mpt = getMaybeStringAtKey docval "pageTemplate"
-        let pageType = maybe "page3" id mpt
-        -- TODO where is default page set?
-        yaml <- read8  ( template2 </> (pageType)) yamlFileType
---        ptype :: Value <- decodeThrow   . t2b . unYAML $ yaml
-
+--        let mpt = getMaybeStringAtKey docval "pageTemplate"
+--        let pageType = maybe "page0default" id mpt
+--        -- TODO where is default page set?
+--        yaml <- read8  ( template2 </> (pageType)) yamlFileType
+----        ptype :: Value <- decodeThrow   . t2b . unYAML $ yaml
+--
         let mmt = getMaybeStringAtKey docval "masterTemplate"
-
-        settings <- read8 (dough2 </> makeRelFile "settings2") yamlFileType
---        svalue <- decodeThrow . t2b . unYAML $ settings
 
         -- TODO where is settings2 file name fixed
         let masterfn = maybe "master4.dtpl" id mmt
         template <- read8 (template2 </> masterfn) dtmplFileType
-
-        let val = DocValue . fromJustNote "decoded union 2r2e"
-                      . decodeBytestrings
-                    $ [bl2b . encode $ unDocValue docval, t2b $ unYAML yaml, t2b $ unYAML settings]
-
+--
+--        settings <- read8 (dough2 </> makeRelFile "settings2") yamlFileType
+----        svalue <- decodeThrow . t2b . unYAML $ settings
+--
+--        let val = DocValue . fromJustNote "decoded union 2r2e"
+--                      . decodeBytestrings
+--                    $ [bl2b . encode $ unDocValue docval
+--                        , t2b $ unYAML yaml
+--                        , t2b $ unYAML settings]
+        val <- docValToAllVal debug docval dough2 template2
         html2 <-  applyTemplate3 template val  -- inTemplate.html
 
 --

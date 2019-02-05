@@ -1,9 +1,9 @@
 ---
 title: postwk.md
-author: auf
+author: Andrew U Frank
 date: Jan. 4, 2019
 keywords: test
-abstract: A silly text not needing an abstract.
+abstract: Some text without an idea.
 pageTemplate: page3.yaml
 ---
 

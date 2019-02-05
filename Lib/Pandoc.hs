@@ -21,15 +21,18 @@ module Lib.Pandoc
 import Control.Lens ((^?), (?~), (&), at)
 import Data.Aeson
 import Data.Aeson.Lens
+import  Data.Yaml.Union
 import Text.Pandoc as Pandoc
 import Text.Pandoc.Highlighting
 import Text.Pandoc.Shared
 import Text.CSL.Pandoc (processCites')
 import System.Process  as System (readProcess)
 
+import Uniform.Filenames hiding (Meta, at)
 import Uniform.Error hiding (Meta, at)
-import Lib.FileMgt (MarkdownText(..), unMT, HTMLout(..), unHTMLout
-            , unDocValue, DocValue (..) )
+import Uniform.FileIO hiding (Meta, at)
+import Lib.FileMgt -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
+--            , unDocValue, DocValue (..) )
 
 
 
@@ -66,6 +69,34 @@ pandocToContentHtml debug pandoc2 = do
     let withContent = putStringAtKey meta2 "contentHthml" (unHTMLout text2)
 --    ( meta2) & _Object . at "contentHtml" ?~ String (unHTMLout text2)
     return  . DocValue $ withContent
+
+docValToAllVal :: Bool -> DocValue -> Path Abs Dir -> Path Abs Dir -> ErrIO DocValue
+-- from the docVal of the page
+-- get the pageType and the settings (master) values
+-- and combine them
+docValToAllVal debug docval dough2 template2 = do
+        let mpt = getMaybeStringAtKey docval "pageTemplate"
+        let pageType = maybe "page0default" id mpt
+        -- TODO where is default page set?
+        yaml <- read8  ( template2 </> (pageType)) yamlFileType
+--        ptype :: Value <- decodeThrow   . t2b . unYAML $ yaml
+
+--        let mmt = getMaybeStringAtKey docval "masterTemplate"
+--
+--        -- TODO where is settings2 file name fixed
+--        let masterfn = maybe "master4.dtpl" id mmt
+--        template <- read8 (template2 </> masterfn) dtmplFileType
+
+        settings <- read8 (dough2 </> makeRelFile "settings2") yamlFileType
+--        svalue <- decodeThrow . t2b . unYAML $ settings
+
+        let val = DocValue . fromJustNote "decoded union 2r2e"
+                      . decodeBytestrings
+                    $ [ t2b $ unYAML settings
+                        , t2b $ unYAML yaml
+                        , bl2b . encode $ unDocValue docval
+                       ]  -- last winns!
+        return val
 
 
 -- | Reasonable options for reading a markdown file
