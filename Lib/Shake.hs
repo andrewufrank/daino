@@ -21,7 +21,7 @@ module Lib.Shake
 
 import Uniform.Strings (putIOwords) -- hiding ((<.>), (</>))
 import Uniform.Filenames -- (toFilePath, makeAbsFile
-, makeRelFile, makeRelDir, stripProperPrefix')
+--                , makeRelFile, makeRelDir, stripProperPrefix')
          hiding ((<.>), (</>))
 import Uniform.FileStrings () -- for instances
 --import Uniform.Error
