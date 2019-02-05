@@ -36,7 +36,7 @@ import Development.Shake
 import Development.Shake.FilePath
 --import Development.Shake.Util
 import Development.Shake.Linters (yamllint)
-import Path.IO (setCurrentDir)
+--import Path.IO (setCurrentDir)
 
 shake :: SiteLayout ->    ErrIO ()
 shake layout   = do
@@ -49,7 +49,7 @@ shake layout   = do
     --              staticD = testD </>"static"  -- where all the static files go
       masterSettings = doughD</>"settings2.yaml"
       masterTemplate = templatesD</>"master4.dtpl"
-    setCurrentDir (unPath $ doughDir layout)
+    setCurrentDir (doughDir layout)
     callIO $ shakeWrapped doughD templatesD bakedD
 --                (toFilePath . doughDir $ layout)
 --                ((toFilePath . themeDir $ layout) </> (toFilePath templatesDirName))

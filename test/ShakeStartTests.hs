@@ -35,7 +35,7 @@ import Lib.Foundation_test (testLayout)
 import Lib.Pandoc  (markdownToPandoc, pandocToContentHtml)   -- with a simplified Action ~ ErrIO
 import Text.Pandoc (Pandoc)
 import Lib.Templating (applyTemplate3 )
-import Path.IO (setCurrentDir)
+--import Path.IO (setCurrentDir)
 test_shake =  do
                 shakeTesting layoutDefaults
                 return ()
@@ -51,7 +51,7 @@ shakeTesting layout = do
       templatesD =   (toFilePath . themeDir $ layout) </> (toFilePath templatesDirName)
       testD = toFilePath  $  testDir layout
     --              staticD = testD </>"static"  -- where all the static files go
-  setCurrentDir (unPath $ doughDir layout)
+  setCurrentDir (doughDir layout)
   shakeTestWrapped doughD templatesD testD
 
 shakeTestWrapped :: FilePath -> FilePath -> FilePath ->  IO  ()
