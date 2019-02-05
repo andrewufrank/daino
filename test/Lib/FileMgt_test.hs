@@ -56,8 +56,8 @@ test_docvalue2 = testFileReadWrite testDocVal testDocVal2 docValueFileType
 --                    return (inf == f2)
 --            assertEqual  (Right True) res
 
-testYAML = sourceDir </> makeRelFile "site/dough/master.yaml"
-testYAML2 = testD </> makeRelFile "site/dough/masterTest.yaml"
+testYAML = sourceDir </> makeRelFile "site/dough/settings2.yaml"
+testYAML2 = testD </> makeRelFile "site/dough/settings2.yaml"
 
 
 test_YAMLue = testFileReadWrite testYAML testYAML2 yamlFileType
@@ -72,8 +72,8 @@ test_htmlout = testFileReadWrite testHTMLout testHTMLout2 htmloutFileType
 --
 --test_gtemp = testFileReadWrite testGtemp testGtemp2 gtmplFileType
 
-testDtemp = sourceDir </> makeRelFile "theme/templates/Page3.dtpl"
-testDtemp2 =testD </> makeRelFile "theme/templates/Page32.dtpl"
+testDtemp = sourceDir </> makeRelFile "theme/templates/master4.dtpl"
+testDtemp2 =testD </> makeRelFile "theme/templates/master4.dtpl"
 
 test_dtemp = testFileReadWrite testDtemp testDtemp2 dtmplFileType
 

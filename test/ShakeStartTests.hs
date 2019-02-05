@@ -51,7 +51,7 @@ shakeTesting layout = do
       templatesD =   (toFilePath . themeDir $ layout) </> (toFilePath templatesDirName)
       testD = toFilePath  $  testDir layout
     --              staticD = testD </>"static"  -- where all the static files go
-  setCurrentDir (doughDir layout)
+  _ <- runErr $ setCurrentDir (doughDir layout)
   shakeTestWrapped doughD templatesD testD
 
 shakeTestWrapped :: FilePath -> FilePath -> FilePath ->  IO  ()
