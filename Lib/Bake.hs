@@ -63,14 +63,15 @@ bakeOneFile :: Bool -> Path Abs File -> Path Abs Dir
 -- get pageType, read file and process
 
 --test in bake_tests:
-bakeOneFile debug md2 dough2 template2 ht2 = do
-        putIOwords ["\n-----------------", "bakeOneFile fn", showT md2, "\n\n"]
+bakeOneFile debug pageFn dough2 template2 ht2 = do
+        putIOwords ["\n-----------------", "bakeOneFile fn", showT pageFn, "\n\n"]
         -- currently only for md files
-        intext :: MarkdownText <- read8 md2 markdownFileType
+        pageMd :: MarkdownText <- read8 pageFn markdownFileType -- pageFn -> pageMd
         -- process the md file (including bibtex citations)
-        pandoc <- markdownToPandoc debug intext  -- AG -> AD
+        pandoc <- markdownToPandoc debug pageMd  -- AG -> AD
+                                -- withSettings.pandoc
         -- produce html and put into contentHtml key
-        docval <- pandocToContentHtml debug pandoc
+        docval <- pandocToContentHtml debug pandoc  -- with settings.pandoc
 
         let mpt = getMaybeStringAtKey docval "pageTemplate"
         let pageType = maybe "page3" id mpt
@@ -91,7 +92,7 @@ bakeOneFile debug md2 dough2 template2 ht2 = do
                       . decodeBytestrings
                     $ [bl2b . encode $ unDocValue docval, t2b $ unYAML yaml, t2b $ unYAML settings]
 
-        html2 <-  applyTemplate3 template val
+        html2 <-  applyTemplate3 template val  -- inTemplate.html
 
 --
         write8   ht2 htmloutFileType html2
@@ -99,14 +100,14 @@ bakeOneFile debug md2 dough2 template2 ht2 = do
 --            (which was just written) \n", unHTMLout html2, "\n"]
 
         when debug $ putIOwords ["bakeOneFile resultFile"
-                        , showT ht2, "from",  showT md2, "\n"]
+                        , showT ht2, "from",  showT pageFn, "\n"]
         when debug $ putIOwords ["\n......................"]
 
-        return . unwords' $  ["bakeOneFile outhtml ", showT md2, "done"]
+        return . unwords' $  ["bakeOneFile outhtml ", showT pageFn, "done"]
 
  `catchError` (\e -> do
                     let errmsg2 =  ["\n****************"
-                                , "bakeOneFile catchError", showT e , "for ", showT md2
+                                , "bakeOneFile catchError", showT e , "for ", showT pageFn
 
                                 , "\n****************"]
                     putIOwords errmsg2

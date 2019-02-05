@@ -18,10 +18,8 @@ module ShakeStartTests
 
 
 import           Test.Framework
---import Uniform.Test.TestHarness          hiding ((<.>), (</>))
 import Uniform.FileIO            hiding ((<.>), (</>))
 import Development.Shake
---import Development.Shake.Command
 import Development.Shake.FilePath
 --import Development.Shake.Util
 --import System.Path (copyDir)
@@ -31,8 +29,8 @@ import Lib.Bake
 import Lib.FileMgt
 import Lib.Foundation_test (testLayout)
 --import Lib.Foundation (templatesDirName)
---import Lib.Templating (Gtemplate(..), gtmplFileType, Dtemplate(..))
-import Lib.Pandoc  (markdownToPandoc, pandocToContentHtml)   -- with a simplified Action ~ ErrIO
+import Lib.Pandoc  (markdownToPandoc, pandocToContentHtml)
+        -- with a simplified Action ~ ErrIO
 import Text.Pandoc (Pandoc)
 import Lib.Templating (applyTemplate3 )
 --import Path.IO (setCurrentDir)
@@ -79,33 +77,35 @@ shakeTestWrapped doughD templatesD testD =
         let mdFiles3 =  map dropExtension mdFiles1
         liftIO $ putIOwords ["\nshakeWrapped - makrdown and md files to work on\n"
                         , showT mdFiles3]
-        -- overall test
-        let htmlFiles2 = [testD </> md <.> "html" | md <- mdFiles3]
-        liftIO $ putIOwords ["\nshakeWrapped - htmlFile", showT htmlFiles2]
+--            ["landingPage","Blog/postTufteStyled","Blog/postwk","Blog/postwk2"
+--            ,"Blog/postwkTufte","PublicationList/postWithReference"]
+
+--        -- overall test
+--        let htmlFiles2 = [testD </> md <.> "html" | md <- mdFiles3]
+--        liftIO $ putIOwords ["\nshakeWrapped - htmlFile", showT htmlFiles2]
 
     --                need [testD </> md -<.> "z.html" | md <- mdFiles1]
 
-        need [testD </> md <.> "withSettings.md" | md <- mdFiles3]  -- spliceMarkdown
+--        need [testD </> md <.> "withSettings.md" | md <- mdFiles3]  -- spliceMarkdown
         need [testD </> md <.> "withSettings.pandoc" | md <- mdFiles3]  -- markdownToPandoc
-        need [testD </> md <.> "content.docval" | md <- mdFiles3]  -- pandocToContentHtml
-        need [testD </> md <.> "dtpl" | md <- mdFiles3]  -- spliceTemplates
-        need [testD </> md <.> "inTemplate.html" | md <- mdFiles3]  -- applyTemplate3
+--        need [testD </> md <.> "content.docval" | md <- mdFiles3]  -- pandocToContentHtml
+--        need [testD </> md <.> "dtpl" | md <- mdFiles3]  -- spliceTemplates
+--        need [testD </> md <.> "inTemplate.html" | md <- mdFiles3]  -- applyTemplate3
+--
+--        need [testD </> md <.> "a.html" | md <- mdFiles3]  -- bakeOneFile
 
-        need [testD </> md <.> "a.html" | md <- mdFiles3]  -- bakeOneFile
 
-      (testD <> "//*inTemplate.html") %> \out -> do --    apply the (completed) template to values
+-- in order of bakeOneFile :
 
-        let source = out --<.>   "content.docval"
-        let tpl =  out --<.>  "dtpl"
-        need [source, tpl]
-        runErr2action $   -- applyTemplate3
-            do
-                valText :: DocValue  <-   read8 (makeAbsFile source )
-                                                docValueFileType
-                dtempl :: Dtemplate  <- read8 (makeAbsFile tpl ) dtmplFileType
-                p :: HTMLout <- applyTemplate3  dtempl valText
-                write8 (makeAbsFile out) htmloutFileType p
-
+      (testD <> "//*.withSettings.pandoc") %> \out -> do
+        liftIO $ putIOwords ["\n.withSettings.pandoc", s2t out]
+        let source = doughD </> (makeRelative testD  (out --<.> "md"))
+        need [source]
+        runErr2action $
+                do
+                    intext <- read8 (makeAbsFile source) markdownFileType
+                    p <- markdownToPandoc True intext
+                    writeFile2 (makeAbsFile out) (showT p)
 
 --      (testD <> "//*dtpl") %> \out -> do  -- produce the combined template
 --        let source = out -<.>  "content.docval"
@@ -128,17 +128,21 @@ shakeTestWrapped doughD templatesD testD =
         runErr2action $   -- pandocToContentHtml
             do
                 pandocText  <- readFile2 (makeAbsFile source)
-                p :: DocValue <- pandocToContentHtml True (readNote "we23" pandocText :: Pandoc)
+                p :: DocValue <- pandocToContentHtml True
+                                (readNote "we23" pandocText :: Pandoc)
                 write8 (makeAbsFile out) docValueFileType p
 
-      (testD <> "//*.withSettings.pandoc") %> \out -> do
-        let source =  out -<.> "md"
-        need [source]
-        runErr2action $
-                do
-                    intext <- read8 (makeAbsFile source) markdownFileType
-                    p <- markdownToPandoc True intext
-                    writeFile2 (makeAbsFile out) (showT p)
+      (testD <> "//*inTemplate.html") %> \out -> do --    apply the (completed) template to values
+        let source = out --<.>   "content.docval"
+        let tpl =  out --<.>  "dtpl"
+        need [source, tpl]
+        runErr2action $   -- applyTemplate3
+            do
+                valText :: DocValue  <-   read8 (makeAbsFile source )
+                                                docValueFileType
+                dtempl :: Dtemplate  <- read8 (makeAbsFile tpl ) dtmplFileType
+                p :: HTMLout <- applyTemplate3  dtempl valText
+                write8 (makeAbsFile out) htmloutFileType p
 
 --      (testD <> "//*.withSettings.md") %> \out -> do
 --        let mdSource2 = doughD </> makeRelative testD  ((out -<.> "")  -<.> "md")
