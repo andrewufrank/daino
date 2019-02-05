@@ -1,8 +1,3 @@
--- This file has been generated from package.yaml by hpack version 0.28.2.
---
--- see: https://github.com/sol/hpack
---
--- hash: e79d5aea9d8b4709817950a5a6bfcbe7bf3109d3aa7ff6d31f563fbcb25e592b
 
 name:           SSG
 version:        0.0.1
@@ -39,10 +34,12 @@ library
     , lens-aeson
     , lens
     , aeson-pretty
+    , yaml-union
 --    , pipes
     , path , path-io
     , shake
-    , glabrous
+    , shake-ext
+--    , glabrous
     , doctemplates
     , yaml
 
@@ -114,7 +111,7 @@ test-suite g2
     , uniform-fileio
     , uniform-error
     , SSG
-    , glabrous
+--    , glabrous
     , doctemplates
     , pandoc-types
     , shake
@@ -124,6 +121,7 @@ test-suite g2
     , aeson
     , aeson-pretty
     , bytestring
+    , yaml-union
     , path-io
 
   default-language: Haskell2010

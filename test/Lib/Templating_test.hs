@@ -26,7 +26,7 @@ import Lib.Foundation_test (testLayout)
 import Lib.Templating -- (applyTemplate2, convGmaster)
 --import Uniform.Filenames
 import Lib.FileMgt
-import qualified Text.Glabrous as G
+--import qualified Text.Glabrous as G
 --import Text.Glabrous (Template, insert) -- , insertMany)
 --import Text.DocTemplates
 
@@ -38,18 +38,18 @@ import qualified Text.Glabrous as G
 temp1 = "some start {{template2}} and some more text."
 temp2 = "xxx and yyy"
 
-t1 = fromRightNoteString "t1 rwe2" . G.fromText $ temp1
-t2 = fromRightNoteString "t2 wwer2" . G.fromText $ temp2
+--t1 = fromRightNoteString "t1 rwe2" . G.fromText $ temp1
+--t2 = fromRightNoteString "t2 wwer2" . G.fromText $ temp2
+--
+--c1 = G.fromList [("template2",temp2)] :: G.Context
+--
+--res1 = G.process  t1 c1  :: Text
 
-c1 = G.fromList [("template2",temp2)] :: G.Context
 
-res1 = G.process  t1 c1  :: Text
-
-
-test_convMaster3 = do
-           res <- runErrorVoid $ putPageInMaster
-                     page3 master3 "body" page33
-           assertEqual () res
+--test_convMaster3 = do
+--           res <- runErrorVoid $ putPageInMaster
+--                     page3 master3 "body" page33
+--           assertEqual () res
 
 templateDir = addDir (themeDir testLayout) templatesDirName
 page3  = addDir templateDir (makeRelFile "Page3")

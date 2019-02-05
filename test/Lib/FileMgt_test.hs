@@ -67,10 +67,10 @@ testHTMLout2 = testD </> makeRelFile "Blog/postwk.a2.html"
 
 test_htmlout = testFileReadWrite testHTMLout testHTMLout2 htmloutFileType
 
-testGtemp = sourceDir </> makeRelFile "theme/templates/Master3.gtpl"
-testGtemp2 = testD </> makeRelFile "theme/templates/Master32.gtpl"
-
-test_gtemp = testFileReadWrite testGtemp testGtemp2 gtmplFileType
+--testGtemp = sourceDir </> makeRelFile "theme/templates/Master3.gtpl"
+--testGtemp2 = testD </> makeRelFile "theme/templates/Master32.gtpl"
+--
+--test_gtemp = testFileReadWrite testGtemp testGtemp2 gtmplFileType
 
 testDtemp = sourceDir </> makeRelFile "theme/templates/Page3.dtpl"
 testDtemp2 =testD </> makeRelFile "theme/templates/Page32.dtpl"

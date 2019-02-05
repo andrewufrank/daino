@@ -35,6 +35,7 @@ import Development.Shake
 --import Development.Shake.Command
 import Development.Shake.FilePath
 --import Development.Shake.Util
+import Development.Shake.Linters (yamllint)
 
 shake :: SiteLayout ->    ErrIO ()
 shake layout   = do
@@ -66,16 +67,18 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
             -- need one for ssg and one for baked
 
     want ["allMarkdownConversion"]
-
     phony "allMarkdownConversion" $ do
 
         liftIO $ putIOwords ["\nshakeWrapped phony allMarkdonwConversion" ]
+
+        yamllint
 
         -- get markdown files
         mdFiles1 <- getDirectoryFiles  doughD ["//*.md", "//*.markdown"]
         let htmlFiles2 = [bakedD </> md -<.> "html" | md <- mdFiles1]
         liftIO $ putIOwords ["\nshakeWrapped - htmlFile"
                 ,  showT (map (makeRelative doughD) htmlFiles2)]
+                -- list of file.html (no dir)
 
         -- get css
         cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs
@@ -88,7 +91,7 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
 --                    (staticD </> fn)) cssFiles1
 
         -- pages templates
-        pageTemplates <- getDirectoryFiles templatesD ["/*.gtpl", "/*.dtpl"]
+        pageTemplates <- getDirectoryFiles templatesD ["/*.gtpl"]
         let pageTemplates2 = [templatesD </> tpl | tpl <- pageTemplates]
         liftIO $ putIOwords ["\nshakeWrapped - phony pageTemplates", showT pageTemplates2]
 
@@ -101,25 +104,20 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
     (bakedD <> "//*.html") %> \out -> do
 
         liftIO $ putIOwords ["\nshakeWrapped - bakedD html -  out ", showT out]
-        let md =   doughD </> ( makeRelative bakedD $ out -<.> "md")
+        let md =   doughD </>  (makeRelative bakedD $ out -<.> "md")
         liftIO $ putIOwords ["\nshakeWrapped - bakedD html - c ", showT md]
 
-        let masterTemplate = templatesD</>"Master3.gtpl"
-            masterSettings_yaml = doughD </> "settings2.yaml"
+--        let masterTemplate = templatesD</>"Master3.gtpl"
+--            masterSettings_yaml = doughD </> "settings2.yaml"
         need [md]
-        need [masterSettings_yaml]
-        need [masterTemplate]
-        runErr2action $ bakeOneFileFPs  md  masterSettings_yaml masterTemplate out
+--        need [masterSettings_yaml]
+--        need [masterTemplate]
+        runErr2action $ bakeOneFileFPs  md  doughD templatesD out
             -- c relative to dough/
 
---        (templatesD</>"page33.dtpl") %> \out ->     -- construct the template from pieces
---            do
---                liftIO $ putIOwords ["\nshakeWrapped - templatesD dtpl -  out ", showT out]
---                let mf = templatesD</>"Master3.gtpl"
---                let pf = templatesD</>"Page3.dtpl"
---                need [mf, pf]
---                liftIO $ makeOneMaster mf pf out
-----                copyFileChanged (replaceDirectory out templatesD) out
+--    (templatesD</>"*.dtpl") %> \out ->     -- check only existence
+--        do
+
 
     (staticD </> "*.css") %> \out ->  do           -- insert css
         liftIO $ putIOwords ["\nshakeWrapped - staticD - *.css", showT out]
@@ -139,14 +137,14 @@ runErr2action op = liftIO $ do
         Left msg -> throw msg
         Right a -> return a
 
-makeOneMaster :: FilePath -> FilePath -> FilePath -> IO ()
--- makes the master plus page style in template
-makeOneMaster master page result = do
-    putIOwords ["makeOneMaster", showT result]
-
-    res <- runErrorVoid $ putPageInMaster
-                     (makeAbsFile page) (makeAbsFile master)
-                    "body" (makeAbsFile result)
-    putIOwords ["makeOneMaster done", showT res ]
-    return ()
+--makeOneMaster :: FilePath -> FilePath -> FilePath -> IO ()
+---- makes the master plus page style in template
+--makeOneMaster master page result = do
+--    putIOwords ["makeOneMaster", showT result]
+--
+--    res <- runErrorVoid $ putPageInMaster
+--                     (makeAbsFile page) (makeAbsFile master)
+--                    "body" (makeAbsFile result)
+--    putIOwords ["makeOneMaster done", showT res ]
+--    return ()
 

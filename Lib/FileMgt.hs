@@ -110,23 +110,23 @@ extMD = Extension "md"
 extHTML = Extension "html"
 
 
--- handling the glabrous templates gtpl
-extGtemplate = Extension "gtpl"
-
-newtype Gtemplate = Gtemplate Text deriving (Show, Read, Eq, Ord)
--- ^ a template which contains variables in glabrous {{xx}} format
--- a wrapper around html ready to publish
---unGtemplate (Gtemplate a) = a
-
-gtmplFileType = makeTyped extGtemplate :: TypedFile5 Text Gtemplate
-
-instance Zeros Gtemplate where zero = Gtemplate zero
-
-instance TypedFiles5 Text Gtemplate  where
-instance TypedFiles7 Text Gtemplate  where
-
-    wrap7 = Gtemplate
-    unwrap7 (Gtemplate a) = a
+---- handling the glabrous templates gtpl
+--extGtemplate = Extension "gtpl"
+--
+--newtype Gtemplate = Gtemplate Text deriving (Show, Read, Eq, Ord)
+---- ^ a template which contains variables in glabrous {{xx}} format
+---- a wrapper around html ready to publish
+----unGtemplate (Gtemplate a) = a
+--
+--gtmplFileType = makeTyped extGtemplate :: TypedFile5 Text Gtemplate
+--
+--instance Zeros Gtemplate where zero = Gtemplate zero
+--
+--instance TypedFiles5 Text Gtemplate  where
+--instance TypedFiles7 Text Gtemplate  where
+--
+--    wrap7 = Gtemplate
+--    unwrap7 (Gtemplate a) = a
 
 -- handling the doctype templates dtpl
 extDtemplate = Extension "dtpl"

@@ -52,7 +52,7 @@ startTesting layout = do
       testD = toFilePath  $  testDir layout
     --              staticD = testD </>"static"  -- where all the static files go
       masterSettings = doughD</>"settings2.yaml"
-      masterTemplate = templatesD</>"Master3.gtpl"
+      masterTemplate = templatesD</>"master4.dtpl"
   setCurrentDir (unPath $ doughDir layout)
   shakeArgs shakeOptions {shakeFiles= toFilePath $ testDir layout
             , shakeVerbosity=Chatty -- Loud
@@ -102,18 +102,18 @@ startTesting layout = do
                 write8 (makeAbsFile out) htmloutFileType p
 
 
-      (testD <> "//*dtpl") %> \out -> do  -- produce the combined template
-        let source = out -<.>  "content.docval"
-        need [source, masterTemplate]
-        runErr2action $   -- spliceTemplates
-    --is the product of a gtempl and a page template
-    -- but is produced for each page (wasteful)
-            do
-                putIOwords ["testD - dtpl", showT source]
-                valText  <- read8 (makeAbsFile source)  docValueFileType
-                gtempl <- read8 (makeAbsFile masterTemplate) gtmplFileType
-                p :: Dtemplate <- spliceTemplates (valText :: DocValue)  (gtempl :: Gtemplate)
-                write8 (makeAbsFile out) dtmplFileType p
+--      (testD <> "//*dtpl") %> \out -> do  -- produce the combined template
+--        let source = out -<.>  "content.docval"
+--        need [source, masterTemplate]
+--        runErr2action $   -- spliceTemplates
+--    --is the product of a gtempl and a page template
+--    -- but is produced for each page (wasteful)
+--            do
+--                putIOwords ["testD - dtpl", showT source]
+--                valText  <- read8 (makeAbsFile source)  docValueFileType
+--                gtempl <- read8 (makeAbsFile masterTemplate) gtmplFileType
+--                p :: Dtemplate <- spliceTemplates (valText :: DocValue)  (gtempl :: Gtemplate)
+--                write8 (makeAbsFile out) dtmplFileType p
 
       (testD <> "//*content.docval") %> \out -> do
 
@@ -135,15 +135,15 @@ startTesting layout = do
                     p <- markdownToPandoc True intext
                     writeFile2 (makeAbsFile out) (showT p)
 
-      (testD <> "//*.withSettings.md") %> \out -> do
-        let mdSource2 = doughD </> makeRelative testD  ((out -<.> "")  -<.> "md")
-        need [mdSource2, masterSettings, masterTemplate]
-        runErr2action $ -- spliceMarkdown
-            do
-                yml <- read8 (makeAbsFile masterSettings) yamlFileType
-                source  <-read8 (makeAbsFile mdSource2) markdownFileType
-                let spliced = spliceMarkdown yml source
-                write8 (makeAbsFile out)  markdownFileType spliced
+--      (testD <> "//*.withSettings.md") %> \out -> do
+--        let mdSource2 = doughD </> makeRelative testD  ((out -<.> "")  -<.> "md")
+--        need [mdSource2, masterSettings, masterTemplate]
+--        runErr2action $ -- spliceMarkdown
+--            do
+--                yml <- read8 (makeAbsFile masterSettings) yamlFileType
+--                source  <-read8 (makeAbsFile mdSource2) markdownFileType
+--                let spliced = spliceMarkdown yml source
+--                write8 (makeAbsFile out)  markdownFileType spliced
 
       (testD <> "//*.a.html") %> \out -> do
         let  mdSource1 =  out -<.> ""
@@ -152,7 +152,7 @@ startTesting layout = do
         runErr2action $
             do
                 bakeOneFile True (makeAbsFile mdSource2)
-                            (makeAbsFile masterSettings) (makeAbsFile masterTemplate)
+                            (makeAbsDir doughD) (makeAbsDir templatesD)
                             (makeAbsFile out)
 
       (testD <> "//*.z.html") %> \out -> do
@@ -166,8 +166,7 @@ startTesting layout = do
 
         runErr2action $ bakeOneFile False
             (makeAbsFile md)
-            (makeAbsFile masterSettings)
-            (makeAbsFile masterTemplate)
+             (makeAbsDir doughD) (makeAbsDir templatesD)
             (makeAbsFile out)
 
 

@@ -26,7 +26,7 @@ import Text.DocTemplates (applyTemplate)
 --import Data.Aeson
 
 import Lib.FileMgt
-import qualified Text.Glabrous as G
+--import qualified Text.Glabrous as G
 
 -- the final application
 applyTemplate3 :: Dtemplate -> DocValue -> ErrIO HTMLout
@@ -36,45 +36,45 @@ applyTemplate3  templText val = do
                     Left msg -> throwError  . s2t $ msg
                     Right val2 -> return  . HTMLout $  (val2 :: Text)
 
-putPageInMaster ::  Path Abs File -> Path Abs File -> Text -> Path Abs File -> ErrIO ()
--- ^ insert the first doctype template into the (master) glabrous template at the tag
--- result is a doctype (clean) template
-putPageInMaster  page master tag full = do
-        putIOwords ["putPageInMaster put", showT page, "into", showT master
-                        , "\n\tat",  tag, "giving", showT full]
-        fm :: Gtemplate <- read8 master gtmplFileType -- must have correct extension
-        resTempl2 <- putPageInMaster2  page fm tag
-        write8 full dtmplFileType ( resTempl2 :: Dtemplate)
+--putPageInMaster ::  Path Abs File -> Path Abs File -> Text -> Path Abs File -> ErrIO ()
+---- ^ insert the first doctype template into the (master) glabrous template at the tag
+---- result is a doctype (clean) template
+--putPageInMaster  page master tag full = do
+--        putIOwords ["putPageInMaster put", showT page, "into", showT master
+--                        , "\n\tat",  tag, "giving", showT full]
+--        fm :: Gtemplate <- read8 master gtmplFileType -- must have correct extension
+--        resTempl2 <- putPageInMaster2  page fm tag
+--        write8 full dtmplFileType ( resTempl2 :: Dtemplate)
 
-putPageInMaster2 ::  Path Abs File -> Gtemplate -> Text ->  ErrIO Dtemplate
--- ^ insert the first doctype template into the (master) glabrous template at the tag
--- result is a doctype (clean) template
-putPageInMaster2  page master tag  = do
---    putIOwords ["putPageInMaster2 put", showT page, "into", showT master
---                        , "\n\tat",  tag]
+--putPageInMaster2 ::  Path Abs File -> Gtemplate -> Text ->  ErrIO Dtemplate
+---- ^ insert the first doctype template into the (master) glabrous template at the tag
+---- result is a doctype (clean) template
+--putPageInMaster2  page master tag  = do
+----    putIOwords ["putPageInMaster2 put", showT page, "into", showT master
+----                        , "\n\tat",  tag]
+--
+----    fm :: Gtemplate <- read8 master gtmplFileType -- must have correct extension
+----    putIOwords ["putPageInMaster", "fm read"]
+--    fp :: Dtemplate <- read8 page dtmplFileType
+----    putIOwords ["putPageInMaster", "fpread"]
+--
+--    let master2 = compileGlabrous master :: G.Template
+--    let temp2 = unwrap7 fp  :: Text -- the text of the page (doctemplate)
+--
+--    let replaceList = G.fromList [(tag,temp2)] :: G.Context
+--
+--    let resTempl = G.partialProcess master2 replaceList :: G.Template
+--
+--    let tags = G.tagsOf resTempl -- should be null
+--    when (not $ null tags) $
+--        throwErrorT ["putPageInMaster", "template not completely replaced"
+--                    , "tags open", showT tags]
+--    return . Dtemplate $ G.toText resTempl
 
---    fm :: Gtemplate <- read8 master gtmplFileType -- must have correct extension
---    putIOwords ["putPageInMaster", "fm read"]
-    fp :: Dtemplate <- read8 page dtmplFileType
---    putIOwords ["putPageInMaster", "fpread"]
-
-    let master2 = compileGlabrous master :: G.Template
-    let temp2 = unwrap7 fp  :: Text -- the text of the page (doctemplate)
-
-    let replaceList = G.fromList [(tag,temp2)] :: G.Context
-
-    let resTempl = G.partialProcess master2 replaceList :: G.Template
-
-    let tags = G.tagsOf resTempl -- should be null
-    when (not $ null tags) $
-        throwErrorT ["putPageInMaster", "template not completely replaced"
-                    , "tags open", showT tags]
-    return . Dtemplate $ G.toText resTempl
-
-compileGlabrous :: Gtemplate -> G.Template
--- compile a glabrous template from text
-compileGlabrous t = either (\msg -> errorT ["glabrous master not ok", s2t msg]) id
-                    $ G.fromText . unwrap7 $ t
+--compileGlabrous :: Gtemplate -> G.Template
+---- compile a glabrous template from text
+--compileGlabrous t = either (\msg -> errorT ["glabrous master not ok", s2t msg]) id
+--                    $ G.fromText . unwrap7 $ t
 
 
 

@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<!-- a master page for the pandoc templating mechanism includes a body page 
-	expects body inserted from second template using the glabrous templating mechanis
+<!-- the master page for the pandoc templating mechanism
 	needs page-title, page-title-postfix
 		author date and keywords for indexing
-	uses style.css as default, other can be loaded 
+	uses style.css as default, other can be loaded
 	-->
 <html lang="$lang$">
   <head>
@@ -21,7 +20,7 @@
       	q { quotes: "“" "”" "‘" "’"; }
 	$endif$
   </style>
-  
+
 	$if(highlighting-css)$
 	  <style type="text/css">
 	$highlighting-css$
@@ -53,10 +52,10 @@
 	$endfor$
 -->
 
-<!-- end master - start page --> 
- 
+<!-- end master - start page -->
+
     </head>
-    
+
     <body>
     <!-- AF - my template for pandoc page (from the default) page3.dtpl -->
         $for(include-before)$
@@ -84,22 +83,22 @@
             <h3>$settings.byline$</h3>
     </section>
     <section class="header">
-           
-            <section class="menu"> 
+
+            <section class="menu">
 		<ul>
             	$for(menu)$
 				<li><a href=$menu.link$>$menu.text$</a></li>
-            		$endfor$ 
+            		$endfor$
 		</ul>
     </section>
-        
-<!-- start tufte with article tag  
-    <article>    
+
+<!-- start tufte with article tag
+    <article>
         $if(contentHtml)$
         $contentTufte$
         $endif$
     </article>
-end article tag from tufte  --> 
+end article tag from tufte  -->
 
         $if(toc)$
         <nav id="$idprefix$TOC">
@@ -107,26 +106,26 @@ end article tag from tufte  -->
         </nav>
         $endif$
 
-<!-- new content section --> 
-    $beforeContent$ 
-    $contentHtml$ 
-    $afterContent$ 
+<!-- new content section -->
+    $beforeContent$
+    $contentHtml$
+    $afterContent$
 
-<!-- non tufte content 
+<!-- non tufte content
          <section class="header">
         <h3> $title$ </h3>
         <p> $contentHtml$  </p>
     </section>
 -- >
-    
+
     <p class=meta tiny">
         Produced with SGG on $datetime.date.today$.
     </p>
-    
+
         $for(include-after)$
         $include-after$
         $endfor$
     </body>
 
- 
+
 </html>

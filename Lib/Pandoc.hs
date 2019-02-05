@@ -13,11 +13,12 @@
 {-# LANGUAGE OverloadedStrings     #-}
 
 module Lib.Pandoc
-  ( markdownToPandoc, pandocToContentHtml, getMeta
-  , Pandoc, flattenMeta, readMarkdown2, _String, key, (^?)
-  ) where
+--  ( markdownToPandoc, pandocToContentHtml, getMeta
+--  , Pandoc, flattenMeta, readMarkdown2, _String, key, (^?)
+--  )
+    where
 
-import Control.Lens
+import Control.Lens ((^?), (?~), (&), at)
 import Data.Aeson
 import Data.Aeson.Lens
 import Text.Pandoc as Pandoc
@@ -47,7 +48,8 @@ markdownToPandoc debug (MarkdownText t)  = do
     let meta2 = flattenMeta (getMeta pandoc)
 
     -- test if biblio is present and apply
-    let bib = fmap t2s $  ( meta2) ^? key "bibliography" . _String :: Maybe FilePath
+    let bib = getMaybeStringAtKey meta2 "bibliography"
+--    let bib = fmap t2s $  ( meta2) ^? key "bibliography" . _String :: Maybe FilePath
 
     pandoc2 <- case bib of
         Nothing ->  return pandoc
@@ -60,8 +62,9 @@ pandocToContentHtml :: Bool -> Pandoc ->  ErrIO DocValue
 -- the settings are initially put into the pandoc
 pandocToContentHtml debug pandoc2 = do
     text2 <-  writeHtml5String2 pandoc2
-    let meta2 = flattenMeta (getMeta pandoc2)
-    let withContent = ( meta2) & _Object . at "contentHtml" ?~ String (unHTMLout text2)
+    let meta2 = flattenMeta (getMeta pandoc2) :: Value
+    let withContent = putStringAtKey meta2 "contentHthml" (unHTMLout text2)
+--    ( meta2) & _Object . at "contentHtml" ?~ String (unHTMLout text2)
     return  . DocValue $ withContent
 
 
@@ -109,30 +112,27 @@ unPandocM op1 = do
 getMeta :: Pandoc -> Meta
 getMeta (Pandoc m _) = m
 
+class AtKey v where
+    getMaybeStringAtKey :: v -> Text -> Maybe FilePath
+    putStringAtKey :: v -> Text -> Text -> v
+instance AtKey Value where
+    getMaybeStringAtKey meta2 k2 = fmap t2s $ meta2 ^? key k2 . _String
 
-processCites2x :: Bool -> Maybe FilePath -> Maybe FilePath -> Text ->   ErrIO Text
--- porcess the cites in the text
--- using systemcall because the standalone pandoc works
--- call is: pandoc -f markdown -t html  --filter=pandoc-citeproc
--- the csl and bib file are used from text, not from what is passed
+--instance AsValue Meta
+--instance AsPrimitive Meta
+--instance AsNumber Meta
 
-processCites2x debug _ _  t  = do
---        let styleFn2 = maybe apaCSL id cslfn
---            bibfn2 = fromJustNote "processCites2x ew224" bibfn   -- tested befire
-        when debug $ putIOwords ["processCite2x" ]
-                    -- - filein\n", showT styleFn2, "\n", showT bibfn2]
+    putStringAtKey meta2 k2 txt = meta2 & _Object . at k2 ?~ String txt
+--        (unHTMLout text2)
 
-        let cmd = "pandoc"
-        let cmdargs = ["--from=markdown", "--to=html5", "--filter=pandoc-citeproc" ]
---                    ++ cmdargsbib ++ cmdargsCSL
---        let cmdargsbib =  "--bibliography=" <> showT cslfn
---        let cmdargsCSL = "--csl=" <> showT bibfn
+instance AtKey DocValue  where
+    getMaybeStringAtKey meta2 k2 = getMaybeStringAtKey (unDocValue meta2) k2
 
-        let cmdinp = t2s t
-        res :: String <- callIO $ System.readProcess cmd cmdargs cmdinp
+--instance AsValue Meta
+--instance AsPrimitive Meta
+--instance AsNumber Meta
 
-        return . s2t $ res
-        -- error are properly caught and reported in ErrIO
+    putStringAtKey meta2 k2 txt = DocValue $ (unDocValue meta2) & _Object . at k2 ?~ String txt
 
 
 

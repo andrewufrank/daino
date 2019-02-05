@@ -25,8 +25,10 @@ import  Lib.Foundation
 import Lib.FileMgt
 import Lib.Pandoc -- (getMeta)
 --import Text.Pandoc.Definition
-import Data.Yaml
+import Data.Yaml (decodeThrow)
 import Data.Aeson.Lens
+import Data.Aeson
+import Control.Lens ((^?))
 
 readSettings :: ErrIO (SiteLayout, Int)
 readSettings = do
@@ -35,6 +37,7 @@ readSettings = do
     wd <- currentDir
     settingsTxt <- read8 (wd </> makeRelFile "settings2") yamlFileType
     when debug $ putIOwords ["readSettings text", showT settingsTxt]
+    -- TODO where is settings
     layout3 <- readSettings2 debug settingsTxt
 --    putIOwords ["readSettings layout3", showT layout3]
     putIOwords ["readSettings end", showT layout3]
