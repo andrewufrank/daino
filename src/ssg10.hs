@@ -23,8 +23,6 @@ import Lib.ReadSettingFile
 programName = "SSG10" :: Text
 progTitle = "constructing a static site generator" :: Text
 
---post1 = makeRelFile "postwk.md" :: Path Rel File
---postWithRef = makeRelFile "PublicationList/postWithReference.md" :: Path Rel File
 
 main :: IO ()
 main = startProg programName progTitle
@@ -34,8 +32,3 @@ main = startProg programName progTitle
                 return ()
                 )
 
---layout :: SiteLayout
---layout = layoutDefaults {reportFile=reportfn}
---
---reportfn :: Path Abs File
---reportfn = addFileName (bakedDir layoutDefaults) (makeRelFile "reportBake.txt")

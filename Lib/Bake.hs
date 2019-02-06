@@ -41,17 +41,17 @@ bakeOneFileFPs :: FilePath -> FilePath -> FilePath -> FilePath -> ErrIO ()
 -- bake one file absolute fp , page template and result html
 -- exceptionally calls with FilePath (usually the files are read in shake and
 -- passed the values)
-bakeOneFileFPs md doughD templateD ht = do
+bakeOneFileFPs md doughD templatesD ht = do
         putIOwords ["bakeOneFileFPs - from shake xx", s2t md]
             --baked/SGGdesign/Principles.md
         let md2 = makeAbsFile md
         let dough2 = makeAbsDir doughD
-        let template2 = makeAbsDir templateD
+        let templates2 = makeAbsDir templatesD
         let ht2 = makeAbsFile ht
         when False $ putIOwords ["bakeOneFileIO - files", showT md2
-                        , "\ntemplate: ", showT template2, "\noutput file: ", showT ht2]
+                        , "\ntemplate: ", showT templates2, "\noutput file: ", showT ht2]
 --        let masterSettings = makeAbsFile masterSettingsFn
-        res <- bakeOneFile False md2 dough2 template2 ht2
+        res <- bakeOneFile False md2 dough2 templates2 ht2
         putIOwords ["bakeOneFileFPs - done", showT ht2, res]
 
 
@@ -63,7 +63,7 @@ bakeOneFile :: Bool -> Path Abs File -> Path Abs Dir
 -- get pageType, read file and process
 
 --test in bake_tests:
-bakeOneFile debug pageFn dough2 template2 ht2 = do
+bakeOneFile debug pageFn dough2 templates2 ht2 = do
         putIOwords ["\n-----------------", "bakeOneFile fn", showT pageFn, "\n\n"]
         -- currently only for md files
         pageMd :: MarkdownText <- read8 pageFn markdownFileType -- pageFn -> pageMd
@@ -79,11 +79,6 @@ bakeOneFile debug pageFn dough2 template2 ht2 = do
 --        yaml <- read8  ( template2 </> (pageType)) yamlFileType
 ----        ptype :: Value <- decodeThrow   . t2b . unYAML $ yaml
 --
-        let mmt = getMaybeStringAtKey docval "masterTemplate"
-
-        -- TODO where is settings2 file name fixed
-        let masterfn = maybe "master4.dtpl" id mmt
-        template <- read8 (template2 </> masterfn) dtmplFileType
 --
 --        settings <- read8 (dough2 </> makeRelFile "settings2") yamlFileType
 ----        svalue <- decodeThrow . t2b . unYAML $ settings
@@ -93,10 +88,18 @@ bakeOneFile debug pageFn dough2 template2 ht2 = do
 --                    $ [bl2b . encode $ unDocValue docval
 --                        , t2b $ unYAML yaml
 --                        , t2b $ unYAML settings]
-        val <- docValToAllVal debug docval dough2 template2
-        html2 <-  applyTemplate3 template val  -- inTemplate.html
+        val <- docValToAllVal debug docval dough2 templates2
 
+--        let mmt = getMaybeStringAtKey val "masterTemplate"
 --
+--        -- TODO where is settings2 file name fixed
+--        let masterfn = maybe "master4.dtpl" id mmt
+--        template <- read8 (templates2 </> masterfn) dtmplFileType
+--
+--        html2 <-  applyTemplate3 template val  -- inTemplate.html
+
+        html2 <- putValinMaster debug val templates2
+
         write8   ht2 htmloutFileType html2
 --            putIOwords ["bakeOneFile outhtml
 --            (which was just written) \n", unHTMLout html2, "\n"]
@@ -115,6 +118,22 @@ bakeOneFile debug pageFn dough2 template2 ht2 = do
                     putIOwords errmsg2
                     return . unwords' $ errmsg2
                 )
+
+putValinMaster :: Bool -> DocValue -> Path Abs Dir -> ErrIO HTMLout
+-- ^ get the master html template and put the val into it
+-- takes the master filename from val
+putValinMaster debug val templates2 =  do
+        let mmt = getMaybeStringAtKey val "masterTemplate"
+        let masterfn = fromMaybe "master4.dtpl"  mmt
+        template <- read8 (templates2 </> masterfn) dtmplFileType
+        html2 <-  applyTemplate3 template val  -- inTemplate.html
+        when debug $
+            putIOwords ["putValinMaster\n\n", showT html2]
+        return html2
+
+
+
+
 
 --bakeOneFileCore :: Bool -> YamlText -> MarkdownText  -> Gtemplate  -> ErrIO HTMLout
 ---- the template can only be combined here,

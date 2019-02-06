@@ -66,7 +66,7 @@ pandocToContentHtml :: Bool -> Pandoc ->  ErrIO DocValue
 pandocToContentHtml debug pandoc2 = do
     text2 <-  writeHtml5String2 pandoc2
     let meta2 = flattenMeta (getMeta pandoc2) :: Value
-    let withContent = putStringAtKey meta2 "contentHthml" (unHTMLout text2)
+    let withContent = putStringAtKey meta2 "contentHtml" (unHTMLout text2)
 --    ( meta2) & _Object . at "contentHtml" ?~ String (unHTMLout text2)
     return  . DocValue $ withContent
 

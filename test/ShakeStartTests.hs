@@ -29,9 +29,9 @@ import Lib.Bake
 import Lib.FileMgt
 import Lib.Foundation_test (testLayout)
 --import Lib.Foundation (templatesDirName)
-import Lib.Pandoc  (markdownToPandoc, pandocToContentHtml,docValToAllVal)
+import Lib.Pandoc  -- (markdownToPandoc, pandocToContentHtml,docValToAllVal)
         -- with a simplified Action ~ ErrIO
-import Text.Pandoc (Pandoc)
+import Text.Pandoc  (Pandoc)
 import Lib.Templating (applyTemplate3 )
 --import Path.IO (setCurrentDir)
 test_shake =  do
@@ -91,7 +91,7 @@ shakeTestWrapped doughD templatesD testD =
         need [testD </> md <.> "content.docval" | md <- mdFiles3]  -- pandocToContentHtml
         need [testD </> md <.> "allyaml.docval" | md <- mdFiles3]  -- pandocToContentHtml
 --        need [testD </> md <.> "dtpl" | md <- mdFiles3]  -- spliceTemplates
---        need [testD </> md <.> "inTemplate.html" | md <- mdFiles3]  -- applyTemplate3
+        need [testD </> md <.> "inTemplate.html" | md <- mdFiles3]  -- applyTemplate3
 --
 --        need [testD </> md <.> "a.html" | md <- mdFiles3]  -- bakeOneFile
 
@@ -130,6 +130,36 @@ shakeTestWrapped doughD templatesD testD =
                                 valText (makeAbsDir doughD) (makeAbsDir templatesD)
                 write8 (makeAbsFile out) docValueFileType p
 
+---- produe the template for the md
+--      (testD <> "//*dtpl") %> \out -> do  -- produce the combined template
+--        let source = out -<.>  "allyaml.docval"
+--        need [source]
+--        runErr2action $
+--            do
+--                putIOwords ["testD - dtpl", showT source]
+--                val  <- read8 (makeAbsFile source)  docValueFileType
+--                let mmt = getMaybeStringAtKey val "masterTemplate"
+--        let masterfn = maybe "master4.dtpl" id mmt
+--                template <- read8 (makeAbsFile $ templatesD </> masterfn) dtmplFileType
+----
+----                gtempl <- read8 (makeAbsFile masterTemplate) gtmplFileType
+----                p :: Dtemplate <- spliceTemplates (valText :: DocValue)  (gtempl :: Gtemplate)
+--                write8 (makeAbsFile out) dtmplFileType template
+
+
+-- apply val to template
+      (testD <> "//*inTemplate.html") %> \out -> do --    apply   template to values
+        let source = out --<.>   "allyaml.docval"
+--        let tpl =  out --<.>  "dtpl"
+        need [source]
+        runErr2action $   -- applyTemplate3
+            do
+                valText :: DocValue  <-   read8 (makeAbsFile source )
+                                                docValueFileType
+--                dtempl :: Dtemplate  <- read8 (makeAbsFile tpl ) dtmplFileType
+                p :: HTMLout <- putValinMaster True valText (makeAbsDir templatesD)
+                write8 (makeAbsFile out) htmloutFileType p
+
 --      (testD <> "//*dtpl") %> \out -> do  -- produce the combined template
 --        let source = out -<.>  "content.docval"
 --        need [source, masterTemplate]
@@ -144,17 +174,6 @@ shakeTestWrapped doughD templatesD testD =
 --                write8 (makeAbsFile out) dtmplFileType p
 
 
-      (testD <> "//*inTemplate.html") %> \out -> do --    apply the (completed) template to values
-        let source = out --<.>   "content.docval"
-        let tpl =  out --<.>  "dtpl"
-        need [source, tpl]
-        runErr2action $   -- applyTemplate3
-            do
-                valText :: DocValue  <-   read8 (makeAbsFile source )
-                                                docValueFileType
-                dtempl :: Dtemplate  <- read8 (makeAbsFile tpl ) dtmplFileType
-                p :: HTMLout <- applyTemplate3  dtempl valText
-                write8 (makeAbsFile out) htmloutFileType p
 
 --      (testD <> "//*.withSettings.md") %> \out -> do
 --        let mdSource2 = doughD </> makeRelative testD  ((out -<.> "")  -<.> "md")

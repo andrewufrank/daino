@@ -2,7 +2,8 @@
 <!-- the master page for the pandoc templating mechanism
 	needs page-title, page-title-postfix
 		author date and keywords for indexing
-	uses style.css as default, other can be loaded
+    contentHtml, beforeContent, afterContent to wrap html content  
+	uses style.css as default, other can be loaded with key css 
 	-->
 <html lang="$lang$">
   <head>
@@ -43,16 +44,6 @@
 
 	<title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$</title>
 	
-<!--    <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
-	$if(math)$
-	  $math$
-	$endif$
-	$for(header-includes)$
-	  $header-includes$
-	$endfor$
--->
-
-<!-- end master - start page -->
 
     </head>
 
@@ -92,13 +83,6 @@
 		</ul>
     </section>
 
-<!-- start tufte with article tag
-    <article>
-        $if(contentHtml)$
-        $contentTufte$
-        $endif$
-    </article>
-end article tag from tufte  -->
 
         $if(toc)$
         <nav id="$idprefix$TOC">
@@ -111,12 +95,6 @@ end article tag from tufte  -->
     $contentHtml$
     $afterContent$
 
-<!-- non tufte content
-         <section class="header">
-        <h3> $title$ </h3>
-        <p> $contentHtml$  </p>
-    </section>
--- >
 
     <p class=meta tiny">
         Produced with SGG on $datetime.date.today$.
