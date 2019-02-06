@@ -14,6 +14,7 @@ library
       Lib.Pandoc
       Lib.Foundation
       Lib.ReadSettingFile
+      Lib.Indexing
 
   other-modules:
 
@@ -99,6 +100,7 @@ test-suite g2
         Lib.Pandoc_test
         Lib.Templating_test
         Lib.ReadSettingFile_test
+        Lib.Indexing_test
   hs-source-dirs:
       test
   ghc-options: -Wall
