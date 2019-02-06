@@ -1,7 +1,8 @@
 masterTemplate: master4.dtpl
 beforeContent: "<article>"
 afterContent: "</article>"
-
+css:
+    - /static/tufte.css  # relative to root of site - so called absolute
 
 
 

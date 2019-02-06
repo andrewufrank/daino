@@ -10,7 +10,7 @@ storage:
 # master yaml - applies to all pages
 quotes: True 
 css :
-    - /static/style.css  # relative to root of site - so called absolute
+#    - /static/style.css  # relative to root of site - so called absolute
     - /static/menu.css 
 
 author : NN
