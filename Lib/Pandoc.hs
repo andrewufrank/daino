@@ -26,7 +26,6 @@ import Text.Pandoc as Pandoc
 import Text.Pandoc.Highlighting
 import Text.Pandoc.Shared
 import Text.CSL.Pandoc (processCites')
-import System.Process  as System (readProcess)
 
 import Uniform.Filenames hiding (Meta, at)
 import Uniform.Error hiding (Meta, at)
@@ -79,13 +78,6 @@ docValToAllVal debug docval dough2 template2 = do
         let pageType = maybe "page0default" id mpt
         -- TODO where is default page set?
         yaml <- read8  ( template2 </> (pageType)) yamlFileType
---        ptype :: Value <- decodeThrow   . t2b . unYAML $ yaml
-
---        let mmt = getMaybeStringAtKey docval "masterTemplate"
---
---        -- TODO where is settings2 file name fixed
---        let masterfn = maybe "master4.dtpl" id mmt
---        template <- read8 (template2 </> masterfn) dtmplFileType
 
         settings <- read8 (dough2 </> makeRelFile "settings2") yamlFileType
 --        svalue <- decodeThrow . t2b . unYAML $ settings
@@ -149,19 +141,11 @@ class AtKey v where
 instance AtKey Value where
     getMaybeStringAtKey meta2 k2 = fmap t2s $ meta2 ^? key k2 . _String
 
---instance AsValue Meta
---instance AsPrimitive Meta
---instance AsNumber Meta
-
     putStringAtKey meta2 k2 txt = meta2 & _Object . at k2 ?~ String txt
 --        (unHTMLout text2)
 
 instance AtKey DocValue  where
     getMaybeStringAtKey meta2 k2 = getMaybeStringAtKey (unDocValue meta2) k2
-
---instance AsValue Meta
---instance AsPrimitive Meta
---instance AsNumber Meta
 
     putStringAtKey meta2 k2 txt = DocValue $ (unDocValue meta2) & _Object . at k2 ?~ String txt
 

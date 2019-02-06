@@ -28,13 +28,7 @@ import Lib.Pandoc --  (markdownToPandoc, pandocToContentHtml)
 
 import Lib.Templating
 import Lib.FileMgt
---import Lib.Foundation
-
---import Data.Yaml (decodeThrow)
---import Control.Lens
 import Data.Aeson
---import Data.Aeson.Lens
---import  Data.Yaml.Union
 
 bakeOneFileFPs :: FilePath -> FilePath -> FilePath -> FilePath -> ErrIO ()
 -- this is called from shake and produce the final html
@@ -64,7 +58,7 @@ bakeOneFile :: Bool -> Path Abs File -> Path Abs Dir
 
 --test in bake_tests:
 bakeOneFile debug pageFn dough2 templates2 ht2 = do
-        putIOwords ["\n-----------------", "bakeOneFile fn", showT pageFn, "\n\n"]
+        putIOwords ["\n-----------------", "bakeOneFile fn", showT pageFn]
         -- currently only for md files
         pageMd :: MarkdownText <- read8 pageFn markdownFileType -- pageFn -> pageMd
         -- process the md file (including bibtex citations)
@@ -73,30 +67,7 @@ bakeOneFile debug pageFn dough2 templates2 ht2 = do
         -- produce html and put into contentHtml key
         docval <- pandocToContentHtml debug pandoc  -- content.docval
 
---        let mpt = getMaybeStringAtKey docval "pageTemplate"
---        let pageType = maybe "page0default" id mpt
---        -- TODO where is default page set?
---        yaml <- read8  ( template2 </> (pageType)) yamlFileType
-----        ptype :: Value <- decodeThrow   . t2b . unYAML $ yaml
---
---
---        settings <- read8 (dough2 </> makeRelFile "settings2") yamlFileType
-----        svalue <- decodeThrow . t2b . unYAML $ settings
---
---        let val = DocValue . fromJustNote "decoded union 2r2e"
---                      . decodeBytestrings
---                    $ [bl2b . encode $ unDocValue docval
---                        , t2b $ unYAML yaml
---                        , t2b $ unYAML settings]
         val <- docValToAllVal debug docval dough2 templates2
-
---        let mmt = getMaybeStringAtKey val "masterTemplate"
---
---        -- TODO where is settings2 file name fixed
---        let masterfn = maybe "master4.dtpl" id mmt
---        template <- read8 (templates2 </> masterfn) dtmplFileType
---
---        html2 <-  applyTemplate3 template val  -- inTemplate.html
 
         html2 <- putValinMaster debug val templates2
 
@@ -106,7 +77,7 @@ bakeOneFile debug pageFn dough2 templates2 ht2 = do
 
         when debug $ putIOwords ["bakeOneFile resultFile"
                         , showT ht2, "from",  showT pageFn, "\n"]
-        when debug $ putIOwords ["\n......................"]
+        when debug $ putIOwords ["......................"]
 
         return . unwords' $  ["bakeOneFile outhtml ", showT pageFn, "done"]
 
@@ -128,39 +99,11 @@ putValinMaster debug val templates2 =  do
         template <- read8 (templates2 </> masterfn) dtmplFileType
         html2 <-  applyTemplate3 template val  -- inTemplate.html
         when debug $
-            putIOwords ["putValinMaster\n\n", showT html2]
+            putIOwords ["putValinMaster", showT html2]
         return html2
 
 
 
 
-
---bakeOneFileCore :: Bool -> YamlText -> MarkdownText  -> Gtemplate  -> ErrIO HTMLout
----- the template can only be combined here,
----- because the page template name is only accessible in the pandoc
----- this is teh complete processing (above is only read and write)
----- AK (markdow) ->  R (HTMLout)
----- the yaml text needs --- before and ofter to separate from doc text value
---bakeOneFileCore debug preface intext masterTempl  = do
---        let intext2 = spliceMarkdown preface intext  --  AK -> AG
---        pandoc <- markdownToPandoc debug intext2  -- AG -> AD
---        val :: DocValue <- pandocToContentHtml debug pandoc
---
---        templ2 <- spliceTemplates val masterTempl
---
---        html2 <-  applyTemplate3 templ2 val
---        when debug $
---            putIOwords ["bakeOneFile val\n\n", showT html2]
---
---        return html2
---
---
---spliceMarkdown :: YamlText -> MarkdownText -> MarkdownText
----- postfix the master yaml text to a markdown text
---spliceMarkdown (YamlText y) (MarkdownText m) = MarkdownText $ m <> yamlSep1 <> y <> yamlSep2
---    where
---        yamlSep1 = "\n---"
---        yamlSep2 = "\n---\n"
---    -- assumes that the is spliced aftera a newline and text ends with newline
 
 
