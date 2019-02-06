@@ -19,6 +19,7 @@ module ShakeStartTests
 
 import           Test.Framework
 import Uniform.FileIO            hiding ((<.>), (</>))
+import Uniform.Error
 import Development.Shake
 import Development.Shake.FilePath
 --import Development.Shake.Util
@@ -33,14 +34,17 @@ import Lib.Pandoc  -- (markdownToPandoc, pandocToContentHtml,docValToAllVal)
         -- with a simplified Action ~ ErrIO
 import Text.Pandoc  (Pandoc)
 import Lib.Templating (applyTemplate3 )
---import Path.IO (setCurrentDir)
+--import qualified System.Directory as IO
+--import Data.List (sort)
+
+test_shake :: IO ()
 test_shake =  do
-                shakeTesting layoutDefaults
+                runErrorVoid $ shakeTesting layoutDefaults
                 return ()
 
 -- bake errors are reported
 
-shakeTesting :: SiteLayout -> IO ()
+shakeTesting :: SiteLayout -> ErrIO ()
 -- start the testing by executing the tests and building teh
 -- intermediate results
 shakeTesting layout = do
@@ -49,8 +53,22 @@ shakeTesting layout = do
       templatesD =   (toFilePath . themeDir $ layout) </> (toFilePath templatesDirName)
       testD = toFilePath  $  testDir layout
     --              staticD = testD </>"static"  -- where all the static files go
-  _ <- runErr $ setCurrentDir (doughDir layout)
-  shakeTestWrapped doughD templatesD testD
+  setCurrentDir (doughDir layout)
+  fs <- getDirectoryDirs' testD
+  putIOwords ["shakeTesting", "to delete", showT fs]
+  mapM_ deleteDirRecursive fs
+  callIO $ shakeTestWrapped doughD templatesD testD
+
+--getDirectoryContentsIO :: FilePath -> IO [FilePath]
+---- getDirectoryContents "" is equivalent to getDirectoryContents "." on Windows,
+---- but raises an error on Linux. We smooth out the difference.
+--getDirectoryContentsIO dir = fmap (sort . filter (not . all (== '.')))
+--        $ IO.getDirectoryContents $ if dir == "" then "." else dir
+--
+--
+--getDirectoryDirsIO :: FilePath -> IO [FilePath]
+--getDirectoryDirsIO dir = filterM f =<< getDirectoryContentsIO dir
+--    where f x = IO.doesDirectoryExist $ dir </> x
 
 shakeTestWrapped :: FilePath -> FilePath -> FilePath ->  IO  ()
 shakeTestWrapped doughD templatesD testD =

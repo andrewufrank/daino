@@ -69,7 +69,9 @@
         $endif$
 
     <section class="hero">
-            <h1><br><br><a href="/">$settings.sitename$</a></h1>
+            <h1><br><br><a href="/"> 
+                <span style="text-shadow: 2px 2px 8px black"
+                >$settings.sitename$</span></a></h1>
             <h3>$settings.byline$</h3>
     </section>
     <section class="header">

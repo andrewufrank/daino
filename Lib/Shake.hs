@@ -20,7 +20,7 @@ module Lib.Shake
      where
 
 import Uniform.Strings (putIOwords) -- hiding ((<.>), (</>))
-import Uniform.Filenames -- (toFilePath, makeAbsFile
+import Uniform.FileIO -- (toFilePath, makeAbsFile
 --                , makeRelFile, makeRelDir, stripProperPrefix')
          hiding ((<.>), (</>))
 import Uniform.FileStrings () -- for instances
@@ -50,6 +50,12 @@ shake layout   = do
       masterSettings = doughD</>"settings2.yaml"
       masterTemplate = templatesD</>"master4.dtpl"
     setCurrentDir (doughDir layout)
+
+    -- delete old
+    fs <- getDirectoryDirs' bakedD
+    putIOwords ["shakeTesting", "to delete", showT fs]
+--  mapM_ removeDirectoryRecursive fs
+
     callIO $ shakeWrapped doughD templatesD bakedD
 --                (toFilePath . doughDir $ layout)
 --                ((toFilePath . themeDir $ layout) </> (toFilePath templatesDirName))
@@ -58,6 +64,10 @@ shake layout   = do
     putIOwords ["\nshake done", "\n"]
 
     return ()
+
+--getDirectoryDirs' :: FilePath -> ErrIO [FilePath]
+--getDirectoryDirs' dir = filterM f =<< getDirCont  dir
+--    where f x =  doesDirExist' $ dir </> x
 
 
 shakeWrapped :: FilePath -> FilePath -> FilePath ->  IO  ()
