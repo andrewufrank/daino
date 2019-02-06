@@ -11,13 +11,6 @@ date: 2010-01-29
 keywords: homepage
 abstract: |
     The index page for all.
-menu:
-     - link: Blog/postwk.html
-       text: postwk
-     - link : PublicationList/postWithReference.html
-       text : with reference
-     - link : Blog/postwkTufte.html
-       text: withTufteCSS
 
 ---
 
