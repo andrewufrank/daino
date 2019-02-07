@@ -36,13 +36,14 @@ import Development.Shake.FilePath
 ---- insert the index into the index md
 
 
-makeIndexForDir :: Path Abs Dir -> ErrIO MenuEntry
+makeIndexForDir :: Path Abs Dir -> Path Abs File -> ErrIO MenuEntry
 -- make the index for the directory
 -- place result in index.html in this directory
-
-makeIndexForDir focus = do
+-- the name of the index file is passed to exclude it
+makeIndexForDir focus indexFn = do
     fs <- getDirContentNonHiddenFiles (toFilePath focus)
-    is :: [IndexEntry] <- mapM (\f -> makeIndexEntry (makeAbsFile f)) fs
+    let fs2 = filter (/= (toFilePath indexFn)) fs
+    is :: [IndexEntry] <- mapM (\f -> makeIndexEntry (makeAbsFile f)) fs2
     let menu1 = MenuEntry {menu2 = is}
     putIOwords ["makeIndexForDir", "for ", showT focus, "\n", showT menu1 ]
     let yaml1 = bb2t .   Y.encode  $ menu1

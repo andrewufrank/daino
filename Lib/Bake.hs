@@ -67,8 +67,7 @@ bakeOneFile debug pageFn dough2 templates2 ht2 = do
         -- produce html and put into contentHtml key
         docval <- pandocToContentHtml debug pandoc  -- content.docval
 
-        let currentDir = makeAbsDir $ getParentDir pageFn
-        val <- docValToAllVal debug docval currentDir dough2 templates2
+        val <- docValToAllVal debug docval pageFn dough2 templates2
 
         html2 <- putValinMaster debug val templates2
 

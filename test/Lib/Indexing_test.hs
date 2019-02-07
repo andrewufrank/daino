@@ -28,9 +28,11 @@ import Lib.FileMgt
 import Lib.Indexing
 --import Text.DocTemplates
 
-blogFn = makeAbsDir "/home/frank/Workspace8/ssg/site/dough/Blog"
+blogDir = makeAbsDir "/home/frank/Workspace8/ssg/site/dough/Blog"
+blogindexfn = makeAbsFile "/home/frank/Workspace8/ssg/site/dough/Blog/index.md"
+
 test_1 = do
-            res <- runErr $ makeIndexForDir blogFn
+            res <- runErr $ makeIndexForDir blogDir blogindexfn
             assertEqual res2  res
 
 res2 =

@@ -69,11 +69,14 @@ pandocToContentHtml debug pandoc2 = do
 --    ( meta2) & _Object . at "contentHtml" ?~ String (unHTMLout text2)
     return  . DocValue $ withContent
 
-docValToAllVal :: Bool -> DocValue -> Path Abs Dir -> Path Abs Dir -> Path Abs Dir -> ErrIO DocValue
+docValToAllVal :: Bool -> DocValue -> Path Abs File -> Path Abs Dir -> Path Abs Dir -> ErrIO DocValue
 -- from the docVal of the page
 -- get the pageType and the settings (master) values
 -- and combine them
-docValToAllVal debug docval currentDir dough2 template2 = do
+-- the current file is only necessary if it is an index file
+-- then to determine the current dir
+-- and to exclude it from index
+docValToAllVal debug docval pageFn dough2 template2 = do
         let mpt = getMaybeStringAtKey docval "pageTemplate"
         putIOwords ["docValToAllVal", "mpt", showT mpt]
         let pageType = t2s $ fromMaybe "page0default" mpt  :: FilePath
@@ -91,7 +94,8 @@ docValToAllVal debug docval currentDir dough2 template2 = do
         ix :: MenuEntry <- if doindex2
             then
                 do
-                    ix2 <- makeIndexForDir currentDir
+                    let currentDir2 = makeAbsDir $ getParentDir pageFn
+                    ix2 <- makeIndexForDir currentDir2 pageFn
                     putIOwords ["docValToAllVal", "index", showT ix2]
 
                     return ix2
