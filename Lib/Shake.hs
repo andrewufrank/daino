@@ -117,6 +117,11 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
         let pageTemplates2 = [templatesD </> tpl | tpl <- pageTemplates]
         liftIO $ putIOwords ["\nshakeWrapped - phony pageTemplates", showT pageTemplates2]
 
+        -- index pages
+        ixPages <- getDirectoryFiles doughD ["//*.dtpl" ]
+        liftIO $ putIOwords ["\nshakeWrapped - index file tempaltes"
+                ,  showT (map (makeRelative doughD) ixPages)]
+
 
         need pageTemplates2
         need cssFiles2

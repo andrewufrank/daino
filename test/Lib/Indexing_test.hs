@@ -25,6 +25,10 @@ import Lib.Foundation_test (testLayout)
 import Lib.Templating -- (applyTemplate2, convGmaster)
 --import Uniform.Filenames
 import Lib.FileMgt
-
+import Lib.Indexing
 --import Text.DocTemplates
 
+blogFn = makeAbsDir "/home/frank/Workspace8/ssg/site/dough/Blog"
+test_1 = do
+            res <- runErr $ makeIndexForDir blogFn
+            assertEqual ("") (showT res)

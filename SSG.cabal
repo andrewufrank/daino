@@ -36,6 +36,7 @@ library
     , lens
     , aeson-pretty
     , yaml-union
+
 --    , pipes
     , path , path-io
     , shake
