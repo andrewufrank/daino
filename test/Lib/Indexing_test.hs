@@ -31,4 +31,13 @@ import Lib.Indexing
 blogFn = makeAbsDir "/home/frank/Workspace8/ssg/site/dough/Blog"
 test_1 = do
             res <- runErr $ makeIndexForDir blogFn
-            assertEqual ("") (showT res)
+            assertEqual res2  res
+
+res2 =
+    Right
+      (MenuEntry{menu =
+               [IndexEntry{text = "postwk", link = "/Blog/postwk.html"},
+                IndexEntry{text = "postwkTufte", link = "/Blog/postwkTufte.html"},
+                IndexEntry{text = "postwk2", link = "/Blog/postwk2.html"},
+                IndexEntry{text = "postTufteStyled",
+                           link = "/Blog/postTufteStyled.html"}]})
