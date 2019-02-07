@@ -32,7 +32,7 @@ import Uniform.Error hiding (Meta, at)
 import Uniform.FileIO hiding (Meta, at)
 import Lib.FileMgt -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
 --            , unDocValue, DocValue (..) )
-
+import Lib.Indexing
 
 
 -- | Convert markdown text into a 'Value';
@@ -50,7 +50,7 @@ markdownToPandoc debug (MarkdownText t)  = do
     let meta2 = flattenMeta (getMeta pandoc)
 
     -- test if biblio is present and apply
-    let bib = getMaybeStringAtKey meta2 "bibliography"
+    let bib = getMaybeStringAtKey meta2 "bibliography" :: Maybe Text
 --    let bib = fmap t2s $  ( meta2) ^? key "bibliography" . _String :: Maybe FilePath
 
     pandoc2 <- case bib of
@@ -69,24 +69,35 @@ pandocToContentHtml debug pandoc2 = do
 --    ( meta2) & _Object . at "contentHtml" ?~ String (unHTMLout text2)
     return  . DocValue $ withContent
 
-docValToAllVal :: Bool -> DocValue -> Path Abs Dir -> Path Abs Dir -> ErrIO DocValue
+docValToAllVal :: Bool -> DocValue -> Path Abs Dir -> Path Abs Dir -> Path Abs Dir -> ErrIO DocValue
 -- from the docVal of the page
 -- get the pageType and the settings (master) values
 -- and combine them
-docValToAllVal debug docval dough2 template2 = do
+docValToAllVal debug docval currentDir dough2 template2 = do
         let mpt = getMaybeStringAtKey docval "pageTemplate"
-        let pageType = maybe "page0default" id mpt
+        let pageType = t2s $ fromMaybe "page0default" mpt  :: FilePath
         -- TODO where is default page set?
         yaml <- read8  ( template2 </> (pageType)) yamlFileType
 
         settings <- read8 (dough2 </> makeRelFile "settings2") yamlFileType
 --        svalue <- decodeThrow . t2b . unYAML $ settings
+        let doindex = getMaybeStringAtKey docval "indexPage"
+        let doindex2 = fromMaybe False doindex
+        ix :: MenuEntry <- if doindex2
+            then
+                do
+                    ix2 <- makeIndexForDir currentDir
 
+                    return ix2
+
+          else return zero
+        let ixVal = toJSON ix :: Value
         let val = DocValue . fromJustNote "decoded union 2r2e"
                       . decodeBytestrings
                     $ [ t2b $ unYAML settings
                         , t2b $ unYAML yaml
                         , bl2b . encode $ unDocValue docval
+                        , (bl2b . encode $ ixVal)
                        ]  -- last winns!
         return val
 
@@ -135,20 +146,25 @@ unPandocM op1 = do
 getMeta :: Pandoc -> Meta
 getMeta (Pandoc m _) = m
 
-class AtKey v where
-    getMaybeStringAtKey :: v -> Text -> Maybe FilePath
-    putStringAtKey :: v -> Text -> Text -> v
-instance AtKey Value where
-    getMaybeStringAtKey meta2 k2 = fmap t2s $ meta2 ^? key k2 . _String
+class AtKey vk v where
+    getMaybeStringAtKey :: vk -> Text -> Maybe v
+    putStringAtKey :: vk -> Text -> v -> vk
 
-    putStringAtKey meta2 k2 txt = meta2 & _Object . at k2 ?~ String txt
+instance AtKey Value Text where
+    getMaybeStringAtKey meta2 k2 =   meta2 ^? key k2 . _String
+
+    putStringAtKey meta2 k2 txt = meta2 & _Object . at k2 ?~ String  txt
 --        (unHTMLout text2)
 
-instance AtKey DocValue  where
+instance AtKey DocValue  Text where
     getMaybeStringAtKey meta2 k2 = getMaybeStringAtKey (unDocValue meta2) k2
 
     putStringAtKey meta2 k2 txt = DocValue $ (unDocValue meta2) & _Object . at k2 ?~ String txt
 
+instance AtKey DocValue Bool  where
+    getMaybeStringAtKey meta2 k2 =  (unDocValue meta2) ^? key k2 . _Bool
+
+    putStringAtKey meta2 k2 b = DocValue $  (unDocValue meta2) & _Object . at k2 ?~ Bool b
 
 
 readMarkdown2 :: Text -> ErrIO Pandoc

@@ -32,6 +32,9 @@ import Data.Yaml  as Y
 --import Lib.FileMgt
 import Development.Shake.FilePath
 
+--insertIndex :: Path Abs File -> ErrIO ()
+---- insert the index into the index md
+
 
 makeIndexForDir :: Path Abs Dir -> ErrIO MenuEntry
 -- make the index for the directory
@@ -42,9 +45,6 @@ makeIndexForDir focus = do
     is :: [IndexEntry] <- mapM (\f -> makeIndexEntry (makeAbsFile f)) fs
     let menu1 = MenuEntry {menu = is}
     putIOwords ["makeIndexForDir", "for ", showT focus, "\n", showT menu1 ]
---    let is1 = Y.encode is :: _
---    let is2 =  (("menu"::Text) .= is1) -- :: KeyValue Pair
---    let is3 = object is2
     let yaml1 = bb2t .   Y.encode  $ menu1
     putIOwords ["makeIndexForDir", "yaml ", yaml1  ]
 

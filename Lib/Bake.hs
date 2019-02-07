@@ -67,7 +67,8 @@ bakeOneFile debug pageFn dough2 templates2 ht2 = do
         -- produce html and put into contentHtml key
         docval <- pandocToContentHtml debug pandoc  -- content.docval
 
-        val <- docValToAllVal debug docval dough2 templates2
+        let currentDir = makeAbsDir $ getParentDir pageFn
+        val <- docValToAllVal debug docval currentDir dough2 templates2
 
         html2 <- putValinMaster debug val templates2
 
@@ -95,7 +96,7 @@ putValinMaster :: Bool -> DocValue -> Path Abs Dir -> ErrIO HTMLout
 -- takes the master filename from val
 putValinMaster debug val templates2 =  do
         let mmt = getMaybeStringAtKey val "masterTemplate"
-        let masterfn = fromMaybe "master4.dtpl"  mmt
+        let masterfn = t2s $ fromMaybe "master4.dtpl"  mmt :: FilePath
         template <- read8 (templates2 </> masterfn) dtmplFileType
         html2 <-  applyTemplate3 template val  -- inTemplate.html
         when debug $

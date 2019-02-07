@@ -116,8 +116,9 @@ shakeTestWrapped doughD templatesD testD =
             do
                 valText :: DocValue  <-   read8 (makeAbsFile source )
                                                 docValueFileType
-                p :: DocValue <- docValToAllVal True
-                                valText (makeAbsDir doughD) (makeAbsDir templatesD)
+                p :: DocValue <- docValToAllVal True valText
+                                 (makeAbsDir $ takeDirectory source)
+                                 (makeAbsDir doughD) (makeAbsDir templatesD)
                 write8 (makeAbsFile out) docValueFileType p
 
 
