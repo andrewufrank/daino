@@ -43,14 +43,14 @@ makeIndexForDir :: Path Abs Dir -> ErrIO MenuEntry
 makeIndexForDir focus = do
     fs <- getDirContentNonHiddenFiles (toFilePath focus)
     is :: [IndexEntry] <- mapM (\f -> makeIndexEntry (makeAbsFile f)) fs
-    let menu1 = MenuEntry {menu = is}
+    let menu1 = MenuEntry {menu2 = is}
     putIOwords ["makeIndexForDir", "for ", showT focus, "\n", showT menu1 ]
     let yaml1 = bb2t .   Y.encode  $ menu1
     putIOwords ["makeIndexForDir", "yaml ", yaml1  ]
 
     return menu1
 
-data MenuEntry = MenuEntry {menu :: [IndexEntry]} deriving (Generic, Eq, Ord, Show)
+data MenuEntry = MenuEntry {menu2 :: [IndexEntry]} deriving (Generic, Eq, Ord, Show)
 instance Zeros MenuEntry where zero = MenuEntry zero
 instance FromJSON MenuEntry
 instance ToJSON MenuEntry

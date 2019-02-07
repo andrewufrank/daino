@@ -75,18 +75,24 @@ docValToAllVal :: Bool -> DocValue -> Path Abs Dir -> Path Abs Dir -> Path Abs D
 -- and combine them
 docValToAllVal debug docval currentDir dough2 template2 = do
         let mpt = getMaybeStringAtKey docval "pageTemplate"
+        putIOwords ["docValToAllVal", "mpt", showT mpt]
         let pageType = t2s $ fromMaybe "page0default" mpt  :: FilePath
         -- TODO where is default page set?
+
         yaml <- read8  ( template2 </> (pageType)) yamlFileType
 
         settings <- read8 (dough2 </> makeRelFile "settings2") yamlFileType
 --        svalue <- decodeThrow . t2b . unYAML $ settings
         let doindex = getMaybeStringAtKey docval "indexPage"
         let doindex2 = fromMaybe False doindex
+
+        putIOwords ["docValToAllVal", "doindex", showT doindex]
+
         ix :: MenuEntry <- if doindex2
             then
                 do
                     ix2 <- makeIndexForDir currentDir
+                    putIOwords ["docValToAllVal", "index", showT ix2]
 
                     return ix2
 

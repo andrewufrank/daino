@@ -9,6 +9,15 @@ html {
     color: #2a4127;
 }
 
+.menu2 {
+    font-family: sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    padding: 0;
+    margin: 0;
+    color: #2a4127;
+}
+
 body {
     padding: 0;
     margin: 0;

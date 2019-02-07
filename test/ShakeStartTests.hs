@@ -72,7 +72,7 @@ shakeTestWrapped doughD templatesD testD =
 
         mdFiles1 <- getDirectoryFiles doughD ["**/*.md", "**/*.markdown"]
         let mdFiles3 =  map dropExtension mdFiles1
-        liftIO $ putIOwords ["\nshakeWrapped - makrdown and md files to work on\n"
+        liftIO $ putIOwords ["\nshakeWrapped - markdown and md files to work on\n"
                         , showT mdFiles3]
 --            ["landingPage","Blog/postTufteStyled","Blog/postwk","Blog/postwk2"
 --            ,"Blog/postwkTufte","PublicationList/postWithReference"]
@@ -110,6 +110,7 @@ shakeTestWrapped doughD templatesD testD =
 
       (testD <> "//*allyaml.docval") %> \out -> do
         let source = out --<.>   "content.docval"
+        let source2 = doughD </> (makeRelative testD  (out --<.> "md"))
         need [source]
         -- does not track the settingss and the pageN.yaml
         runErr2action $   -- docValToAllVal
@@ -117,7 +118,7 @@ shakeTestWrapped doughD templatesD testD =
                 valText :: DocValue  <-   read8 (makeAbsFile source )
                                                 docValueFileType
                 p :: DocValue <- docValToAllVal True valText
-                                 (makeAbsDir $ takeDirectory source)
+                                 (makeAbsDir $ takeDirectory source2)
                                  (makeAbsDir doughD) (makeAbsDir templatesD)
                 write8 (makeAbsFile out) docValueFileType p
 

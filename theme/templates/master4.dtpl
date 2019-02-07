@@ -84,6 +84,13 @@
 		</ul>
     </section>
 
+            <section class=menu2>
+		<ul>
+            	$for(menu2)$
+				<li><a href=$menu2.link$>$menu2.text$</a></li>
+            		$endfor$
+		</ul>
+    </section>
 
         $if(toc)$
         <nav id="$idprefix$TOC">

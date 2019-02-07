@@ -35,8 +35,9 @@ test_1 = do
 
 res2 =
     Right
-      (MenuEntry{menu =
+      (MenuEntry{menu2 =
                [IndexEntry{text = "postwk", link = "/Blog/postwk.html"},
+                IndexEntry{text = "index", link = "/Blog/index.html"},
                 IndexEntry{text = "postwkTufte", link = "/Blog/postwkTufte.html"},
                 IndexEntry{text = "postwk2", link = "/Blog/postwk2.html"},
                 IndexEntry{text = "postTufteStyled",

@@ -20,9 +20,9 @@ settings :
     byline : siteByLineExample
 
 menu:
-     - link: Blog/index.html
+     - link: /Blog/index.html
        text: Blog
-     - link : PublicationList/index.html
+     - link : /PublicationList/index.html
        text : Publications
 
 
