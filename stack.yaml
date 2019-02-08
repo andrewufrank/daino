@@ -7,6 +7,7 @@ packages:
 - ../uniform/uniform-convenience
 - ../uniform/uniform-fileio
 - ../uniform/uniform-error
+- ../fromOthers/bibtex
 
 # - ../fromOthers/glabrous
 
