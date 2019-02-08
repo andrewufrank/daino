@@ -16,6 +16,8 @@ module Lib.BibTex  -- (openMain, htf_thisModuelsTests)
 
 import Uniform.Strings
 import Uniform.Error
+import Uniform.FileIO
+
 import Text.BibTeX.Parse
 import Text.BibTeX.Entry as T
 import qualified Text.BibTeX.Parse as Parse
@@ -66,6 +68,16 @@ getBibIdentifier :: [Entry.T] -> [String]
 -- extract the bib identifier from the entries
 --getBibIdentifier es = map T.entryType es
 getBibIdentifier es = map T.identifier es
+
+bibIdentifierFromBibTex :: Path Abs File -> String -> ErrIO [String]
+-- combine the process
+bibIdentifierFromBibTex bibfn group = callIO $
+    do
+        bib <- readBibTex (toFilePath bibfn)
+        entries <- parseBibTex bib
+        let es = filterByGroup group entries
+            ids = getBibIdentifier es
+        return ids
 
 
 --typeTable :: [((String, Maybe String), String)]

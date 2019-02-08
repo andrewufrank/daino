@@ -33,7 +33,7 @@ import Uniform.FileIO hiding (Meta, at)
 import Lib.FileMgt -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
 --            , unDocValue, DocValue (..) )
 import Lib.Indexing
-
+import Lib.BibTex
 
 -- | Convert markdown text into a 'Value';
 -- The 'Value'  has a "content" key containing rendered HTML
@@ -48,16 +48,37 @@ markdownToPandoc :: Bool -> MarkdownText -> ErrIO Pandoc
 markdownToPandoc debug (MarkdownText t)  = do
     pandoc   <- readMarkdown2   t
     let meta2 = flattenMeta (getMeta pandoc)
-
-    -- test if biblio is present and apply
     let bib = getMaybeStringAtKey meta2 "bibliography" :: Maybe Text
---    let bib = fmap t2s $  ( meta2) ^? key "bibliography" . _String :: Maybe FilePath
-
+    let nociteNeeded = getMaybeStringAtKey meta2 "bibliographyGroup" :: Maybe Text
     pandoc2 <- case bib of
         Nothing ->  return pandoc
-        Just _ ->   callIO $ processCites'  pandoc
+        Just bibfp ->   pandocProcessCites (makeAbsFile . t2s $ bibfp) nociteNeeded pandoc
 
     return pandoc2
+
+
+
+    -- test if biblio is present and apply
+--    let bib = fmap t2s $  ( meta2) ^? key "bibliography" . _String :: Maybe FilePath
+
+
+    return pandoc2
+
+pandocProcessCites :: Path Abs File  -> Maybe Text -> Pandoc -> ErrIO Pandoc
+-- process the citations
+-- including the filling the references for publication lists
+pandocProcessCites biblio groupname pandoc1 = do
+        pandoc2 <- case groupname of
+            Nothing -> return pandoc1
+            Just gn -> do
+                    bibids <- bibIdentifierFromBibTex biblio (t2s gn)
+                    let bibidsat = map ("@" <>) bibids
+                    let meta3 = putStringAtKey (getMeta pandoc1) "nocite" (s2t . unwords $ bibidsat)
+                    let pandoc2 = putMeta meta3 pandoc1
+                    return pandoc2
+        callIO $ processCites'  pandoc2
+
+
 
 pandocToContentHtml :: Bool -> Pandoc ->  ErrIO DocValue
 -- convert the pandoc to html in the contentHtml key
@@ -156,6 +177,9 @@ unPandocM op1 = do
 getMeta :: Pandoc -> Meta
 getMeta (Pandoc m _) = m
 
+putMeta :: Meta -> Pandoc -> Pandoc
+putMeta m1 (Pandoc _ p0) = Pandoc m1 p0
+
 class AtKey vk v where
     getMaybeStringAtKey :: vk -> Text -> Maybe v
     putStringAtKey :: vk -> Text -> v -> vk
@@ -165,6 +189,16 @@ instance AtKey Value Text where
 
     putStringAtKey meta2 k2 txt = meta2 & _Object . at k2 ?~ String  txt
 --        (unHTMLout text2)
+
+instance AsValue Meta
+instance AsPrimitive Meta
+instance AsNumber Meta
+
+
+instance AtKey Meta Text where
+    getMaybeStringAtKey meta2 k2 =   meta2 ^? key k2 . _String
+
+    putStringAtKey meta2 k2 txt = meta2 & _Object . at k2 ?~ String  txt
 
 instance AtKey DocValue  Text where
     getMaybeStringAtKey meta2 k2 = getMaybeStringAtKey (unDocValue meta2) k2

@@ -43,7 +43,7 @@ bakeOneFileFPs md doughD templatesD ht = do
         let templates2 = makeAbsDir templatesD
         let ht2 = makeAbsFile ht
         when False $ putIOwords ["bakeOneFileIO - files", showT md2
-                        , "\ntemplate: ", showT templates2, "\noutput file: ", showT ht2]
+                    , "\ntemplate: ", showT templates2, "\noutput file: ", showT ht2]
 --        let masterSettings = makeAbsFile masterSettingsFn
         res <- bakeOneFile False md2 dough2 templates2 ht2
         putIOwords ["bakeOneFileFPs - done", showT ht2, res]
@@ -83,7 +83,8 @@ bakeOneFile debug pageFn dough2 templates2 ht2 = do
 
  `catchError` (\e -> do
                     let errmsg2 =  ["\n****************"
-                                , "bakeOneFile catchError", showT e , "for ", showT pageFn
+                                , "bakeOneFile catchError"
+                                , showT e , "for ", showT pageFn
 
                                 , "\n****************"]
                     putIOwords errmsg2
