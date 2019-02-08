@@ -45,14 +45,16 @@ markdownToPandoc :: Bool -> MarkdownText -> ErrIO Pandoc
 -- process the markdown (including if necessary the BibTex treatment)
 -- the bibliography must be in the metadata
 -- the settings are in the markdownText (at end - to let page specific have precedence)
-markdownToPandoc debug (MarkdownText t)  = do
-    pandoc   <- readMarkdown2   t
+markdownToPandoc debug mdtext  = do
+    pandoc   <- readMarkdown2  mdtext
     let meta2 = flattenMeta (getMeta pandoc)
     let bib = getMaybeStringAtKey meta2 "bibliography" :: Maybe Text
     let nociteNeeded = getMaybeStringAtKey meta2 "bibliographyGroup" :: Maybe Text
+    currDir <- currentDir
     pandoc2 <- case bib of
         Nothing ->  return pandoc
-        Just bibfp ->   pandocProcessCites (makeAbsFile . t2s $ bibfp) nociteNeeded pandoc
+        Just bibfp -> pandocProcessCites (currDir </> (makeRelFile . t2s $ bibfp))
+                    nociteNeeded mdtext pandoc
 
     return pandoc2
 
@@ -64,17 +66,21 @@ markdownToPandoc debug (MarkdownText t)  = do
 
     return pandoc2
 
-pandocProcessCites :: Path Abs File  -> Maybe Text -> Pandoc -> ErrIO Pandoc
+pandocProcessCites :: Path Abs File  -> Maybe Text -> MarkdownText -> Pandoc -> ErrIO Pandoc
 -- process the citations
 -- including the filling the references for publication lists
-pandocProcessCites biblio groupname pandoc1 = do
+pandocProcessCites biblio groupname mdtext pandoc1 = do
         pandoc2 <- case groupname of
             Nothing -> return pandoc1
             Just gn -> do
                     bibids <- bibIdentifierFromBibTex biblio (t2s gn)
-                    let bibidsat = map ("@" <>) bibids
-                    let meta3 = putStringAtKey (getMeta pandoc1) "nocite" (s2t . unwords $ bibidsat)
-                    let pandoc2 = putMeta meta3 pandoc1
+                    let bibidsat = s2t . unwords  $ map ("@" <>) bibids
+                    let nociteblock = "\n---\nnocite: | \n     " <>   bibidsat  <> "\n---\n"
+                    let mdtext2 = (MarkdownText $ (unMT mdtext) <> nociteblock)
+                    putIOwords ["pandocProcessCites", "nociteblock", unMT mdtext2]
+                    pandoc2 <- readMarkdown2 mdtext2
+--                    let meta3 = putStringAtKey (flattenMeta . getMeta $ pandoc1) "nocite" (s2t . unwords $ bibidsat)
+--                    let pandoc2 = putMeta meta3 pandoc1
                     return pandoc2
         callIO $ processCites'  pandoc2
 
@@ -190,15 +196,15 @@ instance AtKey Value Text where
     putStringAtKey meta2 k2 txt = meta2 & _Object . at k2 ?~ String  txt
 --        (unHTMLout text2)
 
-instance AsValue Meta
-instance AsPrimitive Meta
-instance AsNumber Meta
+--instance AsValue Meta
+--instance AsPrimitive Meta
+--instance AsNumber Meta
 
 
-instance AtKey Meta Text where
-    getMaybeStringAtKey meta2 k2 =   meta2 ^? key k2 . _String
-
-    putStringAtKey meta2 k2 txt = meta2 & _Object . at k2 ?~ String  txt
+--instance AtKey Meta Text where
+--    getMaybeStringAtKey meta2 k2 =   meta2 ^? key k2 . _String
+--
+--    putStringAtKey meta2 k2 txt = meta2 & _Object . at k2 ?~ String  txt
 
 instance AtKey DocValue  Text where
     getMaybeStringAtKey meta2 k2 = getMaybeStringAtKey (unDocValue meta2) k2
@@ -211,8 +217,8 @@ instance AtKey DocValue Bool  where
     putStringAtKey meta2 k2 b = DocValue $  (unDocValue meta2) & _Object . at k2 ?~ Bool b
 
 
-readMarkdown2 :: Text -> ErrIO Pandoc
-readMarkdown2 text1 =  unPandocM $ readMarkdown markdownOptions text1
+readMarkdown2 :: MarkdownText -> ErrIO Pandoc
+readMarkdown2 (MarkdownText text1) =  unPandocM $ readMarkdown markdownOptions text1
 
 writeHtml5String2 :: Pandoc -> ErrIO HTMLout
 writeHtml5String2 pandocRes = do
