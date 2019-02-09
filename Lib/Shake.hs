@@ -38,9 +38,12 @@ import Development.Shake.FilePath
 --import Development.Shake.Linters (yamllint)  -- how does this work (needs shake-ext)
 --import Path.IO (setCurrentDir)
 
-shake :: SiteLayout ->    ErrIO ()
-shake layout   = do
-    putIOwords ["\n\n=====================================shake start", shownice layout]
+shake :: SiteLayout ->  FilePath ->   ErrIO ()
+-- the second argument is the file which has changed
+shake layout filepath  = do
+    putIOwords ["\n\n=====================================shake start"
+--            , shownice layout
+            ,"caused by", s2t filepath]
     let  -- where the layout is used, rest in shakeWrapped
           doughD      =    doughDir $ layout  -- the regular dough
           templatesD =   (themeDir $ layout)

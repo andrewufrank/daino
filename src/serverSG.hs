@@ -68,7 +68,7 @@ main2 = do
     let templatesPath =  (themeDir layout) </> templatesDirName :: Path Abs Dir
     let resourcesPath = (doughDir layout) </> resourcesDirName :: Path Abs Dir
     -- copy static resources (templates and dough)
---    copyDirRecursive resourcesPath (bakedPath </> staticDirName )
+    copyDirRecursive resourcesPath (bakedPath </> staticDirName )
     putIOwords [programName, "copied all templates  files from"
                         , showT resourcesPath, "to", showT bakedPath ]
     -- resources in dough are not needed for baked
@@ -81,7 +81,7 @@ main2 = do
 mainWatch :: SiteLayout -> Port -> Path Abs Dir ->  ErrIO ()
 mainWatch layout  bakedPort bakedPath = bracketErrIO
         (do  -- first
-            shake layout
+            shake layout ""
             watchDough <- callIO $ forkIO (mainWatchDough layout)
             watchTemplates <- callIO $ forkIO (mainWatchThemes layout)
             callIO $ scotty bakedPort (site bakedPath)
@@ -140,9 +140,9 @@ mainWatchDough layout  =  do
                     {Twitch.root = Just . toFilePath $ doughPath
                      , Twitch.log = Twitch.NoLogger
                     }) $ do
-            Twitch.addModify (\filepath -> runErrorVoid $ shake layout) "**/*.md"
-            Twitch.addModify (\filepath -> runErrorVoid $ shake layout) "**/*.yaml"
-            Twitch.addModify (\filepath -> runErrorVoid $ shake layout) "**/*.bib"
+            Twitch.addModify (\filepath -> runErrorVoid $ shake layout filepath) "**/*.md"
+            Twitch.addModify (\filepath -> runErrorVoid $ shake layout filepath) "**/*.yaml"
+            Twitch.addModify (\filepath -> runErrorVoid $ shake layout filepath) "**/*.bib"
             -- add and modify event
 
 mainWatchThemes layout =  do
@@ -157,10 +157,10 @@ mainWatchThemes layout =  do
                      , Twitch.log = Twitch.NoLogger
                     }) $ do
 --            verbosity from Cabal
-            Twitch.addModify (\filepath -> runErrorVoid $ shake layout) "**/*.yaml"
-            Twitch.addModify (\filepath -> runErrorVoid $ shake layout) "**/*.dtpl"
-            Twitch.addModify (\filepath -> runErrorVoid $ shake layout) "**/*.css"
-            Twitch.addModify (\filepath -> runErrorVoid $ shake layout) "**/*.jpg"
+            Twitch.addModify (\filepath -> runErrorVoid $ shake layout filepath) "**/*.yaml"
+            Twitch.addModify (\filepath -> runErrorVoid $ shake layout filepath) "**/*.dtpl"
+            Twitch.addModify (\filepath -> runErrorVoid $ shake layout filepath) "**/*.css"
+            Twitch.addModify (\filepath -> runErrorVoid $ shake layout filepath) "**/*.jpg"
             -- add and modify event
                 --  "*.html" |> \_ -> system $ "osascript refreshSafari.AppleScript"
 

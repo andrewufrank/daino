@@ -28,7 +28,7 @@ main :: IO ()
 main = startProg programName progTitle
              (do
                 (layout2, _)  <- readSettings
-                shake layout2
+                shake layout2 ""
                 return ()
                 )
 
