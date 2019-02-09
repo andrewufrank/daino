@@ -22,10 +22,10 @@ import Text.BibTeX.Parse
 import Text.BibTeX.Entry as T
 import qualified Text.BibTeX.Parse as Parse
 import qualified Text.BibTeX.Entry as Entry
-import qualified Text.ParserCombinators.Parsec as Parsec
+--import qualified Text.ParserCombinators.Parsec as Parsec
 
 import qualified Data.Char as Char
-import System.IO (hPutStrLn, stderr, )
+--import System.IO (hPutStrLn, stderr, )
 
 bibMain :: ErrIO ()
 bibMain = do
@@ -50,7 +50,8 @@ readBibTex fp = do
     return bib
 
 parseBibTex :: String -> IO [Entry.T]
-parseBibTex bib = case Parsec.parse (Parsec.skipMany Parsec.space >> Parse.file) "stdin" bib of
+parseBibTex bib = case  parse (skippingLeadingSpace   Parse.file) "stdin" bib of
+--parseBibTex bib = case Parsec.parse (Parsec.skipMany Parsec.space >> Parse.file) "stdin" bib of
          Left errMsg -> error  (show errMsg)
          Right entries -> return entries
 
