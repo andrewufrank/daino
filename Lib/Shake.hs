@@ -25,7 +25,7 @@ import Uniform.FileIO -- (toFilePath, makeAbsFile
          hiding ((<.>), (</>))
 import Uniform.FileStrings () -- for instances
 --import Uniform.Error
-import Lib.Templating
+--import Lib.Templating
 
 
 import Lib.Foundation (SiteLayout (..), templatesDirName, staticDirName)
@@ -41,33 +41,23 @@ import Development.Shake.FilePath
 shake :: SiteLayout ->    ErrIO ()
 shake layout   = do
     putIOwords ["\nshake start", shownice layout]
-    let
-      doughD      =   toFilePath . doughDir $ layout  -- the regular dough
-      templatesD =   (toFilePath . themeDir $ layout) </> (toFilePath templatesDirName)
---      testD = toFilePath  $  testDir layout
-      bakedD = toFilePath . bakedDir $ layout
-    --              staticD = testD </>"static"  -- where all the static files go
-      masterSettings = doughD</>"settings2.yaml"
-      masterTemplate = templatesD</>"master4.dtpl"
+    let  -- where the layout is used, rest in shakeWrapped
+          doughD      =   toFilePath . doughDir $ layout  -- the regular dough
+          templatesD =   (toFilePath . themeDir $ layout)
+                                </> (toFilePath templatesDirName)
+          bakedD = toFilePath . bakedDir $ layout
     setCurrentDir (doughDir layout)
 
-    -- delete old
+    -- delete old baked files  -- should not be needed when needs correct
     fs <- getDirectoryDirs' bakedD
     putIOwords ["shakeTesting", "to delete", showT fs]
 --  mapM_ removeDirectoryRecursive fs
 
     callIO $ shakeWrapped doughD templatesD bakedD
---                (toFilePath . doughDir $ layout)
---                ((toFilePath . themeDir $ layout) </> (toFilePath templatesDirName))
---                (toFilePath . bakedDir $ layout)
 
     putIOwords ["\nshake done", "\n"]
 
     return ()
-
---getDirectoryDirs' :: FilePath -> ErrIO [FilePath]
---getDirectoryDirs' dir = filterM f =<< getDirCont  dir
---    where f x =  doesDirExist' $ dir </> x
 
 
 shakeWrapped :: FilePath -> FilePath -> FilePath ->  IO  ()
@@ -91,16 +81,16 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
 
         liftIO $ putIOwords ["\nshakeWrapped phony allMarkdonwConversion" ]
 
---        yamllint  -- issue with create process
---        yamllint: createProcess: runInteractiveProcb
+--        yamllint  -- issue with create process, error
+--        yamllint: createProcess: runInteractive
 
 
         -- get markdown files
         mdFiles1 <- getDirectoryFiles  doughD ["//*.md", "//*.markdown"]
+            -- todo markdown files are not found ?
         let htmlFiles2 = [bakedD </> md -<.> "html" | md <- mdFiles1]
         liftIO $ putIOwords ["\nshakeWrapped - htmlFile"
                 ,  showT (map (makeRelative doughD) htmlFiles2)]
-                -- list of file.html (no dir)
 
         -- get css
         cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs

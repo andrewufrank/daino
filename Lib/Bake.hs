@@ -35,6 +35,7 @@ bakeOneFileFPs :: FilePath -> FilePath -> FilePath -> FilePath -> ErrIO ()
 -- bake one file absolute fp , page template and result html
 -- exceptionally calls with FilePath (usually the files are read in shake and
 -- passed the values)
+-- list the needed files
 bakeOneFileFPs md doughD templatesD ht = do
         putIOwords ["bakeOneFileFPs - from shake xx", s2t md]
             --baked/SGGdesign/Principles.md
