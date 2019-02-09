@@ -35,7 +35,7 @@ import Development.Shake
 --import Development.Shake.Command
 import Development.Shake.FilePath
 --import Development.Shake.Util
-import Development.Shake.Linters (yamllint)
+--import Development.Shake.Linters (yamllint)  -- how does this work (needs shake-ext)
 --import Path.IO (setCurrentDir)
 
 shake :: SiteLayout ->    ErrIO ()

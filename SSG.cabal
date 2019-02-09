@@ -42,7 +42,7 @@ library
 --    , pipes
 --    , path , path-io
     , shake
-    , shake-ext
+--    , shake-ext
 --    , glabrous
     , yaml
     , bibtex==0.1.0.8
@@ -83,7 +83,7 @@ executable serversg
 --    , hinotify
 --    , directory
     , twitch
-    , Cabal
+--    , Cabal
 --    , spawn
 --    , path-io
 

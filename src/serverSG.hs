@@ -24,11 +24,11 @@ import Uniform.Error
 import Uniform.Convenience.StartApp
 
 import Web.Scotty
-import Network.Wai.Middleware.Static
-import Network.Wai.Handler.Warp   -- .Warp.Types
+import Network.Wai.Middleware.Static (staticPolicy, addBase)
+import Network.Wai.Handler.Warp  (Port) -- .Warp.Types
 
-import System.Directory
-import System.IO
+--import System.Directory
+--import System.IO
 
 import  Twitch hiding (Options, log)
 import qualified Twitch

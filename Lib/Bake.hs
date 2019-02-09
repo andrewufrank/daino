@@ -28,7 +28,7 @@ import Lib.Pandoc --  (markdownToPandoc, pandocToContentHtml)
 
 import Lib.Templating
 import Lib.FileMgt
-import Data.Aeson
+--import Data.Aeson
 
 bakeOneFileFPs :: FilePath -> FilePath -> FilePath -> FilePath -> ErrIO ()
 -- this is called from shake and produce the final html
