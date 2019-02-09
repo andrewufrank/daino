@@ -62,13 +62,16 @@ main = startProg programName progTitle
 main2 :: ErrIO ()
 main2 = do
     (layout, port)  <- readSettings
+    putIOwords ["main2", showT layout, showT port]
+
     let bakedPath = bakedDir layout :: Path Abs Dir
     let templatesPath =  (themeDir layout) </> templatesDirName :: Path Abs Dir
     let resourcesPath = (doughDir layout) </> resourcesDirName :: Path Abs Dir
     -- copy static resources (templates and dough)
     Pathio.copyDirRecur
                          (unPath resourcesPath) (unPath $ bakedPath </> staticDirName )
-    putIOwords [programName, "copied all templates  files"]
+    putIOwords [programName, "copied all templates  files from"
+                        , showT resourcesPath, "to", showT bakedPath ]
     -- resources in dough are not needed for baked
 --    let templatesPath =  (themeDir layout) </> templatesDirName :: Path Abs Dir
 --    Pathio.copyDirRecur
@@ -79,7 +82,7 @@ main2 = do
 mainWatch :: SiteLayout -> Port -> Path Abs Dir ->  ErrIO ()
 mainWatch layout  bakedPort bakedPath = bracketErrIO
         (do  -- first
-            shake layoutDefaults
+            shake layout
             watchDough <- callIO $ forkIO (mainWatchDough layout)
             watchTemplates <- callIO $ forkIO (mainWatchThemes layout)
             callIO $ scotty bakedPort (site bakedPath)
