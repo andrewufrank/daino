@@ -28,7 +28,7 @@ import Uniform.FileStrings
 import Uniform.TypedFile
 import Data.Aeson (Value, ToJSON (..), Value (..), decode)
 import Data.Aeson.Encode.Pretty (encodePretty)
-import  Path.IO (ensureDir)
+--import  Path.IO (ensureDir)
 
 instance NiceStrings Value where
     shownice = bb2t . bl2b . encodePretty
