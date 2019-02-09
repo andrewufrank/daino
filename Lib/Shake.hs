@@ -42,10 +42,10 @@ shake :: SiteLayout ->    ErrIO ()
 shake layout   = do
     putIOwords ["\nshake start", shownice layout]
     let  -- where the layout is used, rest in shakeWrapped
-          doughD      =   toFilePath . doughDir $ layout  -- the regular dough
-          templatesD =   (toFilePath . themeDir $ layout)
-                                </> (toFilePath templatesDirName)
-          bakedD = toFilePath . bakedDir $ layout
+          doughD      =    doughDir $ layout  -- the regular dough
+          templatesD =   (themeDir $ layout)
+                               `addFileName` ( templatesDirName)
+          bakedD =  bakedDir $ layout
     setCurrentDir (doughDir layout)
 
     -- delete old baked files  -- should not be needed when needs correct
@@ -60,16 +60,20 @@ shake layout   = do
     return ()
 
 
-shakeWrapped :: FilePath -> FilePath -> FilePath ->  IO  ()
-shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=bakedD
+shakeWrapped :: Path Abs Dir  -> Path Abs Dir  -> Path Abs Dir ->  IO  ()
+shakeWrapped doughD templatesD bakedD =
+    shakeArgs shakeOptions {shakeFiles=toFilePath bakedD
                 , shakeVerbosity=Chatty -- Loud
                 , shakeLint=Just LintBasic
 --                , shakeRebuild=[(RebuildNow,"allMarkdownConversion")]
 --                  seems not to produce an effect
                 } $ do
 
-    let staticD = bakedD </> (toFilePath staticDirName)
+    let staticD = addFileName bakedD  ( staticDirName)
         -- where all the static files go
+        resourcesD = makeAbsDir $ doughD `addFileName` "resources"
+        masterTemplate = makeRelFile "master4.dtpl"
+        settingsYaml = makeRelFile "settings2.yaml"
 
 --    phony "clean" $ do
 --        putNormal "delete all files in "
@@ -86,35 +90,20 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
 
 
         -- get markdown files
-        mdFiles1 <- getDirectoryFiles  doughD ["//*.md", "//*.markdown"]
+        mdFiles1 <- getDirectoryFiles  (toFilePath doughD) ["//*.md", "//*.markdown"]
             -- todo markdown files are not found ?
-        let htmlFiles2 = [bakedD </> md -<.> "html" | md <- mdFiles1]
+        let htmlFiles2 = [(toFilePath bakedD) </> md -<.> "html" | md <- mdFiles1]
         liftIO $ putIOwords ["\nshakeWrapped - htmlFile"
-                ,  showT (map (makeRelative doughD) htmlFiles2)]
+                ,  showT (map (makeRelative . toFilePath $ doughD) htmlFiles2)]
 
-        -- get css
-        cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs
-    --                liftIO $ putIOwords
---                    ["\nshakeWrapped - phony cssFiles1", showT cssFiles1]
-        let cssFiles2 = [replaceDirectory c staticD  | c <- cssFiles1]
-    --                let cssFiles2 = [dropDirectory1 staticD </> c  | c <- cssFiles1]
-        liftIO $ putIOwords ["\nshakeWrapped - phony cssFiles2", showT cssFiles2]
-    --                mapM_ (\fn -> copyFileChanged (templatesD </> fn)
---                    (staticD </> fn)) cssFiles1
+-- TODO missing static resources from dough
 
-        -- pages templates
-        pageTemplates <- getDirectoryFiles templatesD ["/*.gtpl"]
-        let pageTemplates2 = [templatesD </> tpl | tpl <- pageTemplates]
-        liftIO $ putIOwords ["\nshakeWrapped - phony pageTemplates", showT pageTemplates2]
+--        -- get css
+--        cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs
+--        let cssFiles2 = [replaceDirectory c staticD  | c <- cssFiles1]
+--        liftIO $ putIOwords ["\nshakeWrapped - phony cssFiles2", showT cssFiles2]
 
---        -- index pages
---        ixPages <- getDirectoryFiles doughD ["//*.dtpl" ]
---        liftIO $ putIOwords ["\nshakeWrapped - index file tempaltes"
---                ,  showT (map (makeRelative doughD) ixPages)]
-
-
-        need pageTemplates2
-        need cssFiles2
+--        need cssFiles2
         need htmlFiles2
         -- the templates static files are copied with watch
 
@@ -124,11 +113,47 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
         let md =   doughD </>  (makeRelative bakedD $ out -<.> "md")
         liftIO $ putIOwords ["\nshakeWrapped - bakedD html - c ", showT md]
 
---        let masterTemplate = templatesD</>"Master3.gtpl"
---            masterSettings_yaml = doughD </> "settings2.yaml"
-        need [md]
+        let masterTemplate = templatesD </> masterTemplate
+            masterSettings_yaml_abs = doughD </> settingsYaml
+
+        biblio <- getDirectoryFiles resourcesD ["*.bib"]
+        let biblio2 = [resourcesD </> b | b <- biblio]
+        putIOwords ["shake bakedD", "biblio", showT biblio2]
+
+        yamlPageFiles <- getDirectoryFiles templatesD ["*.yaml"]
+        let yamlPageFiles2 = [templatesD </> y | y <- yamlPageFiles]
+
+        cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs
+        let cssFiles2 = [replaceDirectory c staticD  | c <- cssFiles1]
+
+        -- for index rebake
+        let mdDir = md -<.> ""  -- should be directory
+        ixLikely <- doesDirectoryExist mdDir
+        liftIO $ putIOwords ["shake bakedD", "ixLikely ", showT ixLikely, s2t mdDir]
+        if ixLikely
+            then do
+                submds <- getDirectoryFiles mdDir ["*.md"]
+                putIOwords ["shake bakedD", "submds", showT submds]
+                need submds
+            else return ()
+
+        liftIO $ putIOwords ["shake bakedD", "ixLikely passed", showT ixLikely, s2t mdDir]
+
+        -- the list of needs is too large and forces
+        -- baking when any biblio,css,page.yaml or .dtpl changes
+        need biblio2
+        need cssFiles2
+        liftIO $ putIOwords ["shake bakedD", "needs next yaml", showT yamlPageFiles2]
+        need yamlPageFiles2
+        liftIO $ putIOwords ["shake bakedD", "needs next 1", showT masterSettings_yaml]
 --        need [masterSettings_yaml]
---        need [masterTemplate]
+        liftIO $ putIOwords ["shake bakedD", "needs next 2", s2t masterTemplate]
+        need [masterTemplate]
+        liftIO $ putIOwords ["shake bakedD", "next need 3 ", s2t md]
+
+        need [md]
+        liftIO $ putIOwords ["shake bakedD", "md need done 4"]
+
         runErr2action $ bakeOneFileFPs  md  doughD templatesD out
             -- c relative to dough/
 
@@ -138,10 +163,6 @@ shakeWrapped doughD templatesD bakedD = shakeArgs shakeOptions {shakeFiles=baked
 
     (staticD </> "*.css") %> \out ->  do           -- insert css
         liftIO $ putIOwords ["\nshakeWrapped - staticD - *.css", showT out]
---        let etFont = staticD</>"et-book"  -- the directory with the fonts
---        copyFileChanged (replaceDirectory etFont templatesD) etFont
---          gives need on dir - all static files are copied_
---           with watch
         copyFileChanged (replaceDirectory out templatesD) out
 
 

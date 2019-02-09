@@ -68,7 +68,7 @@ main2 = do
     let templatesPath =  (themeDir layout) </> templatesDirName :: Path Abs Dir
     let resourcesPath = (doughDir layout) </> resourcesDirName :: Path Abs Dir
     -- copy static resources (templates and dough)
-    copyDirRecursive resourcesPath (bakedPath </> staticDirName )
+--    copyDirRecursive resourcesPath (bakedPath </> staticDirName )
     putIOwords [programName, "copied all templates  files from"
                         , showT resourcesPath, "to", showT bakedPath ]
     -- resources in dough are not needed for baked
@@ -140,7 +140,10 @@ mainWatchDough layout  =  do
                     {Twitch.root = Just . toFilePath $ doughPath
                      , Twitch.log = Twitch.NoLogger
                     }) $ do
-            Twitch.addModify (\filepath -> runErrorVoid $ shake layout) "**/*.md"     -- add and modify event
+            Twitch.addModify (\filepath -> runErrorVoid $ shake layout) "**/*.md"
+            Twitch.addModify (\filepath -> runErrorVoid $ shake layout) "**/*.yaml"
+            Twitch.addModify (\filepath -> runErrorVoid $ shake layout) "**/*.bib"
+            -- add and modify event
 
 mainWatchThemes layout =  do
     let templatesPath =  (themeDir layout) </> templatesDirName :: Path Abs Dir
@@ -154,8 +157,8 @@ mainWatchThemes layout =  do
                      , Twitch.log = Twitch.NoLogger
                     }) $ do
 --            verbosity from Cabal
-            Twitch.addModify (\filepath -> runErrorVoid $ shake layout) "**/*.html"
-            Twitch.addModify (\filepath -> runErrorVoid $ shake layout) "**/*.*tpl"
+            Twitch.addModify (\filepath -> runErrorVoid $ shake layout) "**/*.yaml"
+            Twitch.addModify (\filepath -> runErrorVoid $ shake layout) "**/*.dtpl"
             Twitch.addModify (\filepath -> runErrorVoid $ shake layout) "**/*.css"
             Twitch.addModify (\filepath -> runErrorVoid $ shake layout) "**/*.jpg"
             -- add and modify event
