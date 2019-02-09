@@ -39,7 +39,7 @@ import Lib.Foundation
         , templatesDirName, staticDirName, resourcesDirName)
 
 
-import Lib.Shake (shake)
+import Lib.Shake (shake,shakeDelete)
 import  Lib.ReadSettingFile
 
 --import qualified Path.IO as Pathio
@@ -124,8 +124,8 @@ twichDefault4ssg = Twitch.Options
     , logFile                   = Nothing
     , root                      = Nothing
     , recurseThroughDirectories = True
-    , debounce                  = DebounceDefault
-    , debounceAmount            = 0
+    , debounce                  = Debounce
+    , debounceAmount            = 1  -- second? NominalTimeDifference
     , pollInterval              = 10^(6 :: Int) -- 1 second
     , usePolling                = False
     }
@@ -141,6 +141,7 @@ mainWatchDough layout  =  do
                      , Twitch.log = Twitch.NoLogger
                     }) $ do
             Twitch.addModify (\filepath -> runErrorVoid $ shake layout filepath) "**/*.md"
+            Twitch.delete (\filepath -> runErrorVoid $ shakeDelete layout filepath) "**/*.md"
             Twitch.addModify (\filepath -> runErrorVoid $ shake layout filepath) "**/*.yaml"
             Twitch.addModify (\filepath -> runErrorVoid $ shake layout filepath) "**/*.bib"
             -- add and modify event

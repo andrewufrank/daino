@@ -38,6 +38,12 @@ import Development.Shake.FilePath
 --import Development.Shake.Linters (yamllint)  -- how does this work (needs shake-ext)
 --import Path.IO (setCurrentDir)
 
+shakeDelete :: SiteLayout ->  FilePath ->   ErrIO ()
+-- experimental - twich found delete of md
+shakeDelete _ filepath = do
+    putIOwords ["\n\n*******************************************"
+            ,"DELETED MD", s2t filepath]
+
 shake :: SiteLayout ->  FilePath ->   ErrIO ()
 -- the second argument is the file which has changed
 shake layout filepath  = do
