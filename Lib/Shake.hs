@@ -49,7 +49,7 @@ shake layout   = do
     setCurrentDir (doughDir layout)
 
     -- delete old baked files  -- should not be needed when needs correct
-    fs <- getDirectoryDirs' bakedD
+    fs <- getDirectoryDirs' (toFilePath bakedD)
     putIOwords ["shakeTesting", "to delete", showT fs]
 --  mapM_ removeDirectoryRecursive fs
 
@@ -61,19 +61,22 @@ shake layout   = do
 
 
 shakeWrapped :: Path Abs Dir  -> Path Abs Dir  -> Path Abs Dir ->  IO  ()
-shakeWrapped doughD templatesD bakedD =
-    shakeArgs shakeOptions {shakeFiles=toFilePath bakedD
+shakeWrapped doughP templatesP bakedP =
+    shakeArgs shakeOptions {shakeFiles=toFilePath bakedP
                 , shakeVerbosity=Chatty -- Loud
                 , shakeLint=Just LintBasic
 --                , shakeRebuild=[(RebuildNow,"allMarkdownConversion")]
 --                  seems not to produce an effect
                 } $ do
 
-    let staticD = addFileName bakedD  ( staticDirName)
+    let doughD = toFilePath doughP
+        templatesD = toFilePath templatesP
+        bakedD = toFilePath bakedP
+    let staticD =   bakedD </>  (toFilePath staticDirName)
         -- where all the static files go
-        resourcesD = makeAbsDir $ doughD `addFileName` "resources"
-        masterTemplate = makeRelFile "master4.dtpl"
-        settingsYaml = makeRelFile "settings2.yaml"
+        resourcesD =  doughD </> "resources"
+        masterTemplateFn =  "master4.dtpl"
+        settingsYamlFn =  "settings2.yaml"
 
 --    phony "clean" $ do
 --        putNormal "delete all files in "
@@ -90,11 +93,11 @@ shakeWrapped doughD templatesD bakedD =
 
 
         -- get markdown files
-        mdFiles1 <- getDirectoryFiles  (toFilePath doughD) ["//*.md", "//*.markdown"]
+        mdFiles1 <- getDirectoryFiles  doughD ["//*.md", "//*.markdown"]
             -- todo markdown files are not found ?
-        let htmlFiles2 = [(toFilePath bakedD) </> md -<.> "html" | md <- mdFiles1]
+        let htmlFiles2 = [bakedD </> md -<.> "html" | md <- mdFiles1]
         liftIO $ putIOwords ["\nshakeWrapped - htmlFile"
-                ,  showT (map (makeRelative . toFilePath $ doughD) htmlFiles2)]
+                ,  showT (map (makeRelative  doughD) htmlFiles2)]
 
 -- TODO missing static resources from dough
 
@@ -113,8 +116,8 @@ shakeWrapped doughD templatesD bakedD =
         let md =   doughD </>  (makeRelative bakedD $ out -<.> "md")
         liftIO $ putIOwords ["\nshakeWrapped - bakedD html - c ", showT md]
 
-        let masterTemplate = templatesD </> masterTemplate
-            masterSettings_yaml_abs = doughD </> settingsYaml
+        let masterTemplate = templatesD </> masterTemplateFn
+            masterSettings_yaml = doughD </> settingsYamlFn
 
         biblio <- getDirectoryFiles resourcesD ["*.bib"]
         let biblio2 = [resourcesD </> b | b <- biblio]
@@ -129,7 +132,7 @@ shakeWrapped doughD templatesD bakedD =
         -- for index rebake
         let mdDir = md -<.> ""  -- should be directory
         ixLikely <- doesDirectoryExist mdDir
-        liftIO $ putIOwords ["shake bakedD", "ixLikely ", showT ixLikely, s2t mdDir]
+--        liftIO $ putIOwords ["shake bakedD", "ixLikely ", showT ixLikely, s2t mdDir]
         if ixLikely
             then do
                 submds <- getDirectoryFiles mdDir ["*.md"]
@@ -143,22 +146,15 @@ shakeWrapped doughD templatesD bakedD =
         -- baking when any biblio,css,page.yaml or .dtpl changes
         need biblio2
         need cssFiles2
-        liftIO $ putIOwords ["shake bakedD", "needs next yaml", showT yamlPageFiles2]
         need yamlPageFiles2
-        liftIO $ putIOwords ["shake bakedD", "needs next 1", showT masterSettings_yaml]
---        need [masterSettings_yaml]
-        liftIO $ putIOwords ["shake bakedD", "needs next 2", s2t masterTemplate]
+        need [masterSettings_yaml]
         need [masterTemplate]
-        liftIO $ putIOwords ["shake bakedD", "next need 3 ", s2t md]
-
         need [md]
-        liftIO $ putIOwords ["shake bakedD", "md need done 4"]
 
         runErr2action $ bakeOneFileFPs  md  doughD templatesD out
             -- c relative to dough/
 
---    (templatesD</>"*.dtpl") %> \out ->     -- check only existence
---        do
+-- what else needs to be copied ?
 
 
     (staticD </> "*.css") %> \out ->  do           -- insert css
