@@ -3,7 +3,7 @@ title: index for post
 author: AUF
 date: Jan. 4, 2019
 keywords: test
-abstract: A silly text not needing an abstract.
+abstract: The directory for experiments.
 pageTemplate: page3.yaml
 indexPage: True 
 ---

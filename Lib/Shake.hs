@@ -40,7 +40,7 @@ import Development.Shake.FilePath
 
 shake :: SiteLayout ->    ErrIO ()
 shake layout   = do
-    putIOwords ["\nshake start", shownice layout]
+    putIOwords ["\n\n=====================================shake start", shownice layout]
     let  -- where the layout is used, rest in shakeWrapped
           doughD      =    doughDir $ layout  -- the regular dough
           templatesD =   (themeDir $ layout)
@@ -50,12 +50,12 @@ shake layout   = do
 
     -- delete old baked files  -- should not be needed when needs correct
     fs <- getDirectoryDirs' (toFilePath bakedD)
-    putIOwords ["shakeTesting", "to delete", showT fs]
+    putIOwords ["shakeTesting", "could be to delete", showT fs]
 --  mapM_ removeDirectoryRecursive fs
 
     callIO $ shakeWrapped doughD templatesD bakedD
 
-    putIOwords ["\nshake done", "\n"]
+    putIOwords ["\n--------------------------------------------shake done", "\n"]
 
     return ()
 
@@ -95,7 +95,9 @@ shakeWrapped doughP templatesP bakedP =
         -- get markdown files
         mdFiles1 <- getDirectoryFiles  doughD ["//*.md", "//*.markdown"]
             -- todo markdown files are not found ?
-        let htmlFiles2 = [bakedD </> md -<.> "html" | md <- mdFiles1]
+
+        let htmlFiles2 = [bakedD </> md -<.> "html"
+                        | md <- mdFiles1, not $ isInfixOf' "index.md" md]
         liftIO $ putIOwords ["\nshakeWrapped - htmlFile"
                 ,  showT (map (makeRelative  doughD) htmlFiles2)]
 
@@ -109,6 +111,13 @@ shakeWrapped doughP templatesP bakedP =
 --        need cssFiles2
         need htmlFiles2
         -- the templates static files are copied with watch
+        -- process the index files after all others are done
+        indexFiles1 <- getDirectoryFiles doughD ["//index.md"]
+        let indexFiles2 = [bakedD </> ix -<.> "html" | ix <- indexFiles1]
+        liftIO $ putIOwords ["\nshakeWrapped - indexFiles2"
+                ,  showT indexFiles2]
+        need indexFiles2
+
 
     (bakedD <> "//*.html") %> \out -> do
 
@@ -129,18 +138,19 @@ shakeWrapped doughP templatesP bakedP =
         cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs
         let cssFiles2 = [replaceDirectory c staticD  | c <- cssFiles1]
 
-        -- for index rebake
-        let mdDir = md -<.> ""  -- should be directory
-        ixLikely <- doesDirectoryExist mdDir
---        liftIO $ putIOwords ["shake bakedD", "ixLikely ", showT ixLikely, s2t mdDir]
-        if ixLikely
-            then do
-                submds <- getDirectoryFiles mdDir ["*.md"]
-                putIOwords ["shake bakedD", "submds", showT submds]
-                need submds
-            else return ()
-
-        liftIO $ putIOwords ["shake bakedD", "ixLikely passed", showT ixLikely, s2t mdDir]
+        when (takeBaseName md == "index")  $
+            do
+--        -- for index rebake
+                let mdDir = md -<.> ""  -- should be directory
+                ixLikely <- doesDirectoryExist mdDir
+                liftIO $ putIOwords ["shake bakedD", "ixLikely ", showT ixLikely, s2t mdDir]
+                when ixLikely $
+                    do
+                        submds <- getDirectoryFiles mdDir ["*.md"]
+                        putIOwords ["shake bakedD", "submds", showT submds]
+                        need submds
+--
+--        liftIO $ putIOwords ["shake bakedD", "ixLikely passed", showT ixLikely, s2t mdDir]
 
         -- the list of needs is too large and forces
         -- baking when any biblio,css,page.yaml or .dtpl changes
