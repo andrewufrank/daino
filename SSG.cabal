@@ -17,7 +17,7 @@ library
       Lib.Indexing
       Lib.BibTex
 
-  other-modules:
+  other-modules: Paths_SSG
 
   hs-source-dirs:
       .
@@ -47,6 +47,7 @@ library
     , yaml
     , bibtex==0.1.0.8
 --    , parsec
+    , old-time
 
   default-language: Haskell2010
 

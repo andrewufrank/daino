@@ -34,6 +34,10 @@ import Lib.FileMgt -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
 --            , unDocValue, DocValue (..) )
 import Lib.Indexing
 import Lib.BibTex
+import System.Time
+import Paths_SSG (version)
+import Data.Version (showVersion)
+
 
 -- | Convert markdown text into a 'Value';
 -- The 'Value'  has a "content" key containing rendered HTML
@@ -136,7 +140,10 @@ docValToAllVal debug docval pageFn dough2 template2 = do
                         , bl2b . encode $ unDocValue docval
                         , (bl2b . encode $ ixVal)
                        ]  -- last winns!
-        return val
+        now <- callIO $ toCalendarTime =<< getClockTime
+        let val2 = putStringAtKey val "today" (s2t $ calendarTimeToString now)
+        let val3 = putStringAtKey val2 "ssgversion" (s2t$ showVersion version)
+        return val3
 
 
 -- | Reasonable options for reading a markdown file

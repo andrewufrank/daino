@@ -107,7 +107,7 @@
     $afterContent$
 
 
-        <p class=meta tiny">
+        <p class=tiny>
         Produced with SGG $ssgversion$ on $today$.
         </p>
 
