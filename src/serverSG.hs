@@ -42,7 +42,7 @@ import Lib.Foundation
 import Lib.Shake (shake)
 import  Lib.ReadSettingFile
 
-import qualified Path.IO as Pathio
+--import qualified Path.IO as Pathio
 --import Distribution.Simple.Utils (copyDirectoryRecursive)
 --import Distribution.Verbosity (Verbosity(..), normal)
 
@@ -68,8 +68,7 @@ main2 = do
     let templatesPath =  (themeDir layout) </> templatesDirName :: Path Abs Dir
     let resourcesPath = (doughDir layout) </> resourcesDirName :: Path Abs Dir
     -- copy static resources (templates and dough)
-    Pathio.copyDirRecur
-                         (unPath resourcesPath) (unPath $ bakedPath </> staticDirName )
+    copyDirRecursive resourcesPath (bakedPath </> staticDirName )
     putIOwords [programName, "copied all templates  files from"
                         , showT resourcesPath, "to", showT bakedPath ]
     -- resources in dough are not needed for baked
@@ -148,8 +147,7 @@ mainWatchThemes layout =  do
     let bakedPath = bakedDir layout
     putIOwords [programName, progTitle,"mainWatchThemes"]
     -- copy the static files, not done by shake yet
-    Pathio.copyDirRecur
-                         (unPath templatesPath) (unPath $ bakedPath </> staticDirName )
+    runErrorVoid $ copyDirRecursive templatesPath (bakedPath </> staticDirName )
     putIOwords [programName, "copied templates all files"]
     Twitch.defaultMainWithOptions (twichDefault4ssg
                     {Twitch.root = Just . toFilePath $ templatesPath

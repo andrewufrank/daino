@@ -81,11 +81,11 @@ executable serversg
     , warp
     , wai-middleware-static
 --    , hinotify
-    , directory
+--    , directory
     , twitch
     , Cabal
 --    , spawn
-    , path-io
+--    , path-io
 
   hs-source-dirs:
     src
@@ -119,15 +119,16 @@ test-suite g2
     , uniform-error
     , SSG
 --    , glabrous
+
     , doctemplates
-    , pandoc-types
+--    , pandoc-types
     , shake
     , pandoc
     , lens-aeson
     , lens
     , aeson
     , aeson-pretty
-    , bytestring
+--    , bytestring
     , yaml-union
     , bibtex==0.1.0.8
 --    , parsec

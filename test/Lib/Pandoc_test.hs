@@ -20,8 +20,8 @@ import           Test.Framework
 import Uniform.Test.TestHarness
 import Lib.Foundation (progName)
 import Lib.FileMgt
-import Lib.Pandoc
-import Text.Pandoc.Definition as PD
+--import Lib.Pandoc
+--import Text.Pandoc.Definition as PD
 
 readMarkdownFile8 :: String  -> ErrIO MarkdownText
 readMarkdownFile8 fnn = read8 (makeAbsFile fnn) markdownFileType
@@ -57,4 +57,4 @@ test_pandoc_pageFn_pageMd_2 = test1FileIO progName  "pageFn2" "pageMd2" readMark
 instance  ShowTestHarness MarkdownText where
 
 instance  ShowTestHarness DocValue where
-instance  ShowTestHarness Pandoc where
+--instance  ShowTestHarness Pandoc where
