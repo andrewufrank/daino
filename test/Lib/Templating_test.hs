@@ -35,8 +35,8 @@ import Lib.FileMgt
 
 --test_templating_put1 = test2FileIO progName "resultAF1"
 
-temp1 = "some start {{template2}} and some more text."
-temp2 = "xxx and yyy"
+--temp1 = "some start {{template2}} and some more text."
+--temp2 = "xxx and yyy"
 
 --t1 = fromRightNoteString "t1 rwe2" . G.fromText $ temp1
 --t2 = fromRightNoteString "t2 wwer2" . G.fromText $ temp2
@@ -71,6 +71,6 @@ instance  ShowTestHarness DocValue where
 instance ShowTestHarness HTMLout
 --
 --
-fromRightNoteString ::   Text -> Either String b -> b
-fromRightNoteString msg (Left a) = errorT ["fromRight", showT a, msg]
-fromRightNoteString _ (Right a) = a
+--fromRightNoteString ::   Text -> Either String b -> b
+--fromRightNoteString msg (Left a) = errorT ["fromRight", showT a, msg]
+--fromRightNoteString _ (Right a) = a
