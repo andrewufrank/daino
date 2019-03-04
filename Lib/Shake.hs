@@ -111,6 +111,16 @@ shakeWrapped doughP templatesP bakedP =
                 ,  showT (map (makeRelative  doughD) htmlFiles2)]
 
 -- TODO missing static resources from dough
+-- what else needs to be copied ?
+
+    -- get html files from dough (not yet done, html are in resources)
+--        htmlFilesStatic <- getDirectoryFiles  doughD ["//*.html"]
+--            -- todo markdown files are not found ?
+--
+--        let htmlFilesStatic2 = [bakedD </> f | f <- htmlFilesStatic]
+--        liftIO $ putIOwords ["\nshakeWrapped - htmlFilesStatic2"
+--                ,  showT (map (makeRelative  doughD) htmlFilesStatic2)]
+--        need htmlFilesStatic2
 
 --        -- get css
 --        cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs
@@ -173,7 +183,6 @@ shakeWrapped doughP templatesP bakedP =
         runErr2action $ bakeOneFileFPs  md  doughD templatesD out
             -- c relative to dough/
 
--- what else needs to be copied ?
 
 
     (staticD </> "*.css") %> \out ->  do           -- insert css

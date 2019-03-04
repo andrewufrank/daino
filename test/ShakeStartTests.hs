@@ -95,8 +95,10 @@ shakeTestWrapped doughD templatesD testD =
         runErr2action $
                 do
                     intext <- read8 (makeAbsFile source) markdownFileType
-                    p <- markdownToPandoc True intext
-                    writeFile2 (makeAbsFile out) (showT p)
+                    mp <- markdownToPandoc True intext
+                    case mp of
+                        Nothing -> return ()
+                        Just p -> writeFile2 (makeAbsFile out) (showT p)
 
       (testD <> "//*content.docval") %> \out -> do
         let source = out --<.>   "withSettings.pandoc"

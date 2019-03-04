@@ -13,9 +13,10 @@
 {-# LANGUAGE OverloadedStrings     #-}
 
 module Lib.Pandoc
---  ( markdownToPandoc, pandocToContentHtml, getMeta
---  , Pandoc, flattenMeta, readMarkdown2, _String, key, (^?)
---  )
+  ( markdownToPandoc, pandocToContentHtml, getMeta, docValToAllVal
+  , getMaybeStringAtKey
+  , Pandoc, flattenMeta, readMarkdown2, _String, key, (^?)
+  )
     where
 
 import Control.Lens ((^?), (?~), (&), at)
@@ -23,12 +24,12 @@ import Data.Aeson
 import Data.Aeson.Lens
 import  Data.Yaml.Union
 import Text.Pandoc as Pandoc
-import Text.Pandoc.Highlighting
-import Text.Pandoc.Shared
+import Text.Pandoc.Highlighting (tango)
+import Text.Pandoc.Shared (stringify)
 import Text.CSL.Pandoc (processCites')
 
 import Uniform.Filenames hiding (Meta, at)
-import Uniform.Error hiding (Meta, at)
+--import Uniform.Error hiding (Meta, at)
 import Uniform.FileIO hiding (Meta, at)
 import Lib.FileMgt -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
 --            , unDocValue, DocValue (..) )
@@ -45,30 +46,38 @@ import Data.Version (showVersion)
 -- includes reference replacement (pandoc-citeproc)
 -- runs in the pandoc monad!
 
-markdownToPandoc :: Bool -> MarkdownText -> ErrIO Pandoc
+markdownToPandoc :: Bool -> MarkdownText -> ErrIO (Maybe Pandoc)
 -- process the markdown (including if necessary the BibTex treatment)
 -- the bibliography must be in the metadata
 -- the settings are in the markdownText (at end - to let page specific have precedence)
 markdownToPandoc debug mdtext  = do
     pandoc   <- readMarkdown2  mdtext
     let meta2 = flattenMeta (getMeta pandoc)
-    let bib = getMaybeStringAtKey meta2 "bibliography" :: Maybe Text
-    let nociteNeeded = getMaybeStringAtKey meta2 "bibliographyGroup" :: Maybe Text
-    currDir <- currentDir
-    pandoc2 <- case bib of
-        Nothing ->  return pandoc
-        Just bibfp -> pandocProcessCites (currDir </> (makeRelFile . t2s $ bibfp))
-                    nociteNeeded mdtext pandoc
+    let publish = getMaybeStringAtKey meta2 "publish" :: Maybe Text
+    if  isNothing publish || (fmap toLower' publish) == Just "true"
+        then do
+            putIOwords ["markdownToPandoc", "publish", showT publish]
 
-    return pandoc2
+            let bib = getMaybeStringAtKey meta2 "bibliography" :: Maybe Text
+            let nociteNeeded = getMaybeStringAtKey meta2 "bibliographyGroup" :: Maybe Text
+            currDir <- currentDir
+            pandoc2 <- case bib of
+                Nothing ->  return pandoc
+                Just bibfp -> pandocProcessCites (currDir </> (makeRelFile . t2s $ bibfp))
+                            nociteNeeded mdtext pandoc
 
+            return . Just $ pandoc2
+
+        else do
+                putIOwords ["markdownToPandoc", "NOT PUBLISH", showT publish]
+                return Nothing
 
 
     -- test if biblio is present and apply
 --    let bib = fmap t2s $  ( meta2) ^? key "bibliography" . _String :: Maybe FilePath
 
 
-    return pandoc2
+--    return pandoc2
 
 pandocProcessCites :: Path Abs File  -> Maybe Text -> MarkdownText -> Pandoc -> ErrIO Pandoc
 -- process the citations
@@ -123,12 +132,10 @@ docValToAllVal debug docval pageFn dough2 template2 = do
         putIOwords ["docValToAllVal", "doindex", showT doindex]
 
         ix :: MenuEntry <- if doindex2
-            then
-                do
+            then do
                     let currentDir2 = makeAbsDir $ getParentDir pageFn
                     ix2 <- makeIndexForDir currentDir2 pageFn
                     putIOwords ["docValToAllVal", "index", showT ix2]
-
                     return ix2
 
           else return zero

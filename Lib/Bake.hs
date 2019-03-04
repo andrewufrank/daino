@@ -63,24 +63,28 @@ bakeOneFile debug pageFn dough2 templates2 ht2 = do
         -- currently only for md files
         pageMd :: MarkdownText <- read8 pageFn markdownFileType -- pageFn -> pageMd
         -- process the md file (including bibtex citations)
-        pandoc <- markdownToPandoc debug pageMd  -- AG -> AD
+        mpandoc :: Maybe Pandoc  <- markdownToPandoc debug pageMd  -- AG -> AD
                                                         -- withSettings.pandoc
         -- produce html and put into contentHtml key
-        docval <- pandocToContentHtml debug pandoc  -- content.docval
 
-        val <- docValToAllVal debug docval pageFn dough2 templates2
+        case mpandoc of
+            Just pandoc -> do
+                docval   <- pandocToContentHtml debug pandoc  -- content.docval
+                val <- docValToAllVal debug docval pageFn dough2 templates2
 
-        html2 <- putValinMaster debug val templates2
+                html2 <- putValinMaster debug val templates2
 
-        write8   ht2 htmloutFileType html2
---            putIOwords ["bakeOneFile outhtml
---            (which was just written) \n", unHTMLout html2, "\n"]
+                write8   ht2 htmloutFileType html2
+        --            putIOwords ["bakeOneFile outhtml
+        --            (which was just written) \n", unHTMLout html2, "\n"]
 
-        when debug $ putIOwords ["bakeOneFile resultFile"
-                        , showT ht2, "from",  showT pageFn, "\n"]
-        when debug $ putIOwords ["......................"]
+                when debug $ putIOwords ["bakeOneFile resultFile"
+                                , showT ht2, "from",  showT pageFn, "\n"]
+                when debug $ putIOwords ["......................"]
 
-        return . unwords' $  ["bakeOneFile outhtml ", showT pageFn, "done"]
+                return . unwords' $  ["bakeOneFile outhtml ", showT pageFn, "done"]
+            Nothing -> return . unwords'
+                        $  ["bakeOneFile outhtml ", showT pageFn, "nothing to do"]
 
  `catchError` (\e -> do
                     let errmsg2 =  ["\n****************"
