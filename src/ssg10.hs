@@ -23,11 +23,13 @@ import Lib.ReadSettingFile
 programName = "SSG10" :: Text
 progTitle = "constructing a static site generator" :: Text
 
+settingsfileName = makeRelFile "settings2"
+
 
 main :: IO ()
 main = startProg programName progTitle
              (do
-                (layout2, _)  <- readSettings
+                (layout2, _)  <- readSettings settingsfileName
                 shake layout2 ""
                 return ()
                 )

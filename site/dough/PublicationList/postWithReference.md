@@ -29,7 +29,9 @@ references:
     month: 3
 ---
 
-An example post [@fenner2012a]. With a reference to [@Frank2010a] given.
+An example post [@fenner2012a]. With a reference to [@Frank2010a[TUxx9999]] given and navratil08 as nocite.
+The frank2010a is a
+The references are in "resources/BibTexLatex.bib".
 
 # References
 

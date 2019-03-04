@@ -27,19 +27,6 @@ import qualified Text.BibTeX.Entry as Entry
 import qualified Data.Char as Char
 --import System.IO (hPutStrLn, stderr, )
 
-bibMain :: ErrIO ()
-bibMain = do
-    return ()
-
-bibMain1 :: IO ()
-bibMain1 =    do
---    bib <- getContents
---    case Parsec.parse (Parsec.skipMany Parsec.space >> Parse.file) "stdin" bib of
---         Left errMsg -> hPutStrLn stderr (show errMsg)
---         Right entries ->
---            mapM_ (putStrLn . cite) entries
-
-    return ()
 
 readBibTex :: FilePath ->  IO String
 -- reads the bibtex file

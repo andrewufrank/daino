@@ -14,6 +14,6 @@ bibliography: "resources/BibTexLatex.bib"
 
 ---
 
-An example publication list for AF
+An example publication list for AF  
 
  

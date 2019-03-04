@@ -9,6 +9,7 @@ module Main     where      -- must have Main (main) or Main where
 
 
 --import System.Exit
+import System.Directory (createDirectoryIfMissing)
 
 import           Test.Framework
 
@@ -39,6 +40,9 @@ import {-@ HTF_TESTS @-} Lib.BibTex_test
 main ::  IO ()
 main =  do  -- with tests in other modules
     putStrLn "HTF ExampleTest.hs:\n"
+    createDirectoryIfMissing False "/home/frank/SSGtest"
+    -- is in settings.yaml testDir  - must correspond
+
     p <- htfMain htf_importedTests
     putStrLn ("HTF end ExampleTest.hs test:\n" ++ show p ++ "\nEND HTF ExampleTest")
     return ()

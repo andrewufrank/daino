@@ -50,6 +50,7 @@ programName = "SSG" :: Text
 progTitle = unwords' ["constructing a static site generator"
 --                , "on port ", showT bakedPort
                 ]  :: Text
+settingsfileName = makeRelFile "settings2"
 
 --bakedPort = 3099
 
@@ -61,10 +62,13 @@ main = startProg programName progTitle
 
 main2 :: ErrIO ()
 main2 = do
-    (layout, port)  <- readSettings
+    (layout, port)  <- readSettings settingsfileName
     putIOwords ["main2", showT layout, showT port]
 
     let bakedPath = bakedDir layout :: Path Abs Dir
+    createDirIfMissing' bakedPath
+    -- the directory can be missing or deleted intentionally
+
     let templatesPath =  (themeDir layout) </> templatesDirName :: Path Abs Dir
     let resourcesPath = (doughDir layout) </> resourcesDirName :: Path Abs Dir
     -- copy static resources (templates and dough)

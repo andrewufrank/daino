@@ -119,6 +119,7 @@ test-suite g2
     , uniform-fileio
     , uniform-error
     , SSG
+    , directory
 --    , glabrous
 
     , doctemplates

@@ -30,12 +30,18 @@ import Data.Aeson.Lens
 import Data.Aeson
 import Control.Lens ((^?))
 
-readSettings :: ErrIO (SiteLayout, Int)
-readSettings = do
+readSettings ::Path Rel File ->  ErrIO (SiteLayout, Int)
+-- must be the settings2.yaml file, relative to the current working dir
+-- which contain the rest of the settings
+-- returns layout and port
+
+readSettings settingsfilename = do
     let debug = False
-    when debug $ putIOwords ["readSettings start"]
+
+--    when debug $
+    putIOwords ["readSettings", "file", showT settingsfilename]
     wd <- currentDir
-    settingsTxt <- read8 (wd </> makeRelFile "settings2") yamlFileType
+    settingsTxt <- read8 (wd </> settingsfilename) yamlFileType
     when debug $ putIOwords ["readSettings text", showT settingsTxt]
     -- TODO where is settings
     layout3 <- readSettings2 debug settingsTxt
