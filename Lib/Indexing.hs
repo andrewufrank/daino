@@ -41,7 +41,7 @@ makeIndexForDir :: Path Abs Dir -> Path Abs File -> ErrIO MenuEntry
 -- place result in index.html in this directory
 -- the name of the index file is passed to exclude it
 makeIndexForDir focus indexFn = do
-    fs <- getDirContentNonHiddenFiles (toFilePath focus)
+    fs <- getDirContentNonHidden (toFilePath focus)
     let fs2 = filter (/= (toFilePath indexFn)) fs
     is :: [IndexEntry] <- mapM (\f -> makeIndexEntry (makeAbsFile f)) fs2
     let menu1 = MenuEntry {menu2 = is}
@@ -76,8 +76,8 @@ makeIndexEntry fp = do
     return $ IndexEntry {text = s2t fnn, link = s2t $ "/" <> dir </> fnn <.> "html"}
 
 
-getDirContentNonHiddenFiles :: FileOps fp => fp -> ErrIO [fp]
-getDirContentNonHiddenFiles fp = do
-    fps  <- getDirContentNonHidden fp
-    filterM doesFileExist' fps
+--getDirContentNonHiddenFiles :: FileOps fp => fp -> ErrIO [fp]
+--getDirContentNonHiddenFiles fp = do
+--    fps  <- getDirContentNonHidden fp
+--    filterM doesFileExist' fps
 
