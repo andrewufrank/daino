@@ -102,8 +102,10 @@ shakeWrapped doughP templatesP bakedP =
 
 
         -- get markdown files
-        mdFiles1 <- getDirectoryFiles  doughD ["//*.md", "//*.markdown"]
+        mdFiles1 <- getDirectoryFiles  doughD ["//*.md"]
+            -- , "//*.markdown"]
             -- todo markdown files are not found ?
+                -- found ok, but not indexed
 
         let htmlFiles2 = [bakedD </> md -<.> "html"
                         | md <- mdFiles1, not $ isInfixOf' "index.md" md]
@@ -157,17 +159,17 @@ shakeWrapped doughP templatesP bakedP =
         cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs
         let cssFiles2 = [replaceDirectory c staticD  | c <- cssFiles1]
 
-        when (takeBaseName md == "index")  $
-            do
---        -- for index rebake
-                let mdDir = md -<.> ""  -- should be directory
-                ixLikely <- doesDirectoryExist mdDir
-                liftIO $ putIOwords ["shake bakedD", "ixLikely ", showT ixLikely, s2t mdDir]
-                when ixLikely $
-                    do
-                        submds <- getDirectoryFiles mdDir ["*.md"]
-                        putIOwords ["shake bakedD", "submds", showT submds]
-                        need submds
+--        when (takeBaseName md == "index")  $
+--            do
+----        -- for index rebake
+--                let mdDir = md -<.> ""  -- should be directory
+--                ixLikely <- doesDirectoryExist mdDir
+--                liftIO $ putIOwords ["shake bakedD", "ixLikely ", showT ixLikely, s2t mdDir]
+--                when ixLikely $
+--                    do
+--                        submds <- getDirectoryFiles mdDir ["*.md"]
+--                        putIOwords ["shake bakedD", "submds", showT submds]
+--                        need submds
 --
 --        liftIO $ putIOwords ["shake bakedD", "ixLikely passed", showT ixLikely, s2t mdDir]
 

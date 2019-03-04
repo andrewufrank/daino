@@ -24,6 +24,7 @@ module Lib.Indexing
 
 import Uniform.Strings hiding ((<.>), (</>))
 import Uniform.FileIO hiding ((<.>), (</>))
+import qualified Uniform.FileIO as FileIO
 --import Uniform.FileStrings
 --import Uniform.TypedFile
 
@@ -40,10 +41,13 @@ makeIndexForDir :: Path Abs Dir -> Path Abs File -> ErrIO MenuEntry
 -- make the index for the directory
 -- place result in index.html in this directory
 -- the name of the index file is passed to exclude it
+-- makes index only for md files in dough
+-- needs more work for index? date ? abstract?
 makeIndexForDir focus indexFn = do
     fs <- getDirContentNonHidden (toFilePath focus)
-    let fs2 = filter (/= (toFilePath indexFn)) fs
-    is :: [IndexEntry] <- mapM (\f -> makeIndexEntry (makeAbsFile f)) fs2
+    let fs2 = filter (/= (toFilePath indexFn)) fs -- exclude index
+    let fs3 = filter (FileIO.hasExtension ( "md")) fs2
+    is :: [IndexEntry] <- mapM (\f -> makeIndexEntry (makeAbsFile f)) fs3
     let menu1 = MenuEntry {menu2 = is}
     putIOwords ["makeIndexForDir", "for ", showT focus, "\n", showT menu1 ]
     let yaml1 = bb2t .   Y.encode  $ menu1
