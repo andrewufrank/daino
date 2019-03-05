@@ -60,6 +60,15 @@ layoutDefaults = SiteLayout{  doughDir = sourceDir </> makeRelDir "site/dough"
 templatesDirName, staticDirName :: Path Rel Dir
 templatesDirName = (makeRelDir "templates")
 staticDirName = makeRelDir "static"
+resourcesDirName :: Path Rel Dir
 resourcesDirName = makeRelDir "resources"
 
+-- content of settings2.yaml
+--storage:
+--    themeDir:  /home/frank/Workspace8/ssg/theme
+--    doughDir: /home/frank/Workspace8/ssg/site/dough
+--    bakedDir: /home/frank/Workspace8/ssg/site/baked
+--    reportFile: /home/frank/SSGreport.txt
+--    testDir: /home/frank/SSGtest
+--localhostPort: 3000
 
