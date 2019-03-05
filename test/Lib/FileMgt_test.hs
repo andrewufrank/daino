@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 --
--- Module      :   a test for HTF framework
+-- Module      :   a for the read writes typed files
 -- insert {-@ HTF_TESTS @-} for each import
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
@@ -29,7 +29,7 @@ doughD = doughDir layoutDefaults
 testD = testDir layoutDefaults
 
 post1 = sourceDir </> makeRelFile "site/dough/Blog/postwk.md" :: Path Abs File
-post2 = testD </> makeRelFile "site/dough/Blog/postwk2.md" :: Path Abs File
+post2 = testD </> makeRelFile "site/dough/Blog/postwk.md" :: Path Abs File
 
 test_md2 = testFileReadWrite post1 post2 markdownFileType
 -- show produces the "xx"
@@ -42,8 +42,8 @@ test_md2 = testFileReadWrite post1 post2 markdownFileType
 --                    return (mdf == mdf2)
 --            assertEqual  (Right True) res
 
-testDocVal = testD </> makeRelFile "Blog/postwk.content.docval"
-testDocVal2 = testD </> makeRelFile "Blog/postwkTest.content.docval"
+testDocVal = testD </> makeRelFile "site/dough/Blog/postwk.content.docval"
+testDocVal2 = testD </> makeRelFile "site/dough/Blog/postwkTest.content.docval"
 
 test_docvalue2 = testFileReadWrite testDocVal testDocVal2 docValueFileType
 
@@ -62,8 +62,8 @@ testYAML2 = testD </> makeRelFile "site/dough/settings2.yaml"
 
 test_YAMLue = testFileReadWrite testYAML testYAML2 yamlFileType
 
-testHTMLout = testD </> makeRelFile "Blog/postwk.a.html"
-testHTMLout2 = testD </> makeRelFile "Blog/postwk.a2.html"
+testHTMLout = testD </> makeRelFile "site/dough/Blog/postwk.a.html"
+testHTMLout2 = testD </> makeRelFile "site/dough/Blog/postwk.a2.html"
 
 test_htmlout = testFileReadWrite testHTMLout testHTMLout2 htmloutFileType
 

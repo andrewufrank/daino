@@ -39,6 +39,7 @@ test_currentDir = do
                 putIOwords ["currentDir test", showT cd]
                 return . toFilePath $ cd
         assertEqual (Right ("/home/frank/Workspace8/ssg/site/dough/")) res
+        -- is ok if test is run locally (in site/dough)
 
 test_readSettings2 =
     do

@@ -24,14 +24,15 @@ import Uniform.Test.TestHarness
 import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)
 --import Uniform.Filenames
 
-testLayout = layoutDefaults {
-            doughDir = makeAbsDir "/home/frank/.SSG/dough"
-            , bakedDir = makeAbsDir "/home/frank/.SSG/baked"
-            , reportFile = makeAbsFile "/home/frank/.SSG/reportBakeAll.txt"
---            , templateDir = makeAbsDir "templates"
-            , themeDir = makeAbsDir "/home/frank/.SSG/theme"
-            }
+--testLayout = layoutDefaults {
+--            doughDir = makeAbsDir "/home/frank/.SSG/dough"
+--            , bakedDir = makeAbsDir "/home/frank/.SSG/baked"
+--            , reportFile = makeAbsFile "/home/frank/.SSG/reportBakeAll.txt"
+----            , templateDir = makeAbsDir "templates"
+--            , themeDir = makeAbsDir "/home/frank/.SSG/theme"
+--            }
 
+testLayout = layoutDefaults
 --templateFile = addDir (themeDir testLayout) ("Templates/page33.dtpl" :: FilePath)
 
 test_Defaults_1_A :: IO ()
