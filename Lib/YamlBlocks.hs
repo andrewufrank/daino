@@ -77,7 +77,40 @@ instance AtKey DocValue Bool  where
     putStringAtKey  k2 b meta2 = DocValue $  (unDocValue meta2) & _Object . at k2 ?~ Bool b
 
 
+-- | Handle possible pandoc failure within the Action Monad
+unPandocM :: PandocIO a -> ErrIO a
+unPandocM op1 = do
+        res   <- callIO $ runIO (do  -- liftIO $putStrLn "unPandocM op"
+                                     a <- op1 --       error "xx"
+                                     -- liftIO $putStrLn "error xx"
+                                     return a)
+        either (\e -> do
+                        putIOwords ["unPandocM error", showT e ]
+                        throwError . showT $ e
+                ) return res
+     `catchError` (\e -> do
+                        putIOwords ["unPandocM catchError", showT e ]
+                        throwError . showT $  e)
 
+readMarkdown2 :: MarkdownText -> ErrIO Pandoc
+readMarkdown2 (MarkdownText text1) =  unPandocM $ readMarkdown markdownOptions text1
+
+-- | Reasonable options for reading a markdown file
+markdownOptions :: ReaderOptions
+markdownOptions = def { readerExtensions = exts }
+ where
+  exts = mconcat
+    [ extensionsFromList
+      [ Ext_yaml_metadata_block
+      , Ext_fenced_code_attributes
+      , Ext_auto_identifiers
+      ,  Ext_raw_html   -- three extension give markdown_strict
+      , Ext_shortcut_reference_links
+      , Ext_spaced_reference_links
+      , Ext_citations           -- <-- this is the important extension for bibTex
+      ]
+    , githubMarkdownExtensions
+    ]
 
 -- | Flatten a Pandoc 'Meta' into a well-structured JSON object, rendering Pandoc
 -- text objects into plain strings along the way.

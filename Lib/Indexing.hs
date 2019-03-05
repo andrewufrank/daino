@@ -32,7 +32,7 @@ import Data.Aeson
 import Data.Yaml  as Y
 --import Lib.FileMgt
 import Development.Shake.FilePath
-import Lib.FileMgt (DocValue (..))
+import Lib.FileMgt (DocValue (..), MarkdownText (..), markdownFileType)
 import Lib.YamlBlocks
 
 --insertIndex :: Path Abs File -> ErrIO ()
@@ -70,7 +70,7 @@ makeIndexForDir focus indexFn = do
 
     -- needed filename.html title abstract author data
 
-    is :: [IndexEntry] <- mapM (\f -> makeIndexEntry (makeAbsFile f)) fs3
+    is :: [IndexEntry] <- mapM (\f -> getOneIndexEntry (makeAbsFile f)) fs3
     let menu1 = MenuEntry {menu2 = is}
     putIOwords ["makeIndexForDir", "for ", showT focus, "\n", showT menu1 ]
     let yaml1 = bb2t .   Y.encode  $ menu1
@@ -78,19 +78,36 @@ makeIndexForDir focus indexFn = do
 
     return menu1
 
-getOneIndexEntry :: Path Abs File -> IO (IndexEntry)
+getOneIndexEntry :: Path Abs File -> ErrIO (IndexEntry)
 -- fill one entry from one md file
 getOneIndexEntry md = do
-        let
+        mdtext :: MarkdownText <- read8 md markdownFileType
+        pandoc <- readMarkdown2 mdtext
+        let meta2 = flattenMeta (getMeta pandoc)
 
-        let ix = IndexEntry {fn = fn1}
+        let abstract1 = getMaybeStringAtKey meta2 "abstract" :: Maybe Text
+        let title1 = getMaybeStringAtKey meta2 "title" :: Maybe Text
+        let author1 = getMaybeStringAtKey meta2 "author" :: Maybe Text
+        let date1 = getMaybeStringAtKey meta2 "date" :: Maybe Text
+
+        let paths = reverse $ splitPath (toFilePath md)
+        let fn = head paths
+        let dir = head . tail $ paths
+        let fnn = takeBaseName fn
+
+        let ix = IndexEntry {text =  s2t fnn
+                        , link = s2t $ "/" <> dir </> fnn  <.> "html"
+                        , abstract =  maybe "" id abstract1
+                        }
         return ix
+
+
 data MenuEntry = MenuEntry {menu2 :: [IndexEntry]} deriving (Generic, Eq, Ord, Show)
 instance Zeros MenuEntry where zero = MenuEntry zero
 instance FromJSON MenuEntry
 instance ToJSON MenuEntry
 
-data IndexEntry = IndexEntry {fn :: Text  -- ^ naked filename
+data IndexEntry = IndexEntry {text :: Text  -- ^ naked filename
                               , link :: Text -- ^ the url relative to dough dir
                               , title :: Text -- ^ the title
                               , abstract :: Text
@@ -98,21 +115,21 @@ data IndexEntry = IndexEntry {fn :: Text  -- ^ naked filename
                               , date :: Text -- ^ data in the JJJJ-MM-DD format
 
                               } deriving (Generic, Eq, Ord, Show)
-instance Zeros IndexEntry where zero = IndexEntry zero zero
+instance Zeros IndexEntry where zero = IndexEntry zero zero zero zero zero zero
 instance FromJSON IndexEntry
 instance ToJSON IndexEntry
 
 
-makeIndexEntry :: Path Abs File -> ErrIO IndexEntry
-makeIndexEntry fp = do
-    let paths = reverse $ splitPath (toFilePath fp)
-    let fn = head paths
-    let dir = head . tail $ paths
-    let fnn = takeBaseName fn
-
-
-
-    return $ IndexEntry {text = s2t fnn, link = s2t $ "/" <> dir </> fnn <.> "html"}
+--makeIndexEntry :: Path Abs File -> ErrIO IndexEntry
+--makeIndexEntry fp = do
+--    let paths = reverse $ splitPath (toFilePath fp)
+--    let fn = head paths
+--    let dir = head . tail $ paths
+--    let fnn = takeBaseName fn
+--
+--
+--
+--    return $ IndexEntry {text = s2t fnn, link = s2t $ "/" <> dir </> fnn <.> "html"}
 
 
 --getDirContentNonHiddenFiles :: FileOps fp => fp -> ErrIO [fp]

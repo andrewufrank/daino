@@ -40,7 +40,8 @@ import System.Time
 import Paths_SSG (version)
 import Data.Version (showVersion)
 import System.Directory (setCurrentDirectory, getCurrentDirectory)
-import Lib.YamlBlocks (flattenMeta, getMeta, getMaybeStringAtKey, putStringAtKey)
+import Lib.YamlBlocks (flattenMeta, getMeta, getMaybeStringAtKey
+                , putStringAtKey, readMarkdown2, unPandocM)
 
 
 -- | Convert markdown text into a 'Value';
@@ -175,22 +176,6 @@ docValToAllVal debug docval pageFn dough2 templateP = do
 
 
 
--- | Reasonable options for reading a markdown file
-markdownOptions :: ReaderOptions
-markdownOptions = def { readerExtensions = exts }
- where
-  exts = mconcat
-    [ extensionsFromList
-      [ Ext_yaml_metadata_block
-      , Ext_fenced_code_attributes
-      , Ext_auto_identifiers
-      ,  Ext_raw_html   -- three extension give markdown_strict
-      , Ext_shortcut_reference_links
-      , Ext_spaced_reference_links
-      , Ext_citations           -- <-- this is the important extension for bibTex
-      ]
-    , githubMarkdownExtensions
-    ]
 
 
 -- | Reasonable options for rendering to HTML
@@ -199,23 +184,6 @@ html5Options = def { writerHighlightStyle = Just tango
                    , writerExtensions     = writerExtensions def
                    }
 
--- | Handle possible pandoc failure within the Action Monad
-unPandocM :: PandocIO a -> ErrIO a
-unPandocM op1 = do
-        res   <- callIO $ runIO (do  -- liftIO $putStrLn "unPandocM op"
-                                     a <- op1 --       error "xx"
-                                     -- liftIO $putStrLn "error xx"
-                                     return a)
-        either (\e -> do
-                        putIOwords ["unPandocM error", showT e ]
-                        throwError . showT $ e
-                ) return res
-     `catchError` (\e -> do
-                        putIOwords ["unPandocM catchError", showT e ]
-                        throwError . showT $  e)
-
-readMarkdown2 :: MarkdownText -> ErrIO Pandoc
-readMarkdown2 (MarkdownText text1) =  unPandocM $ readMarkdown markdownOptions text1
 
 writeHtml5String2 :: Pandoc -> ErrIO HTMLout
 writeHtml5String2 pandocRes = do
