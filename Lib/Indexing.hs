@@ -40,6 +40,7 @@ import Lib.YamlBlocks
 
 makeIndex :: DocValue -> Path Abs File -> ErrIO MenuEntry
 -- | make the index text, will be moved into the page template later
+-- return zero if not index page
 makeIndex docval pageFn = do
         let doindex = fromMaybe False $ getMaybeStringAtKey docval "indexPage"
         putIOwords ["docValToAllVal", "doindex", showT doindex]
@@ -65,6 +66,10 @@ makeIndexForDir focus indexFn = do
     fs <- getDirContentNonHidden (toFilePath focus)
     let fs2 = filter (/= (toFilePath indexFn)) fs -- exclude index
     let fs3 = filter (FileIO.hasExtension ( "md")) fs2
+    putIOwords ["makeIndexForDir", "for ", showT focus, "\n", showT fs3 ]
+
+    -- needed filename.html title abstract author data
+
     is :: [IndexEntry] <- mapM (\f -> makeIndexEntry (makeAbsFile f)) fs3
     let menu1 = MenuEntry {menu2 = is}
     putIOwords ["makeIndexForDir", "for ", showT focus, "\n", showT menu1 ]
@@ -73,13 +78,25 @@ makeIndexForDir focus indexFn = do
 
     return menu1
 
+getOneIndexEntry :: Path Abs File -> IO (IndexEntry)
+-- fill one entry from one md file
+getOneIndexEntry md = do
+        let
+
+        let ix = IndexEntry {fn = fn1}
+        return ix
 data MenuEntry = MenuEntry {menu2 :: [IndexEntry]} deriving (Generic, Eq, Ord, Show)
 instance Zeros MenuEntry where zero = MenuEntry zero
 instance FromJSON MenuEntry
 instance ToJSON MenuEntry
 
-data IndexEntry = IndexEntry {text :: Text  -- ^ naked filename
+data IndexEntry = IndexEntry {fn :: Text  -- ^ naked filename
                               , link :: Text -- ^ the url relative to dough dir
+                              , title :: Text -- ^ the title
+                              , abstract :: Text
+                              , author :: Text
+                              , date :: Text -- ^ data in the JJJJ-MM-DD format
+
                               } deriving (Generic, Eq, Ord, Show)
 instance Zeros IndexEntry where zero = IndexEntry zero zero
 instance FromJSON IndexEntry
