@@ -44,33 +44,37 @@ shakeTesting :: SiteLayout -> ErrIO ()
 -- intermediate results
 shakeTesting layout = do
   let
-      doughD      =   toFilePath . doughDir $ layout  -- the regular dough
-      templatesD =   (toFilePath . themeDir $ layout) </> (toFilePath templatesDirName)
-      testD = toFilePath  $  testDir layout
+      doughP      =    doughDir $ layout  -- the regular dough
+      templatesP =   ( themeDir $ layout) `addFileName` (templatesDirName)
+      testP =   testDir layout
     --              staticD = testD </>"static"  -- where all the static files go
   setCurrentDir (doughDir layout)
-  fs <- getDirectoryDirs' testD
+  fs <- getDirectoryDirs' . toFilePath $ testP
   putIOwords ["shakeTesting", "to delete", showT fs]
   mapM_ deleteDirRecursive fs
-  callIO $ shakeTestWrapped doughD templatesD testD
+  callIO $ shakeTestWrapped doughP templatesP testP
 
 
-shakeTestWrapped :: FilePath -> FilePath -> FilePath ->  IO  ()
-shakeTestWrapped doughD templatesD testD =
-    shakeArgs shakeOptions {shakeFiles= testD
+shakeTestWrapped :: Path Abs Dir  -> Path Abs Dir  -> Path Abs Dir ->  IO  ()
+shakeTestWrapped doughP templatesP testP =
+    shakeArgs shakeOptions {shakeFiles= toFilePath testP
             , shakeVerbosity=Chatty -- Loud
             , shakeLint=Just LintBasic
     --                , shakeRebuild=[(RebuildNow,"allMarkdownConversion")]
     --                  seems not to produce an effect
                     } $ do
-      let
-        masterSettings = doughD</>"settings2.yaml"
-        masterTemplate = templatesD</>"master4.dtpl"
-      want ["allTests"]
-      phony "allTests" $ do
+    let doughD = toFilePath doughP
+        templatesD = toFilePath templatesP
+        testD = toFilePath testP
+    let
+        masterSettings = doughD </>"settings2.yaml"
+        masterTemplate =  templatesD </>"master4.dtpl"
+    want ["allTests"]
+
+    phony "allTests" $ do
         need [masterSettings, masterTemplate]
 
-        mdFiles1 <- getDirectoryFiles doughD ["**/*.md", "**/*.markdown"]
+        mdFiles1 <- getDirectoryFiles (toFilePath doughP) ["**/*.md", "**/*.markdown"]
         let mdFiles3 =  map dropExtension mdFiles1
         liftIO $ putIOwords ["\nshakeWrapped - markdown and md files to work on\n"
                         , showT mdFiles3]
@@ -88,7 +92,7 @@ shakeTestWrapped doughD templatesD testD =
 
 -- in order of bakeOneFile :
 
-      (testD <> "//*.withSettings.pandoc") %> \out -> do
+    (testD <> "//*.withSettings.pandoc") %> \out -> do
 --        liftIO $ putIOwords ["\n.withSettings.pandoc", s2t out]
         let source = doughD </> (makeRelative testD  (out --<.> "md"))
         need [source]
@@ -100,7 +104,7 @@ shakeTestWrapped doughD templatesD testD =
                         Nothing -> return ()
                         Just p -> writeFile2 (makeAbsFile out) (showT p)
 
-      (testD <> "//*content.docval") %> \out -> do
+    (testD <> "//*content.docval") %> \out -> do
         let source = out --<.>   "withSettings.pandoc"
         need [source]
         runErr2action $   -- pandocToContentHtml
@@ -110,7 +114,7 @@ shakeTestWrapped doughD templatesD testD =
                                 (readNote "we23" pandocText :: Pandoc)
                 write8 (makeAbsFile out) docValueFileType p
 
-      (testD <> "//*allyaml.docval") %> \out -> do
+    (testD <> "//*allyaml.docval") %> \out -> do
         let source = out --<.>   "content.docval"
         let source2 = doughD </> (makeRelative testD  (out --<.> "md"))
         need [source]
@@ -126,7 +130,7 @@ shakeTestWrapped doughD templatesD testD =
 
 
 -- apply val to template
-      (testD <> "//*inTemplate.html") %> \out -> do --    apply   template to values
+    (testD <> "//*inTemplate.html") %> \out -> do --    apply   template to values
         let source = out --<.>   "allyaml.docval"
         need [source]
         runErr2action $   -- applyTemplate3
@@ -136,7 +140,7 @@ shakeTestWrapped doughD templatesD testD =
                 p :: HTMLout <- putValinMaster False valText (makeAbsDir templatesD)
                 write8 (makeAbsFile out) htmloutFileType p
 
-      (testD <> "//*.a.html") %> \out -> do
+    (testD <> "//*.a.html") %> \out -> do
         let  mdSource1 =  out -<.> ""
              mdSource2 = doughD </> makeRelative testD  (mdSource1 -<.> "md")
         need [mdSource2, masterSettings, masterTemplate]
