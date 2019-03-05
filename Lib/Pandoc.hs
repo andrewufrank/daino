@@ -130,16 +130,17 @@ docValToAllVal :: Bool -> DocValue -> Path Abs File -> Path Abs Dir -> Path Abs 
 -- the current file is only necessary if it is an index file
 -- then to determine the current dir
 -- and to exclude it from index
-docValToAllVal debug docval pageFn dough2 template2 = do
-        let mpt = getMaybeStringAtKey docval "pageTemplate"
-        putIOwords ["docValToAllVal", "mpt", showT mpt]
-        let pageType = t2s $ fromMaybe "page0default" mpt  :: FilePath
-        -- TODO where is default page set?
+docValToAllVal debug docval pageFn dough2 templateP = do
+        let mpageType = getMaybeStringAtKey docval "pageTemplate" :: Maybe Text
+        putIOwords ["docValToAllVal", "mpt", showT mpageType]
+        let pageType = makeRelFile . t2s $ fromMaybe "page0default" mpageType  :: Path Rel File
+        -- page0default defined in theme
 
-        yaml <- read8  ( template2 </> (pageType)) yamlFileType
+        pageTypeYaml <- read8  ( templateP </> (pageType)) yamlFileType
 
-        settings <- read8 (dough2 </> makeRelFile "settings2") yamlFileType
+        settingsYaml <- read8 (dough2 </> makeRelFile "settings2") yamlFileType
 --        svalue <- decodeThrow . t2b . unYAML $ settings
+
         let doindex = getMaybeStringAtKey docval "indexPage"
         let doindex2 = fromMaybe False doindex
 
@@ -154,16 +155,19 @@ docValToAllVal debug docval pageFn dough2 template2 = do
 
           else return zero
         let ixVal = toJSON ix :: Value
+
+        -- combine all the
         let val = DocValue . fromJustNote "decoded union 2r2e"
                       . decodeBytestrings
-                    $ [ t2b $ unYAML settings
-                        , t2b $ unYAML yaml
+                    $ [ t2b $ unYAML settingsYaml
+                        , t2b $ unYAML pageTypeYaml
                         , bl2b . encode $ unDocValue docval
-                        , (bl2b . encode $ ixVal)
+                        , bl2b . encode $ ixVal
                        ]  -- last winns!
+        -- add the bottom line
         now <- callIO $ toCalendarTime =<< getClockTime
-        let val2 = putStringAtKey  "today" (s2t $ calendarTimeToString now) val
-        let val3 = putStringAtKey  "ssgversion" (s2t$ showVersion version) val2
+        let val3 = putStringAtKey  "ssgversion" (s2t$ showVersion version) .
+                    putStringAtKey  "today" (s2t $ calendarTimeToString now) $ val
         return val3
 
 
