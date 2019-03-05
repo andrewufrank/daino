@@ -119,7 +119,7 @@ pandocToContentHtml :: Bool -> Pandoc ->  ErrIO DocValue
 pandocToContentHtml debug pandoc2 = do
     text2 <-  writeHtml5String2 pandoc2
     let meta2 = flattenMeta (getMeta pandoc2) :: Value
-    let withContent = putStringAtKey meta2 "contentHtml" (unHTMLout text2)
+    let withContent = putStringAtKey  "contentHtml" (unHTMLout text2) meta2
 --    ( meta2) & _Object . at "contentHtml" ?~ String (unHTMLout text2)
     return  . DocValue $ withContent
 
@@ -162,8 +162,8 @@ docValToAllVal debug docval pageFn dough2 template2 = do
                         , (bl2b . encode $ ixVal)
                        ]  -- last winns!
         now <- callIO $ toCalendarTime =<< getClockTime
-        let val2 = putStringAtKey val "today" (s2t $ calendarTimeToString now)
-        let val3 = putStringAtKey val2 "ssgversion" (s2t$ showVersion version)
+        let val2 = putStringAtKey  "today" (s2t $ calendarTimeToString now) val
+        let val3 = putStringAtKey  "ssgversion" (s2t$ showVersion version) val2
         return val3
 
 
@@ -216,12 +216,12 @@ putMeta m1 (Pandoc _ p0) = Pandoc m1 p0
 
 class AtKey vk v where
     getMaybeStringAtKey :: vk -> Text -> Maybe v
-    putStringAtKey :: vk -> Text -> v -> vk
+    putStringAtKey :: Text -> v -> vk -> vk
 
 instance AtKey Value Text where
     getMaybeStringAtKey meta2 k2 =   meta2 ^? key k2 . _String
 
-    putStringAtKey meta2 k2 txt = meta2 & _Object . at k2 ?~ String  txt
+    putStringAtKey  k2 txt meta2 = meta2 & _Object . at k2 ?~ String  txt
 --        (unHTMLout text2)
 
 --instance AsValue Meta
@@ -237,12 +237,12 @@ instance AtKey Value Text where
 instance AtKey DocValue  Text where
     getMaybeStringAtKey meta2 k2 = getMaybeStringAtKey (unDocValue meta2) k2
 
-    putStringAtKey meta2 k2 txt = DocValue $ (unDocValue meta2) & _Object . at k2 ?~ String txt
+    putStringAtKey  k2 txt meta2= DocValue $ (unDocValue meta2) & _Object . at k2 ?~ String txt
 
 instance AtKey DocValue Bool  where
     getMaybeStringAtKey meta2 k2 =  (unDocValue meta2) ^? key k2 . _Bool
 
-    putStringAtKey meta2 k2 b = DocValue $  (unDocValue meta2) & _Object . at k2 ?~ Bool b
+    putStringAtKey  k2 b meta2 = DocValue $  (unDocValue meta2) & _Object . at k2 ?~ Bool b
 
 
 readMarkdown2 :: MarkdownText -> ErrIO Pandoc
