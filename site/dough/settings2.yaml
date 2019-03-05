@@ -4,7 +4,10 @@ storage:
     doughDir: /home/frank/Workspace8/ssg/site/dough
     bakedDir: /home/frank/Workspace8/ssg/site/baked
     reportFile: /home/frank/SSGreport.txt
-    testDir: /home/frank/SSGtest
+    testDir: /home/frank/.SSG 
+    # create dir in ExampleTesting
+    # filename must be homedir + program name (in Foundation) - hidden
+    # fixed in testharness
 localhostPort: 3000
 
 # master yaml - applies to all pages
