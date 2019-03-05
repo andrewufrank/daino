@@ -28,6 +28,7 @@ import Lib.Pandoc --  (markdownToPandoc, pandocToContentHtml)
 
 import Lib.Templating
 import Lib.FileMgt
+import Lib.Foundation (resourcesDirName)
 --import Data.Aeson
 
 bakeOneFileFPs :: FilePath -> FilePath -> FilePath -> FilePath -> ErrIO ()
@@ -58,21 +59,22 @@ bakeOneFile :: Bool -> Path Abs File -> Path Abs Dir
 -- get pageType, read file and process
 
 --test in bake_tests:
-bakeOneFile debug pageFn dough2 templates2 ht2 = do
+bakeOneFile debug pageFn doughP templatesP ht2 = do
         putIOwords ["\n-----------------", "bakeOneFile fn", showT pageFn]
         -- currently only for md files
         pageMd :: MarkdownText <- read8 pageFn markdownFileType -- pageFn -> pageMd
         -- process the md file (including bibtex citations)
-        mpandoc :: Maybe Pandoc  <- markdownToPandoc debug pageMd  -- AG -> AD
+--        let resourcesPath = doughP </> resourcesDirName :: Path Abs Dir
+        mpandoc :: Maybe Pandoc  <- markdownToPandoc debug doughP pageMd  -- AG -> AD
                                                         -- withSettings.pandoc
         -- produce html and put into contentHtml key
 
         case mpandoc of
             Just pandoc -> do
                 docval   <- pandocToContentHtml debug pandoc  -- content.docval
-                val <- docValToAllVal debug docval pageFn dough2 templates2
+                val <- docValToAllVal debug docval pageFn doughP templatesP
 
-                html2 <- putValinMaster debug val templates2
+                html2 <- putValinMaster debug val templatesP
 
                 write8   ht2 htmloutFileType html2
         --            putIOwords ["bakeOneFile outhtml

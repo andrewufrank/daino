@@ -31,6 +31,7 @@ import Lib.Pandoc  -- (markdownToPandoc, pandocToContentHtml,docValToAllVal)
         -- with a simplified Action ~ ErrIO
 import Text.Pandoc  (Pandoc)
 import Lib.Templating (applyTemplate3 )
+import Lib.Foundation (resourcesDirName)
 
 test_shake :: IO ()
 test_shake =  do
@@ -48,10 +49,10 @@ shakeTesting layout = do
       templatesP =   ( themeDir $ layout) `addFileName` (templatesDirName)
       testP =   testDir layout
     --              staticD = testD </>"static"  -- where all the static files go
-  setCurrentDir (doughDir layout)
-  fs <- getDirectoryDirs' . toFilePath $ testP
-  putIOwords ["shakeTesting", "to delete", showT fs]
-  mapM_ deleteDirRecursive fs
+--  setCurrentDir (doughDir layout)
+--  fs <- getDirectoryDirs' . toFilePath $ testP
+--  putIOwords ["shakeTesting", "to delete", showT fs]
+--  mapM_ deleteDirRecursive fs
   callIO $ shakeTestWrapped doughP templatesP testP
 
 
@@ -99,7 +100,8 @@ shakeTestWrapped doughP templatesP testP =
         runErr2action $
                 do
                     intext <- read8 (makeAbsFile source) markdownFileType
-                    mp <- markdownToPandoc True intext
+--                    let resourcesPath = doughP `addDir` resourcesDirName :: Path Abs Dir
+                    mp <- markdownToPandoc True doughP intext
                     case mp of
                         Nothing -> return ()
                         Just p -> writeFile2 (makeAbsFile out) (showT p)

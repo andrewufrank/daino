@@ -35,10 +35,11 @@ import Lib.FileMgt -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
 --            , unDocValue, DocValue (..) )
 import Lib.Indexing
 import Lib.BibTex
+import Lib.Foundation
 import System.Time
 import Paths_SSG (version)
 import Data.Version (showVersion)
-
+import System.Directory (setCurrentDirectory, getCurrentDirectory)
 
 -- | Convert markdown text into a 'Value';
 -- The 'Value'  has a "content" key containing rendered HTML
@@ -46,11 +47,13 @@ import Data.Version (showVersion)
 -- includes reference replacement (pandoc-citeproc)
 -- runs in the pandoc monad!
 
-markdownToPandoc :: Bool -> MarkdownText -> ErrIO (Maybe Pandoc)
+markdownToPandoc :: Bool -> Path Abs Dir  -> MarkdownText -> ErrIO (Maybe Pandoc)
 -- process the markdown (including if necessary the BibTex treatment)
 -- the bibliography must be in the metadata
 -- the settings are in the markdownText (at end - to let page specific have precedence)
-markdownToPandoc debug mdtext  = do
+-- questionable if the draft/publish switch should be here
+-- or in the creation of the index (where more details from md is needed
+markdownToPandoc debug doughP mdtext  = do
     pandoc   <- readMarkdown2  mdtext
     let meta2 = flattenMeta (getMeta pandoc)
     let publish = getMaybeStringAtKey meta2 "publish" :: Maybe Text
@@ -60,11 +63,11 @@ markdownToPandoc debug mdtext  = do
 
             let bib = getMaybeStringAtKey meta2 "bibliography" :: Maybe Text
             let nociteNeeded = getMaybeStringAtKey meta2 "bibliographyGroup" :: Maybe Text
-            currDir <- currentDir
             pandoc2 <- case bib of
                 Nothing ->  return pandoc
-                Just bibfp -> pandocProcessCites (currDir </> (makeRelFile . t2s $ bibfp))
+                Just bibfp -> pandocProcessCites doughP (doughP </> (makeRelFile . t2s $ bibfp))
                             nociteNeeded mdtext pandoc
+                            -- here the dire is used for processing in my code
 
             return . Just $ pandoc2
 
@@ -79,10 +82,10 @@ markdownToPandoc debug mdtext  = do
 
 --    return pandoc2
 
-pandocProcessCites :: Path Abs File  -> Maybe Text -> MarkdownText -> Pandoc -> ErrIO Pandoc
+pandocProcessCites :: Path Abs Dir -> Path Abs File  -> Maybe Text -> MarkdownText -> Pandoc -> ErrIO Pandoc
 -- process the citations
 -- including the filling the references for publication lists
-pandocProcessCites biblio groupname mdtext pandoc1 = do
+pandocProcessCites doughP biblio groupname mdtext pandoc1 = do
         pandoc2 <- case groupname of
             Nothing -> return pandoc1
             Just gn -> do
@@ -95,7 +98,18 @@ pandocProcessCites biblio groupname mdtext pandoc1 = do
 --                    let meta3 = putStringAtKey (flattenMeta . getMeta $ pandoc1) "nocite" (s2t . unwords $ bibidsat)
 --                    let pandoc2 = putMeta meta3 pandoc1
                     return pandoc2
-        callIO $ processCites'  pandoc2
+        callIO $ do
+            currDir <- getCurrentDirectory
+            -- the current dir is the directory in which the procCites of pando will
+            -- search.
+
+            putIOwords ["markdownToPandoc", "currDir", showT currDir, "\ndoughP", showT doughP]
+--            putIOwords ["markdownToPandoc", "bibfp", showT bib]
+            setCurrentDirectory (toFilePath doughP)
+            res <- processCites'  pandoc2
+            setCurrentDirectory currDir
+            putIOwords ["markdownToPandoc", "again currDir", showT currDir, "\nwas doughP", showT doughP]
+            return res
 
 
 

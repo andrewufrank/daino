@@ -54,7 +54,7 @@ layoutDefaults = SiteLayout{  doughDir = sourceDir </> makeRelDir "site/dough"
 --            , templateDir = makeAbsDir "templates"
             , themeDir = sourceDir </> makeRelDir "theme"
             , testDir = makeAbsDir
-                $ ("/home/frank" :: FilePath)   </> (t2s progName <> "test")
+                $ ("/home/frank" :: FilePath)   </> ("." <> t2s progName)
             }
 
 templatesDirName, staticDirName :: Path Rel Dir
@@ -63,12 +63,13 @@ staticDirName = makeRelDir "static"
 resourcesDirName :: Path Rel Dir
 resourcesDirName = makeRelDir "resources"
 
+
 -- content of settings2.yaml
 --storage:
 --    themeDir:  /home/frank/Workspace8/ssg/theme
 --    doughDir: /home/frank/Workspace8/ssg/site/dough
 --    bakedDir: /home/frank/Workspace8/ssg/site/baked
 --    reportFile: /home/frank/SSGreport.txt
---    testDir: /home/frank/SSGtest
+--    testDir: /home/frank/.SSG  -- fixed in testharness
 --localhostPort: 3000
 
