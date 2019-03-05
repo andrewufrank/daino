@@ -51,18 +51,18 @@ shake layout filepath  = do
 --            , shownice layout
             ,"caused by", s2t filepath]
     let  -- where the layout is used, rest in shakeWrapped
-          doughD      =    doughDir $ layout  -- the regular dough
-          templatesD =   (themeDir $ layout)
+          doughP      =    doughDir $ layout  -- the regular dough
+          templatesP =   (themeDir $ layout)
                                `addFileName` ( templatesDirName)
-          bakedD =  bakedDir $ layout
+          bakedP =  bakedDir $ layout
     setCurrentDir (doughDir layout)
 
     -- delete old baked files  -- should not be needed when needs correct
-    fs <- getDirectoryDirs' (toFilePath bakedD)
+    fs <- getDirectoryDirs' (toFilePath bakedP)
     putIOwords ["shakeTesting", "could be to delete", showT fs]
 --  mapM_ removeDirectoryRecursive fs
 
-    callIO $ shakeWrapped doughD templatesD bakedD
+    callIO $ shakeWrapped doughP templatesP bakedP
 
     putIOwords ["\n--------------------------------------------shake done", "\n"]
 
