@@ -40,6 +40,8 @@ import System.Time
 import Paths_SSG (version)
 import Data.Version (showVersion)
 import System.Directory (setCurrentDirectory, getCurrentDirectory)
+import Lib.YamlBlocks (flattenMeta, getMeta, getMaybeStringAtKey, putStringAtKey)
+
 
 -- | Convert markdown text into a 'Value';
 -- The 'Value'  has a "content" key containing rendered HTML
@@ -141,20 +143,21 @@ docValToAllVal debug docval pageFn dough2 templateP = do
         settingsYaml <- read8 (dough2 </> makeRelFile "settings2") yamlFileType
 --        svalue <- decodeThrow . t2b . unYAML $ settings
 
-        let doindex = getMaybeStringAtKey docval "indexPage"
-        let doindex2 = fromMaybe False doindex
+        ix <- makeIndex docval pageFn
 
-        putIOwords ["docValToAllVal", "doindex", showT doindex]
-
-        ix :: MenuEntry <- if doindex2
-            then do
-                    let currentDir2 = makeAbsDir $ getParentDir pageFn
-                    ix2 <- makeIndexForDir currentDir2 pageFn
-                    putIOwords ["docValToAllVal", "index", showT ix2]
-                    return ix2
-
-          else return zero
-        let ixVal = toJSON ix :: Value
+--        let doindex = fromMaybe False . getMaybeStringAtKey docval "indexPage"
+--
+--        putIOwords ["docValToAllVal", "doindex", showT doindex]
+--
+--        ix :: MenuEntry <- if doindex2
+--            then do
+--                    let currentDir2 = makeAbsDir $ getParentDir pageFn
+--                    ix2 <- makeIndexForDir currentDir2 pageFn
+--                    putIOwords ["docValToAllVal", "index", showT ix2]
+--                    return ix2
+--
+--          else return zero
+--        let ixVal = toJSON ix :: Value
 
         -- combine all the
         let val = DocValue . fromJustNote "decoded union 2r2e"
@@ -162,13 +165,14 @@ docValToAllVal debug docval pageFn dough2 templateP = do
                     $ [ t2b $ unYAML settingsYaml
                         , t2b $ unYAML pageTypeYaml
                         , bl2b . encode $ unDocValue docval
-                        , bl2b . encode $ ixVal
+                        , bl2b . encode . toJSON $ ix
                        ]  -- last winns!
         -- add the bottom line
         now <- callIO $ toCalendarTime =<< getClockTime
         let val3 = putStringAtKey  "ssgversion" (s2t$ showVersion version) .
                     putStringAtKey  "today" (s2t $ calendarTimeToString now) $ val
         return val3
+
 
 
 -- | Reasonable options for reading a markdown file
@@ -210,45 +214,6 @@ unPandocM op1 = do
                         putIOwords ["unPandocM catchError", showT e ]
                         throwError . showT $  e)
 
-
-
-getMeta :: Pandoc -> Meta
-getMeta (Pandoc m _) = m
-
-putMeta :: Meta -> Pandoc -> Pandoc
-putMeta m1 (Pandoc _ p0) = Pandoc m1 p0
-
-class AtKey vk v where
-    getMaybeStringAtKey :: vk -> Text -> Maybe v
-    putStringAtKey :: Text -> v -> vk -> vk
-
-instance AtKey Value Text where
-    getMaybeStringAtKey meta2 k2 =   meta2 ^? key k2 . _String
-
-    putStringAtKey  k2 txt meta2 = meta2 & _Object . at k2 ?~ String  txt
---        (unHTMLout text2)
-
---instance AsValue Meta
---instance AsPrimitive Meta
---instance AsNumber Meta
-
-
---instance AtKey Meta Text where
---    getMaybeStringAtKey meta2 k2 =   meta2 ^? key k2 . _String
---
---    putStringAtKey meta2 k2 txt = meta2 & _Object . at k2 ?~ String  txt
-
-instance AtKey DocValue  Text where
-    getMaybeStringAtKey meta2 k2 = getMaybeStringAtKey (unDocValue meta2) k2
-
-    putStringAtKey  k2 txt meta2= DocValue $ (unDocValue meta2) & _Object . at k2 ?~ String txt
-
-instance AtKey DocValue Bool  where
-    getMaybeStringAtKey meta2 k2 =  (unDocValue meta2) ^? key k2 . _Bool
-
-    putStringAtKey  k2 b meta2 = DocValue $  (unDocValue meta2) & _Object . at k2 ?~ Bool b
-
-
 readMarkdown2 :: MarkdownText -> ErrIO Pandoc
 readMarkdown2 (MarkdownText text1) =  unPandocM $ readMarkdown markdownOptions text1
 
@@ -257,16 +222,3 @@ writeHtml5String2 pandocRes = do
     p <-  unPandocM $ writeHtml5String html5Options pandocRes
     return . HTMLout $ p
 
-
--- | Flatten a Pandoc 'Meta' into a well-structured JSON object, rendering Pandoc
--- text objects into plain strings along the way.
-flattenMeta :: Meta -> Value
-flattenMeta (Meta meta) = toJSON $ fmap go meta
- where
-  go :: MetaValue -> Value
-  go (MetaMap     m) = toJSON $ fmap go m
-  go (MetaList    m) = toJSONList $ fmap go m
-  go (MetaBool    m) = toJSON m
-  go (MetaString  m) = toJSON m
-  go (MetaInlines m) = toJSON $ stringify m
-  go (MetaBlocks  m) = toJSON $ stringify m

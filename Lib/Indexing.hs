@@ -32,9 +32,27 @@ import Data.Aeson
 import Data.Yaml  as Y
 --import Lib.FileMgt
 import Development.Shake.FilePath
+import Lib.FileMgt (DocValue (..))
+import Lib.YamlBlocks
 
 --insertIndex :: Path Abs File -> ErrIO ()
 ---- insert the index into the index md
+
+makeIndex :: DocValue -> Path Abs File -> ErrIO MenuEntry
+-- | make the index text, will be moved into the page template later
+makeIndex docval pageFn = do
+        let doindex = fromMaybe False $ getMaybeStringAtKey docval "indexPage"
+        putIOwords ["docValToAllVal", "doindex", showT doindex]
+
+        ix :: MenuEntry <- if doindex
+            then do
+                    let currentDir2 = makeAbsDir $ getParentDir pageFn
+                    ix2 <- makeIndexForDir currentDir2 pageFn
+                    putIOwords ["docValToAllVal", "index", showT ix2]
+                    return ix2
+
+          else return zero
+        return ix -- (toJSON ix :: Value)
 
 
 makeIndexForDir :: Path Abs Dir -> Path Abs File -> ErrIO MenuEntry

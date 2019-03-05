@@ -16,6 +16,7 @@ library
       Lib.ReadSettingFile
       Lib.Indexing
       Lib.BibTex
+      Lib.YamlBlocks
 
   other-modules: Paths_SSG
 
@@ -108,6 +109,8 @@ test-suite g2
         Lib.ReadSettingFile_test
         Lib.Indexing_test
         Lib.BibTex_test
+        Lib.YamlBlocks_test
+
   hs-source-dirs:
       test
   ghc-options: -Wall
