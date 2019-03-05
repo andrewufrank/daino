@@ -94,10 +94,14 @@ getOneIndexEntry md = do
         let fn = head paths
         let dir = head . tail $ paths
         let fnn = takeBaseName fn
+        let ln = s2t $ "/" <> dir </> fnn  <.> "html"
 
         let ix = IndexEntry {text =  s2t fnn
-                        , link = s2t $ "/" <> dir </> fnn  <.> "html"
+                        , link = ln
                         , abstract =  maybe "" id abstract1
+                        , title = maybe ln id title1
+                        , author = maybe "" id author1
+                        , date = maybe "" id date1
                         }
         return ix
 

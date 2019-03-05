@@ -90,7 +90,13 @@
     <section class=menu2>
 		<ul>
             	$for(menu2)$
-				<li><a href=$menu2.link$>$menu2.text$</a></li>
+				<li>
+				    <a href=$menu2.link$><em>$menu2.title$ </em></a>
+				    $if(menu2.abstract)$<br>$menu2.abstract$$endif$		     
+				    <span class=tiny>$menu2.author$ $menu2.date$ $menu2.links$  
+                    </span>
+                    
+    			</li>
             		$endfor$
 		</ul>
     </section>
