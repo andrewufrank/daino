@@ -62,7 +62,8 @@ templatesDirName = (makeRelDir "templates")
 staticDirName = makeRelDir "static"
 resourcesDirName :: Path Rel Dir
 resourcesDirName = makeRelDir "resources"
-
+templatesImgDirName :: Path Rel Dir
+templatesImgDirName = makeRelDir "img"
 
 -- content of settings2.yaml
 --storage:

@@ -4,6 +4,8 @@
 -- Module      :   serving the baked site
         -- must be in the dough directory - uses current directory to find
         -- the settings.yaml file
+        -- set watches for changing - uses shake
+
 
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}

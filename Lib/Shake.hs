@@ -68,15 +68,21 @@ shake layout filepath  = do
 
     return ()
 
-
-shakeWrapped :: Path Abs Dir  -> Path Abs Dir  -> Path Abs Dir ->  IO  ()
-shakeWrapped doughP templatesP bakedP =
-    shakeArgs shakeOptions {shakeFiles=toFilePath bakedP
+shakeArgs2 bakedP = shakeArgs shakeOptions {shakeFiles=toFilePath bakedP
                 , shakeVerbosity=Chatty -- Loud
                 , shakeLint=Just LintBasic
 --                , shakeRebuild=[(RebuildNow,"allMarkdownConversion")]
 --                  seems not to produce an effect
-                } $ do
+                }
+
+shakeWrapped :: Path Abs Dir  -> Path Abs Dir  -> Path Abs Dir ->  IO  ()
+shakeWrapped doughP templatesP bakedP = shakeArgs2 bakedP $ do
+--    shakeArgs shakeOptions {shakeFiles=toFilePath bakedP
+--                , shakeVerbosity=Chatty -- Loud
+--                , shakeLint=Just LintBasic
+----                , shakeRebuild=[(RebuildNow,"allMarkdownConversion")]
+----                  seems not to produce an effect
+--                } $ do
 
     let doughD = toFilePath doughP
         templatesD = toFilePath templatesP

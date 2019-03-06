@@ -1,6 +1,7 @@
 -----------------------------------------------------------------------------
 --
 -- Module      :   the main for the sgg - no UI yet
+-- uses shake - must be run in dough dir
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
