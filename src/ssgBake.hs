@@ -61,6 +61,7 @@ bakeAll layout = do
     deleteDirRecursive bakedP
 
     -- copy resources and banner   not easy to do with shake
+    -- only the html and the pdf files (possible the jpg) are required
     copyDirRecursive (doughP `addDir` resourcesDirName)   (bakedP `addDir` staticDirName)
 
     let bannerImage = templatesImgDirName `addFileName` bannerImageFileName
@@ -101,8 +102,23 @@ shakeMD layout  doughP templatesP bakedP=
 
             cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs
             let cssFiles2 = [replaceDirectory c staticD  | c <- cssFiles1]
+            liftIO $ putIOwords ["\nshakeWrapped - css files"
+                        ,  showT (map (makeRelative  doughD) cssFiles2)]
             need cssFiles2
 
+            pdfFiles1 <- getDirectoryFiles (doughD </> toFilePath resourcesDirName)
+                                 ["//*.pdf"]
+            let pdfFIles2 = [replaceDirectory c staticD  | c <- pdfFiles1]
+            liftIO $ putIOwords ["\nshakeWrapped - pdf files"
+                        ,  showT (map (makeRelative  doughD) pdfFIles2)]
+            need pdfFIles2
+--
+            htmlFiles11<- getDirectoryFiles (doughD </> toFilePath resourcesDirName)
+                                 ["//*.html"]
+            let htmlFiles22 = [replaceDirectory c staticD  | c <- htmlFiles11]
+            liftIO $ putIOwords ["\nshakeWrapped - html 22 files"
+                        ,  showT (map (makeRelative  doughD) htmlFiles22)]
+            need htmlFiles22
 
         (bakedD <> "//*.html") %> \out -> do
 
@@ -115,6 +131,15 @@ shakeMD layout  doughP templatesP bakedP=
         (staticD </> "*.css") %> \out ->  do           -- insert css
             liftIO $ putIOwords ["\nshakeWrapped - staticD - *.css", showT out]
             copyFileChanged (replaceDirectory out templatesD) out
+
+        (staticD </> "//*.pdf") %> \out ->  do           -- insert pdfFIles1
+            liftIO $ putIOwords ["\nshakeWrapped - staticD - *.pdf", showT out]
+            copyFileChanged (replaceDirectory out doughD) out
+
+--        (\f -> (isPrefix' (staticD </> staticD </> "//*.html") ?> \out ->  do
+--            -- insert pdfFIles1 -- how to separate this rule from the other html rule?
+--            liftIO $ putIOwords ["\nshakeWrapped - staticD - *.pdf", showT out]
+--            copyFileChanged (replaceDirectory out doughD) out
 
         return ()
 
