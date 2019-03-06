@@ -60,7 +60,7 @@ bakeAll layout = do
     setCurrentDir (doughP)
     deleteDirRecursive bakedP
 
-    -- copy banner (only)
+    -- copy resources and banner   not easy to do with shake
     copyDirRecursive (doughP `addDir` resourcesDirName)   (bakedP `addDir` staticDirName)
 
     let bannerImage = templatesImgDirName `addFileName` bannerImageFileName
@@ -89,6 +89,7 @@ shakeMD layout  doughP templatesP bakedP=
             templatesD = toFilePath templatesP
             bakedD = toFilePath bakedP
         let staticD =   bakedD </>  (toFilePath staticDirName)
+
         want ["allMarkdownConversion"]
         phony "allMarkdownConversion" $ do
 
