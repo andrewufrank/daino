@@ -17,3 +17,4 @@ testForLitText
 site/baked/*
 *.sav
 *.bak
+.haskell-code-explorer
