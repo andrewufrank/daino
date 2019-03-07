@@ -69,6 +69,7 @@ bakeOneFile debug pageFn doughP templatesP ht2 = do
         mpandoc :: Maybe Pandoc  <- markdownToPandoc debug doughP pageFn  -- AG -> AD
                                                         -- withSettings.pandoc
         -- produce html and put into contentHtml key
+        -- can be nothing if the md file is not ready to publish
 
         case mpandoc of
             Just pandoc -> do

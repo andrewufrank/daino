@@ -80,10 +80,21 @@ import qualified Data.Map as M
                    ]
                )
 -}
+
+fillCitation :: Text -> PD.Citation
 fillCitation citID = PD.Citation {PD.citationId = t2s citID, PD.citationPrefix=zero, PD.citationSuffix=zero
                                     ,PD.citationMode=PD.AuthorInText
                                     , PD.citationNoteNum= zero, PD.citationHash=zero}
-fillCitation :: Text -> PD.Citation
+
+constructNoCite :: [Text] -> P.Meta
+-- ^ construct the structure for the nocite info
+constructNoCite bibids = P.Meta map1
+    where
+        cits = map (\s -> [fillCitation  s]) bibids :: [[PD.Citation]]
+        refs = map (\s -> [PD.Str ("@" <> (t2s s))]) bibids :: [[PD.Inline]]
+        cites = zipWith PD.Cite cits refs  :: [PD.Inline]
+        metablocks = PD.MetaBlocks [PD.Plain cites]
+        map1 = M.insert "nocite" metablocks M.empty
 
 pandocProcessCites :: Path Abs Dir -> Path Abs File  -> Maybe Text->  Pandoc -> ErrIO Pandoc
 -- process the citations
@@ -93,14 +104,15 @@ pandocProcessCites doughP biblio groupname  pandoc1 = do
         Nothing -> return pandoc1
         Just gn -> do
                     bibids <- bibIdentifierFromBibTex biblio (t2s gn)
-                    let cits = map (\s -> [fillCitation . s2t $ s]) bibids :: [[PD.Citation]]
-                    let refs = map (\s -> [PD.Str ("@" <> s)]) bibids :: [[PD.Inline]]
-                    let cites = zipWith PD.Cite cits refs  :: [PD.Inline]
-                    let metablocks = PD.MetaBlocks [PD.Plain cites]
-                    let map1 = M.insert "nocite" metablocks M.empty
+                    let meta1 = constructNoCite (map s2t bibids)
+--                    let cits = map (\s -> [fillCitation . s2t $ s]) bibids :: [[PD.Citation]]
+--                    let refs = map (\s -> [PD.Str ("@" <> s)]) bibids :: [[PD.Inline]]
+--                    let cites = zipWith PD.Cite cits refs  :: [PD.Inline]
+--                    let metablocks = PD.MetaBlocks [PD.Plain cites]
+--                    let map1 = M.insert "nocite" metablocks M.empty
                     let meta2 = getMeta $ pandoc1 :: P.Meta
-                    let meta3 = meta2 <> P.Meta map1
-                    let pandoc2 = putMeta meta3 pandoc1
+--                    let meta3 = meta2 <> P.Meta map1
+                    let pandoc2 = putMeta (meta2 <> meta1) pandoc1
                     return pandoc2
 --    callIO $ do
     currDir <- currentDir
