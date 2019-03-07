@@ -51,6 +51,7 @@ library
 --    , parsec
 --    , old-time
     , directory
+    , containers
 
   default-language: Haskell2010
 
