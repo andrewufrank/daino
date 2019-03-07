@@ -21,23 +21,31 @@
 
 module Lib.YamlBlocks where
 
-import Uniform.Zero hiding (Meta, at)
+--import Uniform.Zero hiding (Meta, at)
 import Uniform.Filenames hiding (Meta, at)
-import Uniform.FileStrings hiding (Meta, at)
+--import Uniform.FileStrings hiding (Meta, at)
 import Uniform.TypedFile
-import Data.Aeson (Value, ToJSON (..), Value (..), decode)
-import Data.Aeson.Encode.Pretty (encodePretty)
+--import Data.Aeson (Value, ToJSON (..), Value (..), decode)
+--import Data.Aeson.Encode.Pretty (encodePretty)
 --import  Path.IO (ensureDir)
 import Text.Pandoc as Pandoc
-import Text.Pandoc.Highlighting (tango)
+--import Text.Pandoc.Highlighting (tango)
 import Text.Pandoc.Shared (stringify)
-import Text.CSL.Pandoc (processCites')
+--import Text.CSL.Pandoc (processCites')
 import Lib.FileMgt -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
 --            , unDocValue, DocValue (..) )
 import Control.Lens ((^?), (?~), (&), at)
 import Data.Aeson
 import Data.Aeson.Lens
-import  Data.Yaml.Union
+--import  Data.Yaml.Union
+
+readMd2meta :: Path Abs File -> ErrIO (Pandoc, Value)
+-- ^ read a markdown file to metadata
+readMd2meta md = do
+        mdtext :: MarkdownText <- read8 md markdownFileType
+        pandoc <- readMarkdown2 mdtext
+        let meta2 = flattenMeta (getMeta pandoc)
+        return (pandoc, meta2)
 
 
 getMeta :: Pandoc -> Meta

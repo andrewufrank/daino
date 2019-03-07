@@ -41,6 +41,7 @@ import Paths_SSG (version)
 import Data.Version (showVersion)
 import Lib.YamlBlocks (flattenMeta, getMeta, getMaybeStringAtKey
                 , putStringAtKey, readMarkdown2, unPandocM)
+import Lib.YamlBlocks (readMd2meta)
 
 
 -- | Convert markdown text into a 'Value';
@@ -56,6 +57,7 @@ markdownToPandoc :: Bool -> Path Abs Dir  -> MarkdownText -> ErrIO (Maybe Pandoc
 -- questionable if the draft/publish switch should be here
 -- or in the creation of the index (where more details from md is needed
 markdownToPandoc debug doughP mdtext  = do
+--    (pandoc, meta2) <- readMd2meta mdfile
     pandoc   <- readMarkdown2  mdtext
     let meta2 = flattenMeta (getMeta pandoc)
     let publish = getMaybeStringAtKey meta2 "publish" :: Maybe Text

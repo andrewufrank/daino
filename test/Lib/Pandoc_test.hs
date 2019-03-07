@@ -20,16 +20,17 @@ import           Test.Framework
 import Uniform.Test.TestHarness
 import Lib.Foundation (progName)
 import Lib.FileMgt
+import Lib.YamlBlocks (readMd2meta)
 --import Lib.Pandoc
 --import Text.Pandoc.Definition as PD
 
-readMarkdownFile8 :: String  -> ErrIO MarkdownText
-readMarkdownFile8 fnn = read8 (makeAbsFile fnn) markdownFileType
--- uses files to be copied to dough
---
-test_pandoc_pageFn_pageMd_1, test_pandoc_pageFn_pageMd_2 :: IO ()
-test_pandoc_pageFn_pageMd_1 = test1FileIO progName  "pageFn1" "pageMd1" readMarkdownFile8
-test_pandoc_pageFn_pageMd_2 = test1FileIO progName  "pageFn2" "pageMd2" readMarkdownFile8
+--readMarkdownFile8 :: String  -> ErrIO MarkdownText
+--readMarkdownFile8 fnn = fmap fst $ readMd2meta (makeAbsFile fnn)
+---- uses files to be copied to dough
+----
+--test_pandoc_pageFn_pageMd_1, test_pandoc_pageFn_pageMd_2 :: IO ()
+--test_pandoc_pageFn_pageMd_1 = test1FileIO progName  "pageFn1" "pageMd1" readMarkdownFile8
+--test_pandoc_pageFn_pageMd_2 = test1FileIO progName  "pageFn2" "pageMd2" readMarkdownFile8
 
 --
 --test_pandoc_11_A_D, test_pandoc_12_A_D :: IO ()

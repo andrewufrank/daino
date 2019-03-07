@@ -32,7 +32,7 @@ import Data.Aeson
 import Data.Yaml  as Y
 --import Lib.FileMgt
 import Development.Shake.FilePath
-import Lib.FileMgt (DocValue (..), MarkdownText (..), markdownFileType)
+import Lib.FileMgt (DocValue (..)) --  MarkdownText (..), markdownFileType)
 import Lib.YamlBlocks
 
 --insertIndex :: Path Abs File -> ErrIO ()
@@ -81,9 +81,10 @@ makeIndexForDir debug focus indexFn = do
 getOneIndexEntry :: Path Abs File -> ErrIO (IndexEntry)
 -- fill one entry from one md file
 getOneIndexEntry md = do
-        mdtext :: MarkdownText <- read8 md markdownFileType
-        pandoc <- readMarkdown2 mdtext
-        let meta2 = flattenMeta (getMeta pandoc)
+        (_, meta2) <- readMd2meta md
+--        mdtext :: MarkdownText <- read8 md markdownFileType
+--        pandoc <- readMarkdown2 mdtext
+--        let meta2 = flattenMeta (getMeta pandoc)
 
         let abstract1 = getMaybeStringAtKey meta2 "abstract" :: Maybe Text
         let title1 = getMaybeStringAtKey meta2 "title" :: Maybe Text

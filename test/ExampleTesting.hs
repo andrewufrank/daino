@@ -24,7 +24,7 @@ import {-@ HTF_TESTS @-} Lib.FileMgt_test
 
 ----    -- writes A : testLayout
 ----    --  pageFn :: abs pandoc filenames
-import {-@ HTF_TESTS @-} Lib.Pandoc_test
+--import {-@ HTF_TESTS @-} Lib.Pandoc_test
 --    -- test_pandoc_pageFn_pageMd_1 - pageFn -> pageMd : MarkdownText
 --    -- AK :: MarkdownText -> BE  DocValue
 --    -- AK ->AD :: Pandoc
