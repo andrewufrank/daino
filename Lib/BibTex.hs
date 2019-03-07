@@ -24,8 +24,44 @@ import qualified Text.BibTeX.Parse as Parse
 import qualified Text.BibTeX.Entry as Entry
 --import qualified Text.ParserCombinators.Parsec as Parsec
 
-import qualified Data.Char as Char
+--import qualified Data.Char as Char
 --import System.IO (hPutStrLn, stderr, )
+import Lib.FileMgt (MarkdownText(..), unMT, HTMLout(..), unHTMLout
+            , unDocValue, DocValue (..) )
+import Text.Pandoc (Pandoc)
+import Text.CSL.Pandoc (processCites')
+import System.Directory (setCurrentDirectory, getCurrentDirectory)
+import Lib.YamlBlocks (flattenMeta, getMeta, getMaybeStringAtKey
+                , putStringAtKey, readMarkdown2, unPandocM)
+
+pandocProcessCites :: Path Abs Dir -> Path Abs File  -> Maybe Text-> MarkdownText -> Pandoc -> ErrIO Pandoc
+-- process the citations
+-- including the filling the references for publication lists
+pandocProcessCites doughP biblio groupname mdtext pandoc1 = do
+        pandoc2 <- case groupname of
+            Nothing -> return pandoc1
+            Just gn -> do
+                    bibids <- bibIdentifierFromBibTex biblio (t2s gn)
+                    let bibidsat = s2t . unwords  $ map ("@" <>) bibids
+                    let nociteblock = "\n---\nnocite: | \n     " <>   bibidsat  <> "\n---\n"
+                    let mdtext2 = (MarkdownText $ (unMT mdtext) <> nociteblock)
+                    putIOwords ["pandocProcessCites", "nociteblock", unMT mdtext2]
+                    pandoc2 <- readMarkdown2 mdtext2
+--                    let meta3 = putStringAtKey (flattenMeta . getMeta $ pandoc1) "nocite" (s2t . unwords $ bibidsat)
+--                    let pandoc2 = putMeta meta3 pandoc1
+                    return pandoc2
+        callIO $ do
+            currDir <- getCurrentDirectory
+            -- the current dir is the directory in which the procCites of pando will
+            -- search.
+
+--            putIOwords ["markdownToPandoc", "currDir", showT currDir, "\ndoughP", showT doughP]
+--            putIOwords ["markdownToPandoc", "bibfp", showT bib]
+            setCurrentDirectory (toFilePath doughP)
+            res <- processCites'  pandoc2
+            setCurrentDirectory currDir
+--            putIOwords ["markdownToPandoc", "again currDir", showT currDir, "\nwas doughP", showT doughP]
+            return res
 
 
 readBibTex :: FilePath ->  IO String
