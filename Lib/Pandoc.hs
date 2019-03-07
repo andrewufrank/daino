@@ -62,7 +62,7 @@ markdownToPandoc debug doughP mdtext  = do
     let publish = getMaybeStringAtKey meta2 "publish" :: Maybe Text
     if  isNothing publish || (fmap toLower' publish) == Just "true"
         then do
-            putIOwords ["markdownToPandoc", "publish", showT publish]
+--            putIOwords ["markdownToPandoc", "publish", showT publish]
 
             let bib = getMaybeStringAtKey meta2 "bibliography" :: Maybe Text
             let nociteNeeded = getMaybeStringAtKey meta2 "bibliographyGroup" :: Maybe Text
@@ -106,12 +106,12 @@ pandocProcessCites doughP biblio groupname mdtext pandoc1 = do
             -- the current dir is the directory in which the procCites of pando will
             -- search.
 
-            putIOwords ["markdownToPandoc", "currDir", showT currDir, "\ndoughP", showT doughP]
+--            putIOwords ["markdownToPandoc", "currDir", showT currDir, "\ndoughP", showT doughP]
 --            putIOwords ["markdownToPandoc", "bibfp", showT bib]
             setCurrentDirectory (toFilePath doughP)
             res <- processCites'  pandoc2
             setCurrentDirectory currDir
-            putIOwords ["markdownToPandoc", "again currDir", showT currDir, "\nwas doughP", showT doughP]
+--            putIOwords ["markdownToPandoc", "again currDir", showT currDir, "\nwas doughP", showT doughP]
             return res
 
 
@@ -144,7 +144,7 @@ docValToAllVal debug docval pageFn dough2 templateP = do
         settingsYaml <- read8 (dough2 </> makeRelFile "settings2") yamlFileType
 --        svalue <- decodeThrow . t2b . unYAML $ settings
 
-        ix <- makeIndex docval pageFn
+        ix <- makeIndex debug docval pageFn
 
 --        let doindex = fromMaybe False . getMaybeStringAtKey docval "indexPage"
 --

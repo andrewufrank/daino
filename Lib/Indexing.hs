@@ -38,17 +38,17 @@ import Lib.YamlBlocks
 --insertIndex :: Path Abs File -> ErrIO ()
 ---- insert the index into the index md
 
-makeIndex :: DocValue -> Path Abs File -> ErrIO MenuEntry
+makeIndex :: Bool -> DocValue -> Path Abs File -> ErrIO MenuEntry
 -- | make the index text, will be moved into the page template later
 -- return zero if not index page
-makeIndex docval pageFn = do
+makeIndex debug docval pageFn = do
         let doindex = fromMaybe False $ getMaybeStringAtKey docval "indexPage"
         putIOwords ["docValToAllVal", "doindex", showT doindex]
 
         ix :: MenuEntry <- if doindex
             then do
                     let currentDir2 = makeAbsDir $ getParentDir pageFn
-                    ix2 <- makeIndexForDir currentDir2 pageFn
+                    ix2 <- makeIndexForDir debug currentDir2 pageFn
                     putIOwords ["docValToAllVal", "index", showT ix2]
                     return ix2
 
@@ -56,25 +56,25 @@ makeIndex docval pageFn = do
         return ix -- (toJSON ix :: Value)
 
 
-makeIndexForDir :: Path Abs Dir -> Path Abs File -> ErrIO MenuEntry
+makeIndexForDir :: Bool -> Path Abs Dir -> Path Abs File -> ErrIO MenuEntry
 -- make the index for the directory
 -- place result in index.html in this directory
 -- the name of the index file is passed to exclude it
 -- makes index only for md files in dough
 -- needs more work for index? date ? abstract?
-makeIndexForDir focus indexFn = do
+makeIndexForDir debug focus indexFn = do
     fs <- getDirContentNonHidden (toFilePath focus)
     let fs2 = filter (/= (toFilePath indexFn)) fs -- exclude index
     let fs3 = filter (FileIO.hasExtension ( "md")) fs2
-    putIOwords ["makeIndexForDir", "for ", showT focus, "\n", showT fs3 ]
+    when debug $ putIOwords ["makeIndexForDir", "for ", showT focus, "\n", showT fs3 ]
 
     -- needed filename.html title abstract author data
 
     is :: [IndexEntry] <- mapM (\f -> getOneIndexEntry (makeAbsFile f)) fs3
     let menu1 = MenuEntry {menu2 = is}
-    putIOwords ["makeIndexForDir", "for ", showT focus, "\n", showT menu1 ]
+    when debug $ putIOwords ["makeIndexForDir", "for ", showT focus, "\n", showT menu1 ]
     let yaml1 = bb2t .   Y.encode  $ menu1
-    putIOwords ["makeIndexForDir", "yaml ", yaml1  ]
+    when debug $ putIOwords ["makeIndexForDir", "yaml ", yaml1  ]
 
     return menu1
 

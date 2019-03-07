@@ -46,7 +46,7 @@ readSettings settingsfilename = do
     -- TODO where is settings
     layout3 <- readSettings2 debug settingsTxt
 --    putIOwords ["readSettings layout3", showT layout3]
-    putIOwords ["readSettings end", showT layout3]
+    when debug $ putIOwords ["readSettings end", showT layout3]
     return layout3
 
 
@@ -80,7 +80,7 @@ readSettings2 debug (YamlText t)  = do
 
     when debug $ putIOwords ["readSettings2", showT layout3 ]
 --    when debug $
-    putIOwords ["readSettings2 port", showT port2 ]
+    when debug $ putIOwords ["readSettings2 port", showT port2 ]
 
     return  (layout3, port2 )
 

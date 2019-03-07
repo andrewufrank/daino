@@ -28,7 +28,7 @@ import Lib.Pandoc --  (markdownToPandoc, pandocToContentHtml)
 
 import Lib.Templating
 import Lib.FileMgt
-import Lib.Foundation (resourcesDirName)
+--import Lib.Foundation (resourcesDirName)
 --import Data.Aeson
 
 bakeOneFileFPs :: FilePath -> FilePath -> FilePath -> FilePath -> ErrIO ()

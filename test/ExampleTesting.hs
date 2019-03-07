@@ -29,7 +29,7 @@ import {-@ HTF_TESTS @-} Lib.Pandoc_test
 --    -- AK :: MarkdownText -> BE  DocValue
 --    -- AK ->AD :: Pandoc
 --    -- AD -> AF ::
-import {-@ HTF_TESTS @-} Lib.Bake_test
+--import {-@ HTF_TESTS @-} Lib.Bake_test
 import {-@ HTF_TESTS @-} Lib.ReadSettingFile_test
 import {-@ HTF_TESTS @-} Lib.Indexing_test
 import {-@ HTF_TESTS @-} Lib.BibTex_test

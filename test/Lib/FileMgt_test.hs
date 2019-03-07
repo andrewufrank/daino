@@ -45,7 +45,7 @@ test_md2 = testFileReadWrite post1 post2 markdownFileType
 testDocVal = testD </> makeRelFile "site/dough/Blog/postwk.content.docval"
 testDocVal2 = testD </> makeRelFile "site/dough/Blog/postwkTest.content.docval"
 
-test_docvalue2 = testFileReadWrite testDocVal testDocVal2 docValueFileType
+--test_docvalue2 = testFileReadWrite testDocVal testDocVal2 docValueFileType
 
 --test_docvalue = do
 --            res <- runErr $
@@ -65,7 +65,7 @@ test_YAMLue = testFileReadWrite testYAML testYAML2 yamlFileType
 testHTMLout = testD </> makeRelFile "site/dough/Blog/postwk.a.html"
 testHTMLout2 = testD </> makeRelFile "site/dough/Blog/postwk.a2.html"
 
-test_htmlout = testFileReadWrite testHTMLout testHTMLout2 htmloutFileType
+--test_htmlout = testFileReadWrite testHTMLout testHTMLout2 htmloutFileType
 
 --testGtemp = sourceDir </> makeRelFile "theme/templates/Master3.gtpl"
 --testGtemp2 = testD </> makeRelFile "theme/templates/Master32.gtpl"
