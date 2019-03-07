@@ -120,7 +120,9 @@ shakeMD layout  doughP templatesP bakedP=
                         ,  showT (map (makeRelative  doughD) htmlFiles22)]
             need htmlFiles22
 
-        (bakedD <> "//*.html") %> \out -> do
+        (\x -> ((bakedD <> "//*.html") ?== x) && (not ((staticD <> "//*.html") ?== x)))
+--        (bakedD <> "//*.html")
+                     ?> \out -> do
 
             liftIO $ putIOwords ["\nshakeWrapped - bakedD html -  out ", showT out]
             let md =   doughD </>  (makeRelative bakedD $ out -<.> "md")
@@ -136,11 +138,13 @@ shakeMD layout  doughP templatesP bakedP=
             liftIO $ putIOwords ["\nshakeWrapped - staticD - *.pdf", showT out]
             copyFileChanged (replaceDirectory out doughD) out
 
+        (staticD </> "//*.html" ) %> \out -> do
 --        (\f -> (isPrefix' (staticD </> staticD </> "//*.html") ?> \out ->  do
---            -- insert pdfFIles1 -- how to separate this rule from the other html rule?
---            liftIO $ putIOwords ["\nshakeWrapped - staticD - *.pdf", showT out]
---            copyFileChanged (replaceDirectory out doughD) out
+            -- insert pdfFIles1 -- how to separate this rule from the other html rule?
+            liftIO $ putIOwords ["\nshakeWrapped - staticD - *.pdf", showT out]
+            copyFileChanged (replaceDirectory out doughD) out
 
+-- /home/frank/bakedHomepageSSG/SSGdesign/index.html
         return ()
 
 site :: Path Abs Dir -> ScottyM  ()
