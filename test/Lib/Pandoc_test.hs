@@ -18,28 +18,37 @@ module Lib.Pandoc_test  -- (openMain, htf_thisModuelsTests)
 
 import           Test.Framework
 import Uniform.Test.TestHarness
-import Lib.Foundation (progName)
+import Lib.Foundation (progName, layoutDefaults, SiteLayout(..))
 import Lib.FileMgt
 import Lib.YamlBlocks (readMd2meta)
---import Lib.Pandoc
+import Lib.Pandoc
 --import Text.Pandoc.Definition as PD
 
---readMarkdownFile8 :: String  -> ErrIO MarkdownText
---readMarkdownFile8 fnn = fmap fst $ readMd2meta (makeAbsFile fnn)
+readMarkdownFile8 :: String  -> ErrIO MarkdownText
+readMarkdownFile8 fnn =  read8   (makeAbsFile fnn) markdownFileType
 ---- uses files to be copied to dough
 ----
---test_pandoc_pageFn_pageMd_1, test_pandoc_pageFn_pageMd_2 :: IO ()
---test_pandoc_pageFn_pageMd_1 = test1FileIO progName  "pageFn1" "pageMd1" readMarkdownFile8
---test_pandoc_pageFn_pageMd_2 = test1FileIO progName  "pageFn2" "pageMd2" readMarkdownFile8
+test_pandoc_pageFn_pageMd_1, test_pandoc_pageFn_pageMd_2 :: IO ()
+test_pandoc_pageFn_pageMd_1 = test1FileIO progName  "pageFn1" "pageMd1" readMarkdownFile8
+test_pandoc_pageFn_pageMd_2 = test1FileIO progName  "pageFn2" "pageMd2" readMarkdownFile8
+test_pandoc_pageFn_pageMd_3 = test1FileIO progName  "pageFn3" "pageMd3" readMarkdownFile8
 
+doughP = doughDir layoutDefaults
+markdownToPandoX :: MarkdownText -> ErrIO (Maybe Pandoc)
+markdownToPandoX = markdownToPandoc False doughP
+
+test_pandoc_11_A_D, test_pandoc_12_A_D :: IO ()
+test_pandoc_11_A_D = test1FileIO progName  "pageMd1" "resultAD1" markdownToPandoX
+test_pandoc_12_A_D = test1FileIO progName  "pageMd2" "resultAD2" markdownToPandoX
+test_pandoc_13_A_D = test1FileIO progName  "pageMd2" "resultAD3" markdownToPandoX
+
+pandocToContentHtmlX :: Maybe Pandoc -> ErrIO DocValue
+pandocToContentHtmlX mp = pandocToContentHtml False (fromJustNote "fwerw" mp)
 --
---test_pandoc_11_A_D, test_pandoc_12_A_D :: IO ()
---test_pandoc_11_A_D = test1FileIO progName  "resultAG1" "resultAD1" (markdownToPandoc False)
---test_pandoc_12_A_D = test1FileIO progName  "resultAG2" "resultAD2" (markdownToPandoc False)
---
---test_pandoc_11_A_F, test_pandoc_12_A_F :: IO ()
---test_pandoc_11_A_F = test1FileIO progName  "resultAD1" "resultAF1" (pandocToContentHtml False)
---test_pandoc_12_A_F = test1FileIO progName  "resultAD2" "resultAF2" (pandocToContentHtml False)
+test_pandoc_11_A_F, test_pandoc_12_A_F :: IO ()
+test_pandoc_11_A_F = test1FileIO progName  "resultAD1" "resultAF1" pandocToContentHtmlX
+test_pandoc_12_A_F = test1FileIO progName  "resultAD2" "resultAF2" pandocToContentHtmlX
+test_pandoc_13_A_F = test1FileIO progName  "resultAD3" "resultAF3" pandocToContentHtmlX
 --
 --instance Zeros Pandoc where zero = Pandoc mempty zero
 ----instance Zeros PD.Meta where zero = PD.Meta []
@@ -58,4 +67,4 @@ import Lib.YamlBlocks (readMd2meta)
 instance  ShowTestHarness MarkdownText where
 
 instance  ShowTestHarness DocValue where
---instance  ShowTestHarness Pandoc where
+instance  ShowTestHarness (Maybe Pandoc) where

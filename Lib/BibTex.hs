@@ -43,28 +43,28 @@ pandocProcessCites doughP biblio groupname mdtext pandoc1 = do
     pandoc2 <- case groupname of
         Nothing -> return pandoc1
         Just gn -> do
-            bibids <- bibIdentifierFromBibTex biblio (t2s gn)
-            let bibidsat = s2t . unwords  $ map ("@" <>) bibids
-
---                    let nociteblock = "\n---\nnocite: | \n     " <>   bibidsat  <> "\n---\n"
---                    let mdtext2 = (MarkdownText $ (unMT mdtext) <> nociteblock)
---                    putIOwords ["pandocProcessCites", "nociteblock", unMT mdtext2]
---                    pandoc2 <- readMarkdown2 mdtext2
-            let meta2 = getMeta $ pandoc1 :: P.Meta
-            let map1 =  M.insert "nocite"  (P.MetaList (map P.MetaString bibids)) M.empty
-                            :: M.Map String P.MetaValue
-            let meta3 = meta2 <> P.Meta map1
-            let pandoc2 = putMeta meta3 pandoc1
-            return pandoc2
---                    bibids <- bibIdentifierFromBibTex biblio (t2s gn)
---                    let bibidsat = s2t . unwords  $ map ("@" <>) bibids
---                    let nociteblock = "\n---\nnocite: | \n     " <>   bibidsat  <> "\n---\n"
---                    let mdtext2 = (MarkdownText $ (unMT mdtext) <> nociteblock)
---                    putIOwords ["pandocProcessCites", "nociteblock", unMT mdtext2]
---                    pandoc2 <- readMarkdown2 mdtext2
-----                    let meta3 = putStringAtKey (flattenMeta . getMeta $ pandoc1) "nocite" (s2t . unwords $ bibidsat)
-----                    let pandoc2 = putMeta meta3 pandoc1
---                    return pandoc2
+--            bibids <- bibIdentifierFromBibTex biblio (t2s gn)
+--            let bibidsat = s2t . unwords  $ map ("@" <>) bibids
+--
+----                    let nociteblock = "\n---\nnocite: | \n     " <>   bibidsat  <> "\n---\n"
+----                    let mdtext2 = (MarkdownText $ (unMT mdtext) <> nociteblock)
+----                    putIOwords ["pandocProcessCites", "nociteblock", unMT mdtext2]
+----                    pandoc2 <- readMarkdown2 mdtext2
+--            let meta2 = getMeta $ pandoc1 :: P.Meta
+--            let map1 =  M.insert "nocite"  (P.MetaList (map P.MetaString bibids)) M.empty
+--                            :: M.Map String P.MetaValue
+--            let meta3 = meta2 <> P.Meta map1
+--            let pandoc2 = putMeta meta3 pandoc1
+--            return pandoc2
+                    bibids <- bibIdentifierFromBibTex biblio (t2s gn)
+                    let bibidsat = s2t . unwords  $ map ("@" <>) bibids
+                    let nociteblock = "\n---\nnocite: | \n     " <>   bibidsat  <> "\n---\n"
+                    let mdtext2 = (MarkdownText $ (unMT mdtext) <> nociteblock)
+                    putIOwords ["pandocProcessCites", "nociteblock", unMT mdtext2]
+                    pandoc2 <- readMarkdown2 mdtext2
+--                    let meta3 = putStringAtKey (flattenMeta . getMeta $ pandoc1) "nocite" (s2t . unwords $ bibidsat)
+--                    let pandoc2 = putMeta meta3 pandoc1
+                    return pandoc2
     callIO $ do
         currDir <- getCurrentDirectory
         -- the current dir is the directory in which the procCites of pando will

@@ -63,6 +63,7 @@ bakeOneFile debug pageFn doughP templatesP ht2 = do
         putIOwords ["\n-----------------", "bakeOneFile fn", showT pageFn]
         -- currently only for md files
         pageMd :: MarkdownText <- read8 pageFn markdownFileType -- pageFn -> pageMd
+
         -- process the md file (including bibtex citations)
 --        let resourcesPath = doughP </> resourcesDirName :: Path Abs Dir
         mpandoc :: Maybe Pandoc  <- markdownToPandoc debug doughP pageMd  -- AG -> AD

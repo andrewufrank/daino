@@ -43,6 +43,7 @@ test_Defaults_1_A
 test11, test12 ::  Path Rel File
 test11 = makeRelFile "Blog/postwk.md"
 test12 = makeRelFile "PublicationList/postWithReference.md"
+test13 = makeRelFile "PublicationList/publistAF.md"
 -- these files must be copied to .SSG/dough !!
 
 showAbsFile ::  Path Rel File -> Text
@@ -50,6 +51,7 @@ showAbsFile f = shownice $ addDir (doughDir testLayout) f
 
 test_foundation_1_AA = testVar0File progName test11 "pageFn1" showAbsFile
 test_foundation_2_AA = testVar0File progName test12 "pageFn2" showAbsFile
+test_foundation_3_AA = testVar0File progName test13 "pageFn3" showAbsFile
 
 
 
