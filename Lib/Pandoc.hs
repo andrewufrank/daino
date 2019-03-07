@@ -34,7 +34,7 @@ import Lib.FileMgt -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
 --            , unDocValue, DocValue (..) )
 import Lib.Indexing
 import Lib.BibTex
---import Lib.Foundation
+import Lib.Foundation (settingsFileName)
 --import System.Time
 import Uniform.Time (getDateAsText)
 import Paths_SSG (version)
@@ -102,7 +102,7 @@ docValToAllVal debug docval pageFn dough2 templateP = do
 
         pageTypeYaml <- read8  ( templateP </> (pageType)) yamlFileType
 
-        settingsYaml <- read8 (dough2 </> makeRelFile "settings2") yamlFileType
+        settingsYaml <- read8 (dough2 </> settingsFileName) yamlFileType
 --        svalue <- decodeThrow . t2b . unYAML $ settings
 
         ix <- makeIndex debug docval pageFn
