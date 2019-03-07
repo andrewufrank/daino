@@ -50,16 +50,16 @@ import Lib.YamlBlocks (readMd2meta)
 -- includes reference replacement (pandoc-citeproc)
 -- runs in the pandoc monad!
 
-markdownToPandoc :: Bool -> Path Abs Dir  -> MarkdownText -> ErrIO (Maybe Pandoc)
+markdownToPandoc :: Bool -> Path Abs Dir  -> Path Abs File -> ErrIO (Maybe Pandoc)
 -- process the markdown (including if necessary the BibTex treatment)
 -- the bibliography must be in the metadata
 -- the settings are in the markdownText (at end - to let page specific have precedence)
 -- questionable if the draft/publish switch should be here
 -- or in the creation of the index (where more details from md is needed
-markdownToPandoc debug doughP mdtext  = do
---    (pandoc, meta2) <- readMd2meta mdfile
-    pandoc   <- readMarkdown2  mdtext
-    let meta2 = flattenMeta (getMeta pandoc)
+markdownToPandoc debug doughP mdfile  = do
+    (pandoc, meta2) <- readMd2meta mdfile
+--    pandoc   <- readMarkdown2
+--    let meta2 = flattenMeta (getMeta pandoc)
     let publish = getMaybeStringAtKey meta2 "publish" :: Maybe Text
     if  isNothing publish || (fmap toLower' publish) == Just "true"
         then do
@@ -70,7 +70,7 @@ markdownToPandoc debug doughP mdtext  = do
             pandoc2 <- case bib of
                 Nothing ->  return pandoc
                 Just bibfp -> pandocProcessCites doughP (doughP </> (makeRelFile . t2s $ bibfp))
-                            nociteNeeded mdtext pandoc
+                            nociteNeeded  pandoc
                             -- here the dir is used for processing in my code
 
             return . Just $ pandoc2

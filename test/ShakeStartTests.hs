@@ -99,9 +99,9 @@ shakeTestWrapped doughP templatesP testP =
         need [source]
         runErr2action $
                 do
-                    intext <- read8 (makeAbsFile source) markdownFileType
+--                    intext <- read8 (makeAbsFile source) markdownFileType
 --                    let resourcesPath = doughP `addDir` resourcesDirName :: Path Abs Dir
-                    mp <- markdownToPandoc True doughP intext
+                    mp <- markdownToPandoc True doughP (makeAbsFile source)
                     case mp of
                         Nothing -> return ()
                         Just p -> writeFile2 (makeAbsFile out) (showT p)

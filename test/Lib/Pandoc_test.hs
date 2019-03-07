@@ -34,13 +34,23 @@ test_pandoc_pageFn_pageMd_2 = test1FileIO progName  "pageFn2" "pageMd2" readMark
 test_pandoc_pageFn_pageMd_3 = test1FileIO progName  "pageFn3" "pageMd3" readMarkdownFile8
 
 doughP = doughDir layoutDefaults
-markdownToPandoX :: MarkdownText -> ErrIO (Maybe Pandoc)
-markdownToPandoX = markdownToPandoc False doughP
+--markdownToPandoX :: MarkdownText -> ErrIO (Maybe Pandoc)
+--markdownToPandoX = markdownToPandoc False doughP
+--
+--test_pandoc_11_A_D, test_pandoc_12_A_D :: IO ()
+--test_pandoc_11_A_D = test1FileIO progName  "pageMd1" "resultAD1" markdownToPandoX
+--test_pandoc_12_A_D = test1FileIO progName  "pageMd2" "resultAD2" markdownToPandoX
+--test_pandoc_13_A_D = test1FileIO progName  "pageMd3" "resultAD3" markdownToPandoX
+--            -- 13 fails
+---- "/home/frank/Workspace8/ssg/site/dough/site/dough/resources/BibTexLatex.bib: openFile: does not exist (No such file or directory)"
+
+markdownToPandoX :: String  -> ErrIO (Maybe Pandoc)
+markdownToPandoX s = markdownToPandoc False doughP (makeAbsFile s)
 
 test_pandoc_11_A_D, test_pandoc_12_A_D :: IO ()
-test_pandoc_11_A_D = test1FileIO progName  "pageMd1" "resultAD1" markdownToPandoX
-test_pandoc_12_A_D = test1FileIO progName  "pageMd2" "resultAD2" markdownToPandoX
-test_pandoc_13_A_D = test1FileIO progName  "pageMd3" "resultAD3" markdownToPandoX
+test_pandoc_11_A_D = test1FileIO progName  "pageFn1" "resultAD1" markdownToPandoX
+test_pandoc_12_A_D = test1FileIO progName  "pageFn2" "resultAD2" markdownToPandoX
+test_pandoc_13_A_D = test1FileIO progName  "pageFn3" "resultAD3" markdownToPandoX
             -- 13 fails
 -- "/home/frank/Workspace8/ssg/site/dough/site/dough/resources/BibTexLatex.bib: openFile: does not exist (No such file or directory)"
 

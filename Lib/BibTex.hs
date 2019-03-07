@@ -85,10 +85,10 @@ fillCitation citID = PD.Citation {PD.citationId = t2s citID, PD.citationPrefix=z
                                     , PD.citationNoteNum= zero, PD.citationHash=zero}
 fillCitation :: Text -> PD.Citation
 
-pandocProcessCites :: Path Abs Dir -> Path Abs File  -> Maybe Text-> MarkdownText -> Pandoc -> ErrIO Pandoc
+pandocProcessCites :: Path Abs Dir -> Path Abs File  -> Maybe Text->  Pandoc -> ErrIO Pandoc
 -- process the citations
 -- including the filling the references for publication lists
-pandocProcessCites doughP biblio groupname mdtext pandoc1 = do
+pandocProcessCites doughP biblio groupname  pandoc1 = do
     pandoc2 <- case groupname of
         Nothing -> return pandoc1
         Just gn -> do

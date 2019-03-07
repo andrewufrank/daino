@@ -62,11 +62,11 @@ bakeOneFile :: Bool -> Path Abs File -> Path Abs Dir
 bakeOneFile debug pageFn doughP templatesP ht2 = do
         putIOwords ["\n-----------------", "bakeOneFile fn", showT pageFn]
         -- currently only for md files
-        pageMd :: MarkdownText <- read8 pageFn markdownFileType -- pageFn -> pageMd
+--        pageMd :: MarkdownText <- read8 pageFn markdownFileType -- pageFn -> pageMd
 
         -- process the md file (including bibtex citations)
 --        let resourcesPath = doughP </> resourcesDirName :: Path Abs Dir
-        mpandoc :: Maybe Pandoc  <- markdownToPandoc debug doughP pageMd  -- AG -> AD
+        mpandoc :: Maybe Pandoc  <- markdownToPandoc debug doughP pageFn  -- AG -> AD
                                                         -- withSettings.pandoc
         -- produce html and put into contentHtml key
 
