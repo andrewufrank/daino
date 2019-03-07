@@ -29,6 +29,7 @@ library
     , uniform-strings
     , uniform-fileio
     , uniform-error
+    , uniform-time
 
     , pandoc
     , pandoc-citeproc
@@ -48,7 +49,7 @@ library
     , yaml
     , bibtex==0.1.0.8
 --    , parsec
-    , old-time
+--    , old-time
     , directory
 
   default-language: Haskell2010

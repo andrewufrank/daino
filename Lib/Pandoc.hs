@@ -35,7 +35,8 @@ import Lib.FileMgt -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
 import Lib.Indexing
 import Lib.BibTex
 --import Lib.Foundation
-import System.Time
+--import System.Time
+import Uniform.Time (getDateAsText)
 import Paths_SSG (version)
 import Data.Version (showVersion)
 import Lib.YamlBlocks (flattenMeta, getMeta, getMaybeStringAtKey
@@ -115,9 +116,10 @@ docValToAllVal debug docval pageFn dough2 templateP = do
                         , bl2b . encode . toJSON $ ix
                        ]  -- last winns!
         -- add the bottom line
-        now <- callIO $ toCalendarTime =<< getClockTime
+        now <- getDateAsText
+--        callIO $ toCalendarTime =<< getClockTime
         let val3 = putStringAtKey  "ssgversion" (s2t$ showVersion version) .
-                    putStringAtKey  "today" (s2t $ calendarTimeToString now) $ val
+                    putStringAtKey  "today" now $ val
         return val3
 
 

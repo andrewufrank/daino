@@ -6,6 +6,7 @@ packages:
 - ../uniform/uniform-algebras
 - ../uniform/uniform-convenience
 - ../uniform/uniform-fileio
+- ../uniform/uniform-time
 - ../uniform/uniform-error
 - ../fromOthers/bibtex
 
