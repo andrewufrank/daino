@@ -68,6 +68,11 @@ templatesImgDirName = makeRelDir "img"
 settingsFileName :: Path Rel File
 -- ^ the yaml file in which the settings are fixec
 settingsFileName = makeRelFile "settings2"
+
+masterTemplateFileName :: Path Rel File
+-- ^ the name of the master template
+-- should probably be in the settings?
+masterTemplateFileName = makeRelFile "master4.dtpl"
 -- content of settings2.yaml
 --storage:
 --    themeDir:  /home/frank/Workspace8/ssg/theme
