@@ -22,6 +22,9 @@ module Lib.Pandoc
 import Control.Lens ((^?), (?~), (&), at)
 import Data.Aeson
 import Data.Aeson.Lens
+import Data.Aeson(Value(Object))
+import qualified Data.HashMap.Lazy as HML
+
 import  Data.Yaml.Union
 import Text.Pandoc as Pandoc
 import Text.Pandoc.Highlighting (tango)
@@ -124,9 +127,20 @@ docValToAllVal debug docval pageFn dough2 templateP = do
                     putStringAtKey  "today" now $ val
         return val3
 
+--unionLastWins :: _ -> _ -> _ -> _ -> Value
+--
+--unionLastWins o1 o2 o3 o4 =   fromJustNote "decoded union 2r2e"
+--                      . decodeBytestrings
+--                    $ [ t2b $   o1
+--                        , t2b $ o2
+--                        , bl2b $ encode o3
+--                        , bl2b $ encode o4
+--                       ]  -- last winns!
 
 
 
+merge_aeson :: [Value] -> Value
+merge_aeson = Object . HML.unions . map (\(Object x) -> x)
 
 -- | Reasonable options for rendering to HTML
 html5Options :: WriterOptions
