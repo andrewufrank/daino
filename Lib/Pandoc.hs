@@ -76,16 +76,6 @@ markdownToPandoc debug doughP mdtext  = do
                 putIOwords ["markdownToPandoc", "NOT PUBLISH", showT publish]
                 return Nothing
 
-
-    -- test if biblio is present and apply
---    let bib = fmap t2s $  ( meta2) ^? key "bibliography" . _String :: Maybe FilePath
-
-
---    return pandoc2
-
-
-
-
 pandocToContentHtml :: Bool -> Pandoc ->  ErrIO DocValue
 -- convert the pandoc to html in the contentHtml key
 -- the settings are initially put into the pandoc
@@ -115,20 +105,6 @@ docValToAllVal debug docval pageFn dough2 templateP = do
 --        svalue <- decodeThrow . t2b . unYAML $ settings
 
         ix <- makeIndex debug docval pageFn
-
---        let doindex = fromMaybe False . getMaybeStringAtKey docval "indexPage"
---
---        putIOwords ["docValToAllVal", "doindex", showT doindex]
---
---        ix :: MenuEntry <- if doindex2
---            then do
---                    let currentDir2 = makeAbsDir $ getParentDir pageFn
---                    ix2 <- makeIndexForDir currentDir2 pageFn
---                    putIOwords ["docValToAllVal", "index", showT ix2]
---                    return ix2
---
---          else return zero
---        let ixVal = toJSON ix :: Value
 
         -- combine all the
         let val = DocValue . fromJustNote "decoded union 2r2e"
