@@ -17,7 +17,7 @@
 module Lib.Templating  -- (openMain, htf_thisModuelsTests)
      where
 
-import Uniform.Strings
+import Uniform.Strings hiding ((</>))
 import Uniform.Filenames
 --import Uniform.FileStrings
 import Uniform.TypedFile
@@ -25,9 +25,25 @@ import Uniform.TypedFile
 --import Text.Glabrous (Template, insert) -- , insertMany)
 import Text.DocTemplates (applyTemplate)
 --import Data.Aeson
+import Lib.Foundation (masterTemplateFileName)
 
 import Lib.FileMgt
---import qualified Text.Glabrous as G
+import Lib.YamlBlocks (flattenMeta, getMeta, getMaybeStringAtKey
+                , putStringAtKey, readMarkdown2, unPandocM)
+
+putValinMaster :: Bool -> DocValue -> Path Abs Dir -> ErrIO HTMLout
+-- ^ get the master html template and put the val into it
+-- takes the master filename from val
+putValinMaster debug val templatesP =  do
+        let mmt = getMaybeStringAtKey val "masterTemplate" :: Maybe Text
+        let mf = maybe (masterTemplateFileName) (makeRelFile . t2s) mmt
+
+        let masterfn = (templatesP </> mf)
+        template <- read8 masterfn dtmplFileType
+        html2 <-  applyTemplate3 template val  -- inTemplate.html
+        when debug $
+            putIOwords ["putValinMaster", showT html2]
+        return html2
 
 -- the final application
 applyTemplate3 :: Dtemplate -> DocValue -> ErrIO HTMLout

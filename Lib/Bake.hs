@@ -26,9 +26,9 @@ import Uniform.TypedFile
 import Lib.Pandoc --  (markdownToPandoc, pandocToContentHtml)
         -- with a simplified Action ~ ErrIO
 
-import Lib.Templating
+import Lib.Templating (putValinMaster)
 import Lib.FileMgt
-import Lib.Foundation (masterTemplateFileName)
+--import Lib.Foundation (masterTemplateFileName)
 --import Data.Aeson
 
 bakeOneFileFPs :: FilePath -> FilePath -> FilePath -> FilePath -> ErrIO ()
@@ -98,19 +98,6 @@ bakeOneFile debug pageFn doughP templatesP ht2 = do
                     return . unwords' $ errmsg2
                 )
 
-putValinMaster :: Bool -> DocValue -> Path Abs Dir -> ErrIO HTMLout
--- ^ get the master html template and put the val into it
--- takes the master filename from val
-putValinMaster debug val templatesP =  do
-        let mmt = getMaybeStringAtKey val "masterTemplate" :: Maybe Text
-        let mf = maybe (masterTemplateFileName) (makeRelFile . t2s) mmt
-
-        let masterfn = (templatesP </> mf)
-        template <- read8 masterfn dtmplFileType
-        html2 <-  applyTemplate3 template val  -- inTemplate.html
-        when debug $
-            putIOwords ["putValinMaster", showT html2]
-        return html2
 
 
 

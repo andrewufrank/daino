@@ -30,7 +30,7 @@ import Lib.Foundation_test (testLayout)
 import Lib.Pandoc  -- (markdownToPandoc, pandocToContentHtml,docValToAllVal)
         -- with a simplified Action ~ ErrIO
 import Text.Pandoc  (Pandoc)
-import Lib.Templating (applyTemplate3 )
+import Lib.Templating (applyTemplate3, putValinMaster )
 import Lib.Foundation (resourcesDirName)
 
 test_shake :: IO ()
