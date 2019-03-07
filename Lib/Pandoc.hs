@@ -71,7 +71,7 @@ markdownToPandoc debug doughP mdtext  = do
                 Nothing ->  return pandoc
                 Just bibfp -> pandocProcessCites doughP (doughP </> (makeRelFile . t2s $ bibfp))
                             nociteNeeded mdtext pandoc
-                            -- here the dire is used for processing in my code
+                            -- here the dir is used for processing in my code
 
             return . Just $ pandoc2
 

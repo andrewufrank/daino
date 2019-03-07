@@ -9,7 +9,7 @@ abstract: |
 
 bibliographyGroup: authorAF
 
-bibliography: "site/dough/resources/BibTexLatex.bib"
+bibliography: "resources/BibTexLatex.bib"
 
 
 ---

@@ -33,6 +33,7 @@ library
 
     , pandoc
     , pandoc-citeproc
+    , pandoc-types
     , doctemplates
 --    , process
     , aeson

@@ -40,7 +40,9 @@ markdownToPandoX = markdownToPandoc False doughP
 test_pandoc_11_A_D, test_pandoc_12_A_D :: IO ()
 test_pandoc_11_A_D = test1FileIO progName  "pageMd1" "resultAD1" markdownToPandoX
 test_pandoc_12_A_D = test1FileIO progName  "pageMd2" "resultAD2" markdownToPandoX
-test_pandoc_13_A_D = test1FileIO progName  "pageMd2" "resultAD3" markdownToPandoX
+test_pandoc_13_A_D = test1FileIO progName  "pageMd3" "resultAD3" markdownToPandoX
+            -- 13 fails
+-- "/home/frank/Workspace8/ssg/site/dough/site/dough/resources/BibTexLatex.bib: openFile: does not exist (No such file or directory)"
 
 pandocToContentHtmlX :: Maybe Pandoc -> ErrIO DocValue
 pandocToContentHtmlX mp = pandocToContentHtml False (fromJustNote "fwerw" mp)

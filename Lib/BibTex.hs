@@ -30,11 +30,60 @@ import Lib.FileMgt (MarkdownText(..), unMT, HTMLout(..), unHTMLout
             , unDocValue, DocValue (..) )
 import Text.Pandoc (Pandoc)
 import qualified Text.Pandoc   as P
+import qualified Text.Pandoc.Definition   as PD
+import qualified Text.Pandoc.Builder   as PB
 import Text.CSL.Pandoc (processCites')
 import System.Directory (setCurrentDirectory, getCurrentDirectory)
 import Lib.YamlBlocks (flattenMeta, getMeta, putMeta, getMaybeStringAtKey
                 , putStringAtKey, readMarkdown2, unPandocM)
 import qualified Data.Map as M
+
+{-
+, MetaBlocks
+                   [ Plain
+                       [ Cite
+                           [ Citation
+                               { citationId = "frank-machbarkeit"
+                               , citationPrefix = []
+                               , citationSuffix = []
+                               , citationMode = AuthorInText
+                               , citationNoteNum = 0
+                               , citationHash = 0
+                               }
+                           ]
+                           [ Str "@frank-machbarkeit" ]
+                       , Space
+                       , Cite
+                           [ Citation
+                               { citationId = "frank09geo"
+                               , citationPrefix = []
+                               , citationSuffix = []
+                               , citationMode = AuthorInText
+                               , citationNoteNum = 0
+                               , citationHash = 0
+                               }
+                           ]
+                           [ Str "@frank09geo" ]
+                       , Space
+                       , Cite
+                           [ Citation
+                               { citationId = "Frank2010a"
+                               , citationPrefix = []
+                               , citationSuffix = [ Str "TUxx9999" ]
+                               , citationMode = AuthorInText
+                               , citationNoteNum = 0
+                               , citationHash = 0
+                               }
+                           ]
+                           [ Str "@Frank2010a" , Space , Str "[TUxx9999]" ]
+                       ]
+                   ]
+               )
+-}
+fillCitation citID = PD.Citation {PD.citationId = t2s citID, PD.citationPrefix=zero, PD.citationSuffix=zero
+                                    ,PD.citationMode=PD.AuthorInText
+                                    , PD.citationNoteNum= zero, PD.citationHash=zero}
+fillCitation :: Text -> PD.Citation
 
 pandocProcessCites :: Path Abs Dir -> Path Abs File  -> Maybe Text-> MarkdownText -> Pandoc -> ErrIO Pandoc
 -- process the citations
@@ -43,19 +92,28 @@ pandocProcessCites doughP biblio groupname mdtext pandoc1 = do
     pandoc2 <- case groupname of
         Nothing -> return pandoc1
         Just gn -> do
---            bibids <- bibIdentifierFromBibTex biblio (t2s gn)
---            let bibidsat = s2t . unwords  $ map ("@" <>) bibids
---
-----                    let nociteblock = "\n---\nnocite: | \n     " <>   bibidsat  <> "\n---\n"
-----                    let mdtext2 = (MarkdownText $ (unMT mdtext) <> nociteblock)
-----                    putIOwords ["pandocProcessCites", "nociteblock", unMT mdtext2]
-----                    pandoc2 <- readMarkdown2 mdtext2
---            let meta2 = getMeta $ pandoc1 :: P.Meta
---            let map1 =  M.insert "nocite"  (P.MetaList (map P.MetaString bibids)) M.empty
---                            :: M.Map String P.MetaValue
---            let meta3 = meta2 <> P.Meta map1
---            let pandoc2 = putMeta meta3 pandoc1
---            return pandoc2
+            if True then do
+                    bibids <- bibIdentifierFromBibTex biblio (t2s gn)
+                    let cits = map (\s -> [fillCitation . s2t $ s]) bibids :: [[PD.Citation]]
+                    let refs = map (\s -> [PD.Str ("@" <> s)]) bibids :: [[PD.Inline]]
+                    let cites = zipWith PD.Cite cits refs  :: [PD.Inline]
+                    let metablocks = PD.MetaBlocks [PD.Plain cites]
+                    let map1 = M.insert "nocite" metablocks M.empty
+                    let meta2 = getMeta $ pandoc1 :: P.Meta
+                    let meta3 = meta2 <> P.Meta map1
+--                    let bibidsat = s2t . unwords  $ map ("@" <>) bibids
+
+        --                    let nociteblock = "\n---\nnocite: | \n     " <>   bibidsat  <> "\n---\n"
+        --                    let mdtext2 = (MarkdownText $ (unMT mdtext) <> nociteblock)
+        --                    putIOwords ["pandocProcessCites", "nociteblock", unMT mdtext2]
+        --                    pandoc2 <- readMarkdown2 mdtext2
+--                    let meta2 = getMeta $ pandoc1 :: P.Meta
+--                    let map1 =  M.insert "nocite"  (P.MetaList (map P.MetaString bibids)) M.empty
+--                                    :: M.Map String P.MetaValue
+--                    let meta3 = meta2 <> P.Meta map1
+                    let pandoc2 = putMeta meta3 pandoc1
+                    return pandoc2
+                else do
                     bibids <- bibIdentifierFromBibTex biblio (t2s gn)
                     let bibidsat = s2t . unwords  $ map ("@" <>) bibids
                     let nociteblock = "\n---\nnocite: | \n     " <>   bibidsat  <> "\n---\n"
