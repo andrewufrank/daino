@@ -62,7 +62,7 @@ bakeAll layout = do
 
     -- copy resources and banner   not easy to do with shake
     -- only the html and the pdf files (possible the jpg) are required
-    copyDirRecursive (doughP `addDir` resourcesDirName)   (bakedP `addDir` staticDirName)
+--    copyDirRecursive (doughP `addDir` resourcesDirName)   (bakedP `addDir` staticDirName)
 
     let bannerImage = templatesImgDirName `addFileName` bannerImageFileName
 
@@ -98,7 +98,7 @@ shakeMD layout  doughP templatesP bakedP=
         want ["allMarkdownConversion"]
         phony "allMarkdownConversion" $ do
 
-            mdFiles1 <- getDirectoryFiles  doughD ["*/*.md"]   -- no subfiledirectories
+            mdFiles1 <- getDirectoryFiles  doughD ["**/*.md"]   -- subfiledirectories
             let htmlFiles2 = [bakedD </> md -<.> "html" | md <- mdFiles1] -- , not $ isInfixOf' "index.md" md]
             liftIO $ putIOwords ["============================\nshakeWrapped - mdFile 1",  showT   mdFiles1]
             liftIO $ putIOwords ["\nshakeWrapped - htmlFile 2",  showT  htmlFiles2]
@@ -122,7 +122,7 @@ shakeMD layout  doughP templatesP bakedP=
             liftIO $ putIOwords ["\nshakeWrapped - html 22 files", showT htmlFiles22]
             need htmlFiles22
 
-        (\x -> ((bakedD <> "**/*.html") ?== x) && not  ((staticD <> "**/*.html") ?== x))
+        (\x -> ((bakedD <> "**/*.html") ?== x) && not  ((staticD <> "**/*.html") ?== x)) -- with subdir
                   ?> \out -> do
             liftIO $ putIOwords ["\nshakeWrapped - bakedD html -  out ", showT out]
             let md =   doughD </>  (makeRelative bakedD $ out -<.> "md")
