@@ -18,7 +18,7 @@ module Lib.Pandoc_test  -- (openMain, htf_thisModuelsTests)
 
 import           Test.Framework
 import Uniform.Test.TestHarness
-import Lib.Foundation (progName, layoutDefaults, SiteLayout(..))
+import Lib.Foundation (progName, layoutDefaults, SiteLayout(..), templatesDirName)
 import Lib.FileMgt
 import Lib.YamlBlocks (readMd2meta)
 import Lib.Pandoc
@@ -62,6 +62,15 @@ test_pandoc_11_A_F = test1FileIO progName  "resultAD1" "resultAF1" pandocToConte
 test_pandoc_12_A_F = test1FileIO progName  "resultAD2" "resultAF2" pandocToContentHtmlX
 test_pandoc_13_A_F = test1FileIO progName  "resultAD3" "resultAF3" pandocToContentHtmlX
 --
+docVal2 :: DocValue -> String -> ErrIO DocValue
+docVal2 docval pagefn = docValToAllVal False docval (makeAbsFile pagefn)
+                (doughDir layoutDefaults) (themeDir layoutDefaults </> templatesDirName)
+
+test_pandoc_11_F_G, test_pandoc_12_F_G :: IO ()
+test_pandoc_11_F_G = test2FileIO progName  "resultAF1" "pageFn1" "resultAG1" docVal2
+test_pandoc_12_F_G = test2FileIO progName  "resultAF2" "pageFn2" "resultAG2" docVal2
+test_pandoc_13_F_G = test2FileIO progName  "resultAF3" "pageFn3" "resultAG3" docVal2
+
 --instance Zeros Pandoc where zero = Pandoc mempty zero
 ----instance Zeros PD.Meta where zero = PD.Meta []
 --

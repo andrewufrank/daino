@@ -38,6 +38,8 @@ import Control.Lens ((^?), (?~), (&), at)
 import Data.Aeson
 import Data.Aeson.Lens
 --import  Data.Yaml.Union
+import qualified Data.Yaml as Y
+import qualified Data.HashMap.Lazy as HML
 
 readMd2meta :: Path Abs File -> ErrIO (Pandoc, Value)
 -- ^ read a markdown file to metadata
@@ -133,3 +135,44 @@ flattenMeta (Meta meta) = toJSON $ fmap go meta
   go (MetaInlines m) = toJSON $ stringify m
   go (MetaBlocks  m) = toJSON $ stringify m
 
+-------- for yaml
+
+readYaml2value :: Path Abs File -> ErrIO Value
+-- read a yaml file to a value
+-- error when syntax issue
+readYaml2value fp = do
+    t <- read8 fp yamlFileType
+    return . yaml2value $ t
+
+yaml2value :: YamlText -> Value
+-- convert a YamlText to a JSON value, error if not ok
+-- how to debug input erros?
+yaml2value yt = either (error  . show) id  vx
+    where
+        vx =  Y.decodeEither' (t2b . unYAML $ yt)  :: Either Y.ParseException Value
+
+mergeAll :: [Value] -> DocValue
+-- merge the four diffferent values -- last winns
+mergeAll vals  = DocValue
+        . merge_aeson . reverse $ vals
+--        $ [settingsYaml
+--                            , pageTypeYaml
+----                            fromJustNote "sdfa" . decode . b2bl . t2b . unYAML $ settingsYaml
+----                        , fromJustNote "sdfaxx" . decode . b2bl . t2b . unYAML $ pageTypeYaml
+--                        , unDocValue docval
+--                        , toJSON ix
+--                        ]
+
+--                        . fromJustNote "decoded union 2r2e"
+--                      . decodeBytestrings
+--                    $ [ t2b $ unYAML settingsYaml
+--                        , t2b $ unYAML pageTypeYaml
+--                        , bl2b . encode $ unDocValue docval
+--                        , bl2b . encode . toJSON $ ix
+--                       ]  -- last winns!
+
+merge_aeson :: [Value] -> Value
+-- The (left-biased) union of two maps.
+-- It prefers the first map when duplicate keys are encountered,
+-- http://hackage.haskell.org/package/hashmap-1.3.3/docs/Data-HashMap.html
+merge_aeson = Object . HML.unions . map (\(Object x) -> x)

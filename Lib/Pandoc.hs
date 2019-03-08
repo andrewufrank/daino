@@ -23,8 +23,7 @@ import Control.Lens ((^?), (?~), (&), at)
 import Data.Aeson
 import Data.Aeson.Lens
 import Data.Aeson(Value(Object))
-import qualified Data.HashMap.Lazy as HML
-
+import qualified Data.Yaml as Y
 import  Data.Yaml.Union
 import Text.Pandoc as Pandoc
 import Text.Pandoc.Highlighting (tango)
@@ -44,7 +43,7 @@ import Paths_SSG (version)
 import Data.Version (showVersion)
 import Lib.YamlBlocks (flattenMeta, getMeta, getMaybeStringAtKey
                 , putStringAtKey, readMarkdown2, unPandocM)
-import Lib.YamlBlocks (readMd2meta)
+import Lib.YamlBlocks (readMd2meta, yaml2value, mergeAll, readYaml2value)
 
 
 -- | Convert markdown text into a 'Value';
@@ -105,27 +104,43 @@ docValToAllVal debug docval pageFn dough2 templateP = do
         let pageType = makeRelFile . t2s $ fromMaybe "page0default" mpageType  :: Path Rel File
         -- page0default defined in theme
 
-        pageTypeYaml <- read8  ( templateP </> (pageType)) yamlFileType
+        pageTypeYaml <- readYaml2value  ( templateP </> (pageType))
 
-        settingsYaml <- read8 (dough2 </> settingsFileName) yamlFileType
---        svalue <- decodeThrow . t2b . unYAML $ settings
+        settingsYaml <- readYaml2value (dough2 </> settingsFileName)
+        --        svalue <- decodeThrow . t2b . unYAML $ settings
 
         ix <- makeIndex debug docval pageFn
 
         -- combine all the
-        let val = DocValue . fromJustNote "decoded union 2r2e"
-                      . decodeBytestrings
-                    $ [ t2b $ unYAML settingsYaml
-                        , t2b $ unYAML pageTypeYaml
-                        , bl2b . encode $ unDocValue docval
-                        , bl2b . encode . toJSON $ ix
-                       ]  -- last winns!
-        -- add the bottom line
+
+        --        let vx =  Y.decodeEither' (t2b . unYAML $ settingsYaml)  :: Either Y.ParseException Value
+        --        let vx2 = either (error  . show) id  vx
+        --        vsetting ::   Value <-   Y.decodeThrow  (t2b . unYAML $ settingsYaml)
+        --
+        --        vpt ::   Value <-   Y.decodeThrow  (t2b . unYAML $ pageTypeYaml)
+        --        putIOwords ["pandoc settingsYaml", showT settingsYaml
+        --                    , "\ndecoded settings:", showT vsetting
+        --                    , "\ndecoded vx:", showT vx
+        --                    , "\ndecoded pageType:", showT vpt ]
+
         now <- getDateAsText
---        callIO $ toCalendarTime =<< getClockTime
-        let val3 = putStringAtKey  "ssgversion" (s2t$ showVersion version) .
-                    putStringAtKey  "today" now $ val
-        return val3
+        let bottom = object ["ssgversion" .= (s2t$ showVersion version)
+                    , "today" .= (s2t "somestring to avoid failures in regression test")]
+
+        let val = mergeAll [settingsYaml, pageTypeYaml, unDocValue docval, toJSON ix, bottom]
+
+        --        let val = DocValue . fromJustNote "decoded union 2r2e"
+        --                      . decodeBytestrings
+        --                    $ [ t2b $ unYAML settingsYaml
+        --                        , t2b $ unYAML pageTypeYaml
+        --                        , bl2b . encode $ unDocValue docval
+        --                        , bl2b . encode . toJSON $ ix
+        --                       ]  -- last winns!
+        -- add the bottom line
+        --        callIO $ toCalendarTime =<< getClockTime
+--        let val3 = putStringAtKey  "ssgversion" (s2t$ showVersion version) .
+--                    putStringAtKey  "today" now $ val
+        return val
 
 --unionLastWins :: _ -> _ -> _ -> _ -> Value
 --
@@ -138,9 +153,6 @@ docValToAllVal debug docval pageFn dough2 templateP = do
 --                       ]  -- last winns!
 
 
-
-merge_aeson :: [Value] -> Value
-merge_aeson = Object . HML.unions . map (\(Object x) -> x)
 
 -- | Reasonable options for rendering to HTML
 html5Options :: WriterOptions

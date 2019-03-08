@@ -1,6 +1,6 @@
 ---
 title: postWithReference
-author: auf
+#author: NNauthor
 date: 2010-07-29
 keywords: homepage
 pageTemplate: page3.yaml
@@ -29,8 +29,9 @@ references:
     month: 3
 ---
 
-An example post [@fenner2012a]. With a reference to [@Frank2010a[TUxx9999]] given and navratil08 as nocite.
-The frank2010a is a
+An example post [@fenner2012a]. With a reference to [@frank09geo] given and navratil08 as nocite. 
+Not including the "TUxx9999" addition in brackets.
+The frank2010a and frank09geo is a
 The references are in "resources/BibTexLatex.bib".
 
 # References

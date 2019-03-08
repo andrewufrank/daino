@@ -73,7 +73,7 @@ bakeOneFile debug pageFn doughP templatesP ht2 = do
 
         case mpandoc of
             Just pandoc -> do
-                docval   <- pandocToContentHtml debug pandoc  -- content.docval
+                docval   <- pandocToContentHtml debug pandoc  -- content.docval  AD -> AF
                 val <- docValToAllVal debug docval pageFn doughP templatesP
 
                 html2 <- putValinMaster debug val templatesP
