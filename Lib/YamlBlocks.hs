@@ -152,7 +152,8 @@ yaml2value yt = either (error  . show) id  vx
         vx =  Y.decodeEither' (t2b . unYAML $ yt)  :: Either Y.ParseException Value
 
 mergeAll :: [Value] -> DocValue
--- merge the four diffferent values -- last winns
+-- merge the four diffferent value -- last winns
+-- issue how to collect all css?
 mergeAll vals  = DocValue
         . merge_aeson . reverse $ vals
 --        $ [settingsYaml
@@ -176,3 +177,9 @@ merge_aeson :: [Value] -> Value
 -- It prefers the first map when duplicate keys are encountered,
 -- http://hackage.haskell.org/package/hashmap-1.3.3/docs/Data-HashMap.html
 merge_aeson = Object . HML.unions . map (\(Object x) -> x)
+
+--merge_aesonPlus :: [Value] -> Value
+---- The   union of two maps -- unions values
+---- It prefers the first map when duplicate keys are encountered,
+---- http://hackage.haskell.org/package/hashmap-1.3.3/docs/Data-HashMap.html
+--merge_aesonPlus = Object . HML.unionWith (++) . map (\(Object x) -> x)

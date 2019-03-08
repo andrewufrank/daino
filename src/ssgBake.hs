@@ -38,6 +38,7 @@ progTitle = "constructing a static site generator x5" :: Text
 
 settingsfileName = makeRelFile "settings2" -- the yaml file
 bannerImageFileName = makeRelFile "cropped-DSC05127-1024x330.jpg"
+-- where should this be fixed?
 
 main :: IO ()
 main = startProg programName progTitle

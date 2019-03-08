@@ -127,6 +127,8 @@ docValToAllVal debug docval pageFn dough2 templateP = do
         let bottom = object ["ssgversion" .= (s2t$ showVersion version)
                     , "today" .= (s2t "somestring to avoid failures in regression test")]
 
+        putIOwords ["pandoc settings2.yaml", showT settingsYaml]
+
         let val = mergeAll [settingsYaml, pageTypeYaml, unDocValue docval, toJSON ix, bottom]
 
         --        let val = DocValue . fromJustNote "decoded union 2r2e"
@@ -152,6 +154,20 @@ docValToAllVal debug docval pageFn dough2 templateP = do
 --                        , bl2b $ encode o4
 --                       ]  -- last winns!
 
+--        , ( "menu"
+--          , Array
+--              [ Object
+--                  (fromList
+--                     [ ( "text" , String "Blog" )
+--                     , ( "link" , String "/Blog/index.html" )
+--                     ])
+--              , Object
+--                  (fromList
+--                     [ ( "text" , String "Publications" )
+--                     , ( "link" , String "/PublicationList/index.html" )
+--                     ])
+--              ]
+--          )
 
 
 -- | Reasonable options for rendering to HTML
