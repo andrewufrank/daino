@@ -43,13 +43,13 @@ makeIndex :: Bool -> DocValue -> Path Abs File -> ErrIO MenuEntry
 -- return zero if not index page
 makeIndex debug docval pageFn = do
         let doindex = fromMaybe False $ getMaybeStringAtKey docval "indexPage"
-        putIOwords ["docValToAllVal", "doindex", showT doindex]
+        when debug $ putIOwords ["makeIndex", "doindex", showT doindex]
 
         ix :: MenuEntry <- if doindex
             then do
                     let currentDir2 = makeAbsDir $ getParentDir pageFn
                     ix2 <- makeIndexForDir debug currentDir2 pageFn
-                    putIOwords ["docValToAllVal", "index", showT ix2]
+                    when debug $ putIOwords ["makeIndex", "index", showT ix2]
                     return ix2
 
           else return zero

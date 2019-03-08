@@ -101,7 +101,7 @@ docValToAllVal :: Bool -> DocValue -> Path Abs File -> Path Abs Dir -> Path Abs 
 -- and to exclude it from index
 docValToAllVal debug docval pageFn dough2 templateP = do
         let mpageType = getMaybeStringAtKey docval "pageTemplate" :: Maybe Text
-        putIOwords ["docValToAllVal", "mpt", showT mpageType]
+        when debug $ putIOwords ["docValToAllVal", "mpt", showT mpageType]
         let pageType = makeRelFile . t2s $ fromMaybe "page0default" mpageType  :: Path Rel File
         -- page0default defined in theme
 

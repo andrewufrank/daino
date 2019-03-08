@@ -34,7 +34,7 @@ import Network.Wai.Handler.Warp  (Port) -- .Warp.Types
 
 
 programName = "SSG10" :: Text
-progTitle = "constructing a static site generator" :: Text
+progTitle = "constructing a static site generator x3" :: Text
 
 settingsfileName = makeRelFile "settings2" -- the yaml file
 bannerImageFileName = makeRelFile "cropped-DSC05127-1024x330.jpg"
@@ -78,13 +78,13 @@ shakeMD :: SiteLayout -> Path Abs Dir  -> Path Abs Dir -> Path Abs Dir  -> IO ()
 -- ^ process all md files
 -- in IO
 shakeMD layout  doughP templatesP bakedP=
-    shakeArgs2 bakedP $ do
---    shakeArgs shakeOptions {shakeFiles=toFilePath bakedP
---                , shakeVerbosity=Chatty -- Loud
---                , shakeLint=Just LintBasic
-----                , shakeRebuild=[(RebuildNow,"allMarkdownConversion")]
-----                  seems not to produce an effect
---                } $ do
+--    shakeArgs2 bakedP $ do
+    shakeArgs shakeOptions {shakeFiles=toFilePath bakedP
+                , shakeVerbosity=Chatty -- Loud -- Diagnostic --
+                , shakeLint=Just LintBasic
+--                , shakeRebuild=[(RebuildNow,"allMarkdownConversion")]
+--                  seems not to produce an effect
+                } $ do
 
         let doughD = toFilePath doughP
             templatesD = toFilePath templatesP
@@ -120,7 +120,7 @@ shakeMD layout  doughP templatesP bakedP=
                         ,  showT (map (makeRelative  doughD) htmlFiles22)]
             need htmlFiles22
 
-        (\x -> ((bakedD <> "//*.html") ?== x) && (not ((staticD <> "//*.html") ?== x)))
+        (\x -> ((bakedD </> "//*.html") ?== x) && (not False )) -- ((staticD </> "//*.html") ?== x)))
 --        (bakedD <> "//*.html")
                      ?> \out -> do
 
@@ -138,11 +138,12 @@ shakeMD layout  doughP templatesP bakedP=
             liftIO $ putIOwords ["\nshakeWrapped - staticD - *.pdf", showT out]
             copyFileChanged (replaceDirectory out doughD) out
 
-        (staticD </> "//*.html" ) %> \out -> do
---        (\f -> (isPrefix' (staticD </> staticD </> "//*.html") ?> \out ->  do
-            -- insert pdfFIles1 -- how to separate this rule from the other html rule?
-            liftIO $ putIOwords ["\nshakeWrapped - staticD - *.pdf", showT out]
-            copyFileChanged (replaceDirectory out doughD) out
+----        (staticD </> "//*.html" ) %> \out -> do
+--        (\x -> (staticD </> "//*.html" ) ?== x) ?> \out -> do
+----        (\f -> (isPrefix' (staticD </> staticD </> "//*.html") ?> \out ->  do
+--            -- insert pdfFIles1 -- how to separate this rule from the other html rule?
+--            liftIO $ putIOwords ["\nshakeWrapped - staticD - *.html", showT out]
+--            copyFileChanged (replaceDirectory out doughD) out
 
 -- /home/frank/bakedHomepageSSG/SSGdesign/index.html
         return ()
