@@ -34,7 +34,7 @@ import Network.Wai.Handler.Warp  (Port) -- .Warp.Types
 
 
 programName = "SSG10" :: Text
-progTitle = "constructing a static site generator x3" :: Text
+progTitle = "constructing a static site generator x5" :: Text
 
 settingsfileName = makeRelFile "settings2" -- the yaml file
 bannerImageFileName = makeRelFile "cropped-DSC05127-1024x330.jpg"
@@ -89,61 +89,68 @@ shakeMD layout  doughP templatesP bakedP=
         let doughD = toFilePath doughP
             templatesD = toFilePath templatesP
             bakedD = toFilePath bakedP
-        let staticD =   bakedD </>  (toFilePath staticDirName)
+--        let staticD =   templatesD </>  (toFilePath staticDirName)  -- changed to make it differ
+        let staticD =   bakedD </>  (toFilePath staticDirName)  -- ok
+
+        liftIO $ putIOwords ["\nshake dirs", "\n\tstaticD", showT staticD, "\n\tbakedD", showT bakedD]
 
         want ["allMarkdownConversion"]
         phony "allMarkdownConversion" $ do
 
-            mdFiles1 <- getDirectoryFiles  doughD ["//*.md"]
+            mdFiles1 <- getDirectoryFiles  doughD ["*/*.md"]   -- no subfiledirectories
             let htmlFiles2 = [bakedD </> md -<.> "html" | md <- mdFiles1] -- , not $ isInfixOf' "index.md" md]
-            liftIO $ putIOwords ["\nshakeWrapped - htmlFile"
+            liftIO $ putIOwords ["============================\nshakeWrapped - mdFile 1",  showT   mdFiles1]
+            liftIO $ putIOwords ["\nshakeWrapped - htmlFile 2"
                         ,  showT (map (makeRelative  doughD) htmlFiles2)]
             need htmlFiles2
 
             cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs
             let cssFiles2 = [replaceDirectory c staticD  | c <- cssFiles1]
+            liftIO $ putIOwords ["========================\nshakeWrapped - css files 1",  showT   cssFiles1]
             liftIO $ putIOwords ["\nshakeWrapped - css files"
                         ,  showT (map (makeRelative  doughD) cssFiles2)]
             need cssFiles2
 
-            pdfFiles1 <- getDirectoryFiles (doughD </> toFilePath resourcesDirName)
-                                 ["//*.pdf"]
-            let pdfFIles2 = [replaceDirectory c staticD  | c <- pdfFiles1]
+            pdfFiles1 <- getDirectoryFiles (doughD </> toFilePath resourcesDirName) ["**/*.pdf"] -- subdirs
+            let pdfFiles2 = [replaceDirectory c staticD  | c <- pdfFiles1]
+            liftIO $ putIOwords ["===================\nshakeWrapped - pdf files1",  showT   pdfFiles1]
             liftIO $ putIOwords ["\nshakeWrapped - pdf files"
-                        ,  showT (map (makeRelative  doughD) pdfFIles2)]
-            need pdfFIles2
+                        ,  showT (map (makeRelative  doughD) pdfFiles2)]
+            need pdfFiles2
 --
-            htmlFiles11<- getDirectoryFiles (doughD </> toFilePath resourcesDirName)
-                                 ["//*.html"]
+            htmlFiles11<- getDirectoryFiles (doughD </> toFilePath resourcesDirName) ["**/*.html"] -- subdirs
             let htmlFiles22 = [replaceDirectory c staticD  | c <- htmlFiles11]
+            liftIO $ putIOwords ["===================\nshakeWrapped - html 11 files",  showT   htmlFiles11]
             liftIO $ putIOwords ["\nshakeWrapped - html 22 files"
                         ,  showT (map (makeRelative  doughD) htmlFiles22)]
             need htmlFiles22
 
-        (\x -> ((bakedD </> "//*.html") ?== x) && (not False )) -- ((staticD </> "//*.html") ?== x)))
---        (bakedD <> "//*.html")
-                     ?> \out -> do
-
+--        (\x -> ((bakedD <> "**/*.html") ?== x) && (not $ isPrefixOf' staticD x )) -- ((staticD <> "*/*.html") ?== x)))
+        (\x -> ((bakedD <> "**/*.html") ?== x) && not  ((staticD <> "**/*.html") ?== x))
+                  ?> \out -> do
+--        (bakedD </> "//*.html") %> \out -> do
             liftIO $ putIOwords ["\nshakeWrapped - bakedD html -  out ", showT out]
             let md =   doughD </>  (makeRelative bakedD $ out -<.> "md")
-            liftIO $ putIOwords ["\nshakeWrapped - bakedD html - c ", showT md]
+            liftIO $ putIOwords ["\nshakeWrapped - bakedD html - c ", showT bakedD, "file", showT md]
 
             runErr2action $ bakeOneFileFPs  md  doughD templatesD out
+
+        (staticD <> "**/*.html" ) %> \out -> do
+--        (\x -> (staticD </> "//*.html" ) ?== x) ?> \out -> do
+--        (\f -> (isPrefix' (staticD </> staticD </> "//*.html") ?> \out ->  do
+            -- insert pdfFIles1 -- how to separate this rule from the other html rule?
+            liftIO $ putIOwords ["\nshakeWrapped - staticD ok - *.html", showT staticD, "file", showT out]
+            copyFileChanged (replaceDirectory out doughD) out
 
         (staticD </> "*.css") %> \out ->  do           -- insert css
             liftIO $ putIOwords ["\nshakeWrapped - staticD - *.css", showT out]
             copyFileChanged (replaceDirectory out templatesD) out
 
-        (staticD </> "//*.pdf") %> \out ->  do           -- insert pdfFIles1
+        (staticD <> "**/*.pdf") %> \out ->  do           -- insert pdfFIles1
             liftIO $ putIOwords ["\nshakeWrapped - staticD - *.pdf", showT out]
+            liftIO $ putIOwords ["\nshakeWrapped - staticD - from ", showT (replaceDirectory out doughD)]
             copyFileChanged (replaceDirectory out doughD) out
 
---        (staticD </> "//*.html" ) %> \out -> do
-        (\x -> (staticD </> "//*.html" ) ?== x) ?> \out -> do
---        (\f -> (isPrefix' (staticD </> staticD </> "//*.html") ?> \out ->  do
-            -- insert pdfFIles1 -- how to separate this rule from the other html rule?
-            liftIO $ putIOwords ["\nshakeWrapped - staticD - *.html", showT out]
-            copyFileChanged (replaceDirectory out doughD) out
 
 -- /home/frank/bakedHomepageSSG/SSGdesign/index.html
         return ()
