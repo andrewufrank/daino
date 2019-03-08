@@ -68,7 +68,7 @@ executable ssgbake
     , uniform-fileio
     , uniform-error
     , SSG
-    , shake
+    , shake==0.17.6
     , scotty
     , warp
     , wai-middleware-static
