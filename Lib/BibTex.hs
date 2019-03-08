@@ -37,6 +37,7 @@ import System.Directory (setCurrentDirectory, getCurrentDirectory)
 import Lib.YamlBlocks (flattenMeta, getMeta, putMeta, getMaybeStringAtKey
                 , putStringAtKey, readMarkdown2, unPandocM)
 import qualified Data.Map as M
+import Data.List (intersperse)
 
 {-
 , MetaBlocks
@@ -93,7 +94,7 @@ constructNoCite bibids = P.Meta map1
         cits = map (\s -> [fillCitation  s]) bibids :: [[PD.Citation]]
         refs = map (\s -> [PD.Str ("@" <> (t2s s))]) bibids :: [[PD.Inline]]
         cites = zipWith PD.Cite cits refs  :: [PD.Inline]
-        metablocks = PD.MetaBlocks [PD.Plain cites]
+        metablocks = PD.MetaBlocks [PD.Plain (intersperse PD.Space cites)]
         map1 = M.insert "nocite" metablocks M.empty
 
 pandocProcessCites :: Path Abs Dir -> Path Abs File  -> Maybe Text->  Pandoc -> ErrIO Pandoc
