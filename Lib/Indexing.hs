@@ -140,14 +140,18 @@ getOneIndexEntry dough2 mdfile  = do
                     , title = maybe ln id title1
                     , author = maybe "" id author1
                     , date = maybe "" id date1
-                    , publicationState =  shownice $ maybe PSpublish (\t -> case t of
-                                                                    "True" -> PSpublish
-                                                                    "Draft" -> PSdraft
-                                                                    "Old" -> PSold
-                                                                    _ -> PSzero
-                                                        ) publish1
+                    , publicationState =  shownice $ maybe PSpublish text2publish publish1
+                            -- default is publish
                     }
     return ix
+
+text2publish :: Text -> PublicationState
+-- convert a text to a publicationstate
+text2publish  tt =   case tt of
+                                "True" -> PSpublish
+                                "Draft" -> PSdraft
+                                "Old" -> PSold
+                                _ -> PSzero
 
 
 data MenuEntry = MenuEntry {menu2 :: [IndexEntry]} deriving (Generic, Eq, Ord, Show)
