@@ -53,6 +53,16 @@ makeIndex debug docval pageFn = do
           else return zero
         return ix -- (toJSON ix :: Value)
 
+findDirs  :: [FilePath] -> ErrIO [Path Abs Dir]
+-- ^ find directories in a list of files
+findDirs fns = do
+    mdirs <- mapM isDir fns
+    return . catMaybes $ mdirs
+
+isDir :: FilePath -> ErrIO (Maybe (Path Abs Dir))
+isDir fn = do
+    st <- getFileStatus'  fn
+    return (if isDirectory st then Just (makeAbsDir fn) else Nothing)
 
 makeIndexForDir :: Bool -> Path Abs Dir -> Path Abs File -> ErrIO MenuEntry
 -- make the index for the directory
@@ -64,17 +74,33 @@ makeIndexForDir debug focus indexFn = do
     fs <- getDirContentNonHidden (toFilePath focus)
     let fs2 = filter (/= (toFilePath indexFn)) fs -- exclude index
     let fs3 = filter (FileIO.hasExtension ( "md")) fs2
+
     when debug $ putIOwords ["makeIndexForDir", "for ", showT focus, "\n", showT fs3 ]
-
-    -- needed filename.html title abstract author data
-
     is :: [IndexEntry] <- mapM (\f -> getOneIndexEntry (makeAbsFile f)) fs3
-    let menu1 = MenuEntry {menu2 = is}
+
+    -- find directories
+    dirs <- findDirs fs
+    putIOwords ["makeIndexForDir", "dirs ", showT focus, "\n", showT dirs]
+
+    let dis  = map  oneDirIndexEntry dirs :: [IndexEntry]
+    -- needed filename.html title abstract author data
+    putIOwords ["makeIndexForDir", "index for dirs  ", showT focus, "\n", showT dis]
+
+    let menu1 = MenuEntry {menu2 = dis ++ is}
     when debug $ putIOwords ["makeIndexForDir", "for ", showT focus, "\n", showT menu1 ]
     let yaml1 = bb2t .   Y.encode  $ menu1
     when debug $ putIOwords ["makeIndexForDir", "yaml ", yaml1  ]
 
     return menu1
+
+oneDirIndexEntry :: Path Abs Dir -> IndexEntry
+-- make an entry for a subdir
+oneDirIndexEntry dn = zero {text = showT dn
+                , link = s2t $ nakedName </> "index.html"
+                , title = printable <> "(subdirectory)" }
+     where
+        nakedName = getNakedDir . toFilePath $ dn :: FilePath
+        printable = s2t $ nakedName
 
 getOneIndexEntry :: Path Abs File -> ErrIO (IndexEntry)
 -- fill one entry from one md file
@@ -117,9 +143,9 @@ instance Zeros MenuEntry where zero = MenuEntry zero
 instance FromJSON MenuEntry
 instance ToJSON MenuEntry
 
-data IndexEntry = IndexEntry {text :: Text  -- ^ naked filename
+data IndexEntry = IndexEntry {text :: Text  -- ^ naked filename -- not shown
                               , link :: Text -- ^ the url relative to dough dir
-                              , title :: Text -- ^ the title
+                              , title :: Text -- ^ the title as shown
                               , abstract :: Text
                               , author :: Text
                               , date :: Text -- ^ data in the JJJJ-MM-DD format
