@@ -33,6 +33,7 @@ test_pandoc_pageFn_pageMd_1 = test1FileIO progName  "pageFn1" "pageMd1" readMark
 test_pandoc_pageFn_pageMd_2 = test1FileIO progName  "pageFn2" "pageMd2" readMarkdownFile8
 test_pandoc_pageFn_pageMd_3 = test1FileIO progName  "pageFn3" "pageMd3" readMarkdownFile8
 test_pandoc_pageFn_pageMd_4 = test1FileIO progName  "pageFn4" "pageMd4" readMarkdownFile8
+test_pandoc_pageFn_pageMd_5 = test1FileIO progName  "pageFn5" "pageMd5" readMarkdownFile8
 
 doughP = doughDir layoutDefaults
 --markdownToPandoX :: MarkdownText -> ErrIO (Maybe Pandoc)
@@ -53,6 +54,7 @@ test_pandoc_11_A_D = test1FileIO progName  "pageFn1" "resultAD1" markdownToPando
 test_pandoc_12_A_D = test1FileIO progName  "pageFn2" "resultAD2" markdownToPandoX
 test_pandoc_13_A_D = test1FileIO progName  "pageFn3" "resultAD3" markdownToPandoX
 test_pandoc_14_A_D = test1FileIO progName  "pageFn4" "resultAD4" markdownToPandoX
+test_pandoc_15_A_D = test1FileIO progName  "pageFn5" "resultAD5" markdownToPandoX
             -- 13 fails
 -- "/home/frank/Workspace8/ssg/site/dough/site/dough/resources/BibTexLatex.bib: openFile: does not exist (No such file or directory)"
 
@@ -64,6 +66,7 @@ test_pandoc_11_A_F = test1FileIO progName  "resultAD1" "resultAF1" pandocToConte
 test_pandoc_12_A_F = test1FileIO progName  "resultAD2" "resultAF2" pandocToContentHtmlX
 test_pandoc_13_A_F = test1FileIO progName  "resultAD3" "resultAF3" pandocToContentHtmlX
 test_pandoc_14_A_F = test1FileIO progName  "resultAD4" "resultAF4" pandocToContentHtmlX
+test_pandoc_15_A_F = test1FileIO progName  "resultAD5" "resultAF5" pandocToContentHtmlX
 --
 docVal2 :: DocValue -> String -> ErrIO DocValue
 docVal2 docval pagefn = docValToAllVal False docval (makeAbsFile pagefn)
@@ -74,13 +77,14 @@ test_pandoc_11_F_G = test2FileIO progName  "resultAF1" "pageFn1" "resultAG1" doc
 test_pandoc_12_F_G = test2FileIO progName  "resultAF2" "pageFn2" "resultAG2" docVal2
 test_pandoc_13_F_G = test2FileIO progName  "resultAF3" "pageFn3" "resultAG3" docVal2
 test_pandoc_14_F_G = test2FileIO progName  "resultAF4" "pageFn4" "resultAG4" docVal2
+test_pandoc_15_F_G = test2FileIO progName  "resultAF5" "pageFn5" "resultAG5" docVal2
 
 --instance Zeros Pandoc where zero = Pandoc mempty zero
 ----instance Zeros PD.Meta where zero = PD.Meta []
 --
---markdownToHTML4xdebug ::  MarkdownText -> ErrIO DocValue
+--markdownToHTML5xdebug ::  MarkdownText -> ErrIO DocValue
 --
---markdownToHTML4xdebug intext = do
+--markdownToHTML5xdebug intext = do
 --    pandoc <- markdownToPandoc False intext
 --    pandocToContentHtml False pandoc
 --

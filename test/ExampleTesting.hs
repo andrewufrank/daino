@@ -13,7 +13,7 @@ import System.Directory (createDirectoryIfMissing)
 
 import           Test.Framework
 
---import {-@ HTF_TESTS @-} ShakeStartTests
+import {-@ HTF_TESTS @-} ShakeStartTests
 -- must run first because it produces the test values used later
 -- uses layoutDefaults, not settings2.yaml
 -- test dir must be ~/.SSG  -- the program name in foundation
