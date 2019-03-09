@@ -18,10 +18,12 @@ module Lib.Pandoc_test  -- (openMain, htf_thisModuelsTests)
 
 import           Test.Framework
 import Uniform.Test.TestHarness
-import Lib.Foundation (progName, layoutDefaults, SiteLayout(..), templatesDirName)
+import Lib.Foundation (progName, SiteLayout(..), templatesDirName)
 import Lib.FileMgt
-import Lib.YamlBlocks (readMd2meta)
+--import Lib.YamlBlocks (readMd2meta)
 import Lib.Pandoc
+import Lib.Foundation_test (testLayout)
+
 --import Text.Pandoc.Definition as PD
 
 readMarkdownFile8 :: String  -> ErrIO MarkdownText
@@ -36,7 +38,7 @@ test_pandoc_pageFn_pageMd_4 = test1FileIO progName  "pageFn4" "pageMd4" readMark
 test_pandoc_pageFn_pageMd_5 = test1FileIO progName  "pageFn5" "pageMd5" readMarkdownFile8
 test_pandoc_pageFn_pageMd_6 = test1FileIO progName  "pageFn6" "pageMd6" readMarkdownFile8
 
-doughP = doughDir layoutDefaults
+doughP = doughDir testLayout
 --markdownToPandoX :: MarkdownText -> ErrIO (Maybe Pandoc)
 --markdownToPandoX = markdownToPandoc False doughP
 --
@@ -73,7 +75,7 @@ test_pandoc_16_A_F = test1FileIO progName  "resultAD6" "resultAF6" pandocToConte
 --
 docVal2 :: DocValue -> String -> ErrIO DocValue
 docVal2 docval pagefn = docValToAllVal False docval (makeAbsFile pagefn)
-                (doughDir layoutDefaults) (themeDir layoutDefaults </> templatesDirName)
+                (doughDir testLayout) (themeDir testLayout </> templatesDirName)
 
 test_pandoc_11_F_G, test_pandoc_12_F_G :: IO ()
 test_pandoc_11_F_G = test2FileIO progName  "resultAF1" "pageFn1" "resultAG1" docVal2

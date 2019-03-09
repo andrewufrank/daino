@@ -22,7 +22,7 @@ import           Test.Framework
 --import Lib.Bake
 import Uniform.Filenames
 import Uniform.TypedFile
-import Lib.Foundation   (layoutDefaults, SiteLayout (..), sourceDir)
+import Lib.Foundation   (SiteLayout (..), sourceDir)
 import Lib.FileMgt
 
 

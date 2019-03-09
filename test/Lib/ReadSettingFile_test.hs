@@ -20,7 +20,7 @@ module Lib.ReadSettingFile_test  -- (openMain, htf_thisModuelsTests)
 import           Test.Framework
 import Uniform.Test.TestHarness
 
-import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)
+import Lib.Foundation (progName, SiteLayout (..))
 import Lib.ReadSettingFile
 import Lib.FileMgt
 import Lib.Foundation_test (testLayout)
@@ -51,7 +51,7 @@ test_readSettings2 =
                 layout <- readSettings2 False settingsTxt
                 return . showT $ layout
 
-        assertEqual (Right ( showT (layoutDefaults, 3000):: Text))  res
+        assertEqual (Right ( showT (testLayout, 3000):: Text))  res
 
 
 

@@ -22,11 +22,12 @@ import           Test.Framework
 --import Lib.Bake
 import Uniform.Filenames
 import Uniform.TypedFile
-import Lib.Foundation   (layoutDefaults, SiteLayout (..), sourceDir)
+import Lib.Foundation   (SiteLayout (..), sourceDir)
 import Lib.FileMgt
+import Lib.Foundation_test (testLayout)
 
-doughD = doughDir layoutDefaults
-testD = testDir layoutDefaults
+doughD = doughDir testLayout
+testD = testDir testLayout
 
 post1 = sourceDir </> makeRelFile "site/dough/Blog/postwk.md" :: Path Abs File
 post2 = testD </> makeRelFile "site/dough/Blog/postwk.md" :: Path Abs File

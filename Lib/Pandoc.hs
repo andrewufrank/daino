@@ -109,7 +109,7 @@ docValToAllVal debug docval pageFn dough2 templateP = do
         settingsYaml <- readYaml2value (dough2 </> settingsFileName)
         --        svalue <- decodeThrow . t2b . unYAML $ settings
 
-        ix <- makeIndex debug docval pageFn
+        ix <- makeIndex debug docval pageFn dough2
 
         -- combine all the
 

@@ -20,7 +20,7 @@ module Lib.Bake_test  -- (openMain, htf_thisModuelsTests)
 import           Test.Framework
 import Uniform.Test.TestHarness
 
-import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)
+import Lib.Foundation (progName, SiteLayout (..))
 import Lib.Bake
 import Lib.FileMgt
 import Lib.Foundation_test (testLayout)

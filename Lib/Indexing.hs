@@ -36,17 +36,17 @@ import Lib.YamlBlocks
 --insertIndex :: Path Abs File -> ErrIO ()
 ---- insert the index into the index md
 
-makeIndex :: Bool -> DocValue -> Path Abs File -> ErrIO MenuEntry
+makeIndex :: Bool -> DocValue -> Path Abs File -> Path Abs Dir -> ErrIO MenuEntry
 -- | make the index text, will be moved into the page template later
 -- return zero if not index page
-makeIndex debug docval pageFn = do
+makeIndex debug docval pageFn dough2= do
         let doindex = fromMaybe False $ getMaybeStringAtKey docval "indexPage"
         when debug $ putIOwords ["makeIndex", "doindex", showT doindex]
 
         ix :: MenuEntry <- if doindex
             then do
                     let currentDir2 = makeAbsDir $ getParentDir pageFn
-                    ix2 <- makeIndexForDir debug currentDir2 pageFn
+                    ix2 <- makeIndexForDir debug currentDir2 pageFn dough2
                     when debug $ putIOwords ["makeIndex", "index", showT ix2]
                     return ix2
 
@@ -64,30 +64,37 @@ isDir fn = do
     st <- getFileStatus'  fn
     return (if isDirectory st then Just (makeAbsDir fn) else Nothing)
 
-makeIndexForDir :: Bool -> Path Abs Dir -> Path Abs File -> ErrIO MenuEntry
+makeIndexForDir :: Bool -> Path Abs Dir -> Path Abs File -> Path Abs Dir-> ErrIO MenuEntry
 -- make the index for the directory
 -- place result in index.html in this directory
 -- the name of the index file is passed to exclude it
 -- makes index only for md files in dough
--- needs more work for index? date ? abstract?
-makeIndexForDir debug focus indexFn = do
-    fs <- getDirContentNonHidden (toFilePath focus)
+-- and for subdirs, where the index must be called index.md
+
+makeIndexForDir debug pageFn indexFn dough2 = do
+    let parentDir = makeAbsDir . getParentDir . toFilePath $ pageFn :: Path Abs Dir
+    let relDirPath = fromJustNote "makeIndexForDir prefix dwerwd"
+                                $  stripPrefix dough2 parentDir :: Path Rel Dir
+    -- this is the addition for the links
+    putIOwords ["makeIndexForDir", "for ", showT pageFn, "\n relative root", showT relDirPath ]
+
+    fs <- getDirContentNonHidden (toFilePath pageFn)
     let fs2 = filter (/= (toFilePath indexFn)) fs -- exclude index
     let fs3 = filter (FileIO.hasExtension ( "md")) fs2
 
-    when debug $ putIOwords ["makeIndexForDir", "for ", showT focus, "\n", showT fs3 ]
-    is :: [IndexEntry] <- mapM (\f -> getOneIndexEntry (makeAbsFile f)) fs3
+    when debug $ putIOwords ["makeIndexForDir", "for ", showT pageFn, "\n", showT fs3 ]
+    is :: [IndexEntry] <- mapM (\f -> getOneIndexEntry dough2 (makeAbsFile f)) fs3
 
     -- find directories
     dirs <- findDirs fs
-    putIOwords ["makeIndexForDir", "dirs ", showT focus, "\n", showT dirs]
+    putIOwords ["makeIndexForDir", "dirs ", showT pageFn, "\n", showT dirs]
 
     let dis  = map  oneDirIndexEntry dirs :: [IndexEntry]
     -- needed filename.html title abstract author data
-    putIOwords ["makeIndexForDir", "index for dirs  ", showT focus, "\n", showT dis]
+    putIOwords ["makeIndexForDir", "index for dirs  ", showT pageFn, "\n", showT dis]
 
     let menu1 = MenuEntry {menu2 = dis ++ is}
-    when debug $ putIOwords ["makeIndexForDir", "for ", showT focus, "\n", showT menu1 ]
+    when debug $ putIOwords ["makeIndexForDir", "for ", showT pageFn, "\n", showT menu1 ]
     let yaml1 = bb2t .   Y.encode  $ menu1
     when debug $ putIOwords ["makeIndexForDir", "yaml ", yaml1  ]
 
@@ -102,40 +109,45 @@ oneDirIndexEntry dn = zero {text = showT dn
         nakedName = getNakedDir . toFilePath $ dn :: FilePath
         printable = s2t $ nakedName
 
-getOneIndexEntry :: Path Abs File -> ErrIO (IndexEntry)
--- fill one entry from one md file
-getOneIndexEntry md = do
-        (_, meta2) <- readMd2meta md
---        mdtext :: MarkdownText <- read8 md markdownFileType
+getOneIndexEntry :: Path Abs Dir -> Path Abs File ->  ErrIO (IndexEntry)
+-- fill one entry from one mdfile file
+getOneIndexEntry dough2 mdfile  = do
+    (_, meta2) <- readMd2meta mdfile
+--        mdtext :: MarkdownText <- read8 mdfile markdownFileType
 --        pandoc <- readMarkdown2 mdtext
 --        let meta2 = flattenMeta (getMeta pandoc)
 
-        let abstract1 = getMaybeStringAtKey meta2 "abstract" :: Maybe Text
-        let title1 = getMaybeStringAtKey meta2 "title" :: Maybe Text
-        let author1 = getMaybeStringAtKey meta2 "author" :: Maybe Text
-        let date1 = getMaybeStringAtKey meta2 "date" :: Maybe Text
-        let publish1 = getMaybeStringAtKey meta2 "publish" :: Maybe Text
+    let abstract1 = getMaybeStringAtKey meta2 "abstract" :: Maybe Text
+    let title1 = getMaybeStringAtKey meta2 "title" :: Maybe Text
+    let author1 = getMaybeStringAtKey meta2 "author" :: Maybe Text
+    let date1 = getMaybeStringAtKey meta2 "date" :: Maybe Text
+    let publish1 = getMaybeStringAtKey meta2 "publish" :: Maybe Text
 
-        let paths = reverse $ splitPath (toFilePath md)
-        let fn = head paths
-        let dir = head . tail $ paths
-        let fnn = takeBaseName fn
-        let ln = s2t $ "/" <> dir </> fnn  <.> "html"
+    let parentDir = makeAbsDir . getParentDir . toFilePath $ mdfile :: Path Abs Dir
+    let relDirPath = fromJustNote "makeIndexForDir prefix dwerwd"
+                                $  stripPrefix dough2 parentDir :: Path Rel Dir
+    let paths = reverse $ splitPath (toFilePath mdfile)
+    let fn = head paths
+    let dir = toFilePath relDirPath -- head . tail $ paths
+    let fnn = takeBaseName fn
+    let ln = s2t $ "/" <> dir </> fnn  <.> "html"
 
-        let ix = IndexEntry {text =  s2t fnn
-                        , link = ln
-                        , abstract =  maybe "" id abstract1
-                        , title = maybe ln id title1
-                        , author = maybe "" id author1
-                        , date = maybe "" id date1
-                        , publicationState =  shownice $ maybe PSpublish (\t -> case t of
-                                                                        "True" -> PSpublish
-                                                                        "Draft" -> PSdraft
-                                                                        "Old" -> PSold
-                                                                        _ -> PSzero
-                                                            ) publish1
-                        }
-        return ix
+    putIOwords ["getONeIndexEntry", "dir", showT mdfile, "link", ln]
+
+    let ix = IndexEntry {text =  s2t fnn
+                    , link = ln
+                    , abstract =  maybe "" id abstract1
+                    , title = maybe ln id title1
+                    , author = maybe "" id author1
+                    , date = maybe "" id date1
+                    , publicationState =  shownice $ maybe PSpublish (\t -> case t of
+                                                                    "True" -> PSpublish
+                                                                    "Draft" -> PSdraft
+                                                                    "Old" -> PSold
+                                                                    _ -> PSzero
+                                                        ) publish1
+                    }
+    return ix
 
 
 data MenuEntry = MenuEntry {menu2 :: [IndexEntry]} deriving (Generic, Eq, Ord, Show)
