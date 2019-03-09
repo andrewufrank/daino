@@ -111,7 +111,7 @@
 
 
         <p class=tiny>
-        Produced with SGG $ssgversion$ on $today$.
+        Produced with SGG $ssgversion$ on $today$ from $filename$.
         </p>
 
         $for(include-after)$
