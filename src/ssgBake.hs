@@ -27,6 +27,7 @@ import Lib.Foundation (SiteLayout (..), templatesDirName, staticDirName, resourc
 
 import Development.Shake
 import Development.Shake.FilePath
+--import Development.Shake.Path hiding (setCurrentDir, toFilePath)
 
 import Web.Scotty
 import Network.Wai.Middleware.Static (staticPolicy, addBase)

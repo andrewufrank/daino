@@ -45,6 +45,7 @@ library
 --    , pipes
 --    , path , path-io
     , shake
+--    , shake-path==0.0.0.2
 --    , shake-ext
 --    , glabrous
     , yaml
@@ -69,6 +70,7 @@ executable ssgbake
     , uniform-error
     , SSG
     , shake==0.17.6
+--    , shake-path==0.0.0.2
     , scotty
     , warp
     , wai-middleware-static
