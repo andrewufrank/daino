@@ -102,7 +102,7 @@ getOneIndexEntry md = do
                         , title = maybe ln id title1
                         , author = maybe "" id author1
                         , date = maybe "" id date1
-                        , publicationState = maybe PSpublish (\t -> case t of
+                        , publicationState =  shownice $ maybe PSpublish (\t -> case t of
                                                                         "True" -> PSpublish
                                                                         "Draft" -> PSdraft
                                                                         "Old" -> PSold
@@ -123,7 +123,7 @@ data IndexEntry = IndexEntry {text :: Text  -- ^ naked filename
                               , abstract :: Text
                               , author :: Text
                               , date :: Text -- ^ data in the JJJJ-MM-DD format
-                              , publicationState :: PublicationState -- ^ ready for publication?
+                              , publicationState :: Text
 
                               } deriving (Generic, Eq, Ord, Show)
 instance Zeros IndexEntry where zero = IndexEntry zero zero zero zero zero zero zero
@@ -131,9 +131,10 @@ instance FromJSON IndexEntry
 instance ToJSON IndexEntry
 
 data PublicationState = PSpublish | PSdraft | PSold | PSzero
-        deriving (Generic, Show, Read, Ord, Eq)
+        deriving (Generic,  Show, Read, Ord, Eq)
 -- ^ is this file ready to publish
 instance Zeros PublicationState where zero = PSzero
+instance NiceStrings PublicationState where shownice = drop' 2 . showT
 
 instance ToJSON PublicationState
 instance FromJSON PublicationState
