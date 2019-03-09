@@ -140,7 +140,7 @@ getOneIndexEntry dough2 mdfile  = do
                     , title = maybe ln id title1
                     , author = maybe "" id author1
                     , date = maybe "" id date1
-                    , publicationState =  shownice $ maybe PSpublish text2publish publish1
+                    , publish =  shownice $ maybe PSpublish text2publish publish1
                             -- default is publish
                     }
     return ix
@@ -165,7 +165,7 @@ data IndexEntry = IndexEntry {text :: Text  -- ^ naked filename -- not shown
                               , abstract :: Text
                               , author :: Text
                               , date :: Text -- ^ data in the JJJJ-MM-DD format
-                              , publicationState :: Text
+                              , publish :: Text
 
                               } deriving (Generic, Eq, Ord, Show)
 instance Zeros IndexEntry where zero = IndexEntry zero zero zero zero zero zero zero
