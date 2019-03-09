@@ -90,7 +90,7 @@
 				<li>
 				    <a href=$menu2.link$><em>$menu2.title$ </em></a>
 				    $if(menu2.abstract)$<br>$menu2.abstract$$endif$		     
-				    <span class=tiny>$menu2.author$ $menu2.date$ $menu2.links$  
+				    <span class=tiny>$menu2.author$ $menu2.date$ $menu2.links$ $menu2.publicationState$
                     </span>
                     
     			</li>

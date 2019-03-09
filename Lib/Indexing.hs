@@ -2,9 +2,7 @@
 ------------------------------------------------------------------------------
 --
 -- Module      :   create an index for a directory
-
 --
-
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
@@ -13,7 +11,7 @@
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DeriveGeneric, DeriveAnyClass #-}
 --{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 --{-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE RecordWildCards #-}
@@ -90,6 +88,7 @@ getOneIndexEntry md = do
         let title1 = getMaybeStringAtKey meta2 "title" :: Maybe Text
         let author1 = getMaybeStringAtKey meta2 "author" :: Maybe Text
         let date1 = getMaybeStringAtKey meta2 "date" :: Maybe Text
+        let publish1 = getMaybeStringAtKey meta2 "publish" :: Maybe Text
 
         let paths = reverse $ splitPath (toFilePath md)
         let fn = head paths
@@ -103,6 +102,12 @@ getOneIndexEntry md = do
                         , title = maybe ln id title1
                         , author = maybe "" id author1
                         , date = maybe "" id date1
+                        , publicationState = maybe PSpublish (\t -> case t of
+                                                                        "True" -> PSpublish
+                                                                        "Draft" -> PSdraft
+                                                                        "Old" -> PSold
+                                                                        _ -> PSzero
+                                                            ) publish1
                         }
         return ix
 
@@ -118,11 +123,20 @@ data IndexEntry = IndexEntry {text :: Text  -- ^ naked filename
                               , abstract :: Text
                               , author :: Text
                               , date :: Text -- ^ data in the JJJJ-MM-DD format
+                              , publicationState :: PublicationState -- ^ ready for publication?
 
                               } deriving (Generic, Eq, Ord, Show)
-instance Zeros IndexEntry where zero = IndexEntry zero zero zero zero zero zero
+instance Zeros IndexEntry where zero = IndexEntry zero zero zero zero zero zero zero
 instance FromJSON IndexEntry
 instance ToJSON IndexEntry
+
+data PublicationState = PSpublish | PSdraft | PSold | PSzero
+        deriving (Generic, Show, Read, Ord, Eq)
+-- ^ is this file ready to publish
+instance Zeros PublicationState where zero = PSzero
+
+instance ToJSON PublicationState
+instance FromJSON PublicationState
 
 
 --makeIndexEntry :: Path Abs File -> ErrIO IndexEntry
