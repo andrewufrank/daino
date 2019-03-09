@@ -68,6 +68,7 @@ test_templating_11_E_F, test_templating_12_E_F :: IO ()
 test_templating_11_E_F = test1FileIO progName   "resultAF1" "resultEF1"  applyTemplate3x
 test_templating_12_E_F = test1FileIO progName     "resultAF2" "resultEF2" applyTemplate3x
 test_templating_13_E_F = test1FileIO progName     "resultAF3" "resultEF3" applyTemplate3x
+test_templating_14_E_F = test1FileIO progName     "resultAF4" "resultEF4" applyTemplate3x
 
 instance  ShowTestHarness DocValue where
 instance ShowTestHarness HTMLout
