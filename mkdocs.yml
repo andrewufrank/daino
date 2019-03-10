@@ -3,7 +3,7 @@ nav:
   - Home: index.md
   - About: about.md
   - Some: test3.md
-theme: readthedocs
+#theme: readthedocs
 dev_addr: '127.0.0.1:8001'
 site_dir: docsSite 
 
