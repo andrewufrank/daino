@@ -19,3 +19,4 @@ site/baked/*
 *.bak
 .haskell-code-explorer
 docsSite
+**/site

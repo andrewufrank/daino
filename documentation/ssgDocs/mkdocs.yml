@@ -1,0 +1,9 @@
+site_name: 'Static Site Generator Documenation' 
+nav:
+  - Home: index.md
+  - About: about.md
+  - Some: test3.md
+theme: readthedocs
+dev_addr: '127.0.0.1:8001'
+site_dir: docsSite 
+

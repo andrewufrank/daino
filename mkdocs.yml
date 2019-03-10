@@ -1,8 +1,0 @@
-site_name:  Static Site Generator Documenation (from docs/index.md)
-nav:
-    - Home: index.md
-    - About: test2.md
-    - Some: test3.md
-theme: readthedocs
-dev_addr: '127.0.0.1:8001'
-site_dir: docsSite 
