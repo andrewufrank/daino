@@ -26,7 +26,7 @@ import qualified Uniform.FileIO as FileIO
 --import Uniform.FileStrings
 --import Uniform.TypedFile
 
-import Data.Aeson
+import Data.Aeson as A
 import Data.Yaml  as Y
 --import Lib.FileMgt
 import Development.Shake.FilePath
@@ -123,6 +123,10 @@ getOneIndexEntry dough2 mdfile  = do
     let date1 = getMaybeStringAtKey meta2 "date" :: Maybe Text
     let publish1 = getMaybeStringAtKey meta2 "publish" :: Maybe Text
 
+    let ix2 = A.fromJSON meta2 :: Result IndexEntry
+
+    putIOwords ["getONeIndexEntry", "decoded", showT ix2]
+
     let parentDir = makeAbsDir . getParentDir . toFilePath $ mdfile :: Path Abs Dir
     let relDirPath = fromJustNote "makeIndexForDir prefix dwerwd"
                                 $  stripPrefix dough2 parentDir :: Path Rel Dir
@@ -159,7 +163,7 @@ instance Zeros MenuEntry where zero = MenuEntry zero
 instance FromJSON MenuEntry
 instance ToJSON MenuEntry
 
-data IndexEntry = IndexEntry {text :: Text  -- ^ naked filename -- not shown
+data IndexEntry = IndexEntry {text :: Maybe Text  -- ^ naked filename -- not shown
                               , link :: Text -- ^ the url relative to dough dir
                               , title :: Text -- ^ the title as shown
                               , abstract :: Text
@@ -169,8 +173,10 @@ data IndexEntry = IndexEntry {text :: Text  -- ^ naked filename -- not shown
 
                               } deriving (Generic, Eq, Ord, Show)
 instance Zeros IndexEntry where zero = IndexEntry zero zero zero zero zero zero zero
-instance FromJSON IndexEntry
+--instance FromJSON IndexEntry
 instance ToJSON IndexEntry
+instance FromJSON IndexEntry where
+    parseJSON = genericParseJSON defaultOptions { omitNothingFields  = True }
 
 data PublicationState = PSpublish | PSdraft | PSold | PSzero
         deriving (Generic,  Show, Read, Ord, Eq)
