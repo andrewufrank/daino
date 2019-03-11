@@ -27,6 +27,8 @@ menu:
        text: Blog
      - link : /PublicationList/index.html
        text : Publications
+     - link : /SSGdesign/index.html
+       text : SSG Documentation  
 
 
 

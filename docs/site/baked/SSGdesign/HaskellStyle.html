@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<!-- the master page for the pandoc templating mechanism
+	needs page-title, page-title-postfix
+		author date and keywords for indexing
+    contentHtml, beforeContent, afterContent to wrap html content  
+	uses style.css as default, other can be loaded with key css 
+	-->
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+	      	q { quotes: "“" "”" "‘" "’"; }
+	  </style>
+
+	
+		  <link rel="stylesheet" href="/static/style.css" />
+	
+          <meta name="author" content="auf" />
+              <meta name="dcterms.date" content="Jan. 4, 2019" />
+              <meta name="keywords" content="Haskell, uniform" />
+    
+	<title></title>
+	
+
+    </head>
+
+    <body>
+    <!-- AF - my template for pandoc page (from the default) page3.dtpl -->
+        
+
+    <section class="hero">
+            <h1><br><br><a href="/"> 
+                <span style="text-shadow: 2px 2px 8px black"
+                >siteNameExample</span></a></h1>
+            <h3>siteByLineExample</h3>
+    </section>
+    <section class="header">
+
+            <section class="menu">
+		<ul>
+            					<li><a href=/Blog/index.html>Blog</a></li>
+            						<li><a href=/PublicationList/index.html>Publications</a></li>
+            						<li><a href=/SSGdesign/index.html>SSG Documentation</a></li>
+            				</ul>
+    </section>
+    <section>
+                <header>
+        <h1 class="title">40. HaskellStyle.md</h1>
+        
+                <p class="author">auf</p>
+                </header>
+         
+    </section>
+
+    <section class=menu2>
+		<ul>
+            			</ul>
+    </section>
+
+        
+<!-- new content section -->
+    <section class=header>
+    <p>Writing Haskell code is time consuming. Why? I experience often unnecessary complexity and compile time errors when using packages from others or from myself not adhering to expected standards. Typically:</p>
+    <ul>
+    <li>confusion about representation of character sequences (aka "Strings"),</li>
+    <li>issues with directory and filenames (or url),</li>
+    <li>diffferences in the monad used,</li>
+    <li>obscure shortcuts and infix function names,</li>
+    <li>...</li>
+    </ul>
+    <p>I try to give here some rules how to write readable Haskell</p>
+    <p>The overall goal is to make functionality easy to understand to assure that I can read the code again and establish conventions on which a user of a package can rely. It is an attempt to reduce the choice of the programmer to use a specific solution to write code when Haskell allows many different approaches.</p>
+    <p><strong>Clarity - achieved by making functionality visible and providing only one way of achieving a goal.</strong></p>
+    <h2 id="use-do-notation">Use do notation</h2>
+    <p>There are nice ways to combine monads leading to very short and elegant code. In my experience they are hard to read and understand.</p>
+    <p>Example: the first lines of a main from <code>bibtex</code>:</p>
+    <pre><code>main :: IO ()
+    main =
+       do bib &lt;- getContents
+          case Parsec.parse (Parsec.skipMany Parsec.space &gt;&gt; Parse.file) &quot;stdin&quot; bib of
+             Left errMsg -&gt; hPutStrLn stderr (show errMsg)
+             Right entries -&gt;
+                mapM_ (putStrLn . cite) entries</code></pre>
+    <p>The difficulty is that elegance implies much is not said and must be reconstructed by a potential user.</p>
+    <h2 id="write-type-annotations">write type annotations</h2>
+    <p>Whenever writing code and you know the type of a symbol, annotate it. It reduces "ambiguous type error", checks statically against mistakes and makes understanding code later when searching for errors or reading the code of others easier.</p>
+    <h2 id="document-the-intention-of-functions">document the intention of functions</h2>
+    <p>Between the type of a function and the code insert a comment line (with <code>-- ^</code>) to inform yourself and future users what should be achieved and why.</p>
+    <h2 id="packages-export-types-and-required-support-functions">packages export types and required support functions</h2>
+    <p>Reduce the number of imports by exporting in a package all functions and types a user will automatically need to use these functions (and annotate the types).</p>
+    <h2 id="isolate-seldom-used-haskell-features">isolate seldom used Haskell features</h2>
+    <p>There are very elegant solutions, for example lenses, to get and set values in JSON records with a few inline functions. Isolate such functions in a single location and pack into ordinary functions which are documented and exported.</p>
+    <p>In particular, avoid in general code:</p>
+    <ul>
+    <li>lenses</li>
+    <li>type level programming</li>
+    <li>template haskell</li>
+    </ul>
+    <h2 id="handling-of-directory-and-filenames">handling of directory and filenames</h2>
+    <p>Shake seems to include a nearly complete set of functions to handle directory and file names; perhaps I should always use this set?</p>
+    </section>
+
+
+        <p class=tiny>
+        Produced with SGG 0.0.1 on somestring to avoid failures in regression test from "SSGdesign/HaskellStyle.md".
+        </p>
+
+            </body>
+
+
+</html>

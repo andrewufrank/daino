@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!-- the master page for the pandoc templating mechanism
+	needs page-title, page-title-postfix
+		author date and keywords for indexing
+    contentHtml, beforeContent, afterContent to wrap html content  
+	uses style.css as default, other can be loaded with key css 
+	-->
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+	      	q { quotes: "“" "”" "‘" "’"; }
+	  </style>
+
+	
+		  <link rel="stylesheet" href="/static/style.css" />
+	
+          <meta name="author" content="Author of Settings" />
+              <meta name="dcterms.date" content="Jan. 4, 2019" />
+              <meta name="keywords" content="SSGdesign" />
+    
+	<title></title>
+	
+
+    </head>
+
+    <body>
+    <!-- AF - my template for pandoc page (from the default) page3.dtpl -->
+        
+
+    <section class="hero">
+            <h1><br><br><a href="/"> 
+                <span style="text-shadow: 2px 2px 8px black"
+                >siteNameExample</span></a></h1>
+            <h3>siteByLineExample</h3>
+    </section>
+    <section class="header">
+
+            <section class="menu">
+		<ul>
+            					<li><a href=/Blog/index.html>Blog</a></li>
+            						<li><a href=/PublicationList/index.html>Publications</a></li>
+            						<li><a href=/SSGdesign/index.html>SSG Documentation</a></li>
+            				</ul>
+    </section>
+    <section>
+                <header>
+        <h1 class="title">70. PageLayout.md</h1>
+        
+                <p class="author">Author of Settings</p>
+                </header>
+         
+    </section>
+
+    <section class=menu2>
+		<ul>
+            			</ul>
+    </section>
+
+        
+<!-- new content section -->
+    <section class=header>
+    <p>Pages must be laid out to adapt to three principle screen width and to a print format. The print format should be produced with LaTex to give pdf output (TO DO). The screen widht could be:</p>
+    <ul>
+    <li>desktop (&gt; 1500 pixels)</li>
+    <li>tablet (1500 &gt; x &gt; 800 pixels)</li>
+    <li>smartphones</li>
+    </ul>
+    <h2 id="goals">Goals</h2>
+    <p>Clarity - achieved by making functionality visible and providing only one way of achieving a goal.</p>
+    <h2 id="desktop">Desktop</h2>
+    <p>The screen is wider than what is suitable for a line of text - a break in colums necessary. The limitation is rather the height of the screen, require frequent scrol for longer text; the vertical direction is limiting and height of elements should be carefully managed.</p>
+    <ul>
+    <li>menus can be vertical on the side</li>
+    <li>other than (short) dispatch pages no big banner at top</li>
+    </ul>
+    <h2 id="text-blog-and-similar-pages">Text (blog and similar) pages</h2>
+    <p>Minimal top with menu at the side. Use tufte style with the emblem figure for in the margin.</p>
+    <p>Give blogs a picture, which serves as an emblem figure and is repeated in menus etc.</p>
+    <h3 id="tufte-style-for-text-pages">Tufte style for text pages</h3>
+    <p>Tufte's style was adapted for the web by Liepmann (see <a href="https://edwardtufte.github.io/tufte-css/">instructions</a>). The css is copied from the <a href="https://github.com/edwardtufte/tufte-css">github project</a> together with the font.</p>
+    <p>See similar for R <a href="https://cran.r-project.org/web/packages/tint/vignettes/tintHTML.html">tint</a></p>
+    </section>
+
+
+        <p class=tiny>
+        Produced with SGG 0.0.1 on somestring to avoid failures in regression test from "SSGdesign/PageLayout.md".
+        </p>
+
+            </body>
+
+
+</html>

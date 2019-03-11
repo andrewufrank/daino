@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<!-- the master page for the pandoc templating mechanism
+	needs page-title, page-title-postfix
+		author date and keywords for indexing
+    contentHtml, beforeContent, afterContent to wrap html content  
+	uses style.css as default, other can be loaded with key css 
+	-->
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+	      	q { quotes: "“" "”" "‘" "’"; }
+	  </style>
+
+	
+		  <link rel="stylesheet" href="/static/style.css" />
+	
+          <meta name="author" content="auf" />
+              <meta name="dcterms.date" content="Jan. 29, 2019" />
+              <meta name="keywords" content="SSGdesign" />
+    
+	<title></title>
+	
+
+    </head>
+
+    <body>
+    <!-- AF - my template for pandoc page (from the default) page3.dtpl -->
+        
+
+    <section class="hero">
+            <h1><br><br><a href="/"> 
+                <span style="text-shadow: 2px 2px 8px black"
+                >siteNameExample</span></a></h1>
+            <h3>siteByLineExample</h3>
+    </section>
+    <section class="header">
+
+            <section class="menu">
+		<ul>
+            					<li><a href=/Blog/index.html>Blog</a></li>
+            						<li><a href=/PublicationList/index.html>Publications</a></li>
+            						<li><a href=/SSGdesign/index.html>SSG Documentation</a></li>
+            				</ul>
+    </section>
+    <section>
+                <header>
+        <h1 class="title">ReservedWords.md</h1>
+        
+                <p class="author">auf</p>
+                </header>
+         
+    </section>
+
+    <section class=menu2>
+		<ul>
+            			</ul>
+    </section>
+
+        
+<!-- new content section -->
+    <section class=header>
+    <p>A number of words are fixed in the code or in the themes and must be used as given here. Changing is possible, but requires careful checking and possibly recompilation of the code.</p>
+    <h2 id="settings-page">Settings page</h2>
+    <p>The settings page must include the location of the files and the port to use; the keys are (with examples)</p>
+    <pre><code>storage:
+        themeDir:  /home/frank/Workspace8/ssg/theme
+        doughDir: /home/frank/Desktop/myHomepageSSG/
+        bakedDir: /home/frank/Workspace8/myHomepageSSG/
+        reportFile: /home/frank/myhomepageSSGreport.txt
+        testDir: /home/frank/SSGtest
+    localhostPort: 3001</code></pre>
+    <p>Other keys used:</p>
+    <ul>
+    <li>for style: <code>quotes, css,</code></li>
+    <li>default values: <code>author, date</code></li>
+    <li>setting the <code>sitename</code> and the <code>byLine</code></li>
+    </ul>
+    <p>The menu is structured as (with examples</p>
+    <pre><code>menu:
+         - link: /Blog/index.html
+           text: Blog
+    </code></pre>
+    <h2 id="file-and-directory-names">File and directory names:</h2>
+    <p>Filenames fixed are:</p>
+    <ul>
+    <li>settings2.yaml</li>
+    <li>landingPage.md</li>
+    <li>index.md (must be present in any directory (including the root=dough) unless the directory has another page which is called from the menu -resources</li>
+    <li>static (used in baked, not in dough)</li>
+    </ul>
+    <h2 id="directory-names-in-themes">Directory names in themes</h2>
+    <p>There must be directories:</p>
+    <ul>
+    <li>templates Other names follow from the placeholders in the page templates (<code>.dtpl</code> files):</li>
+    <li>menu.css</li>
+    <li>style.css</li>
+    <li>img directory where the image at the top is held</li>
+    </ul>
+    <h2 id="filenames">filenames</h2>
+    <p>-masater4.dtpl</p>
+    <ul>
+    <li>settings2.yaml</li>
+    <li></li>
+    </ul>
+    </section>
+
+
+        <p class=tiny>
+        Produced with SGG 0.0.1 on somestring to avoid failures in regression test from "SSGdesign/ReservedWords.md".
+        </p>
+
+            </body>
+
+
+</html>

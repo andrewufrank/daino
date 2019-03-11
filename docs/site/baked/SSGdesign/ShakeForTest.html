@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!-- the master page for the pandoc templating mechanism
+	needs page-title, page-title-postfix
+		author date and keywords for indexing
+    contentHtml, beforeContent, afterContent to wrap html content  
+	uses style.css as default, other can be loaded with key css 
+	-->
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+	      	q { quotes: "“" "”" "‘" "’"; }
+	  </style>
+
+	
+		  <link rel="stylesheet" href="/static/style.css" />
+	
+          <meta name="author" content="auf" />
+              <meta name="dcterms.date" content="Jan. 29, 2019" />
+              <meta name="keywords" content="SSGdesign" />
+    
+	<title></title>
+	
+
+    </head>
+
+    <body>
+    <!-- AF - my template for pandoc page (from the default) page3.dtpl -->
+        
+
+    <section class="hero">
+            <h1><br><br><a href="/"> 
+                <span style="text-shadow: 2px 2px 8px black"
+                >siteNameExample</span></a></h1>
+            <h3>siteByLineExample</h3>
+    </section>
+    <section class="header">
+
+            <section class="menu">
+		<ul>
+            					<li><a href=/Blog/index.html>Blog</a></li>
+            						<li><a href=/PublicationList/index.html>Publications</a></li>
+            						<li><a href=/SSGdesign/index.html>SSG Documentation</a></li>
+            				</ul>
+    </section>
+    <section>
+                <header>
+        <h1 class="title">ShakeForTest.md</h1>
+        
+                <p class="author">auf</p>
+                </header>
+         
+    </section>
+
+    <section class=menu2>
+		<ul>
+            			</ul>
+    </section>
+
+        
+<!-- new content section -->
+    <section class=header>
+    <p>The construction of regression tests is very time consuming;</p>
+    <ul>
+    <li>changes in the code require adaption,</li>
+    <li>naming conventions are constantly confusing,</li>
+    <li>sequence of running is difficult to understand.</li>
+    </ul>
+    <p><code>shake</code> could be used to manage regression tests.</p>
+    <p>Automatic testing algebraic properties --- especially inversion --- remains much faster and easier to detect errors. It must have precedence and anything which can be tested algebraicly should be done so. Example: writing and reading to a file.</p>
+    <h2 id="shake-controls-sequence-of-execution">Shake controls sequence of execution</h2>
+    <p>The dependencies between functions to consume and produce data files necessary in the regression tests is controlled by <code>shake</code> and the caching method reduces unnecessary recomputations which also reduces clutter in the output from functions which are not needed to reexecute.</p>
+    <h2 id="limitation">Limitation</h2>
+    <p>Changes of code may make parts of the produced values invalid. Shake can currently not detect which parts and requires recomputing all the files.</p>
+    <h2 id="regression">Regression</h2>
+    <p>A regression test compares a newly computed value with the value previously computed.</p>
+    <p>Using <code>meld</code> open a directory comparision with a copy of <code>.SSG</code> and itself. The copy remains till replaced, the <code>.SSG</code> directory changes and changes are identified.</p>
+    <h2 id="file-level-operations-used">File level operations used</h2>
+    <p>In general, the operations are on the file level and shake is used to read and write the files (using the <code>TypedFile</code>) class. For the top level functions, a test with</p>
+    <p>TODO</p>
+    </section>
+
+
+        <p class=tiny>
+        Produced with SGG 0.0.1 on somestring to avoid failures in regression test from "SSGdesign/ShakeForTest.md".
+        </p>
+
+            </body>
+
+
+</html>

@@ -20,11 +20,11 @@
 	  </style>
 
 	
-		  <link rel="stylesheet" href="/static/tufte.css" />
+		  <link rel="stylesheet" href="/static/style.css" />
 	
           <meta name="author" content="auf" />
               <meta name="dcterms.date" content="Jan. 4, 2019" />
-              <meta name="keywords" content="test" />
+              <meta name="keywords" content="SSGdesign" />
     
 	<title></title>
 	
@@ -52,7 +52,7 @@
     </section>
     <section>
                 <header>
-        <h1 class="title">postwkTufte.md</h1>
+        <h1 class="title">Functionality.md</h1>
         
                 <p class="author">auf</p>
                 </header>
@@ -66,16 +66,21 @@
 
         
 <!-- new content section -->
-    <article>
-    <h1 id="a-title">a title</h1>
-    <p>some starting sentences. and more</p>
-    <h2 id="a-second-level-title">a second level title</h2>
-    <p>with some text. some starting sentences. and more</p>
-    </article>
+    <section class=header>
+    <h2 id="ssgbake">ssgbake</h2>
+    <p>Converts all content in <code>dough</code> and produces the corresponding html pages in <code>baked</code> preserving the folder structure. Uses a simple shake structure and copies static content wholesale; no watches. Starts a web server automatically.</p>
+    <p>Used to clarify the code.</p>
+    <h2 id="serversg">serversg</h2>
+    <p>Bundles two services: serving and rebaking</p>
+    <h3 id="serving-baked">serving baked</h3>
+    <p>The server uses <a href="">Scotty</a> to serve the html files in <code>baked</code> on localhost 3099 till the process is stopped.</p>
+    <h3 id="rebaking">rebaking</h3>
+    <p>Watches are set on the *.md files in <code>dough</code> and on all files in <code>templates</code>; when a markdown file in <code>dough</code> changes, the file is baked (only this file) and therefore served for future request (attention, browser cache may contain an old version). When anything in <code>template</code> changes, the site is completely baked (i.e. all pages are reconverted).</p>
+    </section>
 
 
         <p class=tiny>
-        Produced with SGG 0.0.1 on somestring to avoid failures in regression test from "Blog/postTufteStyled.md".
+        Produced with SGG 0.0.1 on somestring to avoid failures in regression test from "SSGdesign/Functionality.md".
         </p>
 
             </body>
