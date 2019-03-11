@@ -1,0 +1,12 @@
+masterTemplate: master4.dtpl
+beforeContent: "<section class=header>"
+afterContent: "</section>"
+author: 
+testVal: testValPage3yaml
+css: 
+    - /static/style.css  # relative to root of site - so called absolute
+    - /static/menu.css 
+
+
+
+

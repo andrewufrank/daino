@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!-- the master page for the pandoc templating mechanism
+	needs page-title, page-title-postfix
+		author date and keywords for indexing
+    contentHtml, beforeContent, afterContent to wrap html content  
+	uses style.css as default, other can be loaded with key css 
+	-->
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+	      	q { quotes: "“" "”" "‘" "’"; }
+	  </style>
+
+	
+		  <link rel="stylesheet" href="/static/style.css" />
+		  <link rel="stylesheet" href="/static/menu.css" />
+	
+          <meta name="author" content="auf" />
+              <meta name="dcterms.date" content="2010-07-29" />
+              <meta name="keywords" content="homepage" />
+    
+	<title></title>
+	
+
+    </head>
+
+    <body>
+    <!-- AF - my template for pandoc page (from the default) page3.dtpl -->
+        
+
+    <section class="hero">
+            <h1><br><br><a href="/"> 
+                <span style="text-shadow: 2px 2px 8px black"
+                >siteNameExample</span></a></h1>
+            <h3>siteByLineExample</h3>
+    </section>
+    <section class="header">
+
+            <section class="menu">
+		<ul>
+            					<li><a href=/Blog/index.html>Blog</a></li>
+            						<li><a href=/PublicationList/index.html>Publications</a></li>
+            				</ul>
+    </section>
+    <section>
+                <header>
+        <h1 class="title">publistAF.md</h1>
+        
+                <p class="author">auf</p>
+                </header>
+         
+    </section>
+
+    <section class=menu2>
+		<ul>
+            			</ul>
+    </section>
+
+        
+<!-- new content section -->
+    <section class=header>
+    <p>An example publication list for AF</p>
+    <div id="refs" class="references">
+    <div id="ref-frank09geo">
+    <p>Frank, Andrew U. 2009. “Geo-Ontologies Are Scale Dependent (Abstract Only).” In <em>European Geosciences Union, General Assembly 2009, Session Knowledge and Ontologies</em>, edited by Tuija Pulkkinen. <a href="http://publik.tuwien.ac.at/files/PubDat-175453.pdf">http://publik.tuwien.ac.at/files/PubDat-175453.pdf</a>.</p>
+    </div>
+    <div id="ref-Frank2010a[TUxx9999]">
+    <p>———. 2010. “What Is the Use of Ontologies Concerning Organizing Data in Multidisciplinary Projects?” In <em>Mining in European History Conference</em>, 9. Universität Innsbruck.</p>
+    </div>
+    <div id="ref-frank-machbarkeit">
+    <p>———. 2014. “Machbarkeit eines InformaInformations für geographische Daten.” Geoinformation, Technische Universitaet Wien.</p>
+    </div>
+    </div>
+    </section>
+
+
+        <p class=tiny>
+        Produced with SGG 0.0.1 on somestring to avoid failures in regression test from "PublicationList/publistAF.md".
+        </p>
+
+            </body>
+
+
+</html>
