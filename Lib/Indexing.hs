@@ -32,6 +32,7 @@ import Data.Yaml  as Y
 import Development.Shake.FilePath
 import Lib.FileMgt (DocValue (..)) --  MarkdownText (..), markdownFileType)
 import Lib.YamlBlocks
+import GHC.Exts (sortWith)
 
 --insertIndex :: Path Abs File -> ErrIO ()
 ---- insert the index into the index md
@@ -41,12 +42,13 @@ makeIndex :: Bool -> DocValue -> Path Abs File -> Path Abs Dir -> ErrIO MenuEntr
 -- return zero if not index page
 makeIndex debug docval pageFn dough2= do
         let doindex = fromMaybe False $ getMaybeStringAtKey docval "indexPage"
+        let indexSort = getMaybeStringAtKey docval "indexSort" :: Maybe Text
         when debug $ putIOwords ["makeIndex", "doindex", showT doindex]
 
         ix :: MenuEntry <- if doindex
             then do
                     let currentDir2 = makeAbsDir $ getParentDir pageFn
-                    ix2 <- makeIndexForDir debug currentDir2 pageFn dough2
+                    ix2 <- makeIndexForDir debug currentDir2 pageFn dough2 indexSort
                     when debug $ putIOwords ["makeIndex", "index", showT ix2]
                     return ix2
 
@@ -64,36 +66,51 @@ isDir fn = do
     st <- getFileStatus'  fn
     return (if isDirectory st then Just (makeAbsDir fn) else Nothing)
 
-makeIndexForDir :: Bool -> Path Abs Dir -> Path Abs File -> Path Abs Dir-> ErrIO MenuEntry
+makeIndexForDir :: Bool -> Path Abs Dir -> Path Abs File -> Path Abs Dir-> Maybe Text -> ErrIO MenuEntry
 -- make the index for the directory
 -- place result in index.html in this directory
 -- the name of the index file is passed to exclude it
 -- makes index only for md files in dough
 -- and for subdirs, where the index must be called index.md
 
-makeIndexForDir debug pageFn indexFn dough2 = do
+makeIndexForDir debug pageFn indexFn dough2 indexSort = do
+    -- values title date
+
     let parentDir = makeAbsDir . getParentDir . toFilePath $ pageFn :: Path Abs Dir
     let relDirPath = fromJustNote "makeIndexForDir prefix dwerwd"
                                 $  stripPrefix dough2 parentDir :: Path Rel Dir
     -- this is the addition for the links
-    putIOwords ["makeIndexForDir", "for ", showT pageFn, "\n relative root", showT relDirPath ]
+    putIOwords ["makeIndexForDir", "for ", showT pageFn, "\n relative root"
+                                        , showT relDirPath, "\n sort", showT indexSort ]
 
     fs <- getDirContentNonHidden (toFilePath pageFn)
     let fs2 = filter (/= (toFilePath indexFn)) fs -- exclude index
     let fs3 = filter (FileIO.hasExtension ( "md")) fs2
 
     when debug $ putIOwords ["makeIndexForDir", "for ", showT pageFn, "\n", showT fs3 ]
-    is :: [IndexEntry] <- mapM (\f -> getOneIndexEntry dough2 (makeAbsFile f)) fs3
+    fileIxs :: [IndexEntry] <- mapM (\f -> getOneIndexEntry dough2 (makeAbsFile f)) fs3
 
-    -- find directories
+    let fileIxsSorted = case indexSort of
+                        Just "title" ->  sortWith title fileIxs
+                        Nothing -> fileIxs
+    when (not . null $ fileIxs) $ do
+        putIOwords ["makeIndexForDir", "index for dirs not sorted "
+                ,   showT $ map title  fileIxs]
+        putIOwords ["makeIndexForDir", "index for dirs sorted "
+                ,   showT $ map title fileIxsSorted]
+
+    -- directories
     dirs <- findDirs fs
-    putIOwords ["makeIndexForDir", "dirs ", showT pageFn, "\n", showT dirs]
-
-    let dis  = map  oneDirIndexEntry dirs :: [IndexEntry]
+    when debug $ putIOwords ["makeIndexForDir", "dirs ", showT pageFn, "\ndirIxs", showT dirs]
+    let dirIxs  = map  oneDirIndexEntry dirs :: [IndexEntry]
     -- needed filename.html title abstract author data
-    putIOwords ["makeIndexForDir", "index for dirs  ", showT pageFn, "\n", showT dis]
-
-    let menu1 = MenuEntry {menu2 = dis ++ is}
+    when debug $ putIOwords ["makeIndexForDir", "index for dirs  ", showT pageFn
+                    , "\n", showT dirIxs]
+    let dirIxsSorted = sortWith title dirIxs
+    let dirIxsSorted2 = if not (null dirIxsSorted)
+                        then dirIxsSorted ++ [zero{title="------"}]
+                        else []
+    let menu1 = MenuEntry {menu2 = dirIxsSorted2 ++  fileIxsSorted}
     when debug $ putIOwords ["makeIndexForDir", "for ", showT pageFn, "\n", showT menu1 ]
     let yaml1 = bb2t .   Y.encode  $ menu1
     when debug $ putIOwords ["makeIndexForDir", "yaml ", yaml1  ]
@@ -104,7 +121,7 @@ oneDirIndexEntry :: Path Abs Dir -> IndexEntry
 -- make an entry for a subdir
 oneDirIndexEntry dn = zero {text = showT dn
                 , link = s2t $ nakedName </> "index.html"
-                , title = printable <> "(subdirectory)" }
+                , title = printable <> " (subdirectory)" }
      where
         nakedName = getNakedDir . toFilePath $ dn :: FilePath
         printable = s2t $ nakedName
@@ -136,7 +153,10 @@ getOneIndexEntry dough2 mdfile  = do
     let fnn = takeBaseName fn
     let ln = s2t $ "/" <> dir </> fnn  <.> "html"
 
-    putIOwords ["getONeIndexEntry", "dir", showT mdfile, "link", ln]
+    when False $ putIOwords ["getONeIndexEntry", "dir", showT mdfile
+                    , "link", ln
+                    , "title1", showT title1
+                    , "title", maybe ln id title1]
 
     let ix = IndexEntry {text =  s2t fnn
                     , link = ln

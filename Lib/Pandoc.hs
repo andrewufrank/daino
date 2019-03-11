@@ -126,12 +126,13 @@ docValToAllVal debug docval pageFn dough2 templateP = do
         now <- getDateAsText
         fn2 <- stripProperPrefix' dough2 pageFn
         let bottom = object ["ssgversion" .= (s2t$ showVersion version)
-                    , "today" .= "" -- (s2t "somestring to avoid failures in regression test")
+--                    , "today" .= zero -- (s2t "somestring to avoid failures in regression test")
                     , "filename" .= showT fn2
                     ]
 
-        putIOwords ["pandoc filename", showT fn2]
-        putIOwords ["pandoc settings2.yaml", showT settingsYaml]
+        when debug $ do
+            putIOwords ["pandoc filename", showT fn2]
+            putIOwords ["pandoc settings2.yaml", showT settingsYaml]
 
         let val = mergeAll [settingsYaml, pageTypeYaml, unDocValue docval, toJSON ix, bottom]
 

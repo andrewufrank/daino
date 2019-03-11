@@ -6,6 +6,7 @@ keywords: test
 abstract: A silly text not needing an abstract.
 pageTemplate: page3.yaml
 indexPage: True 
+indexSort: title
 ---
 
 an index page for test publication list

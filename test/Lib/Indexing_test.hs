@@ -32,7 +32,7 @@ blogDir = makeAbsDir "/home/frank/Workspace8/ssg/site/dough/Blog"
 blogindexfn = makeAbsFile "/home/frank/Workspace8/ssg/site/dough/Blog/index.md"
 
 test_1 = do
-            res <- runErr $ makeIndexForDir False blogDir blogindexfn (doughDir testLayout)
+            res <- runErr $ makeIndexForDir False blogDir blogindexfn (doughDir testLayout) (Just "title")
             assertEqual res2  res
 
 res2 =

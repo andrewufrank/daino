@@ -6,6 +6,7 @@ keywords: test
 abstract: The directory for experiments.
 pageTemplate: page3.yaml
 indexPage: True 
+indexSort: title
 ---
 
 an index page for test 

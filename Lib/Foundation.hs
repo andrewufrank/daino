@@ -48,14 +48,17 @@ sourceDir = makeAbsDir "/home/frank/Workspace8/ssg"
 --testDir = makeAbsDir $ ("/home/frank" :: FilePath)   </> (t2s progName)
 
 layoutDefaults :: SiteLayout
-layoutDefaults = SiteLayout{  doughDir = sourceDir </> makeRelDir "site/dough"
-            , bakedDir = sourceDir </> makeRelDir "site/baked"
-            , reportFile = makeAbsFile "/home/frank/SSGreport.txt"
+-- used for finding the test cases
+-- must correspond to the settings2.yaml in source code repository
+layoutDefaults = SiteLayout
+    {  doughDir = sourceDir </> makeRelDir "docs/site/dough"
+        , bakedDir = sourceDir </> makeRelDir "docs/site/baked"
+        , reportFile = makeAbsFile "/home/frank/SSGreport.txt"
 --            , templateDir = makeAbsDir "templates"
-            , themeDir = sourceDir </> makeRelDir "theme"
-            , testDir = makeAbsDir
-                $ ("/home/frank" :: FilePath)   </> ("." <> t2s progName)
-            }
+        , themeDir = sourceDir </> makeRelDir "theme"
+        , testDir = makeAbsDir
+            $ ("/home/frank" :: FilePath)   </> ("." <> t2s progName)
+        }
 
 templatesDirName, staticDirName :: Path Rel Dir
 templatesDirName = (makeRelDir "templates")
