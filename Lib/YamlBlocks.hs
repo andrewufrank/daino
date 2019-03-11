@@ -44,6 +44,7 @@ import qualified Data.HashMap.Lazy as HML
 readMd2meta :: Path Abs File -> ErrIO (Pandoc, Value)
 -- ^ read a markdown file to metadata
 readMd2meta md = do
+        putIOwords ["readMd2meta", "readPandocFile", showT md]
         mdtext :: MarkdownText <- read8 md markdownFileType
         pandoc <- readMarkdown2 mdtext
         let meta2 = flattenMeta (getMeta pandoc)
@@ -103,7 +104,8 @@ unPandocM op1 = do
                         throwError . showT $  e)
 
 readMarkdown2 :: MarkdownText -> ErrIO Pandoc
-readMarkdown2 (MarkdownText text1) =  unPandocM $ readMarkdown markdownOptions text1
+readMarkdown2 (MarkdownText text1) =  unPandocM
+                $ readMarkdown markdownOptions text1
 
 -- | Reasonable options for reading a markdown file
 markdownOptions :: ReaderOptions

@@ -1,7 +1,7 @@
 ---
 title: TransformationOfPost.md
 author: auf 
-date: Jan. 27, 2019
+date: Jan 27, 2019
 keywords: SSGdesign
 abstract: Process of transformations of input
 ---

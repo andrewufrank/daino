@@ -1,7 +1,7 @@
 ---
 title: 01. Introduction
 #author: auf 
-date: March 5, 2019
+date: Mar  5, 2019
 keywords: SSGdesign
 abstract: Introduction to my Static Site Generator, installation and start
 ---

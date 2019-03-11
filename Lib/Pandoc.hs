@@ -63,7 +63,7 @@ markdownToPandoc debug doughP mdfile  = do
 --    pandoc   <- readMarkdown2
 --    let meta2 = flattenMeta (getMeta pandoc)
     let publish = getMaybeStringAtKey meta2 "publish" :: Maybe Text
-    if  isNothing publish || (fmap toLower' publish) == Just "true"
+    if  isNothing publish || (fmap toLower' publish) == Just "true" || (fmap toLower' publish) == Just "draft"
         then do
 --            putIOwords ["markdownToPandoc", "publish", showT publish]
 

@@ -1,7 +1,7 @@
 ---
 title: 20. DefaultFileLayout.md
 #author: auf 
-date: March 5, 2019
+date: Mar  5, 2019
 keywords: SSGdesign
 abstract: Layout of the files used to construct a site.
 ---

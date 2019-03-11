@@ -33,6 +33,7 @@ import Development.Shake.FilePath
 import Lib.FileMgt (DocValue (..)) --  MarkdownText (..), markdownFileType)
 import Lib.YamlBlocks
 import GHC.Exts (sortWith)
+import Uniform.Time (readDate3, UTCTime (..))
 
 --insertIndex :: Path Abs File -> ErrIO ()
 ---- insert the index into the index md
@@ -66,6 +67,9 @@ isDir fn = do
     st <- getFileStatus'  fn
     return (if isDirectory st then Just (makeAbsDir fn) else Nothing)
 
+--year2000 :: UTCTime
+--year2000 = fromJustNote "werwe date" $ readDate3 "2000-01-01"
+
 makeIndexForDir :: Bool -> Path Abs Dir -> Path Abs File -> Path Abs Dir-> Maybe Text -> ErrIO MenuEntry
 -- make the index for the directory
 -- place result in index.html in this directory
@@ -92,6 +96,7 @@ makeIndexForDir debug pageFn indexFn dough2 indexSort = do
 
     let fileIxsSorted = case fmap toLower' indexSort of
                         Just "title" ->  sortWith title fileIxs
+                        Just "date" -> sortWith (readDate3 . date) fileIxs
                         Nothing -> fileIxs
     when (not . null $ fileIxs) $ do
         putIOwords ["makeIndexForDir", "index for dirs not sorted "
