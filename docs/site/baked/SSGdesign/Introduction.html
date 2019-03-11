@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<!-- the master page for the pandoc templating mechanism
+	needs page-title, page-title-postfix
+		author date and keywords for indexing
+    contentHtml, beforeContent, afterContent to wrap html content  
+	uses style.css as default, other can be loaded with key css 
+	-->
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+	      	q { quotes: "“" "”" "‘" "’"; }
+	  </style>
+
+	
+		  <link rel="stylesheet" href="/static/style.css" />
+	
+          <meta name="author" content="Author of Settings" />
+              <meta name="dcterms.date" content="March 5, 2019" />
+              <meta name="keywords" content="SSGdesign" />
+    
+	<title></title>
+	
+
+    </head>
+
+    <body>
+    <!-- AF - my template for pandoc page (from the default) page3.dtpl -->
+        
+
+    <section class="hero">
+            <h1><br><br><a href="/"> 
+                <span style="text-shadow: 2px 2px 8px black"
+                >siteNameExample</span></a></h1>
+            <h3>siteByLineExample</h3>
+    </section>
+    <section class="header">
+
+            <section class="menu">
+		<ul>
+            					<li><a href=/Blog/index.html>Blog</a></li>
+            						<li><a href=/PublicationList/index.html>Publications</a></li>
+            						<li><a href=/SSGdesign/index.html>SSG Documentation</a></li>
+            				</ul>
+    </section>
+    <section>
+                <header>
+        <h1 class="title">01. Introduction</h1>
+        
+                <p class="author">Author of Settings</p>
+                </header>
+         
+    </section>
+
+    <section class=menu2>
+		<ul>
+            			</ul>
+    </section>
+
+        
+<!-- new content section -->
+    <section class=header>
+    <h2 id="my-goals-with-ssg">My Goals with SSG</h2>
+    <p>The use case is my own homepage with <a href="Principles.html">requirements</a> typical for an academic researcher.</p>
+    <ul>
+    <li>Build a SSG from available packages in Haskell (especially pandoc).</li>
+    <li>Reduce maintenance efforts with
+    <ul>
+    <li>Demonstrate integration using the "uniform" approach to wrap packages in integratable interfaces.</li>
+    <li>Streamline the design to use the least amount of packages.</li>
+    </ul></li>
+    </ul>
+    <p>I want a strict separation of content and presentation (dough &amp; theme). The use case does not push for performance but rather simple handling and long term stability, with options to move the content to other tools.</p>
+    <h2 id="installation-and-test-for-functionality">Installation and test for functionality</h2>
+    <p>Clone or copy the code from <a href="https://github.com/andrewufrank/SSG">github</a>. <code>git clone https://github.com/andrewufrank/SSG</code> Change into the <code>ssg</code> directory and install with stack <code>stack install</code> which produces <code>serversg</code>, the program which converts the content into a static site and serves it on <code>localhost:3001</code>. It watches for changes in the content files and converts changed files automatically, keeping the static site updated (for most simple changes in content).</p>
+    <p>Open in your browser <code>localhost:3001</code> and you should be greeted by</p>
+    <p><em>missing screenshot</em></p>
+    <h2 id="build-your-own-site">Build your own site</h2>
+    <p>Copy the content of the <code>site</code> directory and remain it to <code>myhomepage</code> (or whatever directory name you fancy). In the file <code>settings2.yaml</code> adaption is possible:</p>
+    <ul>
+    <li>the location of folders</li>
+    <li>the localhost port the server is using</li>
+    <li>the name and byline as well as the default author for the site</li>
+    <li>the names of style files to be used</li>
+    <li>the general menu for the site</li>
+    </ul>
+    <p>After adaptation restart <code>serversg</code>. adapted to your needs</p>
+    </section>
+
+
+        <p class=tiny>
+        Produced with SGG 0.0.1 on somestring to avoid failures in regression test from "SSGdesign/Introduction.md".
+        </p>
+
+            </body>
+
+
+</html>
