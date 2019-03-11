@@ -90,7 +90,7 @@ makeIndexForDir debug pageFn indexFn dough2 indexSort = do
     when debug $ putIOwords ["makeIndexForDir", "for ", showT pageFn, "\n", showT fs3 ]
     fileIxs :: [IndexEntry] <- mapM (\f -> getOneIndexEntry dough2 (makeAbsFile f)) fs3
 
-    let fileIxsSorted = case indexSort of
+    let fileIxsSorted = case fmap toLower' indexSort of
                         Just "title" ->  sortWith title fileIxs
                         Nothing -> fileIxs
     when (not . null $ fileIxs) $ do

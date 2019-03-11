@@ -1,5 +1,5 @@
 ---
-title: postwkTufte.md
+title: postTufteStyle.md
 author: auf
 date: Jan. 4, 2019
 keywords: test
