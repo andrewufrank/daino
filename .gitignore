@@ -18,5 +18,3 @@ site/baked/*
 *.sav
 *.bak
 .haskell-code-explorer
-docsSite
-**/site

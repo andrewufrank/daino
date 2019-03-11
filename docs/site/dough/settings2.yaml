@@ -1,0 +1,32 @@
+
+storage:
+    themeDir:  /home/frank/Workspace8/ssg/theme
+    doughDir: /home/frank/Workspace8/ssg/site/dough
+    bakedDir: /home/frank/Workspace8/ssg/site/baked
+    reportFile: /home/frank/SSGreport.txt
+    testDir: /home/frank/.SSG 
+    # create dir in ExampleTesting
+    # filename must be homedir + program name (in Foundation) - hidden
+    # fixed in testharness
+localhostPort: 3000
+
+# master yaml - applies to all pages
+quotes: True 
+css :
+    - /static/style.css  # relative to root of site - so called absolute
+    - /static/menu.css 
+
+author : Author of Settings 
+date: 2019-01-01
+settings : 
+    sitename : siteNameExample
+    byline : siteByLineExample
+
+menu:
+     - link: /Blog/index.html
+       text: Blog
+     - link : /PublicationList/index.html
+       text : Publications
+
+
+
