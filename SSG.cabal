@@ -148,6 +148,7 @@ test-suite g2
     , uniform-convenience
     , uniform-fileio
     , uniform-error
+    , uniform-time
     , SSG
     , directory
 --    , glabrous
@@ -163,6 +164,7 @@ test-suite g2
 --    , bytestring
     , yaml-union
     , bibtex==0.1.0.8
+    , time
 --    , parsec
 --    , path-io
 --    , directory

@@ -67,8 +67,8 @@ isDir fn = do
     st <- getFileStatus'  fn
     return (if isDirectory st then Just (makeAbsDir fn) else Nothing)
 
---year2000 :: UTCTime
---year2000 = fromJustNote "werwe date" $ readDate3 "2000-01-01"
+year2000 :: UTCTime
+year2000 =  readDate3 "2000-01-01"
 
 makeIndexForDir :: Bool -> Path Abs Dir -> Path Abs File -> Path Abs Dir-> Maybe Text -> ErrIO MenuEntry
 -- make the index for the directory
@@ -96,7 +96,8 @@ makeIndexForDir debug pageFn indexFn dough2 indexSort = do
 
     let fileIxsSorted = case fmap toLower' indexSort of
                         Just "title" ->  sortWith title fileIxs
-                        Just "date" -> sortWith (readDate3 . date) fileIxs
+                        Just "date" -> sortWith (date) fileIxs
+                        Just "reversedate" -> reverse $ sortWith (date) fileIxs
                         Nothing -> fileIxs
     when (not . null $ fileIxs) $ do
         putIOwords ["makeIndexForDir", "index for dirs not sorted "
@@ -168,7 +169,7 @@ getOneIndexEntry dough2 mdfile  = do
                     , abstract =  maybe "" id abstract1
                     , title = maybe ln id title1
                     , author = maybe "" id author1
-                    , date = maybe "" id date1
+                    , date = showT $ maybe year2000 readDate3 date1   -- test early for proper format
                     , publish =  shownice $ maybe PSpublish text2publish publish1
                             -- default is publish
                     }
@@ -193,10 +194,11 @@ data IndexEntry = IndexEntry {text ::  Text  -- ^ naked filename -- not shown
                               , title :: Text -- ^ the title as shown
                               , abstract :: Text
                               , author :: Text
-                              , date :: Text -- ^ data in the JJJJ-MM-DD format
+                              , date :: Text -- UTCTime -- read the time early one to find errors
                               , publish :: Text
 
-                              } deriving (Generic, Eq, Ord, Show)
+                              } deriving (Generic, Eq, Ord, Show, Read)
+
 instance Zeros IndexEntry where zero = IndexEntry zero zero zero zero zero zero zero
 --instance FromJSON IndexEntry
 instance ToJSON IndexEntry

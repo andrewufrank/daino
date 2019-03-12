@@ -27,36 +27,66 @@ import Lib.Templating -- (applyTemplate2, convGmaster)
 import Lib.FileMgt
 import Lib.Indexing
 --import Text.DocTemplates
+import Lib.Foundation (layoutDefaults, doughDir)
+import Uniform.Time (readDate3, UTCTime (..))
 
-blogDir = makeAbsDir "/home/frank/Workspace8/ssg/site/dough/Blog"
-blogindexfn = makeAbsFile "/home/frank/Workspace8/ssg/site/dough/Blog/index.md"
+blogDir = (doughDir layoutDefaults) </> makeRelDir "Blog"
+blogindexfn = (doughDir layoutDefaults) </> makeRelFile "Blog/index.md"
 
 test_1 = do
-            res <- runErr $ makeIndexForDir False blogDir blogindexfn (doughDir testLayout) (Just "title")
+            res <- runErr $ makeIndexForDir False
+                    blogDir blogindexfn (doughDir testLayout) (Just "title")
             assertEqual res2  res
 
 res2 =
-    Right
+--    Right
 --      (MenuEntry{menu2 = []})
 
-  (MenuEntry{menu2 =
-               [IndexEntry{text = "postwkTufte", link = "/Blog/postwkTufte.html",
-                           title = "postwkTufte.md",
-                           abstract = "A silly text not needing an abstract updated.",
-                           author = "auf", date = "Jan. 4, 2019",
-                           publish = zero},
-                IndexEntry{text = "postwk9", link = "/Blog/postwk9.html",
-                           title = "postwk.md",
-                           abstract = "A silly text not needing an abstract.", author = "AUF",
-                           date = "Jan. 4, 2019",
-                           publish = zero},
+     Right
+      (MenuEntry{menu2 =
+               [IndexEntry{text =
+                             "\"/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/\"",
+                           link = "SubBlog/index.html", title = "SubBlog (subdirectory)",
+                           abstract = "", author = "", date = "2000-01-01 00:00:00 UTC",
+                           publish = ""},
+                IndexEntry{text = "", link = "", title = "------", abstract = "",
+                           author = "", date = "", publish = ""},
                 IndexEntry{text = "postTufteStyled",
-                           link = "/Blog/postTufteStyled.html", title = "postwkTufte.md",
+                           link = "/Blog/postTufteStyled.html", title = "postTufteStyle.md",
                            abstract = "A silly text not needing an abstract updated.",
-                           author = "auf", date = "Jan. 4, 2019",
-                           publish = zero},
+                           author = "auf", date = "2019-01-04 00:00:00 UTC",
+                           publish = "publish"},
                 IndexEntry{text = "postwk", link = "/Blog/postwk.html",
                            title = "postwk.md",
                            abstract = "A silly text not needing an abstract.", author = "AUF",
-                           date = "Jan. 4, 2019",
-                           publish = zero}]})
+                           date = "2019-01-04 00:00:00 UTC", publish = "publish"},
+                IndexEntry{text = "postwk9", link = "/Blog/postwk9.html",
+                           title = "postwk9.md",
+                           abstract = "A silly text not needing an abstract.", author = "AUF",
+                           date = "2019-01-04 00:00:00 UTC", publish = "publish"},
+                IndexEntry{text = "postwkTufte", link = "/Blog/postwkTufte.html",
+                           title = "postwkTufte.md",
+                           abstract = "A silly text not needing an abstract updated.",
+                           author = "auf", date = "2019-01-04 00:00:00 UTC",
+                           publish = "publish"}]})
+
+index1 = IndexEntry{
+    text = "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/"
+    , link = "SubBlog/index.html"
+    , title = "SubBlog (subdirectory)"
+    , abstract = ""
+    , author = ""
+    , date = "2019-01-03 00:00:00 UTC"
+    , publish = ""
+    }
+
+instance IsString UTCTime where
+    fromString = readNote "IsString UTCTime"
+
+test_3 = assertEqual r3 (index1)
+
+r3 = IndexEntry{text =
+             "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/",
+           link = "SubBlog/index.html", title = "SubBlog (subdirectory)",
+           abstract = "", author = "", date = "2019-01-03 00:00:00 UTC",
+           publish = ""}
