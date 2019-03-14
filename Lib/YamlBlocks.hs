@@ -19,7 +19,9 @@
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
 
-module Lib.YamlBlocks where
+module Lib.YamlBlocks (module Lib.YamlBlocks
+        , Value (..)
+        ) where
 
 --import Uniform.Zero hiding (Meta, at)
 import Uniform.Filenames hiding (Meta, at)

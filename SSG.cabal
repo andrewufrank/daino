@@ -17,11 +17,13 @@ library
       Lib.Indexing
       Lib.BibTex
       Lib.YamlBlocks
+      Lib.CheckInput
+
 
   other-modules: Paths_SSG
 
   hs-source-dirs:
-      .
+      . 
   ghc-options: -Wall
   build-depends:
       base ==4.*
@@ -136,7 +138,7 @@ test-suite g2
         Lib.Indexing_test
         Lib.BibTex_test
         Lib.YamlBlocks_test
-
+        Lib.CheckInputs_test
   hs-source-dirs:
       test
   ghc-options: -Wall

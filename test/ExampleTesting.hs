@@ -19,6 +19,7 @@ import {-@ HTF_TESTS @-} ShakeStartTests
 -- test dir must be ~/.SSG  -- the program name in foundation
 
 import {-@ HTF_TESTS @-} Lib.Foundation_test
+import {-@ HTF_TESTS @-} Lib.CheckInputs_test
 
 --import {-@ HTF_TESTS @-} Lib.FileMgt_test
 
