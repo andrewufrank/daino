@@ -24,7 +24,7 @@ module Lib.FileMgt
 
 import Uniform.Zero
 import Uniform.Filenames
-import Uniform.FileStrings
+-- import Uniform.FileStrings
 import Uniform.TypedFile
 import Data.Aeson (Value, ToJSON (..), Value (..), decode)
 import Data.Aeson.Encode.Pretty (encodePretty)

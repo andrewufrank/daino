@@ -1,0 +1,5 @@
+:set -fwarn-unused-binds -fwarn-unused-imports -fno-warn-deprecations 
+:set -fno-warn-unused-do-bind -fno-warn-missing-signatures
+:set -isrc
+:load test/ExampleTesting.hs
+--test:=g2

@@ -19,38 +19,46 @@
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
 
-module Lib.YamlBlocks (module Lib.YamlBlocks
-        , Value (..)
-        ) where
+module Lib.YamlBlocks
+  ( module Lib.YamlBlocks
+  , Value(..)
+  )
+where
 
 --import Uniform.Zero hiding (Meta, at)
-import Uniform.Filenames hiding (Meta, at)
+import           Uniform.Filenames       hiding ( Meta
+                                                , at
+                                                )
 --import Uniform.FileStrings hiding (Meta, at)
-import Uniform.TypedFile
+import           Uniform.TypedFile
 --import Data.Aeson (Value, ToJSON (..), Value (..), decode)
 --import Data.Aeson.Encode.Pretty (encodePretty)
 --import  Path.IO (ensureDir)
-import Text.Pandoc as Pandoc
+import           Text.Pandoc                   as Pandoc
 --import Text.Pandoc.Highlighting (tango)
-import Text.Pandoc.Shared (stringify)
+import           Text.Pandoc.Shared             ( stringify )
 --import Text.CSL.Pandoc (processCites')
-import Lib.FileMgt -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
+import           Lib.FileMgt -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
 --            , unDocValue, DocValue (..) )
-import Control.Lens ((^?), (?~), (&), at)
-import Data.Aeson
-import Data.Aeson.Lens
+import           Control.Lens                   ( (^?)
+                                                , (?~)
+                                                , (&)
+                                                , at
+                                                )
+import           Data.Aeson
+import           Data.Aeson.Lens
 --import  Data.Yaml.Union
-import qualified Data.Yaml as Y
-import qualified Data.HashMap.Lazy as HML
+import qualified Data.Yaml                     as Y
+import qualified Data.HashMap.Lazy             as HML
 
 readMd2meta :: Path Abs File -> ErrIO (Pandoc, Value)
 -- ^ read a markdown file to metadata
 readMd2meta md = do
-        putIOwords ["readMd2meta", "readPandocFile", showT md]
-        mdtext :: MarkdownText <- read8 md markdownFileType
-        pandoc <- readMarkdown2 mdtext
-        let meta2 = flattenMeta (getMeta pandoc)
-        return (pandoc, meta2)
+  putIOwords ["readMd2meta", "readPandocFile", showT md]
+  mdtext :: MarkdownText <- read8 md markdownFileType
+  pandoc                 <- readMarkdown2 mdtext
+  let meta2 = flattenMeta (getMeta pandoc)
+  return (pandoc, meta2)
 
 
 getMeta :: Pandoc -> Meta
@@ -65,8 +73,11 @@ class AtKey vk v where
 
 instance AtKey Value Text where
     getMaybeStringAtKey meta2 k2 =   meta2 ^? key k2 . _String
-
     putStringAtKey  k2 txt meta2 = meta2 & _Object . at k2 ?~ String  txt
+--        (unHTMLout text2)
+instance AtKey Value Bool where
+    getMaybeStringAtKey meta2 k2 =   meta2 ^? key k2 . _Bool
+    putStringAtKey  k2 txt meta2 = meta2 & _Object . at k2 ?~ Bool  txt
 --        (unHTMLout text2)
 
 --instance AsValue Meta
@@ -92,22 +103,29 @@ instance AtKey DocValue Bool  where
 
 -- | Handle possible pandoc failure within the Action Monad
 unPandocM :: PandocIO a -> ErrIO a
-unPandocM op1 = do
-        res   <- callIO $ runIO (do  -- liftIO $putStrLn "unPandocM op"
-                                     a <- op1 --       error "xx"
-                                     -- liftIO $putStrLn "error xx"
-                                     return a)
-        either (\e -> do
-                        putIOwords ["unPandocM error", showT e ]
-                        throwError . showT $ e
-                ) return res
-     `catchError` (\e -> do
-                        putIOwords ["unPandocM catchError", showT e ]
-                        throwError . showT $  e)
+unPandocM op1 =
+  do
+      res <- callIO $ runIO
+        (do  -- liftIO $putStrLn "unPandocM op"
+          a <- op1 --       error "xx"
+          -- liftIO $putStrLn "error xx"
+          return a
+        )
+      either
+        (\e -> do
+          putIOwords ["unPandocM error", showT e]
+          throwError . showT $ e
+        )
+        return
+        res
+    `catchError` (\e -> do
+                   putIOwords ["unPandocM catchError", showT e]
+                   throwError . showT $ e
+                 )
 
 readMarkdown2 :: MarkdownText -> ErrIO Pandoc
-readMarkdown2 (MarkdownText text1) =  unPandocM
-                $ readMarkdown markdownOptions text1
+readMarkdown2 (MarkdownText text1) =
+  unPandocM $ readMarkdown markdownOptions text1
 
 -- | Reasonable options for reading a markdown file
 markdownOptions :: ReaderOptions
@@ -118,7 +136,7 @@ markdownOptions = def { readerExtensions = exts }
       [ Ext_yaml_metadata_block
       , Ext_fenced_code_attributes
       , Ext_auto_identifiers
-      ,  Ext_raw_html   -- three extension give markdown_strict
+      , Ext_raw_html   -- three extension give markdown_strict
       , Ext_shortcut_reference_links
       , Ext_spaced_reference_links
       , Ext_citations           -- <-- this is the important extension for bibTex
@@ -145,21 +163,20 @@ readYaml2value :: Path Abs File -> ErrIO Value
 -- read a yaml file to a value
 -- error when syntax issue
 readYaml2value fp = do
-    t <- read8 fp yamlFileType
-    return . yaml2value $ t
+  t <- read8 fp yamlFileType
+  return . yaml2value $ t
 
 yaml2value :: YamlText -> Value
 -- convert a YamlText to a JSON value, error if not ok
 -- how to debug input erros?
-yaml2value yt = either (error  . show) id  vx
-    where
-        vx =  Y.decodeEither' (t2b . unYAML $ yt)  :: Either Y.ParseException Value
+yaml2value yt = either (error . show) id vx
+ where
+  vx = Y.decodeEither' (t2b . unYAML $ yt) :: Either Y.ParseException Value
 
 mergeAll :: [Value] -> DocValue
 -- merge the four diffferent value -- last winns
 -- issue how to collect all css?
-mergeAll vals  = DocValue
-        . merge_aeson . reverse $ vals
+mergeAll vals = DocValue . merge_aeson . reverse $ vals
 --        $ [settingsYaml
 --                            , pageTypeYaml
 ----                            fromJustNote "sdfa" . decode . b2bl . t2b . unYAML $ settingsYaml
