@@ -14,8 +14,8 @@ library
         Lib.Foundation
         Lib.ReadSettingFile
         Lib.Indexing
-        Lib.BibTex
-        Lib.YamlBlocks
+        -- Lib.BibTex
+        -- Lib.YamlBlocks
         Lib.CheckInput
     hs-source-dirs: .
     other-modules:
@@ -42,7 +42,7 @@ library
         yaml-union -any,
         shake -any,
         yaml -any,
-        bibtex ==0.1.0.8,
+        -- bibtex ==0.1.0.8,
         directory -any,
         containers -any,
         unordered-containers -any
@@ -104,8 +104,8 @@ test-suite ssgTest
         Lib.Templating_test
         Lib.ReadSettingFile_test
         Lib.Indexing_test
-        Lib.BibTex_test
-        Lib.YamlBlocks_test
+        -- Lib.BibTex_test
+        -- Lib.YamlBlocks_test
         Lib.CheckInputs_test
     default-language: Haskell2010
     ghc-options: -Wall

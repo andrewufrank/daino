@@ -16,7 +16,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE TypeFamilies          #-}
-{-# LANGUAGE TypeSynonymInstances  #-}
+-- {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
 
 module Lib.FileMgt
@@ -26,35 +26,14 @@ import Uniform.Zero
 import Uniform.Filenames
 -- import Uniform.FileStrings
 import Uniform.TypedFile
-import Data.Aeson (Value, ToJSON (..), Value (..), decode)
-import Data.Aeson.Encode.Pretty (encodePretty)
+import Uniform.Json 
+-- import Data.Aeson (Value, ToJSON (..), Value (..), decode)
+-- import Data.Aeson.Encode.Pretty (encodePretty)
 --import  Path.IO (ensureDir)
 -- import Lib.YamlBlocks
-instance NiceStrings Value where
-    shownice = bb2t . bl2b . encodePretty
 
 
--- newtype DocValue = DocValue Value  deriving (Show,  Eq, Read)
--- -- ^ a value type with "content" which is a html translation
--- -- and all the other keys
--- unDocValue (DocValue v) = v
-
--- instance Zeros DocValue where zero = DocValue Null
-
--- instance NiceStrings DocValue where
---     shownice = showNice .  unDocValue
-
--- docValueFileType = TypedFile5 {tpext5 = Extension "docval"} :: TypedFile5   Text DocValue
--- --instance FileHandles MarkdownText
--- -- what is missing here?
-
-
--- instance TypedFiles7 Text  DocValue    where
--- -- handling Markdown and read them into DocValue
---     wrap7 = DocValue . fromJustNote "wrap7 docvalue decode" . decode . b2bl . t2b
---     unwrap7 (DocValue a) = shownice a
-
--------------
+    -------------
 
 -- newtype MarkdownText = MarkdownText Text deriving (Show, Read, Eq, Ord)
 -- -- a wrapper around Markdonw text
@@ -128,22 +107,5 @@ instance NiceStrings Value where
 --    wrap7 = Gtemplate
 --    unwrap7 (Gtemplate a) = a
 
--- handling the doctype templates dtpl
-extDtemplate = Extension "dtpl"
 
-newtype Dtemplate = Dtemplate Text deriving (Show, Read, Eq, Ord)
--- ^ a template which contains variables in doctype  $x$  format
-
--- a wrapper around html ready to publish
---unDtemplate (Dtemplate a) = a
-
-dtmplFileType = makeTyped extDtemplate :: TypedFile5 Text Dtemplate
-
-instance Zeros Dtemplate where zero = Dtemplate zero
-
-instance TypedFiles5 Text Dtemplate  where
-instance TypedFiles7 Text Dtemplate  where
-
-    wrap7 = Dtemplate
-    unwrap7 (Dtemplate a) = a
 

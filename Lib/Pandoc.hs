@@ -9,16 +9,24 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE TypeFamilies          #-}
-{-# LANGUAGE TypeSynonymInstances  #-}
+-- {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE DeriveGeneric     #-}
 
 module Lib.Pandoc
-  ( markdownToPandoc, pandocToContentHtml, getMeta, docValToAllVal
-  , getMaybeStringAtKey
-  , Pandoc, flattenMeta, readMarkdown2, _String, key, (^?)
-  )
-    where
+    ( markdownToPandoc
+    , pandocToContentHtml
+    , getMeta
+    , docValToAllVal
+    , getMaybeStringAtKey
+    , Pandoc(..)
+    , flattenMeta
+    , readMarkdown2
+    , _String
+    , key
+    , (^?)
+    )
+where
 
 -- import           Control.Lens ((^?), (?~), (&), at)
 -- import           Data.Aeson
@@ -27,26 +35,32 @@ module Lib.Pandoc
 -- import           Data.Version (showVersion)
 -- import qualified Data.Yaml as Y
 -- import           Data.Yaml.Union
-import           Lib.BibTex
+-- import           Lib.BibTex
 --import Text.Pandoc.Shared (stringify)
 
 import           Lib.FileMgt
 --import Uniform.Error hiding (Meta, at)
-import           Lib.Foundation (settingsFileName)
+import           Lib.Foundation                 ( settingsFileName )
 import           Lib.Indexing -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
 --            , unDocValue, DocValue (..) )
-import           Lib.YamlBlocks
-import           Paths_SSG (version)
+-- import           Lib.YamlBlocks
+import           Paths_SSG                      ( version )
 -- import           Text.Pandoc as Pandoc
 --import System.Time
 -- import           Text.Pandoc.Highlighting (tango)
-import           Uniform.Convenience.DataVarious (    showVersionT        )
-import           Uniform.FileIO hiding (Meta, at)
-import           Uniform.Filenames hiding (Meta, at) 
-import           Uniform.Pandoc 
+import           Uniform.Convenience.DataVarious
+                                                ( showVersionT )
+import           Uniform.FileIO          hiding ( Meta
+                                                , at
+                                                )
+import           Uniform.Filenames       hiding ( Meta
+                                                , at
+                                                )
+import           Uniform.Pandoc
 import           Uniform.Json
-import           Uniform.Time (getDateAsText) 
-import GHC.Generics
+import           Uniform.Time                   ( getDateAsText )
+import              Uniform.BibTex
+import           GHC.Generics
 
 -- (flattenMeta, getMeta, getMaybeStringAtKey
 --                 , putStringAtKey, readMarkdown2, unPandocM)
@@ -59,47 +73,57 @@ import GHC.Generics
 -- includes reference replacement (pandoc-citeproc)
 -- runs in the pandoc monad!
 
-markdownToPandoc :: Bool -> Path Abs Dir  -> Path Abs File -> ErrIO (Maybe Pandoc)
+markdownToPandoc
+    :: Bool -> Path Abs Dir -> Path Abs File -> ErrIO (Maybe Pandoc)
 -- process the markdown (including if necessary the BibTex treatment)
 -- the bibliography must be in the metadata
 -- the settings are in the markdownText (at end - to let page specific have precedence)
 -- questionable if the draft/publish switch should be here
 -- or in the creation of the index (where more details from md is needed
-markdownToPandoc debug doughP mdfile  = do
+markdownToPandoc debug doughP mdfile = do
     (pandoc, meta2) <- readMd2meta mdfile
 --    pandoc   <- readMarkdown2
 --    let meta2 = flattenMeta (getMeta pandoc)
     let publish = getMaybeStringAtKey meta2 "publish" :: Maybe Text
-    if  True  -- needs proper selection before shaking
+    if True  -- needs proper selection before shaking
             -- isNothing publish || (fmap toLower' publish) == Just "true" || (fmap toLower' publish) == Just "draft"
         then do
 --            putIOwords ["markdownToPandoc", "publish", showT publish]
 
             let bib = getMaybeStringAtKey meta2 "bibliography" :: Maybe Text
-            let nociteNeeded = getMaybeStringAtKey meta2 "bibliographyGroup" :: Maybe Text
+            let nociteNeeded =
+                    getMaybeStringAtKey meta2 "bibliographyGroup" :: Maybe Text
             pandoc2 <- case bib of
-                Nothing ->  return pandoc
-                Just bibfp -> pandocProcessCites doughP (doughP </> (makeRelFile . t2s $ bibfp))
-                            nociteNeeded  pandoc
+                Nothing    -> return pandoc
+                Just bibfp -> pandocProcessCites
+                    doughP
+                    (doughP </> (makeRelFile . t2s $ bibfp))
+                    nociteNeeded
+                    pandoc
                             -- here the dir is used for processing in my code
 
             return . Just $ pandoc2
-
         else do
-                putIOwords ["markdownToPandoc", "NOT PUBLISH", showT publish]
-                return Nothing
+            putIOwords ["markdownToPandoc", "NOT PUBLISH", showT publish]
+            return Nothing
 
-pandocToContentHtml :: Bool -> Pandoc ->  ErrIO DocValue
+pandocToContentHtml :: Bool -> Pandoc -> ErrIO DocValue
 -- convert the pandoc to html in the contentHtml key
 -- the settings are initially put into the pandoc
 pandocToContentHtml debug pandoc2 = do
-    text2 <-  writeHtml5String2 pandoc2
-    let meta2 = flattenMeta (getMeta pandoc2) :: Value
-    let withContent = putStringAtKey  "contentHtml" (unHTMLout text2) meta2
+    text2 <- writeHtml5String2 pandoc2
+    let meta2       = flattenMeta (getMeta pandoc2) :: Value
+    let withContent = putStringAtKey "contentHtml" (unHTMLout text2) meta2
 --    ( meta2) & _Object . at "contentHtml" ?~ String (unHTMLout text2)
-    return  . DocValue $ withContent
+    return . DocValue $ withContent
 
-docValToAllVal :: Bool -> DocValue -> Path Abs File -> Path Abs Dir -> Path Abs Dir -> ErrIO DocValue
+docValToAllVal
+    :: Bool
+    -> DocValue
+    -> Path Abs File
+    -> Path Abs Dir
+    -> Path Abs Dir
+    -> ErrIO DocValue
 -- from the docVal of the page
 -- get the pageType and the settings (master) values
 -- and combine them
@@ -107,69 +131,77 @@ docValToAllVal :: Bool -> DocValue -> Path Abs File -> Path Abs Dir -> Path Abs 
 -- then to determine the current dir
 -- and to exclude it from index
 docValToAllVal debug docval pageFn dough2 templateP = do
-        let mpageType = getMaybeStringAtKey docval "pageTemplate" :: Maybe Text
-        when debug $ putIOwords ["docValToAllVal", "mpt", showT mpageType]
-        let pageType = makeRelFile . t2s $ fromMaybe "page0default" mpageType  :: Path Rel File
-        -- page0default defined in theme
+    let mpageType = getMaybeStringAtKey docval "pageTemplate" :: Maybe Text
+    when debug $ putIOwords ["docValToAllVal", "mpt", showT mpageType]
+    let pageType =
+            makeRelFile . t2s $ fromMaybe "page0default" mpageType :: Path
+                    Rel
+                    File
+    -- page0default defined in theme
 
-        pageTypeYaml <- readYaml2value  ( templateP </> (pageType))
+    pageTypeYaml <- readYaml2value (templateP </> pageType)
 
-        settingsYaml <- readYaml2value (dough2 </> settingsFileName)
-        --        svalue <- decodeThrow . t2b . unYAML $ settings
+    settingsYaml <- readYaml2value (dough2 </> settingsFileName)
+    --        svalue <- decodeThrow . t2b . unYAML $ settings
 
-        ix <- makeIndex debug docval pageFn dough2
+    ix           <- makeIndex debug docval pageFn dough2
 
-        -- combine all the
+    -- combine all the
 
-        --        let vx =  Y.decodeEither' (t2b . unYAML $ settingsYaml)  :: Either Y.ParseException Value
-        --        let vx2 = either (error  . show) id  vx
-        --        vsetting ::   Value <-   Y.decodeThrow  (t2b . unYAML $ settingsYaml)
-        --
-        --        vpt ::   Value <-   Y.decodeThrow  (t2b . unYAML $ pageTypeYaml)
-        --        putIOwords ["pandoc settingsYaml", showT settingsYaml
-        --                    , "\ndecoded settings:", showT vsetting
-        --                    , "\ndecoded vx:", showT vx
-        --                    , "\ndecoded pageType:", showT vpt ]
+    --        let vx =  Y.decodeEither' (t2b . unYAML $ settingsYaml)  :: Either Y.ParseException Value
+    --        let vx2 = either (error  . show) id  vx
+    --        vsetting ::   Value <-   Y.decodeThrow  (t2b . unYAML $ settingsYaml)
+    --
+    --        vpt ::   Value <-   Y.decodeThrow  (t2b . unYAML $ pageTypeYaml)
+    --        putIOwords ["pandoc settingsYaml", showT settingsYaml
+    --                    , "\ndecoded settings:", showT vsetting
+    --                    , "\ndecoded vx:", showT vx
+    --                    , "\ndecoded pageType:", showT vpt ]
 
-        now <- getDateAsText
-        fn2 <- stripProperPrefix' dough2 pageFn
-        let bottomLines = BottomLines{ssgversion = showVersionT version
-                                , today = year2000 
-                                , filename = showT fn2
-                                }
+    now          <- getDateAsText
+    fn2          <- stripProperPrefix' dough2 pageFn
+    let bottomLines = BottomLines { ssgversion = showVersionT version
+                                  , today      = year2000
+                                  , filename   = showT fn2
+                                  }
 
 --         let bottom = object ["ssgversion" .= (s2t $ showVersion version)
 -- --                    , "today" .= zero -- (s2t "somestring to avoid failures in regression test")
 --                     , "filename" .= showT fn2
 --                     ]
 
-        when debug $ do
-            putIOwords ["pandoc filename", showT fn2]
-            putIOwords ["pandoc settings2.yaml", showT settingsYaml]
+    when debug $ do
+        putIOwords ["pandoc filename", showT fn2]
+        putIOwords ["pandoc settings2.yaml", showT settingsYaml]
 
-        let val = mergeAll [settingsYaml, pageTypeYaml, unDocValue docval
-                            , toJSON ix, toJSON bottomLines]
+    let val = mergeAll
+            [ settingsYaml
+            , pageTypeYaml
+            , unDocValue docval
+            , toJSON ix
+            , toJSON bottomLines
+            ]
 
-        --        let val = DocValue . fromJustNote "decoded union 2r2e"
-        --                      . decodeBytestrings
-        --                    $ [ t2b $ unYAML settingsYaml
-        --                        , t2b $ unYAML pageTypeYaml
-        --                        , bl2b . encode $ unDocValue docval
-        --                        , bl2b . encode . toJSON $ ix
-        --                       ]  -- last winns!
-        -- add the bottom line
-        --        callIO $ toCalendarTime =<< getClockTime
+    --        let val = DocValue . fromJustNote "decoded union 2r2e"
+    --                      . decodeBytestrings
+    --                    $ [ t2b $ unYAML settingsYaml
+    --                        , t2b $ unYAML pageTypeYaml
+    --                        , bl2b . encode $ unDocValue docval
+    --                        , bl2b . encode . toJSON $ ix
+    --                       ]  -- last winns!
+    -- add the bottom line
+    --        callIO $ toCalendarTime =<< getClockTime
 --        let val3 = putStringAtKey  "ssgversion" (s2t$ showVersion version) .
 --                    putStringAtKey  "today" now $ val
-        return val
+    return val
 
 
 data BottomLines = BottomLines {
-            ssgversion :: Text 
+            ssgversion :: Text
             , today :: Text -- ^ the data when converted(baked)
-            , filename :: Text 
+            , filename :: Text
 } deriving (Generic, Read, Show, Eq, Ord)
-instance ToJSON BottomLines 
+instance ToJSON BottomLines
 
 
 

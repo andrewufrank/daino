@@ -9,24 +9,27 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE TypeFamilies          #-}
-{-# LANGUAGE TypeSynonymInstances  #-}
+-- {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-unused-imports #-}
 
-module Lib.Templating_test
-     where
+module Lib.Templating_test where
 
 
 import           Test.Framework
-import Uniform.Test.TestHarness
-import Lib.Foundation (progName, SiteLayout(..), templatesDirName, masterTemplateFileName)
-import Lib.Foundation_test (testLayout)
-import Lib.Pandoc
+import           Uniform.Test.TestHarness
+import           Lib.Foundation                 ( progName
+                                                , SiteLayout(..)
+                                                , templatesDirName
+                                                , masterTemplateFileName
+                                                )
+import           Lib.Foundation_test            ( testLayout )
+import           Lib.Pandoc
 
 --import Uniform.Strings
-import Lib.Templating -- (applyTemplate2, convGmaster)
+import           Lib.Templating -- (applyTemplate2, convGmaster)
 --import Uniform.Filenames
-import Lib.FileMgt
+import           Lib.FileMgt
 --import qualified Text.Glabrous as G
 --import Text.Glabrous (Template, insert) -- , insertMany)
 --import Text.DocTemplates
@@ -59,9 +62,9 @@ master3 = addDir templateDir masterTemplateFileName
 --
 applyTemplate3x :: DocValue -> ErrIO Text
 applyTemplate3x dval = do
-                        template <- read8  master3  dtmplFileType
-                        ht <- applyTemplate3   template dval
-                        return . unHTMLout $ ht 
+     template <- read8 master3 dtmplFileType
+     ht       <- applyTemplate3 template dval
+     return . unHTMLout $ ht
 ----                        (makeRelFile "pandocDefault.html"::Path Rel File)
 ----
 ----
@@ -74,12 +77,18 @@ applyTemplate3x dval = do
 -- test_templating_16_AF_EF = test1FileIO progName     "resultAF6" "resultEF6" applyTemplate3x
 
 test_templating_11_AG_EG, test_templating_12_AG_EG :: IO ()
-test_templating_11_AG_EG = test1FileIO progName   "resultAG1" "resultEG1"  applyTemplate3x
-test_templating_12_AG_EG = test1FileIO progName     "resultAG2" "resultEG2" applyTemplate3x
-test_templating_13_AG_EG = test1FileIO progName     "resultAG3" "resultEG3" applyTemplate3x
-test_templating_14_AG_EG = test1FileIO progName     "resultAG4" "resultEG4" applyTemplate3x
-test_templating_15_AG_EG = test1FileIO progName     "resultAG5" "resultEG5" applyTemplate3x
-test_templating_16_AG_EG = test1FileIO progName     "resultAF6" "resultEG6" applyTemplate3x
+test_templating_11_AG_EG =
+     test1FileIO progName "resultAG1" "resultEG1" applyTemplate3x
+test_templating_12_AG_EG =
+     test1FileIO progName "resultAG2" "resultEG2" applyTemplate3x
+test_templating_13_AG_EG =
+     test1FileIO progName "resultAG3" "resultEG3" applyTemplate3x
+test_templating_14_AG_EG =
+     test1FileIO progName "resultAG4" "resultEG4" applyTemplate3x
+test_templating_15_AG_EG =
+     test1FileIO progName "resultAG5" "resultEG5" applyTemplate3x
+test_templating_16_AG_EG =
+     test1FileIO progName "resultAF6" "resultEG6" applyTemplate3x
 
 instance  ShowTestHarness DocValue where
 instance ShowTestHarness HTMLout

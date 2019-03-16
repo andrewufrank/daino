@@ -8,22 +8,25 @@
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE TypeFamilies          #-}
-{-# LANGUAGE TypeSynonymInstances  #-}
-{-# LANGUAGE OverloadedStrings     #-}
+-- {-# LANGUAGE TypeSynonymInstances  #-}
 
 module Lib.CheckInput where
 
 import Lib.Foundation
 import Lib.Indexing
 -- import Uniform.FileStrings
-import Lib.YamlBlocks                 ( Value
-                                                , readMd2meta
-                                                , getMaybeStringAtKey
-                                                )
-import Text.Pandoc
+-- import Lib.YamlBlocks                 ( Value
+                                                -- , readMd2meta
+                                                -- , getMaybeStringAtKey
+                                                -- )
+-- import Text.Pandoc
 import Uniform.Filenames
+import Uniform.Json
+import Lib.Pandoc (Pandoc)
+
 
 import Uniform.Strings         hiding ( (</>) )
 
@@ -47,7 +50,7 @@ checkOneMdFile dough2 mdfn = do
   -- what needs to be checked ? 
 
   -- let doindex1 =  maybe False ("True"==) $ getMaybeStringAtKey meta2 "indexPage"  :: Bool
-  let doindex2 = maybe False id $ getMaybeStringAtKey meta2 "indexPage" :: Bool
+  let doindex2 = fromMaybe $ getMaybeStringAtKey meta2 "indexPage" :: Bool
 
 
   putIOwords ["checkOneMdFile end", showT meta2]
