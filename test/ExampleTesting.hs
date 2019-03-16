@@ -25,7 +25,11 @@ import {-@ HTF_TESTS @-} Lib.CheckInputs_test
 
 ----    -- writes A : testLayout
 ----    --  pageFn :: abs pandoc filenames
+
 import {-@ HTF_TESTS @-} Lib.Pandoc_test
+            --  -> AD markdownToPandoc
+            -- -> AF pandocToContentHtml
+            -- -> AG (docValToAllVal)
 --    -- test_pandoc_pageFn_pageMd_1 - pageFn -> pageMd : MarkdownText
 --    -- AK :: MarkdownText -> BE  DocValue
 --    -- Md ->AD :: Pandoc
@@ -33,7 +37,8 @@ import {-@ HTF_TESTS @-} Lib.Pandoc_test
 --import {-@ HTF_TESTS @-} Lib.Bake_test
 --import {-@ HTF_TESTS @-} Lib.ReadSettingFile_test
 import {-@ HTF_TESTS @-} Lib.Indexing_test
-import {-@ HTF_TESTS @-} Lib.Templating_test  --AD -> EF
+import {-@ HTF_TESTS @-} Lib.Templating_test  --AF -> EF
+                                              -- AG -> EG 
 --import {-@ HTF_TESTS @-} Lib.BibTex_test
 --
 --

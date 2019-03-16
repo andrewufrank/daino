@@ -138,7 +138,8 @@ docValToAllVal debug docval pageFn dough2 templateP = do
             putIOwords ["pandoc filename", showT fn2]
             putIOwords ["pandoc settings2.yaml", showT settingsYaml]
 
-        let val = mergeAll [settingsYaml, pageTypeYaml, unDocValue docval, toJSON ix, bottom]
+        let val = mergeAll [settingsYaml, pageTypeYaml, unDocValue docval
+                            , toJSON ix, bottom]
 
         --        let val = DocValue . fromJustNote "decoded union 2r2e"
         --                      . decodeBytestrings

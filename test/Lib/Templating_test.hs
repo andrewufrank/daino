@@ -57,18 +57,29 @@ templateDir = addDir (themeDir testLayout) templatesDirName
 master3 = addDir templateDir masterTemplateFileName
 --page33 = addDir templateDir(makeRelFile "page33")
 --
-applyTemplate3x :: DocValue -> ErrIO HTMLout
+applyTemplate3x :: DocValue -> ErrIO Text
 applyTemplate3x dval = do
                         template <- read8  master3  dtmplFileType
-                        applyTemplate3   template dval
+                        ht <- applyTemplate3   template dval
+                        return . unHTMLout $ ht 
 ----                        (makeRelFile "pandocDefault.html"::Path Rel File)
 ----
 ----
-test_templating_11_E_F, test_templating_12_E_F :: IO ()
-test_templating_11_E_F = test1FileIO progName   "resultAF1" "resultEF1"  applyTemplate3x
-test_templating_12_E_F = test1FileIO progName     "resultAF2" "resultEF2" applyTemplate3x
-test_templating_13_E_F = test1FileIO progName     "resultAF3" "resultEF3" applyTemplate3x
-test_templating_14_E_F = test1FileIO progName     "resultAF4" "resultEF4" applyTemplate3x
+test_templating_11_AF_EF, test_templating_12_AF_EF :: IO ()
+test_templating_11_AF_EF = test1FileIO progName   "resultAF1" "resultEF1"  applyTemplate3x
+test_templating_12_AF_EF = test1FileIO progName     "resultAF2" "resultEF2" applyTemplate3x
+test_templating_13_AF_EF = test1FileIO progName     "resultAF3" "resultEF3" applyTemplate3x
+test_templating_14_AF_EF = test1FileIO progName     "resultAF4" "resultEF4" applyTemplate3x
+test_templating_15_AF_EF = test1FileIO progName     "resultAF5" "resultEF5" applyTemplate3x
+test_templating_16_AF_EF = test1FileIO progName     "resultAF6" "resultEF6" applyTemplate3x
+
+test_templating_11_AG_EG, test_templating_12_AG_EG :: IO ()
+test_templating_11_AG_EG = test1FileIO progName   "resultAG1" "resultEG1"  applyTemplate3x
+test_templating_12_AG_EG = test1FileIO progName     "resultAG2" "resultEG2" applyTemplate3x
+test_templating_13_AG_EG = test1FileIO progName     "resultAG3" "resultEG3" applyTemplate3x
+test_templating_14_AG_EG = test1FileIO progName     "resultAG4" "resultEG4" applyTemplate3x
+test_templating_15_AG_EG = test1FileIO progName     "resultAG5" "resultEG5" applyTemplate3x
+test_templating_16_AG_EG = test1FileIO progName     "resultAF6" "resultEG6" applyTemplate3x
 
 instance  ShowTestHarness DocValue where
 instance ShowTestHarness HTMLout

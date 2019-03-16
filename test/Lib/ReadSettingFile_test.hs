@@ -32,6 +32,7 @@ import Data.Aeson.Lens
 import Data.Aeson
 --import Data.Aeson.Encode.Pretty (encodePretty)
 --import Data.ByteString.Lazy as BS (putStrLn)
+import Lib.YamlBlocks
 
 test_currentDir = do
         res <- runErr $ do

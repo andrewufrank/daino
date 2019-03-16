@@ -57,11 +57,6 @@ testDocVal2 = testD </> makeRelFile "site/dough/Blog/postwkTest.content.docval"
 --                    return (inf == f2)
 --            assertEqual  (Right True) res
 
-testYAML = sourceDir </> makeRelFile "site/dough/settings2.yaml"
-testYAML2 = testD </> makeRelFile "site/dough/settings2.yaml"
-
-
-test_YAMLue = testFileReadWrite testYAML testYAML2 yamlFileType
 
 testHTMLout = testD </> makeRelFile "site/dough/Blog/postwk.a.html"
 testHTMLout2 = testD </> makeRelFile "site/dough/Blog/postwk.a2.html"

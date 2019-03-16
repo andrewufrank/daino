@@ -125,7 +125,7 @@ executable serversg
 
 
 
-test-suite g2
+test-suite ssgTest
   type: exitcode-stdio-1.0
   main-is: ExampleTesting.hs
   other-modules:

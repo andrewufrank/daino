@@ -24,6 +24,14 @@ import Uniform.Filenames
 import Uniform.TypedFile
 import Lib.Foundation   (SiteLayout (..), sourceDir)
 import Lib.FileMgt
+import Lib.YamlBlocks
+import Lib.FileMgt_test (testFileReadWrite, testD)
 
+testYAML = sourceDir </> makeRelFile "site/dough/settings2.yaml"
+testYAML, testYAML2 :: Path Abs File 
+testYAML2 = testD </> makeRelFile "site/dough/settings2.yaml"
+
+
+test_YAMLue = testFileReadWrite testYAML testYAML2 yamlFileType
 
 
