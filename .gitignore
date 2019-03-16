@@ -15,6 +15,7 @@ ideaHaskellLib
 out
 testForLitText
 site/baked/*
+docs/site/baked/*
 *.sav
 *.bak
 .haskell-code-explorer

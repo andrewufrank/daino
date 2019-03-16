@@ -49,7 +49,7 @@ putValinMaster debug val templatesP =  do
 applyTemplate3 :: Dtemplate -> DocValue -> ErrIO HTMLout
 -- apply the template in the file to the text
 --
-applyTemplate3  templText val = do
+applyTemplate3  templText val =  
      case applyTemplate (unwrap7 templText)  (unDocValue val) of
                     Left msg -> throwError  . s2t $ msg
                     Right val2 -> return  . HTMLout $  (val2 :: Text)
