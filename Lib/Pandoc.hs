@@ -19,31 +19,34 @@ module Lib.Pandoc
   )
     where
 
-import Control.Lens ((^?), (?~), (&), at)
-import Data.Aeson
-import Data.Aeson.Lens
-import Data.Aeson(Value(Object))
+import           Control.Lens ((^?), (?~), (&), at)
+import           Data.Aeson
+import           Data.Aeson.Lens
+import           Data.Aeson(Value(Object))
+import           Data.Version (showVersion)
 import qualified Data.Yaml as Y
-import  Data.Yaml.Union
-import Text.Pandoc as Pandoc
-import Text.Pandoc.Highlighting (tango)
+import           Data.Yaml.Union
+import           Lib.BibTex
 --import Text.Pandoc.Shared (stringify)
 
-import Uniform.Filenames hiding (Meta, at)
+import           Lib.FileMgt
 --import Uniform.Error hiding (Meta, at)
-import Uniform.FileIO hiding (Meta, at)
-import Lib.FileMgt -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
+import           Lib.Foundation (settingsFileName)
+import           Lib.Indexing -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
 --            , unDocValue, DocValue (..) )
-import Lib.Indexing
-import Lib.BibTex
-import Lib.Foundation (settingsFileName)
+import           Lib.YamlBlocks
+import           Paths_SSG (version)
+import           Text.Pandoc as Pandoc
 --import System.Time
-import Uniform.Time (getDateAsText)
-import Paths_SSG (version)
-import Data.Version (showVersion)
-import Lib.YamlBlocks (flattenMeta, getMeta, getMaybeStringAtKey
-                , putStringAtKey, readMarkdown2, unPandocM)
-import Lib.YamlBlocks (readMd2meta, yaml2value, mergeAll, readYaml2value)
+import           Text.Pandoc.Highlighting (tango)
+import           Uniform.FileIO hiding (Meta, at)
+import           Uniform.Filenames hiding (Meta, at)
+import           Uniform.Pandoc 
+import           Uniform.Time (getDateAsText) 
+
+-- (flattenMeta, getMeta, getMaybeStringAtKey
+--                 , putStringAtKey, readMarkdown2, unPandocM)
+-- import Lib.YamlBlocks (readMd2meta, yaml2value, mergeAll, readYaml2value)
 
 
 -- | Convert markdown text into a 'Value';

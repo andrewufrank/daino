@@ -15,17 +15,17 @@
 
 module Lib.CheckInput where
 
-import           Uniform.Strings         hiding ( (</>) )
-import           Uniform.Filenames
+import Lib.Foundation
+import Lib.Indexing
 -- import Uniform.FileStrings
-import           Lib.Foundation
-import           Lib.YamlBlocks                 ( Value
+import Lib.YamlBlocks                 ( Value
                                                 , readMd2meta
                                                 , getMaybeStringAtKey
                                                 )
-import           Lib.Indexing
+import Text.Pandoc
+import Uniform.Filenames
 
-import           Text.Pandoc
+import Uniform.Strings         hiding ( (</>) )
 
 
 checkAllInputs :: SiteLayout -> [Path Rel File] -> ErrIO ()

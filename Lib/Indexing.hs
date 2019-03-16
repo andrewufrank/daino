@@ -34,6 +34,8 @@ import Lib.FileMgt (DocValue (..)) --  MarkdownText (..), markdownFileType)
 import Lib.YamlBlocks
 import GHC.Exts (sortWith)
 import Uniform.Time (readDate3, UTCTime (..))
+import Uniform.Json 
+import Uniform.Pandoc
 
 --insertIndex :: Path Abs File -> ErrIO ()
 ---- insert the index into the index md

@@ -34,8 +34,10 @@ import qualified Text.Pandoc.Definition   as PD
 import qualified Text.Pandoc.Builder   as PB
 import Text.CSL.Pandoc (processCites')
 import System.Directory (setCurrentDirectory, getCurrentDirectory)
-import Lib.YamlBlocks (flattenMeta, getMeta, putMeta, getMaybeStringAtKey
-                , putStringAtKey, readMarkdown2, unPandocM)
+-- import Lib.YamlBlocks (flattenMeta, getMeta, putMeta, getMaybeStringAtKey
+--                 , putStringAtKey, readMarkdown2, unPandocM)
+import Uniform.Json 
+import Uniform.Pandoc
 import qualified Data.Map as M
 import Data.List (intersperse)
 

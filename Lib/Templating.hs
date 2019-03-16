@@ -26,10 +26,10 @@ import Uniform.TypedFile
 import Text.DocTemplates (applyTemplate)
 --import Data.Aeson
 import Lib.Foundation (masterTemplateFileName)
-
-import Lib.FileMgt
-import Lib.YamlBlocks (flattenMeta, getMeta, getMaybeStringAtKey
-                , putStringAtKey, readMarkdown2, unPandocM)
+import Lib.YamlBlocks 
+import Lib.FileMgt 
+-- import Lib.YamlBlocks (flattenMeta, getMeta, getMaybeStringAtKey
+--                 , putStringAtKey, readMarkdown2, unPandocM)
 
 putValinMaster :: Bool -> DocValue -> Path Abs Dir -> ErrIO HTMLout
 -- ^ get the master html template and put the val into it

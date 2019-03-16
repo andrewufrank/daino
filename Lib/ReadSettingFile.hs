@@ -17,18 +17,19 @@
 module Lib.ReadSettingFile   -- (openMain, htf_thisModuelsTests)
      where
 
-import Uniform.Strings hiding ((</>))
-import Uniform.Filenames
---import Uniform.FileStrings
-import Uniform.TypedFile
-import  Lib.Foundation
-import Lib.FileMgt
-import Lib.Pandoc -- (getMeta)
---import Text.Pandoc.Definition
-import Data.Yaml (decodeThrow)
-import Data.Aeson.Lens
-import Data.Aeson
 import Control.Lens ((^?))
+import Data.Aeson
+--import Uniform.FileStrings
+import Data.Aeson.Lens
+import Data.Yaml (decodeThrow)
+import Lib.FileMgt
+import Lib.Foundation -- (getMeta)
+--import Text.Pandoc.Definition
+import Lib.Pandoc
+import Lib.YamlBlocks
+import Uniform.Filenames
+import Uniform.Strings hiding ((</>))
+import Uniform.TypedFile
 
 readSettings ::Path Rel File ->  ErrIO (SiteLayout, Int)
 -- must be the settings2.yaml file, relative to the current working dir

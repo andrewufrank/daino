@@ -35,7 +35,7 @@ instance NiceStrings Value where
 
 
 newtype DocValue = DocValue Value  deriving (Show,  Eq, Read)
--- ^ a value type with "content" is a html translation
+-- ^ a value type with "content" which is a html translation
 -- and all the other keys
 unDocValue (DocValue v) = v
 
@@ -72,22 +72,22 @@ instance TypedFiles7 Text  MarkdownText    where
     unwrap7 (MarkdownText a) = a
 
 -----------
-newtype YamlText = YamlText Text deriving (Show, Read, Eq, Ord)
--- a wrapper around Markdonw text
-unYAML (YamlText a) = a   --needed for other ops
+-- newtype YamlText = YamlText Text deriving (Show, Read, Eq, Ord)
+-- -- a wrapper around Markdonw text
+-- unYAML (YamlText a) = a   --needed for other ops
 
-extYAML = Extension "yaml"
-instance Zeros YamlText where zero = YamlText zero
+-- extYAML = Extension "yaml"
+-- instance Zeros YamlText where zero = YamlText zero
 
-yamlFileType = TypedFile5 {tpext5 = extYAML} :: TypedFile5   Text YamlText
---instance FileHandles YamlText
--- what is missing here?
+-- yamlFileType = TypedFile5 {tpext5 = extYAML} :: TypedFile5   Text YamlText
+-- --instance FileHandles YamlText
+-- -- what is missing here?
 
 
-instance TypedFiles7 Text  YamlText    where
--- handling Markdown and read them into YamlText
-    wrap7 = YamlText
-    unwrap7 (YamlText a) = a
+-- instance TypedFiles7 Text  YamlText    where
+-- -- handling Markdown and read them into YamlText
+--     wrap7 = YamlText
+--     unwrap7 (YamlText a) = a
 
 -----------
 newtype HTMLout = HTMLout Text deriving (Show, Read, Eq, Ord)

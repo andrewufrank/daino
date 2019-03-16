@@ -8,6 +8,7 @@ packages:
 - ../uniform/uniform-fileio
 - ../uniform/uniform-time
 - ../uniform/uniform-error
+- ../uniform/uniform-json
 - ../fromOthers/bibtex
 
 # - ../fromOthers/shake-path
