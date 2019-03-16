@@ -65,13 +65,13 @@ applyTemplate3x dval = do
 ----                        (makeRelFile "pandocDefault.html"::Path Rel File)
 ----
 ----
-test_templating_11_AF_EF, test_templating_12_AF_EF :: IO ()
-test_templating_11_AF_EF = test1FileIO progName   "resultAF1" "resultEF1"  applyTemplate3x
-test_templating_12_AF_EF = test1FileIO progName     "resultAF2" "resultEF2" applyTemplate3x
-test_templating_13_AF_EF = test1FileIO progName     "resultAF3" "resultEF3" applyTemplate3x
-test_templating_14_AF_EF = test1FileIO progName     "resultAF4" "resultEF4" applyTemplate3x
-test_templating_15_AF_EF = test1FileIO progName     "resultAF5" "resultEF5" applyTemplate3x
-test_templating_16_AF_EF = test1FileIO progName     "resultAF6" "resultEF6" applyTemplate3x
+-- test_templating_11_AF_EF, test_templating_12_AF_EF :: IO ()
+-- test_templating_11_AF_EF = test1FileIO progName   "resultAF1" "resultEF1"  applyTemplate3x
+-- test_templating_12_AF_EF = test1FileIO progName     "resultAF2" "resultEF2" applyTemplate3x
+-- test_templating_13_AF_EF = test1FileIO progName     "resultAF3" "resultEF3" applyTemplate3x
+-- test_templating_14_AF_EF = test1FileIO progName     "resultAF4" "resultEF4" applyTemplate3x
+-- test_templating_15_AF_EF = test1FileIO progName     "resultAF5" "resultEF5" applyTemplate3x
+-- test_templating_16_AF_EF = test1FileIO progName     "resultAF6" "resultEF6" applyTemplate3x
 
 test_templating_11_AG_EG, test_templating_12_AG_EG :: IO ()
 test_templating_11_AG_EG = test1FileIO progName   "resultAG1" "resultEG1"  applyTemplate3x
