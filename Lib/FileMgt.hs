@@ -34,42 +34,42 @@ instance NiceStrings Value where
     shownice = bb2t . bl2b . encodePretty
 
 
-newtype DocValue = DocValue Value  deriving (Show,  Eq, Read)
--- ^ a value type with "content" which is a html translation
--- and all the other keys
-unDocValue (DocValue v) = v
+-- newtype DocValue = DocValue Value  deriving (Show,  Eq, Read)
+-- -- ^ a value type with "content" which is a html translation
+-- -- and all the other keys
+-- unDocValue (DocValue v) = v
 
-instance Zeros DocValue where zero = DocValue Null
+-- instance Zeros DocValue where zero = DocValue Null
 
-instance NiceStrings DocValue where
-    shownice = showNice .  unDocValue
+-- instance NiceStrings DocValue where
+--     shownice = showNice .  unDocValue
 
-docValueFileType = TypedFile5 {tpext5 = Extension "docval"} :: TypedFile5   Text DocValue
---instance FileHandles MarkdownText
--- what is missing here?
+-- docValueFileType = TypedFile5 {tpext5 = Extension "docval"} :: TypedFile5   Text DocValue
+-- --instance FileHandles MarkdownText
+-- -- what is missing here?
 
 
-instance TypedFiles7 Text  DocValue    where
--- handling Markdown and read them into DocValue
-    wrap7 = DocValue . fromJustNote "wrap7 docvalue decode" . decode . b2bl . t2b
-    unwrap7 (DocValue a) = shownice a
+-- instance TypedFiles7 Text  DocValue    where
+-- -- handling Markdown and read them into DocValue
+--     wrap7 = DocValue . fromJustNote "wrap7 docvalue decode" . decode . b2bl . t2b
+--     unwrap7 (DocValue a) = shownice a
 
 -------------
 
-newtype MarkdownText = MarkdownText Text deriving (Show, Read, Eq, Ord)
--- a wrapper around Markdonw text
-unMT (MarkdownText a) = a   --needed for other ops
+-- newtype MarkdownText = MarkdownText Text deriving (Show, Read, Eq, Ord)
+-- -- a wrapper around Markdonw text
+-- unMT (MarkdownText a) = a   --needed for other ops
 
-instance Zeros MarkdownText where zero = MarkdownText zero
-markdownFileType = TypedFile5 {tpext5 = extMD} :: TypedFile5   Text MarkdownText
---instance FileHandles MarkdownText
--- what is missing here?
+-- instance Zeros MarkdownText where zero = MarkdownText zero
+-- markdownFileType = TypedFile5 {tpext5 = extMD} :: TypedFile5   Text MarkdownText
+-- --instance FileHandles MarkdownText
+-- -- what is missing here?
 
 
-instance TypedFiles7 Text  MarkdownText    where
--- handling Markdown and read them into MarkdownText
-    wrap7 = MarkdownText
-    unwrap7 (MarkdownText a) = a
+-- instance TypedFiles7 Text  MarkdownText    where
+-- -- handling Markdown and read them into MarkdownText
+--     wrap7 = MarkdownText
+--     unwrap7 (MarkdownText a) = a
 
 -----------
 -- newtype YamlText = YamlText Text deriving (Show, Read, Eq, Ord)
@@ -90,24 +90,24 @@ instance TypedFiles7 Text  MarkdownText    where
 --     unwrap7 (YamlText a) = a
 
 -----------
-newtype HTMLout = HTMLout Text deriving (Show, Read, Eq, Ord)
+-- newtype HTMLout = HTMLout Text deriving (Show, Read, Eq, Ord)
 
--- a wrapper around html ready to publish
-unHTMLout (HTMLout a) = a
+-- -- a wrapper around html ready to publish
+-- unHTMLout (HTMLout a) = a
 
-htmloutFileType = TypedFile5 {tpext5 = extHTML} :: TypedFile5 Text HTMLout
+-- htmloutFileType = TypedFile5 {tpext5 = extHTML} :: TypedFile5 Text HTMLout
 
-instance Zeros HTMLout where zero = HTMLout zero
+-- instance Zeros HTMLout where zero = HTMLout zero
 
-instance TypedFiles7 Text HTMLout  where
+-- instance TypedFiles7 Text HTMLout  where
 
-    wrap7 = HTMLout
-    unwrap7 (HTMLout a) = a
+--     wrap7 = HTMLout
+--     unwrap7 (HTMLout a) = a
 
 
-extMD, extHTML :: Extension
-extMD = Extension "md"
-extHTML = Extension "html"
+-- extMD, extHTML :: Extension
+-- extMD = Extension "md"
+-- extHTML = Extension "html"
 
 
 ---- handling the glabrous templates gtpl

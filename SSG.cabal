@@ -1,134 +1,101 @@
-
-name:           SSG
-version:        0.0.1
-license-file:   LICENSE
-build-type:     Simple
-cabal-version:  >= 1.10
+cabal-version: >=1.10
+name: SSG
+version: 0.0.1
+license-file: LICENSE
+build-type: Simple
 
 library
-  exposed-modules:
-      Lib.Bake
-      Lib.Shake
-      Lib.FileMgt
-      Lib.Templating
-      Lib.Pandoc
-      Lib.Foundation
-      Lib.ReadSettingFile
-      Lib.Indexing
-      Lib.BibTex
-      Lib.YamlBlocks
-      Lib.CheckInput
-
-
-  other-modules: Paths_SSG
-
-  hs-source-dirs:
-      . 
-  ghc-options: -Wall
-  build-depends:
-      base ==4.*
-    , uniform-algebras
-    , uniform-strings
-    , uniform-fileio
-    , uniform-error
-    , uniform-time
-    , uniform-json
-
-    , pandoc
-    , pandoc-citeproc
-    , pandoc-types
-    , doctemplates
---    , process
-    , aeson
-    , lens-aeson
-    , lens
-    , aeson-pretty
-    , yaml-union
-
---    , pipes
---    , path , path-io
-    , shake
---    , shake-path==0.0.0.2
---    , shake-ext
---    , glabrous
-    , yaml
-    , bibtex==0.1.0.8
---    , parsec
---    , old-time
-    , directory
-    , containers
-    , unordered-containers
-
-  default-language: Haskell2010
+    exposed-modules:
+        Lib.Bake
+        Lib.Shake
+        Lib.FileMgt
+        Lib.Templating
+        Lib.Pandoc
+        Lib.Foundation
+        Lib.ReadSettingFile
+        Lib.Indexing
+        Lib.BibTex
+        Lib.YamlBlocks
+        Lib.CheckInput
+    hs-source-dirs: .
+    other-modules:
+        Paths_SSG
+    default-language: Haskell2010
+    ghc-options: -Wall
+    build-depends:
+        base ==4.*,
+        uniform-algebras -any,
+        uniform-strings -any,
+        uniform-fileio -any,
+        uniform-error -any,
+        uniform-time -any,
+        uniform-json -any,
+        uniform-convenience -any,
+        pandoc -any,
+        pandoc-citeproc -any,
+        pandoc-types -any,
+        doctemplates -any,
+        aeson -any,
+        lens-aeson -any,
+        lens -any,
+        aeson-pretty -any,
+        yaml-union -any,
+        shake -any,
+        yaml -any,
+        bibtex ==0.1.0.8,
+        directory -any,
+        containers -any,
+        unordered-containers -any
 
 executable ssgbake
-  main-is: ssgBake.hs
-  other-modules:
-
-  build-depends:
-      base ==4.*
-    , uniform-strings
-    , uniform-convenience
-    , uniform-fileio
-    , uniform-error
-    , SSG
-    , shake==0.17.6
---    , shake-path==0.0.0.2
-    , scotty
-    , warp
-    , wai-middleware-static
-
-  hs-source-dirs:
-    src
-  default-language: Haskell2010
+    main-is: ssgBake.hs
+    hs-source-dirs: src
+    default-language: Haskell2010
+    build-depends:
+        base ==4.*,
+        uniform-strings -any,
+        uniform-convenience -any,
+        uniform-fileio -any,
+        uniform-error -any,
+        SSG -any,
+        shake ==0.17.6,
+        scotty -any,
+        warp -any,
+        wai-middleware-static -any
 
 executable ssg10
-  main-is: ssg10.hs
-  other-modules:
-
-  build-depends:
-      base ==4.*
-    , uniform-strings
-    , uniform-convenience
-    , uniform-fileio
-    , uniform-error
-    , SSG
-
-  hs-source-dirs:
-    src
-  default-language: Haskell2010
+    main-is: ssg10.hs
+    hs-source-dirs: src
+    default-language: Haskell2010
+    build-depends:
+        base ==4.*,
+        uniform-strings -any,
+        uniform-convenience -any,
+        uniform-fileio -any,
+        uniform-error -any,
+        SSG -any
 
 executable serversg
-  main-is: serverSG.hs
-  other-modules:
-
-  build-depends:
-      base ==4.*
-    , uniform-strings
-    , uniform-convenience
-    , uniform-fileio
-    , uniform-error
-    , SSG
-    , scotty
-    , warp
-    , wai-middleware-static
---    , hinotify
---    , directory
-    , twitch
---    , Cabal
---    , spawn
---    , path-io
-
-  hs-source-dirs:
-    src
-  default-language: Haskell2010
-
-
+    main-is: serverSG.hs
+    hs-source-dirs: src
+    default-language: Haskell2010
+    build-depends:
+        base ==4.*,
+        uniform-strings -any,
+        uniform-convenience -any,
+        uniform-fileio -any,
+        uniform-error -any,
+        SSG -any,
+        scotty -any,
+        warp -any,
+        wai-middleware-static -any,
+        twitch -any
 
 test-suite ssgTest
-  type: exitcode-stdio-1.0
-  main-is: ExampleTesting.hs
-  other-modules:
+    type: exitcode-stdio-1.0
+    main-is: ExampleTesting.hs
+    hs-source-dirs: test
+    other-modules:
         ShakeStartTests
         Lib.FileMgt_test
         Lib.Bake_test
@@ -140,36 +107,27 @@ test-suite ssgTest
         Lib.BibTex_test
         Lib.YamlBlocks_test
         Lib.CheckInputs_test
-  hs-source-dirs:
-      test
-  ghc-options: -Wall
-  build-depends:
-      HTF
-    , QuickCheck
-    , base ==4.*
-    , uniform-strings
-    , uniform-convenience
-    , uniform-fileio
-    , uniform-error
-    , uniform-time
-    , SSG
-    , directory
---    , glabrous
-
-    , doctemplates
---    , pandoc-types
-    , shake
-    , pandoc
-    , lens-aeson
-    , lens
-    , aeson
-    , aeson-pretty
---    , bytestring
-    , yaml-union
-    , bibtex==0.1.0.8
-    , time
---    , parsec
---    , path-io
---    , directory
-
-  default-language: Haskell2010
+    default-language: Haskell2010
+    ghc-options: -Wall
+    build-depends:
+        HTF -any,
+        QuickCheck -any,
+        base ==4.*,
+        uniform-strings -any,
+        uniform-convenience -any,
+        uniform-fileio -any,
+        uniform-error -any,
+        uniform-time -any,
+        SSG -any,
+        directory -any,
+        doctemplates -any,
+        shake -any,
+        pandoc -any,
+        lens-aeson -any,
+        lens -any,
+        aeson -any,
+        aeson-pretty -any,
+        yaml-union -any,
+        bibtex ==0.1.0.8,
+        time -any,
+        test-framework -any

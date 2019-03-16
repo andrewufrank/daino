@@ -16,22 +16,22 @@ module Lib.Indexing_test
      where
 
 
-import           Test.Framework
-import Uniform.Test.TestHarness
+import Lib.FileMgt
+import Lib.Foundation (layoutDefaults, doughDir)
 import Lib.Foundation (progName, SiteLayout(..), templatesDirName)
 import Lib.Foundation_test (testLayout)
 
 --import Uniform.Strings
-import Lib.Templating -- (applyTemplate2, convGmaster)
+import Lib.Indexing -- (applyTemplate2, convGmaster)
 --import Uniform.Filenames
-import Lib.FileMgt
-import Lib.Indexing
+import Lib.Templating
+import Test.Framework
 --import Text.DocTemplates
-import Lib.Foundation (layoutDefaults, doughDir)
+import Uniform.Test.TestHarness
 import Uniform.Time (readDate3, UTCTime (..))
 
-blogDir = (doughDir layoutDefaults) </> makeRelDir "Blog"
-blogindexfn = (doughDir layoutDefaults) </> makeRelFile "Blog/index.md"
+blogDir = doughDir layoutDefaults </> makeRelDir "Blog"
+blogindexfn = doughDir layoutDefaults </> makeRelFile "Blog/index.md"
 
 test_1 = do
             res <- runErr $ makeIndexForDir False
