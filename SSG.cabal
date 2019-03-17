@@ -41,7 +41,8 @@ library
         -- lens -any,
         -- aeson-pretty -any,
         -- yaml-union -any,
-        shake -any
+        shake -any,
+        shake-path
         -- yaml -any,
         -- bibtex ==0.1.0.8,
         -- directory -any
