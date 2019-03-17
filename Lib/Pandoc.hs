@@ -38,16 +38,11 @@ where
 -- import           Lib.BibTex
 --import Text.Pandoc.Shared (stringify)
 
-import           Lib.FileMgt
 --import Uniform.Error hiding (Meta, at)
 import           Lib.Foundation                 ( settingsFileName )
 import           Lib.Indexing -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
 --            , unDocValue, DocValue (..) )
--- import           Lib.YamlBlocks
 import           Paths_SSG                      ( version )
--- import           Text.Pandoc as Pandoc
---import System.Time
--- import           Text.Pandoc.Highlighting (tango)
 import           Uniform.Convenience.DataVarious
                                                 ( showVersionT )
 import           Uniform.FileIO          hiding ( Meta
