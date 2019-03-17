@@ -18,7 +18,7 @@ module Lib.Pandoc
     , pandocToContentHtml
     , getMeta
     , docValToAllVal
-    , getMaybeStringAtKey
+    , getAtKey
     , Pandoc(..)
     , flattenMeta
     , readMarkdown2
@@ -62,7 +62,7 @@ import           Uniform.Time                   ( getDateAsText )
 import              Uniform.BibTex
 import           GHC.Generics
 
--- (flattenMeta, getMeta, getMaybeStringAtKey
+-- (flattenMeta, getMeta, getAtKey
 --                 , putStringAtKey, readMarkdown2, unPandocM)
 -- import Lib.YamlBlocks (readMd2meta, yaml2value, mergeAll, readYaml2value)
 
@@ -84,15 +84,14 @@ markdownToPandoc debug doughP mdfile = do
     (pandoc, meta2) <- readMd2meta mdfile
 --    pandoc   <- readMarkdown2
 --    let meta2 = flattenMeta (getMeta pandoc)
-    let publish = getMaybeStringAtKey meta2 "publish" :: Maybe Text
+    let publish = getAtKey meta2 "publish" :: Maybe Text
     if True  -- needs proper selection before shaking
             -- isNothing publish || (fmap toLower' publish) == Just "true" || (fmap toLower' publish) == Just "draft"
         then do
 --            putIOwords ["markdownToPandoc", "publish", showT publish]
 
-            let bib = getMaybeStringAtKey meta2 "bibliography" :: Maybe Text
-            let nociteNeeded =
-                    getMaybeStringAtKey meta2 "bibliographyGroup" :: Maybe Text
+            let bib = getAtKey meta2 "bibliography" :: Maybe Text
+            let nociteNeeded = getAtKey meta2 "bibliographyGroup" :: Maybe Text
             pandoc2 <- case bib of
                 Nothing    -> return pandoc
                 Just bibfp -> pandocProcessCites
@@ -131,7 +130,7 @@ docValToAllVal
 -- then to determine the current dir
 -- and to exclude it from index
 docValToAllVal debug docval pageFn dough2 templateP = do
-    let mpageType = getMaybeStringAtKey docval "pageTemplate" :: Maybe Text
+    let mpageType = getAtKey docval "pageTemplate" :: Maybe Text
     when debug $ putIOwords ["docValToAllVal", "mpt", showT mpageType]
     let pageType =
             makeRelFile . t2s $ fromMaybe "page0default" mpageType :: Path

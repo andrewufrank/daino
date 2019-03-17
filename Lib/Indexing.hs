@@ -12,7 +12,7 @@
 {-# LANGUAGE DeriveGeneric     #-}
 
 module Lib.Indexing (module Lib.Indexing
-    , getMaybeStringAtKey) where
+    , getAtKey) where
 
 -- import           Data.Aeson                    as A
 -- import           Data.Yaml                     as Y
@@ -39,8 +39,8 @@ makeIndex
 -- | make the index text, will be moved into the page template later
 -- return zero if not index page
 makeIndex debug docval pageFn dough2 = do
-    let doindex   = fromMaybe False $ getMaybeStringAtKey docval "indexPage"
-    let indexSort = getMaybeStringAtKey docval "indexSort" :: Maybe Text
+    let doindex   = fromMaybe False $ getAtKey docval "indexPage"
+    let indexSort = getAtKey docval "indexSort" :: Maybe Text
     when debug $ putIOwords ["makeIndex", "doindex", showT doindex]
 
     ix :: MenuEntry <- if doindex
@@ -167,11 +167,11 @@ getOneIndexEntry dough2 mdfile = do
 --        pandoc <- readMarkdown2 mdtext
 --        let meta2 = flattenMeta (getMeta pandoc)
 
-    let abstract1 = getMaybeStringAtKey meta2 "abstract" :: Maybe Text
-    let title1    = getMaybeStringAtKey meta2 "title" :: Maybe Text
-    let author1   = getMaybeStringAtKey meta2 "author" :: Maybe Text
-    let date1     = getMaybeStringAtKey meta2 "date" :: Maybe Text
-    let publish1  = getMaybeStringAtKey meta2 "publish" :: Maybe Text
+    let abstract1 = getAtKey meta2 "abstract" :: Maybe Text
+    let title1    = getAtKey meta2 "title" :: Maybe Text
+    let author1   = getAtKey meta2 "author" :: Maybe Text
+    let date1     = getAtKey meta2 "date" :: Maybe Text
+    let publish1  = getAtKey meta2 "publish" :: Maybe Text
 
 --    let ix2 = A.fromJSON meta2 :: Result IndexEntry
 
@@ -274,13 +274,13 @@ instance FromJSON PublicationState
 --    filterM doesFileExist' fps
 
 instance AtKey DocValue  Text where
-    getMaybeStringAtKey meta2 k2 = getMaybeStringAtKey (unDocValue meta2) k2
+    getAtKey meta2 k2 = getAtKey (unDocValue meta2) k2
 
     putStringAtKey k2 txt meta2 =
         DocValue $ putStringAtKey k2 txt (unDocValue meta2)
 
 instance AtKey DocValue Bool  where
-    getMaybeStringAtKey meta2 k2 = getMaybeStringAtKey (unDocValue meta2) k2
+    getAtKey meta2 k2 = getAtKey (unDocValue meta2) k2
 
     putStringAtKey k2 b meta2 =
         DocValue $ putStringAtKey k2 b (unDocValue meta2)

@@ -20,7 +20,7 @@ import Lib.Indexing
 -- import Uniform.FileStrings
 -- import Lib.YamlBlocks                 ( Value
                                                 -- , readMd2meta
-                                                -- , getMaybeStringAtKey
+                                                -- , getAtKey
                                                 -- )
 -- import Text.Pandoc
 import Uniform.Filenames
@@ -49,8 +49,8 @@ checkOneMdFile dough2 mdfn = do
   ixEntry                       <- getOneIndexEntry dough2 (dough2 </> mdfn)
   -- what needs to be checked ? 
 
-  -- let doindex1 =  maybe False ("True"==) $ getMaybeStringAtKey meta2 "indexPage"  :: Bool
-  let doindex2 = fromMaybe $ getMaybeStringAtKey meta2 "indexPage" :: Bool
+  -- let doindex1 =  maybe False ("True"==) $ getAtKey meta2 "indexPage"  :: Bool
+  let doindex2 = fromMaybe $ getAtKey meta2 "indexPage" :: Bool
 
 
   putIOwords ["checkOneMdFile end", showT meta2]
