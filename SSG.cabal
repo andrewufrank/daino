@@ -8,7 +8,7 @@ library
     exposed-modules:
         Lib.Bake
         Lib.Shake
-        Lib.FileMgt
+        -- Lib.FileMgt
         Lib.Templating
         Lib.Pandoc
         Lib.Foundation
@@ -98,7 +98,7 @@ test-suite ssgTest
     hs-source-dirs: test
     other-modules:
         ShakeStartTests
-        Lib.FileMgt_test
+        -- Lib.FileMgt_test
         Lib.Bake_test
         Lib.Foundation_test
         Lib.Pandoc_test
