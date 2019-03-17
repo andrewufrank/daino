@@ -41,10 +41,10 @@ library
         -- lens -any,
         -- aeson-pretty -any,
         -- yaml-union -any,
-        shake -any,
+        shake -any
         -- yaml -any,
         -- bibtex ==0.1.0.8,
-        directory -any
+        -- directory -any
         -- containers -any,
         -- unordered-containers -any
 
@@ -119,6 +119,9 @@ test-suite ssgTest
         uniform-fileio -any,
         uniform-error -any,
         uniform-time -any,
+        uniform-json,
+        uniform-pandoc,
+        
         SSG -any,
         directory -any,
         -- doctemplates -any,

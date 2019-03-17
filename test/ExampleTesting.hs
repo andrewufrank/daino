@@ -10,6 +10,7 @@ module Main     where      -- must have Main (main) or Main where
 
 --import System.Exit
 import System.Directory (createDirectoryIfMissing)
+-- keep this because it is in IO (not ErrIO)
 
 import           Test.Framework
 

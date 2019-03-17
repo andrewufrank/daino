@@ -21,7 +21,6 @@ import Development.Shake
 import Development.Shake.FilePath
 import Lib.Bake
 import Lib.Foundation
-import Lib.Foundation
 
 import Lib.Foundation_test (testLayout) -- (progName, SiteLayout (..), layoutDefaults, templatesDirName)
 import Lib.Pandoc
@@ -32,7 +31,7 @@ import Test.Framework  -- (markdownToPandoc, pandocToContentHtml,docValToAllVal)
 -- import Text.Pandoc  (Pandoc)
 import Uniform.Error
 import Uniform.FileIO            hiding ((<.>), (</>)) -- (resourcesDirName)
-import Uniform.Pandoc (applyTemplate3, Pandoc, DocValue, HTMLout)
+import Uniform.Pandoc -- (applyTemplate3, Pandoc, DocValue, doc HTMLout, htmloutFileType)
 
 test_shake :: IO ()
 test_shake =  do

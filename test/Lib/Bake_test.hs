@@ -25,8 +25,10 @@ import Lib.Bake
 -- import Lib.FileMgt
 import Lib.Foundation_test (testLayout)
 import Lib.Foundation (templatesDirName)
+import Uniform.Json (AtKey(..), Value(..))
+import Uniform.Pandoc -- (DocValue(..), unDocValue, docValueFileType)
 --import Lib.Templating (Gtemplate(..), gtmplFileType, Dtemplate(..))
-import Control.Lens
+-- import Control.Lens
 --import Data.Aeson
 -- import Data.Aeson.Lens
 -- import Data.Aeson
@@ -42,7 +44,8 @@ test_findTemplate =
 
                     putIOwords ["test_findTemplate", "val2\n" ] -- ,  shownice $ val2]
 --                    liftIO $ BS.putStrLn ( encodePretty$ val2)
-                    let ptemplate = (val2) ^? key "pageTemplate" . _String
+                    let ptemplate = getAtKey val2 "pageTemplate" 
+                        -- (val2) ^? key "pageTemplate" . _String
 --                                :: Maybe FilePath
                     putIOwords ["test_findTemplate", "found", showT ptemplate]
                     return   ptemplate
