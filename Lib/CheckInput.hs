@@ -26,8 +26,8 @@ import Lib.Indexing
 import Uniform.Filenames
 import Uniform.Json
 import Lib.Pandoc (Pandoc)
-
-
+import Uniform.Pandoc (readMd2meta)
+import Uniform.Json (getAtKey)
 import Uniform.Strings         hiding ( (</>) )
 
 
@@ -50,7 +50,8 @@ checkOneMdFile dough2 mdfn = do
   -- what needs to be checked ? 
 
   -- let doindex1 =  maybe False ("True"==) $ getAtKey meta2 "indexPage"  :: Bool
-  let doindex2 = fromMaybe $ getAtKey meta2 "indexPage" :: Bool
+  let doindex2 = fromMaybe b
+        where b = getAtKey meta2 "indexPage" :: Maybe Bool
 
 
   putIOwords ["checkOneMdFile end", showT meta2]

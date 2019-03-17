@@ -14,23 +14,20 @@
 module Lib.Indexing (module Lib.Indexing
     , getAtKey) where
 
--- import           Data.Aeson                    as A
--- import           Data.Yaml                     as Y
 import           Development.Shake.FilePath
 import           GHC.Exts                       ( sortWith )
-import           Lib.FileMgt                  --  ( DocValue(..), unDocValue)
+-- import           Lib.FileMgt                 
 import qualified Uniform.FileIO                as FileIO
 import           Uniform.FileIO          hiding ( (<.>)
                                                 , (</>)
                                                  )  
 import           Uniform.Json
 import           Uniform.Json (FromJSON(..))  
-import           Uniform.Pandoc (HTMLout, readMd2meta, DocValue (..))
--- import           Uniform.Strings         hiding ( (<.>)
---                                                 , (</>)
---                                                 )
+import           Uniform.Pandoc (HTMLout, readMd2meta
+                        , DocValue (..), unDocValue)
 import           Uniform.Time                   ( readDate3
                                                 , UTCTime(..)
+                                                , year2000
                                                 )
 
 
@@ -52,19 +49,6 @@ makeIndex debug docval pageFn dough2 = do
         else return zero
     return ix -- (toJSON ix :: Value)
 
-findDirs :: [FilePath] -> ErrIO [Path Abs Dir]
--- ^ find directories in a list of files
-findDirs fns = do
-    mdirs <- mapM isDir fns
-    return . catMaybes $ mdirs
-
-isDir :: FilePath -> ErrIO (Maybe (Path Abs Dir))
-isDir fn = do
-    st <- getFileStatus' fn
-    return (if isDirectory st then Just (makeAbsDir fn) else Nothing)
-
-year2000 :: UTCTime
-year2000 = readDate3 "2000-01-01"
 
 makeIndexForDir
     :: Bool
@@ -104,7 +88,8 @@ makeIndexForDir debug pageFn indexFn dough2 indexSort = do
 
     when debug $ putIOwords
         ["makeIndexForDir", "for ", showT pageFn, "\n", showT fs3]
-    fileIxs :: [IndexEntry] <- mapM (\f -> getOneIndexEntry dough2 $ makeAbsFile f) fs3
+    -- fileIxs :: [IndexEntry] <- mapM (\f -> getOneIndexEntry dough2 $ makeAbsFile f) fs3
+    fileIxs :: [IndexEntry] <- mapM ( getOneIndexEntry dough2 . makeAbsFile ) fs3
 
     let fileIxsSorted = case fmap toLower' indexSort of
             Just "title"       -> sortWith title fileIxs
@@ -125,7 +110,7 @@ makeIndexForDir debug pageFn indexFn dough2 indexSort = do
             ]
 
     -- directories
-    dirs <- findDirs fs
+    dirs <- FileIO.findDirs fs
     when debug $ putIOwords
         ["makeIndexForDir", "dirs ", showT pageFn, "\ndirIxs", showT dirs]
     let dirIxs = map oneDirIndexEntry dirs :: [IndexEntry]
@@ -144,7 +129,7 @@ makeIndexForDir debug pageFn indexFn dough2 indexSort = do
     let menu1 = MenuEntry { menu2 = dirIxsSorted2 ++ fileIxsSorted }
     when debug $ putIOwords
         ["makeIndexForDir", "for ", showT pageFn, "\n", showT menu1]
-    let yaml1 = bb2t . encode $ menu1
+    let yaml1 =  encodeT menu1 -- bb2t . encode $ menu1
     when debug $ putIOwords ["makeIndexForDir", "yaml ", yaml1]
 
     return menu1
@@ -163,9 +148,6 @@ getOneIndexEntry :: Path Abs Dir -> Path Abs File -> ErrIO IndexEntry
 -- fill one entry from one mdfile file
 getOneIndexEntry dough2 mdfile = do
     (_, meta2) <- readMd2meta mdfile
---        mdtext :: MarkdownText <- read8 mdfile markdownFileType
---        pandoc <- readMarkdown2 mdtext
---        let meta2 = flattenMeta (getMeta pandoc)
 
     let abstract1 = getAtKey meta2 "abstract" :: Maybe Text
     let title1    = getAtKey meta2 "title" :: Maybe Text
@@ -256,31 +238,14 @@ instance ToJSON PublicationState
 instance FromJSON PublicationState
 
 
---makeIndexEntry :: Path Abs File -> ErrIO IndexEntry
---makeIndexEntry fp = do
---    let paths = reverse $ splitPath (toFilePath fp)
---    let fn = head paths
---    let dir = head . tail $ paths
---    let fnn = takeBaseName fn
---
---
---
---    return $ IndexEntry {text = s2t fnn, link = s2t $ "/" <> dir </> fnn <.> "html"}
-
-
---getDirContentNonHiddenFiles :: FileOps fp => fp -> ErrIO [fp]
---getDirContentNonHiddenFiles fp = do
---    fps  <- getDirContentNonHidden fp
---    filterM doesFileExist' fps
-
 instance AtKey DocValue  Text where
     getAtKey meta2 k2 = getAtKey (unDocValue meta2) k2
 
-    putStringAtKey k2 txt meta2 =
-        DocValue $ putStringAtKey k2 txt (unDocValue meta2)
+    putAtKey k2 txt meta2 =
+        DocValue $ putAtKey k2 txt (unDocValue meta2)
 
 instance AtKey DocValue Bool  where
     getAtKey meta2 k2 = getAtKey (unDocValue meta2) k2
 
-    putStringAtKey k2 b meta2 =
-        DocValue $ putStringAtKey k2 b (unDocValue meta2)
+    putAtKey k2 b meta2 =
+        DocValue $ putAtKey k2 b (unDocValue meta2)

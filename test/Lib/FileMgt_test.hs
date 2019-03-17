@@ -23,8 +23,9 @@ import           Test.Framework
 import Uniform.Filenames
 import Uniform.TypedFile
 import Lib.Foundation   (SiteLayout (..), sourceDir)
-import Lib.FileMgt
+-- import Lib.FileMgt
 import Lib.Foundation_test (testLayout)
+import Uniform.Pandoc 
 
 doughD = doughDir testLayout
 testD = testDir testLayout

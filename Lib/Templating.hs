@@ -24,7 +24,8 @@ import Lib.Indexing (getAtKey)
 
 import Uniform.Filenames
 import Uniform.Json (getAtKey)
-import Uniform.Pandoc (HTMLout(..), readMd2meta)
+import Uniform.Pandoc (dtmplFileType, applyTemplate3
+               , HTMLout(..), readMd2meta, DocValue(..))
 import Uniform.Strings         hiding ( (</>) )
 import Uniform.TypedFile
 

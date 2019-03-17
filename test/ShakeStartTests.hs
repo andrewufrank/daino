@@ -17,21 +17,22 @@ module ShakeStartTests
      where
 
 
-import           Test.Framework
-import Uniform.FileIO            hiding ((<.>), (</>))
-import Uniform.Error
 import Development.Shake
 import Development.Shake.FilePath
-
-import Lib.Foundation -- (progName, SiteLayout (..), layoutDefaults, templatesDirName)
 import Lib.Bake
-import Lib.FileMgt
-import Lib.Foundation_test (testLayout)
-import Lib.Pandoc  -- (markdownToPandoc, pandocToContentHtml,docValToAllVal)
+import Lib.Foundation
+import Lib.Foundation
+
+import Lib.Foundation_test (testLayout) -- (progName, SiteLayout (..), layoutDefaults, templatesDirName)
+import Lib.Pandoc
+-- import Lib.FileMgt
+import Lib.Templating (putValinMaster )
+import Test.Framework  -- (markdownToPandoc, pandocToContentHtml,docValToAllVal)
         -- with a simplified Action ~ ErrIO
 -- import Text.Pandoc  (Pandoc)
-import Lib.Templating (applyTemplate3, putValinMaster )
-import Lib.Foundation (resourcesDirName)
+import Uniform.Error
+import Uniform.FileIO            hiding ((<.>), (</>)) -- (resourcesDirName)
+import Uniform.Pandoc (applyTemplate3, Pandoc, DocValue, HTMLout)
 
 test_shake :: IO ()
 test_shake =  do
@@ -45,8 +46,8 @@ shakeTesting :: SiteLayout -> ErrIO ()
 -- intermediate results
 shakeTesting layout = do
   let
-      doughP      =    doughDir $ layout  -- the regular dough
-      templatesP =   ( themeDir $ layout) `addFileName` (templatesDirName)
+      doughP      =    doughDir  layout  -- the regular dough
+      templatesP =   themeDir  layout `addFileName` templatesDirName
       testP =   testDir layout
     --              staticD = testD </>"static"  -- where all the static files go
 --  setCurrentDir (doughDir layout)

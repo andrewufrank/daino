@@ -19,9 +19,10 @@ module Lib.Pandoc_test  -- (openMain, htf_thisModuelsTests)
 import           Test.Framework
 import Uniform.Test.TestHarness
 import Lib.Foundation (progName, SiteLayout(..), templatesDirName)
-import Lib.FileMgt
+-- import Lib.FileMgt
 --import Lib.YamlBlocks (readMd2meta)
 import Lib.Pandoc
+import Uniform.Pandoc
 import Lib.Foundation_test (testLayout)
 
 --import Text.Pandoc.Definition as PD

@@ -22,10 +22,12 @@ module Lib.ReadSettingFile   -- (openMain, htf_thisModuelsTests)
 --import Uniform.FileStrings
 -- import           Data.Aeson.Lens
 -- import           Data.Yaml                      ( decodeThrow )
-import           Lib.FileMgt
+-- import           Lib.FileMgt
 import           Lib.Foundation -- (getMeta)
 --import Text.Pandoc.Definition
 import           Lib.Pandoc
+import Uniform.Yaml (decodeThrowT, YamlText(..), yamlFileType)
+import Uniform.Json (Value, getAt2Key, getAtKey)
 -- import Lib.YamlBlocks
 import           Uniform.Filenames
 import           Uniform.Strings         hiding ( (</>) )
@@ -54,7 +56,7 @@ readSettings settingsfilename = do
 readSettings2 :: Bool -> YamlText -> ErrIO (SiteLayout, Int)
 -- ^ process the settings file
 readSettings2 debug (YamlText t) = do
-    meta2 :: Value <- decodeThrow . t2b $ t
+    meta2 :: Value <- decodeThrowT t -- decodeThrow . t2b $ t
 
     when debug $ putIOwords ["readSettings2 settings", showT meta2]
 --    let meta2 = flattenMeta (getMeta pandoc)
@@ -62,17 +64,15 @@ readSettings2 debug (YamlText t) = do
 --    let themeDir2 = meta2 ^?   key "themeDir" . _String :: Maybe Text
 --    when debug $ putIOwords ["readSettings2 themedir", showT themeDir2]
 
-    let themeDir2 =
-            meta2 ^? key "storage" . key "themeDir" . _String :: Maybe Text
-    let doughDir2 =
-            meta2 ^? key "storage" . key "doughDir" . _String :: Maybe Text
-    let bakedDir2 =
-            meta2 ^? key "storage" . key "bakedDir" . _String :: Maybe Text
-    let reportFile2 =
-            meta2 ^? key "storage" . key "reportFile" . _String :: Maybe Text
-    let testDir2 =
-            meta2 ^? key "storage" . key "testDir" . _String :: Maybe Text
-    let port = meta2 ^? key "localhostPort" . _Integral :: Maybe Integer
+    let themeDir2 = getAt2Key meta2 "storage"   "themeDir" :: Maybe Text
+        --     meta2 ^? key "storage" . key "themeDir" . _String :: Maybe Text
+    let doughDir2 = getAt2Key meta2 "storage"   "doughDir"  :: Maybe Text
+    let bakedDir2 = getAt2Key meta2
+              "storage"   "bakedDir"   :: Maybe Text
+    let reportFile2 = getAt2Key meta2
+              "storage"   "reportFile"  :: Maybe Text
+    let testDir2 = getAt2Key meta2  "storage"  "testDir"  :: Maybe Text
+    let port = getAtKey meta2  "localhostPort"   :: Maybe Integer
 
 
     let

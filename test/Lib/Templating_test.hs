@@ -25,11 +25,12 @@ import           Lib.Foundation                 ( progName
                                                 )
 import           Lib.Foundation_test            ( testLayout )
 import           Lib.Pandoc
+import Uniform.Pandoc 
 
 --import Uniform.Strings
 import           Lib.Templating -- (applyTemplate2, convGmaster)
 --import Uniform.Filenames
-import           Lib.FileMgt
+-- import           Lib.FileMgt
 --import qualified Text.Glabrous as G
 --import Text.Glabrous (Template, insert) -- , insertMany)
 --import Text.DocTemplates

@@ -21,7 +21,7 @@ module Lib.ReadSettingFile_test  -- (openMain, htf_thisModuelsTests)
 -- import Data.Aeson
 
 -- import Data.Aeson.Lens
-import Lib.FileMgt
+-- import Lib.FileMgt
 import Lib.Foundation                 ( templatesDirName
                                 , progName, SiteLayout(..), templatesDirName)
 import Lib.Foundation_test            ( testLayout )
@@ -33,6 +33,7 @@ import Uniform.Test.TestHarness
 --import Data.Aeson.Encode.Pretty (encodePretty)
 --import Data.ByteString.Lazy as BS (putStrLn)
 -- import Lib.YamlBlocks
+import Uniform.Yaml 
 
 test_currentDir = do
         res <- runErr $ do

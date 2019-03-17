@@ -10,10 +10,10 @@
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE ScopedTypeVariables   #-}
-{-# LANGUAGE TypeFamilies          #-}
-{-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
+{-# LANGUAGE ScopedTypeVariables   #-}
+-- {-# LANGUAGE TypeSynonymInstances  #-}
+{-# LANGUAGE TypeFamilies          #-}
 
 module Lib.Bake  -- (openMain, htf_thisModuelsTests)
      where
@@ -21,13 +21,14 @@ module Lib.Bake  -- (openMain, htf_thisModuelsTests)
 import Uniform.Strings hiding ((</>))
 import Uniform.Filenames
 import Uniform.FileStrings () -- for instances
-import Uniform.TypedFile
+-- import Uniform.TypedFile
 
-import Lib.Pandoc --  (markdownToPandoc, pandocToContentHtml)
+import Lib.Pandoc   (markdownToPandoc, pandocToContentHtml, docValToAllVal)
         -- with a simplified Action ~ ErrIO
 
 import Lib.Templating (putValinMaster)
-import Lib.FileMgt
+import Uniform.Pandoc   (htmloutFileType, write8, Pandoc)
+-- import Lib.FileMgt
 --import Lib.Foundation (masterTemplateFileName)
 --import Data.Aeson
 

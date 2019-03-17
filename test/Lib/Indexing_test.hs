@@ -16,7 +16,7 @@ module Lib.Indexing_test
      where
 
 
-import Lib.FileMgt
+-- import Lib.FileMgt
 import Lib.Foundation (layoutDefaults, doughDir)
 import Lib.Foundation (progName, SiteLayout(..), templatesDirName)
 import Lib.Foundation_test (testLayout)

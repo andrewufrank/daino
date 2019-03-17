@@ -22,9 +22,9 @@ module Lib.Pandoc
     , Pandoc(..)
     , flattenMeta
     , readMarkdown2
-    , _String
-    , key
-    , (^?)
+    -- , _String
+    -- , key
+    -- , (^?)
     )
 where
 
@@ -58,12 +58,12 @@ import           Uniform.Filenames       hiding ( Meta
                                                 )
 import           Uniform.Pandoc
 import           Uniform.Json
-import           Uniform.Time                   ( getDateAsText )
+import           Uniform.Time                   ( getDateAsText, year2000 )
 import              Uniform.BibTex
 import           GHC.Generics
 
 -- (flattenMeta, getMeta, getAtKey
---                 , putStringAtKey, readMarkdown2, unPandocM)
+--                 , putAtKey, readMarkdown2, unPandocM)
 -- import Lib.YamlBlocks (readMd2meta, yaml2value, mergeAll, readYaml2value)
 
 
@@ -112,7 +112,7 @@ pandocToContentHtml :: Bool -> Pandoc -> ErrIO DocValue
 pandocToContentHtml debug pandoc2 = do
     text2 <- writeHtml5String2 pandoc2
     let meta2       = flattenMeta (getMeta pandoc2) :: Value
-    let withContent = putStringAtKey "contentHtml" (unHTMLout text2) meta2
+    let withContent = putAtKey "contentHtml" (unHTMLout text2) meta2
 --    ( meta2) & _Object . at "contentHtml" ?~ String (unHTMLout text2)
     return . DocValue $ withContent
 
@@ -160,7 +160,7 @@ docValToAllVal debug docval pageFn dough2 templateP = do
     now          <- getDateAsText
     fn2          <- stripProperPrefix' dough2 pageFn
     let bottomLines = BottomLines { ssgversion = showVersionT version
-                                  , today      = year2000
+                                  , today      = showT year2000
                                   , filename   = showT fn2
                                   }
 
@@ -190,8 +190,8 @@ docValToAllVal debug docval pageFn dough2 templateP = do
     --                       ]  -- last winns!
     -- add the bottom line
     --        callIO $ toCalendarTime =<< getClockTime
---        let val3 = putStringAtKey  "ssgversion" (s2t$ showVersion version) .
---                    putStringAtKey  "today" now $ val
+--        let val3 = putAtKey  "ssgversion" (s2t$ showVersion version) .
+--                    putAtKey  "today" now $ val
     return val
 
 
