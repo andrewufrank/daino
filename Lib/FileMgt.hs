@@ -17,7 +17,7 @@
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE TypeFamilies          #-}
 -- {-# LANGUAGE TypeSynonymInstances  #-}
-{-# LANGUAGE OverloadedStrings     #-}
+-- {-# LANGUAGE OverloadedStrings     #-}
 
 module Lib.FileMgt
      where

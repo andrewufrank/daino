@@ -9,8 +9,8 @@ packages:
 - ../uniform/uniform-time
 - ../uniform/uniform-error
 - ../uniform/uniform-json
+- ../uniform/uniform-pandoc
 - ../fromOthers/bibtex
-
 # - ../fromOthers/shake-path
 
 extra-deps:

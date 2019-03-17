@@ -17,11 +17,11 @@
 module Lib.ReadSettingFile   -- (openMain, htf_thisModuelsTests)
                            where
 
-import           Control.Lens                   ( (^?) )
-import           Data.Aeson
+-- import           Control.Lens                   ( (^?) )
+-- import           Data.Aeson
 --import Uniform.FileStrings
-import           Data.Aeson.Lens
-import           Data.Yaml                      ( decodeThrow )
+-- import           Data.Aeson.Lens
+-- import           Data.Yaml                      ( decodeThrow )
 import           Lib.FileMgt
 import           Lib.Foundation -- (getMeta)
 --import Text.Pandoc.Definition

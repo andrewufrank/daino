@@ -14,17 +14,18 @@
 module Lib.Indexing (module Lib.Indexing
     , getMaybeStringAtKey) where
 
-import           Data.Aeson                    as A
-import           Data.Yaml                     as Y
+-- import           Data.Aeson                    as A
+-- import           Data.Yaml                     as Y
 import           Development.Shake.FilePath
 import           GHC.Exts                       ( sortWith )
-import           Lib.FileMgt                    ( DocValue(..), unDocValue)
+import           Lib.FileMgt                  --  ( DocValue(..), unDocValue)
 import qualified Uniform.FileIO                as FileIO
 import           Uniform.FileIO          hiding ( (<.>)
                                                 , (</>)
                                                  )  
 import           Uniform.Json
-import           Uniform.Pandoc (HTMLout, readMd2meta)
+import           Uniform.Json (FromJSON(..))  
+import           Uniform.Pandoc (HTMLout, readMd2meta, DocValue (..))
 -- import           Uniform.Strings         hiding ( (<.>)
 --                                                 , (</>)
 --                                                 )
@@ -143,7 +144,7 @@ makeIndexForDir debug pageFn indexFn dough2 indexSort = do
     let menu1 = MenuEntry { menu2 = dirIxsSorted2 ++ fileIxsSorted }
     when debug $ putIOwords
         ["makeIndexForDir", "for ", showT pageFn, "\n", showT menu1]
-    let yaml1 = bb2t . Y.encode $ menu1
+    let yaml1 = bb2t . encode $ menu1
     when debug $ putIOwords ["makeIndexForDir", "yaml ", yaml1]
 
     return menu1
@@ -241,7 +242,7 @@ instance Zeros IndexEntry where
 --instance FromJSON IndexEntry
 instance ToJSON IndexEntry
 instance FromJSON IndexEntry where
-    parseJSON = genericParseJSON defaultOptions { omitNothingFields = True }
+    parseJSON = genericParseJSON defaultOptions {omitNothingFields = True}
 
 data PublicationState = PSpublish | PSdraft | PSold | PSzero
         deriving (Generic,  Show, Read, Ord, Eq)

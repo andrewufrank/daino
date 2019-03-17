@@ -17,10 +17,10 @@ module Lib.ReadSettingFile_test  -- (openMain, htf_thisModuelsTests)
                                 where
 
 
-import Control.Lens
-import Data.Aeson
+-- import Control.Lens
+-- import Data.Aeson
 
-import Data.Aeson.Lens
+-- import Data.Aeson.Lens
 import Lib.FileMgt
 import Lib.Foundation                 ( templatesDirName
                                 , progName, SiteLayout(..), templatesDirName)
