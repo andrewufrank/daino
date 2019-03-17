@@ -19,30 +19,22 @@
 module Lib.Shake
      where
 
-import Uniform.Strings (putIOwords) -- hiding ((<.>), (</>))
-import Uniform.FileIO -- (toFilePath, makeAbsFile
+import Development.Shake -- hiding ((<.>), (</>))
+import Development.Shake.FilePath -- (toFilePath, makeAbsFile
 --                , makeRelFile, makeRelDir, stripProperPrefix')
          hiding ((<.>), (</>))
-import Uniform.FileStrings () -- for instances
---import Uniform.Error
---import Lib.Templating
-
-
+import Lib.Bake -- for instances
 import Lib.Foundation (SiteLayout (..), templatesDirName, staticDirName)
-import Lib.Bake
+import Uniform.FileIO
 
-import Development.Shake
---import Development.Shake.Command
-import Development.Shake.FilePath
---import Development.Shake.Util
---import Development.Shake.Linters (yamllint)  -- how does this work (needs shake-ext)
---import Path.IO (setCurrentDir)
+import Uniform.FileStrings ()
+import Uniform.Strings (putIOwords)
 
 shakeDelete :: SiteLayout ->  FilePath ->   ErrIO ()
--- experimental - twich found delete of md
+-- ^ experimental - twich found delete of md
 shakeDelete _ filepath = do
     putIOwords ["\n\n*******************************************"
-            ,"DELETED MD", s2t filepath]
+            ,"experimental -- twich found  DELETED MD file ", s2t filepath]
 
 shake :: SiteLayout ->  FilePath ->   ErrIO ()
 -- the second argument is the file which has changed

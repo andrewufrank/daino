@@ -28,9 +28,6 @@ import Lib.Pandoc   (markdownToPandoc, pandocToContentHtml, docValToAllVal)
 
 import Lib.Templating (putValinMaster)
 import Uniform.Pandoc   (htmloutFileType, write8, Pandoc)
--- import Lib.FileMgt
---import Lib.Foundation (masterTemplateFileName)
---import Data.Aeson
 
 bakeOneFileFPs :: FilePath -> FilePath -> FilePath -> FilePath -> ErrIO ()
 -- this is called from shake and produce the final html
