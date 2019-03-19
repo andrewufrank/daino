@@ -29,24 +29,24 @@ import Lib.Pandoc   (markdownToPandoc, pandocToContentHtml, docValToAllVal)
 import Lib.Templating (putValinMaster)
 import Uniform.Pandoc   (htmloutFileType, write8, Pandoc)
 
-bakeOneFileFPs :: FilePath -> FilePath -> FilePath -> FilePath -> ErrIO ()
--- this is called from shake and produce the final html
--- bake one file absolute fp , page template and result html
--- exceptionally calls with FilePath (usually the files are read in shake and
--- passed the values)
--- list the needed files
-bakeOneFileFPs md doughD templatesD ht = do
-        putIOwords ["bakeOneFileFPs - from shake xx", s2t md]
-            --baked/SGGdesign/Principles.md
-        let md2 = makeAbsFile md
-        let dough2 = makeAbsDir doughD
-        let templates2 = makeAbsDir templatesD
-        let ht2 = makeAbsFile ht
-        when False $ putIOwords ["bakeOneFileIO - files", showT md2
-                    , "\ntemplate: ", showT templates2, "\noutput file: ", showT ht2]
---        let masterSettings = makeAbsFile masterSettingsFn
-        res <- bakeOneFile False md2 dough2 templates2 ht2
-        putIOwords ["bakeOneFileFPs - done", showT ht2, res]
+-- bakeOneFileFPs :: FilePath -> FilePath -> FilePath -> FilePath -> ErrIO ()
+-- -- this is called from shake and produce the final html
+-- -- bake one file absolute fp , page template and result html
+-- -- exceptionally calls with FilePath (usually the files are read in shake and
+-- -- passed the values)
+-- -- list the needed files
+-- bakeOneFileFPs md doughD templatesD ht = do
+--         putIOwords ["bakeOneFileFPs - from shake xx", s2t md]
+--             --baked/SGGdesign/Principles.md
+--         let md2 = makeAbsFile md
+--         let dough2 = makeAbsDir doughD
+--         let templates2 = makeAbsDir templatesD
+--         let ht2 = makeAbsFile ht
+--         when False $ putIOwords ["bakeOneFileIO - files", showT md2
+--                     , "\ntemplate: ", showT templates2, "\noutput file: ", showT ht2]
+-- --        let masterSettings = makeAbsFile masterSettingsFn
+--         res <- bakeOneFile False md2 dough2 templates2 ht2
+--         putIOwords ["bakeOneFileFPs - done", showT ht2, res]
 
 
 bakeOneFile :: Bool -> Path Abs File -> Path Abs Dir

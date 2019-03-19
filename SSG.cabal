@@ -7,7 +7,7 @@ build-type: Simple
 library
     exposed-modules:
         Lib.Bake
-        -- Lib.Shake
+        Lib.Shake2
         -- Lib.FileMgt
         Lib.Templating
         Lib.Pandoc

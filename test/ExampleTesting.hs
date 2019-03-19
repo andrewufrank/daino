@@ -14,31 +14,32 @@ import System.Directory (createDirectoryIfMissing)
 
 import           Test.Framework
 
-import {-@ HTF_TESTS @-} ShakeStartTests
--- must run first because it produces the test values used later
--- uses layoutDefaults, not settings2.yaml
--- test dir must be ~/.SSG  -- the program name in foundation
+import {-@ HTF_TESTS @-} Lib.Shake_test
+-- import {-@ HTF_TESTS @-} ShakeStartTests
+-- -- must run first because it produces the test values used later
+-- -- uses layoutDefaults, not settings2.yaml
+-- -- test dir must be ~/.SSG  -- the program name in foundation
 
-import {-@ HTF_TESTS @-} Lib.Foundation_test
-import {-@ HTF_TESTS @-} Lib.CheckInputs_test
+-- import {-@ HTF_TESTS @-} Lib.Foundation_test
+-- import {-@ HTF_TESTS @-} Lib.CheckInputs_test
 
 
-----    -- writes A : testLayout
-----    --  pageFn :: abs pandoc filenames
+-- ----    -- writes A : testLayout
+-- ----    --  pageFn :: abs pandoc filenames
 
-import {-@ HTF_TESTS @-} Lib.Pandoc_test
-            --  -> AD markdownToPandoc
-            -- -> AF pandocToContentHtml
-            -- -> AG (docValToAllVal)
---    -- test_pandoc_pageFn_pageMd_1 - pageFn -> pageMd : MarkdownText
---    -- AK :: MarkdownText -> BE  DocValue
---    -- Md ->AD :: Pandoc
---    -- AD -> AF :: DocValue
---import {-@ HTF_TESTS @-} Lib.Bake_test
---import {-@ HTF_TESTS @-} Lib.ReadSettingFile_test
-import {-@ HTF_TESTS @-} Lib.Indexing_test
-import {-@ HTF_TESTS @-} Lib.Templating_test  -- AG -> EG 
---import {-@ HTF_TESTS @-} Lib.BibTex_test
+-- import {-@ HTF_TESTS @-} Lib.Pandoc_test
+--             --  -> AD markdownToPandoc
+--             -- -> AF pandocToContentHtml
+--             -- -> AG (docValToAllVal)
+-- --    -- test_pandoc_pageFn_pageMd_1 - pageFn -> pageMd : MarkdownText
+-- --    -- AK :: MarkdownText -> BE  DocValue
+-- --    -- Md ->AD :: Pandoc
+-- --    -- AD -> AF :: DocValue
+-- --import {-@ HTF_TESTS @-} Lib.Bake_test
+-- --import {-@ HTF_TESTS @-} Lib.ReadSettingFile_test
+-- import {-@ HTF_TESTS @-} Lib.Indexing_test
+-- import {-@ HTF_TESTS @-} Lib.Templating_test  -- AG -> EG 
+-- --import {-@ HTF_TESTS @-} Lib.BibTex_test
 --
 --
 ---- main =  do  -- the local tests only
