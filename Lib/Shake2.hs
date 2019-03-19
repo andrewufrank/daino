@@ -19,16 +19,20 @@
 module Lib.Shake2
      where
 
-import Uniform.FileIO hiding ((<.>), (</>))
-import Uniform.Shake.Path
+import qualified Uniform.FileIO  as FIO -- hiding ((<.>), (</>))
+import Uniform.FileIO (Path, Abs, Rel, File, Dir, (<.>), (</>), toFilePath)
+import Uniform.Shake.Path (replaceExtension, needP, getDirectoryFilesP)
 import Uniform.Shake 
-import Uniform.Error ()
-import Development.Shake -- hiding ((<.>), (</>))
-import Development.Shake.FilePath -- (toFilePath, makeAbsFile
+import Uniform.Error (ErrIO, callIO, liftIO)
+import Uniform.Strings (showT, putIOwords)
+-- import Path 
+import  Development.Shake ((?>), (?==), phony, want )
+import qualified Development.Shake as Sh --  hiding ((<.>), (</>), (-<.>))
+import qualified Development.Shake.FilePath  as ShD-- (toFilePath, makeAbsFile
 --                , makeRelFile, makeRelDir, stripProperPrefix')
-        --  hiding ((<.>), (</>))
+         hiding ((<.>), (</>), (-<.>) , replaceExtension)
 
-import Lib.Foundation (progName, SiteLayout (..)
+import Lib.Foundation (SiteLayout (..)
         , templatesDirName,  templatesImgDirName
         , staticDirName, resourcesDirName)
 
@@ -41,19 +45,19 @@ bakeAll bannerImageFileName layout = do
     let  -- where the layout is used, rest in shakeWrapped
           doughP      =    doughDir  layout  -- the regular dough
           templatesP =   themeDir layout
-                               `addFileName` templatesDirName
+                               `FIO.addFileName` templatesDirName
           bakedP =  bakedDir  layout
-    setCurrentDir doughP
-    deleteDirRecursive bakedP
+    FIO.setCurrentDir doughP
+    FIO.deleteDirRecursive bakedP
 
     -- copy resources and banner   not easy to do with shake
     -- only the html and the pdf files (possible the jpg) are required
 --    copyDirRecursive (doughP `addDir` resourcesDirName)   (bakedP `addDir` staticDirName)
 
-    let bannerImage = templatesImgDirName `addFileName` bannerImageFileName
+    let bannerImage = templatesImgDirName `FIO.addFileName` bannerImageFileName
 
-    copyOneFile (templatesP `addFileName` bannerImage)
-        (bakedP `addDir` staticDirName `addDir` bannerImage)
+    FIO.copyOneFile (templatesP `FIO.addFileName` bannerImage)
+        (bakedP `FIO.addDir` staticDirName `FIO.addDir` bannerImage)
 
     -- convert md files and copy css
     callIO $ shakeMD layout  doughP templatesP bakedP
@@ -65,18 +69,18 @@ shakeMD :: SiteLayout -> Path Abs Dir  -> Path Abs Dir -> Path Abs Dir  -> IO ()
 -- in IO
 shakeMD layout  doughP templatesP bakedP =
 --    shakeArgs2 bakedP $ do
-    shakeArgs shakeOptions {shakeFiles=toFilePath bakedP -- TODO
-                , shakeVerbosity=Chatty -- Loud -- Diagnostic --
-                , shakeLint=Just LintBasic
+    Sh.shakeArgs Sh.shakeOptions {Sh.shakeFiles=toFilePath bakedP -- TODO
+                , Sh.shakeVerbosity=Sh.Chatty -- Loud -- Diagnostic --
+                , Sh.shakeLint=Just Sh.LintBasic
 --                , shakeRebuild=[(RebuildNow,"allMarkdownConversion")]
 --                  seems not to produce an effect
-                } $ do
+                } $ do  -- in Rule () 
 
         -- let doughD = toFilePath doughP
         --     templatesD = toFilePath templatesP
         --     bakedP = toFilePath bakedP
-        let staticP =   bakedP `addFileName`  staticDirName  -- ok
-        let resourcesDir =   doughP `addFileName`  resourcesDirName
+        let staticP =   bakedP `FIO.addFileName`  staticDirName  -- ok
+        let resourcesDir =   doughP `FIO.addFileName`  resourcesDirName
 
         liftIO $ putIOwords ["\nshake dirs", "\n\tstaticP", showT staticP, "\n\tbakedP", showT bakedP
                         ,"\nresourcesDir", showT resourcesDir]
@@ -84,11 +88,15 @@ shakeMD layout  doughP templatesP bakedP =
         want ["allMarkdownConversion"]
         phony "allMarkdownConversion" $ do
 
-            mdFiles1 <- getDirectoryFilesP  doughP ["**/*.md"]   -- subfiledirectories
-            let htmlFiles2 = [(toFilePath bakedP) </> (toFilePath md) -<.> "html" | md <- mdFiles1] -- , not $ isInfixOf' "index.md" md]
+            mdFiles1 :: [Path Rel File] <- getDirectoryFilesP  doughP ["**/*.md"]   -- subfiledirectories
+            let htmlFiles2 = map (\f -> bakedP </> f) mdFiles1
+                        -- [( bakedP </>  md) -<.> "html" | md <- mdFiles1] 
+                                    :: [Path Abs File]
+                            -- , not $ isInfixOf' "index.md" md]
+            let htmlFiles3 = map (replaceExtension "html") htmlFiles2 :: [Path Abs File]
             liftIO $ putIOwords ["============================\nshakeWrapped - mdFile 1",  showT   mdFiles1]
-            liftIO $ putIOwords ["\nshakeWrapped - htmlFile 2",  showT  htmlFiles2]
-            need htmlFiles2
+            liftIO $ putIOwords ["\nshakeWrapped - htmlFile 2",  showT  htmlFiles3]
+            needP htmlFiles3
 
 --             cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs
 --             let cssFiles2 = [replaceDirectory c staticP  | c <- cssFiles1]
@@ -111,11 +119,14 @@ shakeMD layout  doughP templatesP bakedP =
         (\x -> (((toFilePath bakedP) <> "**/*.html") ?== x) 
                             && not  (((toFilePath staticP) <> "**/*.html") ?== x)) -- with subdir
                   ?> \out -> do
+            let out2 = FIO.makeRelFile out  
             liftIO $ putIOwords ["\nshakeWrapped - bakedP html -  out ", showT out]
-            let md = makeAbsFile $ (toFilePath doughP)</>  (makeRelative (toFilePath bakedP) $ out -<.> "md")
+            let out3 = bakedP </> FIO.makeRelFile out :: Path Abs File
+            let md = replaceExtension "md" out2 :: Path Rel File  --  <-    out2 -<.> "md"  
+            let md2 = doughP </> md :: Path Abs File 
             liftIO $ putIOwords ["\nshakeWrapped - bakedP html - c ", showT bakedP, "file", showT md]
-            let outP = makeAbsFile out 
-            res <- runErr2action $ bakeOneFile True  md  doughP templatesP outP
+            let outP = FIO.makeAbsFile out 
+            res <- runErr2action $ bakeOneFile True  md2  doughP templatesP outP
             return ()
         -- (staticP <> "**/*.html" ) %> \out -> do  -- with subdir
         --     liftIO $ putIOwords ["\nshakeWrapped - staticP ok - *.html", showT staticP, "file", showT out]

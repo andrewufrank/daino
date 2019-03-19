@@ -43,6 +43,8 @@ library
         -- aeson-pretty -any,
         -- yaml-union -any,
         shake -any
+        , path==0.6.1.1
+
         -- shake-path
         -- yaml -any,
         -- bibtex ==0.1.0.8,
@@ -113,7 +115,7 @@ test-suite ssgTest
         Lib.CheckInputs_test
         Lib.Templating_test
         Lib.Indexing_test
-        Lib.ShakeTest
+        Lib.Shake_test
     default-language: Haskell2010
     ghc-options: -Wall
     build-depends:
@@ -128,10 +130,11 @@ test-suite ssgTest
         uniform-json,
         uniform-pandoc,
         
-        SSG -any,
-        directory -any,
+        SSG -any
+        , directory -any 
         -- doctemplates -any,
-        shake -any
+        , shake -any
+        , path==0.6.1.1
         -- pandoc -any,
         -- lens-aeson -any,
         -- lens -any,

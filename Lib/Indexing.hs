@@ -23,10 +23,12 @@ import           Uniform.FileIO          hiding ( (<.>)
                                                  )  
 import           Uniform.Json
 import           Uniform.Json (FromJSON(..))  
-import           Uniform.Pandoc (HTMLout, readMd2meta
-                        , DocValue (..), unDocValue)
+import           Uniform.Pandoc (readMd2meta
+                        , DocValue (..)
+                        -- , unDocValue
+                        , getAtKey )
 import           Uniform.Time                   ( readDate3
-                                                , UTCTime(..)
+                                                -- , UTCTime(..)
                                                 , year2000
                                                 )
 
@@ -236,16 +238,3 @@ instance NiceStrings PublicationState where
 
 instance ToJSON PublicationState
 instance FromJSON PublicationState
-
-
-instance AtKey DocValue  Text where
-    getAtKey meta2 k2 = getAtKey (unDocValue meta2) k2
-
-    putAtKey k2 txt meta2 =
-        DocValue $ putAtKey k2 txt (unDocValue meta2)
-
-instance AtKey DocValue Bool  where
-    getAtKey meta2 k2 = getAtKey (unDocValue meta2) k2
-
-    putAtKey k2 b meta2 =
-        DocValue $ putAtKey k2 b (unDocValue meta2)

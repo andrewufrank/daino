@@ -28,17 +28,7 @@ module Lib.Pandoc
     )
 where
 
--- import           Control.Lens ((^?), (?~), (&), at)
--- import           Data.Aeson
--- import           Data.Aeson.Lens
--- import           Data.Aeson(Value(Object))
--- import           Data.Version (showVersion)
--- import qualified Data.Yaml as Y
--- import           Data.Yaml.Union
--- import           Lib.BibTex
---import Text.Pandoc.Shared (stringify)
 
---import Uniform.Error hiding (Meta, at)
 import           Lib.Foundation                 ( settingsFileName )
 import           Lib.Indexing -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
 --            , unDocValue, DocValue (..) )
@@ -48,14 +38,14 @@ import           Uniform.Convenience.DataVarious
 import           Uniform.FileIO          hiding ( Meta
                                                 , at
                                                 )
-import           Uniform.Filenames       hiding ( Meta
-                                                , at
-                                                )
+-- import           Uniform.Filenames       hiding ( Meta
+--                                                 , at
+--                                                 )
 import           Uniform.Pandoc
-import           Uniform.Json
+-- import           Uniform.Json
 import           Uniform.Time                   ( getDateAsText, year2000 )
 import              Uniform.BibTex
-import           GHC.Generics
+-- import           GHC.Generics
 
 -- (flattenMeta, getMeta, getAtKey
 --                 , putAtKey, readMarkdown2, unPandocM)
@@ -79,7 +69,7 @@ markdownToPandoc debug doughP mdfile = do
     (pandoc, meta2) <- readMd2meta mdfile
 --    pandoc   <- readMarkdown2
 --    let meta2 = flattenMeta (getMeta pandoc)
-    let publish = getAtKey meta2 "publish" :: Maybe Text
+    let publishTest = getAtKey meta2 "publish" :: Maybe Text
     if True  -- needs proper selection before shaking
             -- isNothing publish || (fmap toLower' publish) == Just "true" || (fmap toLower' publish) == Just "draft"
         then do
@@ -98,7 +88,7 @@ markdownToPandoc debug doughP mdfile = do
 
             return . Just $ pandoc2
         else do
-            putIOwords ["markdownToPandoc", "NOT PUBLISH", showT publish]
+            putIOwords ["markdownToPandoc", "NOT PUBLISH", showT publishTest]
             return Nothing
 
 pandocToContentHtml :: Bool -> Pandoc -> ErrIO DocValue

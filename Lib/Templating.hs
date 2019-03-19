@@ -23,7 +23,7 @@ import Lib.Indexing (getAtKey)
 
 import Uniform.Filenames
 import Uniform.Pandoc (dtmplFileType, applyTemplate3
-               , HTMLout(..), readMd2meta, DocValue(..))
+               , HTMLout(..),  DocValue(..))
 import Uniform.TypedFile
 
 putValinMaster :: Bool -> DocValue -> Path Abs Dir -> ErrIO HTMLout
