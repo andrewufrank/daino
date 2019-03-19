@@ -42,32 +42,32 @@ res2 =
 --    Right
 --      (MenuEntry{menu2 = []})
 
-    Right
-     (MenuEntry{menu2 =
-      [IndexEntry{text =
-                    "\"/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/\"",
-                  link = "SubBlog/index.html", title = "SubBlog (subdirectory)",
-                  abstract = "", author = "", date = "", publish = ""},
-       IndexEntry{text = "", link = "", title = "------", abstract = "",
-                  author = "", date = "", publish = ""},
-       IndexEntry{text = "postTufteStyled",
-                  link = "/Blog/postTufteStyled.html", title = "postTufteStyle.md",
-                  abstract = "A silly text not needing an abstract updated.",
-                  author = "auf", date = "2019-01-04 00:00:00 UTC",
-                  publish = "publish"},
-       IndexEntry{text = "postwk", link = "/Blog/postwk.html",
-                  title = "postwk.md",
-                  abstract = "A silly text not needing an abstract.", author = "AUF",
-                  date = "2019-01-04 00:00:00 UTC", publish = "publish"},
-       IndexEntry{text = "postwk9", link = "/Blog/postwk9.html",
-                  title = "postwk9.md",
-                  abstract = "A silly text not needing an abstract.", author = "AUF",
-                  date = "2019-01-04 00:00:00 UTC", publish = "publish"},
-       IndexEntry{text = "postwkTufte", link = "/Blog/postwkTufte.html",
-                  title = "postwkTufte.md",
-                  abstract = "A silly text not needing an abstract updated.",
-                  author = "auf", date = "2019-01-04 00:00:00 UTC",
-                  publish = "publish"}]})
+      Right
+        (MenuEntry{menu2 =
+                [IndexEntry{text =
+                             "Path Abs Dir /home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/",
+                           link = "SubBlog/index.html", title = "SubBlog (subdirectory)",
+                           abstract = "", author = "", date = "", publish = ""},
+                IndexEntry{text = "", link = "", title = "------", abstract = "",
+                           author = "", date = "", publish = ""},
+                IndexEntry{text = "postTufteStyled",
+                           link = "/Blog/postTufteStyled.html", title = "postTufteStyle.md",
+                           abstract = "A silly text not needing an abstract updated.",
+                           author = "auf", date = "2019-01-04 00:00:00 UTC",
+                           publish = "publish"},
+                IndexEntry{text = "postwk", link = "/Blog/postwk.html",
+                           title = "postwk.md",
+                           abstract = "A silly text not needing an abstract.", author = "AUF",
+                           date = "2019-01-04 00:00:00 UTC", publish = "publish"},
+                IndexEntry{text = "postwk9", link = "/Blog/postwk9.html",
+                           title = "postwk9.md",
+                           abstract = "A silly text not needing an abstract.", author = "AUF",
+                           date = "2019-01-04 00:00:00 UTC", publish = "publish"},
+                IndexEntry{text = "postwkTufte", link = "/Blog/postwkTufte.html",
+                           title = "postwkTufte.md",
+                           abstract = "A silly text not needing an abstract updated.",
+                           author = "auf", date = "2019-01-04 00:00:00 UTC",
+                           publish = "publish"}]})
 
 index1 = IndexEntry{
     text = "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/"
