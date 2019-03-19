@@ -20,10 +20,10 @@ import           Test.Framework
 import Uniform.Test.TestHarness
 
 
-import Lib.Foundation (progName, SiteLayout (..))
+import Lib.Foundation (progName, SiteLayout (..), templatesDirName)
 import Lib.Shake2
 -- import Lib.FileMgt
--- import Lib.Foundation_test (testLayout)
+import Lib.Foundation_test (testLayout)
 -- import Lib.Foundation (templatesDirName)
 -- import Uniform.Json (AtKey(..), Value(..))
 -- import Uniform.Pandoc -- (DocValue(..), unDocValue, docValueFileType)
@@ -35,8 +35,10 @@ import Lib.Shake2
 --import Data.Aeson.Encode.Pretty (encodePretty)
 --import Data.ByteString.Lazy as BS (putStrLn)
 
-test_shakeMD = assertEqual () $
-                shakeWrapped (doughDir layoutDefaults)
-                ((themeDir $ layout) `addFileName` ( templatesDirName))
-                (makeAbsDir "/home/frank/.SSG/bakedTest")
-
+test_shakeMD = do 
+    shakeMD testLayout 
+                    (doughDir testLayout)
+                    ((themeDir $ testLayout) `addFileName` ( templatesDirName)
+                            :: Path Abs Dir)
+                    (makeAbsDir "/home/frank/.SSG/bakedTest")
+    assertBool False 

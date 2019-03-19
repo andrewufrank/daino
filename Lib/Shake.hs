@@ -191,14 +191,14 @@ shakeWrapped doughP templatesP bakedP = shakeArgs2 bakedP $ do
         copyFileChanged (replaceDirectory out templatesD) out
 
 
-instance Exception Text
+-- instance Exception Text
 
-runErr2action :: ErrIO a -> Action a
-runErr2action op = liftIO $ do
-    res <- runErr  op
-    case res of
-        Left msg -> throw msg
-        Right a -> return a
+-- runErr2action :: ErrIO a -> Action a
+-- runErr2action op = liftIO $ do
+--     res <- runErr  op
+--     case res of
+--         Left msg -> throw msg
+--         Right a -> return a
 
 --makeOneMaster :: FilePath -> FilePath -> FilePath -> IO ()
 ---- makes the master plus page style in template
