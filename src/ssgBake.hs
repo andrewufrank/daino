@@ -21,6 +21,8 @@ module Main     where      -- must have Main (main) or Main where
 import Uniform.Convenience.StartApp
 import Uniform.FileIO hiding ((<.>), (</>))
 import Uniform.Shake.Path
+import Uniform.Shake 
+import Uniform.Error ()
 
 import Lib.Bake
 -- import Lib.Shake
@@ -98,13 +100,13 @@ shakeMD layout  doughP templatesP bakedP =
         let resourcesDir =   doughP `addFileName`  resourcesDirName
 
         liftIO $ putIOwords ["\nshake dirs", "\n\tstaticP", showT staticP, "\n\tbakedP", showT bakedP
-                        ,"\nresourcesDir", s2t resourcesDir]
+                        ,"\nresourcesDir", showT resourcesDir]
 
         want ["allMarkdownConversion"]
         phony "allMarkdownConversion" $ do
 
-            mdFiles1 <- getDirectoryFilesP  doghP ["**/*.md"]   -- subfiledirectories
-            let htmlFiles2 = [bakedP </> md -<.> "html" | md <- mdFiles1] -- , not $ isInfixOf' "index.md" md]
+            mdFiles1 <- getDirectoryFilesP  doughP ["**/*.md"]   -- subfiledirectories
+            let htmlFiles2 = [(toFilePath bakedP) </> (toFilePath md) -<.> "html" | md <- mdFiles1] -- , not $ isInfixOf' "index.md" md]
             liftIO $ putIOwords ["============================\nshakeWrapped - mdFile 1",  showT   mdFiles1]
             liftIO $ putIOwords ["\nshakeWrapped - htmlFile 2",  showT  htmlFiles2]
             need htmlFiles2
@@ -127,14 +129,15 @@ shakeMD layout  doughP templatesP bakedP =
 --             liftIO $ putIOwords ["\nshakeWrapped - html 22 files", showT htmlFiles22]
 --             need htmlFiles22
 
-        (\x -> ((bakedP <> "**/*.html") ?== x) && not  ((staticP <> "**/*.html") ?== x)) -- with subdir
+        (\x -> (((toFilePath bakedP) <> "**/*.html") ?== x) 
+                            && not  (((toFilePath staticP) <> "**/*.html") ?== x)) -- with subdir
                   ?> \out -> do
             liftIO $ putIOwords ["\nshakeWrapped - bakedP html -  out ", showT out]
-            let md =   doghP </>  (makeRelative bakedP $ out -<.> "md")
+            let md = makeAbsFile $ (toFilePath doughP)</>  (makeRelative (toFilePath bakedP) $ out -<.> "md")
             liftIO $ putIOwords ["\nshakeWrapped - bakedP html - c ", showT bakedP, "file", showT md]
-
-            runErr2action $ bakeOneFileFPs  md  doghP templatesD out
-
+            let outP = makeAbsFile out 
+            res <- runErr2action $ bakeOneFile True  md  doughP templatesP outP
+            return ()
         -- (staticP <> "**/*.html" ) %> \out -> do  -- with subdir
         --     liftIO $ putIOwords ["\nshakeWrapped - staticP ok - *.html", showT staticP, "file", showT out]
         --     let fromfile = resourcesDir </> (makeRelative staticP out)

@@ -26,6 +26,7 @@ import Development.Shake.FilePath -- (toFilePath, makeAbsFile
 import Lib.Bake -- for instances
 import Lib.Foundation (SiteLayout (..), templatesDirName, staticDirName)
 import Uniform.FileIO
+import Uniform.Error 
 
 import Uniform.FileStrings ()
 import Uniform.Strings (putIOwords)

@@ -25,7 +25,8 @@ library
     build-depends:
         base == 4.*
         , uniform-algebras -any
-        ,  uniform-strings -any,
+        ,  uniform-strings -any
+        ,uniform-shake,
           uniform-fileio -any,
         uniform-error -any,
               uniform-time -any,
@@ -59,7 +60,7 @@ executable ssgbake
         uniform-convenience -any,
         uniform-fileio -any,
         uniform-error -any,
-        uniform-shake, 
+        uniform-shake ==0.0.0.3, 
         SSG -any,
         shake ==0.17.6,
         scotty -any,
