@@ -11,24 +11,22 @@
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE TypeFamilies          #-}
--- {-# LANGUAGE TypeSynonymInstances  #-}
+{-# LANGUAGE TypeSynonymInstances  #-}
+{-# LANGUAGE OverloadedStrings     #-}
 
 module Lib.CheckInput where
 
-import Lib.Foundation
-import Lib.Indexing
+import           Uniform.Strings         hiding ( (</>) )
+import           Uniform.Filenames
 -- import Uniform.FileStrings
--- import Lib.YamlBlocks                 ( Value
-                                                -- , readMd2meta
-                                                -- , getAtKey
-                                                -- )
--- import Text.Pandoc
-import Uniform.Filenames
-import Uniform.Json
-import Lib.Pandoc (Pandoc)
-import Uniform.Pandoc (readMd2meta)
-import Uniform.Json (getAtKey)
-import Uniform.Strings         hiding ( (</>) )
+import           Lib.Foundation
+import           Lib.YamlBlocks                 ( Value
+                                                , readMd2meta
+                                                , getMaybeStringAtKey
+                                                )
+import           Lib.Indexing
+
+import           Text.Pandoc
 
 
 checkAllInputs :: SiteLayout -> [Path Rel File] -> ErrIO ()
@@ -49,9 +47,8 @@ checkOneMdFile dough2 mdfn = do
   ixEntry                       <- getOneIndexEntry dough2 (dough2 </> mdfn)
   -- what needs to be checked ? 
 
-  -- let doindex1 =  maybe False ("True"==) $ getAtKey meta2 "indexPage"  :: Bool
-  let doindex2 = fromMaybe b
-        where b = getAtKey meta2 "indexPage" :: Maybe Bool
+  -- let doindex1 =  maybe False ("True"==) $ getMaybeStringAtKey meta2 "indexPage"  :: Bool
+  let doindex2 = maybe False id $ getMaybeStringAtKey meta2 "indexPage" :: Bool
 
 
   putIOwords ["checkOneMdFile end", showT meta2]

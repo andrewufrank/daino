@@ -92,62 +92,62 @@ shakeMD layout  doughP templatesP bakedP =
 
         -- let doughD = toFilePath doughP
         --     templatesD = toFilePath templatesP
-        --     bakedD = toFilePath bakedP
+        --     bakedP = toFilePath bakedP
         let staticP =   bakedP `addFileName`  staticDirName  -- ok
         let resourcesDir =   doughP `addFileName`  resourcesDirName
 
-        liftIO $ putIOwords ["\nshake dirs", "\n\tstaticD", showT staticD, "\n\tbakedD", showT bakedD
+        liftIO $ putIOwords ["\nshake dirs", "\n\tstaticP", showT staticP, "\n\tbakedP", showT bakedP
                         ,"\nresourcesDir", s2t resourcesDir]
 
         want ["allMarkdownConversion"]
         phony "allMarkdownConversion" $ do
 
-            mdFiles1 <- getDirectoryFiles  doughD ["**/*.md"]   -- subfiledirectories
-            let htmlFiles2 = [bakedD </> md -<.> "html" | md <- mdFiles1] -- , not $ isInfixOf' "index.md" md]
+            mdFiles1 <- getDirectoryFilesP  doghP ["**/*.md"]   -- subfiledirectories
+            let htmlFiles2 = [bakedP </> md -<.> "html" | md <- mdFiles1] -- , not $ isInfixOf' "index.md" md]
             liftIO $ putIOwords ["============================\nshakeWrapped - mdFile 1",  showT   mdFiles1]
             liftIO $ putIOwords ["\nshakeWrapped - htmlFile 2",  showT  htmlFiles2]
             need htmlFiles2
 
 --             cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs
---             let cssFiles2 = [replaceDirectory c staticD  | c <- cssFiles1]
+--             let cssFiles2 = [replaceDirectory c staticP  | c <- cssFiles1]
 --             liftIO $ putIOwords ["========================\nshakeWrapped - css files 1",  showT   cssFiles1]
 --             liftIO $ putIOwords ["\nshakeWrapped - css files" ,  showT  cssFiles2]
 --             need cssFiles2
 
 --             pdfFiles1 <- getDirectoryFiles resourcesDir ["**/*.pdf"] -- subdirs
---             let pdfFiles2 = [ staticD </> c  | c <- pdfFiles1]
+--             let pdfFiles2 = [ staticP </> c  | c <- pdfFiles1]
 --             liftIO $ putIOwords ["===================\nshakeWrapped - pdf files1",  showT   pdfFiles1]
 --             liftIO $ putIOwords ["\nshakeWrapped - pdf files 2",  showT  pdfFiles2]
 --             need pdfFiles2
 -- --
 --             htmlFiles11<- getDirectoryFiles resourcesDir ["**/*.html"] -- subdirs
---             let htmlFiles22 = [  staticD </> c | c <- htmlFiles11]
+--             let htmlFiles22 = [  staticP </> c | c <- htmlFiles11]
 --             liftIO $ putIOwords ["===================\nshakeWrapped - html 11 files",  showT   htmlFiles11]
 --             liftIO $ putIOwords ["\nshakeWrapped - html 22 files", showT htmlFiles22]
 --             need htmlFiles22
 
-        (\x -> ((bakedD <> "**/*.html") ?== x) && not  ((staticD <> "**/*.html") ?== x)) -- with subdir
+        (\x -> ((bakedP <> "**/*.html") ?== x) && not  ((staticP <> "**/*.html") ?== x)) -- with subdir
                   ?> \out -> do
-            liftIO $ putIOwords ["\nshakeWrapped - bakedD html -  out ", showT out]
-            let md =   doughD </>  (makeRelative bakedD $ out -<.> "md")
-            liftIO $ putIOwords ["\nshakeWrapped - bakedD html - c ", showT bakedD, "file", showT md]
+            liftIO $ putIOwords ["\nshakeWrapped - bakedP html -  out ", showT out]
+            let md =   doghP </>  (makeRelative bakedP $ out -<.> "md")
+            liftIO $ putIOwords ["\nshakeWrapped - bakedP html - c ", showT bakedP, "file", showT md]
 
-            runErr2action $ bakeOneFileFPs  md  doughD templatesD out
+            runErr2action $ bakeOneFileFPs  md  doghP templatesD out
 
-        -- (staticD <> "**/*.html" ) %> \out -> do  -- with subdir
-        --     liftIO $ putIOwords ["\nshakeWrapped - staticD ok - *.html", showT staticD, "file", showT out]
-        --     let fromfile = resourcesDir </> (makeRelative staticD out)
-        --     liftIO $ putIOwords ["\nshakeWrapped - staticD - fromfile ", showT fromfile]
+        -- (staticP <> "**/*.html" ) %> \out -> do  -- with subdir
+        --     liftIO $ putIOwords ["\nshakeWrapped - staticP ok - *.html", showT staticP, "file", showT out]
+        --     let fromfile = resourcesDir </> (makeRelative staticP out)
+        --     liftIO $ putIOwords ["\nshakeWrapped - staticP - fromfile ", showT fromfile]
         --     copyFileChanged fromfile out
 
-        -- (staticD </> "*.css") %> \out ->  do           -- insert css -- no subdir
-        --     liftIO $ putIOwords ["\nshakeWrapped - staticD - *.css", showT out]
+        -- (staticP </> "*.css") %> \out ->  do           -- insert css -- no subdir
+        --     liftIO $ putIOwords ["\nshakeWrapped - staticP - *.css", showT out]
         --     copyFileChanged (replaceDirectory out templatesD) out
 
-        -- (staticD <> "**/*.pdf") %> \out ->  do           -- insert pdfFIles1 -- with subdir
-        --     liftIO $ putIOwords ["\nshakeWrapped - staticD - *.pdf", showT out]
-        --     let fromfile = resourcesDir </> (makeRelative staticD out)
-        --     liftIO $ putIOwords ["\nshakeWrapped - staticD - fromfile ", showT fromfile]
+        -- (staticP <> "**/*.pdf") %> \out ->  do           -- insert pdfFIles1 -- with subdir
+        --     liftIO $ putIOwords ["\nshakeWrapped - staticP - *.pdf", showT out]
+        --     let fromfile = resourcesDir </> (makeRelative staticP out)
+        --     liftIO $ putIOwords ["\nshakeWrapped - staticP - fromfile ", showT fromfile]
         --     copyFileChanged fromfile out
 
 
