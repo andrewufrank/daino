@@ -7,7 +7,7 @@ build-type: Simple
 library
     exposed-modules:
         Lib.Bake
-        Lib.Shake
+        -- Lib.Shake
         -- Lib.FileMgt
         Lib.Templating
         Lib.Pandoc
@@ -23,12 +23,12 @@ library
     default-language: Haskell2010
     ghc-options: -Wall
     build-depends:
-        base ==4.*,
-        uniform-algebras -any,
-        uniform-strings -any,
-        uniform-fileio -any,
+        base == 4.*
+        , uniform-algebras -any
+        ,  uniform-strings -any,
+          uniform-fileio -any,
         uniform-error -any,
-        uniform-time -any,
+              uniform-time -any,
         uniform-json -any,
         uniform-pandoc,
         uniform-convenience -any,
@@ -41,8 +41,8 @@ library
         -- lens -any,
         -- aeson-pretty -any,
         -- yaml-union -any,
-        shake -any,
-        shake-path
+        shake -any
+        -- shake-path
         -- yaml -any,
         -- bibtex ==0.1.0.8,
         -- directory -any
@@ -59,39 +59,40 @@ executable ssgbake
         uniform-convenience -any,
         uniform-fileio -any,
         uniform-error -any,
+        uniform-shake, 
         SSG -any,
         shake ==0.17.6,
         scotty -any,
         warp -any,
         wai-middleware-static -any
 
-executable ssg10
-    main-is: ssg10.hs
-    hs-source-dirs: src
-    default-language: Haskell2010
-    build-depends:
-        base ==4.*,
-        uniform-strings -any,
-        uniform-convenience -any,
-        uniform-fileio -any,
-        uniform-error -any,
-        SSG -any
+-- executable ssg10
+--     main-is: ssg10.hs
+--     hs-source-dirs: src
+--     default-language: Haskell2010
+--     build-depends:
+--         base ==4.*,
+--         uniform-strings -any,
+--         uniform-convenience -any,
+--         uniform-fileio -any,
+--         uniform-error -any,
+--         SSG -any
 
-executable serversg
-    main-is: serverSG.hs
-    hs-source-dirs: src
-    default-language: Haskell2010
-    build-depends:
-        base ==4.*,
-        uniform-strings -any,
-        uniform-convenience -any,
-        uniform-fileio -any,
-        uniform-error -any,
-        SSG -any,
-        scotty -any,
-        warp -any,
-        wai-middleware-static -any,
-        twitch -any
+-- executable serversg
+--     main-is: serverSG.hs
+--     hs-source-dirs: src
+--     default-language: Haskell2010
+--     build-depends:
+--         base ==4.*,
+--         uniform-strings -any,
+--         uniform-convenience -any,
+--         uniform-fileio -any,
+--         uniform-error -any,
+--         SSG -any,
+--         scotty -any,
+--         warp -any,
+--         wai-middleware-static -any,
+--         twitch -any
 
 test-suite ssgTest
     type: exitcode-stdio-1.0
@@ -109,6 +110,8 @@ test-suite ssgTest
         -- Lib.BibTex_test
         -- Lib.YamlBlocks_test
         Lib.CheckInputs_test
+        Lib.Templating_test
+        Lib.Indexing_test
     default-language: Haskell2010
     ghc-options: -Wall
     build-depends:

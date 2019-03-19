@@ -1,4 +1,3 @@
-
 ------------------------------------------------------------------------------
 --
 -- Module      :  check all inputs
@@ -20,13 +19,13 @@ import           Uniform.Strings         hiding ( (</>) )
 import           Uniform.Filenames
 -- import Uniform.FileStrings
 import           Lib.Foundation
-import           Lib.YamlBlocks                 ( Value
-                                                , readMd2meta
-                                                , getMaybeStringAtKey
-                                                )
+-- import           Lib.YamlBlocks                 ( Value
+--                                                 , readMd2meta
+--                                                 , getMaybeStringAtKey
+--                                                 )
 import           Lib.Indexing
 
-import           Text.Pandoc
+import           Uniform.Pandoc
 
 
 checkAllInputs :: SiteLayout -> [Path Rel File] -> ErrIO ()
@@ -48,7 +47,7 @@ checkOneMdFile dough2 mdfn = do
   -- what needs to be checked ? 
 
   -- let doindex1 =  maybe False ("True"==) $ getMaybeStringAtKey meta2 "indexPage"  :: Bool
-  let doindex2 = maybe False id $ getMaybeStringAtKey meta2 "indexPage" :: Bool
+  let doindex2 = maybe False id $ getAtKey meta2 "indexPage" :: Bool
 
 
   putIOwords ["checkOneMdFile end", showT meta2]

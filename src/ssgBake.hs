@@ -20,9 +20,10 @@ module Main     where      -- must have Main (main) or Main where
 
 import Uniform.Convenience.StartApp
 import Uniform.FileIO hiding ((<.>), (</>))
+import Uniform.Shake.Path
 
 import Lib.Bake
-import Lib.Shake
+-- import Lib.Shake
 --import Lib.Foundation (layoutDefaults, SiteLayout (..))
 import Lib.ReadSettingFile
 import Lib.Foundation (SiteLayout (..), templatesDirName, staticDirName, resourcesDirName, templatesImgDirName)
@@ -79,7 +80,7 @@ bakeAll layout = do
     return ()
 
 shakeMD :: SiteLayout -> Path Abs Dir  -> Path Abs Dir -> Path Abs Dir  -> IO ()
--- ^ process all md files
+-- ^ process all md files (currently only the MD)
 -- in IO
 shakeMD layout  doughP templatesP bakedP =
 --    shakeArgs2 bakedP $ do

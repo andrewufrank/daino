@@ -12,6 +12,9 @@ packages:
 - ../uniform/uniform-pandoc
 - ../uniform/uniform-shake
 - ../fromOthers/bibtex
+- ../fromOthers/path
+- ../fromOthers/path-io
+- ../fromOthers/pretty-show
 # - ../fromOthers/shake-path
 
 extra-deps:
