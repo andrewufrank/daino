@@ -25,7 +25,7 @@ import Uniform.Shake.Path (replaceExtension, needP, getDirectoryFilesP)
 import Uniform.Shake 
 import Uniform.Error (ErrIO, callIO, liftIO)
 import Uniform.Strings (showT, putIOwords)
--- import Path 
+import Path (stripProperPrefix)
 import  Development.Shake ((?>), (?==), phony, want )
 import qualified Development.Shake as Sh --  hiding ((<.>), (</>), (-<.>))
 import qualified Development.Shake.FilePath  as ShD-- (toFilePath, makeAbsFile
@@ -82,7 +82,8 @@ shakeMD layout  doughP templatesP bakedP =
         let staticP =   bakedP `FIO.addFileName`  staticDirName  -- ok
         let resourcesDir =   doughP `FIO.addFileName`  resourcesDirName
 
-        liftIO $ putIOwords ["\nshake dirs", "\n\tstaticP", showT staticP, "\n\tbakedP", showT bakedP
+        liftIO $ putIOwords ["\nshakeMD dirs", "\n\tstaticP", showT staticP
+                        , "\n\tbakedP", showT bakedP
                         ,"\nresourcesDir", showT resourcesDir]
 
         want ["allMarkdownConversion"]
@@ -94,54 +95,57 @@ shakeMD layout  doughP templatesP bakedP =
                                     :: [Path Abs File]
                             -- , not $ isInfixOf' "index.md" md]
             let htmlFiles3 = map (replaceExtension "html") htmlFiles2 :: [Path Abs File]
-            liftIO $ putIOwords ["============================\nshakeWrapped - mdFile 1",  showT   mdFiles1]
-            liftIO $ putIOwords ["\nshakeWrapped - htmlFile 2",  showT  htmlFiles3]
+            liftIO $ putIOwords ["============================\nshakeMD - mdFile 1",  showT   mdFiles1]
+            liftIO $ putIOwords ["\nshakeMD - htmlFile 2",  showT  htmlFiles3]
             needP htmlFiles3
 
 --             cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs
 --             let cssFiles2 = [replaceDirectory c staticP  | c <- cssFiles1]
---             liftIO $ putIOwords ["========================\nshakeWrapped - css files 1",  showT   cssFiles1]
---             liftIO $ putIOwords ["\nshakeWrapped - css files" ,  showT  cssFiles2]
+--             liftIO $ putIOwords ["========================\nshakeMD - css files 1",  showT   cssFiles1]
+--             liftIO $ putIOwords ["\nshakeMD - css files" ,  showT  cssFiles2]
 --             need cssFiles2
 
 --             pdfFiles1 <- getDirectoryFiles resourcesDir ["**/*.pdf"] -- subdirs
 --             let pdfFiles2 = [ staticP </> c  | c <- pdfFiles1]
---             liftIO $ putIOwords ["===================\nshakeWrapped - pdf files1",  showT   pdfFiles1]
---             liftIO $ putIOwords ["\nshakeWrapped - pdf files 2",  showT  pdfFiles2]
+--             liftIO $ putIOwords ["===================\nshakeMD - pdf files1",  showT   pdfFiles1]
+--             liftIO $ putIOwords ["\nshakeMD - pdf files 2",  showT  pdfFiles2]
 --             need pdfFiles2
 -- --
 --             htmlFiles11<- getDirectoryFiles resourcesDir ["**/*.html"] -- subdirs
 --             let htmlFiles22 = [  staticP </> c | c <- htmlFiles11]
---             liftIO $ putIOwords ["===================\nshakeWrapped - html 11 files",  showT   htmlFiles11]
---             liftIO $ putIOwords ["\nshakeWrapped - html 22 files", showT htmlFiles22]
+--             liftIO $ putIOwords ["===================\nshakeMD - html 11 files",  showT   htmlFiles11]
+--             liftIO $ putIOwords ["\nshakeMD - html 22 files", showT htmlFiles22]
 --             need htmlFiles22
 
         (\x -> (((toFilePath bakedP) <> "**/*.html") ?== x) 
                             && not  (((toFilePath staticP) <> "**/*.html") ?== x)) -- with subdir
                   ?> \out -> do
-            let out2 = FIO.makeRelFile out  
-            liftIO $ putIOwords ["\nshakeWrapped - bakedP html -  out ", showT out]
-            let out3 = bakedP </> FIO.makeRelFile out :: Path Abs File
-            let md = replaceExtension "md" out2 :: Path Rel File  --  <-    out2 -<.> "md"  
-            let md2 = doughP </> md :: Path Abs File 
-            liftIO $ putIOwords ["\nshakeWrapped - bakedP html - c ", showT bakedP, "file", showT md]
-            let outP = FIO.makeAbsFile out 
+            liftIO $ putIOwords ["\nshakeMD - bakedP html -  out ", showT out]
+            -- hakeMD - bakedP html -  out  "/home/frank/.SSG/bakedTest/SSGdesign/index.html"
+            let outP = FIO.makeAbsFile out  :: Path Abs File
+            liftIO $ putIOwords ["\nshakeMD - bakedP html -  out2 ", showT outP]
+            let md = replaceExtension "md" outP :: Path Abs File  --  <-    out2 -<.> "md"  
+            liftIO $ putIOwords ["\nshakeMD - bakedP html 2 -  md ", showT md]
+            md1 :: Path Rel File <- liftIO $ Path.stripProperPrefix bakedP md  
+            liftIO $ putIOwords ["\nshakeMD - bakedP html 3 - md1 ", showT md1]
+            let md2 =  doughP </>  md1 :: Path Abs File 
+            liftIO $ putIOwords ["\nshakeMD - bakedP html 4 - md2 ", showT md2]
             res <- runErr2action $ bakeOneFile True  md2  doughP templatesP outP
             return ()
         -- (staticP <> "**/*.html" ) %> \out -> do  -- with subdir
-        --     liftIO $ putIOwords ["\nshakeWrapped - staticP ok - *.html", showT staticP, "file", showT out]
+        --     liftIO $ putIOwords ["\nshakeMD - staticP ok - *.html", showT staticP, "file", showT out]
         --     let fromfile = resourcesDir </> (makeRelative staticP out)
-        --     liftIO $ putIOwords ["\nshakeWrapped - staticP - fromfile ", showT fromfile]
+        --     liftIO $ putIOwords ["\nshakeMD - staticP - fromfile ", showT fromfile]
         --     copyFileChanged fromfile out
 
         -- (staticP </> "*.css") %> \out ->  do           -- insert css -- no subdir
-        --     liftIO $ putIOwords ["\nshakeWrapped - staticP - *.css", showT out]
+        --     liftIO $ putIOwords ["\nshakeMD - staticP - *.css", showT out]
         --     copyFileChanged (replaceDirectory out templatesD) out
 
         -- (staticP <> "**/*.pdf") %> \out ->  do           -- insert pdfFIles1 -- with subdir
-        --     liftIO $ putIOwords ["\nshakeWrapped - staticP - *.pdf", showT out]
+        --     liftIO $ putIOwords ["\nshakeMD - staticP - *.pdf", showT out]
         --     let fromfile = resourcesDir </> (makeRelative staticP out)
-        --     liftIO $ putIOwords ["\nshakeWrapped - staticP - fromfile ", showT fromfile]
+        --     liftIO $ putIOwords ["\nshakeMD - staticP - fromfile ", showT fromfile]
         --     copyFileChanged fromfile out
 
 
