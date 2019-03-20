@@ -21,16 +21,17 @@ module Lib.Shake2
 
 import qualified Uniform.FileIO  as FIO -- hiding ((<.>), (</>))
 import Uniform.FileIO (Path, Abs, Rel, File, Dir, (<.>), (</>), toFilePath)
-import Uniform.Shake.Path (replaceExtension, needP, getDirectoryFilesP)
+import Uniform.Shake.Path -- (replaceExtension, needP, getDirectoryFilesP)
 import Uniform.Shake 
 import Uniform.Error (ErrIO, callIO, liftIO)
 import Uniform.Strings (showT, putIOwords)
-import Path (stripProperPrefix)
-import  Development.Shake ((?>), (?==), phony, want )
-import qualified Development.Shake as Sh --  hiding ((<.>), (</>), (-<.>))
-import qualified Development.Shake.FilePath  as ShD-- (toFilePath, makeAbsFile
---                , makeRelFile, makeRelDir, stripProperPrefix')
-         hiding ((<.>), (</>), (-<.>) , replaceExtension)
+-- import Path (stripProperPrefix)
+
+-- import  Development.Shake ((?>), (?==), phony, want )
+-- import qualified Development.Shake as Sh --  hiding ((<.>), (</>), (-<.>))
+-- import qualified Development.Shake.FilePath  as ShD-- (toFilePath, makeAbsFile
+-- --                , makeRelFile, makeRelDir, stripProperPrefix')
+--          hiding ((<.>), (</>), (-<.>) , replaceExtension)
 
 import Lib.Foundation (SiteLayout (..)
         , templatesDirName,  templatesImgDirName
@@ -69,9 +70,9 @@ shakeMD :: SiteLayout -> Path Abs Dir  -> Path Abs Dir -> Path Abs Dir  -> IO ()
 -- in IO
 shakeMD layout  doughP templatesP bakedP =
 --    shakeArgs2 bakedP $ do
-    Sh.shakeArgs Sh.shakeOptions {Sh.shakeFiles=toFilePath bakedP -- TODO
-                , Sh.shakeVerbosity=Sh.Chatty -- Loud -- Diagnostic --
-                , Sh.shakeLint=Just Sh.LintBasic
+    shakeArgs shakeOptions {shakeFiles=toFilePath bakedP -- TODO
+                , shakeVerbosity=Chatty -- Loud -- Diagnostic --
+                , shakeLint=Just LintBasic
 --                , shakeRebuild=[(RebuildNow,"allMarkdownConversion")]
 --                  seems not to produce an effect
                 } $ do  -- in Rule () 
@@ -126,7 +127,7 @@ shakeMD layout  doughP templatesP bakedP =
             liftIO $ putIOwords ["\nshakeMD - bakedP html -  out2 ", showT outP]
             let md = replaceExtension "md" outP :: Path Abs File  --  <-    out2 -<.> "md"  
             liftIO $ putIOwords ["\nshakeMD - bakedP html 2 -  md ", showT md]
-            md1 :: Path Rel File <- liftIO $ Path.stripProperPrefix bakedP md  
+            md1 :: Path Rel File <- liftIO $ stripProperPrefix bakedP md  
             liftIO $ putIOwords ["\nshakeMD - bakedP html 3 - md1 ", showT md1]
             let md2 =  doughP </>  md1 :: Path Abs File 
             liftIO $ putIOwords ["\nshakeMD - bakedP html 4 - md2 ", showT md2]
