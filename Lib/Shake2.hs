@@ -127,9 +127,9 @@ shakeMD layout  doughP templatesP bakedP =
             
             let md = replaceExtension "md" outP :: Path Abs File  --  <-    out2 -<.> "md"  
             liftIO $ putIOwords ["\nshakeMD - bakedP html 2 -  md ", showT md]
-            let md1 =  stripProperPrefixP bakedP md :: Path Rel File 
-            liftIO $ putIOwords ["\nshakeMD - bakedP html 3 - md1 ", showT md1]
-            let md2 =  doughP </>  md1 :: Path Abs File 
+            -- let md1 =  stripProperPrefixP bakedP md :: Path Rel File 
+            -- liftIO $ putIOwords ["\nshakeMD - bakedP html 3 - md1 ", showT md1]
+            let md2 =  doughP </> (stripProperPrefixP bakedP md ):: Path Abs File 
             liftIO $ putIOwords ["\nshakeMD - bakedP html 4 - md2 ", showT md2]
             res <- runErr2action $ bakeOneFile True  md2  doughP templatesP outP
             return ()
