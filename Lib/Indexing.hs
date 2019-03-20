@@ -14,13 +14,15 @@
 module Lib.Indexing (module Lib.Indexing
     , getAtKey) where
 
-import           Development.Shake.FilePath
+-- import           Development.Shake.FilePath
+import Uniform.Shake
 import           GHC.Exts                       ( sortWith )
 -- import           Lib.FileMgt                 
 import qualified Uniform.FileIO                as FileIO
-import           Uniform.FileIO          hiding ( (<.>)
-                                                , (</>)
-                                                 )  
+import           Uniform.FileIO   
+        --    hiding ( (<.>)
+        --                                         , (</>)
+        --                                          )  
 import           Uniform.Json
 import           Uniform.Json (FromJSON(..))  
 import           Uniform.Pandoc (readMd2meta
@@ -139,11 +141,12 @@ makeIndexForDir debug pageFn indexFn dough2 indexSort = do
 oneDirIndexEntry :: Path Abs Dir -> IndexEntry
 -- make an entry for a subdir
 oneDirIndexEntry dn = zero { text  = showT dn
-                           , link  = s2t $ nakedName </> "index.html"
+                           , link  = s2t $ nakedName </> ("html" :: FilePath)
                            , title = printable <> " (subdirectory)"
                            }
   where
-    nakedName = getNakedDir . toFilePath $ dn :: FilePath
+    nakedName =  getNakedDir $ dn :: FilePath 
+                -- getNakedDir . toFilePath $ dn :: FilePath
     printable = s2t nakedName
 
 getOneIndexEntry :: Path Abs Dir -> Path Abs File -> ErrIO IndexEntry
@@ -170,7 +173,7 @@ getOneIndexEntry dough2 mdfile = do
     let fn    = head paths
     let dir   = toFilePath relDirPath -- head . tail $ paths
     let fnn   = takeBaseName fn
-    let ln    = s2t $ "/" <> dir </> fnn <.> "html"
+    let ln    = s2t $ "/" <> dir </> fnn <.> ("html" :: FilePath)
 
     when False $ putIOwords
         [ "getONeIndexEntry"

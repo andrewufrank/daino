@@ -4,8 +4,8 @@
 -- Module      :  with Path  the  process to convert
 --              files in any input format to html
 --              orginals are found in dire doughDir and go to bakeDir
+                -- all imports are from Lib or Uniform
 --
-
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
@@ -21,7 +21,7 @@ module Lib.Shake2
 
 import qualified Uniform.FileIO  as FIO -- hiding ((<.>), (</>))
 import Uniform.FileIO (Path, Abs, Rel, File, Dir, (<.>), (</>), toFilePath)
-import Uniform.Shake.Path -- (replaceExtension, needP, getDirectoryFilesP)
+-- import Uniform.Shake.Path -- (replaceExtension, needP, getDirectoryFilesP)
 import Uniform.Shake 
 import Uniform.Error (ErrIO, callIO, liftIO)
 import Uniform.Strings (showT, putIOwords)

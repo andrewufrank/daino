@@ -20,7 +20,7 @@ module Main     where      -- must have Main (main) or Main where
 
 import Uniform.Convenience.StartApp
 import Uniform.FileIO hiding ((<.>), (</>))
-import Uniform.Shake.Path
+-- import Uniform.Shake.Path
 import Uniform.Shake 
 import Uniform.Error ()
 
@@ -30,8 +30,8 @@ import Lib.Shake2
 import Lib.ReadSettingFile
 import Lib.Foundation (SiteLayout (..), templatesDirName, staticDirName, resourcesDirName, templatesImgDirName)
 
-import Development.Shake
-import Development.Shake.FilePath
+-- import Development.Shake
+-- import Development.Shake.FilePath
 --import Development.Shake.Path hiding (setCurrentDir, toFilePath)
 
 import Web.Scotty

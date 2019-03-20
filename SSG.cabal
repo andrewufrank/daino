@@ -42,8 +42,8 @@ library
         -- lens -any,
         -- aeson-pretty -any,
         -- yaml-union -any,
-        shake -any
-        , path==0.6.1.1
+        -- shake -any
+        path==0.6.1.1
 
         -- shake-path
         -- yaml -any,
@@ -62,7 +62,7 @@ executable ssgbake
         uniform-convenience -any,
         uniform-fileio -any,
         uniform-error -any,
-        uniform-shake ==0.0.0.3, 
+        uniform-shake ==0.0.0.4, 
         SSG -any,
         shake ==0.17.6,
         scotty -any,
