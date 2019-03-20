@@ -20,7 +20,7 @@ module Lib.Shake2
      where
 
 import qualified Uniform.FileIO  as FIO -- hiding ((<.>), (</>))
-import Uniform.FileIO (Path, Abs, Rel, File, Dir, (<.>), (</>), toFilePath)
+-- import Uniform.FileIO (Path, Abs, Rel, File, Dir, (<.>), (</>), toFilePath)
 -- import Uniform.Shake.Path -- (replaceExtension, needP, getDirectoryFilesP)
 import Uniform.Shake 
 import Uniform.Error (ErrIO, callIO, liftIO)
@@ -77,11 +77,8 @@ shakeMD layout  doughP templatesP bakedP =
 --                  seems not to produce an effect
                 } $ do  -- in Rule () 
 
-        -- let doughD = toFilePath doughP
-        --     templatesD = toFilePath templatesP
-        --     bakedP = toFilePath bakedP
-        let staticP =   bakedP `FIO.addFileName`  staticDirName  -- ok
-        let resourcesDir =   doughP `FIO.addFileName`  resourcesDirName
+        let staticP =   bakedP </>  staticDirName  -- ok
+        let resourcesDir =   doughP </>  resourcesDirName
 
         liftIO $ putIOwords ["\nshakeMD dirs", "\n\tstaticP", showT staticP
                         , "\n\tbakedP", showT bakedP
@@ -91,12 +88,13 @@ shakeMD layout  doughP templatesP bakedP =
         phony "allMarkdownConversion" $ do
 
             mdFiles1 :: [Path Rel File] <- getDirectoryFilesP  doughP ["**/*.md"]   -- subfiledirectories
-            let htmlFiles2 = map (\f -> bakedP </> f) mdFiles1
+            let htmlFiles3 = map ((replaceExtension "html") . (\f -> bakedP </> f)) mdFiles1
                         -- [( bakedP </>  md) -<.> "html" | md <- mdFiles1] 
                                     :: [Path Abs File]
                             -- , not $ isInfixOf' "index.md" md]
-            let htmlFiles3 = map (replaceExtension "html") htmlFiles2 :: [Path Abs File]
-            liftIO $ putIOwords ["============================\nshakeMD - mdFile 1",  showT   mdFiles1]
+            -- let htmlFiles3 = map (replaceExtension "html") htmlFiles2 :: [Path Abs File]
+            liftIO $ putIOwords ["============================\nshakeMD - mdFile 1"
+                        ,  showT   mdFiles1]
             liftIO $ putIOwords ["\nshakeMD - htmlFile 2",  showT  htmlFiles3]
             needP htmlFiles3
 
@@ -123,11 +121,13 @@ shakeMD layout  doughP templatesP bakedP =
                   ?> \out -> do
             liftIO $ putIOwords ["\nshakeMD - bakedP html -  out ", showT out]
             -- hakeMD - bakedP html -  out  "/home/frank/.SSG/bakedTest/SSGdesign/index.html"
-            let outP = FIO.makeAbsFile out  :: Path Abs File
-            liftIO $ putIOwords ["\nshakeMD - bakedP html -  out2 ", showT outP]
+            let outP = makeAbsFile out  :: Path Abs File
+            -- needs to know if this is abs or rel file !
+            liftIO $ putIOwords ["\nshakeMD - bakedP html -  out2 ", showT outP] 
+            
             let md = replaceExtension "md" outP :: Path Abs File  --  <-    out2 -<.> "md"  
             liftIO $ putIOwords ["\nshakeMD - bakedP html 2 -  md ", showT md]
-            md1 :: Path Rel File <- liftIO $ stripProperPrefix bakedP md  
+            let md1 =  stripProperPrefixP bakedP md :: Path Rel File 
             liftIO $ putIOwords ["\nshakeMD - bakedP html 3 - md1 ", showT md1]
             let md2 =  doughP </>  md1 :: Path Abs File 
             liftIO $ putIOwords ["\nshakeMD - bakedP html 4 - md2 ", showT md2]

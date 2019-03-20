@@ -18,8 +18,8 @@ module Lib.Indexing (module Lib.Indexing
 import Uniform.Shake
 import           GHC.Exts                       ( sortWith )
 -- import           Lib.FileMgt                 
-import qualified Uniform.FileIO                as FileIO
-import           Uniform.FileIO   
+-- import qualified Uniform.FileIO                as FileIO
+-- import           Uniform.FileIO   
         --    hiding ( (<.>)
         --                                         , (</>)
         --                                          )  
@@ -88,7 +88,7 @@ makeIndexForDir debug pageFn indexFn dough2 indexSort = do
 
     fs <- getDirContentNonHidden (toFilePath pageFn)
     let fs2 = filter (/= toFilePath indexFn) fs -- exclude index
-    let fs3 = filter (FileIO.hasExtension "md") fs2
+    let fs3 = filter (hasExtension "md") fs2
 
     when debug $ putIOwords
         ["makeIndexForDir", "for ", showT pageFn, "\n", showT fs3]
@@ -114,7 +114,7 @@ makeIndexForDir debug pageFn indexFn dough2 indexSort = do
             ]
 
     -- directories
-    dirs <- FileIO.findDirs fs
+    dirs <- findDirs fs
     when debug $ putIOwords
         ["makeIndexForDir", "dirs ", showT pageFn, "\ndirIxs", showT dirs]
     let dirIxs = map oneDirIndexEntry dirs :: [IndexEntry]
