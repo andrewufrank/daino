@@ -28,7 +28,7 @@ library
         , uniform-algebras -any
         ,  uniform-strings -any
         ,uniform-shake,
-          uniform-fileio -any,
+          uniform-fileio==0.0.14.3,
         uniform-error -any,
               uniform-time -any,
         uniform-json -any,

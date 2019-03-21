@@ -103,9 +103,11 @@ shakeWrapped doughP templatesP bakedP =
             -- , "//*.markdown"]
             -- todo markdown files are not found ?
                 -- found ok, but not indexed
+      liftIO $ putIOwords ["\nshakeWrapped phony 1"]
       let htmlFiles2 = map ((replaceExtension' "html") 
                             . (\f -> bakedP </> f)) mdFiles1
       let htmlFiles3 = filter ( not . isInfixOf' "index.md" . toFilePath) htmlFiles2
+      liftIO $ putIOwords ["\nshakeWrapped phony 2"]
       -- let htmlFiles2 =
       -- [ bakedP </> (md $-<.> (makeExtension "html") :: Path Abs File)
       -- | md <- mdFiles1
@@ -114,8 +116,10 @@ shakeWrapped doughP templatesP bakedP =
       liftIO $
         putIOwords
           [ "\nshakeWrapped - htmlFile"
-          , showT (map (makeRelativeP doughP) htmlFiles3)
+          , showT  htmlFiles3 -- (map (makeRelativeP doughP)
           ]
+      liftIO $ putIOwords ["\nshakeWrapped phony end"]
+      
 -- TODO missing static resources from dough
 -- what else needs to be copied ?
     -- get html files from dough (not yet done, html are in resources)
