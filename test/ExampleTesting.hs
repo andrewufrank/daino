@@ -13,6 +13,7 @@ import System.Directory (createDirectoryIfMissing)
 -- keep this because it is in IO (not ErrIO)
 
 import           Test.Framework
+import Lib.Shake  -- just to test ghci
 
 import {-@ HTF_TESTS @-} Lib.Shake_test
 -- import {-@ HTF_TESTS @-} ShakeStartTests

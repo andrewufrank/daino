@@ -5,6 +5,7 @@
 --              files in any input format to html
 --              orginals are found in dire doughDir and go to bakeDir
                 -- all imports are from Lib or Uniform
+                -- used from ssgBake
 --
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
@@ -23,6 +24,7 @@ import qualified Uniform.FileIO  as FIO -- hiding ((<.>), (</>))
 -- import Uniform.FileIO (Path, Abs, Rel, File, Dir, (<.>), (</>), toFilePath)
 -- import Uniform.Shake.Path -- (replaceExtension, needP, getDirectoryFilesP)
 import Uniform.Shake 
+import Uniform.Shake (liftErrIO)
 import Uniform.Error (ErrIO, callIO, liftIO)
 import Uniform.Strings (showT, putIOwords)
 -- import Path (stripProperPrefix)
@@ -119,25 +121,29 @@ shakeMD layout  doughP templatesP bakedP =
         (\x -> (((toFilePath bakedP) <> "**/*.html") ?== x) 
                             && not  (((toFilePath staticP) <> "**/*.html") ?== x)) -- with subdir
                   ?> \out -> do
-            liftIO $ putIOwords ["\nshakeMD - bakedP html -  out ", showT out]
+            -- liftIO $ putIOwords ["\nshakeMD - bakedP html -  out ", showT out]
             -- hakeMD - bakedP html -  out  "/home/frank/.SSG/bakedTest/SSGdesign/index.html"
             let outP = makeAbsFile out  :: Path Abs File
-            -- needs to know if this is abs or rel file !
-            liftIO $ putIOwords ["\nshakeMD - bakedP html -  out2 ", showT outP] 
+            -- --needs to know if this is abs or rel file !
+            -- --liftIO $ putIOwords ["\nshakeMD - bakedP html -  out2 ", showT outP] 
             
             let md = replaceExtension "md" outP :: Path Abs File  --  <-    out2 -<.> "md"  
-            liftIO $ putIOwords ["\nshakeMD - bakedP html 2 -  md ", showT md]
-            -- let md1 =  stripProperPrefixP bakedP md :: Path Rel File 
-            -- liftIO $ putIOwords ["\nshakeMD - bakedP html 3 - md1 ", showT md1]
+            -- liftIO $ putIOwords ["\nshakeMD - bakedP html 2 -  md ", showT md]
+            -- --let md1 =  stripProperPrefixP bakedP md :: Path Rel File 
+            -- l--iftIO $ putIOwords ["\nshakeMD - bakedP html 3 - md1 ", showT md1]
             let md2 =  doughP </> (stripProperPrefixP bakedP md ):: Path Abs File 
-            liftIO $ putIOwords ["\nshakeMD - bakedP html 4 - md2 ", showT md2]
+            -- liftIO $ putIOwords ["\nshakeMD - bakedP html 4 - md2 ", showT md2]
             res <- runErr2action $ bakeOneFile True  md2  doughP templatesP outP
             return ()
-        -- (staticP <> "**/*.html" ) %> \out -> do  -- with subdir
-        --     liftIO $ putIOwords ["\nshakeMD - staticP ok - *.html", showT staticP, "file", showT out]
-        --     let fromfile = resourcesDir </> (makeRelative staticP out)
-        --     liftIO $ putIOwords ["\nshakeMD - staticP - fromfile ", showT fromfile]
-        --     copyFileChanged fromfile out
+
+        (toFilePath staticP <> "**/*.html" ) %> \out -> do  -- with subdir
+            let outP = makeAbsFile out  :: Path Abs File
+            liftIO $ putIOwords ["\nshakeMD - staticP ok - *.html", showT staticP
+                    , "file", showT outP
+                    , "out", showT out]
+            let fromfile = resourcesDir </> (makeRelativeP staticP outP)
+            liftIO $ putIOwords ["\nshakeMD - staticP - fromfile ", showT fromfile]
+            copyFileChanged (toFilePath fromfile) out
 
         -- (staticP </> "*.css") %> \out ->  do           -- insert css -- no subdir
         --     liftIO $ putIOwords ["\nshakeMD - staticP - *.css", showT out]

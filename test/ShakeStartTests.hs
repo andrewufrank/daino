@@ -1,7 +1,6 @@
 -----------------------------------------------------------------------------
 --
--- ModuKe      :   a test for HTF framework
--- insert {-@ HTF_TESTS @-} for each import
+-- Module      :   a shake to produce the files for the debuging and testing
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 {-# LANGUAGE FlexibleContexts      #-}
