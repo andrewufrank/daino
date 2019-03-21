@@ -20,11 +20,11 @@
 module Lib.Shake2
      where
 
-import qualified Uniform.FileIO  as FIO -- hiding ((<.>), (</>))
+-- import qualified Uniform.FileIO    -- hiding ((<.>), (</>))
 -- import Uniform.FileIO (Path, Abs, Rel, File, Dir, (<.>), (</>), toFilePath)
 -- import Uniform.Shake.Path -- (replaceExtension, needP, getDirectoryFilesP)
 import Uniform.Shake 
-import Uniform.Shake (liftErrIO)
+-- import Uniform.Shake (liftErrIO)
 import Uniform.Error (ErrIO, callIO, liftIO)
 import Uniform.Strings (showT, putIOwords)
 -- import Path (stripProperPrefix)
@@ -48,19 +48,19 @@ bakeAll bannerImageFileName layout = do
     let  -- where the layout is used, rest in shakeWrapped
           doughP      =    doughDir  layout  -- the regular dough
           templatesP =   themeDir layout
-                               `FIO.addFileName` templatesDirName
+                               `addFileName` templatesDirName
           bakedP =  bakedDir  layout
-    FIO.setCurrentDir doughP
-    FIO.deleteDirRecursive bakedP
+    setCurrentDir doughP
+    deleteDirRecursive bakedP
 
     -- copy resources and banner   not easy to do with shake
     -- only the html and the pdf files (possible the jpg) are required
 --    copyDirRecursive (doughP `addDir` resourcesDirName)   (bakedP `addDir` staticDirName)
 
-    let bannerImage = templatesImgDirName `FIO.addFileName` bannerImageFileName
+    let bannerImage = templatesImgDirName `addFileName` bannerImageFileName
 
-    FIO.copyOneFile (templatesP `FIO.addFileName` bannerImage)
-        (bakedP `FIO.addDir` staticDirName `FIO.addDir` bannerImage)
+    copyOneFile (templatesP `addFileName` bannerImage)
+        (bakedP </> staticDirName </> bannerImage)
 
     -- convert md files and copy css
     callIO $ shakeMD layout  doughP templatesP bakedP
@@ -90,7 +90,7 @@ shakeMD layout  doughP templatesP bakedP =
         phony "allMarkdownConversion" $ do
 
             mdFiles1 :: [Path Rel File] <- getDirectoryFilesP  doughP ["**/*.md"]   -- subfiledirectories
-            let htmlFiles3 = map ((replaceExtension "html") . (\f -> bakedP </> f)) mdFiles1
+            let htmlFiles3 = map ((replaceExtension' "html") . (\f -> bakedP </> f)) mdFiles1
                         -- [( bakedP </>  md) -<.> "html" | md <- mdFiles1] 
                                     :: [Path Abs File]
                             -- , not $ isInfixOf' "index.md" md]
@@ -127,7 +127,7 @@ shakeMD layout  doughP templatesP bakedP =
             -- --needs to know if this is abs or rel file !
             -- --liftIO $ putIOwords ["\nshakeMD - bakedP html -  out2 ", showT outP] 
             
-            let md = replaceExtension "md" outP :: Path Abs File  --  <-    out2 -<.> "md"  
+            let md = replaceExtension' "md" outP :: Path Abs File  --  <-    out2 -<.> "md"  
             -- liftIO $ putIOwords ["\nshakeMD - bakedP html 2 -  md ", showT md]
             -- --let md1 =  stripProperPrefixP bakedP md :: Path Rel File 
             -- l--iftIO $ putIOwords ["\nshakeMD - bakedP html 3 - md1 ", showT md1]

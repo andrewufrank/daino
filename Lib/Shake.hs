@@ -84,11 +84,11 @@ shakeWrapped doughP templatesP bakedP =
     --     templatesD = toFilePath templatesP
     --     bakedD = toFilePath bakedP
    do
-    let staticP = bakedP </> (toFilePath staticDirName)
+    let staticP = bakedP </> ( staticDirName) :: Path Abs Dir 
     -- where all the static files go
-        resourcesP = doughP </> "resources"
-        masterTemplateFn = "master4.dtpl"
-        settingsYamlFn = "settings2.yaml"
+        resourcesP = doughP </> (makeRelDir "resources") :: Path Abs Dir 
+        masterTemplateP = makeRelFile "master4.dtpl"
+        settingsYamlP = makeRelFile "settings2.yaml"
 --    phony "clean" $ do
 --        putNormal "delete all files in "
 --        removeFiles bakedP<>"*"
@@ -99,19 +99,22 @@ shakeWrapped doughP templatesP bakedP =
 --        yamllint  -- issue with create process, error
 --        yamllint: createProcess: runInteractive
         -- get markdown files
-      mdFiles1 <- getDirectoryFilesP doughP ["//*.md"]
+      mdFiles1 :: [Path Rel File] <- getDirectoryFilesP doughP ["//*.md"]
             -- , "//*.markdown"]
             -- todo markdown files are not found ?
                 -- found ok, but not indexed
-      let htmlFiles2 =
-            [ bakedP </> md $-<.> "html"
-            | md <- mdFiles1
-            , not $ isInfixOf' "index.md" md
-            ]
+      let htmlFiles2 = map ((replaceExtension' "html") 
+                            . (\f -> bakedP </> f)) mdFiles1
+      let htmlFiles3 = filter ( not . isInfixOf' "index.md" . toFilePath) htmlFiles2
+      -- let htmlFiles2 =
+      -- [ bakedP </> (md $-<.> (makeExtension "html") :: Path Abs File)
+      -- | md <- mdFiles1
+      -- , not $ isInfixOf' "index.md" md
+      -- ]
       liftIO $
         putIOwords
           [ "\nshakeWrapped - htmlFile"
-          , showT (map (makeRelativeP doughP) htmlFiles2)
+          , showT (map (makeRelativeP doughP) htmlFiles3)
           ]
 -- TODO missing static resources from dough
 -- what else needs to be copied ?
@@ -128,26 +131,34 @@ shakeWrapped doughP templatesP bakedP =
 --        let cssFiles2 = [replaceDirectory c staticD  | c <- cssFiles1]
 --        liftIO $ putIOwords ["\nshakeWrapped - phony cssFiles2", showT cssFiles2]
 --        need cssFiles2
-      needP htmlFiles2
+      needP htmlFiles3
         -- the templates static files are copied with watch
         -- process the index files after all others are done
-      indexFiles1 <- getDirectoryFiles doughP ["//index.md"]
-      let indexFiles2 = [bakedP </> ix $-<.> "html" | ix <- indexFiles1]
+      indexFiles1 <- getDirectoryFilesP doughP ["//index.md"]
+      let indexFiles2 = map ((replaceExtension' "html") . (\f -> bakedP </> f)) mdFiles1
+      -- let indexFiles2 = [bakedP </> ix $-<.> "html" | ix <- indexFiles1]
       liftIO $ putIOwords ["\nshakeWrapped - indexFiles2", showT indexFiles2]
       needP indexFiles2
-    (bakedP <> "//*.html") %> \out -> do
-      liftIO $ putIOwords ["\nshakeWrapped - bakedP html -  out ", showT out]
-      let md = doughP </> (makeRelativeP bakedP $ out $-<.> "md")
-      liftIO $ putIOwords ["\nshakeWrapped - bakedP html - c ", showT md]
-      let masterTemplate = templatesP </> masterTemplateFn
-          masterSettings_yaml = doughP </> settingsYamlFn
-      biblio <- getDirectoryFiles resourcesP ["*.bib"]
-      let biblio2 = [resourcesP </> b | b <- biblio]
+
+    ((toFilePath bakedP) <> "//*.html") %> \out -> do
+      let outP = makeAbsFile out  :: Path Abs File
+      liftIO $ putIOwords ["\nshakeWrapped - bakedP html -  out ", showT outP]
+      let md = doughP </> (stripProperPrefixP bakedP . replaceExtension' "md" $ outP)
+      -- let md = doughP </> (makeRelativeP bakedP $ outP $-<.> "md")
+      liftIO $ putIOwords ["\nshakeWrapped - bakedP html - md ", showT md]
+
+      let masterTemplate = templatesP </> masterTemplateP
+          masterSettings_yaml = doughP </> settingsYamlP
+
+      biblio :: [Path Rel File] <- getDirectoryFilesP resourcesP ["*.bib"] 
+      let biblio2 = [resourcesP </> b | b <- biblio] :: [Path Abs File]
       putIOwords ["shake bakedP", "biblio", showT biblio2]
-      yamlPageFiles <- getDirectoryFiles templatesP ["*.yaml"]
+      yamlPageFiles <- getDirectoryFilesP templatesP ["*.yaml"]
       let yamlPageFiles2 = [templatesP </> y | y <- yamlPageFiles]
-      cssFiles1 <- getDirectoryFiles templatesP ["*.css"] -- no subdirs
-      let cssFiles2 = [replaceDirectoryP c staticP | c <- cssFiles1]
+      cssFiles1 :: [Path Rel File] <- getDirectoryFilesP templatesP ["*.css"]   -- no subdirs
+      liftIO $ putIOwords ["\nshakeWrapped - bakedP html - cssFiles1 ", showT cssFiles1]
+      -- let cssFiles2 = [replaceDirectoryP templatesP staticP c | c <- cssFiles1]  -- flipped args
+      let cssFiles2 = [ staticP </> c | c <- cssFiles1]  -- flipped args
 --        when (takeBaseName md == "index")  $
 --            do
 ----        -- for index rebake
@@ -170,13 +181,16 @@ shakeWrapped doughP templatesP bakedP =
       needP [masterTemplate]
       needP [md]
 
-      liftErrIO $ bakeOneFile md doughP templatesP out
+
+      res <- liftErrIO $ bakeOneFile False md doughP templatesP outP
+      return () 
             -- c relative to dough/
 
-    ((toFilePath staticP) </> "*.css") %> \out -- insert css
+    (  (toFilePath staticP) <> "/*.css") %> \out -- insert css
      -> do
-      liftIO $ putIOwords ["\nshakeWrapped - staticD - *.css", showT out]
-      copyFileChanged (replaceDirectoryP out templatesP) out
+     let outP = makeAbsFile out  :: Path Abs File
+     liftIO $ putIOwords ["\nshakeWrapped - staticD - *.css", showT outP]
+     copyFileChangedP (replaceDirectoryP staticP templatesP outP) outP
 -- instance Exception Text
 -- runErr2action :: ErrIO a -> Action a
 -- runErr2action op = liftIO $ do

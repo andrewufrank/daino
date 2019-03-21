@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 --
--- ModuKe      :   testing the new shake 
+-- Module      :   testing the new shake 
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 {-# LANGUAGE FlexibleContexts      #-}
@@ -41,4 +41,4 @@ test_shakeMD = do
                     ((themeDir $ testLayout) `addFileName` ( templatesDirName)
                             :: Path Abs Dir)
                     (makeAbsDir "/home/frank/.SSG/bakedTest")
-    assertBool False 
+    assertEqual "" "Lib.Shake_test - files written to /home/frank/.SSG/bakedTest"
