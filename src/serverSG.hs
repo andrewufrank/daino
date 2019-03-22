@@ -175,7 +175,6 @@ mainWatchDough layout = do
               Twitch.addModify
                   (\filepath -> runErrorVoid $ shake layout filepath)
                   "**/*.bib"
-            -- add and modify event
 
 mainWatchThemes layout = do
     let templatesPath = (themeDir layout) </> templatesDirName :: Path Abs Dir

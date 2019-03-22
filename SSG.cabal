@@ -25,15 +25,15 @@ library
     ghc-options: -Wall
     build-depends:
         base == 4.*
-        , uniform-algebras -any
+        ,  uniform-algebras -any
         ,  uniform-strings -any
-        ,uniform-shake,
-          uniform-fileio==0.0.14.3,
-        uniform-error -any,
-              uniform-time -any,
-        uniform-json -any,
-        uniform-pandoc,
-        uniform-convenience -any,
+        ,  uniform-shake
+        ,  uniform-fileio==0.0.14.3
+        , uniform-error -any
+        , uniform-time -any
+        , uniform-json -any
+        , uniform-pandoc
+        , uniform-convenience -any
         -- pandoc -any,
         -- pandoc-citeproc -any,
         -- pandoc-types -any,
@@ -44,7 +44,7 @@ library
         -- aeson-pretty -any,
         -- yaml-union -any,
         -- shake -any
-        path==0.6.1.1
+        -- path==0.6.1.1
 
         -- shake-path
         -- yaml -any,
@@ -104,15 +104,12 @@ test-suite ssgTest
     hs-source-dirs: test
     other-modules:
         ShakeStartTests
-        -- Lib.FileMgt_test
         Lib.Bake_test
         Lib.Foundation_test
         Lib.Pandoc_test
         Lib.Templating_test
         Lib.ReadSettingFile_test
         Lib.Indexing_test
-        -- Lib.BibTex_test
-        -- Lib.YamlBlocks_test
         Lib.CheckInputs_test
         Lib.Templating_test
         Lib.Indexing_test
