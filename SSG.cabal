@@ -63,7 +63,7 @@ executable ssgbake
         uniform-convenience -any,
         uniform-fileio -any,
         uniform-error -any,
-        uniform-shake ==0.0.0.4, 
+        uniform-shake ==0.0.0.5, 
         SSG -any,
         shake ==0.17.6,
         scotty -any,
