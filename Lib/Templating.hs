@@ -19,8 +19,6 @@ module Lib.Templating  -- (openMain, htf_thisModuelsTests)
 
 import Lib.Foundation                 ( masterTemplateFileName )
 import Lib.Indexing (getAtKey)
-
-
 import Uniform.Filenames
 import Uniform.Pandoc (dtmplFileType, applyTemplate3
                , HTMLout(..),  DocValue(..))
