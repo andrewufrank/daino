@@ -113,10 +113,12 @@ shakeWrapped doughP templatesP bakedP =
       -- | md <- mdFiles1
       -- , not $ isInfixOf' "index.md" md
       -- ]
+      let htmlRelative = catMaybes $  (map (stripPrefix bakedP)) htmlFiles3:: [Path Rel File]
       liftIO $
         putIOwords
           [ "\nshakeWrapped - htmlFile"
-          , showT  htmlFiles3 -- (map (makeRelativeP doughP)
+          , showT  htmlRelative-- 
+          -- , showT $ ((map (stripPrefix bakedP)) htmlFiles3:: [Maybe (Path Rel File)])
           ]
       liftIO $ putIOwords ["\nshakeWrapped phony end"]
       
