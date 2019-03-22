@@ -1,8 +1,8 @@
-cabal-version: >=1.10
 name: SSG
 version: 0.0.1
 license-file: LICENSE
 build-type: Simple
+cabal-version: >=1.10
 
 library
     exposed-modules:
@@ -63,8 +63,9 @@ executable ssgbake
         uniform-convenience -any,
         uniform-fileio -any,
         uniform-error -any,
-        uniform-shake ==0.0.0.5, 
-        SSG -any,
+        uniform-shake ==0.0.0.5  
+        , uniform-watch 
+        , SSG -any,
         shake ==0.17.6,
         scotty -any,
         warp -any,
@@ -91,7 +92,9 @@ executable serversg
         uniform-strings -any,
         uniform-convenience -any,
         uniform-fileio -any,
-        uniform-error -any,
+        uniform-error -any
+        , uniform-watch , 
+
         SSG -any,
         scotty -any,
         warp -any,
@@ -126,7 +129,9 @@ test-suite ssgTest
         uniform-error -any,
         uniform-time -any,
         uniform-json,
-        uniform-pandoc,
+        uniform-pandoc
+        , uniform-watch ,
+
         
         SSG -any
         , directory -any 

@@ -14,7 +14,6 @@ module Lib.ReadSettingFile -- (openMain, htf_thisModuelsTests)
                            where
 
 import           Lib.Foundation -- (getMeta)
-import           Lib.Pandoc
 import           Uniform.Json                   ( Value
                                                 , getAt2Key
                                                 , getAtKey
@@ -25,7 +24,7 @@ import           Uniform.Yaml                   ( YamlText(..)
                                                 )
 
 import           Uniform.Filenames
-import           Uniform.Strings         hiding ( (</>) )
+-- import           Uniform.Strings         hiding ( (</>) )
 import           Uniform.TypedFile
 
 readSettings :: Path Rel File -> ErrIO (SiteLayout, Int)

@@ -51,6 +51,7 @@ import           Lib.Shake                      ( shake
                                                 , shakeDelete
                                                 )
 import           Lib.ReadSettingFile
+import Uniform.Watch (mainWatch2)
 
 --import qualified Path.IO as Pathio
 --import Distribution.Simple.Utils (copyDirectoryRecursive)
@@ -96,21 +97,22 @@ main2 = do
 --    Pathio.copyDirRecur
 --                         (unPath templatesPath) (unPath $ bakedPath </> staticDirName )
 --    putIOwords [programName, "copied all templates  files"]
+
     mainWatch layout port bakedPath
 
 mainWatch :: SiteLayout -> Port -> Path Abs Dir -> ErrIO ()
 mainWatch layout bakedPort bakedPath = bracketErrIO
     (do  -- first
         shake layout ""
-        watchDough     <- callIO $ forkIO (mainWatchDough layout)
-        watchTemplates <- callIO $ forkIO (mainWatchThemes layout)
+        watchDoughTID     <- callIO $ forkIO (watchDough layout)
+        watchTemplatesTID <- callIO $ forkIO (watchThemes layout )
         callIO $ scotty bakedPort (site bakedPath)
-        return (watchDough, watchTemplates)
+        return (watchDoughTID, watchTemplatesTID)
     )
-    (\(watchDough, watchTemplates) -> do -- last
+    (\(watchDoughTID, watchTemplatesTID) -> do -- last
         putIOwords ["main2 end"]
-        callIO $ killThread watchDough
-        callIO $ killThread watchTemplates
+        callIO $ killThread (watchDoughTID)
+        callIO $ killThread (watchTemplatesTID)
         return ()
     )
     (\watch -> do   -- during
@@ -133,6 +135,18 @@ site bakedPath = do
 landingPage bakedPath =
     toFilePath $ addFileName bakedPath (makeRelFile "landingPage.html")
 
+
+
+watchDough layout  = mainWatch2 shake layout 
+                ((doughDir layout)  )  -- :: Path Abs Dir
+                ["md", "bib", "yaml"] 
+
+-- themesDir = (themeDir layout) </> templatesDirName :: Path Abs Dir
+watchThemes layout  = mainWatch2 shake layout 
+                ((themeDir layout) </> templatesDirName )  -- :: Path Abs Dir
+                ["yaml", "dtpl", "css", "jpg"] 
+-- add copy static files ...
+
 --showLandingPage :: ActionM ()
 --showLandingPage   = do
 --  setHeader "Content-Type" "text/html"
@@ -141,69 +155,70 @@ landingPage bakedPath =
 --  html . t2tl . s2t  $ txt
 
 
-twichDefault4ssg = Twitch.Options { Twitch.log                = NoLogger
-                                  , logFile                   = Nothing
-                                  , root                      = Nothing
-                                  , recurseThroughDirectories = True
-                                  , debounce                  = Debounce
-                                  , debounceAmount            = 1  -- second? NominalTimeDifference
-                                  , pollInterval              = 10 ^ (6 :: Int) -- 1 second
-                                  , usePolling                = False
-                                  }
+-- twichDefault4ssg = Twitch.Options { Twitch.log                = NoLogger
+--                                   , logFile                   = Nothing
+--                                   , root                      = Nothing
+--                                   , recurseThroughDirectories = True
+--                                   , debounce                  = Debounce
+--                                   , debounceAmount            = 1  -- second? NominalTimeDifference
+--                                   , pollInterval              = 10 ^ (6 :: Int) -- 1 second
+--                                   , usePolling                = False
+--                                   }
 
 
-mainWatchDough, mainWatchThemes :: SiteLayout -> IO ()
+-- mainWatchDough, mainWatchThemes :: SiteLayout -> IO ()
 
-mainWatchDough layout = do
-    let doughPath = (doughDir layout) :: Path Abs Dir
-    putIOwords [programName, progTitle, "mainWatchDough"]
-    Twitch.defaultMainWithOptions
-            (twichDefault4ssg { Twitch.root = Just . toFilePath $ doughPath
-                              , Twitch.log  = Twitch.NoLogger
-                              }
-            )
-        $ do
-              Twitch.addModify
-                  (\filepath -> runErrorVoid $ shake layout filepath)
-                  "**/*.md"
-              Twitch.delete
-                  (\filepath -> runErrorVoid $ shakeDelete layout filepath)
-                  "**/*.md"
-              Twitch.addModify
-                  (\filepath -> runErrorVoid $ shake layout filepath)
-                  "**/*.yaml"
-              Twitch.addModify
-                  (\filepath -> runErrorVoid $ shake layout filepath)
-                  "**/*.bib"
 
-mainWatchThemes layout = do
-    let templatesPath = (themeDir layout) </> templatesDirName :: Path Abs Dir
-    let bakedPath     = bakedDir layout
-    putIOwords [programName, progTitle, "mainWatchThemes"]
-    -- copy the static files, not done by shake yet
-    runErrorVoid $ copyDirRecursive templatesPath (bakedPath </> staticDirName)
-    putIOwords [programName, "copied templates all files"]
-    Twitch.defaultMainWithOptions
-            (twichDefault4ssg { Twitch.root = Just . toFilePath $ templatesPath
-                              , Twitch.log  = Twitch.NoLogger
-                              }
-            )
-        $ do
---            verbosity from Cabal
-              Twitch.addModify
-                  (\filepath -> runErrorVoid $ shake layout filepath)
-                  "**/*.yaml"
-              Twitch.addModify
-                  (\filepath -> runErrorVoid $ shake layout filepath)
-                  "**/*.dtpl"
-              Twitch.addModify
-                  (\filepath -> runErrorVoid $ shake layout filepath)
-                  "**/*.css"
-              Twitch.addModify
-                  (\filepath -> runErrorVoid $ shake layout filepath)
-                  "**/*.jpg"
-            -- add and modify event
-                --  "*.html" |> \_ -> system $ "osascript refreshSafari.AppleScript"
+-- mainWatchDough layout = do
+--     let doughPath = (doughDir layout) :: Path Abs Dir
+--     putIOwords [programName, progTitle, "mainWatchDough"]
+--     Twitch.defaultMainWithOptions
+--             (twichDefault4ssg { Twitch.root = Just . toFilePath $ doughPath
+--                               , Twitch.log  = Twitch.NoLogger
+--                               }
+--             )
+--         $ do
+--               Twitch.addModify
+--                   (\filepath -> runErrorVoid $ shake layout filepath)
+--                   "**/*.md"
+--               Twitch.delete
+--                   (\filepath -> runErrorVoid $ shakeDelete layout filepath)
+--                   "**/*.md"
+--               Twitch.addModify
+--                   (\filepath -> runErrorVoid $ shake layout filepath)
+--                   "**/*.yaml"
+--               Twitch.addModify
+--                   (\filepath -> runErrorVoid $ shake layout filepath)
+--                   "**/*.bib"
+
+-- mainWatchThemes layout = do
+--     let templatesPath = (themeDir layout) </> templatesDirName :: Path Abs Dir
+--     let bakedPath     = bakedDir layout
+--     putIOwords [programName, progTitle, "mainWatchThemes"]
+--     -- copy the static files, not done by shake yet
+--     runErrorVoid $ copyDirRecursive templatesPath (bakedPath </> staticDirName)
+--     putIOwords [programName, "copied templates all files"]
+--     Twitch.defaultMainWithOptions
+--             (twichDefault4ssg { Twitch.root = Just . toFilePath $ templatesPath
+--                               , Twitch.log  = Twitch.NoLogger
+--                               }
+--             )
+--         $ do
+-- --            verbosity from Cabal
+--               Twitch.addModify
+--                   (\filepath -> runErrorVoid $ shake layout filepath)
+--                   "**/*.yaml"
+--               Twitch.addModify
+--                   (\filepath -> runErrorVoid $ shake layout filepath)
+--                   "**/*.dtpl"
+--               Twitch.addModify
+--                   (\filepath -> runErrorVoid $ shake layout filepath)
+--                   "**/*.css"
+--               Twitch.addModify
+--                   (\filepath -> runErrorVoid $ shake layout filepath)
+--                   "**/*.jpg"
+--             -- add and modify event
+--                 --  "*.html" |> \_ -> system $ "osascript refreshSafari.AppleScript"
 
 
 runErrorRepl :: (Show a) => a -> IO ()
