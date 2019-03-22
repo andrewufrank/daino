@@ -14,15 +14,8 @@
 module Lib.Indexing (module Lib.Indexing
     , getAtKey) where
 
--- import           Development.Shake.FilePath
 import Uniform.Shake
 import           GHC.Exts                       ( sortWith )
--- import           Lib.FileMgt                 
--- import qualified Uniform.FileIO                as FileIO
--- import           Uniform.FileIO   
-        --    hiding ( (<.>)
-        --                                         , (</>)
-        --                                          )  
 import           Uniform.Json
 import           Uniform.Json (FromJSON(..))  
 import           Uniform.Pandoc (readMd2meta
@@ -30,7 +23,6 @@ import           Uniform.Pandoc (readMd2meta
                         -- , unDocValue
                         , getAtKey )
 import           Uniform.Time                   ( readDate3
-                                                -- , UTCTime(..)
                                                 , year2000
                                                 )
 
