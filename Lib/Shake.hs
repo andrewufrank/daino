@@ -17,19 +17,12 @@
 
 module Lib.Shake where
 
-import Uniform.Shake
-import Uniform.Shake (liftErrIO)
-
--- import           Development.Shake -- hiding ((<.>), (</>))
--- import           Development.Shake.FilePath
---                                          hiding ( (<.>)
---                                                 , (</>) -- (toFilePath, makeAbsFile
--- --                , makeRelFile, makeRelDir, stripProperPrefix')
---                                                 )
 import Lib.Bake -- for instances
 import Lib.Foundation (SiteLayout(..), staticDirName, templatesDirName)
 import Uniform.Error
 import Uniform.FileIO
+import Uniform.Shake
+import Uniform.Shake (liftErrIO)
 
 import Uniform.FileStrings ()
 import Uniform.Strings (putIOwords)
@@ -84,9 +77,9 @@ shakeWrapped doughP templatesP bakedP =
     --     templatesD = toFilePath templatesP
     --     bakedD = toFilePath bakedP
    do
-    let staticP = bakedP </> ( staticDirName) :: Path Abs Dir 
+    let staticP = bakedP </> (staticDirName) :: Path Abs Dir
     -- where all the static files go
-        resourcesP = doughP </> (makeRelDir "resources") :: Path Abs Dir 
+        resourcesP = doughP </> (makeRelDir "resources") :: Path Abs Dir
         masterTemplateP = makeRelFile "master4.dtpl"
         settingsYamlP = makeRelFile "settings2.yaml"
 --    phony "clean" $ do
@@ -104,24 +97,25 @@ shakeWrapped doughP templatesP bakedP =
             -- todo markdown files are not found ?
                 -- found ok, but not indexed
       liftIO $ putIOwords ["\nshakeWrapped phony 1"]
-      let htmlFiles2 = map ((replaceExtension' "html") 
-                            . (\f -> bakedP </> f)) mdFiles1
-      let htmlFiles3 = filter ( not . isInfixOf' "index.md" . toFilePath) htmlFiles2
+      let htmlFiles2 =
+            map ((replaceExtension' "html") . (\f -> bakedP </> f)) mdFiles1
+      let htmlFiles3 =
+            filter (not . isInfixOf' "index.md" . toFilePath) htmlFiles2
       liftIO $ putIOwords ["\nshakeWrapped phony 2"]
       -- let htmlFiles2 =
       -- [ bakedP </> (md $-<.> (makeExtension "html") :: Path Abs File)
       -- | md <- mdFiles1
       -- , not $ isInfixOf' "index.md" md
       -- ]
-      let htmlRelative = catMaybes $  (map (stripPrefix bakedP)) htmlFiles3:: [Path Rel File]
+      let htmlRelative =
+            catMaybes $ (map (stripPrefix bakedP)) htmlFiles3 :: [Path Rel File]
       liftIO $
         putIOwords
           [ "\nshakeWrapped - htmlFile"
-          , showT  htmlRelative-- 
+          , showT htmlRelative -- 
           -- , showT $ ((map (stripPrefix bakedP)) htmlFiles3:: [Maybe (Path Rel File)])
           ]
       liftIO $ putIOwords ["\nshakeWrapped phony end"]
-      
 -- TODO missing static resources from dough
 -- what else needs to be copied ?
     -- get html files from dough (not yet done, html are in resources)
@@ -141,30 +135,32 @@ shakeWrapped doughP templatesP bakedP =
         -- the templates static files are copied with watch
         -- process the index files after all others are done
       indexFiles1 <- getDirectoryFilesP doughP ["//index.md"]
-      let indexFiles2 = map ((replaceExtension' "html") . (\f -> bakedP </> f)) mdFiles1
+      let indexFiles2 =
+            map ((replaceExtension' "html") . (\f -> bakedP </> f)) mdFiles1
       -- let indexFiles2 = [bakedP </> ix $-<.> "html" | ix <- indexFiles1]
       liftIO $ putIOwords ["\nshakeWrapped - indexFiles2", showT indexFiles2]
       needP indexFiles2
-
     ((toFilePath bakedP) <> "//*.html") %> \out -> do
-      let outP = makeAbsFile out  :: Path Abs File
+      let outP = makeAbsFile out :: Path Abs File
       liftIO $ putIOwords ["\nshakeWrapped - bakedP html -  out ", showT outP]
-      let md = doughP </> (stripProperPrefixP bakedP . replaceExtension' "md" $ outP)
+      let md =
+            doughP </>
+            (stripProperPrefixP bakedP . replaceExtension' "md" $ outP)
       -- let md = doughP </> (makeRelativeP bakedP $ outP $-<.> "md")
       liftIO $ putIOwords ["\nshakeWrapped - bakedP html - md ", showT md]
-
       let masterTemplate = templatesP </> masterTemplateP
           masterSettings_yaml = doughP </> settingsYamlP
-
-      biblio :: [Path Rel File] <- getDirectoryFilesP resourcesP ["*.bib"] 
+      biblio :: [Path Rel File] <- getDirectoryFilesP resourcesP ["*.bib"]
       let biblio2 = [resourcesP </> b | b <- biblio] :: [Path Abs File]
       putIOwords ["shake bakedP", "biblio", showT biblio2]
       yamlPageFiles <- getDirectoryFilesP templatesP ["*.yaml"]
       let yamlPageFiles2 = [templatesP </> y | y <- yamlPageFiles]
-      cssFiles1 :: [Path Rel File] <- getDirectoryFilesP templatesP ["*.css"]   -- no subdirs
-      liftIO $ putIOwords ["\nshakeWrapped - bakedP html - cssFiles1 ", showT cssFiles1]
+      cssFiles1 :: [Path Rel File] <- getDirectoryFilesP templatesP ["*.css"] -- no subdirs
+      liftIO $
+        putIOwords
+          ["\nshakeWrapped - bakedP html - cssFiles1 ", showT cssFiles1]
       -- let cssFiles2 = [replaceDirectoryP templatesP staticP c | c <- cssFiles1]  -- flipped args
-      let cssFiles2 = [ staticP </> c | c <- cssFiles1]  -- flipped args
+      let cssFiles2 = [staticP </> c | c <- cssFiles1] -- flipped args
 --        when (takeBaseName md == "index")  $
 --            do
 ----        -- for index rebake
@@ -186,17 +182,14 @@ shakeWrapped doughP templatesP bakedP =
       needP [masterSettings_yaml]
       needP [masterTemplate]
       needP [md]
-
-
       res <- liftErrIO $ bakeOneFile False md doughP templatesP outP
-      return () 
+      return ()
             -- c relative to dough/
-
-    (  (toFilePath staticP) <> "/*.css") %> \out -- insert css
+    ((toFilePath staticP) <> "/*.css") %> \out -- insert css
      -> do
-     let outP = makeAbsFile out  :: Path Abs File
-     liftIO $ putIOwords ["\nshakeWrapped - staticD - *.css", showT outP]
-     copyFileChangedP (replaceDirectoryP staticP templatesP outP) outP
+      let outP = makeAbsFile out :: Path Abs File
+      liftIO $ putIOwords ["\nshakeWrapped - staticD - *.css", showT outP]
+      copyFileChangedP (replaceDirectoryP staticP templatesP outP) outP
 -- instance Exception Text
 -- runErr2action :: ErrIO a -> Action a
 -- runErr2action op = liftIO $ do
