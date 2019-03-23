@@ -98,7 +98,7 @@ executable serversg
         SSG -any,
         scotty -any,
         warp -any,
-        wai-middleware-static -any,
+        wai-middleware-static -any
         -- twitch -any
 
 test-suite ssgTest

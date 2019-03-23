@@ -22,7 +22,7 @@ module Main where
 import           Uniform.Strings         hiding ( (</>) )
 import           Uniform.Filenames
 import           Uniform.FileStrings
-import           Uniform.Error
+-- import           Uniform.Error
 import           Uniform.Convenience.StartApp
 
 import           Web.Scotty
@@ -34,11 +34,6 @@ import           Network.Wai.Handler.Warp       ( Port ) -- .Warp.Types
 --import System.Directory
 --import System.IO
 
-import           Twitch                  hiding ( Options
-                                                , log
-                                                )
-import qualified Twitch
---import Control.Concurrent.Spawn
 import           Control.Concurrent
 import           Lib.Foundation                 ( SiteLayout(..)
                                                 , layoutDefaults
