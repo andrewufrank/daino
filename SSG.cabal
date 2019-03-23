@@ -92,9 +92,9 @@ executable serversg
         uniform-strings -any,
         uniform-convenience -any,
         uniform-fileio -any,
-        uniform-error -any
-        , uniform-watch , 
-
+        uniform-error -any,
+        uniform-watch , 
+        uniform-webserver,
         SSG -any,
         scotty -any,
         warp -any,
@@ -129,7 +129,8 @@ test-suite ssgTest
         uniform-error -any,
         uniform-time -any,
         uniform-json,
-        uniform-pandoc
+        uniform-pandoc,
+        uniform-webserver
         , uniform-watch ,
 
         

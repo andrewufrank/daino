@@ -25,11 +25,11 @@ import           Uniform.FileStrings
 -- import           Uniform.Error
 import           Uniform.Convenience.StartApp
 
-import           Web.Scotty
-import           Network.Wai.Middleware.Static  ( staticPolicy
-                                                , addBase
-                                                )
-import           Network.Wai.Handler.Warp       ( Port ) -- .Warp.Types
+-- import           Web.Scotty
+-- import           Network.Wai.Middleware.Static  ( staticPolicy
+--                                                 , addBase
+--                                                 )
+-- import           Network.Wai.Handler.Warp       ( Port ) -- .Warp.Types
 
 --import System.Directory
 --import System.IO
@@ -48,6 +48,7 @@ import           Lib.Shake                      ( shake
                                                 )
 import           Lib.ReadSettingFile
 import Uniform.Watch (mainWatch2)
+import Uniform.WebServer 
 
 --import qualified Path.IO as Pathio
 --import Distribution.Simple.Utils (copyDirectoryRecursive)
@@ -93,16 +94,17 @@ main2 = do
 --    Pathio.copyDirRecur
 --                         (unPath templatesPath) (unPath $ bakedPath </> staticDirName )
 --    putIOwords [programName, "copied all templates  files"]
+    let landing = makeRelFile "landingPage.html"
+    mainWatch layout port bakedPath landing
 
-    mainWatch layout port bakedPath
-
-mainWatch :: SiteLayout -> Port -> Path Abs Dir -> ErrIO ()
-mainWatch layout bakedPort bakedPath = bracketErrIO
+mainWatch :: SiteLayout -> Port -> Path Abs Dir -> Path Rel File ->  ErrIO ()
+mainWatch layout bakedPort bakedPath landing = bracketErrIO
     (do  -- first
         shake layout ""
         watchDoughTID     <- callIO $ forkIO (runErrorVoid $ watchDough layout)
         watchTemplatesTID <- callIO $ forkIO (runErrorVoid $ watchThemes layout )
-        callIO $ scotty bakedPort (site bakedPath)
+        runScotty bakedPort bakedPath landing
+        -- callIO $ scotty bakedPort (site bakedPath)
         return (watchDoughTID, watchTemplatesTID)
     )
     (\(watchDoughTID, watchTemplatesTID) -> do -- last
@@ -120,16 +122,16 @@ mainWatch layout bakedPort bakedPath = bracketErrIO
     )
 
 
-site :: Path Abs Dir -> ScottyM ()
--- for get, return the page from baked
--- for post return error
-site bakedPath = do
-    get "/" $ file (landingPage bakedPath)
-    middleware $ staticPolicy $ addBase (toFilePath bakedPath)
+-- site :: Path Abs Dir -> ScottyM ()
+-- -- for get, return the page from baked
+-- -- for post return error
+-- site bakedPath = do
+--     get "/" $ file (landingPage bakedPath)
+--     middleware $ staticPolicy $ addBase (toFilePath bakedPath)
 
 
-landingPage bakedPath =
-    toFilePath $ addFileName bakedPath (makeRelFile "landingPage.html")
+-- landingPage bakedPath =
+--     toFilePath $ addFileName bakedPath ()
 
 
 watchDough layout  = mainWatch2 shake layout 

@@ -12,6 +12,7 @@ packages:
 - ../uniform/uniform-pandoc
 - ../uniform/uniform-shake
 - ../uniform/uniform-watch
+- ../uniform/uniform-webserver
 - ../fromOthers/bibtex
 - ../fromOthers/path
 - ../fromOthers/path-io
