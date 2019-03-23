@@ -99,7 +99,7 @@ executable serversg
         scotty -any,
         warp -any,
         wai-middleware-static -any,
-        twitch -any
+        -- twitch -any
 
 test-suite ssgTest
     type: exitcode-stdio-1.0

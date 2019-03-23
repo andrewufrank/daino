@@ -16,7 +16,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE TypeFamilies          #-}
-{-# LANGUAGE TypeSynonymInstances  #-}
+-- {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
 
 module Lib.Foundation  -- (openMain, htf_thisModuelsTests)
@@ -61,7 +61,7 @@ layoutDefaults = SiteLayout
         }
 
 templatesDirName, staticDirName :: Path Rel Dir
-templatesDirName = (makeRelDir "templates")
+templatesDirName = makeRelDir "templates"
 staticDirName = makeRelDir "static"
 resourcesDirName :: Path Rel Dir
 resourcesDirName = makeRelDir "resources"

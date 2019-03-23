@@ -15,6 +15,7 @@
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
+-- {-# LANGUAGE PartialTypeSignatures     #-}
 
 module Main where
 
@@ -81,8 +82,8 @@ main2 = do
     createDirIfMissing' bakedPath
     -- the directory can be missing or deleted intentionally
 
-    let templatesPath = (themeDir layout) </> templatesDirName :: Path Abs Dir
-    let resourcesPath = (doughDir layout) </> resourcesDirName :: Path Abs Dir
+    let templatesPath = themeDir layout </> templatesDirName :: Path Abs Dir
+    let resourcesPath = doughDir layout </> resourcesDirName :: Path Abs Dir
     -- copy static resources (templates and dough)
     copyDirRecursive resourcesPath (bakedPath </> staticDirName)
     putIOwords
@@ -104,8 +105,8 @@ mainWatch :: SiteLayout -> Port -> Path Abs Dir -> ErrIO ()
 mainWatch layout bakedPort bakedPath = bracketErrIO
     (do  -- first
         shake layout ""
-        watchDoughTID     <- callIO $ forkIO (watchDough layout)
-        watchTemplatesTID <- callIO $ forkIO (watchThemes layout )
+        watchDoughTID     <- callIO $ forkIO (runErrorVoid $ watchDough layout)
+        watchTemplatesTID <- callIO $ forkIO (runErrorVoid $ watchThemes layout )
         callIO $ scotty bakedPort (site bakedPath)
         return (watchDoughTID, watchTemplatesTID)
     )
@@ -136,15 +137,14 @@ landingPage bakedPath =
     toFilePath $ addFileName bakedPath (makeRelFile "landingPage.html")
 
 
-
 watchDough layout  = mainWatch2 shake layout 
-                ((doughDir layout)  )  -- :: Path Abs Dir
-                ["md", "bib", "yaml"] 
+                (doughDir layout)    -- :: Path Abs Dir
+                ["md", "bib", "yaml"]  :: ErrIO ()
 
 -- themesDir = (themeDir layout) </> templatesDirName :: Path Abs Dir
 watchThemes layout  = mainWatch2 shake layout 
-                ((themeDir layout) </> templatesDirName )  -- :: Path Abs Dir
-                ["yaml", "dtpl", "css", "jpg"] 
+                (themeDir layout </> templatesDirName )  -- :: Path Abs Dir
+                ["yaml", "dtpl", "css", "jpg"] :: ErrIO () 
 -- add copy static files ...
 
 --showLandingPage :: ActionM ()
