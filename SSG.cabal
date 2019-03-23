@@ -62,14 +62,15 @@ executable ssgbake
         uniform-strings -any,
         uniform-convenience -any,
         uniform-fileio -any,
-        uniform-error -any,
-        uniform-shake ==0.0.0.5  
+        uniform-error
+        , uniform-shake
+        ,uniform-webserver  
         , uniform-watch 
-        , SSG -any,
-        shake ==0.17.6,
-        scotty -any,
-        warp -any,
-        wai-middleware-static -any
+        , SSG -any
+        -- shake ==0.17.6,
+        -- scotty -any,
+        -- warp -any,
+        -- wai-middleware-static -any
 
 -- executable ssg10
 --     main-is: ssg10.hs
@@ -95,10 +96,11 @@ executable serversg
         uniform-error -any,
         uniform-watch , 
         uniform-webserver,
-        SSG -any,
-        scotty -any,
-        warp -any,
-        wai-middleware-static -any
+        SSG 
+        -- SSG -any,
+        -- scotty -any,
+        -- warp -any,
+        -- wai-middleware-static -any
         -- twitch -any
 
 test-suite ssgTest

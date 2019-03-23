@@ -23,6 +23,7 @@ import Uniform.FileIO hiding ((<.>), (</>))
 -- import Uniform.Shake.Path
 import Uniform.Shake 
 import Uniform.Error ()
+import Uniform.WebServer 
 
 import Lib.Bake
 import Lib.Shake2
@@ -34,9 +35,9 @@ import Lib.Foundation (SiteLayout (..), templatesDirName, staticDirName, resourc
 -- import Development.Shake.FilePath
 --import Development.Shake.Path hiding (setCurrentDir, toFilePath)
 
-import Web.Scotty
-import Network.Wai.Middleware.Static (staticPolicy, addBase)
-import Network.Wai.Handler.Warp  (Port) -- .Warp.Types
+-- import Web.Scotty
+-- import Network.Wai.Middleware.Static (staticPolicy, addBase)
+-- import Network.Wai.Handler.Warp  (Port) -- .Warp.Types
 
 
 programName = "SSG10" :: Text
@@ -46,12 +47,15 @@ settingsfileName = makeRelFile "settings2" -- the yaml file
 bannerImageFileName = makeRelFile "cropped-DSC05127-1024x330.jpg"
 -- where should this be fixed?
 
+
 main :: IO ()
 main = startProg programName progTitle
              (do
                 (layout2, port2)  <- readSettings settingsfileName
                 bakeAll bannerImageFileName layout2
-                callIO $ scotty port2 (site (bakedDir layout2))
+                let landing = makeRelFile "landingPage.html"
+                runScotty port2 (bakedDir layout2) landing
+                -- callIO $ scotty port2 (site (bakedDir layout2))
                 return ()
                 )
 
@@ -82,12 +86,12 @@ main = startProg programName progTitle
 --     return ()
 
 
-site :: Path Abs Dir -> ScottyM  ()
--- for get, return the page from baked
--- for post return error
-site bakedPath = do
-    get "/" $ file (landingPage bakedPath)
-    middleware $ staticPolicy $ addBase (toFilePath bakedPath)
+-- site :: Path Abs Dir -> ScottyM  ()
+-- -- for get, return the page from baked
+-- -- for post return error
+-- site bakedPath = do
+--     get "/" $ file (landingPage bakedPath)
+--     middleware $ staticPolicy $ addBase (toFilePath bakedPath)
 
 
-landingPage bakedPath = toFilePath $ addFileName bakedPath (makeRelFile "landingPage.html")
+-- landingPage bakedPath = toFilePath $ addFileName bakedPath (makeRelFile "landingPage.html")
