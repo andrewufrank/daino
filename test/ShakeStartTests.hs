@@ -8,7 +8,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE TypeFamilies          #-}
-{-# LANGUAGE TypeSynonymInstances  #-}
+-- {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-unused-imports#-}
 
@@ -16,8 +16,8 @@ module ShakeStartTests
      where
 
 
-import Development.Shake
-import Development.Shake.FilePath
+-- import Development.Shake
+-- import Development.Shake.FilePath
 import Lib.Bake
 import Lib.Foundation
 
@@ -25,12 +25,14 @@ import Lib.Foundation_test (testLayout) -- (progName, SiteLayout (..), layoutDef
 import Lib.Pandoc
 -- import Lib.FileMgt
 import Lib.Templating (putValinMaster )
-import Test.Framework  -- (markdownToPandoc, pandocToContentHtml,docValToAllVal)
+import Test.Framework 
+         -- (markdownToPandoc, pandocToContentHtml,docValToAllVal)
         -- with a simplified Action ~ ErrIO
 -- import Text.Pandoc  (Pandoc)
 import Uniform.Error
 import Uniform.FileIO            hiding ((<.>), (</>)) -- (resourcesDirName)
 import Uniform.Pandoc -- (applyTemplate3, Pandoc, DocValue, doc HTMLout, htmloutFileType)
+import Uniform.Shake
 
 test_shake :: IO ()
 test_shake =  do
@@ -63,19 +65,20 @@ shakeTestWrapped doughP templatesP testP =
     --                , shakeRebuild=[(RebuildNow,"allMarkdownConversion")]
     --                  seems not to produce an effect
                     } $ do
-    let doughD = toFilePath doughP
-        templatesD = toFilePath templatesP
-        testD = toFilePath testP
+    -- let doughD = toFilePath doughP
+    --     templatesD = toFilePath templatesP
+    --     testD = toFilePath testP
     let
-        masterSettings = doughD </>"settings2.yaml"
-        masterTemplate =  templatesD </>"master4.dtpl"
+        masterSettings = doughP </> makeRelFile "settings2.yaml" :: Path Abs File 
+        masterTemplate =  templatesP </> makeRelFile "master4.dtpl"  :: Path Abs File 
+
     want ["allTests"]
 
     phony "allTests" $ do
-        need [masterSettings, masterTemplate]
+        needP [masterSettings, masterTemplate]
 
-        mdFiles1 <- getDirectoryFiles (toFilePath doughP) ["**/*.md", "**/*.markdown"]
-        let mdFiles3 =  map dropExtension mdFiles1
+        mdFiles1 ::[ Path Rel File] <- getDirectoryFilesP doughP ["**/*.md", "**/*.markdown"] 
+        let mdFiles3 =  map removeExtension mdFiles1
         liftIO $ putIOwords ["\nshakeWrapped - markdown and md files to work on\n"
                         , showT mdFiles3]
 --            ["landingPage","Blog/postTufteStyled","Blog/postwk","Blog/postwk2"
@@ -83,85 +86,92 @@ shakeTestWrapped doughP templatesP testP =
 
 
 
-        need [testD </> md <.> "withSettings.pandoc" | md <- mdFiles3]  -- markdownToPandoc
-        need [testD </> md <.> "content.docval" | md <- mdFiles3]  -- pandocToContentHtml
-        need [testD </> md <.> "allyaml.docval" | md <- mdFiles3]  -- pandocToContentHtml
-        need [testD </> md <.> "inTemplate.html" | md <- mdFiles3]  -- applyTemplate3
-        need [testD </> md -<.> "a.html" | md <- mdFiles1]
+        needP [testP </> md <.> makeExtension "withSettings.pandoc" | md <- mdFiles3]  -- markdownToPandoc
+        needP [testP </> md <.> makeExtension "content.docval" | md <- mdFiles3]  -- pandocToContentHtml
+        needP [testP </> md <.> makeExtension "allyaml.docval" | md <- mdFiles3]  -- pandocToContentHtml
+        needP [testP </> md <.> makeExtension "inTemplate.html" | md <- mdFiles3]  -- applyTemplate3
+        needP [testP </> md $-<.> "a.html" | md <- mdFiles1]
 
 
 -- in order of bakeOneFile :
 
-    (testD <> "//*.withSettings.pandoc") %> \out -> do
+    (toFilePath testP <> "//*.withSettings.pandoc") %> \out -> do
 --        liftIO $ putIOwords ["\n.withSettings.pandoc", s2t out]
-        let source = doughD </> (makeRelative testD  (out --<.> "md"))
-        need [source]
+        let outP = makeAbsFile out :: Path Abs File
+        let source = doughP </> (makeRelativeP testP  (outP $--<.> "md"))
+        needP [source]
         runErr2action $
                 do
 --                    intext <- read8 (makeAbsFile source) markdownFileType
 --                    let resourcesPath = doughP `addDir` resourcesDirName :: Path Abs Dir
-                    mp <- markdownToPandoc True doughP (makeAbsFile source)
+                    mp <- markdownToPandoc True doughP ( source)
                     case mp of
                         Nothing -> return ()
-                        Just p -> writeFile2 (makeAbsFile out) (showT p)
+                        Just p -> writeFile2 ( outP) (showT p)
 
-    (testD <> "//*content.docval") %> \out -> do
-        let source = out --<.>   "withSettings.pandoc"
-        need [source]
+    (toFilePath testP <> "//*content.docval") %> \out -> do
+        let outP = makeAbsFile out :: Path Abs File
+        let source = outP $--<.>   "withSettings.pandoc"
+        needP [source]
         runErr2action $   -- pandocToContentHtml
             do
-                pandocText  <- readFile2 (makeAbsFile source)
+                pandocText  <- readFile2 ( source)
                 p :: DocValue <- pandocToContentHtml True
                                 (readNote "we23" pandocText :: Pandoc)
-                write8 (makeAbsFile out) docValueFileType p
+                write8 ( outP) docValueFileType p
 
-    (testD <> "//*allyaml.docval") %> \out -> do
-        let source = out --<.>   "content.docval"
-        let source2 = doughD </> (makeRelative testD  (out --<.> "md"))
-        need [source]
+    (toFilePath testP <> "//*allyaml.docval") %> \out -> do
+        let outP = makeAbsFile out :: Path Abs File
+        let source = outP $--<.>   "content.docval"
+        let source2 = doughP </> makeRelativeP testP (outP $--<.> "md")
+        needP [source]
         -- does not track the settingss and the pageN.yaml
         runErr2action $   -- docValToAllVal
             do
-                valText :: DocValue  <-   read8 (makeAbsFile source )
+                valText :: DocValue  <-   read8 ( source )
                                                 docValueFileType
                 p :: DocValue <- docValToAllVal True valText
-                                 (makeAbsFile source2)
-                                 (makeAbsDir doughD) (makeAbsDir templatesD)
-                write8 (makeAbsFile out) docValueFileType p
+                                 ( source2)
+                                 ( doughP) ( templatesP)
+                write8 ( outP) docValueFileType p
 
 
 -- apply val to template
-    (testD <> "//*inTemplate.html") %> \out -> do --    apply   template to values
-        let source = out --<.>   "allyaml.docval"
-        need [source]
+    (toFilePath testP <> "//*inTemplate.html") %> \out -> do --    apply   template to values
+        let outP = makeAbsFile out :: Path Abs File
+        let source = outP $--<.>   "allyaml.docval"
+        needP [source]
         runErr2action $   -- applyTemplate3
             do
-                valText :: DocValue  <-   read8 (makeAbsFile source )
+                valText :: DocValue  <-   read8 ( source )
                                                 docValueFileType
-                p :: HTMLout <- putValinMaster False valText (makeAbsDir templatesD)
-                write8 (makeAbsFile out) htmloutFileType p
+                p :: HTMLout <- putValinMaster False valText ( templatesP)
+                write8 ( outP) htmloutFileType p
 
-    (testD <> "//*.a.html") %> \out -> do
-        let  mdSource1 =  out -<.> ""
-             mdSource2 = doughD </> makeRelative testD  (mdSource1 -<.> "md")
-        need [mdSource2, masterSettings, masterTemplate]
-        runErr2action $ bakeOneFile False (makeAbsFile mdSource2)
-                            (makeAbsDir doughD) (makeAbsDir templatesD)
-                            (makeAbsFile out)
+    (toFilePath testP <> "//*.a.html") %> \out -> do
+        let outP = makeAbsFile out :: Path Abs File
+        let  mdSource1 =  outP $-<.> ""
+             mdSource2 = doughP </> makeRelativeP testP  (mdSource1 $-<.> "md")
+        needP [mdSource2, masterSettings, masterTemplate]
+        runErr2action $ do 
+                    r <- bakeOneFile False ( mdSource2)
+                            ( doughP) ( templatesP)
+                            ( outP)
+                    return ()
 
 
 
 instance Exception Text
 
-runErr2action :: Show a => ErrIO a -> Action ()
-runErr2action op = liftIO $ do
-    res <- runErr  op
-    case res of
-        Left msg -> throw msg
-        Right _ -> do
---                        putIOwords ["runErr2action", "got return", showT a] --
-                        return ()
+-- runErr2action :: Show a => ErrIO a -> Action ()
+-- runErr2action op = liftIO $ do
+--     res <- runErr  op
+--     case res of
+--         Left msg -> throw msg
+--         Right _ -> do
+-- --                        putIOwords ["runErr2action", "got return", showT a] --
+--                         return ()
 
-(--<.>) :: FilePath -> FilePath -> FilePath
+($--<.>) :: Path a File  -> Text  -> Path a File
 -- take away two extensions and replace with a new oneLine
-f --<.> ext =  (f -<.> "") -<.> ext
+f $--<.> ext =  (f $-<.> zero) $-<.> ext

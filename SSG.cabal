@@ -132,15 +132,16 @@ test-suite ssgTest
         uniform-time -any,
         uniform-json,
         uniform-pandoc,
-        uniform-webserver
-        , uniform-watch ,
+        uniform-webserver,
+        uniform-shake,
+        uniform-watch ,
 
         
         SSG -any
-        , directory -any 
+        -- , directory -any 
         -- doctemplates -any,
-        , shake -any
-        , path==0.6.1.1
+        -- , shake -any
+        -- , path==0.6.1.1
         -- pandoc -any,
         -- lens-aeson -any,
         -- lens -any,

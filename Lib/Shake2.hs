@@ -33,8 +33,9 @@ import Lib.Bake
 bakeAll :: Path Rel File -> SiteLayout -> ErrIO ()
 -- ^ bake all md files and copy the resources
 -- sets the current dir to doughDir
+-- copies banner image 
 bakeAll bannerImageFileName layout
-         -- where the layout is used, rest in shakeWrapped
+        --  where the layout is used, rest in shakeWrapped
  = do
   let doughP = doughDir layout -- the regular dough
       templatesP = themeDir layout `addFileName` templatesDirName

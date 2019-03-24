@@ -22,7 +22,7 @@ import Lib.Foundation (SiteLayout(..), staticDirName, templatesDirName)
 import Uniform.Error
 import Uniform.FileIO
 import Uniform.Shake
-import Uniform.Shake (liftErrIO)
+import Uniform.Shake (runErr2action)
 
 import Uniform.FileStrings ()
 import Uniform.Strings (putIOwords)
@@ -182,7 +182,7 @@ shakeWrapped doughP templatesP bakedP =
       needP [masterSettings_yaml]
       needP [masterTemplate]
       needP [md]
-      res <- liftErrIO $ bakeOneFile False md doughP templatesP outP
+      res <- runErr2action $ bakeOneFile False md doughP templatesP outP
       return ()
             -- c relative to dough/
     ((toFilePath staticP) <> "/*.css") %> \out -- insert css

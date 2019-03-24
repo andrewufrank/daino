@@ -9,11 +9,13 @@ module Main     where      -- must have Main (main) or Main where
 
 
 --import System.Exit
-import System.Directory (createDirectoryIfMissing)
+-- import System.Directory (createDirectoryIfMissing)
 -- keep this because it is in IO (not ErrIO)
 
 import           Test.Framework
 import Lib.Shake  -- just to test ghci
+import Uniform.FileIO
+import Uniform.Error
 
 import {-@ HTF_TESTS @-} Lib.Shake_test
 -- import {-@ HTF_TESTS @-} ShakeStartTests
@@ -51,7 +53,7 @@ import {-@ HTF_TESTS @-} Lib.Shake_test
 main ::  IO ()
 main =  do  -- with tests in other modules
     putStrLn "HTF ExampleTest.hs:\n"
-    createDirectoryIfMissing False "/home/frank/.SSG"
+    runErrorVoid $ createDirIfMissing' "/home/frank/.SSG"
     -- is in settings.yaml testDir  - must correspond
 
     p <- htfMain htf_importedTests
