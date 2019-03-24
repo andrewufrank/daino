@@ -15,7 +15,7 @@ module Main     where      -- must have Main (main) or Main where
 import           Test.Framework
 import Lib.Shake  -- just to test ghci
 import Uniform.FileIO
-import Uniform.Error
+-- import Uniform.Error
 
 import {-@ HTF_TESTS @-} Lib.Shake_test
 -- import {-@ HTF_TESTS @-} ShakeStartTests

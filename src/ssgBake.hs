@@ -45,24 +45,24 @@ progTitle = "constructing a static site generator x6" :: Text
 
 settingsfileName = makeRelFile "settings2" -- the yaml file
 bannerImageFileName = makeRelFile "cropped-DSC05127-1024x330.jpg"
--- where should this be fixed?
+-- where should this be fixed? duplicate in serverSG
 
 
 main :: IO ()
 main = startProg programName progTitle
              (do
                 (layout2, port2)  <- readSettings settingsfileName
-                bakeAll bannerImageFileName layout2
+                shakeAll bannerImageFileName layout2 ""
                 let landing = makeRelFile "landingPage.html"
                 runScotty port2 (bakedDir layout2) landing
                 -- callIO $ scotty port2 (site (bakedDir layout2))
                 return ()
                 )
 
--- bakeAll :: SiteLayout -> ErrIO ()
+-- shakeAll :: SiteLayout -> ErrIO ()
 -- -- ^ bake all md files and copy the resources
 -- -- sets the current dir to doughDir
--- bakeAll layout = do
+-- shakeAll layout = do
 --     let  -- where the layout is used, rest in shakeWrapped
 --           doughP      =    doughDir  layout  -- the regular dough
 --           templatesP =   themeDir layout

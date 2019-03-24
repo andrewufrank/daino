@@ -8,7 +8,7 @@ library
     exposed-modules:
         Lib.Bake
         Lib.Shake2
-        Lib.Shake
+        -- Lib.Shake
         -- Lib.FileMgt
         Lib.Templating
         Lib.Pandoc

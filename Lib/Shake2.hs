@@ -30,18 +30,46 @@ import Lib.Foundation
 
 import Lib.Bake
 
-bakeAll :: Path Rel File -> SiteLayout -> ErrIO ()
+shakeDelete :: SiteLayout -> FilePath -> ErrIO ()
+-- ^ experimental - twich found delete of md
+shakeDelete _ filepath = do
+  putIOwords
+    [ "\n\n*******************************************"
+    , "experimental -- twich found  DELETED MD file "
+    , s2t filepath
+    ]
+
+shakeArgs2 :: Path b t -> Rules () -> IO ()
+shakeArgs2 bakedP =
+  shakeArgs
+    shakeOptions
+      { shakeFiles = toFilePath bakedP
+      , shakeVerbosity = Chatty -- Loud
+      , shakeLint = Just LintBasic
+      }
+    
+
+shakeAll :: Path Rel File -> SiteLayout -> FilePath -> ErrIO ()
 -- ^ bake all md files and copy the resources
 -- sets the current dir to doughDir
 -- copies banner image 
-bakeAll bannerImageFileName layout
+shakeAll bannerImageFileName layout filepath = do
         --  where the layout is used, rest in shakeWrapped
- = do
+
+  putIOwords
+    [ "\n\n=====================================shakeAll start"
+    , "caused by"
+    , s2t filepath
+    ]
   let doughP = doughDir layout -- the regular dough
       templatesP = themeDir layout `addFileName` templatesDirName
       bakedP = bakedDir layout
-  setCurrentDir doughP
+  setCurrentDir doughP  -- must be done earlier to find settings file!
   deleteDirRecursive bakedP
+  -- delete all the previous stuff for a new start 
+  -- covers the delete issue, which shake does not handle well
+
+
     -- copy resources and banner   not easy to do with shake
     -- only the html and the pdf files (possible the jpg) are required
   let bannerImage = templatesImgDirName `addFileName` bannerImageFileName
@@ -56,20 +84,25 @@ bakeAll bannerImageFileName layout
 shakeMD :: SiteLayout -> Path Abs Dir -> Path Abs Dir -> Path Abs Dir -> IO ()
 -- ^ process all md files (currently only the MD)
 -- in IO
-shakeMD layout doughP templatesP bakedP
---    shakeArgs2 bakedP $ do
- =
-  shakeArgs
-    shakeOptions
-      { shakeFiles = toFilePath bakedP -- TODO
-      , shakeVerbosity = Chatty -- Loud -- Diagnostic --
-      , shakeLint = Just LintBasic
---                , shakeRebuild=[(RebuildNow,"allMarkdownConversion")]
---                  seems not to produce an effect
-      } $ -- in Rule () 
-   do
-    let staticP = bakedP </> staticDirName -- ok
-    let resourcesDir = doughP </> resourcesDirName
+shakeMD layout doughP templatesP bakedP = shakeArgs2 bakedP $ do
+--  =
+--   shakeArgs2 bakedP 
+-- --     shakeOptions
+-- --       { shakeFiles = toFilePath bakedP -- TODO
+-- --       , shakeVerbosity = Chatty -- Loud -- Diagnostic --
+-- --       , shakeLint = Just LintBasic
+-- -- --                , shakeRebuild=[(RebuildNow,"allMarkdownConversion")]
+-- -- --                  seems not to produce an effect
+-- --       } $ -- in Rule () 
+--    do
+    let staticP = bakedP </> staticDirName :: Path Abs Dir
+    let resourcesP = doughP </> resourcesDirName :: Path Abs Dir
+    let masterTemplate = templatesP </> masterTemplateP :: Path Abs File 
+        masterTemplateP = makeRelFile "master4.dtpl" :: Path Rel File 
+        settingsYamlP = makeRelFile "settings2.yaml" :: Path Rel File 
+        masterSettings_yaml = doughP </> settingsYamlP :: Path Abs File
+
+
     liftIO $
       putIOwords
         [ "\nshakeMD dirs"
@@ -78,13 +111,13 @@ shakeMD layout doughP templatesP bakedP
         , "\n\tbakedP"
         , showT bakedP
         , "\nresourcesDir"
-        , showT resourcesDir
+        , showT resourcesP
         ]
     want ["allMarkdownConversion"]
     phony "allMarkdownConversion" $ do
       mdFiles1 :: [Path Rel File] <- getDirectoryFilesP doughP ["**/*.md"] -- subfiledirectories
       let htmlFiles3 =
-            map ((replaceExtension' "html") . (\f -> bakedP </> f)) mdFiles1
+            map (replaceExtension' "html" . (bakedP </>)) mdFiles1
                         -- [( bakedP </>  md) -<.> "html" | md <- mdFiles1] 
              :: [Path Abs File]
                             -- , not $ isInfixOf' "index.md" md]
@@ -93,27 +126,52 @@ shakeMD layout doughP templatesP bakedP
         putIOwords
           ["============================\nshakeMD - mdFile 1", showT mdFiles1]
       liftIO $ putIOwords ["\nshakeMD - htmlFile 2", showT htmlFiles3]
-      needP htmlFiles3
---             cssFiles1 <- getDirectoryFiles templatesD ["*.css"] -- no subdirs
---             let cssFiles2 = [replaceDirectory c staticP  | c <- cssFiles1]
---             liftIO $ putIOwords ["========================\nshakeMD - css files 1",  showT   cssFiles1]
---             liftIO $ putIOwords ["\nshakeMD - css files" ,  showT  cssFiles2]
---             need cssFiles2
---             pdfFiles1 <- getDirectoryFiles resourcesDir ["**/*.pdf"] -- subdirs
---             let pdfFiles2 = [ staticP </> c  | c <- pdfFiles1]
---             liftIO $ putIOwords ["===================\nshakeMD - pdf files1",  showT   pdfFiles1]
---             liftIO $ putIOwords ["\nshakeMD - pdf files 2",  showT  pdfFiles2]
---             need pdfFiles2
+      needP htmlFiles3  -- includes the index files 
+
+      cssFiles1 :: [Path Rel File] <- getDirectoryFilesP templatesP ["*.css"] -- no subdirs
+      let cssFiles2 = [ staticP </> c | c <- cssFiles1] :: [Path Abs File]
+      liftIO $ putIOwords ["========================\nshakeMD - css files 1",  showT   cssFiles1]
+      liftIO $ putIOwords ["\nshakeMD - css files" ,  showT  cssFiles2]
+      needP cssFiles2
+
+      pdfFiles1 :: [Path Rel File] <- getDirectoryFilesP resourcesP ["**/*.pdf"] -- subdirs
+      let pdfFiles2 = [ staticP </> c  | c <- pdfFiles1]
+      liftIO $ putIOwords ["===================\nshakeMD - pdf files1",  showT   pdfFiles1]
+      liftIO $ putIOwords ["\nshakeMD - pdf files 2",  showT  pdfFiles2]
+      needP pdfFiles2
 -- --
---             htmlFiles11<- getDirectoryFiles resourcesDir ["**/*.html"] -- subdirs
---             let htmlFiles22 = [  staticP </> c | c <- htmlFiles11]
---             liftIO $ putIOwords ["===================\nshakeMD - html 11 files",  showT   htmlFiles11]
---             liftIO $ putIOwords ["\nshakeMD - html 22 files", showT htmlFiles22]
---             need htmlFiles22
+      htmlFiles11 :: [Path Rel File]  <- getDirectoryFilesP resourcesP ["**/*.html"] -- subdirs
+      let htmlFiles22 = [  staticP </> c | c <- htmlFiles11]
+      liftIO $ putIOwords ["===================\nshakeMD - html 11 files",  showT   htmlFiles11]
+      liftIO $ putIOwords ["\nshakeMD - html 22 files", showT htmlFiles22]
+      needP htmlFiles22
+
+      biblio :: [Path Rel File] <- getDirectoryFilesP resourcesP ["*.bib"]
+      let biblio2 = [resourcesP </> b | b <- biblio] :: [Path Abs File]
+      putIOwords ["shake bakedP", "biblio", showT biblio2]
+      needP biblio2
+
+      yamlPageFiles <- getDirectoryFilesP templatesP ["*.yaml"]
+      let yamlPageFiles2 = [templatesP </> y | y <- yamlPageFiles]
+      putIOwords ["shake bakedP", "yamlPages", showT yamlPageFiles2]
+      needP yamlPageFiles2
+  
+      cssFiles1 :: [Path Rel File] <- getDirectoryFilesP templatesP ["*.css"] -- no subdirs
+      liftIO $
+        putIOwords
+          ["\nshakeWrapped - bakedP html - cssFiles1 ", showT cssFiles1]
+      -- let cssFiles2 = [replaceDirectoryP templatesP staticP c | c <- cssFiles1]  -- flipped args
+      let cssFiles2 = [staticP </> c | c <- cssFiles1] -- flipped args
+      needP cssFiles2
+
+      needP [masterSettings_yaml]
+      needP [masterTemplate]
+
+
     (\x ->
-       (((toFilePath bakedP) <> "**/*.html") ?== x) &&
-       not (((toFilePath staticP) <> "**/*.html") ?== x) -- with subdir
-     ) ?> \out
+       ((toFilePath bakedP <> "**/*.html") ?== x) &&
+       not ((toFilePath staticP <> "**/*.html") ?== x) -- with subdir
+      ) ?> \out
             -- liftIO $ putIOwords ["\nshakeMD - bakedP html -  out ", showT out]
             -- hakeMD - bakedP html -  out  "/home/frank/.SSG/bakedTest/SSGdesign/index.html"
      -> do
@@ -128,6 +186,8 @@ shakeMD layout doughP templatesP bakedP
             -- liftIO $ putIOwords ["\nshakeMD - bakedP html 4 - md2 ", showT md2]
       res <- runErr2action $ bakeOneFile True md2 doughP templatesP outP
       return ()
+
+
     (toFilePath staticP <> "**/*.html") %> \out -- with subdir
      -> do
       let outP = makeAbsFile out :: Path Abs File
@@ -140,16 +200,25 @@ shakeMD layout doughP templatesP bakedP
           , "out"
           , showT out
           ]
-      let fromfile = resourcesDir </> (makeRelativeP staticP outP)
+      let fromfile = resourcesP </> (makeRelativeP staticP outP)
       liftIO $ putIOwords ["\nshakeMD - staticP - fromfile ", showT fromfile]
-      copyFileChanged (toFilePath fromfile) out
-        -- (staticP </> "*.css") %> \out ->  do           -- insert css -- no subdir
-        --     liftIO $ putIOwords ["\nshakeMD - staticP - *.css", showT out]
-        --     copyFileChanged (replaceDirectory out templatesD) out
-        -- (staticP <> "**/*.pdf") %> \out ->  do           -- insert pdfFIles1 -- with subdir
-        --     liftIO $ putIOwords ["\nshakeMD - staticP - *.pdf", showT out]
-        --     let fromfile = resourcesDir </> (makeRelative staticP out)
-        --     liftIO $ putIOwords ["\nshakeMD - staticP - fromfile ", showT fromfile]
-        --     copyFileChanged fromfile out
--- /home/frank/bakedHomepageSSG/SSGdesign/index.html
+      copyFileChangedP ( fromfile) outP
+
+    (toFilePath staticP <> "/*.css") %> \out ->  do           -- insert css -- no subdir
+      let outP = makeAbsFile out :: Path Abs File
+      liftIO $ putIOwords ["\nshakeMD - staticP - *.css\n"
+            , showT outP, "\nTemplatesP", showT templatesP]
+      let fromfile = templatesP </> (makeRelativeP staticP outP)
+      liftIO $ putIOwords ["\nshakeMD - staticP css- fromfile ", showT fromfile]
+      copyFileChangedP fromfile outP
+
+    (toFilePath staticP <> "**/*.pdf") %> \out ->  do           -- insert pdfFIles1 -- with subdir
+      let outP = makeAbsFile out :: Path Abs File
+      liftIO $ putIOwords ["\nshakeMD - staticP - *.pdf", showT outP]
+      let fromfile = resourcesP </> (makeRelativeP staticP outP)
+      liftIO $ putIOwords ["\nshakeMD - staticP  pdf - fromfile ", showT fromfile]
+      copyFileChangedP fromfile outP
+
     return ()
+
+-- copyFileChangedP source destDir = copyFileChanged (toFilePath source) (toFilePath destDir)

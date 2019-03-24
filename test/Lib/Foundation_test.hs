@@ -28,7 +28,7 @@ import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)
 --testLayout = layoutDefaults {
 --            doughDir = makeAbsDir "/home/frank/.SSG/dough"
 --            , bakedDir = makeAbsDir "/home/frank/.SSG/baked"
---            , reportFile = makeAbsFile "/home/frank/.SSG/reportBakeAll.txt"
+--            , reportFile = makeAbsFile "/home/frank/.SSG/reportshakeAll.txt"
 ----            , templateDir = makeAbsDir "templates"
 --            , themeDir = makeAbsDir "/home/frank/.SSG/theme"
 --            }

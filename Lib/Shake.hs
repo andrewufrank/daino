@@ -27,16 +27,16 @@ import Uniform.Shake (runErr2action)
 import Uniform.FileStrings ()
 import Uniform.Strings (putIOwords)
 
-ashake = 34
+--  = 34
 
-shakeDelete :: SiteLayout -> FilePath -> ErrIO ()
--- ^ experimental - twich found delete of md
-shakeDelete _ filepath = do
-  putIOwords
-    [ "\n\n*******************************************"
-    , "experimental -- twich found  DELETED MD file "
-    , s2t filepath
-    ]
+-- shakeDelete :: SiteLayout -> FilePath -> ErrIO ()
+-- -- ^ experimental - twich found delete of md
+-- shakeDelete _ filepath = do
+--   putIOwords
+--     [ "\n\n*******************************************"
+--     , "experimental -- twich found  DELETED MD file "
+--     , s2t filepath
+--     ]
 
 shake :: SiteLayout -> FilePath -> ErrIO ()
 -- the second argument is the file which has changed
@@ -60,13 +60,13 @@ shake layout filepath = do
 
 --            , shownice layout
 --  mapM_ removeDirectoryRecursive fs
-shakeArgs2 bakedP =
-  shakeArgs
-    shakeOptions
-      { shakeFiles = toFilePath bakedP
-      , shakeVerbosity = Chatty -- Loud
-      , shakeLint = Just LintBasic
-      }
+-- shakeArgs2 bakedP =
+--   shakeArgs
+--     shakeOptions
+--       { shakeFiles = toFilePath bakedP
+--       , shakeVerbosity = Chatty -- Loud
+--       , shakeLint = Just LintBasic
+--       }
 
 --                , shakeRebuild=[(RebuildNow,"allMarkdownConversion")]
 --                  seems not to produce an effect

@@ -43,7 +43,7 @@ import           Lib.Foundation                 ( SiteLayout(..)
                                                 )
 
 
-import           Lib.Shake                      ( shake
+import           Lib.Shake2                      ( shakeAll
                                                 , shakeDelete
                                                 )
 import           Lib.ReadSettingFile
@@ -63,6 +63,8 @@ settingsfileName = makeRelFile "settings2"
 
 --bakedPort = 3099
 
+bannerImageFileName = makeRelFile "cropped-DSC05127-1024x330.jpg"
+-- where should this be fixed? duplicated in ssgBake 
 
 main :: IO ()
 --main = quickHttpServe site
@@ -100,7 +102,7 @@ main2 = do
 mainWatch :: SiteLayout -> Port -> Path Abs Dir -> Path Rel File ->  ErrIO ()
 mainWatch layout bakedPort bakedPath landing = bracketErrIO
     (do  -- first
-        shake layout ""
+        shakeAll bannerImageFileName layout ""
         watchDoughTID     <- callIO $ forkIO (runErrorVoid $ watchDough layout)
         watchTemplatesTID <- callIO $ forkIO (runErrorVoid $ watchThemes layout )
         runScotty bakedPort bakedPath landing
@@ -134,12 +136,12 @@ mainWatch layout bakedPort bakedPath landing = bracketErrIO
 --     toFilePath $ addFileName bakedPath ()
 
 
-watchDough layout  = mainWatch2 shake layout 
+watchDough layout  = mainWatch2 (shakeAll bannerImageFileName layout) 
                 (doughDir layout)    -- :: Path Abs Dir
                 ["md", "bib", "yaml"]  :: ErrIO ()
 
 -- themesDir = (themeDir layout) </> templatesDirName :: Path Abs Dir
-watchThemes layout  = mainWatch2 shake layout 
+watchThemes layout  = mainWatch2 (shakeAll bannerImageFileName layout)
                 (themeDir layout </> templatesDirName )  -- :: Path Abs Dir
                 ["yaml", "dtpl", "css", "jpg"] :: ErrIO () 
 -- add copy static files ...
