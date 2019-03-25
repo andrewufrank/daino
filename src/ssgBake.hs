@@ -44,7 +44,9 @@ programName = "SSG10" :: Text
 progTitle = "constructing a static site generator x6" :: Text
 
 settingsfileName = makeRelFile "settings2" -- the yaml file
-bannerImageFileName = makeRelFile "cropped-DSC05127-1024x330.jpg"
+-- cannot go into layout as this is its name!
+
+-- bannerImageFileName = makeRelFile "cropped-DSC05127-1024x330.jpg"
 -- where should this be fixed? duplicate in serverSG
 
 
@@ -52,9 +54,9 @@ main :: IO ()
 main = startProg programName progTitle
              (do
                 (layout2, port2)  <- readSettings settingsfileName
-                shakeAll bannerImageFileName layout2 ""
-                let landing = makeRelFile "landingPage.html"
-                runScotty port2 (bakedDir layout2) landing
+                shakeAll (bannerImage layout) layout2 ""
+               --  let landing = makeRelFile "landingPage.html"
+                runScotty port2 (bakedDir layout2) (landingPage layout)
                 -- callIO $ scotty port2 (site (bakedDir layout2))
                 return ()
                 )

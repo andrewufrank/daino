@@ -63,11 +63,10 @@ settingsfileName = makeRelFile "settings2"
 
 --bakedPort = 3099
 
-bannerImageFileName = makeRelFile "cropped-DSC05127-1024x330.jpg"
+-- bannerImageFileName = makeRelFile "cropped-DSC05127-1024x330.jpg"
 -- where should this be fixed? duplicated in ssgBake 
 
 main :: IO ()
---main = quickHttpServe site
 main = startProg programName progTitle main2
 
 main2 :: ErrIO ()
@@ -96,17 +95,19 @@ main2 = do
 --    Pathio.copyDirRecur
 --                         (unPath templatesPath) (unPath $ bakedPath </> staticDirName )
 --    putIOwords [programName, "copied all templates  files"]
-    let landing = makeRelFile "landingPage.html"
+
+    -- let landing = makeRelFile "landingPage.html"
     mainWatch layout port bakedPath landing
 
 mainWatch :: SiteLayout -> Port -> Path Abs Dir -> Path Rel File ->  ErrIO ()
+-- the landing page must be given here because it is special for scotty 
+-- and the name of the banner imgage which must be copied by shake
 mainWatch layout bakedPort bakedPath landing = bracketErrIO
     (do  -- first
         shakeAll bannerImageFileName layout ""
         watchDoughTID     <- callIO $ forkIO (runErrorVoid $ watchDough layout)
         watchTemplatesTID <- callIO $ forkIO (runErrorVoid $ watchThemes layout )
-        runScotty bakedPort bakedPath landing
-        -- callIO $ scotty bakedPort (site bakedPath)
+        runScotty bakedPort bakedPath (landingPage layout)
         return (watchDoughTID, watchTemplatesTID)
     )
     (\(watchDoughTID, watchTemplatesTID) -> do -- last
@@ -124,24 +125,13 @@ mainWatch layout bakedPort bakedPath landing = bracketErrIO
     )
 
 
--- site :: Path Abs Dir -> ScottyM ()
--- -- for get, return the page from baked
--- -- for post return error
--- site bakedPath = do
---     get "/" $ file (landingPage bakedPath)
---     middleware $ staticPolicy $ addBase (toFilePath bakedPath)
 
-
--- landingPage bakedPath =
---     toFilePath $ addFileName bakedPath ()
-
-
-watchDough layout  = mainWatch2 (shakeAll bannerImageFileName layout) 
+watchDough layout  = mainWatch2 (shakeAll (bannerImage layout) layout) 
                 (doughDir layout)    -- :: Path Abs Dir
                 ["md", "bib", "yaml"]  :: ErrIO ()
 
 -- themesDir = (themeDir layout) </> templatesDirName :: Path Abs Dir
-watchThemes layout  = mainWatch2 (shakeAll bannerImageFileName layout)
+watchThemes layout  = mainWatch2 (shakeAll  (bannerImage layout) layout)
                 (themeDir layout </> templatesDirName )  -- :: Path Abs Dir
                 ["yaml", "dtpl", "css", "jpg"] :: ErrIO () 
 -- add copy static files ...

@@ -36,7 +36,8 @@ data SiteLayout = SiteLayout
 --    , templateDir :: Path Rel Dir -- ^ where the templates are
     , reportFile :: Path Abs File  -- ^ the report from processing baked with pipe
     , testDir :: Path Abs Dir -- ^ the directory the test results go
-                        -- not important
+    , bannerImage :: Path Rel File -- ^ the name of the banner image, needs special copy of
+    , landingPage :: Path Rel File -- ^ the name of the landing page (html), where web server sarts                   
     } deriving (Show, Ord, Eq, Read)
 
 instance NiceStrings SiteLayout where
@@ -58,6 +59,8 @@ layoutDefaults = SiteLayout
         , themeDir = sourceDir </> makeRelDir "theme"
         , testDir = makeAbsDir
             $ ("/home/frank" :: FilePath)   </> ("." <> t2s progName)
+        , bannerImage = makeRelFile "cropped-DSC05127-1024x330.jpg"
+        , landingPage = makeRelFile "landingPage.html"                  
         }
 
 templatesDirName, staticDirName :: Path Rel Dir

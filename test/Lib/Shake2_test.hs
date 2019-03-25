@@ -12,7 +12,7 @@
 {-# LANGUAGE OverloadedStrings     #-}
 {-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-unused-imports#-}
 
-module Lib.Shake_test  -- (openMain, htf_thisModuelsTests)
+module Lib.Shake2_test  -- (openMain, htf_thisModuelsTests)
      where
 
 
