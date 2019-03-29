@@ -70,6 +70,8 @@ readSettings2 debug (YamlText t) = do
             , reportFile = makeAbsFile . t2s $ fromJustNote "testfile xxdwe"
                                                             reportFile2
             , testDir = makeAbsDir . t2s $ fromJustNote "testdir xxdwe" testDir2
+            , bannerImage = makeRelFile "cropped-DSC05127-1024x330.jpg"
+            , landingPage = makeRelFile "landingPage.html"                  
             }
   --    let layout3 = F.layoutDefaults
     let port2 = fromInteger . fromJustNote "port wrwer" $ port
