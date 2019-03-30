@@ -83,14 +83,14 @@ shakeAll  layout flags filepath = do
     (templatesP `addFileName` bannerImage2)
     (bakedP </> staticDirName </> bannerImage2)
     -- convert md files and copy css
-  callIO $ shakeMD layout doughP templatesP bakedP
+  callIO $ shakeMD layout flags doughP templatesP bakedP
   return ()
 
 --    copyDirRecursive (doughP `addDir` resourcesDirName)   (bakedP `addDir` staticDirName)
-shakeMD :: SiteLayout -> Path Abs Dir -> Path Abs Dir -> Path Abs Dir -> IO ()
+shakeMD :: SiteLayout -> PubFlags -> Path Abs Dir -> Path Abs Dir -> Path Abs Dir -> IO ()
 -- ^ process all md files (currently only the MD)
 -- in IO
-shakeMD layout doughP templatesP bakedP = shakeArgs2 bakedP $ do
+shakeMD layout flags doughP templatesP bakedP = shakeArgs2 bakedP $ do
 --  =
 --   shakeArgs2 bakedP 
 -- --     shakeOptions
@@ -190,7 +190,7 @@ shakeMD layout doughP templatesP bakedP = shakeArgs2 bakedP $ do
             -- l--iftIO $ putIOwords ["\nshakeMD - bakedP html 3 - md1 ", showT md1]
       let md2 = doughP </> (stripProperPrefixP bakedP md) :: Path Abs File
             -- liftIO $ putIOwords ["\nshakeMD - bakedP html 4 - md2 ", showT md2]
-      res <- runErr2action $ bakeOneFile True md2 doughP templatesP outP
+      res <- runErr2action $ bakeOneFile True flags md2 doughP templatesP outP
       return ()
 
 

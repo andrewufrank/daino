@@ -40,6 +40,8 @@ import           Uniform.Time                   ( getDateAsText
                                                 , year2000
                                                 )
 
+import Lib.CmdLineArgs (PubFlags(..))
+
 -- import           GHC.Generics
 -- (flattenMeta, getMeta, getAtKey
 --                 , putAtKey, readMarkdown2, unPandocM)
@@ -91,7 +93,7 @@ pandocToContentHtml debug pandoc2 = do
 
 --    ( meta2) & _Object . at "contentHtml" ?~ String (unHTMLout text2)
 docValToAllVal
-    :: Bool
+    :: Bool -> PubFlags
     -> DocValue
     -> Path Abs File
     -> Path Abs Dir
@@ -103,7 +105,7 @@ docValToAllVal
 -- the current file is only necessary if it is an index file
 -- then to determine the current dir
 -- and to exclude it from index
-docValToAllVal debug docval pageFn dough2 templateP = do
+docValToAllVal debug flags docval pageFn dough2 templateP = do
     let mpageType = getAtKey docval "pageTemplate" :: Maybe Text
     when debug $ putIOwords ["docValToAllVal", "mpt", showT mpageType]
     let pageType =
@@ -114,7 +116,7 @@ docValToAllVal debug docval pageFn dough2 templateP = do
     pageTypeYaml <- readYaml2value (templateP </> pageType)
     settingsYaml <- readYaml2value (dough2 </> settingsFileName)
       --        svalue <- decodeThrow . t2b . unYAML $ settings
-    ix           <- makeIndex debug docval pageFn dough2
+    ix           <- makeIndex debug flags docval pageFn dough2
 
     now          <- getDateAsText
     fn2          <- stripProperPrefix' dough2 pageFn

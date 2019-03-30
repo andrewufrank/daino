@@ -26,6 +26,7 @@ import           Lib.Foundation
 import           Lib.Indexing
 
 import           Uniform.Pandoc
+import Lib.CmdLineArgs (PubFlags(..))
 
 
 checkAllInputs :: SiteLayout -> [Path Rel File] -> ErrIO ()
@@ -43,8 +44,8 @@ checkOneMdFile :: Path Abs Dir -> Path Rel File -> ErrIO Value
 checkOneMdFile dough2 mdfn = do
   putIOwords ["checkOneMdFile start", showT mdfn]
   (_, meta2) :: (Pandoc, Value) <- readMd2meta (dough2 </> mdfn)
-  ixEntry                       <- getOneIndexEntry dough2 (dough2 </> mdfn)
-  -- what needs to be checked ? 
+  ixEntry                       <- getOneIndexEntry allFlags dough2 (dough2 </> mdfn)
+  -- what needs to be checked ?  -- check with all flags true 
 
   -- let doindex1 =  maybe False ("True"==) $ getMaybeStringAtKey meta2 "indexPage"  :: Bool
   let doindex2 = maybe False id $ getAtKey meta2 "indexPage" :: Bool
@@ -52,5 +53,9 @@ checkOneMdFile dough2 mdfn = do
 
   putIOwords ["checkOneMdFile end", showT meta2]
   return meta2
+
+allFlags = zero {publishFlag = True
+                  , oldFlag = True 
+                  , draftFlag = True}
 
 

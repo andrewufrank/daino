@@ -99,6 +99,9 @@ data PubFlags = PubFlags
         -- should not be needed, all dirs set in settings
         } deriving (Show, Read, Eq)
 
+instance Zeros PubFlags where 
+    zero = PubFlags zero zero zero zero zero zero zero
+
 
 parseArgs2input :: Path Rel File -> Text -> Text -> ErrIO PubFlags
 -- getting cmd line arguments, produces the input in the usable form

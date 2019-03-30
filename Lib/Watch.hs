@@ -20,17 +20,17 @@ module Lib.Watch  where
 
 import           Uniform.Strings         hiding ( (</>) )
 import           Uniform.Filenames
-import           Uniform.FileStrings
-import           Uniform.Convenience.StartApp
+-- import           Uniform.FileStrings
+-- import           Uniform.Convenience.StartApp
 
 import           Control.Concurrent
 import           Lib.Foundation                 ( SiteLayout(..)
                                                 -- , layoutDefaults
                                                 , templatesDirName
-                                                , staticDirName
-                                                , resourcesDirName
-                                                , bannerImageFileName 
-                                                , settingsFileName
+                                                -- , staticDirName
+                                                -- , resourcesDirName
+                                                -- , bannerImageFileName 
+                                                -- , settingsFileName
                                                 -- , landingPageName
                                                 )
 
@@ -38,7 +38,7 @@ import           Lib.Foundation                 ( SiteLayout(..)
 import           Lib.Shake2                      ( shakeAll
                                                 -- , shakeDelete
                                                 )
-import           Lib.ReadSettingFile
+-- import           Lib.ReadSettingFile
 import Lib.CmdLineArgs (PubFlags(..))
 import Uniform.Watch (mainWatch2)
 import Uniform.WebServer 
@@ -51,7 +51,7 @@ mainWatch :: SiteLayout -> PubFlags -> Port ->   ErrIO ()
 mainWatch layout flags bakedPort   = 
     do 
         let bakedPath = bakedDir layout
-            bannerImageFileName = bannerImage layout
+            -- bannerImageFileName = bannerImage layout
         bracketErrIO
             (do  -- first
                 shakeAll layout flags ""
