@@ -20,10 +20,10 @@
 {-# LANGUAGE OverloadedStrings     #-}
 
 module Lib.Foundation  -- (openMain, htf_thisModuelsTests)
-     where
+                      where
 
-import Uniform.Strings hiding ((</>))
-import Uniform.Filenames
+import           Uniform.Strings         hiding ( (</>) )
+import           Uniform.Filenames
 --import Uniform.FileStrings
 
 progName :: Text
@@ -52,16 +52,17 @@ layoutDefaults :: SiteLayout
 -- used for finding the test cases
 -- must correspond to the settings2.yaml in source code repository
 layoutDefaults = SiteLayout
-    {  doughDir = sourceDir </> makeRelDir "docs/site/dough"
-        , bakedDir = sourceDir </> makeRelDir "docs/site/baked"
-        , reportFile = makeAbsFile "/home/frank/SSGreport.txt"
+    { doughDir    = sourceDir </> makeRelDir "docs/site/dough"
+    , bakedDir    = sourceDir </> makeRelDir "docs/site/baked"
+    , reportFile  = makeAbsFile "/home/frank/SSGreport.txt"
 --            , templateDir = makeAbsDir "templates"
-        , themeDir = sourceDir </> makeRelDir "theme"
-        , testDir = makeAbsDir
-            $ ("/home/frank" :: FilePath)   </> ("." <> t2s progName)
-        , bannerImage = makeRelFile "cropped-DSC05127-1024x330.jpg"
-        , landingPage = makeRelFile "landingPage.html"                  
-        }
+    , themeDir    = sourceDir </> makeRelDir "theme"
+    , testDir     = makeAbsDir
+                    $   ("/home/frank" :: FilePath)
+                    </> ("." <> t2s progName)
+    , bannerImage = makeRelFile "cropped-DSC05127-1024x330.jpg"
+    , landingPage = makeRelFile "landingPage.html"
+    }
 
 templatesDirName, staticDirName :: Path Rel Dir
 templatesDirName = makeRelDir "templates"
@@ -73,7 +74,14 @@ templatesImgDirName = makeRelDir "img"
 
 settingsFileName :: Path Rel File
 -- ^ the yaml file in which the settings are fixec
-settingsFileName = makeRelFile "settings2"
+settingsFileName = makeRelFile "settings2" -- the yaml file
+-- cannot go into layout as this is its name!
+
+testSettingsFileName :: Path Abs File
+-- the settings file for tests 
+testSettingsFileName = sourceDir </> 
+            (makeRelDirT "docs/site/dough/") </> settingsFileName
+
 
 masterTemplateFileName :: Path Rel File
 -- ^ the name of the master template

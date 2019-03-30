@@ -72,10 +72,10 @@ shakeAll bannerImageFileName layout filepath = do
 
     -- copy resources and banner   not easy to do with shake
     -- only the html and the pdf files (possible the jpg) are required
-  let bannerImage = templatesImgDirName `addFileName` bannerImageFileName
+  let bannerImage2 = templatesImgDirName `addFileName` bannerImageFileName
   copyOneFile
-    (templatesP `addFileName` bannerImage)
-    (bakedP </> staticDirName </> bannerImage)
+    (templatesP `addFileName` bannerImage2)
+    (bakedP </> staticDirName </> bannerImage2)
     -- convert md files and copy css
   callIO $ shakeMD layout doughP templatesP bakedP
   return ()
@@ -156,13 +156,13 @@ shakeMD layout doughP templatesP bakedP = shakeArgs2 bakedP $ do
       putIOwords ["shake bakedP", "yamlPages", showT yamlPageFiles2]
       needP yamlPageFiles2
   
-      cssFiles1 :: [Path Rel File] <- getDirectoryFilesP templatesP ["*.css"] -- no subdirs
+      cssFiles2 :: [Path Rel File] <- getDirectoryFilesP templatesP ["*.css"] -- no subdirs
       liftIO $
         putIOwords
-          ["\nshakeWrapped - bakedP html - cssFiles1 ", showT cssFiles1]
+          ["\nshakeWrapped - bakedP html - cssFiles1 ", showT cssFiles2]
       -- let cssFiles2 = [replaceDirectoryP templatesP staticP c | c <- cssFiles1]  -- flipped args
-      let cssFiles2 = [staticP </> c | c <- cssFiles1] -- flipped args
-      needP cssFiles2
+      let cssFiles3 = [staticP </> c | c <- cssFiles2] -- flipped args
+      needP cssFiles3
 
       needP [masterSettings_yaml]
       needP [masterTemplate]

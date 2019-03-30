@@ -19,6 +19,7 @@
 module Main     where      -- must have Main (main) or Main where
 
 import Uniform.Convenience.StartApp
+import Lib.CmdLineArgs
 import Uniform.FileIO hiding ((<.>), (</>))
 -- import Uniform.Shake.Path
 import Uniform.Shake 
@@ -43,8 +44,6 @@ import Lib.Foundation (SiteLayout (..), templatesDirName, staticDirName, resourc
 programName = "SSG10" :: Text
 progTitle = "constructing a static site generator x6" :: Text
 
-settingsfileName = makeRelFile "settings2" -- the yaml file
--- cannot go into layout as this is its name!
 
 -- bannerImageFileName = makeRelFile "cropped-DSC05127-1024x330.jpg"
 -- where should this be fixed? duplicate in serverSG
@@ -53,13 +52,24 @@ settingsfileName = makeRelFile "settings2" -- the yaml file
 main :: IO ()
 main = startProg programName progTitle
              (do
-                (layout2, port2)  <- readSettings settingsfileName
-                shakeAll (bannerImage layout) layout2 ""
+               inp :: Inputs <- parseArgs2input
+                                    settingsfileName 
+                                    (unlinesT
+                                    [ "the flags to select what is included:"
+                                    , "\n -p publish"
+                                    , "\n -d drafts"
+                                    , "\n -o old"
+                                    , "default is nothing included"
+                                    ]
+                                    )
+                                    "list flags to include"
+               (layout2, port2)  <- readSettings (settingsFile inp)
+                shakeAll (bannerImage layout2) layout2 ""
                --  let landing = makeRelFile "landingPage.html"
-                runScotty port2 (bakedDir layout2) (landingPage layout)
+               runScotty port2 (bakedDir layout2) (landingPage layout2)
                 -- callIO $ scotty port2 (site (bakedDir layout2))
-                return ()
-                )
+               return ()
+            )
 
 -- shakeAll :: SiteLayout -> ErrIO ()
 -- -- ^ bake all md files and copy the resources

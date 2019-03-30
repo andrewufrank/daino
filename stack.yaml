@@ -5,6 +5,7 @@ packages:
 - ../uniform/uniform-strings
 - ../uniform/uniform-algebras
 - ../uniform/uniform-convenience
+- ../uniform/uniform-cmdLineArgs
 - ../uniform/uniform-fileio
 - ../uniform/uniform-time
 - ../uniform/uniform-error
