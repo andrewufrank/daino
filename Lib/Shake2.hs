@@ -40,13 +40,16 @@ shakeDelete _ filepath = do
     ]
 
 shakeArgs2 :: Path b t -> Rules () -> IO ()
-shakeArgs2 bakedP =
-  shakeArgs
+shakeArgs2 bakedP = do 
+  -- putIOwords ["shakeArgs2", "bakedP", s2t . toFilePath $ bakedP]
+  res <- shake
     shakeOptions
       { shakeFiles = toFilePath bakedP
       , shakeVerbosity = Chatty -- Loud
       , shakeLint = Just LintBasic
       }
+  -- putIOwords ["shakeArgs2", "done"]
+  return res 
     
 
 shakeAll :: Path Rel File -> SiteLayout -> FilePath -> ErrIO ()

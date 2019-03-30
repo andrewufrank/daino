@@ -59,9 +59,7 @@ progTitle = "constructing a static site generator x6" :: Text
 
 
 main :: IO ()
-main = startProg
-   programName
-   progTitle
+main = startProg programName progTitle
    (do
       inp :: Inputs <- parseArgs2input
          settingsFileName

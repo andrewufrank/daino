@@ -80,7 +80,7 @@ templatesImgDirName = makeRelDir "img"
 settingsFileName :: Path Rel File
 -- ^ the yaml file in which the settings are fixec
 settingsFileName = makeRelFile "settings2" -- the yaml file
--- cannot go into layout as this is its name!
+-- the value for cannot go into layout as this is its name!
 
 testSettingsFileName :: Path Abs File
 -- the settings file for tests 
