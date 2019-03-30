@@ -13,7 +13,7 @@
 {-# LANGUAGE OverloadedStrings     #-}
 {-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-unused-imports#-}
 
-module Lib.Bake_test  -- (openMain, htf_thisModuelsTests)
+module Lib.CmdLineArgs_test  -- (openMain, htf_thisModuelsTests)
      where
 
 
@@ -35,7 +35,7 @@ import Uniform.Pandoc -- (DocValue(..), unDocValue, docValueFileType)
 --import Data.Aeson.Encode.Pretty (encodePretty)
 --import Data.ByteString.Lazy as BS (putStrLn)
 
-test_findTemplate =
+test_cmdLineArgs =
     do
         res <-  runErr $ do
                     let source = "/home/frank/.SSG/landingPage.content.docval"
