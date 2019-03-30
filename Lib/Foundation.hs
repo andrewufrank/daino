@@ -46,7 +46,12 @@ instance NiceStrings SiteLayout where
 sourceDir :: Path Abs Dir
 sourceDir = makeAbsDir "/home/frank/Workspace8/ssg"
 
+bannerImageFileName :: Path Rel File
+bannerImageFileName = makeRelFileT "cropped-DSC05127-1024x330.jpg"
 --testDir = makeAbsDir $ ("/home/frank" :: FilePath)   </> (t2s progName)
+landingPageName :: Path Rel File
+landingPageName = makeRelFile "landingPage.html"
+-- settingsFileName = makeRelFile "settings2"
 
 layoutDefaults :: SiteLayout
 -- used for finding the test cases
@@ -60,8 +65,8 @@ layoutDefaults = SiteLayout
     , testDir     = makeAbsDir
                     $   ("/home/frank" :: FilePath)
                     </> ("." <> t2s progName)
-    , bannerImage = makeRelFile "cropped-DSC05127-1024x330.jpg"
-    , landingPage = makeRelFile "landingPage.html"
+    , bannerImage = bannerImageFileName
+    , landingPage = landingPageName
     }
 
 templatesDirName, staticDirName :: Path Rel Dir
@@ -79,8 +84,8 @@ settingsFileName = makeRelFile "settings2" -- the yaml file
 
 testSettingsFileName :: Path Abs File
 -- the settings file for tests 
-testSettingsFileName = sourceDir </> 
-            (makeRelDirT "docs/site/dough/") </> settingsFileName
+testSettingsFileName =
+    sourceDir </> (makeRelDirT "docs/site/dough/") </> settingsFileName
 
 
 masterTemplateFileName :: Path Rel File

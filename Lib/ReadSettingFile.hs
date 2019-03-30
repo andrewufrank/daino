@@ -27,15 +27,15 @@ import           Uniform.Filenames
 -- import           Uniform.Strings         hiding ( (</>) )
 import           Uniform.TypedFile
 
-readSettings :: Path Rel File -> ErrIO (SiteLayout, Int)
--- must be the settings2.yaml file, relative to the current working dir
+readSettings :: Path Abs File -> ErrIO (SiteLayout, Int)
+-- must be the settings2.yaml file, (absolute, fixed before to current dir)
 -- which contain the rest of the settings
 -- returns layout and port
 readSettings settingsfilename = do
     let debug = False
     putIOwords ["readSettings", "file", showT settingsfilename]
-    wd          <- currentDir
-    settingsTxt <- read8 (wd </> settingsfilename) yamlFileType
+    -- wd          <- currentDir
+    settingsTxt <- read8 (settingsfilename) yamlFileType
     when debug $ putIOwords ["readSettings text", showT settingsTxt]
       -- TODO where is settings
     layout3 <- readSettings2 debug settingsTxt

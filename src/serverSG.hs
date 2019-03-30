@@ -36,15 +36,18 @@ import           Uniform.Convenience.StartApp
 
 import           Control.Concurrent
 import           Lib.Foundation                 ( SiteLayout(..)
-                                                , layoutDefaults
+                                                -- , layoutDefaults
                                                 , templatesDirName
                                                 , staticDirName
                                                 , resourcesDirName
+                                                , bannerImageFileName 
+                                                , settingsFileName
+                                                -- , landingPageName
                                                 )
 
 
 import           Lib.Shake2                      ( shakeAll
-                                                , shakeDelete
+                                                -- , shakeDelete
                                                 )
 import           Lib.ReadSettingFile
 import Uniform.Watch (mainWatch2)
@@ -54,12 +57,13 @@ import Uniform.WebServer
 --import Distribution.Simple.Utils (copyDirectoryRecursive)
 --import Distribution.Verbosity (Verbosity(..), normal)
 
+programName, progTitle :: Text
 programName = "SSG" :: Text
 progTitle =
     unwords' ["constructing a static site generator"
 --                , "on port ", showT bakedPort
                                                     ] :: Text
-settingsfileName = makeRelFile "settings2"
+-- settingsfileName = makeRelFile "settings2"
 
 --bakedPort = 3099
 
@@ -72,14 +76,15 @@ main = startProg programName progTitle main2
 main2 :: ErrIO ()
 main2 = do
     putIOwords ["main2 start"]
-    (layout, port) <- readSettings settingsfileName
+    wd          <- currentDir
+    (layout, port) <- readSettings (wd </> settingsFileName)
     putIOwords ["main2", showT layout, showT port]
 
     let bakedPath = bakedDir layout :: Path Abs Dir
     createDirIfMissing' bakedPath
     -- the directory can be missing or deleted intentionally
 
-    let templatesPath = themeDir layout </> templatesDirName :: Path Abs Dir
+    -- let templatesPath = themeDir layout </> templatesDirName :: Path Abs Dir
     let resourcesPath = doughDir layout </> resourcesDirName :: Path Abs Dir
     -- copy static resources (templates and dough)
     copyDirRecursive resourcesPath (bakedPath </> staticDirName)
@@ -97,12 +102,12 @@ main2 = do
 --    putIOwords [programName, "copied all templates  files"]
 
     -- let landing = makeRelFile "landingPage.html"
-    mainWatch layout port bakedPath landing
+    mainWatch layout port bakedPath 
 
-mainWatch :: SiteLayout -> Port -> Path Abs Dir -> Path Rel File ->  ErrIO ()
+mainWatch :: SiteLayout -> Port -> Path Abs Dir ->   ErrIO ()
 -- the landing page must be given here because it is special for scotty 
 -- and the name of the banner imgage which must be copied by shake
-mainWatch layout bakedPort bakedPath landing = bracketErrIO
+mainWatch layout bakedPort bakedPath  = bracketErrIO
     (do  -- first
         shakeAll bannerImageFileName layout ""
         watchDoughTID     <- callIO $ forkIO (runErrorVoid $ watchDough layout)
@@ -126,11 +131,14 @@ mainWatch layout bakedPort bakedPath landing = bracketErrIO
 
 
 
+watchDough :: SiteLayout -> ErrIO ()
 watchDough layout  = mainWatch2 (shakeAll (bannerImage layout) layout) 
                 (doughDir layout)    -- :: Path Abs Dir
                 ["md", "bib", "yaml"]  :: ErrIO ()
 
 -- themesDir = (themeDir layout) </> templatesDirName :: Path Abs Dir
+
+watchThemes :: SiteLayout -> ErrIO ()
 watchThemes layout  = mainWatch2 (shakeAll  (bannerImage layout) layout)
                 (themeDir layout </> templatesDirName )  -- :: Path Abs Dir
                 ["yaml", "dtpl", "css", "jpg"] :: ErrIO () 

@@ -16,21 +16,29 @@
 -- {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
 
-module Main     where      -- must have Main (main) or Main where
+module Main where      -- must have Main (main) or Main where
 
-import Uniform.Convenience.StartApp
-import Lib.CmdLineArgs
-import Uniform.FileIO hiding ((<.>), (</>))
+import           Uniform.Convenience.StartApp
+import           Lib.CmdLineArgs
+-- import           Uniform.FileIO          hiding ( (<.>)
+                                                -- , (</>)
+                                                -- )
 -- import Uniform.Shake.Path
-import Uniform.Shake 
-import Uniform.Error ()
-import Uniform.WebServer 
+-- import           Uniform.Shake
+import           Uniform.Error                  ( )
+import           Uniform.WebServer
 
-import Lib.Bake
-import Lib.Shake2
+-- import           Lib.Bake
+import           Lib.Shake2
 --import Lib.Foundation (layoutDefaults, SiteLayout (..))
-import Lib.ReadSettingFile
-import Lib.Foundation (SiteLayout (..), templatesDirName, staticDirName, resourcesDirName, templatesImgDirName)
+import           Lib.ReadSettingFile
+import           Lib.Foundation                 ( SiteLayout(..)
+                                                -- , templatesDirName
+                                                -- , staticDirName
+                                                -- , resourcesDirName
+                                                -- , templatesImgDirName
+                                                , settingsFileName
+                                                )
 
 -- import Development.Shake
 -- import Development.Shake.FilePath
@@ -41,6 +49,7 @@ import Lib.Foundation (SiteLayout (..), templatesDirName, staticDirName, resourc
 -- import Network.Wai.Handler.Warp  (Port) -- .Warp.Types
 
 
+programName, progTitle :: Text
 programName = "SSG10" :: Text
 progTitle = "constructing a static site generator x6" :: Text
 
@@ -50,26 +59,30 @@ progTitle = "constructing a static site generator x6" :: Text
 
 
 main :: IO ()
-main = startProg programName progTitle
-             (do
-               inp :: Inputs <- parseArgs2input
-                                    settingsfileName 
-                                    (unlinesT
-                                    [ "the flags to select what is included:"
-                                    , "\n -p publish"
-                                    , "\n -d drafts"
-                                    , "\n -o old"
-                                    , "default is nothing included"
-                                    ]
-                                    )
-                                    "list flags to include"
-               (layout2, port2)  <- readSettings (settingsFile inp)
-                shakeAll (bannerImage layout2) layout2 ""
-               --  let landing = makeRelFile "landingPage.html"
-               runScotty port2 (bakedDir layout2) (landingPage layout2)
-                -- callIO $ scotty port2 (site (bakedDir layout2))
-               return ()
-            )
+main = startProg
+   programName
+   progTitle
+   (do
+      inp :: Inputs <- parseArgs2input
+         settingsFileName
+         (unlinesT
+            [ "the flags to select what is included:"
+            , "\n -p publish"
+            , "\n -d drafts"
+            , "\n -o old"
+            , "\n -t test (use data in package)"
+            , "default is nothing included"
+            ]
+         )
+         "list flags to include"
+      (layout2, port2) <- readSettings (settingsFile inp)
+      shakeAll (bannerImage layout2) layout2  ""
+      -- the last is the filename that caused the shake call
+      --  let landing = makeRelFile "landingPage.html"
+      runScotty port2 (bakedDir layout2) (landingPage layout2)
+       -- callIO $ scotty port2 (site (bakedDir layout2))
+      return ()
+   )
 
 -- shakeAll :: SiteLayout -> ErrIO ()
 -- -- ^ bake all md files and copy the resources

@@ -20,23 +20,14 @@
 
 module Lib.CmdLineArgs where
 
-
-
-
-
-import           Uniform.Strings
+import           Uniform.Strings hiding ((</>))
 import           Uniform.FileIO
 -- import           Uniform.Error
--- import           Uniform.Convenience.StartApp
 import           Data.Semigroup                 ( (<>) )
 import           Options.Applicative.Builder
 import           Options.Applicative
 
 import           Lib.Foundation
-
-programName, progTitle :: Text
-programName = "CmdLineArgsExample.hs"
-progTitle = "example for command line argument processing" :: Text
 
 
 -- | the command line arguments raw
@@ -50,7 +41,7 @@ data LitArgs = LitArgs
   , settingsFileString  ::  String  -- ^ s 
    } deriving (Show)
 
-cmdArgs :: Path Abs File -> Parser LitArgs
+cmdArgs :: Path Rel File -> Parser LitArgs
 -- | strings which have no default result in enforced arguments
 -- order and type of arguments must correspod to LitArgs
 cmdArgs defaultSetting =
@@ -90,23 +81,23 @@ data Inputs = Inputs
         } deriving (Show, Read, Eq)
 
 
-parseArgs2input :: Path Abs File -> Text -> Text -> ErrIO Inputs
+parseArgs2input :: Path Rel File -> Text -> Text -> ErrIO Inputs
 -- getting cmd line arguments, produces the input in the usable form
 --  with a default value for the file name
 -- the two text arguments are used in the cmd arg parse
 -- is specific to the parser (and thus to the cmd line arguments
 
-parseArgs2input settings t1 t2 = do
-  args1 <- getArgsParsed settings t1 t2
+parseArgs2input settingsFN t1 t2 = do
+  args1 <- getArgsParsed settingsFN t1 t2
   putIOwords ["parseArgs2input: args found", showT args1]
-
+  workingdir :: Path Abs Dir <- currentDir
 
 
   let inputs1 = Inputs { publishFlag  = publishSwitch args1
                        , oldFlag      = oldSwitch args1
                        , draftFlag    = draftSwitch args1
                        , testFlag     = testSwitch args1
-                       , settingsFile = settings
+                       , settingsFile = workingdir </> settingsFN
                        }
 
   let inputs2 = if testFlag inputs1
@@ -117,10 +108,10 @@ parseArgs2input settings t1 t2 = do
   return inputs2
 
 
-getArgsParsed :: Path Abs File -> Text -> Text -> ErrIO LitArgs
+getArgsParsed :: Path Rel File -> Text -> Text -> ErrIO LitArgs
 getArgsParsed fn t1 t2 = do
   args <- callIO $ execParser (opts fn)
   return args
  where
-  opts fn = info (helper <*> cmdArgs fn)
+  opts fn1 = info (helper <*> cmdArgs fn1)
                  (fullDesc <> (progDesc . t2s $ t1) <> (header . t2s $ t2))

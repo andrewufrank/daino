@@ -156,12 +156,12 @@ shakeMD layout doughP templatesP bakedP = shakeArgs2 bakedP $ do
       putIOwords ["shake bakedP", "yamlPages", showT yamlPageFiles2]
       needP yamlPageFiles2
   
-      cssFiles2 :: [Path Rel File] <- getDirectoryFilesP templatesP ["*.css"] -- no subdirs
+      cssFiles22 :: [Path Rel File] <- getDirectoryFilesP templatesP ["*.css"] -- no subdirs
       liftIO $
         putIOwords
-          ["\nshakeWrapped - bakedP html - cssFiles1 ", showT cssFiles2]
+          ["\nshakeWrapped - bakedP html - cssFiles1 ", showT cssFiles22]
       -- let cssFiles2 = [replaceDirectoryP templatesP staticP c | c <- cssFiles1]  -- flipped args
-      let cssFiles3 = [staticP </> c | c <- cssFiles2] -- flipped args
+      let cssFiles3 = [staticP </> c | c <- cssFiles22] -- flipped args
       needP cssFiles3
 
       needP [masterSettings_yaml]
