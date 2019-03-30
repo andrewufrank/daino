@@ -42,7 +42,7 @@ shakeDelete _ filepath = do
 shakeArgs2 :: Path b t -> Rules () -> IO ()
 shakeArgs2 bakedP = do 
   -- putIOwords ["shakeArgs2", "bakedP", s2t . toFilePath $ bakedP]
-  res <- shake
+  res <- shake  -- not shakeArgs, which would include the cmd line args
     shakeOptions
       { shakeFiles = toFilePath bakedP
       , shakeVerbosity = Chatty -- Loud
@@ -52,11 +52,11 @@ shakeArgs2 bakedP = do
   return res 
     
 
-shakeAll :: Path Rel File -> SiteLayout -> FilePath -> ErrIO ()
+shakeAll ::  SiteLayout -> FilePath -> ErrIO ()
 -- ^ bake all md files and copy the resources
 -- sets the current dir to doughDir
 -- copies banner image 
-shakeAll bannerImageFileName layout filepath = do
+shakeAll  layout filepath = do
         --  where the layout is used, rest in shakeWrapped
 
   putIOwords
@@ -67,6 +67,8 @@ shakeAll bannerImageFileName layout filepath = do
   let doughP = doughDir layout -- the regular dough
       templatesP = themeDir layout `addFileName` templatesDirName
       bakedP = bakedDir layout
+      bannerImageFileName = (bannerImage layout)
+
   setCurrentDir doughP  -- must be done earlier to find settings file!
   deleteDirRecursive bakedP
   -- delete all the previous stuff for a new start 

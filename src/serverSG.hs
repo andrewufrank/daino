@@ -6,7 +6,7 @@
         -- the settings.yaml file
         -- set watches for changing - uses shake
 
-
+-- content moved to Lib.Watch
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}

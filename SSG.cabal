@@ -19,6 +19,7 @@ library
         -- Lib.YamlBlocks
         Lib.CheckInput
         Lib.CmdLineArgs
+        Lib.Watch
     hs-source-dirs: .
     other-modules:
         Paths_SSG
@@ -35,6 +36,9 @@ library
         , uniform-json -any
         , uniform-pandoc
         , uniform-convenience -any
+        , uniform-watch 
+        , uniform-webserver
+
         , optparse-applicative
         , optparse-generic
     -- pandoc -any,
@@ -69,7 +73,7 @@ executable ssgbake
         uniform-error
         , uniform-shake
         ,uniform-webserver  
-        , uniform-watch 
+        -- , uniform-watch 
         , SSG -any
         -- shake ==0.17.6,
         -- scotty -any,
@@ -88,24 +92,24 @@ executable ssgbake
 --         uniform-error -any,
 --         SSG -any
 
-executable serversg
-    main-is: serverSG.hs
-    hs-source-dirs: src
-    default-language: Haskell2010
-    build-depends:
-        base ==4.*,
-        uniform-strings -any,
-        uniform-convenience -any,
-        uniform-fileio -any,
-        uniform-error -any,
-        uniform-watch , 
-        uniform-webserver,
-        SSG 
-        -- SSG -any,
-        -- scotty -any,
-        -- warp -any,
-        -- wai-middleware-static -any
-        -- twitch -any
+-- executable serversg
+--     main-is: serverSG.hs
+--     hs-source-dirs: src
+--     default-language: Haskell2010
+--     build-depends:
+--         base ==4.*,
+--         uniform-strings -any,
+--         uniform-convenience -any,
+--         uniform-fileio -any,
+--         uniform-error -any,
+--         uniform-watch , 
+--         uniform-webserver,
+--         SSG 
+--         -- SSG -any,
+--         -- scotty -any,
+--         -- warp -any,
+--         -- wai-middleware-static -any
+--         -- twitch -any
 
 test-suite ssgTest
     type: exitcode-stdio-1.0
@@ -141,8 +145,6 @@ test-suite ssgTest
         uniform-cmdLineArgs,
         uniform-shake,
         uniform-watch ,
-
-        
         SSG -any
         -- , directory -any 
         -- doctemplates -any,

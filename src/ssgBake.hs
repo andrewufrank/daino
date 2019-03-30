@@ -38,7 +38,7 @@ import           Lib.Foundation                 ( SiteLayout(..)
                                                 -- , templatesImgDirName
                                                 , settingsFileName
                                                 )
-
+import Lib.Watch 
 
 programName, progTitle :: Text
 programName = "SSG10" :: Text
@@ -63,11 +63,19 @@ main = startProg programName progTitle
          )
          "list flags to include"
       (layout2, port2) <- readSettings (settingsFile inp)
-      shakeAll (bannerImage layout2) layout2  ""
-      -- the last is the filename that caused the shake call
-      --  let landing = makeRelFile "landingPage.html"
-      runScotty port2 (bakedDir layout2) (landingPage layout2)
-       -- callIO $ scotty port2 (site (bakedDir layout2))
+
+      if watchFlag inp 
+            then do 
+                  mainWatch layout2 port2  
+            else do 
+               shakeAll  layout2  ""
+               -- the last is the filename that caused the shake call
+               --  let landing = makeRelFile "landingPage.html"
+               when (serverFlag inp) $ 
+                     runScotty port2 (bakedDir layout2) (landingPage layout2)
+               -- callIO $ scotty port2 (site (bakedDir layout2))
+
+      putIOwords ["ssgBake done"]
       return ()
    )
 
