@@ -39,55 +39,26 @@ import           Lib.Shake2                      ( shakeAll
                                                 -- , shakeDelete
                                                 )
 import           Lib.ReadSettingFile
+import Lib.CmdLineArgs (PubFlags(..))
 import Uniform.Watch (mainWatch2)
 import Uniform.WebServer 
 
 
--- main2 :: ErrIO ()
--- main2 = do
---     putIOwords ["main2 start"]
---     wd          <- currentDir
---     (layout, port) <- readSettings (wd </> settingsFileName)
---     putIOwords ["main2", showT layout, showT port]
 
---     let bakedPath = bakedDir layout :: Path Abs Dir
---     createDirIfMissing' bakedPath
---     -- the directory can be missing or deleted intentionally
-
---     -- let templatesPath = themeDir layout </> templatesDirName :: Path Abs Dir
---     let resourcesPath = doughDir layout </> resourcesDirName :: Path Abs Dir
---     -- copy static resources (templates and dough)
---     copyDirRecursive resourcesPath (bakedPath </> staticDirName)
---     putIOwords
---         [ programName
---         , "copied all templates  files from"
---         , showT resourcesPath
---         , "to"
---         , showT bakedPath
---         ]
---     -- resources in dough are not needed for baked
--- --    let templatesPath =  (themeDir layout) </> templatesDirName :: Path Abs Dir
--- --    Pathio.copyDirRecur
--- --                         (unPath templatesPath) (unPath $ bakedPath </> staticDirName )
--- --    putIOwords [programName, "copied all templates  files"]
-
---     -- let landing = makeRelFile "landingPage.html"
---     mainWatch layout port bakedPath 
-
-mainWatch :: SiteLayout -> Port ->   ErrIO ()
+mainWatch :: SiteLayout -> PubFlags -> Port ->   ErrIO ()
 -- the landing page must be given here because it is special for scotty 
 -- and the name of the banner imgage which must be copied by shake
-mainWatch layout bakedPort   = 
+mainWatch layout flags bakedPort   = 
     do 
         let bakedPath = bakedDir layout
             bannerImageFileName = bannerImage layout
         bracketErrIO
             (do  -- first
-                shakeAll layout ""
+                shakeAll layout flags ""
                 watchDoughTID     <- callIO 
-                        $ forkIO (runErrorVoid $ watchDough layout)
+                        $ forkIO (runErrorVoid $ watchDough layout flags)
                 watchTemplatesTID <- callIO 
-                        $ forkIO (runErrorVoid $ watchThemes layout )
+                        $ forkIO (runErrorVoid $ watchThemes layout flags)
                 runScotty bakedPort bakedPath (landingPage layout)
                 return (watchDoughTID, watchTemplatesTID)
             )
@@ -106,15 +77,15 @@ mainWatch layout bakedPort   =
 
 
 
-watchDough :: SiteLayout -> ErrIO ()
-watchDough layout  = mainWatch2 (shakeAll  layout) 
+watchDough :: SiteLayout -> PubFlags -> ErrIO ()
+watchDough  layout flags = mainWatch2 (shakeAll  layout flags) 
                 (doughDir layout)    -- :: Path Abs Dir
                 ["md", "bib", "yaml"]  :: ErrIO ()
 
 -- themesDir = (themeDir layout) </> templatesDirName :: Path Abs Dir
 
-watchThemes :: SiteLayout -> ErrIO ()
-watchThemes layout  = mainWatch2 (shakeAll  layout)
+watchThemes :: SiteLayout -> PubFlags -> ErrIO ()
+watchThemes  layout flags = mainWatch2 (shakeAll  layout flags)
                 (themeDir layout </> templatesDirName )  -- :: Path Abs Dir
                 ["yaml", "dtpl", "css", "jpg"] :: ErrIO () 
 -- add copy static files ...

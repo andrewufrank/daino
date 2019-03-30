@@ -38,7 +38,7 @@ import           Lib.Foundation                 ( SiteLayout(..)
                                                 -- , templatesImgDirName
                                                 , settingsFileName
                                                 )
-import Lib.Watch 
+import           Lib.Watch
 
 programName, progTitle :: Text
 programName = "SSG10" :: Text
@@ -46,9 +46,11 @@ progTitle = "constructing a static site generator x6" :: Text
 
 
 main :: IO ()
-main = startProg programName progTitle
+main = startProg
+   programName
+   progTitle
    (do
-      inp :: Inputs <- parseArgs2input
+      flags :: PubFlags <- parseArgs2input
          settingsFileName
          (unlinesT
             [ "the flags to select what is included:"
@@ -62,17 +64,17 @@ main = startProg programName progTitle
             ]
          )
          "list flags to include"
-      (layout2, port2) <- readSettings (settingsFile inp)
+      (layout2, port2) <- readSettings (settingsFile flags)
 
-      if watchFlag inp 
-            then do 
-                  mainWatch layout2 port2  
-            else do 
-               shakeAll  layout2  ""
-               -- the last is the filename that caused the shake call
-               --  let landing = makeRelFile "landingPage.html"
-               when (serverFlag inp) $ 
-                     runScotty port2 (bakedDir layout2) (landingPage layout2)
+      if watchFlag flags
+         then do
+            mainWatch layout2 flags port2
+         else do
+            shakeAll layout2 flags ""
+            -- the last is the filename that caused the shake call
+            --  let landing = makeRelFile "landingPage.html"
+            when (serverFlag flags)
+               $ runScotty port2 (bakedDir layout2) (landingPage layout2)
                -- callIO $ scotty port2 (site (bakedDir layout2))
 
       putIOwords ["ssgBake done"]

@@ -27,6 +27,7 @@ import Lib.Foundation
   , templatesDirName
   , templatesImgDirName
   )
+import Lib.CmdLineArgs (PubFlags(..))
 
 import Lib.Bake
 
@@ -52,16 +53,16 @@ shakeArgs2 bakedP = do
   return res 
     
 
-shakeAll ::  SiteLayout -> FilePath -> ErrIO ()
+shakeAll ::  SiteLayout -> PubFlags -> FilePath -> ErrIO ()
 -- ^ bake all md files and copy the resources
 -- sets the current dir to doughDir
 -- copies banner image 
-shakeAll  layout filepath = do
+shakeAll  layout flags filepath = do
         --  where the layout is used, rest in shakeWrapped
 
   putIOwords
     [ "\n\n=====================================shakeAll start"
-    , "caused by"
+    , "\n flags", showT flags, "caused by"
     , s2t filepath
     ]
   let doughP = doughDir layout -- the regular dough

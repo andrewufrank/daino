@@ -110,6 +110,7 @@ makeIndexForDir debug pageFn indexFn dough2 indexSort = do
     when debug $ putIOwords
         ["makeIndexForDir", "dirs ", showT pageFn, "\ndirIxs", showT dirs]
     let dirIxs = map oneDirIndexEntry dirs :: [IndexEntry]
+    -- format the subdir entries 
     -- needed filename.html title abstract author data
     when debug $ putIOwords
         [ "makeIndexForDir"
@@ -131,7 +132,7 @@ makeIndexForDir debug pageFn indexFn dough2 indexSort = do
     return menu1
 
 oneDirIndexEntry :: Path Abs Dir -> IndexEntry
--- make an entry for a subdir
+-- format an entry for a subdir
 oneDirIndexEntry dn = zero { text  = showT dn
                            , link  = s2t $ nakedName </> ("html" :: FilePath)
                            , title = printable <> " (subdirectory)"

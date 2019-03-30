@@ -84,7 +84,7 @@ cmdArgs defaultSetting =
           -- )
 
 -- | the switches for material to include
-data Inputs = Inputs
+data PubFlags = PubFlags
         {publishFlag
         , oldFlag
         , draftFlag
@@ -100,7 +100,7 @@ data Inputs = Inputs
         } deriving (Show, Read, Eq)
 
 
-parseArgs2input :: Path Rel File -> Text -> Text -> ErrIO Inputs
+parseArgs2input :: Path Rel File -> Text -> Text -> ErrIO PubFlags
 -- getting cmd line arguments, produces the input in the usable form
 --  with a default value for the file name
 -- the two text arguments are used in the cmd arg parse
@@ -112,23 +112,23 @@ parseArgs2input settingsFN t1 t2 = do
   workingdir1 :: Path Abs Dir <- currentDir
 
 
-  let inputs1 = Inputs { publishFlag  = publishSwitch args1
-                       , oldFlag      = oldSwitch args1
-                       , draftFlag    = draftSwitch args1
-                       , testFlag     = testSwitch args1
-                       , watchFlag    = watchSwitch args1
-                       , serverFlag   = serverSwitch args1
-                       , settingsFile = workingdir1 </> settingsFN
+  let flags1 = PubFlags { publishFlag  = publishSwitch args1
+                         , oldFlag      = oldSwitch args1
+                         , draftFlag    = draftSwitch args1
+                         , testFlag     = testSwitch args1
+                         , watchFlag    = watchSwitch args1
+                         , serverFlag   = serverSwitch args1
+                         , settingsFile = workingdir1 </> settingsFN
                       --  , workingDir = workingdir1 
-                       }
+                         }
 
-  let inputs2 = if testFlag inputs1
-        then inputs1 { settingsFile = testSettingsFileName }
+  let flags2 = if testFlag flags1
+        then flags1 { settingsFile = testSettingsFileName }
                     --  ,  PortNumber = sourceDir
-        else inputs1
+        else flags1
 
-  putIOwords ["parseArgs2input:  inputs ", showT inputs2]
-  return inputs2
+  putIOwords ["parseArgs2input:  inputs ", showT flags2]
+  return flags2
 
 
 getArgsParsed :: Path Rel File -> Text -> Text -> ErrIO LitArgs
