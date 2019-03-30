@@ -223,10 +223,11 @@ text2publish :: Maybe Text -> PublicationState
 -- convert a text to a publicationstate
 text2publish (Nothing) = PSpublish 
 --  the default is to publish 
-text2publish (Just tt) = case tt of
-    "True"  -> PSpublish
-    "Draft" -> PSdraft
-    "Old"   -> PSold
+text2publish (Just tt) = case (toLower' tt) of
+    "true"  -> PSpublish
+    "publish"  -> PSpublish
+    "draft" -> PSdraft
+    "old"   -> PSold
     _       -> PSzero
 
 checkPubStateWithFlags :: PubFlags -> PublicationState -> Bool 

@@ -5,9 +5,10 @@ date: Jan. 4, 2019
 keywords: test
 abstract: A silly text not needing an abstract.
 pageTemplate: page3.yaml
+publish: draft
 ---
 
-Some text without meaning; really? Test4
+Some draft text without meaning; really? Test4
 
 
 
