@@ -86,9 +86,9 @@ pandocToContentHtml :: Bool -> Pandoc -> ErrIO DocValue
 -- convert the pandoc to html in the contentHtml key
 -- the settings are initially put into the pandoc
 pandocToContentHtml debug pandoc2 = do
-    text2 <- writeHtml5String2 pandoc2
+    text2x <- writeHtml5String2 pandoc2
     let meta2       = flattenMeta (getMeta pandoc2) :: Value
-    let withContent = putAtKey "contentHtml" (unHTMLout text2) meta2
+    let withContent = putAtKey "contentHtml" (unHTMLout text2x) meta2
     return . DocValue $ withContent
 
 --    ( meta2) & _Object . at "contentHtml" ?~ String (unHTMLout text2)
@@ -118,7 +118,7 @@ docValToAllVal debug flags docval pageFn dough2 templateP = do
       --        svalue <- decodeThrow . t2b . unYAML $ settings
     ix           <- makeIndex debug flags docval pageFn dough2
 
-    now          <- getDateAsText
+    -- now          <- getDateAsText
     fn2          <- stripProperPrefix' dough2 pageFn
     let bottomLines = BottomLines { ssgversion = showVersionT version
                                   , today      = showT year2000

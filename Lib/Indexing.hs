@@ -26,11 +26,10 @@ import           Uniform.Pandoc                 ( readMd2meta
                         -- , unDocValue
                                                 , getAtKey
                                                 )
-import           Uniform.Time                   ( readDate3
-                                                , year2000
+import           Uniform.Time                   (   year2000
                                                 )
 import           Lib.CmdLineArgs                ( PubFlags(..) )
-
+import Lib.CheckInput (MetaRec(..), PublicationState(..), readMeta2rec)
 
 makeIndex
     :: Bool
@@ -108,9 +107,9 @@ makeIndexForDir debug flags pageFn indexFn dough2 indexSort = do
 
     let
         fileIxsSorted = case fmap toLower' indexSort of
-            Just "title"       -> sortWith title fileIxs
-            Just "date"        -> sortWith date fileIxs
-            Just "reversedate" -> reverse $ sortWith date fileIxs
+            Just "title"       -> sortWith title2 fileIxs
+            Just "date"        -> sortWith date2 fileIxs
+            Just "reversedate" -> reverse $ sortWith date2 fileIxs
             Just x ->
                 errorT ["makeIndexForDir fileIxsSorted", "unknonw parameter", x]
             Nothing -> fileIxs
@@ -118,12 +117,12 @@ makeIndexForDir debug flags pageFn indexFn dough2 indexSort = do
         putIOwords
             [ "makeIndexForDir"
             , "index for dirs not sorted "
-            , showT $ map title fileIxs
+            , showT $ map title2 fileIxs
             ]
         putIOwords
             [ "makeIndexForDir"
             , "index for dirs sorted "
-            , showT $ map title fileIxsSorted
+            , showT $ map title2 fileIxsSorted
             ]
 
     -- directories
@@ -140,9 +139,9 @@ makeIndexForDir debug flags pageFn indexFn dough2 indexSort = do
         , "\n"
         , showT dirIxs
         ]
-    let dirIxsSorted = sortWith title dirIxs
+    let dirIxsSorted = sortWith title2 dirIxs
     let dirIxsSorted2 = if not (null dirIxsSorted)
-            then dirIxsSorted ++ [zero { title = "------" }]
+            then dirIxsSorted ++ [zero { title2 = "------" }]
             else []
     let menu1 = MenuEntry { menu2 = dirIxsSorted2 ++ fileIxsSorted }
     when debug $ putIOwords
@@ -154,9 +153,9 @@ makeIndexForDir debug flags pageFn indexFn dough2 indexSort = do
 
 oneDirIndexEntry :: Path Abs Dir -> IndexEntry
 -- format an entry for a subdir
-oneDirIndexEntry dn = zero { text  = showT dn
-                           , link  = s2t $ nakedName </> ("html" :: FilePath)
-                           , title = printable <> " (subdirectory)"
+oneDirIndexEntry dn = zero { text2  = showT dn
+                           , link2  = s2t $ nakedName </> ("html" :: FilePath)
+                           , title2 = printable <> " (subdirectory)"
                            }
   where
     nakedName = getNakedDir $ dn :: FilePath
@@ -167,16 +166,17 @@ getOneIndexEntry :: PubFlags -> Path Abs Dir -> Path Abs File -> ErrIO (Maybe In
 -- fill one entry from one mdfile file
 getOneIndexEntry flags dough2 mdfile = do
     (_, meta2) <- readMd2meta mdfile
+    let (metaRec, _) = readMeta2rec meta2 
 
-    let abstract1 = getAtKey meta2 "abstract" :: Maybe Text
-    let title1    = getAtKey meta2 "title" :: Maybe Text
-    let author1   = getAtKey meta2 "author" :: Maybe Text
-    let date1     = getAtKey meta2 "date" :: Maybe Text
-    let publish1  = getAtKey meta2 "publish" :: Maybe Text
+    -- let abstract1 = getAtKey meta2 "abstract" :: Maybe Text
+    -- let title1    = getAtKey meta2 "title" :: Maybe Text
+    -- let author1   = getAtKey meta2 "author" :: Maybe Text
+    -- let date1     = getAtKey meta2 "date" :: Maybe Text
+    -- let publish1  = getAtKey meta2 "publish" :: Maybe Text
 
-    let publState = text2publish publish1
+    -- let publState = text2publish publish1
 
-    if checkPubStateWithFlags flags publState 
+    if checkPubStateWithFlags flags (publicationState metaRec) 
       then do
 
         --    let ix2 = A.fromJSON meta2 :: Result IndexEntry
@@ -194,48 +194,53 @@ getOneIndexEntry flags dough2 mdfile = do
             let fnn   = takeBaseName fn
             let ln = s2t $ "/" <> dir </> fnn <.> ("html" :: FilePath)
 
-            when False $ putIOwords
-                [ "getONeIndexEntry"
-                , "dir"
-                , showT mdfile
-                , "link"
-                , ln
-                , "title1"
-                , showT title1
-                , "title"
-                , fromMaybe ln title1
-                ]
 
             let ix = IndexEntry
-                    { text     = s2t fnn
-                    , link     = ln
-                    , abstract = fromMaybe "" abstract1
-                    , title    = fromMaybe ln title1
-                    , author   = fromMaybe "" author1
-                    , date     = showT $ maybe year2000 readDate3 date1   -- test early for proper format
-                    , publish  = shownice publState
+                    { text2     = s2t fnn
+                    , link2     = ln
+                    , abstract2 = fromMaybe "" $ abstract metaRec 
+                    , title2    = fromMaybe ln $ title metaRec 
+                    , author2   = fromMaybe "" $ author metaRec 
+                    , date2     = maybe (showT year2000) showT $ date metaRec 
+                    , publish2 = shownice  $ publicationState metaRec
                                     -- default is publish
                     }
+
+            when False $ putIOwords
+                    [ "getONeIndexEntry"
+                    , "dir"
+                    , showT mdfile
+                    , "link"
+                    , ln
+                    , "title2"
+                    , showT  $ title2 ix
+                    , "title originally"
+                    , fromMaybe ln $ title metaRec
+                    ]
+    
+
+
             return . Just $ ix
       else return Nothing 
 
-text2publish :: Maybe Text -> PublicationState
--- convert a text to a publicationstate
-text2publish (Nothing) = PSpublish 
---  the default is to publish 
-text2publish (Just tt) = case (toLower' tt) of
-    "true"  -> PSpublish
-    "publish"  -> PSpublish
-    "draft" -> PSdraft
-    "old"   -> PSold
-    _       -> PSzero
+-- text2publish :: Maybe Text -> PublicationState
+-- -- convert a text to a publicationstate
+-- text2publish (Nothing) = PSpublish 
+-- --  the default is to publish 
+-- text2publish (Just tt) = case (toLower' tt) of
+--     "true"  -> PSpublish
+--     "publish"  -> PSpublish
+--     "draft" -> PSdraft
+--     "old"   -> PSold
+--     _       -> PSzero
 
-checkPubStateWithFlags :: PubFlags -> PublicationState -> Bool 
+checkPubStateWithFlags :: PubFlags -> Maybe PublicationState -> Bool 
 -- check wether the pubstate corresponds to the flag
-checkPubStateWithFlags flags PSpublish = publishFlag flags 
-checkPubStateWithFlags flags PSdraft = draftFlag flags 
-checkPubStateWithFlags flags PSold = oldFlag flags 
-checkPubStateWithFlags _ _ = False 
+checkPubStateWithFlags flags (Just PSpublish) = publishFlag flags 
+checkPubStateWithFlags flags (Just PSdraft) = draftFlag flags 
+checkPubStateWithFlags flags (Just PSold) = oldFlag flags 
+checkPubStateWithFlags _ (Just PSzero) = False 
+checkPubStateWithFlags _ Nothing = False 
 
 newtype MenuEntry = MenuEntry {menu2 :: [IndexEntry]} deriving (Generic, Eq, Ord, Show)
 instance Zeros MenuEntry where
@@ -243,13 +248,13 @@ instance Zeros MenuEntry where
 instance FromJSON MenuEntry
 instance ToJSON MenuEntry
 
-data IndexEntry = IndexEntry {text ::  Text  -- ^ naked filename -- not shown
-                              , link :: Text -- ^ the url relative to dough dir
-                              , title :: Text -- ^ the title as shown
-                              , abstract :: Text
-                              , author :: Text
-                              , date :: Text -- UTCTime -- read the time early one to find errors
-                              , publish :: Text
+data IndexEntry = IndexEntry {text2 ::  Text  -- ^ naked filename -- not shown
+                              , link2 :: Text -- ^ the url relative to dough dir
+                              , title2 :: Text -- ^ the title as shown
+                              , abstract2 :: Text
+                              , author2 :: Text
+                              , date2 :: Text -- UTCTime -- read the time early one to find errors
+                              , publish2 :: Text
 
                               } deriving (Generic, Eq, Ord, Show, Read)
 
@@ -260,13 +265,13 @@ instance ToJSON IndexEntry
 instance FromJSON IndexEntry where
     parseJSON = genericParseJSON defaultOptions { omitNothingFields = True }
 
-data PublicationState = PSpublish | PSdraft | PSold | PSzero
-        deriving (Generic,  Show, Read, Ord, Eq)
--- ^ is this file ready to publish
-instance Zeros PublicationState where
-    zero = PSzero
-instance NiceStrings PublicationState where
-    shownice = drop' 2 . showT
+-- data PublicationState = PSpublish | PSdraft | PSold | PSzero
+--         deriving (Generic,  Show, Read, Ord, Eq)
+-- -- ^ is this file ready to publish
+-- instance Zeros PublicationState where
+--     zero = PSzero
+-- instance NiceStrings PublicationState where
+--     shownice = drop' 2 . showT
 
-instance ToJSON PublicationState
-instance FromJSON PublicationState
+-- instance ToJSON PublicationState
+-- instance FromJSON PublicationState
