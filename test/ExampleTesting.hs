@@ -13,11 +13,11 @@ module Main     where      -- must have Main (main) or Main where
 -- keep this because it is in IO (not ErrIO)
 
 import           Test.Framework
-import Lib.Shake  -- just to test ghci
+import Lib.Shake2  -- just to test ghci
 import Uniform.FileIO
 -- import Uniform.Error
 
-import {-@ HTF_TESTS @-} Lib.Shake_test
+import {-@ HTF_TESTS @-} Lib.Shake2_test
 -- import {-@ HTF_TESTS @-} ShakeStartTests
 -- -- must run first because it produces the test values used later
 -- -- uses layoutDefaults, not settings2.yaml

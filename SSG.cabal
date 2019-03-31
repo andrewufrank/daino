@@ -126,7 +126,7 @@ test-suite ssgTest
         Lib.CheckInputs_test
         Lib.Templating_test
         Lib.Indexing_test
-        Lib.Shake_test
+        Lib.Shake2_test
         -- Lib.CmdLineArgs_test
     default-language: Haskell2010
     ghc-options: -Wall

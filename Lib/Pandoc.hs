@@ -70,8 +70,9 @@ markdownToPandoc debug flags doughP mdfile = do
     (pandoc, metaRec, report) <- checkOneMdFile mdfile
 
     -- let publishTest = getAtKey meta2 "publish" :: Maybe Text
-    if True -- needs proper selection before shaking
-              -- isNothing publish || (fmap toLower' publish) == Just "true" || (fmap toLower' publish) == Just "draft"
+    if -- checkPubStateWithFlags flags (publicationState metaRec)
+        True -- all md files must produce an output in shake
+        
         then do
             -- let bib          = getAtKey meta2 "bibliography" :: Maybe Text
             -- let nociteNeeded = getAtKey meta2 "bibliographyGroup" :: Maybe Text

@@ -52,6 +52,7 @@ checkOneMdFile ::   Path Abs File -> ErrIO (Pandoc, MetaRec, Text)
 checkOneMdFile  mdfn = do
   putIOwords ["checkOneMdFile start", showT mdfn]
   (pandoc, meta2) :: (Pandoc, Value) <- readMd2meta mdfn -- (dough2 </> mdfn)
+  putIOwords ["checkOneMdFile meta2", showT meta2]
 
   let (metaRec1,report1) = readMeta2rec meta2
   -- ixEntry                       <- getOneIndexEntry allFlags dough2 (dough2 </> mdfn)
@@ -62,9 +63,10 @@ checkOneMdFile  mdfn = do
 
   let report2 = unwords' ["\n ------------------",  "\n", report1]
   putIOwords
-    [ "checkOneMdFile end"
-    , showT meta2
-    , showT   metaRec1 
+    [ "checkOneMdFile end metaRec1 \n"
+    -- , showT meta2
+    , showT   metaRec1]
+  putIOwords ["\nreport2 \n"
     , showT  report2
     ]
   return (pandoc, metaRec1, report2) 
@@ -104,8 +106,7 @@ readMeta2rec meta2 = (ix, report)
       Nothing -> unwords' ["date", showT date1x, "not readable"]
       Just _  -> ""
 
-  missingLabels =
-    unwords' . map fst . filter (isNothing . snd) $ zip keys2 vals2
+  missingLabels =  unwords' . map fst . filter (isNothing . snd) $ zip keys2 vals2
 
 -- | the data in the meta/yaml part of the md files 
 data MetaRec = MetaRec {
@@ -138,9 +139,6 @@ text2publish (Just tt) = case (toLower' tt) of
   "old"     -> Just PSold
   _         -> Nothing
 
--- allFlags = zero {publishFlag = True
---                   , oldFlag = True 
---                   , draftFlag = True}
 
 data PublicationState = PSpublish | PSdraft | PSold | PSzero
                   deriving (Generic,  Show, Read, Ord, Eq)

@@ -33,18 +33,19 @@ import Uniform.Error
 import Uniform.FileIO            hiding ((<.>), (</>)) -- (resourcesDirName)
 import Uniform.Pandoc -- (applyTemplate3, Pandoc, DocValue, doc HTMLout, htmloutFileType)
 import Uniform.Shake
+import Lib.CmdLineArgs (allFlags, PubFlags)
 
 test_shake :: IO ()
 test_shake =  do
-                runErrorVoid $ shakeTesting layoutDefaults
+                runErrorVoid $ shakeTesting  layoutDefaults allFlags
                 return ()
 
 -- bake errors are reported
 
-shakeTesting :: SiteLayout -> ErrIO ()
+shakeTesting :: SiteLayout -> PubFlags -> ErrIO ()
 -- start the testing by executing the tests and building teh
 -- intermediate results
-shakeTesting layout = do
+shakeTesting layout flags = do
   let
       doughP      =    doughDir  layout  -- the regular dough
       templatesP =   themeDir  layout `addFileName` templatesDirName
@@ -54,11 +55,11 @@ shakeTesting layout = do
 --  fs <- getDirectoryDirs' . toFilePath $ testP
 --  putIOwords ["shakeTesting", "to delete", showT fs]
 --  mapM_ deleteDirRecursive fs
-  callIO $ shakeTestWrapped doughP templatesP testP
+  callIO $ shakeTestWrapped flags doughP  templatesP testP
 
 
-shakeTestWrapped :: Path Abs Dir  -> Path Abs Dir  -> Path Abs Dir ->  IO  ()
-shakeTestWrapped doughP templatesP testP =
+shakeTestWrapped :: PubFlags ->  Path Abs Dir  -> Path Abs Dir  -> Path Abs Dir ->  IO  ()
+shakeTestWrapped flags doughP  templatesP testP =
     shakeArgs shakeOptions {shakeFiles= toFilePath testP
             , shakeVerbosity=Chatty -- Loud
             , shakeLint=Just LintBasic
@@ -130,7 +131,7 @@ shakeTestWrapped doughP templatesP testP =
             do
                 valText :: DocValue  <-   read8 ( source )
                                                 docValueFileType
-                p :: DocValue <- docValToAllVal True valText
+                p :: DocValue <- docValToAllVal True flags valText
                                  ( source2)
                                  ( doughP) ( templatesP)
                 write8 ( outP) docValueFileType p
@@ -154,7 +155,7 @@ shakeTestWrapped doughP templatesP testP =
              mdSource2 = doughP </> makeRelativeP testP  (mdSource1 $-<.> "md")
         needP [mdSource2, masterSettings, masterTemplate]
         runErr2action $ do 
-                    r <- bakeOneFile False ( mdSource2)
+                    r <- bakeOneFile False flags ( mdSource2)
                             ( doughP) ( templatesP)
                             ( outP)
                     return ()

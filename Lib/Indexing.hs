@@ -275,6 +275,7 @@ instance ToJSON IndexEntry
 instance FromJSON IndexEntry where
     parseJSON = genericParseJSON defaultOptions { omitNothingFields = True }
 
+                
 -- data PublicationState = PSpublish | PSdraft | PSold | PSzero
 --         deriving (Generic,  Show, Read, Ord, Eq)
 -- -- ^ is this file ready to publish

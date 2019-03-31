@@ -24,6 +24,7 @@ import Lib.Foundation (progName, SiteLayout(..), templatesDirName)
 import Lib.Pandoc
 import Uniform.Pandoc
 import Lib.Foundation_test (testLayout)
+import Lib.CmdLineArgs (allFlags)
 
 --import Text.Pandoc.Definition as PD
 
@@ -51,7 +52,7 @@ doughP = doughDir testLayout
 ---- "/home/frank/Workspace8/ssg/site/dough/site/dough/resources/BibTexLatex.bib: openFile: does not exist (No such file or directory)"
 
 markdownToPandoX :: String  -> ErrIO (Maybe Pandoc)
-markdownToPandoX s = markdownToPandoc False doughP (makeAbsFile s)
+markdownToPandoX s = markdownToPandoc False allFlags doughP (makeAbsFile s)
 
 test_pandoc_11_A_D, test_pandoc_12_A_D :: IO ()
 test_pandoc_11_A_D = test1FileIO progName  "pageFn1" "resultAD1" markdownToPandoX
@@ -75,7 +76,7 @@ test_pandoc_15_A_F = test1FileIO progName  "resultAD5" "resultAF5" pandocToConte
 test_pandoc_16_A_F = test1FileIO progName  "resultAD6" "resultAF6" pandocToContentHtmlX
 --
 docVal2 :: DocValue -> String -> ErrIO DocValue
-docVal2 docval pagefn = docValToAllVal False docval (makeAbsFile pagefn)
+docVal2 docval pagefn = docValToAllVal False allFlags docval (makeAbsFile pagefn)
                 (doughDir testLayout) (themeDir testLayout </> templatesDirName)
 
 test_pandoc_11_F_G, test_pandoc_12_F_G :: IO ()

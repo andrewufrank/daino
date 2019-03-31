@@ -102,6 +102,11 @@ data PubFlags = PubFlags
 instance Zeros PubFlags where 
     zero = PubFlags zero zero zero zero zero zero zero
 
+allFlags = zero {publishFlag = True
+  , oldFlag = True 
+  , draftFlag = True}
+
+
 
 parseArgs2input :: Path Rel File -> Text -> Text -> ErrIO PubFlags
 -- getting cmd line arguments, produces the input in the usable form

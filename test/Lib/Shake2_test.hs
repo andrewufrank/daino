@@ -24,6 +24,7 @@ import Lib.Foundation (progName, SiteLayout (..), templatesDirName)
 import Lib.Shake2
 -- import Lib.FileMgt
 import Lib.Foundation_test (testLayout)
+import Lib.CmdLineArgs (allFlags)
 -- import Lib.Foundation (templatesDirName)
 -- import Uniform.Json (AtKey(..), Value(..))
 -- import Uniform.Pandoc -- (DocValue(..), unDocValue, docValueFileType)
@@ -35,10 +36,13 @@ import Lib.Foundation_test (testLayout)
 --import Data.Aeson.Encode.Pretty (encodePretty)
 --import Data.ByteString.Lazy as BS (putStrLn)
 
-test_shakeMD = do 
-    shakeMD testLayout 
-                    (doughDir testLayout)
-                    ((themeDir $ testLayout) `addFileName` ( templatesDirName)
-                            :: Path Abs Dir)
-                    (makeAbsDir "/home/frank/.SSG/bakedTest")
-    assertEqual "" "Lib.Shake_test - files written to /home/frank/.SSG/bakedTest"
+test_shakeMD = 
+    do 
+        -- res <-  runErr $ do
+        res <- shakeMD testLayout allFlags
+                            (doughDir testLayout)
+                            ((themeDir $ testLayout) `addFileName` ( templatesDirName)
+                                        :: Path Abs Dir)
+                            (makeAbsDir "/home/frank/.SSG/bakedTest")
+        assertEqual res ()
+        --  "Lib.Shake_test - files written to /home/frank/.SSG/bakedTest"
