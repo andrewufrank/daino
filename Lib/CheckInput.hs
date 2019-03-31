@@ -19,7 +19,7 @@ module Lib.CheckInput where
 import           Uniform.Strings         hiding ( (</>) )
 import           Uniform.Filenames
 -- import Uniform.FileStrings
-import           Lib.Foundation
+-- import           Lib.Foundation
 import           Uniform.Time                   (   readDateMaybe
                                                 , year2000
                                                 , UTCTime(..)
@@ -34,24 +34,24 @@ import           Uniform.Pandoc
 -- import Lib.CmdLineArgs (PubFlags(..))
 
 
-checkAllInputs :: SiteLayout -> [Path Rel File] -> ErrIO Text
+checkAllInputs :: [Path Abs File] -> ErrIO Text
 -- ^ check the input files for syntax errors 
 -- needs a shake to call check
 -- with a switch -c 
 
-checkAllInputs layout mdfiles = do
-  putIOwords ["checkAllInput start", showT layout]
-  val <- mapM (checkOneMdFile (doughDir layout)) mdfiles
+checkAllInputs  mdfiles = do
+  putIOwords ["checkAllInput start" ]
+  val <- mapM checkOneMdFile  mdfiles
 
   let res = showT val
   putIOwords ["checkAllInput end", showT res]
   return . showT $ val
 
-checkOneMdFile :: Path Abs Dir -> Path Rel File -> ErrIO (MetaRec, Text)
+checkOneMdFile ::   Path Abs File -> ErrIO (Pandoc, MetaRec, Text)
 -- check one input file, return ?
-checkOneMdFile dough2 mdfn = do
+checkOneMdFile  mdfn = do
   putIOwords ["checkOneMdFile start", showT mdfn]
-  (_, meta2) :: (Pandoc, Value) <- readMd2meta (dough2 </> mdfn)
+  (pandoc, meta2) :: (Pandoc, Value) <- readMd2meta mdfn -- (dough2 </> mdfn)
 
   let (metaRec1,report1) = readMeta2rec meta2
   -- ixEntry                       <- getOneIndexEntry allFlags dough2 (dough2 </> mdfn)
@@ -60,14 +60,14 @@ checkOneMdFile dough2 mdfn = do
   -- let doindex1 =  maybe False ("True"==) $ getMaybeStringAtKey meta2 "indexPage"  :: Bool
   -- let doindex2 = maybe False id $ getAtKey meta2 "indexPage" :: Bool
 
-  let report2 = unwords' ["\n ------------------", showT dough2, "\n", report1]
+  let report2 = unwords' ["\n ------------------",  "\n", report1]
   putIOwords
     [ "checkOneMdFile end"
     , showT meta2
     , showT   metaRec1 
     , showT  report2
     ]
-  return (metaRec1, report2) 
+  return (pandoc, metaRec1, report2) 
 
 readMeta2rec :: Value -> (MetaRec, Text)
 -- | read the metadata in a record and check for validity
@@ -82,11 +82,13 @@ readMeta2rec meta2 = (ix, report)
                , author           = author1
                , date             = maybe Nothing readDateMaybe date1   -- test early for proper format
                , publicationState = text2publish $ publish1
+               , bibliography  = bibliography1
+               , bibliographyGroup = bibliographyGroup1
                     -- default is publish
                }
-  [abstract1, title1, author1, date1, publish1] = vals2
+  [abstract1, title1, author1, date1, publish1, bibliography1, bibliographyGroup1] = vals2
   vals2  = map (getAtKey meta2) keys2
-  keys2  = ["abstract", "title", "author", "date", "publish"]
+  keys2  = ["abstract", "title", "author", "date", "publish", "bibliography", "bibliographyGroup"]
 
   -- abstract1 = getAtKey meta2 "abstract" :: Maybe Text
   -- title1    = getAtKey meta2 "title" :: Maybe Text
@@ -114,11 +116,13 @@ data MetaRec = MetaRec {
                               , author :: Maybe Text
                               , date :: Maybe UTCTime -- read the time early one to find errors
                               , publicationState :: Maybe PublicationState
+                              , bibliography :: Maybe Text 
+                              , bibliographyGroup :: Maybe Text 
 
                               } deriving (Generic, Eq, Ord, Show, Read)
 
 instance Zeros MetaRec where
-  zero = MetaRec zero zero zero (Just year2000) zero
+  zero = MetaRec zero zero zero (Just year2000) zero zero zero
 --instance FromJSON IndexEntry
 instance ToJSON MetaRec
 instance FromJSON MetaRec where

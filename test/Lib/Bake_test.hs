@@ -53,7 +53,7 @@ test_findTemplate =
         assertEqual (Right (Just "page3"::Maybe Text))  res
 
 --markdownToHTML4xdebug intext = do
---    pandoc <- markdownToPandoc False intext
+--    pandoc <- markdownToPandoc False allFlags intext
 --    pandocToContentHtml False pandoc
 --
 --test_pandoc_11_B_E, test_pandoc_12_B_E :: IO ()

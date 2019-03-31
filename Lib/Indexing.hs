@@ -21,15 +21,17 @@ import           Uniform.Shake
 import           GHC.Exts                       ( sortWith )
 import           Uniform.Json
 import           Uniform.Json                   ( FromJSON(..) )
-import           Uniform.Pandoc                 ( readMd2meta
-                                                , DocValue(..)
+import           Uniform.Pandoc                 (  DocValue(..)
                         -- , unDocValue
                                                 , getAtKey
                                                 )
-import           Uniform.Time                   (   year2000
-                                                )
+import           Uniform.Time                   ( year2000 )
 import           Lib.CmdLineArgs                ( PubFlags(..) )
-import Lib.CheckInput (MetaRec(..), PublicationState(..), readMeta2rec)
+import           Lib.CheckInput                 ( MetaRec(..)
+                                                , PublicationState(..)
+                                                -- , readMeta2rec
+                                                , checkOneMdFile
+                                                )
 
 makeIndex
     :: Bool
@@ -91,7 +93,8 @@ makeIndexForDir debug flags pageFn indexFn dough2 indexSort = do
         , showT relDirPath
         , "\n sort"
         , showT indexSort
-        , "flags", showT flags
+        , "flags"
+        , showT flags
         ]
 
     fs <- getDirContentNonHidden (toFilePath pageFn)
@@ -101,9 +104,11 @@ makeIndexForDir debug flags pageFn indexFn dough2 indexSort = do
     when debug $ putIOwords
         ["makeIndexForDir", "for ", showT pageFn, "\n", showT fs3]
     -- fileIxs :: [IndexEntry] <- mapM (\f -> getOneIndexEntry dough2 $ makeAbsFile f) fs3
-    fileIxs1 :: [Maybe IndexEntry] <- mapM (getOneIndexEntry flags dough2 . makeAbsFile) fs3
+    fileIxs1 :: [Maybe IndexEntry] <- mapM
+        (getOneIndexEntry flags dough2 . makeAbsFile)
+        fs3
 
-    let fileIxs = catMaybes fileIxs1 
+    let fileIxs = catMaybes fileIxs1
 
     let
         fileIxsSorted = case fmap toLower' indexSort of
@@ -162,11 +167,13 @@ oneDirIndexEntry dn = zero { text2  = showT dn
                 -- getNakedDir . toFilePath $ dn :: FilePath
     printable = s2t nakedName
 
-getOneIndexEntry :: PubFlags -> Path Abs Dir -> Path Abs File -> ErrIO (Maybe IndexEntry)
+getOneIndexEntry
+    :: PubFlags -> Path Abs Dir -> Path Abs File -> ErrIO (Maybe IndexEntry)
 -- fill one entry from one mdfile file
 getOneIndexEntry flags dough2 mdfile = do
-    (_, meta2) <- readMd2meta mdfile
-    let (metaRec, _) = readMeta2rec meta2 
+    (_, metaRec, report) <- checkOneMdFile  mdfile
+    -- (_, meta2) <- readMd2meta mdfile
+    -- let (metaRec, _) = readMeta2rec meta2 
 
     -- let abstract1 = getAtKey meta2 "abstract" :: Maybe Text
     -- let title1    = getAtKey meta2 "title" :: Maybe Text
@@ -176,15 +183,18 @@ getOneIndexEntry flags dough2 mdfile = do
 
     -- let publState = text2publish publish1
 
-    if checkPubStateWithFlags flags (publicationState metaRec) 
-      then do
+    if checkPubStateWithFlags flags (publicationState metaRec)
+        then do
 
         --    let ix2 = A.fromJSON meta2 :: Result IndexEntry
 
         --    putIOwords ["getONeIndexEntry", "decoded", showT ix2]
 
-            let parentDir =
-                    makeAbsDir . getParentDir . toFilePath $ mdfile :: Path Abs Dir
+            let
+                parentDir =
+                    makeAbsDir . getParentDir . toFilePath $ mdfile :: Path
+                            Abs
+                            Dir
             let relDirPath =
                     fromJustNote "makeIndexForDir prefix dwerwd"
                         $ stripPrefix dough2 parentDir :: Path Rel Dir
@@ -198,30 +208,30 @@ getOneIndexEntry flags dough2 mdfile = do
             let ix = IndexEntry
                     { text2     = s2t fnn
                     , link2     = ln
-                    , abstract2 = fromMaybe "" $ abstract metaRec 
-                    , title2    = fromMaybe ln $ title metaRec 
-                    , author2   = fromMaybe "" $ author metaRec 
-                    , date2     = maybe (showT year2000) showT $ date metaRec 
-                    , publish2 = shownice  $ publicationState metaRec
+                    , abstract2 = fromMaybe "" $ abstract metaRec
+                    , title2    = fromMaybe ln $ title metaRec
+                    , author2   = fromMaybe "" $ author metaRec
+                    , date2     = maybe (showT year2000) showT $ date metaRec
+                    , publish2  = shownice $ publicationState metaRec
                                     -- default is publish
                     }
 
             when False $ putIOwords
-                    [ "getONeIndexEntry"
-                    , "dir"
-                    , showT mdfile
-                    , "link"
-                    , ln
-                    , "title2"
-                    , showT  $ title2 ix
-                    , "title originally"
-                    , fromMaybe ln $ title metaRec
-                    ]
-    
+                [ "getONeIndexEntry"
+                , "dir"
+                , showT mdfile
+                , "link"
+                , ln
+                , "title2"
+                , showT $ title2 ix
+                , "title originally"
+                , fromMaybe ln $ title metaRec
+                ]
+
 
 
             return . Just $ ix
-      else return Nothing 
+        else return Nothing
 
 -- text2publish :: Maybe Text -> PublicationState
 -- -- convert a text to a publicationstate
@@ -234,13 +244,13 @@ getOneIndexEntry flags dough2 mdfile = do
 --     "old"   -> PSold
 --     _       -> PSzero
 
-checkPubStateWithFlags :: PubFlags -> Maybe PublicationState -> Bool 
+checkPubStateWithFlags :: PubFlags -> Maybe PublicationState -> Bool
 -- check wether the pubstate corresponds to the flag
-checkPubStateWithFlags flags (Just PSpublish) = publishFlag flags 
-checkPubStateWithFlags flags (Just PSdraft) = draftFlag flags 
-checkPubStateWithFlags flags (Just PSold) = oldFlag flags 
-checkPubStateWithFlags _ (Just PSzero) = False 
-checkPubStateWithFlags _ Nothing = False 
+checkPubStateWithFlags flags (Just PSpublish) = publishFlag flags
+checkPubStateWithFlags flags (Just PSdraft  ) = draftFlag flags
+checkPubStateWithFlags flags (Just PSold    ) = oldFlag flags
+checkPubStateWithFlags _     (Just PSzero   ) = False
+checkPubStateWithFlags _     Nothing          = False
 
 newtype MenuEntry = MenuEntry {menu2 :: [IndexEntry]} deriving (Generic, Eq, Ord, Show)
 instance Zeros MenuEntry where

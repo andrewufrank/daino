@@ -40,7 +40,14 @@ import           Uniform.Time                   ( getDateAsText
                                                 , year2000
                                                 )
 
-import Lib.CmdLineArgs (PubFlags(..))
+
+import           Lib.CheckInput                 ( MetaRec(..)
+                                                , PublicationState(..)
+                                                -- , readMeta2rec
+                                                , checkOneMdFile
+                                                )
+
+import           Lib.CmdLineArgs                ( PubFlags(..) )
 
 -- import           GHC.Generics
 -- (flattenMeta, getMeta, getAtKey
@@ -51,32 +58,34 @@ import Lib.CmdLineArgs (PubFlags(..))
 -- Metadata is assigned on the respective keys in the 'Value'
 -- includes reference replacement (pandoc-citeproc)
 -- runs in the pandoc monad!
-markdownToPandoc
-    :: Bool -> Path Abs Dir -> Path Abs File -> ErrIO (Maybe Pandoc)
+markdownToPandoc :: Bool -> PubFlags -> Path Abs Dir 
+            -> Path Abs File -> ErrIO (Maybe Pandoc)
 -- process the markdown (including if necessary the BibTex treatment)
 -- the bibliography must be in the metadata
 -- the settings are in the markdownText (at end - to let page specific have precedence)
 -- questionable if the draft/publish switch should be here
 -- or in the creation of the index (where more details from md is needed
-markdownToPandoc debug doughP mdfile = do
-    (pandoc, meta2) <- readMd2meta mdfile
-    let publishTest = getAtKey meta2 "publish" :: Maybe Text
+markdownToPandoc debug flags doughP mdfile = do
+    -- (pandoc, meta2) <- readMd2meta mdfile
+    (pandoc, metaRec, report) <- checkOneMdFile mdfile
+
+    -- let publishTest = getAtKey meta2 "publish" :: Maybe Text
     if True -- needs proper selection before shaking
               -- isNothing publish || (fmap toLower' publish) == Just "true" || (fmap toLower' publish) == Just "draft"
         then do
-            let bib          = getAtKey meta2 "bibliography" :: Maybe Text
-            let nociteNeeded = getAtKey meta2 "bibliographyGroup" :: Maybe Text
-            pandoc2 <- case bib of
+            -- let bib          = getAtKey meta2 "bibliography" :: Maybe Text
+            -- let nociteNeeded = getAtKey meta2 "bibliographyGroup" :: Maybe Text
+            pandoc2 <- case (bibliography metaRec) of
                 Nothing    -> return pandoc
                 Just bibfp -> pandocProcessCites
                     doughP
                     (doughP </> (makeRelFile . t2s $ bibfp))
-                    nociteNeeded
+                    (bibliographyGroup metaRec)
                     pandoc
                                   -- here the dir is used for processing in my code
             return . Just $ pandoc2
         else do
-            putIOwords ["markdownToPandoc", "NOT PUBLISH", showT publishTest]
+            -- putIOwords ["markdownToPandoc", "NOT PUBLISH", showT publishTest]
             return Nothing
 
 --    pandoc   <- readMarkdown2
@@ -93,7 +102,8 @@ pandocToContentHtml debug pandoc2 = do
 
 --    ( meta2) & _Object . at "contentHtml" ?~ String (unHTMLout text2)
 docValToAllVal
-    :: Bool -> PubFlags
+    :: Bool
+    -> PubFlags
     -> DocValue
     -> Path Abs File
     -> Path Abs Dir
