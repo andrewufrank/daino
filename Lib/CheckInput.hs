@@ -63,11 +63,11 @@ checkOneMdFile  mdfn = do
 
   let report2 = unwords' ["\n ------------------",  "\n", report1]
   putIOwords
-    [ "checkOneMdFile end metaRec1 \n"
+    [ "checkOneMdFile end metaRec1"
     -- , showT meta2
     , showT   metaRec1]
-  putIOwords ["\nreport2 \n"
-    , showT  report2
+  putIOwords ["report2 \n"
+    , showT  report2, "\n"
     ]
   return (pandoc, metaRec1, report2) 
 
@@ -86,11 +86,13 @@ readMeta2rec meta2 = (ix, report)
                , publicationState = text2publish $ publish1
                , bibliography  = bibliography1
                , bibliographyGroup = bibliographyGroup1
+               , keywords = keywords1
                     -- default is publish
                }
-  [abstract1, title1, author1, date1, publish1, bibliography1, bibliographyGroup1] = vals2
+  [abstract1, title1, author1, date1, publish1, bibliography1, bibliographyGroup1, keywords1] = vals2
   vals2  = map (getAtKey meta2) keys2
-  keys2  = ["abstract", "title", "author", "date", "publish", "bibliography", "bibliographyGroup"]
+  keys2  = ["abstract", "title", "author", "date", "publish", "bibliography", "bibliographyGroup"
+            , "keywords"]
 
   -- abstract1 = getAtKey meta2 "abstract" :: Maybe Text
   -- title1    = getAtKey meta2 "title" :: Maybe Text
@@ -119,11 +121,12 @@ data MetaRec = MetaRec {
                               , publicationState :: Maybe PublicationState
                               , bibliography :: Maybe Text 
                               , bibliographyGroup :: Maybe Text 
+                              , keywords :: Maybe Text 
 
                               } deriving (Generic, Eq, Ord, Show, Read)
 
 instance Zeros MetaRec where
-  zero = MetaRec zero zero zero (Just year2000) zero zero zero
+  zero = MetaRec zero zero zero (Just year2000) zero zero zero zero
 --instance FromJSON IndexEntry
 instance ToJSON MetaRec
 instance FromJSON MetaRec where

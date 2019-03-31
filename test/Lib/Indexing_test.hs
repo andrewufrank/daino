@@ -41,7 +41,7 @@ blogDir = doughDir layoutDefaults </> makeRelDir "Blog"
 blogindexfn = doughDir layoutDefaults </> makeRelFile "Blog/index.md"
 
 test_1 = do
-  res <- runErr $ makeIndexForDir False
+  res <- runErr $ makeIndexForDir True
                                   allFlags
                                   blogDir
                                   blogindexfn
@@ -49,8 +49,35 @@ test_1 = do
                                   (Just "title")
   assertEqual res2 res
 
-res2 = Right (MenuEntry { menu2 = [] })
+res2 = 
+  Right (MenuEntry { menu2 = 
 
+              [IndexEntry{text2 =
+                "Path Abs Dir /home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/",
+              link2 = "SubBlog/html", title2 = "SubBlog (subdirectory)",
+              abstract2 = "", author2 = "", date2 = "", publish2 = ""},
+            IndexEntry{text2 = "", link2 = "", title2 = "------",
+              abstract2 = "", author2 = "", date2 = "", publish2 = ""},
+            IndexEntry{text2 = "postTufteStyled",
+              link2 = "/Blog/postTufteStyled.html", title2 = "postTufteStyle.md",
+              abstract2 = "A silly text not needing an abstract updated.",
+              author2 = "auf", date2 = "2019-01-04 00:00:00 UTC",
+              publish2 = "Nothing"},
+            IndexEntry{text2 = "postwk", link2 = "/Blog/postwk.html",
+              title2 = "postwk.md",
+              abstract2 = "A silly text not needing an abstract.",
+              author2 = "AUF", date2 = "2019-01-04 00:00:00 UTC",
+              publish2 = "Nothing"},
+            IndexEntry{text2 = "postwk9", link2 = "/Blog/postwk9.html",
+              title2 = "postwk9.md",
+              abstract2 = "A silly text not needing an abstract.",
+              author2 = "AUF", date2 = "2019-01-04 00:00:00 UTC",
+              publish2 = "draft"},
+            IndexEntry{text2 = "postwkTufte", link2 = "/Blog/postwkTufte.html",
+              title2 = "postwkTufte.md",
+              abstract2 = "A silly text not needing an abstract updated.",
+              author2 = "auf", date2 = "2019-01-04 00:00:00 UTC",
+              publish2 = "Nothing"}]})
 --       Right
 --         (MenuEntry{menu2 =
 --                 [IndexEntry{text =

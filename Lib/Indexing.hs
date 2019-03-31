@@ -82,11 +82,11 @@ makeIndexForDir debug flags pageFn indexFn dough2 indexSort = do
     let parentDir =
             makeAbsDir . getParentDir . toFilePath $ pageFn :: Path Abs Dir
     let relDirPath =
-            fromJustNote "makeIndexForDir prefix dwerwd"
+            fromJustNote "makeIndexForDir 1 prefix dwerwd"
                 $ stripPrefix dough2 parentDir :: Path Rel Dir
     -- this is the addition for the links
     putIOwords
-        [ "makeIndexForDir"
+        [ "makeIndexForDir 2"
         , "for "
         , showT pageFn
         , "\n relative root"
@@ -102,16 +102,14 @@ makeIndexForDir debug flags pageFn indexFn dough2 indexSort = do
     let fs3 = filter (hasExtension "md") fs2
 
     when debug $ putIOwords
-        ["makeIndexForDir", "for ", showT pageFn, "\n", showT fs3]
+        ["makeIndexForDir 3", "for ", showT pageFn, "\n", showT fs3]
     -- fileIxs :: [IndexEntry] <- mapM (\f -> getOneIndexEntry dough2 $ makeAbsFile f) fs3
-    fileIxs1 :: [Maybe IndexEntry] <- mapM
-        (getOneIndexEntry flags dough2 . makeAbsFile)
+    fileIxs1 :: [Maybe IndexEntry] <- mapM (getOneIndexEntry flags dough2 . makeAbsFile)
         fs3
 
     let fileIxs = catMaybes fileIxs1
 
-    let
-        fileIxsSorted = case fmap toLower' indexSort of
+    let fileIxsSorted = case fmap toLower' indexSort of
             Just "title"       -> sortWith title2 fileIxs
             Just "date"        -> sortWith date2 fileIxs
             Just "reversedate" -> reverse $ sortWith date2 fileIxs
@@ -119,13 +117,13 @@ makeIndexForDir debug flags pageFn indexFn dough2 indexSort = do
                 errorT ["makeIndexForDir fileIxsSorted", "unknonw parameter", x]
             Nothing -> fileIxs
     unless (null fileIxs) $ do
+        -- putIOwords
+        --     [ "makeIndexForDir"
+        --     , "index for dirs not sorted "
+        --     , showT $ map title2 fileIxs
+        --     ]
         putIOwords
-            [ "makeIndexForDir"
-            , "index for dirs not sorted "
-            , showT $ map title2 fileIxs
-            ]
-        putIOwords
-            [ "makeIndexForDir"
+            [ "makeIndexForDir 4"
             , "index for dirs sorted "
             , showT $ map title2 fileIxsSorted
             ]
@@ -133,12 +131,12 @@ makeIndexForDir debug flags pageFn indexFn dough2 indexSort = do
     -- directories
     dirs <- findDirs fs
     when debug $ putIOwords
-        ["makeIndexForDir", "dirs ", showT pageFn, "\ndirIxs", showT dirs]
+        ["makeIndexForDir 5", "dirs ", showT pageFn, "\ndirIxs", showT dirs]
     let dirIxs = map oneDirIndexEntry dirs :: [IndexEntry]
     -- format the subdir entries 
     -- needed filename.html title abstract author data
     when debug $ putIOwords
-        [ "makeIndexForDir"
+        [ "makeIndexForDir 6"
         , "index for dirs  "
         , showT pageFn
         , "\n"
@@ -150,9 +148,9 @@ makeIndexForDir debug flags pageFn indexFn dough2 indexSort = do
             else []
     let menu1 = MenuEntry { menu2 = dirIxsSorted2 ++ fileIxsSorted }
     when debug $ putIOwords
-        ["makeIndexForDir", "for ", showT pageFn, "\n", showT menu1]
+        ["makeIndexForDir 7", "for ", showT pageFn, "\n", showT menu1]
     let yaml1 = encodeT menu1 -- bb2t . encode $ menu1
-    when debug $ putIOwords ["makeIndexForDir", "yaml ", yaml1]
+    when debug $ putIOwords ["makeIndexForDir 8", "yaml ", yaml1]
 
     return menu1
 
@@ -172,29 +170,12 @@ getOneIndexEntry
 -- fill one entry from one mdfile file
 getOneIndexEntry flags dough2 mdfile = do
     (_, metaRec, report) <- checkOneMdFile  mdfile
-    -- (_, meta2) <- readMd2meta mdfile
-    -- let (metaRec, _) = readMeta2rec meta2 
-
-    -- let abstract1 = getAtKey meta2 "abstract" :: Maybe Text
-    -- let title1    = getAtKey meta2 "title" :: Maybe Text
-    -- let author1   = getAtKey meta2 "author" :: Maybe Text
-    -- let date1     = getAtKey meta2 "date" :: Maybe Text
-    -- let publish1  = getAtKey meta2 "publish" :: Maybe Text
-
-    -- let publState = text2publish publish1
-
+    putIOwords ["getOneIndexEntry 1", showT flags]
     if checkPubStateWithFlags flags (publicationState metaRec)
         then do
 
-        --    let ix2 = A.fromJSON meta2 :: Result IndexEntry
-
-        --    putIOwords ["getONeIndexEntry", "decoded", showT ix2]
-
-            let
-                parentDir =
-                    makeAbsDir . getParentDir . toFilePath $ mdfile :: Path
-                            Abs
-                            Dir
+            let parentDir =  makeAbsDir . getParentDir . toFilePath $ mdfile 
+                            :: Path Abs Dir
             let relDirPath =
                     fromJustNote "makeIndexForDir prefix dwerwd"
                         $ stripPrefix dough2 parentDir :: Path Rel Dir
@@ -216,8 +197,8 @@ getOneIndexEntry flags dough2 mdfile = do
                                     -- default is publish
                     }
 
-            when False $ putIOwords
-                [ "getONeIndexEntry"
+            when True $ putIOwords
+                [ "getONeIndexEntry 2"
                 , "dir"
                 , showT mdfile
                 , "link"
@@ -250,7 +231,7 @@ checkPubStateWithFlags flags (Just PSpublish) = publishFlag flags
 checkPubStateWithFlags flags (Just PSdraft  ) = draftFlag flags
 checkPubStateWithFlags flags (Just PSold    ) = oldFlag flags
 checkPubStateWithFlags _     (Just PSzero   ) = False
-checkPubStateWithFlags _     Nothing          = False
+checkPubStateWithFlags flags     Nothing          = publishFlag flags
 
 newtype MenuEntry = MenuEntry {menu2 :: [IndexEntry]} deriving (Generic, Eq, Ord, Show)
 instance Zeros MenuEntry where

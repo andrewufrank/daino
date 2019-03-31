@@ -88,9 +88,10 @@
 		<ul>
             	$for(menu2)$
 				<li>
-				    <a href=$menu2.link$><em>$menu2.title$ </em></a>
-				    $if(menu2.abstract)$<br>$menu2.abstract$$endif$		     
-				    <span class=tiny>$menu2.author$ $menu2.date$ $menu2.links$ $menu2.publicationState$
+				    <a href=$menu2.link2$><em>$menu2.title2$ </em></a>
+				    $if(menu2.abstract2)$<br>$menu2.abstract2$$endif$		     
+				    <span class=tiny>$menu2.author2$ $menu2.date2$ 
+            $menu2.link2$ $menu2.publish2$
                     </span>
                     
     			</li>

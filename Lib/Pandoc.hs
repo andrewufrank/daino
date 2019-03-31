@@ -70,7 +70,7 @@ markdownToPandoc debug flags doughP mdfile = do
     (pandoc, metaRec, report) <- checkOneMdFile mdfile
 
     -- let publishTest = getAtKey meta2 "publish" :: Maybe Text
-    if -- checkPubStateWithFlags flags (publicationState metaRec)
+    if  -- checkPubStateWithFlags flags (publicationState metaRec)
         True -- all md files must produce an output in shake
         
         then do
@@ -137,7 +137,7 @@ docValToAllVal debug flags docval pageFn dough2 templateP = do
                                   }
     when debug $ do
         putIOwords ["pandoc filename", showT fn2]
-        putIOwords ["pandoc settings2.yaml", showT settingsYaml]
+        -- putIOwords ["pandoc settings2.yaml", showT settingsYaml]
     let val = mergeAll
             [ settingsYaml
             , pageTypeYaml

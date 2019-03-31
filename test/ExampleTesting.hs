@@ -17,7 +17,7 @@ import Lib.Shake2  -- just to test ghci
 import Uniform.FileIO
 -- import Uniform.Error
 
-import {-@ HTF_TESTS @-} Lib.Shake2_test
+-- import {-@ HTF_TESTS @-} Lib.Shake2_test
 -- import {-@ HTF_TESTS @-} ShakeStartTests
 -- -- must run first because it produces the test values used later
 -- -- uses layoutDefaults, not settings2.yaml
@@ -40,7 +40,7 @@ import {-@ HTF_TESTS @-} Lib.Shake2_test
 -- --    -- AD -> AF :: DocValue
 -- --import {-@ HTF_TESTS @-} Lib.Bake_test
 -- --import {-@ HTF_TESTS @-} Lib.ReadSettingFile_test
--- import {-@ HTF_TESTS @-} Lib.Indexing_test
+import {-@ HTF_TESTS @-} Lib.Indexing_test
 -- import {-@ HTF_TESTS @-} Lib.Templating_test  -- AG -> EG 
 -- --import {-@ HTF_TESTS @-} Lib.BibTex_test
 --
