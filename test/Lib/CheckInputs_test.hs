@@ -27,6 +27,17 @@ import Lib.Pandoc
 import Lib.CheckInput
 import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)
 
+
+psIn = ["true", "publish", "draft", "old", "", "xx", "Publish", "Draft", "OLD"]
+psRes =  [Just PSpublish, Just PSpublish, Just PSdraft, Just PSold,
+     Nothing, Nothing, 
+     Just PSpublish, Just PSdraft, Just PSold]
+     
+test_PS = assertEqual psRes (map (text2publish . Just) psIn)
+
+
+test_PSnothing = assertEqual Nothing (text2publish Nothing)
+
 ----
 test_checkOneMdFile_1, test_checkOneMdFile_2 :: IO ()
 test_checkOneMdFile_1 = test1FileIO progName  "pageFn1" "TripleDoc1" checkOneMdFile

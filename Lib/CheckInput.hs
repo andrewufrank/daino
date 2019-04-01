@@ -52,9 +52,9 @@ type TripleDoc = (Pandoc, MetaRec, Text)
 checkOneMdFile ::   Path Abs File -> ErrIO (Pandoc, MetaRec, Text)
 -- check one input file, return ?
 checkOneMdFile  mdfn = do
-  putIOwords ["checkOneMdFile start", showT mdfn]
+  -- putIOwords ["checkOneMdFile start", showT mdfn]
   (pandoc, meta2) :: (Pandoc, Value) <- readMd2meta mdfn -- (dough2 </> mdfn)
-  putIOwords ["checkOneMdFile meta2", showT meta2]
+  -- putIOwords ["checkOneMdFile meta2", showT meta2]
 
   let (metaRec1,report1) = readMeta2rec meta2
   -- ixEntry                       <- getOneIndexEntry allFlags dough2 (dough2 </> mdfn)
@@ -64,13 +64,9 @@ checkOneMdFile  mdfn = do
   -- let doindex2 = maybe False id $ getAtKey meta2 "indexPage" :: Bool
 
   let report2 = unwords' ["\n ------------------",  "\n", report1]
-  putIOwords
-    [ "checkOneMdFile end metaRec1"
-    -- , showT meta2
-    , showT   metaRec1]
-  putIOwords ["report2 \n"
-    , showT  report2, "\n"
-    ]
+  -- putIOwords [ "checkOneMdFile end metaRec1"     -- , showT meta2
+  --   , showT   metaRec1]
+  -- putIOwords ["report2 \n"     , showT  report2, "\n"    ]
   return (pandoc, metaRec1, report2) 
 
 readMeta2rec :: Value -> (MetaRec, Text)
@@ -90,14 +86,17 @@ readMeta2rec meta2 = (ix, report)
                , bibliographyGroup = bibliographyGroup1
                , keywords = keywords1
                , pageTemplate = pageTemplate1
+               , indexPage = indexPage1
+               , indexSort = indexSort1
                     -- default is publish
                }
   [abstract1, title1, author1, date1, publish1
-      , bibliography1, bibliographyGroup1, keywords1, pageTemplate1] = vals2
+      , bibliography1, bibliographyGroup1, keywords1, pageTemplate1
+      , indexSort1] = vals2
   vals2  = map (getAtKey meta2) keys2
   keys2  = ["abstract", "title", "author", "date", "publish", "bibliography", "bibliographyGroup"
-            , "keywords", "pageTemplate"]
-
+            , "keywords", "pageTemplate", "indexSort"]
+  indexPage1 = getAtKey meta2 "indexPage" :: Maybe Bool 
   -- abstract1 = getAtKey meta2 "abstract" :: Maybe Text
   -- title1    = getAtKey meta2 "title" :: Maybe Text
   -- author1   = getAtKey meta2 "author" :: Maybe Text
@@ -127,11 +126,13 @@ data MetaRec = MetaRec {
                               , bibliographyGroup :: Maybe Text 
                               , keywords :: Maybe Text 
                               , pageTemplate:: Maybe Text 
+                              , indexPage :: Maybe Bool
+                              , indexSort :: Maybe Text 
 
                               } deriving (Generic, Eq, Ord, Show, Read)
 
 instance Zeros MetaRec where
-  zero = MetaRec zero zero zero (Just year2000) zero zero zero zero zero
+  zero = MetaRec zero zero zero (Just year2000) zero zero zero zero zero zero zero
 --instance FromJSON IndexEntry
 instance ToJSON MetaRec
 instance FromJSON MetaRec where
