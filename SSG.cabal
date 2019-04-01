@@ -41,24 +41,7 @@ library
 
         , optparse-applicative
         , optparse-generic
-    -- pandoc -any,
-        -- pandoc-citeproc -any,
-        -- pandoc-types -any,
-        -- doctemplates -any,
-        -- aeson -any,
-        -- lens-aeson -any,
-        -- lens -any,
-        -- aeson-pretty -any,
-        -- yaml-union -any,
-        -- shake -any
-        -- path==0.6.1.1
 
-        -- shake-path
-        -- yaml -any,
-        -- bibtex ==0.1.0.8,
-        -- directory -any
-        -- containers -any,
-        -- unordered-containers -any
 
 executable ssgbake
     main-is: ssgBake.hs
@@ -75,11 +58,7 @@ executable ssgbake
         ,uniform-webserver  
         -- , uniform-watch 
         , SSG -any
-        -- shake ==0.17.6,
-        -- scotty -any,
-        -- warp -any,
-        -- wai-middleware-static -any
-
+ 
 -- executable ssg10
 --     main-is: ssg10.hs
 --     hs-source-dirs: src
@@ -91,25 +70,6 @@ executable ssgbake
 --         uniform-fileio -any,
 --         uniform-error -any,
 --         SSG -any
-
--- executable serversg
---     main-is: serverSG.hs
---     hs-source-dirs: src
---     default-language: Haskell2010
---     build-depends:
---         base ==4.*,
---         uniform-strings -any,
---         uniform-convenience -any,
---         uniform-fileio -any,
---         uniform-error -any,
---         uniform-watch , 
---         uniform-webserver,
---         SSG 
---         -- SSG -any,
---         -- scotty -any,
---         -- warp -any,
---         -- wai-middleware-static -any
---         -- twitch -any
 
 test-suite ssgTest
     type: exitcode-stdio-1.0
@@ -146,16 +106,4 @@ test-suite ssgTest
         uniform-shake,
         uniform-watch ,
         SSG -any
-        -- , directory -any 
-        -- doctemplates -any,
-        -- , shake -any
-        -- , path==0.6.1.1
-        -- pandoc -any,
-        -- lens-aeson -any,
-        -- lens -any,
-        -- aeson -any,
-        -- aeson-pretty -any,
-        -- yaml-union -any,
-        -- bibtex ==0.1.0.8,
-        -- time -any,
-        -- test-framework -any
+
