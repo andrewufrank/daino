@@ -29,20 +29,40 @@ import           Test.Framework
 import           Uniform.Test.TestHarness
 import           Uniform.Time (readDate3, UTCTime(..))
 import           Lib.CmdLineArgs (allFlags)
+import Lib.CheckInput (MetaRec(..), SortArgs (..))
 
 blogDir = doughDir layoutDefaults </> makeRelDir "Blog"
 
 blogindexfn = doughDir layoutDefaults </> makeRelFile "Blog/index.md"
 
+test_parentDir = assertEqual res1a (getParentDir blogindexfn)
+test_immediateParent = assertEqual res2a (getImmediateParentDir blogindexfn)
+
+res1a = "/home/frank/Workspace8/ssg/docs/site/dough/Blog" :: FilePath 
+res2a = "Blog" :: FilePath 
+metaRec1 =  MetaRec
+              { title = Just "index for post"
+              , abstract = Just "The directory for experiments."
+              , author = Just "AUF"
+              , date = Just "2019-01-04 00:00:00 UTC"
+              , publicationState = Nothing
+              , bibliography = Nothing
+              , bibliographyGroup = Nothing
+              , keywords = Just "test"
+              , pageTemplate = Just "page3.yaml"
+              , indexPage = Just True
+              , indexSort = SAtitle
+              }
+
 test_1 = do
   res <- runErr
     $ makeIndexForDir
       True
-      allFlags
-      blogDir
+      allFlags metaRec1
+      -- blogDir
       blogindexfn
-      (doughDir testLayout)
-      (Just "title")
+      -- (doughDir testLayout)
+      
   assertEqual res2 res
 
 res2 = Right

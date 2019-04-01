@@ -35,7 +35,7 @@ psRes =  [Just PSpublish, Just PSpublish, Just PSdraft, Just PSold,
      
 test_PS = assertEqual psRes (map (text2publish . Just) psIn)
 
-sain = ["title", "titel", "date", "reversedate", "xx", "", "TITEL"]
+sain = ["title", "titel", "date", "reversedate", "xx", "", "TITEL"] :: [Text]
 saRes = []
 
 test_SA = assertEqual saRes (map (text2sortargs . Just) sain)

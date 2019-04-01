@@ -96,6 +96,7 @@ test-suite ssgTest
         HTF -any,
         QuickCheck -any,
         base ==4.*,
+        uniform-algebras, 
         uniform-strings -any,
         uniform-convenience -any,
         uniform-fileio -any,

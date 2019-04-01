@@ -34,6 +34,8 @@ import Uniform.FileIO            hiding ((<.>), (</>)) -- (resourcesDirName)
 import Uniform.Pandoc -- (applyTemplate3, Pandoc, DocValue, doc HTMLout, htmloutFileType)
 import Uniform.Shake
 import Lib.CmdLineArgs (allFlags, PubFlags)
+import Lib.CheckInput (checkOneMdFile, MetaRec(..), TripleDoc(..))
+import Uniform.Pointless (fst3)
 
 test_shake :: IO ()
 test_shake =  do
@@ -55,11 +57,11 @@ shakeTesting layout flags = do
 --  fs <- getDirectoryDirs' . toFilePath $ testP
 --  putIOwords ["shakeTesting", "to delete", showT fs]
 --  mapM_ deleteDirRecursive fs
-  callIO $ shakeTestWrapped flags doughP  templatesP testP
+  callIO $ shakeTestWrapped flags layout doughP  templatesP testP
 
 
-shakeTestWrapped :: PubFlags ->  Path Abs Dir  -> Path Abs Dir  -> Path Abs Dir ->  IO  ()
-shakeTestWrapped flags doughP  templatesP testP =
+shakeTestWrapped :: PubFlags -> SiteLayout ->  Path Abs Dir  -> Path Abs Dir  -> Path Abs Dir ->  IO  ()
+shakeTestWrapped flags layout doughP  templatesP testP =
     shakeArgs shakeOptions {shakeFiles= toFilePath testP
             , shakeVerbosity=Chatty -- Loud
             , shakeLint=Just LintBasic
@@ -87,7 +89,8 @@ shakeTestWrapped flags doughP  templatesP testP =
 
 
 
-        needP [testP </> md <.> makeExtension "withSettings.pandoc" | md <- mdFiles3]  -- markdownToPandoc
+        needP [testP </> md <.> makeExtension "tripleDoc" | md <- mdFiles3]  -- markdownToPandoc
+        needP [testP </> md <.> makeExtension "pandocBiblio" | md <- mdFiles3]  -- markdownToPandoc
         needP [testP </> md <.> makeExtension "content.docval" | md <- mdFiles3]  -- pandocToContentHtml
         needP [testP </> md <.> makeExtension "allyaml.docval" | md <- mdFiles3]  -- pandocToContentHtml
         needP [testP </> md <.> makeExtension "inTemplate.html" | md <- mdFiles3]  -- applyTemplate3
@@ -96,44 +99,64 @@ shakeTestWrapped flags doughP  templatesP testP =
 
 -- in order of bakeOneFile :
 
-    (toFilePath testP <> "//*.withSettings.pandoc") %> \out -> do
---        liftIO $ putIOwords ["\n.withSettings.pandoc", s2t out]
-        let outP = makeAbsFile out :: Path Abs File
-        let source = doughP </> (makeRelativeP testP  (outP $--<.> "md"))
-        needP [source]
-        runErr2action $
-                do
---                    intext <- read8 (makeAbsFile source) markdownFileType
---                    let resourcesPath = doughP `addDir` resourcesDirName :: Path Abs Dir
-                    mp <- markdownToPandoc True allFlags doughP ( source)
-                    case mp of
-                        Nothing -> return ()
-                        Just p -> writeFile2 ( outP) (showT p)
+    (toFilePath testP <> "//*.tripleDoc") %> \out -> do
+        --        liftIO $ putIOwords ["\n.withSettings.pandoc", s2t out]
+                let outP = makeAbsFile out :: Path Abs File
+                let source = doughP </> (makeRelativeP testP  (outP $--<.> "md"))
+                needP [source]
+                runErr2action $
+                        do
+        --                    intext <- read8 (makeAbsFile source) markdownFileType
+        --                    let resourcesPath = doughP `addDir` resourcesDirName :: Path Abs Dir
+                            triple <- checkOneMdFile layout source 
+                            -- p <- markdownToPandocBiblio True allFlags doughP triple 
+                            -- case mp of
+                            --     Nothing -> return ()
+                            writeFile2 ( outP) (showT triple)
 
+    (toFilePath testP <> "//*.pandocBiblio") %> \out -> do
+        --        liftIO $ putIOwords ["\n.withSettings.pandoc", s2t out]
+                let outP = makeAbsFile out :: Path Abs File
+                let source = doughP </> (makeRelativeP testP  (outP $--<.> "tripleDoc"))
+                needP [source]
+                runErr2action $
+                        do
+                        --    intext <- read8 (makeAbsFile source) markdownFileType
+        --                    let resourcesPath = doughP `addDir` resourcesDirName :: Path Abs Dir
+                            tripleText <- readFile2 source 
+                            let triple = readNote "readTriple 42345" tripleText :: TripleDoc 
+                            p <- markdownToPandocBiblio True allFlags doughP triple 
+                            -- case mp of
+                            --     Nothing -> return ()
+                            writeFile2 ( outP) (showT p)
+                                
     (toFilePath testP <> "//*content.docval") %> \out -> do
         let outP = makeAbsFile out :: Path Abs File
-        let source = outP $--<.>   "withSettings.pandoc"
+        let source = outP $--<.>   "tripleDoc"
         needP [source]
         runErr2action $   -- pandocToContentHtml
             do
-                pandocText  <- readFile2 ( source)
-                p :: DocValue <- pandocToContentHtml True
-                                (readNote "we23" pandocText :: Pandoc)
-                write8 ( outP) docValueFileType p
+                triple  <- readFile2 ( source)
+                let pandoc = fst3 (readNote "we23" triple :: TripleDoc)
+                p :: HTMLout <- pandocToContentHtml True pandoc
+                                
+                write8 ( outP) htmloutFileType p
 
     (toFilePath testP <> "//*allyaml.docval") %> \out -> do
         let outP = makeAbsFile out :: Path Abs File
         let source = outP $--<.>   "content.docval"
         let source2 = doughP </> makeRelativeP testP (outP $--<.> "md")
+        let triple = outP $--<.> "tripleDoc"
         needP [source]
         -- does not track the settingss and the pageN.yaml
         runErr2action $   -- docValToAllVal
             do
-                valText :: DocValue  <-   read8 ( source )
-                                                docValueFileType
-                p :: DocValue <- docValToAllVal True flags valText
-                                 ( source2)
-                                 ( doughP) ( templatesP)
+                valText :: HTMLout  <-   read8 ( source )
+                                                htmloutFileType
+                metarecText :: String <- readFile2 triple 
+                let metarec = readNote "read metarec 23243ou" metarecText :: MetaRec
+                p :: DocValue <- docValToAllVal True layout flags valText
+                                 ( source2) metarec 
                 write8 ( outP) docValueFileType p
 
 
@@ -156,7 +179,7 @@ shakeTestWrapped flags doughP  templatesP testP =
         needP [mdSource2, masterSettings, masterTemplate]
         runErr2action $ do 
                     r <- bakeOneFile False flags ( mdSource2)
-                            ( doughP) ( templatesP)
+                            layout
                             ( outP)
                     return ()
 
