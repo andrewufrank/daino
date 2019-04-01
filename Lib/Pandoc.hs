@@ -32,7 +32,7 @@ import           Uniform.Convenience.DataVarious
 import           Uniform.FileIO          hiding ( Meta
                                                 , at
                                                 )
-import           Uniform.Pandoc hiding (Meta(..))
+import           Uniform.Pandoc -- hiding (Meta(..))
 
 import           Uniform.BibTex
 -- import           Uniform.Json
@@ -68,7 +68,7 @@ markdownToPandoc :: Bool -> PubFlags -> Path Abs Dir
 -- or in the creation of the index (where more details from md is needed
 markdownToPandoc debug flags doughP mdfile = do
     -- (pandoc, meta2) <- readMd2meta mdfile
-    (pandoc, metaRec, report) <- checkOneMdFile mdfile
+    (pandoc, metaRec, report) <- checkOneMdFile doughP mdfile
 
     -- let publishTest = getAtKey meta2 "publish" :: Maybe Text
     if  -- checkPubStateWithFlags flags (publicationState metaRec)
@@ -80,8 +80,8 @@ markdownToPandoc debug flags doughP mdfile = do
             pandoc2 <- case (bibliography metaRec) of
                 Nothing    -> return pandoc
                 Just bibfp -> pandocProcessCites
-                    doughP
-                    (doughP </> (makeRelFile . t2s $ bibfp))
+                    doughP  -- required to set the current dir 
+                    bibfp -- (doughP </> (makeRelFile . t2s $ bibfp))
                     (bibliographyGroup metaRec)
                     pandoc
                                   -- here the dir is used for processing in my code

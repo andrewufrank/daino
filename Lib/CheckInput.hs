@@ -34,29 +34,30 @@ import           Uniform.Pandoc
 -- import Lib.CmdLineArgs (PubFlags(..))
 
 
-checkAllInputs :: [Path Abs File] -> ErrIO Text
--- ^ check the input files for syntax errors 
--- needs a shake to call check
--- with a switch -c 
+-- checkAllInputs :: [Path Abs File] -> ErrIO Text
+-- -- ^ check the input files for syntax errors 
+-- -- needs a shake to call check
+-- -- with a switch -c 
 
-checkAllInputs  mdfiles = do
-  putIOwords ["checkAllInput start" ]
-  val <- mapM checkOneMdFile  mdfiles
+-- checkAllInputs  mdfiles = do
+--   putIOwords ["checkAllInput start" ]
+--   val <- mapM checkOneMdFile  mdfiles
 
-  let res = showT val
-  putIOwords ["checkAllInput end", showT res]
-  return . showT $ val
+--   let res = showT val
+--   putIOwords ["checkAllInput end", showT res]
+--   return . showT $ val
 
 type TripleDoc = (Pandoc, MetaRec, Text)
 
-checkOneMdFile ::   Path Abs File -> ErrIO (Pandoc, MetaRec, Text)
--- check one input file, return ?
-checkOneMdFile  mdfn = do
+checkOneMdFile :: Path Abs Dir ->   Path Abs File -> ErrIO (Pandoc, MetaRec, Text)
+-- check one input file, return the values parsed
+-- uses doughP to construct file names to abs file 
+checkOneMdFile  doughP mdfn = do
   -- putIOwords ["checkOneMdFile start", showT mdfn]
   (pandoc, meta2) :: (Pandoc, Value) <- readMd2meta mdfn -- (dough2 </> mdfn)
   -- putIOwords ["checkOneMdFile meta2", showT meta2]
 
-  let (metaRec1,report1) = readMeta2rec meta2
+  let (metaRec1,report1) = readMeta2rec doughP meta2
   -- ixEntry                       <- getOneIndexEntry allFlags dough2 (dough2 </> mdfn)
   -- what needs to be checked ?  -- check with all flags true 
 
@@ -69,27 +70,28 @@ checkOneMdFile  mdfn = do
   -- putIOwords ["report2 \n"     , showT  report2, "\n"    ]
   return (pandoc, metaRec1, report2) 
 
-readMeta2rec :: Value -> (MetaRec, Text)
+readMeta2rec :: Path Abs Dir -> Value -> (MetaRec, Text)
 -- | read the metadata in a record and check for validity
 -- and information what is missing
-readMeta2rec meta2 = (ix, report)
+readMeta2rec doughP meta2 = (ix, report)
  where
-  ix = MetaRec {
+  ix = MetaRec 
+      {
         -- text     = s2t fnn
     -- , link     = ln
-                 abstract         = abstract1
-               , title            = title1
-               , author           = author1
-               , date             = maybe Nothing readDateMaybe date1   -- test early for proper format
-               , publicationState = text2publish $ publish1
-               , bibliography  = bibliography1
-               , bibliographyGroup = bibliographyGroup1
-               , keywords = keywords1
-               , pageTemplate = pageTemplate1
-               , indexPage = indexPage1
-               , indexSort = indexSort1
-                    -- default is publish
-               }
+        abstract         = abstract1
+      , title            = title1
+      , author           = author1
+      , date             = maybe Nothing readDateMaybe date1   -- test early for proper format
+      , publicationState = text2publish $ publish1
+      , bibliography  = fmap (\f -> doughP </> makeRelFileT f) bibliography1
+      , bibliographyGroup = bibliographyGroup1
+      , keywords = keywords1
+      , pageTemplate = pageTemplate1
+      , indexPage = indexPage1
+      , indexSort = indexSort1
+          -- default is publish
+      }
   [abstract1, title1, author1, date1, publish1
       , bibliography1, bibliographyGroup1, keywords1, pageTemplate1
       , indexSort1] = vals2
@@ -122,7 +124,7 @@ data MetaRec = MetaRec {
                               , author :: Maybe Text
                               , date :: Maybe UTCTime -- read the time early one to find errors
                               , publicationState :: Maybe PublicationState
-                              , bibliography :: Maybe Text 
+                              , bibliography :: Maybe (Path Abs File)
                               , bibliographyGroup :: Maybe Text 
                               , keywords :: Maybe Text 
                               , pageTemplate:: Maybe Text 

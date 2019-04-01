@@ -169,7 +169,7 @@ getOneIndexEntry
     :: PubFlags -> Path Abs Dir -> Path Abs File -> ErrIO (Maybe IndexEntry)
 -- fill one entry from one mdfile file
 getOneIndexEntry flags dough2 mdfile = do
-    (_, metaRec, report) <- checkOneMdFile  mdfile
+    (_, metaRec, report) <- checkOneMdFile dough2 mdfile
     putIOwords ["getOneIndexEntry 1", showT flags]
     if checkPubStateWithFlags flags (publicationState metaRec)
         then do
