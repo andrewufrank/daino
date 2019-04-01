@@ -36,26 +36,26 @@ import           Lib.CheckInput                 ( MetaRec(..)
 makeIndex
     :: Bool
     -> PubFlags
-    -> DocValue
+    -> MetaRec
     -> Path Abs File
     -> Path Abs Dir
     -> ErrIO MenuEntry
 -- | make the index text, will be moved into the page template later
 -- return zero if not index page
-makeIndex debug flags docval pageFn dough2 = do
-    let doindex   = fromMaybe False $ getAtKey docval "indexPage"
-    let indexSort = getAtKey docval "indexSort" :: Maybe Text
+makeIndex debug flags metaRec pageFn dough2 = do
+    let doindex   = fromMaybe False $  indexPage metaRec
+    let indexSort1 = indexSort metaRec :: Maybe Text
     when debug $ putIOwords ["makeIndex", "doindex", showT doindex]
 
     ix :: MenuEntry <- if doindex
         then do
             let currentDir2 = makeAbsDir $ getParentDir pageFn
             ix2 <- makeIndexForDir debug
-                                   flags
+                                   flags metaRec
                                    currentDir2
                                    pageFn
                                    dough2
-                                   indexSort
+                                   
             when debug $ putIOwords ["makeIndex", "index", showT ix2]
             return ix2
         else return zero
@@ -65,10 +65,11 @@ makeIndex debug flags docval pageFn dough2 = do
 makeIndexForDir
     :: Bool
     -> PubFlags
+    -> MetaRec
     -> Path Abs Dir
     -> Path Abs File
     -> Path Abs Dir
-    -> Maybe Text
+    -- -> Maybe Text
     -> ErrIO MenuEntry
 -- make the index for the directory
 -- place result in index.html in this directory
@@ -76,7 +77,7 @@ makeIndexForDir
 -- makes index only for md files in dough
 -- and for subdirs, where the index must be called index.md
 
-makeIndexForDir debug flags pageFn indexFn dough2 indexSort = do
+makeIndexForDir debug flags metaRec pageFn indexFn dough2 = do
     -- values title date
 
     let parentDir =
@@ -92,7 +93,7 @@ makeIndexForDir debug flags pageFn indexFn dough2 indexSort = do
         , "\n relative root"
         , showT relDirPath
         , "\n sort"
-        , showT indexSort
+        , showT (indexSort metaRec)
         , "flags"
         , showT flags
         ]
@@ -100,16 +101,15 @@ makeIndexForDir debug flags pageFn indexFn dough2 indexSort = do
     fs <- getDirContentNonHidden (toFilePath pageFn)
     let fs2 = filter (/= toFilePath indexFn) fs -- exclude index
     let fs3 = filter (hasExtension "md") fs2
-
+    let fs4 = map makeAbsFile fs3
     when debug $ putIOwords
         ["makeIndexForDir 3", "for ", showT pageFn, "\n", showT fs3]
     -- fileIxs :: [IndexEntry] <- mapM (\f -> getOneIndexEntry dough2 $ makeAbsFile f) fs3
-    fileIxs1 :: [Maybe IndexEntry] <- mapM (getOneIndexEntry flags dough2 . makeAbsFile)
-        fs3
-
+    fileIxs1 :: [Maybe IndexEntry] <- 
+            mapM (  getOneIndexEntry flags metaRec   ) fs4
     let fileIxs = catMaybes fileIxs1
 
-    let fileIxsSorted = case fmap toLower' indexSort of
+    let fileIxsSorted = case fmap toLower' (indexSort metaRec) of
             Just "title"       -> sortWith title2 fileIxs
             Just "date"        -> sortWith date2 fileIxs
             Just "reversedate" -> reverse $ sortWith date2 fileIxs
@@ -166,22 +166,22 @@ oneDirIndexEntry dn = zero { text2  = showT dn
     printable = s2t nakedName
 
 getOneIndexEntry
-    :: PubFlags -> Path Abs Dir -> Path Abs File -> ErrIO (Maybe IndexEntry)
+    :: PubFlags -> MetaRec-> Path Abs File -> ErrIO (Maybe IndexEntry)
 -- fill one entry from one mdfile file
-getOneIndexEntry flags dough2 mdfile = do
-    (_, metaRec, report) <- checkOneMdFile dough2 mdfile
+getOneIndexEntry flags metaRec mdfile = do
+    -- (_, metaRec, report) <- checkOneMdFile dough2 dough2 mdfile
     putIOwords ["getOneIndexEntry 1", showT flags]
     if checkPubStateWithFlags flags (publicationState metaRec)
         then do
 
             let parentDir =  makeAbsDir . getParentDir . toFilePath $ mdfile 
                             :: Path Abs Dir
-            let relDirPath =
-                    fromJustNote "makeIndexForDir prefix dwerwd"
-                        $ stripPrefix dough2 parentDir :: Path Rel Dir
+            -- let relDirPath =
+            --         fromJustNote "makeIndexForDir prefix dwerwd"
+            --             $ stripPrefix dough2 parentDir :: Path Rel Dir
             let paths = reverse $ splitPath (toFilePath mdfile)
             let fn    = head paths
-            let dir   = toFilePath relDirPath -- head . tail $ paths
+            let dir   = toFilePath parentDir -- relDirPath -- head . tail $ paths
             let fnn   = takeBaseName fn
             let ln = s2t $ "/" <> dir </> fnn <.> ("html" :: FilePath)
 
@@ -234,6 +234,9 @@ checkPubStateWithFlags _     (Just PSzero   ) = False
 checkPubStateWithFlags flags     Nothing          = publishFlag flags
 
 newtype MenuEntry = MenuEntry {menu2 :: [IndexEntry]} deriving (Generic, Eq, Ord, Show)
+
+instance NiceStrings MenuEntry 
+
 instance Zeros MenuEntry where
     zero = MenuEntry zero
 instance FromJSON MenuEntry

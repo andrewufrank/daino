@@ -31,6 +31,7 @@ import           Uniform.Time                   (   readDateMaybe
 -- import           Lib.Indexing
 
 import           Uniform.Pandoc
+import Lib.Foundation (SiteLayout(..), templatesDir)
 -- import Lib.CmdLineArgs (PubFlags(..))
 
 
@@ -49,15 +50,15 @@ import           Uniform.Pandoc
 
 type TripleDoc = (Pandoc, MetaRec, Text)
 
-checkOneMdFile :: Path Abs Dir ->   Path Abs File -> ErrIO (Pandoc, MetaRec, Text)
+checkOneMdFile :: SiteLayout ->   Path Abs File -> ErrIO (Pandoc, MetaRec, Text)
 -- check one input file, return the values parsed
 -- uses doughP to construct file names to abs file 
-checkOneMdFile  doughP mdfn = do
+checkOneMdFile  layout mdfn = do
   -- putIOwords ["checkOneMdFile start", showT mdfn]
   (pandoc, meta2) :: (Pandoc, Value) <- readMd2meta mdfn -- (dough2 </> mdfn)
   -- putIOwords ["checkOneMdFile meta2", showT meta2]
 
-  let (metaRec1,report1) = readMeta2rec doughP meta2
+  let (metaRec1,report1) = readMeta2rec layout meta2
   -- ixEntry                       <- getOneIndexEntry allFlags dough2 (dough2 </> mdfn)
   -- what needs to be checked ?  -- check with all flags true 
 
@@ -70,10 +71,10 @@ checkOneMdFile  doughP mdfn = do
   -- putIOwords ["report2 \n"     , showT  report2, "\n"    ]
   return (pandoc, metaRec1, report2) 
 
-readMeta2rec :: Path Abs Dir -> Value -> (MetaRec, Text)
+readMeta2rec :: SiteLayout -> Value -> (MetaRec, Text)
 -- | read the metadata in a record and check for validity
 -- and information what is missing
-readMeta2rec doughP meta2 = (ix, report)
+readMeta2rec layout meta2 = (ix, report)
  where
   ix = MetaRec 
       {
@@ -84,10 +85,10 @@ readMeta2rec doughP meta2 = (ix, report)
       , author           = author1
       , date             = maybe Nothing readDateMaybe date1   -- test early for proper format
       , publicationState = text2publish $ publish1
-      , bibliography  = fmap (\f -> doughP </> makeRelFileT f) bibliography1
+      , bibliography  = fmap (\f -> (doughDir layout) </> makeRelFileT f) bibliography1
       , bibliographyGroup = bibliographyGroup1
       , keywords = keywords1
-      , pageTemplate = pageTemplate1
+      , pageTemplate = fmap (\f -> (templatesDir layout) </> makeRelFileT f) pageTemplate1
       , indexPage = indexPage1
       , indexSort = indexSort1
           -- default is publish
@@ -127,7 +128,7 @@ data MetaRec = MetaRec {
                               , bibliography :: Maybe (Path Abs File)
                               , bibliographyGroup :: Maybe Text 
                               , keywords :: Maybe Text 
-                              , pageTemplate:: Maybe Text 
+                              , pageTemplate:: Maybe (Path Abs File)
                               , indexPage :: Maybe Bool
                               , indexSort :: Maybe Text 
 

@@ -21,7 +21,7 @@ import           Uniform.Error (ErrIO, callIO, liftIO)
 import           Uniform.Shake 
 import           Uniform.Strings (putIOwords, showT)
 import           Lib.Foundation (SiteLayout(..), resourcesDirName, staticDirName
-                               , templatesDirName, templatesImgDirName)
+                               , templatesDirName, templatesDir, templatesImgDirName)
 import           Lib.CmdLineArgs (PubFlags(..))
 import           Lib.Bake (bakeOneFile)
 
@@ -62,7 +62,7 @@ shakeAll layout flags filepath = do
     , "caused by"
     , s2t filepath]
   let doughP = doughDir layout -- the regular dough
-      templatesP = themeDir layout `addFileName` templatesDirName
+      templatesP = templatesDir layout 
       bakedP = bakedDir layout
       bannerImageFileName = (bannerImage layout)
   setCurrentDir doughP  -- must be done earlier to find settings file!
@@ -194,7 +194,7 @@ shakeMD layout flags doughP templatesP bakedP = shakeArgs2 bakedP
         let md2 = doughP </> (stripProperPrefixP bakedP md) :: Path Abs File
         -- liftIO $ putIOwords ["\nshakeMD - bakedP html 4 - md2 ", showT md2]
         res
-          <- runErr2action $ bakeOneFile True flags md2 doughP templatesP outP
+          <- runErr2action $ bakeOneFile True flags md2 layout outP
         return ()
     (toFilePath staticP <> "**/*.html")
       %> \out -- with subdir
