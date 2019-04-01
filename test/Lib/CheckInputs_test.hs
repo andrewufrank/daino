@@ -38,14 +38,15 @@ test_PS = assertEqual psRes (map (text2publish . Just) psIn)
 
 test_PSnothing = assertEqual Nothing (text2publish Nothing)
 
+checkOneMdFilex = checkOneMdFile layoutDefaults
 ----
 test_checkOneMdFile_1, test_checkOneMdFile_2 :: IO ()
-test_checkOneMdFile_1 = test1FileIO progName  "pageFn1" "TripleDoc1" checkOneMdFile
-test_checkOneMdFile_2 = test1FileIO progName  "pageFn2" "TripleDoc2" checkOneMdFile
-test_checkOneMdFile_3 = test1FileIO progName  "pageFn3" "TripleDoc3" checkOneMdFile
-test_checkOneMdFile_4 = test1FileIO progName  "pageFn4" "TripleDoc4" checkOneMdFile
-test_checkOneMdFile_5 = test1FileIO progName  "pageFn5" "TripleDoc5" checkOneMdFile
-test_checkOneMdFile_6 = test1FileIO progName  "pageFn6" "TripleDoc6" checkOneMdFile
+test_checkOneMdFile_1 = test1FileIO progName  "pageFn1" "TripleDoc1" checkOneMdFilex
+test_checkOneMdFile_2 = test1FileIO progName  "pageFn2" "TripleDoc2" checkOneMdFilex
+test_checkOneMdFile_3 = test1FileIO progName  "pageFn3" "TripleDoc3" checkOneMdFilex
+test_checkOneMdFile_4 = test1FileIO progName  "pageFn4" "TripleDoc4" checkOneMdFilex
+test_checkOneMdFile_5 = test1FileIO progName  "pageFn5" "TripleDoc5" checkOneMdFilex
+test_checkOneMdFile_6 = test1FileIO progName  "pageFn6" "TripleDoc6" checkOneMdFilex
 
 instance  ShowTestHarness TripleDoc
 
