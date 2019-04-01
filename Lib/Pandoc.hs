@@ -32,7 +32,7 @@ import           Uniform.Convenience.DataVarious
 import           Uniform.FileIO          hiding ( Meta
                                                 , at
                                                 )
-import           Uniform.Pandoc
+import           Uniform.Pandoc hiding (Meta(..))
 
 import           Uniform.BibTex
 -- import           Uniform.Json
@@ -48,6 +48,7 @@ import           Lib.CheckInput                 ( MetaRec(..)
                                                 )
 
 import           Lib.CmdLineArgs                ( PubFlags(..) )
+-- import Text.Pandoc.Definition (Meta(..))
 
 -- import           GHC.Generics
 -- (flattenMeta, getMeta, getAtKey
@@ -154,3 +155,9 @@ data BottomLines = BottomLines
   } deriving (Generic, Read, Show, Eq, Ord)
 
 instance ToJSON BottomLines
+
+-- instance Zeros Pandoc where 
+--     zero = Pandoc zero zero 
+
+-- instance Zeros Meta where 
+--     zero = mempty

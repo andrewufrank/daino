@@ -13,14 +13,12 @@
 {-# LANGUAGE TypeFamilies #-}
 
 -- {-# LANGUAGE TypeSynonymInstances  #-}
-module Lib.Bake -- (openMain, htf_thisModuelsTests)
+module Lib.Bake (bakeOneFile) 
+  --  (openMain, htf_thisModuelsTests)
                 where
 
 import           Uniform.FileStrings            ( ) -- for instances
 import           Uniform.Filenames
--- import Uniform.Strings hiding ((</>))
-
--- import Uniform.TypedFile
 import           Lib.Pandoc                     ( docValToAllVal
                                                 , markdownToPandoc
                                                 , pandocToContentHtml

@@ -20,6 +20,7 @@ library
         Lib.CheckInput
         Lib.CmdLineArgs
         Lib.Watch
+        
     hs-source-dirs: .
     other-modules:
         Paths_SSG
@@ -41,6 +42,7 @@ library
 
         , optparse-applicative
         , optparse-generic
+        -- , pandoc-types
 
 
 executable ssgbake

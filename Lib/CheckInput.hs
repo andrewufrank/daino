@@ -47,6 +47,8 @@ checkAllInputs  mdfiles = do
   putIOwords ["checkAllInput end", showT res]
   return . showT $ val
 
+type TripleDoc = (Pandoc, MetaRec, Text)
+
 checkOneMdFile ::   Path Abs File -> ErrIO (Pandoc, MetaRec, Text)
 -- check one input file, return ?
 checkOneMdFile  mdfn = do
@@ -87,12 +89,14 @@ readMeta2rec meta2 = (ix, report)
                , bibliography  = bibliography1
                , bibliographyGroup = bibliographyGroup1
                , keywords = keywords1
+               , pageTemplate = pageTemplate1
                     -- default is publish
                }
-  [abstract1, title1, author1, date1, publish1, bibliography1, bibliographyGroup1, keywords1] = vals2
+  [abstract1, title1, author1, date1, publish1
+      , bibliography1, bibliographyGroup1, keywords1, pageTemplate1] = vals2
   vals2  = map (getAtKey meta2) keys2
   keys2  = ["abstract", "title", "author", "date", "publish", "bibliography", "bibliographyGroup"
-            , "keywords"]
+            , "keywords", "pageTemplate"]
 
   -- abstract1 = getAtKey meta2 "abstract" :: Maybe Text
   -- title1    = getAtKey meta2 "title" :: Maybe Text
@@ -122,11 +126,12 @@ data MetaRec = MetaRec {
                               , bibliography :: Maybe Text 
                               , bibliographyGroup :: Maybe Text 
                               , keywords :: Maybe Text 
+                              , pageTemplate:: Maybe Text 
 
                               } deriving (Generic, Eq, Ord, Show, Read)
 
 instance Zeros MetaRec where
-  zero = MetaRec zero zero zero (Just year2000) zero zero zero zero
+  zero = MetaRec zero zero zero (Just year2000) zero zero zero zero zero
 --instance FromJSON IndexEntry
 instance ToJSON MetaRec
 instance FromJSON MetaRec where
