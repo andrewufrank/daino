@@ -124,7 +124,7 @@ makeIndexForDir debug flags pageFn indexFn dough2 indexSort = do
         --     ]
         putIOwords
             [ "makeIndexForDir 4"
-            , "index for dirs sorted "
+            , "index for dirs soit gui &rted "
             , showT $ map title2 fileIxsSorted
             ]
 

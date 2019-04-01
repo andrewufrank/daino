@@ -25,7 +25,7 @@ import           Uniform.Yaml                   ( YamlText(..)
 
 import           Uniform.Filenames
 -- import           Uniform.Strings         hiding ( (</>) )
-import           Uniform.TypedFile
+import           Uniform.TypedFile (read8)
 
 readSettings :: Path Abs File -> ErrIO (SiteLayout, Int)
 -- must be the settings2.yaml file, (absolute, fixed before to current dir)
@@ -45,7 +45,7 @@ readSettings settingsfilename = do
 --    when debug $
 --    putIOwords ["readSettings layout3", showT layout3]
 readSettings2 :: Bool -> YamlText -> ErrIO (SiteLayout, Int)
--- ^ process the settings file
+-- ^ read the settings file to produce the layout and set the port
 readSettings2 debug (YamlText t) = do
     meta2 :: Value <- decodeThrowT t -- decodeThrow . t2b $ t
     when debug $ putIOwords ["readSettings2 settings", showT meta2]
