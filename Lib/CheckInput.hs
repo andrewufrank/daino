@@ -18,35 +18,15 @@ module Lib.CheckInput where
 
 import           Uniform.Strings         hiding ( (</>) )
 import           Uniform.Filenames
--- import Uniform.FileStrings
--- import           Lib.Foundation
 import           Uniform.Time                   (   readDateMaybe
                                                 , year2000
                                                 , UTCTime(..)
                                                 )
--- import           Lib.YamlBlocks                 ( Value
---                                                 , readMd2meta
---                                                 , getMaybeStringAtKey
---                                                 )
--- import           Lib.Indexing
 
 import           Uniform.Pandoc
 import Lib.Foundation (SiteLayout(..), templatesDir)
--- import Lib.CmdLineArgs (PubFlags(..))
 
 
--- checkAllInputs :: [Path Abs File] -> ErrIO Text
--- -- ^ check the input files for syntax errors 
--- -- needs a shake to call check
--- -- with a switch -c 
-
--- checkAllInputs  mdfiles = do
---   putIOwords ["checkAllInput start" ]
---   val <- mapM checkOneMdFile  mdfiles
-
---   let res = showT val
---   putIOwords ["checkAllInput end", showT res]
---   return . showT $ val
 
 type TripleDoc = (Pandoc, MetaRec, Text)
 
@@ -90,7 +70,7 @@ readMeta2rec layout meta2 = (ix, report)
       , keywords = keywords1
       , pageTemplate = fmap (\f -> (templatesDir layout) </> makeRelFileT f) pageTemplate1
       , indexPage = indexPage1
-      , indexSort = indexSort1
+      , indexSort = text2sortargs indexSort1
           -- default is publish
       }
   [abstract1, title1, author1, date1, publish1
@@ -130,7 +110,7 @@ data MetaRec = MetaRec {
                               , keywords :: Maybe Text 
                               , pageTemplate:: Maybe (Path Abs File)
                               , indexPage :: Maybe Bool
-                              , indexSort :: Maybe Text 
+                              , indexSort :: SortArgs 
 
                               } deriving (Generic, Eq, Ord, Show, Read)
 
@@ -164,4 +144,22 @@ instance NiceStrings PublicationState where
 instance ToJSON PublicationState
 instance FromJSON PublicationState
 
+data SortArgs = SAtitle | SAdate | SAreverseDate | SAzero 
+      deriving (Generic,  Show, Read, Ord, Eq)
+-- ^ the argument for the sorting of the index 
+instance Zeros SortArgs where 
+    zero = SAzero 
+instance NiceStrings SortArgs where 
+    shownice = drop' 2 . showT 
+instance ToJSON SortArgs 
+instance FromJSON SortArgs
+
+text2sortargs :: (CharChains a, IsString a) => Maybe a -> SortArgs
+text2sortargs (Nothing) = SAzero
+text2sortargs (Just tt) = case (toLower' tt) of 
+    "title" -> SAtitle 
+    "titel" -> SAtitle
+    "date" -> SAdate
+    "reversedate" -> SAreverseDate
+    _ -> SAzero 
 
