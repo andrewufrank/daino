@@ -29,6 +29,7 @@ import           Uniform.Time                   ( year2000 )
 import           Lib.CmdLineArgs                ( PubFlags(..) )
 import           Lib.CheckInput                 ( MetaRec(..)
                                                 , PublicationState(..)
+                                                , SortArgs (..)
                                                 -- , readMeta2rec
                                                 , checkOneMdFile
                                                 )
@@ -44,7 +45,7 @@ makeIndex
 -- return zero if not index page
 makeIndex debug flags metaRec pageFn dough2 = do
     let doindex   = fromMaybe False $  indexPage metaRec
-    let indexSort1 = indexSort metaRec :: Maybe Text
+    -- let indexSort1 = indexSort metaRec :: SortArgs
     when debug $ putIOwords ["makeIndex", "doindex", showT doindex]
 
     ix :: MenuEntry <- if doindex
@@ -52,9 +53,7 @@ makeIndex debug flags metaRec pageFn dough2 = do
             let currentDir2 = makeAbsDir $ getParentDir pageFn
             ix2 <- makeIndexForDir debug
                                    flags metaRec
-                                   currentDir2
                                    pageFn
-                                   dough2
                                    
             when debug $ putIOwords ["makeIndex", "index", showT ix2]
             return ix2
@@ -66,36 +65,29 @@ makeIndexForDir
     :: Bool
     -> PubFlags
     -> MetaRec
-    -> Path Abs Dir
     -> Path Abs File
-    -> Path Abs Dir
-    -- -> Maybe Text
     -> ErrIO MenuEntry
 -- make the index for the directory
 -- place result in index.html in this directory
 -- the name of the index file is passed to exclude it
+-- and from it the directory above (i.e. the one to index) is derived
 -- makes index only for md files in dough
 -- and for subdirs, where the index must be called index.md
 
-makeIndexForDir debug flags metaRec pageFn indexFn dough2 = do
+makeIndexForDir debug flags metaRec  indexFn  = do
     -- values title date
-
+    let pageFn = makeAbsDir $ getParentDir indexFn :: Path Abs Dir
     let parentDir =
             makeAbsDir . getParentDir . toFilePath $ pageFn :: Path Abs Dir
-    let relDirPath =
-            fromJustNote "makeIndexForDir 1 prefix dwerwd"
-                $ stripPrefix dough2 parentDir :: Path Rel Dir
+    let relDirPath = parentDir
+    --         fromJustNote "makeIndexForDir 1 prefix dwerwd"
+    --             $ stripPrefix dough2 parentDir :: Path Rel Dir
     -- this is the addition for the links
     putIOwords
         [ "makeIndexForDir 2"
-        , "for "
-        , showT pageFn
-        , "\n relative root"
-        , showT relDirPath
-        , "\n sort"
-        , showT (indexSort metaRec)
-        , "flags"
-        , showT flags
+        , "for " , showT pageFn, "index", showT indexFn
+        , "\n relative root"  , showT relDirPath
+        , "\n sort", showT (indexSort metaRec) , "flags", showT flags
         ]
 
     fs <- getDirContentNonHidden (toFilePath pageFn)
@@ -109,13 +101,12 @@ makeIndexForDir debug flags metaRec pageFn indexFn dough2 = do
             mapM (  getOneIndexEntry flags metaRec   ) fs4
     let fileIxs = catMaybes fileIxs1
 
-    let fileIxsSorted = case fmap toLower' (indexSort metaRec) of
-            Just "title"       -> sortWith title2 fileIxs
-            Just "date"        -> sortWith date2 fileIxs
-            Just "reversedate" -> reverse $ sortWith date2 fileIxs
-            Just x ->
-                errorT ["makeIndexForDir fileIxsSorted", "unknonw parameter", x]
-            Nothing -> fileIxs
+    let fileIxsSorted = case   (indexSort metaRec) of
+            SAtitle       -> sortWith title2 fileIxs
+            SAdate        -> sortWith date2 fileIxs
+            SAreverseDate -> reverse $ sortWith date2 fileIxs
+            SAzero ->         errorT ["makeIndexForDir fileIxsSorted", showT SAzero]
+
     unless (null fileIxs) $ do
         -- putIOwords
         --     [ "makeIndexForDir"

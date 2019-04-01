@@ -177,6 +177,7 @@ shakeMD layout flags doughP templatesP bakedP = shakeArgs2 bakedP
         needP cssFiles3
         needP [masterSettings_yaml]
         needP [masterTemplate]
+
     (\x -> ((toFilePath bakedP <> "**/*.html") ?== x)
      && not ((toFilePath staticP <> "**/*.html") ?== x) -- with subdir
      )
@@ -196,6 +197,7 @@ shakeMD layout flags doughP templatesP bakedP = shakeArgs2 bakedP
         res
           <- runErr2action $ bakeOneFile True flags md2 layout outP
         return ()
+
     (toFilePath staticP <> "**/*.html")
       %> \out -- with subdir
       -> do
@@ -211,6 +213,7 @@ shakeMD layout flags doughP templatesP bakedP = shakeArgs2 bakedP
         let fromfile = resourcesP </> (makeRelativeP staticP outP)
         liftIO $ putIOwords ["\nshakeMD - staticP - fromfile ", showT fromfile]
         copyFileChangedP (fromfile) outP
+
     (toFilePath staticP <> "/*.css")
       %> \out                  -- insert css -- no subdir
       -> do
@@ -225,6 +228,7 @@ shakeMD layout flags doughP templatesP bakedP = shakeArgs2 bakedP
         liftIO
           $ putIOwords ["\nshakeMD - staticP css- fromfile ", showT fromfile]
         copyFileChangedP fromfile outP
+        
     (toFilePath staticP <> "**/*.pdf")
       %> \out                  -- insert pdfFIles1 -- with subdir
       -> do

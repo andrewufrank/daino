@@ -29,7 +29,7 @@ import           Uniform.Convenience.DataVarious (showVersionT)
 import           Uniform.FileIO hiding (Meta, at)
 import           Uniform.Pandoc -- hiding (Meta(..))
 import           Uniform.BibTex
--- import           Uniform.Json
+import           Uniform.Json
 import           Uniform.Time (getDateAsText, year2000)
 import           Lib.CheckInput (MetaRec(..), PublicationState(..)
                                  -- , readMeta2rec
@@ -126,6 +126,7 @@ docValToAllVal debug layout flags htmlout pageFn  metaRec = do
           -- avoids changes during debug
         , filename = showT fn2
         }
+  -- let htmlout2 = 
   when debug
     $ do
       putIOwords ["pandoc filename", showT fn2]
