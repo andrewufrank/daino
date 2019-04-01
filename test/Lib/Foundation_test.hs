@@ -51,7 +51,7 @@ test16 = makeRelFile "Blog/index.md"
 -- these files must be copied to .SSG/dough !!
 
 showAbsFile ::  Path Rel File -> Text
-showAbsFile f = shownice $ addDir (doughDir testLayout) f
+showAbsFile f = showT $ addDir (doughDir testLayout) f
 
 test_foundation_1_AA = testVar0File progName test11 "pageFn1" showAbsFile
 test_foundation_2_AA = testVar0File progName test12 "pageFn2" showAbsFile
