@@ -65,10 +65,10 @@ readMeta2rec layout meta2 = (ix, report)
       , author           = author1
       , date             = maybe Nothing readDateMaybe date1   -- test early for proper format
       , publicationState = text2publish $ publish1
-      , bibliography  = fmap (\f -> (doughDir layout) </> makeRelFileT f) bibliography1
+      , bibliography  = fmap (\f -> toFilePath $ (doughDir layout) </> makeRelFileT f) bibliography1
       , bibliographyGroup = bibliographyGroup1
       , keywords = keywords1
-      , pageTemplate = fmap (\f -> (templatesDir layout) </> makeRelFileT f) pageTemplate1
+      , pageTemplate = fmap (\f -> toFilePath $ (templatesDir layout) </> makeRelFileT f) pageTemplate1
       , indexPage = indexPage1
       , indexSort = text2sortargs indexSort1
           -- default is publish
@@ -105,10 +105,10 @@ data MetaRec = MetaRec {
                               , author :: Maybe Text
                               , date :: Maybe UTCTime -- read the time early one to find errors
                               , publicationState :: Maybe PublicationState
-                              , bibliography :: Maybe (Path Abs File)
+                              , bibliography :: Maybe FilePath -- (Path Abs File)
                               , bibliographyGroup :: Maybe Text 
                               , keywords :: Maybe Text 
-                              , pageTemplate:: Maybe (Path Abs File)
+                              , pageTemplate:: Maybe FilePath -- (Path Abs File)
                               , indexPage :: Maybe Bool
                               , indexSort :: SortArgs 
 

@@ -104,7 +104,8 @@ instance Zeros PubFlags where
 
 allFlags = zero {publishFlag = True
   , oldFlag = True 
-  , draftFlag = True}
+  , draftFlag = True
+  , settingsFile = testSettingsFileName}
 
 
 

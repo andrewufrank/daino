@@ -42,20 +42,11 @@ test_pandoc_pageFn_pageMd_5 = test1FileIO progName  "pageFn5" "pageMd5" readMark
 test_pandoc_pageFn_pageMd_6 = test1FileIO progName  "pageFn6" "pageMd6" readMarkdownFile8
 
 doughP = doughDir testLayout
---markdownToPandoX :: MarkdownText -> ErrIO (Maybe Pandoc)
---markdownToPandoX = markdownToPandoc False doughP
---
---test_pandoc_11_A_D, test_pandoc_12_A_D :: IO ()
---test_pandoc_11_A_D = test1FileIO progName  "pageMd1" "resultAD1" markdownToPandoX
---test_pandoc_12_A_D = test1FileIO progName  "pageMd2" "resultAD2" markdownToPandoX
---test_pandoc_13_A_D = test1FileIO progName  "pageMd3" "resultAD3" markdownToPandoX
---            -- 13 fails
----- "/home/frank/Workspace8/ssg/site/dough/site/dough/resources/BibTexLatex.bib: openFile: does not exist (No such file or directory)"
 
 markdownToPandoX ::  TripleDoc -> ErrIO ( Pandoc)
 markdownToPandoX td = markdownToPandocBiblio True allFlags doughP   td -- (makeAbsFile s)
 
-test_pandoc_11_A_D, test_pandoc_12_A_D :: IO ()
+test_pandoc_11_A_D :: IO ()
 test_pandoc_11_A_D = test1FileIO progName   "TripleDoc1" "resultAD1" markdownToPandoX
 test_pandoc_12_A_D = test1FileIO progName  "TripleDoc2" "resultAD2" markdownToPandoX
 test_pandoc_13_A_D = test1FileIO progName  "TripleDoc3" "resultAD3" markdownToPandoX
@@ -76,9 +67,9 @@ test_pandoc_14_A_F = test1FileIO progName  "resultAD4" "resultAF4" pandocToConte
 test_pandoc_15_A_F = test1FileIO progName  "resultAD5" "resultAF5" pandocToContentHtmlX
 test_pandoc_16_A_F = test1FileIO progName  "resultAD6" "resultAF6" pandocToContentHtmlX
 --
-docVal2 :: HTMLout -> String -> TripleDoc -> ErrIO DocValue
+docVal2 :: HTMLout -> Path Abs File -> TripleDoc -> ErrIO DocValue
 docVal2 htmlout pagefn triple = docValToAllVal False testLayout allFlags 
-                              htmlout (makeAbsFile pagefn)
+                              htmlout (pagefn)
                  (snd3 triple)
 
 test_pandoc_11_F_G, test_pandoc_12_F_G :: IO ()
@@ -89,18 +80,16 @@ test_pandoc_14_F_G = test3FileIO progName  "resultAF4" "pageFn4" "TripleDoc4" "r
 test_pandoc_15_F_G = test3FileIO progName  "resultAF5" "pageFn5" "TripleDoc5" "resultAG5" docVal2
 test_pandoc_16_F_G = test3FileIO progName  "resultAF6" "pageFn6" "TripleDoc6" "resultAG6" docVal2
 
---instance Zeros Pandoc where zero = Pandoc mempty zero
-----instance Zeros PD.Meta where zero = PD.Meta []
---
---markdownToHTML5xdebug ::  MarkdownText -> ErrIO DocValue
---
---markdownToHTML5xdebug intext = do
+
+-- markdownToHTML5xdebug ::  MarkdownText -> ErrIO DocValue
+
+-- markdownToHTML5xdebug intext = do
 --    pandoc <- markdownToPandoc False intext
 --    pandocToContentHtml False pandoc
---
---test_pandoc_11_B_E, test_pandoc_12_B_E :: IO ()
---test_pandoc_11_B_E = test1FileIO progName   "resultB1" "resultBE1"  markdownToHTML4xdebug
---test_pandoc_12_B_E = test1FileIO progName   "resultB2" "resultBE2" markdownToHTML4xdebug
+
+-- test_pandoc_11_B_E, test_pandoc_12_B_E :: IO ()
+-- test_pandoc_11_B_E = test1FileIO progName   "resultB1" "resultBE1"  markdownToHTML4xdebug
+-- test_pandoc_12_B_E = test1FileIO progName   "resultB2" "resultBE2" markdownToHTML4xdebug
 
 
 instance  ShowTestHarness MarkdownText where
@@ -109,4 +98,5 @@ instance  ShowTestHarness DocValue where
 instance  ShowTestHarness ( Pandoc) where
 instance  ShowTestHarness TripleDoc where
 instance  ShowTestHarness HTMLout where
+instance  ShowTestHarness (Path Abs File) where
 

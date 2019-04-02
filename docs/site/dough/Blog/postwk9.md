@@ -8,8 +8,8 @@ pageTemplate: page3.yaml
 publish: draft
 ---
 
-Some draft text without meaning; really? Test4
+Some draft text without meaning; draft
 
 
 
-  An example post. Changed. more and more and 2 3 4 5 6
+  An example post. draft 

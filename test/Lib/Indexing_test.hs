@@ -49,7 +49,7 @@ test_relLink = do
         assertEqual (Right resLink)  res 
 resLink = "/Blog/postwk.html" :: Text
 
-metaRec1 = MetaRec
+metaRec1t = MetaRec
   { title = Just "index for post"
   , abstract = Just "The directory for experiments."
   , author = Just "AUF"
@@ -66,9 +66,10 @@ metaRec1 = MetaRec
 test_makeIndexForDir_1 = do
   res <- runErr
     $ makeIndexForDir
-      True
+      False -- True
+      testLayout 
       allFlags
-      metaRec1
+      metaRec1t
       (doughDir testLayout)
       blogindexfn
   -- 

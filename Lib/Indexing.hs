@@ -28,15 +28,17 @@ import           Uniform.Pandoc                 (  getAtKey
                                                 )
 import           Uniform.Time                   ( year2000 )
 import           Lib.CmdLineArgs                ( PubFlags(..) )
-import           Lib.CheckInput                 ( MetaRec(..)
+import           Lib.CheckInput                 ( MetaRec(..), checkOneMdFile
                                                 , PublicationState(..)
                                                 , SortArgs (..)
                                                 -- , readMeta2rec
                                                 -- , checkOneMdFile
                                                 )
+import Lib.Foundation (SiteLayout)
 
 makeIndex
     :: Bool
+    -> SiteLayout 
     -> PubFlags
     -> MetaRec
     -> Path Abs File
@@ -44,7 +46,7 @@ makeIndex
     -> ErrIO MenuEntry
 -- | make the index text, will be moved into the page template later
 -- return zero if not index page
-makeIndex debug flags metaRec pageFn dough2 = do
+makeIndex debug layout flags metaRec pageFn dough2 = do
     let doindex   = fromMaybe False $  indexPage metaRec
     -- let indexSort1 = indexSort metaRec :: SortArgs
     when debug $ putIOwords ["makeIndex", "doindex", showT doindex]
@@ -52,7 +54,7 @@ makeIndex debug flags metaRec pageFn dough2 = do
     ix :: MenuEntry <- if doindex
         then do
             -- let currentDir2 = makeAbsDir $ getParentDir pageFn
-            ix2 <- makeIndexForDir debug
+            ix2 <- makeIndexForDir debug layout 
                                    flags metaRec
                                    dough2
                                    pageFn
@@ -65,6 +67,7 @@ makeIndex debug flags metaRec pageFn dough2 = do
 
 makeIndexForDir
     :: Bool
+    -> SiteLayout 
     -> PubFlags
     -> MetaRec
     -> Path Abs Dir
@@ -77,7 +80,7 @@ makeIndexForDir
 -- makes index only for md files in dough
 -- and for subdirs, where the index must be called index.md
 
-makeIndexForDir debug flags metaRec dough2 indexFn  = do
+makeIndexForDir debug layout flags metaRec dough2 indexFn  = do
     -- values title date
     let pageFn = makeAbsDir $ getParentDir indexFn :: Path Abs Dir
     let parentDir =
@@ -104,7 +107,7 @@ makeIndexForDir debug flags metaRec dough2 indexFn  = do
 
     -- fileIxs :: [IndexEntry] <- mapM (\f -> getOneIndexEntry dough2 $ makeAbsFile f) fs3
     fileIxs1 :: [Maybe IndexEntry] <-
-            mapM (  getOneIndexEntry debug flags  metaRec dough2  ) fs4
+            mapM (  getOneIndexEntry debug layout flags  metaRec dough2  ) fs4
     let fileIxs = catMaybes fileIxs1
 
     let fileIxsSorted = case   (indexSort metaRec) of
@@ -172,10 +175,10 @@ makeRelLink dough2 mdfile = do
 
 
 getOneIndexEntry
-    :: Bool -> PubFlags -> MetaRec-> Path Abs Dir -> Path Abs File -> ErrIO (Maybe IndexEntry)
+    :: Bool -> SiteLayout -> PubFlags -> MetaRec-> Path Abs Dir -> Path Abs File -> ErrIO (Maybe IndexEntry)
 -- fill one entry from one mdfile file
-getOneIndexEntry debug flags metaRec dough2 mdfile = do
-    -- (_, metaRec, report) <- checkOneMdFile dough2 dough2 mdfile
+getOneIndexEntry debug layout flags metaRecBase  dough2 mdfile = do
+    (_, metaRec, report) <- checkOneMdFile layout mdfile
     if checkPubStateWithFlags flags (publicationState metaRec)
         then do
             when debug $ putIOwords ["getOneIndexEntry 1", showT flags

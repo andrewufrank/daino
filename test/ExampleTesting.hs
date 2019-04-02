@@ -44,8 +44,8 @@ import {-@ HTF_TESTS @-} Lib.Pandoc_test
 -- --    -- AD -> AF :: DocValue
 -- --import {-@ HTF_TESTS @-} Lib.Bake_test
 -- --import {-@ HTF_TESTS @-} Lib.ReadSettingFile_test
--- import {-@ HTF_TESTS @-} Lib.Indexing_test
--- import {-@ HTF_TESTS @-} Lib.Templating_test  -- AG -> EG 
+import {-@ HTF_TESTS @-} Lib.Indexing_test
+import {-@ HTF_TESTS @-} Lib.Templating_test  -- AG -> EG 
 -- --import {-@ HTF_TESTS @-} Lib.BibTex_test
 --
 --

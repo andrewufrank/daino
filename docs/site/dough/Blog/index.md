@@ -1,5 +1,5 @@
 ---
-title: index for post 
+title: index for Blog 
 author: AUF
 date: Jan. 4, 2019
 keywords: test
@@ -9,7 +9,7 @@ indexPage: True
 indexSort: title
 ---
 
-an index page for test 
+an index page for Blog 
 
 
 

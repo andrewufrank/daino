@@ -1,15 +1,15 @@
 ---
-title: index for post 
+title: index for publication list (this text should be overwritten)
 # author: AUF
 date: Jan. 4, 2019
 keywords: test
-abstract: A silly text not needing an abstract.
+abstract: index for the publication directory 
 pageTemplate: page3.yaml
 indexPage: True 
 indexSort: title
 ---
 
-an index page for test publication list
+an index page for testing publication list
 
 
 

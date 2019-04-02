@@ -66,13 +66,17 @@ markdownToPandocBiblio debug flags doughP (pandoc, metaRec, _) = do
   -- do
   -- let bib          = getAtKey meta2 "bibliography" :: Maybe Text
   -- let nociteNeeded = getAtKey meta2 "bibliographyGroup" :: Maybe Text
+  putIOwords ["markdownToPandocBiblio", showT metaRec]
   pandoc2 <- case (bibliography metaRec) of
     Nothing    -> return pandoc
-    Just bibfp -> pandocProcessCites
-      doughP  -- required to set the current dir 
-      bibfp -- (doughP </> (makeRelFile . t2s $ bibfp))
-      (bibliographyGroup metaRec)
-      pandoc
+    Just bibfp -> do 
+      when debug $ putIOwords ["markdownToPandocBiblio", "start pandocProcessCites"
+                , showT doughP, showT bibfp, showT (bibliographyGroup metaRec)]
+      pandocProcessCites
+            doughP  -- required to set the current dir 
+            (makeAbsFile bibfp) -- (doughP </> (makeRelFile . t2s $ bibfp))
+            (bibliographyGroup metaRec)
+            pandoc
          -- here the dir is used for processing in my code
   return pandoc2
 
@@ -110,14 +114,17 @@ docValToAllVal :: Bool
 -- then to determine the current dir
 -- and to exclude it from index
 docValToAllVal debug layout flags htmlout pageFn  metaRec = do
-  let mpageType = pageTemplate metaRec :: Maybe (Path Abs File)
+  let mpageType = fmap makeAbsFile $ pageTemplate metaRec :: Maybe (Path Abs File)
   when debug $ putIOwords ["docValToAllVal"] -- , "mpt", showT mpageType]
   let pageType = maybe (defaultPageType layout) id mpageType :: Path Abs File
   -- page0default defined in theme
+  putIOwords ["docValToAllVal filename", showT pageFn, showT pageType
+            , showT (settingsFile flags)]
+
   pageTypeYaml <- readYaml2value pageType
   settingsYaml <- readYaml2value (settingsFile flags)
   --        svalue <- decodeThrow . t2b . unYAML $ settings
-  ix <- makeIndex debug flags metaRec pageFn (doughDir layout)
+  ix <- makeIndex debug layout flags metaRec pageFn (doughDir layout)
   -- now          <- getDateAsText
   fn2 <- stripProperPrefix' (doughDir layout) pageFn
   let bottomLines = BottomLines
@@ -127,9 +134,8 @@ docValToAllVal debug layout flags htmlout pageFn  metaRec = do
         , filename = showT fn2
         }
   -- let htmlout2 = 
-  when debug
-    $ do
-      putIOwords ["pandoc filename", showT fn2]
+  -- when True
+  --   $ do
   -- putIOwords ["pandoc settings2.yaml", showT settingsYaml]
   let val = mergeAll
         [ settingsYaml
