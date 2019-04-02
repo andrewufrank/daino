@@ -64,7 +64,7 @@ metaRec1t = MetaRec
   }
 
 test_getOneIndexEntryPure = assertEqual res22a 
-        (getOneIndexEntryPure metaRec1t "/Blog/postTufteStyled.html")
+        (getOneIndexEntryPure (doughDir testLayout) metaRec1t "/Blog/postTufteStyled.html")
 
 res22a = IndexEntry{text2 = "postTufteStyled",
           link2 = "/Blog/postTufteStyled.html", title2 = "index for post",

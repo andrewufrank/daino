@@ -18,6 +18,7 @@ module Lib.Indexing
 where
 
 import           Uniform.Shake
+import Uniform.FileIO (getDirectoryDirs', getDirContentFiles)
 import           GHC.Exts                       ( sortWith )
 import           Uniform.Json
 import           Uniform.Json                   ( FromJSON(..) )
@@ -83,7 +84,7 @@ makeIndexForDir
 makeIndexForDir debug layout flags metaRec dough2 indexFn  = do
     -- values title date
     let pageFn = makeAbsDir $ getParentDir indexFn :: Path Abs Dir
-    fs :: [FilePath] <- getDirContentNonHidden (toFilePath pageFn)
+    fs :: [FilePath] <- getDirContentFiles   (toFilePath pageFn)
     when debug $ putIOwords
         [ "makeIndexForDir 2"
         , "for " , showT pageFn, "index file", showT indexFn
@@ -91,23 +92,26 @@ makeIndexForDir debug layout flags metaRec dough2 indexFn  = do
         , "\n sort", showT (indexSort metaRec) , "flags", showT flags
         , "\nfiles found", unlines' . map showT $ fs 
         ]
-    let fs4 = filterIndexForFiles indexFn fs :: [Path Abs File]
-    fileIxs1 :: [Maybe IndexEntry] <- 
-        mapM (\f -> getOneIndexEntry layout flags metaRec dough2 f ) fs4
+    -- let fs4 = filterIndexForFiles indexFn fs :: [Path Abs File]
+    metaRecs :: [(Path Abs File, MetaRec)] <- 
+        mapM (getMetaRecs layout) (map makeAbsFile fs) 
+            -- \f -> getOneIndexEntry layout flags metaRec dough2 f ) fs4
         -- braucht lamda
     -- let fileIxs = catMaybes fileIxs1 :: [IndexEntry]
-    let fileIxsSorted = sortFileEntries (indexSort metaRec)  fileIxs1
+
+    let fileIxsSorted = makeIndexEntries dough2 indexFn (indexSort metaRec) metaRecs
+            --  sortFileEntries (indexSort metaRec)  fileIxs1
     when debug $ putIOwords
             [ "makeIndexForDir 4"
             , "index for dirs sorted "
             , showT $ map title2 fileIxsSorted
             ]
 
-    dirs <- findDirs fs
+    dirs :: [FilePath] <- getDirectoryDirs' (toFilePath pageFn) --  findDirs fs
     when debug $ putIOwords
         ["makeIndexForDir 5", "dirs ", showT dirs]
 
-    let dirIxs = map formatOneDirIndexEntry dirs :: [IndexEntry]
+    let dirIxs = map formatOneDirIndexEntry (map makeAbsDir dirs) :: [IndexEntry]
     -- format the subdir entries
     let dirIxsSorted = sortWith title2 dirIxs
 
@@ -119,13 +123,17 @@ makeIndexForDir debug layout flags metaRec dough2 indexFn  = do
 
     return menu1
 
+getMetaRecs :: SiteLayout -> Path Abs File -> ErrIO (Path Abs File, MetaRec)
+getMetaRecs layout mdfile = do 
+    (_, metaRec, report) <- checkOneMdFile layout mdfile
+    return (mdfile,metaRec)
 
-filterIndexForFiles :: Path Abs File -> [FilePath]-> [Path Abs File]
-filterIndexForFiles indexFn fs = fs4
-    where 
-        fs2 = filter (/= toFilePath  indexFn) fs -- exclude index
-        fs3 = filter (hasExtension "md") fs2
-        fs4 = map makeAbsFile fs3
+-- filterIndexForFiles :: Path Abs File -> [FilePath]-> [Path Abs File]
+-- filterIndexForFiles indexFn fs = fs4
+--     where 
+--         fs2 = filter (/= toFilePath  indexFn) fs -- exclude index
+--         fs3 = filter (hasExtension "md") fs2
+--         fs4 = map makeAbsFile fs3
 
 sortFileEntries :: SortArgs -> [Maybe IndexEntry] -> [IndexEntry]
 sortFileEntries sortArg fileIxsMs = case   sortArg of
@@ -147,21 +155,29 @@ formatOneDirIndexEntry dn = zero { text2  = showT dn
                 -- getNakedDir . toFilePath $ dn :: FilePath
     printable = s2t nakedName
 
-getOneIndexEntry
-    :: SiteLayout -> PubFlags -> MetaRec-> Path Abs Dir -> Path Abs File -> ErrIO (Maybe IndexEntry)
--- fill one entry from one mdfile file
-getOneIndexEntry layout flags metaRecBase  dough2 mdfile = do
-        (_, metaRec, report) <- checkOneMdFile layout mdfile
-        return $ if checkPubStateWithFlags flags (publicationState metaRec)
-                    then Just $ getOneIndexEntryPure  metaRec linkName
-                    else Nothing
-    where 
-        linkName = makeRelLink dough2 mdfile
+makeIndexEntries :: Path Abs Dir -> Path Abs File -> SortArgs  -> [(Path Abs File, MetaRec)] -> [IndexEntry]
+-- reduce the index entries 
+makeIndexEntries dough indexFile sortArg pms = sortFileEntries sortArg 
+         . map (makeOneIndexEntry dough indexFile) $ pms 
 
-getOneIndexEntryPure ::  MetaRec  -> Text ->  IndexEntry
+makeOneIndexEntry :: Path Abs Dir -> Path Abs File -> (Path Abs File, MetaRec) -> Maybe IndexEntry 
+makeOneIndexEntry dough2 indexFile (fn,metaRec) = 
+    if hasExtension (makeExtensionT "md") fn || fn /= indexFile 
+        then  Just . getOneIndexEntryPure dough2 metaRec $ fn
+        else Nothing 
+-- getOneIndexEntry
+--     :: SiteLayout -> PubFlags -> MetaRec-> Path Abs Dir -> Path Abs File -> ErrIO (Maybe IndexEntry)
+-- -- fill one entry from one mdfile file
+-- getOneIndexEntry layout flags metaRecBase  dough2 mdfile = do
+--         (_, metaRec, report) <- checkOneMdFile layout mdfile
+--         return $ if checkPubStateWithFlags flags (publicationState metaRec)
+--                     then getOneIndexEntryPure  metaRec mdFile
+--                     else Nothing
+
+-- getOneIndexEntryPure :: MetaRec  -> Path Abs Dir -> Path Abs File ->   IndexEntry
 -- the pure code to compute an IndexEntry
 -- Text should be "/Blog/postTufteStyled.html"
-getOneIndexEntryPure metaRec linkName =   IndexEntry
+getOneIndexEntryPure dough2 metaRec  mdfile =  IndexEntry
                 { text2     = s2t . takeBaseName . t2s $ linkName 
                 , link2     = linkName
                 , abstract2 = fromMaybe "" $ abstract metaRec
@@ -170,6 +186,9 @@ getOneIndexEntryPure metaRec linkName =   IndexEntry
                 , date2     = maybe (showT year2000) showT $ date metaRec
                 , publish2  = shownice $ publicationState metaRec
                 }
+         
+    where 
+        linkName = makeRelLink dough2 mdfile
 
 makeRelLink :: Path Abs Dir -> Path Abs File ->  Text 
 -- convert a filepath to a relative link 
