@@ -66,7 +66,7 @@ markdownToPandocBiblio debug flags doughP (pandoc, metaRec, _) = do
   -- do
   -- let bib          = getAtKey meta2 "bibliography" :: Maybe Text
   -- let nociteNeeded = getAtKey meta2 "bibliographyGroup" :: Maybe Text
-  putIOwords ["markdownToPandocBiblio", showT metaRec]
+  when debug $ putIOwords ["markdownToPandocBiblio", showT metaRec]
   pandoc2 <- case (bibliography metaRec) of
     Nothing    -> return pandoc
     Just bibfp -> do 
@@ -118,7 +118,7 @@ docValToAllVal debug layout flags htmlout pageFn  metaRec = do
   when debug $ putIOwords ["docValToAllVal"] -- , "mpt", showT mpageType]
   let pageType = maybe (defaultPageType layout) id mpageType :: Path Abs File
   -- page0default defined in theme
-  putIOwords ["docValToAllVal filename", showT pageFn, showT pageType
+  when debug $ putIOwords ["docValToAllVal filename", showT pageFn, showT pageType
             , showT (settingsFile flags)]
 
   pageTypeYaml <- readYaml2value pageType

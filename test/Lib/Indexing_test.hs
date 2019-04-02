@@ -44,9 +44,9 @@ res1a = "/home/frank/Workspace8/ssg/docs/site/dough/Blog" :: FilePath
 res2a = "Blog" :: FilePath
 
 linkIn = doughDir testLayout </> makeRelFile  "Blog/postwk.md" :: Path Abs File
-test_relLink = do 
-        res <- runErr $ makeRelLink (doughDir testLayout) linkIn
-        assertEqual (Right resLink)  res 
+test_relLink =  assertEqual (resLink)  $ 
+                    makeRelLink (doughDir testLayout :: Path Abs Dir) linkIn
+        
 resLink = "/Blog/postwk.html" :: Text
 
 metaRec1t = MetaRec
@@ -63,6 +63,14 @@ metaRec1t = MetaRec
   , indexSort = SAtitle
   }
 
+test_getOneIndexEntryPure = assertEqual res22a 
+        (getOneIndexEntryPure metaRec1t "/Blog/postTufteStyled.html")
+
+res22a = IndexEntry{text2 = "postTufteStyled",
+          link2 = "/Blog/postTufteStyled.html", title2 = "index for post",
+          abstract2 = "The directory for experiments.", author2 = "AUF",
+          date2 = "2019-01-04 00:00:00 UTC", publish2 = "Nothing"} :: IndexEntry
+
 test_makeIndexForDir_1 = do
   res <- runErr
     $ makeIndexForDir
@@ -75,31 +83,33 @@ test_makeIndexForDir_1 = do
   -- 
   assertEqual res2 res
 
-res2 = Right
-    (MenuEntry{menu2 =
-             [IndexEntry{text2 =
-                           "Path Abs Dir /home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/",
-                         link2 = "SubBlog/html", title2 = "SubBlog (subdirectory)",
-                         abstract2 = "", author2 = "", date2 = "", publish2 = ""},
-              IndexEntry{text2 = "", link2 = "", title2 = "------",
-                         abstract2 = "", author2 = "", date2 = "", publish2 = ""},
-              IndexEntry{text2 = "postwk9", link2 = "/Blog/postwk9.html",
-                         title2 = "index for post",
-                         abstract2 = "The directory for experiments.", author2 = "AUF",
-                         date2 = "2019-01-04 00:00:00 UTC", publish2 = "Nothing"},
-              IndexEntry{text2 = "postTufteStyled",
-                         link2 = "/Blog/postTufteStyled.html", title2 = "index for post",
-                         abstract2 = "The directory for experiments.", author2 = "AUF",
-                         date2 = "2019-01-04 00:00:00 UTC", publish2 = "Nothing"},
-              IndexEntry{text2 = "postwk", link2 = "/Blog/postwk.html",
-                         title2 = "index for post",
-                         abstract2 = "The directory for experiments.", author2 = "AUF",
-                         date2 = "2019-01-04 00:00:00 UTC", publish2 = "Nothing"},
-              IndexEntry{text2 = "postwkTufte", link2 = "/Blog/postwkTufte.html",
-                         title2 = "index for post",
-                         abstract2 = "The directory for experiments.", author2 = "AUF",
-                         date2 = "2019-01-04 00:00:00 UTC", publish2 = "Nothing"}]})
-                         
+res2 =  Right
+  (MenuEntry{menu2 =
+               [IndexEntry{text2 =
+                             "Path Abs Dir /home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/",
+                           link2 = "SubBlog/html", title2 = "SubBlog (subdirectory)",
+                           abstract2 = "", author2 = "", date2 = "", publish2 = ""},
+                IndexEntry{text2 = "", link2 = "", title2 = "------",
+                           abstract2 = "", author2 = "", date2 = "", publish2 = ""},
+                IndexEntry{text2 = "postTufteStyled",
+                           link2 = "/Blog/postTufteStyled.html", title2 = "postTufteStyle.md",
+                           abstract2 = "A text with two levels of title", author2 = "auf",
+                           date2 = "2019-01-04 00:00:00 UTC", publish2 = "Nothing"},
+                IndexEntry{text2 = "postwk", link2 = "/Blog/postwk.html",
+                           title2 = "postwk.md",
+                           abstract2 = "A silly text not needing an abstract.",
+                           author2 = "AUF", date2 = "2019-01-04 00:00:00 UTC",
+                           publish2 = "Nothing"},
+                IndexEntry{text2 = "postwk9", link2 = "/Blog/postwk9.html",
+                           title2 = "postwk9.md",
+                           abstract2 = "A silly text not needing an abstract.",
+                           author2 = "AUF", date2 = "2019-01-04 00:00:00 UTC",
+                           publish2 = "draft"},
+                IndexEntry{text2 = "postwkTufte", link2 = "/Blog/postwkTufte.html",
+                           title2 = "postwkTufte.md",
+                           abstract2 = "A silly text not needing an abstract updated.",
+                           author2 = "auf", date2 = "2019-01-04 00:00:00 UTC",
+                           publish2 = "Nothing"}]})
   -- Right
   -- (MenuEntry
   --  { menu2 =

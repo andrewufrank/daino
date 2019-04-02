@@ -83,80 +83,62 @@ makeIndexForDir
 makeIndexForDir debug layout flags metaRec dough2 indexFn  = do
     -- values title date
     let pageFn = makeAbsDir $ getParentDir indexFn :: Path Abs Dir
-    let parentDir =
-            makeAbsDir . getParentDir . toFilePath $ pageFn :: Path Abs Dir
-    let relDirPath = parentDir
-    --         fromJustNote "makeIndexForDir 1 prefix dwerwd"
-    --             $ stripPrefix dough2 parentDir :: Path Rel Dir
-    -- this is the addition for the links
+    fs :: [FilePath] <- getDirContentNonHidden (toFilePath pageFn)
     when debug $ putIOwords
         [ "makeIndexForDir 2"
-        , "for " , showT pageFn, "index", showT indexFn
-        , "\n relative root"  , showT relDirPath
+        , "for " , showT pageFn, "index file", showT indexFn
+        -- , "\n relative root"  , showT relDirPath
         , "\n sort", showT (indexSort metaRec) , "flags", showT flags
+        , "\nfiles found", unlines' . map showT $ fs 
         ]
-
-    fs <- getDirContentNonHidden (toFilePath pageFn)
-    let fs2 = filter (/= toFilePath indexFn) fs -- exclude index
-    let fs3 = filter (hasExtension "md") fs2
-    let fs4 = map makeAbsFile fs3
-    -- fs4 are full path
+    let fs4 = filterIndexForFiles indexFn fs :: [Path Abs File]
+    fileIxs1 :: [Maybe IndexEntry] <- 
+        mapM (\f -> getOneIndexEntry layout flags metaRec dough2 f ) fs4
+        -- braucht lamda
+    -- let fileIxs = catMaybes fileIxs1 :: [IndexEntry]
+    let fileIxsSorted = sortFileEntries (indexSort metaRec)  fileIxs1
     when debug $ putIOwords
-        ["makeIndexForDir 3", "for ", showT pageFn, "\n", showT fs3]
-
-
-    -- fileIxs :: [IndexEntry] <- mapM (\f -> getOneIndexEntry dough2 $ makeAbsFile f) fs3
-    fileIxs1 :: [Maybe IndexEntry] <-
-            mapM (  getOneIndexEntry debug layout flags  metaRec dough2  ) fs4
-    let fileIxs = catMaybes fileIxs1
-
-    let fileIxsSorted = case   (indexSort metaRec) of
-            SAtitle       -> sortWith title2 fileIxs
-            SAdate        -> sortWith date2 fileIxs
-            SAreverseDate -> reverse $ sortWith date2 fileIxs
-            SAzero ->         errorT ["makeIndexForDir fileIxsSorted", showT SAzero]
-
-    unless (null fileIxs) $ do
-        -- putIOwords
-        --     [ "makeIndexForDir"
-        --     , "index for dirs not sorted "
-        --     , showT $ map title2 fileIxs
-        --     ]
-        when debug $ putIOwords
             [ "makeIndexForDir 4"
             , "index for dirs sorted "
             , showT $ map title2 fileIxsSorted
             ]
 
-    -- directories
     dirs <- findDirs fs
     when debug $ putIOwords
-        ["makeIndexForDir 5", "dirs ", showT pageFn, "\ndirIxs", showT dirs]
-    let dirIxs = map oneDirIndexEntry dirs :: [IndexEntry]
+        ["makeIndexForDir 5", "dirs ", showT dirs]
+
+    let dirIxs = map formatOneDirIndexEntry dirs :: [IndexEntry]
     -- format the subdir entries
-    -- needed filename.html title abstract author data
-    when debug $ putIOwords
-        [ "makeIndexForDir 6"
-        , "index for dirs  "
-        , showT pageFn
-        , "\n"
-        , showT dirIxs
-        ]
     let dirIxsSorted = sortWith title2 dirIxs
+
     let dirIxsSorted2 = if not (null dirIxsSorted)
             then dirIxsSorted ++ [zero { title2 = "------" }]
             else []
     let menu1 = MenuEntry { menu2 = dirIxsSorted2 ++ fileIxsSorted }
-    when debug $ putIOwords
-        ["makeIndexForDir 7", "for ", showT pageFn, "\n", showT menu1]
-    let yaml1 = encodeT menu1 -- bb2t . encode $ menu1
-    when debug $ putIOwords ["makeIndexForDir 8", "yaml ", yaml1]
+    when debug $ putIOwords ["makeIndexForDir 8", "menu1", showT menu1]
 
     return menu1
 
-oneDirIndexEntry :: Path Abs Dir -> IndexEntry
+
+filterIndexForFiles :: Path Abs File -> [FilePath]-> [Path Abs File]
+filterIndexForFiles indexFn fs = fs4
+    where 
+        fs2 = filter (/= toFilePath  indexFn) fs -- exclude index
+        fs3 = filter (hasExtension "md") fs2
+        fs4 = map makeAbsFile fs3
+
+sortFileEntries :: SortArgs -> [Maybe IndexEntry] -> [IndexEntry]
+sortFileEntries sortArg fileIxsMs = case   sortArg of
+            SAtitle       -> sortWith title2 fileIxs
+            SAdate        -> sortWith date2 fileIxs
+            SAreverseDate -> reverse $ sortWith date2 fileIxs
+            SAzero ->     fileIxs --    errorT ["makeIndexForDir fileIxsSorted", showT SAzero]
+    where 
+        fileIxs = catMaybes fileIxsMs 
+ 
+formatOneDirIndexEntry :: Path Abs Dir -> IndexEntry
 -- format an entry for a subdir
-oneDirIndexEntry dn = zero { text2  = showT dn
+formatOneDirIndexEntry dn = zero { text2  = showT dn
                            , link2  = s2t $ nakedName </> ("html" :: FilePath)
                            , title2 = printable <> " (subdirectory)"
                            }
@@ -165,71 +147,37 @@ oneDirIndexEntry dn = zero { text2  = showT dn
                 -- getNakedDir . toFilePath $ dn :: FilePath
     printable = s2t nakedName
 
-makeRelLink :: Path Abs Dir -> Path Abs File -> ErrIO Text 
--- convert a filepath to a relative link 
-makeRelLink dough2 mdfile = do 
-    rel2root <- stripProperPrefix' dough2 mdfile
-    let relHtml = setExtension (makeExtensionT "html") . removeExtension $ rel2root
-    -- let fnn   = takeBaseName . toFilePath $ rel2root
-    return $  s2t $ "/" <> toFilePath relHtml
-
-
 getOneIndexEntry
-    :: Bool -> SiteLayout -> PubFlags -> MetaRec-> Path Abs Dir -> Path Abs File -> ErrIO (Maybe IndexEntry)
+    :: SiteLayout -> PubFlags -> MetaRec-> Path Abs Dir -> Path Abs File -> ErrIO (Maybe IndexEntry)
 -- fill one entry from one mdfile file
-getOneIndexEntry debug layout flags metaRecBase  dough2 mdfile = do
-    (_, metaRec, report) <- checkOneMdFile layout mdfile
-    if checkPubStateWithFlags flags (publicationState metaRec)
-        then do
-            when debug $ putIOwords ["getOneIndexEntry 1", showT flags
-                        , showT mdfile]
+getOneIndexEntry layout flags metaRecBase  dough2 mdfile = do
+        (_, metaRec, report) <- checkOneMdFile layout mdfile
+        return $ if checkPubStateWithFlags flags (publicationState metaRec)
+                    then Just $ getOneIndexEntryPure  metaRec linkName
+                    else Nothing
+    where 
+        linkName = makeRelLink dough2 mdfile
 
-            -- let parentDir =  makeAbsDir . getParentDir . toFilePath $ mdfile
-            --                 :: Path Abs Dir
-            -- let relDirPath =
-            --         fromJustNote "makeIndexForDir prefix dwerwd"
-            --             $ stripPrefix dough2 parentDir :: Path Rel Dir
-            -- let paths = reverse $ splitPath (toFilePath mdfile)
-            -- let fn    = head paths
-            -- let dir   = toFilePath parentDir -- relDirPath -- head . tail $ paths
-            -- rel2root <- stripProperPrefix' dough2 mdfile
-            -- let relHtml = setExtension (makeExtensionT "html") . removeExtension $ rel2root
-            -- let fnn   = takeBaseName . toFilePath $ rel2root
-            -- let linkName = s2t $ "/" <> toFilePath relHtml
-            linkName <- makeRelLink dough2 mdfile
-            -- when debug $ putIOwords ["getOneIndexEntry 2"
-            --     , "parentDir", showT parentDir
-            --     , "rel2root", showT rel2root
-            --     , "relHtml", showT relHtml
-            --     , "fnn", showT fnn
-            --     , "linkName", showT linkName
-            --     ]
--- getOneIndexEntry 2
--- parentDir Path Abs Dir /home/frank/Workspace8/ssg/docs/site/dough/Blog/
--- rel2root Path Rel File Blog/postTufteStyled.md
--- relHtml Path Rel File Blog/postTufteStyled.html fnn "postTufteStyled"
--- linkName "/Blog/postTufteStyled.html"
+getOneIndexEntryPure ::  MetaRec  -> Text ->  IndexEntry
+-- the pure code to compute an IndexEntry
+-- Text should be "/Blog/postTufteStyled.html"
+getOneIndexEntryPure metaRec linkName =   IndexEntry
+                { text2     = s2t . takeBaseName . t2s $ linkName 
+                , link2     = linkName
+                , abstract2 = fromMaybe "" $ abstract metaRec
+                , title2    = fromMaybe linkName $ title metaRec
+                , author2   = fromMaybe "" $ author metaRec
+                , date2     = maybe (showT year2000) showT $ date metaRec
+                , publish2  = shownice $ publicationState metaRec
+                }
 
--- should be "/Blog/postTufteStyled.html""
+makeRelLink :: Path Abs Dir -> Path Abs File ->  Text 
+-- convert a filepath to a relative link 
+makeRelLink dough2 mdfile = s2t . ("/" <>) . toFilePath 
+            . setExtension (makeExtensionT "html") . removeExtension $ rel2root
+    where 
+        rel2root = fromJustNote "makeRelLink 2321cv" $ stripProperPrefixM dough2 mdfile
 
-
-            let ix = IndexEntry
-                    { text2     = s2t . takeBaseName . t2s $ linkName 
-                    , link2     = linkName
-                    , abstract2 = fromMaybe "" $ abstract metaRec
-                    , title2    = fromMaybe linkName $ title metaRec
-                    , author2   = fromMaybe "" $ author metaRec
-                    , date2     = maybe (showT year2000) showT $ date metaRec
-                    , publish2  = shownice $ publicationState metaRec
-                                    -- default is publish
-                    }
-            when debug $ putIOwords
-                [ "getOneIndexEntry 3" , "dir", showT mdfile
-                , "link", linkName , "title2", showT $ title2 ix
-                , "title originally", fromMaybe linkName $ title metaRec
-                ]
-            return . Just $ ix
-        else return Nothing
 
 checkPubStateWithFlags :: PubFlags -> Maybe PublicationState -> Bool
 -- check wether the pubstate corresponds to the flag
