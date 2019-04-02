@@ -19,7 +19,7 @@ import Uniform.FileIO
 
 import {-@ HTF_TESTS @-} Lib.Shake2_test  -- internal 
 
--- import {-@ HTF_TESTS @-} ShakeStartTests
+import {-@ HTF_TESTS @-} ShakeStartTests
 -- -- must run first because it produces the test values used later
 -- -- uses layoutDefaults, not settings2.yaml
 -- -- test dir must be ~/.SSG  -- the program name in foundation
@@ -31,7 +31,7 @@ import {-@ HTF_TESTS @-} Lib.CheckInputs_test
 -- ----    -- writes A : testLayout
 -- ----    --  pageFn :: abs pandoc filenames
 
--- import {-@ HTF_TESTS @-} Lib.Pandoc_test
+import {-@ HTF_TESTS @-} Lib.Pandoc_test
 --             --  -> AD markdownToPandoc
 --             -- -> AF pandocToContentHtml
 --             -- -> AG (docValToAllVal)
