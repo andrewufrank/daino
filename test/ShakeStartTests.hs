@@ -117,7 +117,8 @@ shakeTestWrapped flags layout doughP  templatesP testP =
     (toFilePath testP <> "//*.pandocBiblio") %> \out -> do
         --        liftIO $ putIOwords ["\n.withSettings.pandoc", s2t out]
                 let outP = makeAbsFile out :: Path Abs File
-                let source = doughP </> (makeRelativeP testP  (outP $--<.> "tripleDoc"))
+                let source = --testP </> (makeRelativeP testP  
+                                (outP $--<.> "tripleDoc")
                 needP [source]
                 runErr2action $
                         do
@@ -132,7 +133,7 @@ shakeTestWrapped flags layout doughP  templatesP testP =
                                 
     (toFilePath testP <> "//*content.docval") %> \out -> do
         let outP = makeAbsFile out :: Path Abs File
-        let source = outP $--<.>   "tripleDoc"
+        let source = outP  $--<.>   "tripleDoc"
         needP [source]
         runErr2action $   -- pandocToContentHtml
             do

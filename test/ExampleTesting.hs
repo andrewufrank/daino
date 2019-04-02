@@ -17,13 +17,16 @@ import Lib.Shake2  -- just to test ghci
 import Uniform.FileIO
 -- import Uniform.Error
 
-import {-@ HTF_TESTS @-} Lib.Shake2_test  -- internal 
+-- import {-@ HTF_TESTS @-} Lib.Shake2_test 
+     -- tests shake for test dough
+     -- issue with rule not producing file
 
-import {-@ HTF_TESTS @-} ShakeStartTests
+-- import {-@ HTF_TESTS @-} ShakeStartTests
 -- -- must run first because it produces the test values used later
 -- -- uses layoutDefaults, not settings2.yaml
 -- -- test dir must be ~/.SSG  -- the program name in foundation
 
+-- ordinary tests (run without shakeStartTest)
 import {-@ HTF_TESTS @-} Lib.Foundation_test  -- sets pageFn 
 import {-@ HTF_TESTS @-} Lib.CheckInputs_test
 
@@ -41,7 +44,7 @@ import {-@ HTF_TESTS @-} Lib.Pandoc_test
 -- --    -- AD -> AF :: DocValue
 -- --import {-@ HTF_TESTS @-} Lib.Bake_test
 -- --import {-@ HTF_TESTS @-} Lib.ReadSettingFile_test
-import {-@ HTF_TESTS @-} Lib.Indexing_test
+-- import {-@ HTF_TESTS @-} Lib.Indexing_test
 -- import {-@ HTF_TESTS @-} Lib.Templating_test  -- AG -> EG 
 -- --import {-@ HTF_TESTS @-} Lib.BibTex_test
 --

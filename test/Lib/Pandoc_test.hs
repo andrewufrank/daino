@@ -29,8 +29,8 @@ import Lib.CheckInput (TripleDoc)
 import Uniform.Pointless (snd3)
 --import Text.Pandoc.Definition as PD
 
-readMarkdownFile8 :: String  -> ErrIO MarkdownText
-readMarkdownFile8 fnn =  read8   (makeAbsFile fnn) markdownFileType
+readMarkdownFile8 :: Path Abs File  -> ErrIO MarkdownText
+readMarkdownFile8 fnn =  read8   ( fnn) markdownFileType
 ---- uses files to be copied to dough
 ----
 test_pandoc_pageFn_pageMd_1, test_pandoc_pageFn_pageMd_2 :: IO ()
