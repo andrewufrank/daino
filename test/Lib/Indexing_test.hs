@@ -62,9 +62,13 @@ metaRec1t = MetaRec
   , indexPage = Just True
   , indexSort = SAtitle
   }
+test_makeRelLink = assertEqual resmr (makeRelLink (doughDir testLayout)
+          "/Blog/postTufteStyled.html")
 
+resmr = ""
 test_getOneIndexEntryPure = assertEqual res22a 
-        (getOneIndexEntryPure (doughDir testLayout) metaRec1t "/Blog/postTufteStyled.html")
+        (getOneIndexEntryPure  
+           metaRec1t resmr)
 
 res22a = IndexEntry{text2 = "postTufteStyled",
           link2 = "/Blog/postTufteStyled.html", title2 = "index for post",

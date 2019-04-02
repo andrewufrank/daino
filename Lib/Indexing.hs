@@ -111,17 +111,28 @@ makeIndexForDir debug layout flags metaRec dough2 indexFn  = do
     when debug $ putIOwords
         ["makeIndexForDir 5", "dirs ", showT dirs]
 
-    let dirIxs = map formatOneDirIndexEntry (map makeAbsDir dirs) :: [IndexEntry]
-    -- format the subdir entries
-    let dirIxsSorted = sortWith title2 dirIxs
+    -- let dirIxs = map formatOneDirIndexEntry (map makeAbsDir dirs) :: [IndexEntry]
+    -- -- format the subdir entries
+    -- let dirIxsSorted = sortWith title2 dirIxs
 
-    let dirIxsSorted2 = if not (null dirIxsSorted)
-            then dirIxsSorted ++ [zero { title2 = "------" }]
-            else []
+    let dirIxsSorted2 = makeIndexEntriesDirs  (map makeAbsDir dirs)
+        -- if not (null dirIxsSorted)
+        --     then dirIxsSorted ++ [zero { title2 = "------" }]
+        --     else []
+
     let menu1 = MenuEntry { menu2 = dirIxsSorted2 ++ fileIxsSorted }
     when debug $ putIOwords ["makeIndexForDir 8", "menu1", showT menu1]
 
     return menu1
+
+makeIndexEntriesDirs ::  [Path Abs Dir] -> [IndexEntry]
+
+makeIndexEntriesDirs dirs = if not (null dirIxsSorted)
+        then dirIxsSorted ++ [zero { title2 = "------" }]
+        else []
+    where 
+        dirIxsSorted = sortWith title2 dirIxs
+        dirIxs = map formatOneDirIndexEntry (  dirs) :: [IndexEntry]
 
 getMetaRecs :: SiteLayout -> Path Abs File -> ErrIO (Path Abs File, MetaRec)
 getMetaRecs layout mdfile = do 
@@ -155,7 +166,8 @@ formatOneDirIndexEntry dn = zero { text2  = showT dn
                 -- getNakedDir . toFilePath $ dn :: FilePath
     printable = s2t nakedName
 
-makeIndexEntries :: Path Abs Dir -> Path Abs File -> SortArgs  -> [(Path Abs File, MetaRec)] -> [IndexEntry]
+makeIndexEntries :: Path Abs Dir -> Path Abs File -> SortArgs  
+                    -> [(Path Abs File, MetaRec)] -> [IndexEntry]
 -- reduce the index entries 
 makeIndexEntries dough indexFile sortArg pms = sortFileEntries sortArg 
          . map (makeOneIndexEntry dough indexFile) $ pms 
@@ -163,9 +175,11 @@ makeIndexEntries dough indexFile sortArg pms = sortFileEntries sortArg
 makeOneIndexEntry :: Path Abs Dir -> Path Abs File -> (Path Abs File, MetaRec) -> Maybe IndexEntry 
 makeOneIndexEntry dough2 indexFile (fn,metaRec) = 
     if hasExtension (makeExtensionT "md") fn || fn /= indexFile 
-        then  Just . getOneIndexEntryPure dough2 metaRec $ fn
+        then  Just $ getOneIndexEntryPure   metaRec linkName
         else Nothing 
--- getOneIndexEntry
+    where 
+            linkName = makeRelLink dough2 fn
+    -- getOneIndexEntry
 --     :: SiteLayout -> PubFlags -> MetaRec-> Path Abs Dir -> Path Abs File -> ErrIO (Maybe IndexEntry)
 -- -- fill one entry from one mdfile file
 -- getOneIndexEntry layout flags metaRecBase  dough2 mdfile = do
@@ -174,10 +188,10 @@ makeOneIndexEntry dough2 indexFile (fn,metaRec) =
 --                     then getOneIndexEntryPure  metaRec mdFile
 --                     else Nothing
 
--- getOneIndexEntryPure :: MetaRec  -> Path Abs Dir -> Path Abs File ->   IndexEntry
+getOneIndexEntryPure :: MetaRec  -> Text->   IndexEntry
 -- the pure code to compute an IndexEntry
 -- Text should be "/Blog/postTufteStyled.html"
-getOneIndexEntryPure dough2 metaRec  mdfile =  IndexEntry
+getOneIndexEntryPure   metaRec  linkName =  IndexEntry
                 { text2     = s2t . takeBaseName . t2s $ linkName 
                 , link2     = linkName
                 , abstract2 = fromMaybe "" $ abstract metaRec
@@ -187,8 +201,6 @@ getOneIndexEntryPure dough2 metaRec  mdfile =  IndexEntry
                 , publish2  = shownice $ publicationState metaRec
                 }
          
-    where 
-        linkName = makeRelLink dough2 mdfile
 
 makeRelLink :: Path Abs Dir -> Path Abs File ->  Text 
 -- convert a filepath to a relative link 
