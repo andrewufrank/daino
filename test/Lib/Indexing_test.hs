@@ -75,7 +75,7 @@ test_makeIndexForDir_1 = do
   assertEqual res2 res
 
 res2 = Right
-(MenuEntry{menu2 =
+    (MenuEntry{menu2 =
              [IndexEntry{text2 =
                            "Path Abs Dir /home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/",
                          link2 = "SubBlog/html", title2 = "SubBlog (subdirectory)",
