@@ -15,6 +15,7 @@ library
         Lib.Foundation
         Lib.ReadSettingFile
         Lib.Indexing
+        Lib.IndexMake
         -- Lib.BibTex
         -- Lib.YamlBlocks
         Lib.CheckInput
@@ -86,6 +87,7 @@ test-suite ssgTest
         Lib.Templating_test
         Lib.ReadSettingFile_test
         Lib.Indexing_test
+        Lib.IndexMake_test
         Lib.CheckInputs_test
         Lib.Templating_test
         Lib.Indexing_test

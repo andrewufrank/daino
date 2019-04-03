@@ -11,25 +11,23 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 
-module Lib.Indexing (module Lib.Indexing, getAtKey) where
+module Lib.Indexing (module Lib.Indexing, getAtKey
+            , module Lib.IndexMake 
+            ) where
 
 import           Uniform.Shake
-import           Uniform.FileIO (getDirectoryDirs', getDirContentFiles, toFilePathT )
-import           GHC.Exts (sortWith)
-import           Uniform.Json
-import           Uniform.Json (FromJSON(..))
+import           Uniform.FileIO (getDirectoryDirs', getDirContentFiles )
 import           Uniform.Pandoc (getAtKey)
 import Uniform.Strings (putIOline, putIOlineList)
 -- DocValue(..)
 -- , unDocValue
-import           Uniform.Time (year2000)
 import           Lib.CmdLineArgs (PubFlags(..))
 import           Lib.CheckInput (MetaRec(..), checkOneMdFile
-                               , PublicationState(..), SortArgs(..))
+                               , PublicationState(..))
 -- , readMeta2rec
 -- , checkOneMdFile
 import           Lib.Foundation (SiteLayout)
-
+import Lib.IndexMake (makeBothIndex, MenuEntry, IndexEntry)
 makeIndex :: Bool
           -> SiteLayout
           -> PubFlags
@@ -84,122 +82,12 @@ makeIndex debug layout flags metaRec dough2 indexpageFn  = do
             --   when debug $ putIOwords ["makeIndexForDir 8", "menu1", showT menu1]
             return menu1
 
--- makeBothIndex :: -> MenuEntry 
-makeBothIndex dough2 indexFn sortFlag metaRecs dirs =
-  MenuEntry { menu2 = dirIxsSorted2 ++ fileIxsSorted }
-  where
-    fileIxsSorted = makeIndexEntries dough2 indexFn sortFlag metaRecs
-
-    dirIxsSorted2 = makeIndexEntriesDirs dough2 dirs
-    -- linkName = makeRelLink dough2 indexFn
-
-makeIndexEntriesDirs :: Path Abs Dir -> [Path Abs Dir] -> [IndexEntry]
-makeIndexEntriesDirs dough dirs = if not (null dirIxsSorted)
-                            then dirIxsSorted ++ [zero { title2 = "------" }]
-                            else []
-  where
-    dirIxsSorted = sortWith title2 dirIxs
-
-    dirIxs = map (formatOneDirIndexEntry dough) dirs :: [IndexEntry]
-
 
 getMetaRecs :: SiteLayout -> Path Abs File -> ErrIO (Path Abs File, MetaRec)
 getMetaRecs layout mdfile = do
-  (_, metaRec, report) <- checkOneMdFile layout mdfile
-  return (mdfile, metaRec)
-
-filterIndexForFiles :: Path Abs File -> [FilePath]-> [Path Abs File]
-filterIndexForFiles indexFn fs = fs4
-    where 
-        fs2 = filter (/= toFilePath  indexFn) fs -- exclude index
-        fs3 = filter (hasExtension "md") fs2
-        fs4 = map makeAbsFile fs3
-sortFileEntries :: SortArgs -> [Maybe IndexEntry] -> [IndexEntry]
-sortFileEntries sortArg fileIxsMs = case sortArg of
-  SAtitle       -> sortWith title2 fileIxs
-  SAdate        -> sortWith date2 fileIxs
-  SAreverseDate -> reverse $ sortWith date2 fileIxs
-  SAzero        -> fileIxs --    errorT ["makeIndexForDir fileIxsSorted", showT SAzero]
-  where
-    fileIxs = catMaybes fileIxsMs
-
-formatOneDirIndexEntry :: Path Abs Dir -> Path Abs Dir  -> IndexEntry
-
--- format an entry for a subdir
-   -- fn is name of dir, the link should to to ../index.html 
-
-formatOneDirIndexEntry dough2 fn = zero
-  { text2 = s2t (getNakedDir  fn :: FilePath )
-  , link2 =linkName 
-  , title2 = baseName1 <> " (subdirectory)"
-  }
-  where
-    baseName1 = s2t (getNakedDir  fn :: FilePath )
-    -- s2t . takeBaseName . toFilePath $ fn
-    linkName = makeRelLink dough2 (fn </> (makeRelFile "index.mt"))
-    
---     nakedName = getNakedDir $ dn :: FilePath
-
---     -- getNakedDir . toFilePath $ dn :: FilePath
---     printable = s2t nakedName
-
-makeIndexEntries :: Path Abs Dir
-                 -> Path Abs File
-                 -> SortArgs
-                 -> [(Path Abs File, MetaRec)]
-                 -> [IndexEntry]
-
--- reduce the index entries 
-makeIndexEntries dough indexFile sortArg pms =
-  sortFileEntries sortArg . map (makeOneIndexEntry dough indexFile) $ pms
-
-makeOneIndexEntry :: Path Abs Dir
-                  -> Path Abs File
-                  -> (Path Abs File, MetaRec)
-                  -> Maybe IndexEntry
-makeOneIndexEntry dough2 indexFile (fn, metaRec) =
-
-  if hasExtension (makeExtensionT "md") fn || fn /= indexFile
-  then Just $ getOneIndexEntryPure metaRec linkName
-  else Nothing
-  where
-    linkName = makeRelLink dough2 fn
-
--- getOneIndexEntry
---     :: SiteLayout -> PubFlags -> MetaRec-> Path Abs Dir -> Path Abs File -> ErrIO (Maybe IndexEntry)
--- -- fill one entry from one mdfile file
--- getOneIndexEntry layout flags metaRecBase  dough2 mdfile = do
---         (_, metaRec, report) <- checkOneMdFile layout mdfile
---         return $ if checkPubStateWithFlags flags (publicationState metaRec)
---                     then getOneIndexEntryPure  metaRec mdFile
---                     else Nothing
-getOneIndexEntryPure :: MetaRec -> Text -> IndexEntry
-
--- the pure code to compute an IndexEntry
--- Text should be "/Blog/postTufteStyled.html"
-getOneIndexEntryPure metaRec linkName = IndexEntry
-  { text2 = s2t . takeBaseName . t2s $ linkName
-  , link2 = linkName
-  , abstract2 = fromMaybe "" $ abstract metaRec
-  , title2 = fromMaybe linkName $ title metaRec
-  , author2 = fromMaybe "" $ author metaRec
-  , date2 = maybe (showT year2000) showT $ date metaRec
-  , publish2 = shownice $ publicationState metaRec
-  }
-
-makeRelLink :: Path Abs Dir -> Path Abs a -> Text
-
--- convert a filepath to a relative link 
-makeRelLink dough2 mdfile = s2t $   ("/" <>)
---   . toFilePath 
-  . setExtension "html" -- (makeExtensionT "html")
-  . removeExtension
-  . toFilePath
-  $ rel2root
-  where
-    rel2root =
-      fromJustNote "makeRelLink 2321cv" $ stripProperPrefixM dough2 mdfile
-
+    (_, metaRec, report) <- checkOneMdFile layout mdfile
+    return (mdfile, metaRec)
+            
 checkPubStateWithFlags :: PubFlags -> Maybe PublicationState -> Bool
 
 -- check wether the pubstate corresponds to the flag
@@ -208,38 +96,5 @@ checkPubStateWithFlags flags (Just PSdraft) = draftFlag flags
 checkPubStateWithFlags flags (Just PSold) = oldFlag flags
 checkPubStateWithFlags _ (Just PSzero) = False
 checkPubStateWithFlags flags Nothing = publishFlag flags
-
-newtype MenuEntry = MenuEntry { menu2 :: [IndexEntry] }
-  deriving (Generic, Eq, Ord, Show)
-
-instance NiceStrings MenuEntry
-
-instance Zeros MenuEntry where
-  zero = MenuEntry zero
-
-instance FromJSON MenuEntry
-
-instance ToJSON MenuEntry
-
-data IndexEntry =
-  IndexEntry
-    { text2 :: Text  -- ^ naked filename -- not shown
-    , link2 :: Text -- ^ the url relative to dough dir
-    , title2 :: Text -- ^ the title as shown
-    , abstract2 :: Text
-    , author2 :: Text
-    , date2 :: Text -- UTCTime -- read the time early one to find errors
-    , publish2 :: Text
-    }
-  deriving (Generic, Eq, Ord, Show, Read)
-
-instance Zeros IndexEntry where
-  zero = IndexEntry zero zero zero zero zero zero zero
-
---instance FromJSON IndexEntry
-instance ToJSON IndexEntry
-
-instance FromJSON IndexEntry where
-  parseJSON = genericParseJSON defaultOptions { omitNothingFields = True }
-
-
+    
+    
