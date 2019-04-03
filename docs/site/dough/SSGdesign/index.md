@@ -6,7 +6,7 @@ keywords: test
 #abstract: A silly text not needing an abstract.
 pageTemplate: page3.yaml
 indexPage: True 
-indexSort: date
+indexSort: title
 ---
 
 

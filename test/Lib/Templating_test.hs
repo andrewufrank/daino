@@ -89,7 +89,15 @@ test_templating_14_AG_EG =
 test_templating_15_AG_EG =
      test1FileIO progName "resultAG5" "resultEG5" applyTemplate3x
 test_templating_16_AG_EG =
-     test1FileIO progName "resultAF6" "resultEG6" applyTemplate3x
+     test1FileIO progName "resultAG6" "resultEG6" applyTemplate3x
+
+-- test_readAF6 = do 
+--           res <-  runErr $ do 
+--                     st <- readFile2 (makeAbsFile "/home/frank/.SSG/resultAG6.x")
+--                     let st2 = readNote "readAF6test" st :: DocValue
+--                     return st2
+--           assertEqual (Left text0) res
+
 
 instance  ShowTestHarness DocValue where
 instance ShowTestHarness HTMLout

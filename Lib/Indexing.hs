@@ -14,11 +14,12 @@
 module Lib.Indexing (module Lib.Indexing, getAtKey) where
 
 import           Uniform.Shake
-import           Uniform.FileIO (getDirectoryDirs', getDirContentFiles)
+import           Uniform.FileIO (getDirectoryDirs', getDirContentFiles, toFilePathT )
 import           GHC.Exts (sortWith)
 import           Uniform.Json
 import           Uniform.Json (FromJSON(..))
 import           Uniform.Pandoc (getAtKey)
+import Uniform.Strings (putIOline, putIOlineList)
 -- DocValue(..)
 -- , unDocValue
 import           Uniform.Time (year2000)
@@ -49,22 +50,14 @@ makeIndex debug layout flags metaRec dough2 indexpageFn  = do
             let pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir
             fs2 :: [FilePath] <- getDirContentFiles (toFilePath pageFn)
             dirs2 :: [FilePath] <- getDirectoryDirs' (toFilePath pageFn) 
-            when debug
-                $ putIOwords
-                [ "makeIndexForDir 2"
-                , "for "
-                , showT pageFn
-                , "index file"
-                , showT indexpageFn
-                    -- , "\n relative root"  , showT relDirPath
-                , "\n sort"
-                , showT (indexSort metaRec)
-                , "flags"
-                , showT flags
-                , "\nfiles found"
-                , unlines' . map showT $ fs2
-                , "\ndirs found"
-                , unlines' . map showT $ dirs2]
+            when debug $ do 
+                putIOline  "makeIndexForDir 2 for" pageFn
+                putIOline "index file" indexpageFn
+                putIOline "sort"  (indexSort metaRec)
+                putIOline "flags" flags
+                putIOlineList "files found" fs2
+                putIOlineList "dirs found"  dirs2
+                    
             let fs4 = filter (indexpageFn /=) . map makeAbsFile $ fs2 :: [Path Abs File]
             metaRecs2 :: [(Path Abs File, MetaRec)]
                 <- mapM (getMetaRecs layout) fs4
@@ -97,28 +90,30 @@ makeBothIndex dough2 indexFn sortFlag metaRecs dirs =
   where
     fileIxsSorted = makeIndexEntries dough2 indexFn sortFlag metaRecs
 
-    dirIxsSorted2 = makeIndexEntriesDirs (dirs)
+    dirIxsSorted2 = makeIndexEntriesDirs dough2 dirs
+    -- linkName = makeRelLink dough2 indexFn
 
-makeIndexEntriesDirs :: [Path Abs Dir] -> [IndexEntry]
-makeIndexEntriesDirs dirs = if not (null dirIxsSorted)
+makeIndexEntriesDirs :: Path Abs Dir -> [Path Abs Dir] -> [IndexEntry]
+makeIndexEntriesDirs dough dirs = if not (null dirIxsSorted)
                             then dirIxsSorted ++ [zero { title2 = "------" }]
                             else []
   where
     dirIxsSorted = sortWith title2 dirIxs
 
-    dirIxs = map formatOneDirIndexEntry (dirs) :: [IndexEntry]
+    dirIxs = map (formatOneDirIndexEntry dough) dirs :: [IndexEntry]
+
 
 getMetaRecs :: SiteLayout -> Path Abs File -> ErrIO (Path Abs File, MetaRec)
 getMetaRecs layout mdfile = do
   (_, metaRec, report) <- checkOneMdFile layout mdfile
   return (mdfile, metaRec)
 
--- filterIndexForFiles :: Path Abs File -> [FilePath]-> [Path Abs File]
--- filterIndexForFiles indexFn fs = fs4
---     where 
---         fs2 = filter (/= toFilePath  indexFn) fs -- exclude index
---         fs3 = filter (hasExtension "md") fs2
---         fs4 = map makeAbsFile fs3
+filterIndexForFiles :: Path Abs File -> [FilePath]-> [Path Abs File]
+filterIndexForFiles indexFn fs = fs4
+    where 
+        fs2 = filter (/= toFilePath  indexFn) fs -- exclude index
+        fs3 = filter (hasExtension "md") fs2
+        fs4 = map makeAbsFile fs3
 sortFileEntries :: SortArgs -> [Maybe IndexEntry] -> [IndexEntry]
 sortFileEntries sortArg fileIxsMs = case sortArg of
   SAtitle       -> sortWith title2 fileIxs
@@ -128,19 +123,25 @@ sortFileEntries sortArg fileIxsMs = case sortArg of
   where
     fileIxs = catMaybes fileIxsMs
 
-formatOneDirIndexEntry :: Path Abs Dir -> IndexEntry
+formatOneDirIndexEntry :: Path Abs Dir -> Path Abs Dir  -> IndexEntry
 
 -- format an entry for a subdir
-formatOneDirIndexEntry dn = zero
-  { text2 = showT dn
-  , link2 = s2t $ nakedName </> ("html" :: FilePath)
-  , title2 = printable <> " (subdirectory)"
+   -- fn is name of dir, the link should to to ../index.html 
+
+formatOneDirIndexEntry dough2 fn = zero
+  { text2 = s2t (getNakedDir  fn :: FilePath )
+  , link2 =linkName 
+  , title2 = baseName1 <> " (subdirectory)"
   }
   where
-    nakedName = getNakedDir $ dn :: FilePath
+    baseName1 = s2t (getNakedDir  fn :: FilePath )
+    -- s2t . takeBaseName . toFilePath $ fn
+    linkName = makeRelLink dough2 (fn </> (makeRelFile "index.mt"))
+    
+--     nakedName = getNakedDir $ dn :: FilePath
 
-    -- getNakedDir . toFilePath $ dn :: FilePath
-    printable = s2t nakedName
+--     -- getNakedDir . toFilePath $ dn :: FilePath
+--     printable = s2t nakedName
 
 makeIndexEntries :: Path Abs Dir
                  -> Path Abs File
@@ -157,6 +158,7 @@ makeOneIndexEntry :: Path Abs Dir
                   -> (Path Abs File, MetaRec)
                   -> Maybe IndexEntry
 makeOneIndexEntry dough2 indexFile (fn, metaRec) =
+
   if hasExtension (makeExtensionT "md") fn || fn /= indexFile
   then Just $ getOneIndexEntryPure metaRec linkName
   else Nothing
@@ -185,14 +187,14 @@ getOneIndexEntryPure metaRec linkName = IndexEntry
   , publish2 = shownice $ publicationState metaRec
   }
 
-makeRelLink :: Path Abs Dir -> Path Abs File -> Text
+makeRelLink :: Path Abs Dir -> Path Abs a -> Text
 
 -- convert a filepath to a relative link 
-makeRelLink dough2 mdfile = s2t
-  . ("/" <>)
-  . toFilePath
-  . setExtension (makeExtensionT "html")
+makeRelLink dough2 mdfile = s2t $   ("/" <>)
+--   . toFilePath 
+  . setExtension "html" -- (makeExtensionT "html")
   . removeExtension
+  . toFilePath
   $ rel2root
   where
     rel2root =
