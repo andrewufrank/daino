@@ -102,9 +102,9 @@ data PubFlags = PubFlags
 instance Zeros PubFlags where 
     zero = PubFlags zero zero zero zero zero zero zero
 
-allFlags = zero {publishFlag = True
+allFlags = zero {publishFlag = True  -- not including draft
   , oldFlag = True 
-  , draftFlag = True
+  , draftFlag = False
   , settingsFile = testSettingsFileName}
 
 

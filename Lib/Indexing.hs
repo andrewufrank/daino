@@ -43,38 +43,12 @@ makeIndex debug layout flags metaRec dough2 indexpageFn  = do
     let doindex = fromMaybe False $ indexPage metaRec
   -- let indexSort1 = indexSort metaRec :: SortArgs
     when debug $ putIOwords ["makeIndex", "doindex", showT doindex]
---   ix :: MenuEntry
---     <- 
     if not doindex
        then return zero 
        else do
---          -- let currentDir2 = makeAbsDir $ getParentDir pageFn
---          ix2 <- makeIndexForDir debug layout flags metaRec dough2 indexpageFn
---          when debug $ putIOwords ["makeIndex", "index", showT ix2]
---          return ix2
---        else return zero
---   return ix -- (toJSON ix :: Value)
-
--- makeIndexForDir :: Bool
---                 -> SiteLayout
---                 -> PubFlags
---                 -> MetaRec
---                 -> Path Abs Dir
---                 -> Path Abs File
---                 -> ErrIO MenuEntry
-
--- -- make the index for the directory
--- -- place result in index.html in this directory
--- -- the name of the index file is passed to exclude it
--- -- and from it the directory above (i.e. the one to index) is derived
--- -- makes index only for md files in dough
--- -- and for subdirs, where the index must be called index.md
--- makeIndexForDir debug layout flags metaRec dough2 indexpageFn = do
---   -- values title date
             let pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir
             fs2 :: [FilePath] <- getDirContentFiles (toFilePath pageFn)
-            dirs2 :: [FilePath] <- getDirectoryDirs' (toFilePath pageFn) --  findDirs fs
-            --   when debug $ putIOwords ["makeIndexForDir 5", "dirs ", showT dirs]
+            dirs2 :: [FilePath] <- getDirectoryDirs' (toFilePath pageFn) 
             when debug
                 $ putIOwords
                 [ "makeIndexForDir 2"
@@ -91,9 +65,10 @@ makeIndex debug layout flags metaRec dough2 indexpageFn  = do
                 , unlines' . map showT $ fs2
                 , "\ndirs found"
                 , unlines' . map showT $ dirs2]
-            --   let fs4 = filterIndexForFiles indexFn fs :: [Path Abs File]
+            let fs4 = filter (indexpageFn /=) . map makeAbsFile $ fs2 :: [Path Abs File]
             metaRecs2 :: [(Path Abs File, MetaRec)]
-                <- mapM (getMetaRecs layout) (map makeAbsFile fs2)
+                <- mapM (getMetaRecs layout) fs4
+            
             --   let fileIxsSorted =
             --         makeIndexEntries dough2 indexFn (indexSort metaRec) metaRecs
             --   --  sortFileEntries (indexSort metaRec)  fileIxs1
@@ -105,7 +80,7 @@ makeIndex debug layout flags metaRec dough2 indexpageFn  = do
                     dough2
                     indexpageFn
                     (indexSort metaRec)
-                    metaRecs2
+                    (filter (checkPubStateWithFlags flags . publicationState . snd) metaRecs2)
                     (map makeAbsDir dirs2)
             -- MenuEntry { menu2 = dirIxsSorted2 ++ fileIxsSorted }
             when debug
