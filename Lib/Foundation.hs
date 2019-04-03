@@ -48,7 +48,9 @@ sourceDir = makeAbsDir "/home/frank/Workspace8/ssg"
 bannerImageFileName :: Path Rel File
 bannerImageFileName = makeRelFileT "cropped-DSC05127-1024x330.jpg"
 
+defaultPageTypeName :: Path Rel File
 defaultPageTypeName = makeRelFileT "page0default"
+defaultPageType :: SiteLayout -> Path Abs File
 defaultPageType layout = templatesDir layout </> defaultPageTypeName
 
 --testDir = makeAbsDir $ ("/home/frank" :: FilePath)   </> (t2s progName)
@@ -74,6 +76,7 @@ layoutDefaults = SiteLayout
 
 templatesDirName, staticDirName :: Path Rel Dir
 templatesDirName = makeRelDir "templates"
+templatesDir :: SiteLayout -> Path Abs Dir
 templatesDir layout = themeDir layout `addFileName` templatesDirName
 
 staticDirName = makeRelDir "static"

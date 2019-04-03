@@ -20,6 +20,7 @@ library
         Lib.CheckInput
         Lib.CmdLineArgs
         Lib.Watch
+        -- Paths_SSG
         
     hs-source-dirs: .
     other-modules:

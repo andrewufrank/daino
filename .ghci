@@ -6,6 +6,6 @@
 :set -fno-warn-orphans
 :set -isrc
 :set -itest
-#:set -i.stack-work/dist/x86_64-linux-tinfo6/Cabal-2.4.0.1/build/autogen/
+:set -i.stack-work/dist/x86_64-linux-tinfo6/Cabal-2.4.0.1/build/autogen/
 :load test/ExampleTesting.hs
---test:=g2
+--test:=ssgTest

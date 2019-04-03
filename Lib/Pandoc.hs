@@ -124,7 +124,7 @@ docValToAllVal debug layout flags htmlout pageFn  metaRec = do
   pageTypeYaml <- readYaml2value pageType
   settingsYaml <- readYaml2value (settingsFile flags)
   --        svalue <- decodeThrow . t2b . unYAML $ settings
-  ix <- makeIndex debug layout flags metaRec pageFn (doughDir layout)
+  ix <- makeIndex debug layout flags metaRec  (doughDir layout) pageFn
   -- now          <- getDateAsText
   fn2 <- stripProperPrefix' (doughDir layout) pageFn
   let bottomLines = BottomLines

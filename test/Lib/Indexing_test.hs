@@ -32,7 +32,7 @@ import           Lib.CmdLineArgs (allFlags)
 import           Lib.CheckInput (MetaRec(..), SortArgs(..))
 
 blogDir = doughDir testLayout </> makeRelDir "Blog"
-
+dough2 = doughDir testLayout
 blogindexfn = doughDir testLayout </> makeRelFile "Blog/index.md"
 
 test_parentDir = assertEqual res1a (getParentDir blogindexfn)
@@ -44,6 +44,7 @@ res1a = "/home/frank/Workspace8/ssg/docs/site/dough/Blog" :: FilePath
 res2a = "Blog" :: FilePath
 
 linkIn = doughDir testLayout </> makeRelFile  "Blog/postwk.md" :: Path Abs File
+indexIn = doughDir testLayout </> makeRelFile  "Blog/index.md" :: Path Abs File
 test_relLink =  assertEqual (resLink)  $ 
                     makeRelLink (doughDir testLayout :: Path Abs Dir) linkIn
         
@@ -53,7 +54,7 @@ metaRec1t = MetaRec
   { title = Just "index for post"
   , abstract = Just "The directory for experiments."
   , author = Just "AUF"
-  , date = Just "2019-01-04 00:00:00 UTC"
+  , date = Just "2066-06-06 00:00:00 UTC"
   , publicationState = Nothing
   , bibliography = Nothing
   , bibliographyGroup = Nothing
@@ -62,22 +63,31 @@ metaRec1t = MetaRec
   , indexPage = Just True
   , indexSort = SAtitle
   }
-test_makeRelLink = assertEqual resmr (makeRelLink (doughDir testLayout)
-          "/Blog/postTufteStyled.html")
 
-resmr = ""
+test_makeRelLink = assertEqual resmr (makeRelLink dough2 linkIn)
+resmr = "/Blog/postwk.html"
+
+test_makeOneIndexEntry = assertEqual resmo (makeOneIndexEntry dough2 indexIn 
+          (linkIn, metaRec1t))
+resmo =  Just
+  (IndexEntry{text2 = "postwk", link2 = "/Blog/postwk.html",
+              title2 = "index for post",
+              abstract2 = "The directory for experiments.", author2 = "AUF",
+              date2 = "2066-06-06 00:00:00 UTC", publish2 = "Nothing"})
+
+
 test_getOneIndexEntryPure = assertEqual res22a 
         (getOneIndexEntryPure  
            metaRec1t resmr)
 
-res22a = IndexEntry{text2 = "postTufteStyled",
-          link2 = "/Blog/postTufteStyled.html", title2 = "index for post",
-          abstract2 = "The directory for experiments.", author2 = "AUF",
-          date2 = "2019-01-04 00:00:00 UTC", publish2 = "Nothing"} :: IndexEntry
+res22a = IndexEntry{text2 = "postwk", link2 = "/Blog/postwk.html",
+           title2 = "index for post",
+           abstract2 = "The directory for experiments.", author2 = "AUF",
+           date2 = "2066-06-06 00:00:00 UTC", publish2 = "Nothing"}:: IndexEntry
 
-test_makeIndexForDir_1 = do
+test_makeIndex_1 = do
   res <- runErr
-    $ makeIndexForDir
+    $ makeIndex 
       False -- True
       testLayout 
       allFlags
