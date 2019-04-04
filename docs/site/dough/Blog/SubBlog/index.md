@@ -1,9 +1,9 @@
 ---
-title: index for post 
+title: index for subdir 
 author: AUF
 date: Jan. 4, 2019
 keywords: test
-abstract: The directory for experiments.
+abstract: The subdirectory experiment
 pageTemplate: page3.yaml
 indexPage: True
 indexSort: title 

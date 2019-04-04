@@ -60,6 +60,8 @@ formatOneDirIndexEntry :: Path Abs Dir -> Path Abs Dir -> IndexEntry
 formatOneDirIndexEntry dough2 fn = zero
   { text2 = s2t (getNakedDir fn :: FilePath)
   , link2 = s2t $ makeRelPath dough2 (fn </> (makeRelFile "index.html") :: Path Abs File)
+  -- should add to the index file (to be found by search for index set in metaRec)
+
   , title2 = baseName1 <> " (subdirectory)"
   }
   where
@@ -118,29 +120,6 @@ getOneIndexEntryPure metaRec  = IndexEntry
   , publish2 = shownice $ publicationState metaRec
   }
 
--- makeRelLinkZ :: Path Abs Dir -> Path Abs a -> Text
--- -- | convert a filepath to a relative link 
--- makeRelLinkZ dough2 mdfile = s2t
---   $ ("/" <>)
---   --   . toFilePath 
---   . setExtension "html" -- (makeExtensionT "html")
---   . removeExtension
---   . toFilePath
---   $ rel2root
---   where
---     rel2root =
---       fromJustNote "makeRelLink 2321cv" $ stripProperPrefixM dough2 mdfile
-
-
--- makeRelLink2 :: FilePath -> Text
--- -- | convert a relative filepath 
--- makeRelLink2   mdfileRel = s2t
---   $ ("/" <>)
---   --   . toFilePath 
---   . setExtension "html" -- (makeExtensionT "html")
---   . removeExtension
---   -- . toFilePath
---   $ mdfileRel
 
       ------  S U P P O R T 
 

@@ -128,26 +128,34 @@ test_makeIndex_1 = do
   assertEqual res2 res
 
 res2 =  Right
-  (MenuEntry{menu2 =
-    [IndexEntry{text2 = "SubBlog", link2 = "/Blog/SubBlog/index.html",
-                           title2 = "SubBlog (subdirectory)", abstract2 = "", author2 = "",
-                           date2 = "", publish2 = ""},
-    IndexEntry{text2 = "", link2 = "", title2 = "------",
-                abstract2 = "", author2 = "", date2 = "", publish2 = ""},
-    IndexEntry{text2 = "postTufteStyled",
-                link2 = "/Blog/postTufteStyled.html", title2 = "postTufteStyle.md",
-                abstract2 = "A text with two levels of title", author2 = "auf",
-                date2 = "2019-01-04 00:00:00 UTC", publish2 = "publish"},
-    IndexEntry{text2 = "postwk", link2 = "/Blog/postwk.html",
-                title2 = "postwk.md",
-                abstract2 = "A silly text not needing an abstract.",
-                author2 = "AUF", date2 = "2019-01-04 00:00:00 UTC",
-                publish2 = "publish"},
-    IndexEntry{text2 = "postwkTufte", link2 = "/Blog/postwkTufte.html",
-                title2 = "postwkTufte.md",
-                abstract2 = "A silly text not needing an abstract updated.",
-                author2 = "auf", date2 = "2019-01-04 00:00:00 UTC",
-                publish2 = "publish"}]})
+      (MenuEntry{menu2 =
+        [IndexEntry{text2 = "SubBlog", link2 = "/Blog/SubBlog/index.html",
+                    title2 = "SubBlog (subdirectory)", abstract2 = "", author2 = "",
+                    date2 = "", publish2 = ""},
+        IndexEntry{text2 = "", link2 = "", title2 = "------",
+                    abstract2 = "", author2 = "", date2 = "", publish2 = ""},
+        IndexEntry{text2 = "postTufteStyled",
+                    link2 = "/Blog/postTufteStyled.html", title2 = "postTufteStyle.md",
+                    abstract2 = "A text with two levels of title", author2 = "auf",
+                    date2 = "2019-01-04 00:00:00 UTC", publish2 = "publish"},
+        IndexEntry{text2 = "postwk", link2 = "/Blog/postwk.html",
+                    title2 = "postwk.md",
+                    abstract2 = "A silly text not needing an abstract.",
+                    author2 = "AUF", date2 = "2019-01-04 00:00:00 UTC",
+                    publish2 = "publish"},
+        IndexEntry{text2 = "postwkTufte", link2 = "/Blog/postwkTufte.html",
+                    title2 = "postwkTufte.md",
+                    abstract2 = "A silly text not needing an abstract updated.",
+                    author2 = "auf", date2 = "2019-01-04 00:00:00 UTC",
+                    publish2 = "publish"},
+        IndexEntry{text2 = "index3", link2 = "/Blog/index3.html",
+                    title2 = "sort by data (reversed) index 3 for Blog",
+                    abstract2 = "The directory for experiments.", author2 = "AUF",
+                    date2 = "2019-01-04 00:00:00 UTC", publish2 = "publish"},
+        IndexEntry{text2 = "index2", link2 = "/Blog/index2.html",
+                    title2 = "sort by date index 2 for Blog",
+                    abstract2 = "The directory for experiments.", author2 = "AUF",
+                date2 = "2019-01-04 00:00:00 UTC", publish2 = "publish"}]})   
   -- Right
   -- (MenuEntry
   --  { menu2 =
