@@ -24,6 +24,7 @@ import Lib.Foundation (progName, SiteLayout (..), templatesDirName)
 import Lib.Shake2
 -- import Lib.FileMgt
 import Lib.Foundation_test (testLayout)
+import Lib.Foundation (templatesImgDirName, bannerImageFileName)
 import Lib.CmdLineArgs (allFlags)
 -- import Lib.Foundation (templatesDirName)
 -- import Uniform.Json (AtKey(..), Value(..))
@@ -44,5 +45,6 @@ test_shakeMD =
                             ((themeDir $ testLayout) `addFileName` ( templatesDirName)
                                         :: Path Abs Dir)
                             (makeAbsDir "/home/frank/.SSG/bakedTest")
+                            (templatesImgDirName `addFileName` bannerImageFileName)
         assertEqual res ()
         --  "Lib.Shake_test - files written to /home/frank/.SSG/bakedTest"
