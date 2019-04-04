@@ -54,7 +54,9 @@ test_relLink =  assertEqual (resLink)  $
 resLink = "/Blog/postwk.html" :: Text
 
 metaRec1t = MetaRec
-  { title =  "index for post"
+  { nakedFN = "postwk.html"
+  , relURL = "/Blog/postwk.html"
+  , title =  "index for post"
   , abstract =  "The directory for experiments."
   , author =  "AUF"
   , date =  "2066-06-06 00:00:00 UTC"

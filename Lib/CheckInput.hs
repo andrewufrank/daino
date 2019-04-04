@@ -17,7 +17,7 @@
 module Lib.CheckInput where
 
 import           Uniform.Strings         hiding ( (</>) )
-import           Uniform.Filenames
+import           Uniform.FileIO
 import           Uniform.Time                   (   readDateMaybe
                                                 , year2000
                                                 , UTCTime(..)
@@ -38,7 +38,7 @@ checkOneMdFile  layout mdfn = do
   (pandoc, meta2) :: (Pandoc, Value) <- readMd2meta mdfn -- (dough2 </> mdfn)
   -- putIOwords ["checkOneMdFile meta2", showT meta2]
 
-  let (metaRec1,report1) = readMeta2rec layout meta2
+  let (metaRec1,report1) = readMeta2rec layout mdfn meta2
   -- ixEntry                       <- getOneIndexEntry allFlags dough2 (dough2 </> mdfn)
   -- what needs to be checked ?  -- check with all flags true 
 
@@ -51,16 +51,16 @@ checkOneMdFile  layout mdfn = do
   -- putIOwords ["report2 \n"     , showT  report2, "\n"    ]
   return (pandoc, metaRec1, report2) 
 
-readMeta2rec :: SiteLayout -> Value -> (MetaRec, Text)
+readMeta2rec :: SiteLayout -> Path Abs File -> Value -> (MetaRec, Text)
 -- | read the metadata in a record and check for validity
 -- and information what is missing
-readMeta2rec layout meta2 = (ix, report)
+readMeta2rec layout mdfn meta2 = (ix, report)
  where
-  ix = MetaRec 
-      {
-        -- text     = s2t fnn
-    -- , link     = ln
-        abstract         = fromMaybe "" abstract1
+  ix = MetaRec    
+      { nakedFN = s2t .  getNakedFileName  . toFilePath $ mdfn
+      , relURL     = toFilePathT . fromJustNote "readMeta2rec relURL wer234c" 
+                $ (stripPrefix (doughDir layout) mdfn :: Maybe (Path Rel File))
+      ,  abstract         = fromMaybe "" abstract1
       , title            = fromMaybe "" title1
       , author           = fromMaybe "" author1
       , date             = maybe year2000 (fromJustNote "readDate 408ds" . readDateMaybe) date1   -- test early for proper format
@@ -98,9 +98,9 @@ readMeta2rec layout meta2 = (ix, report)
 
 -- | the data in the meta/yaml part of the md files 
 data MetaRec = MetaRec  
-        {  -- nakedFN ::  Text  -- ^ naked filename -- not shown
-        -- , relURL :: Text -- ^ the url relative to dough dir
-          title ::  Text -- ^ the title as shown
+        { nakedFN ::  Text  -- ^ naked filename as text
+        , relURL :: Text -- ^ the url relative to dough dir as text
+        ,  title ::  Text -- ^ the title as shown
         , abstract ::  Text
         , author ::  Text
         , date ::  UTCTime -- read the time early one to find errors
@@ -116,7 +116,7 @@ data MetaRec = MetaRec
         } deriving (Generic, Eq, Ord, Show, Read)
 
 instance Zeros MetaRec where
-  zero = MetaRec zero zero zero (year2000) zero zero zero zero zero zero zero
+  zero = MetaRec zero zero zero zero zero (year2000) zero zero zero zero zero zero zero
 --instance FromJSON IndexEntry
 instance ToJSON MetaRec
 instance FromJSON MetaRec where
