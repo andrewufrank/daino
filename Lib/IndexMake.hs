@@ -108,7 +108,7 @@ getOneIndexEntryPure metaRec linkName = IndexEntry
   , abstract2 = fromMaybe "" $ abstract metaRec
   , title2 = fromMaybe linkName $ title metaRec
   , author2 = fromMaybe "" $ author metaRec
-  , date2 = maybe (showT year2000) showT $ date metaRec
+  , date2 =   showT $ date metaRec
   , publish2 = shownice $ publicationState metaRec
   }
 

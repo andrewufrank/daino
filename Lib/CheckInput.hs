@@ -63,7 +63,7 @@ readMeta2rec layout meta2 = (ix, report)
         abstract         = abstract1
       , title            = title1
       , author           = author1
-      , date             = maybe Nothing readDateMaybe date1   -- test early for proper format
+      , date             = maybe year2000 (fromJustNote "readDate 408ds" . readDateMaybe) date1   -- test early for proper format
       , publicationState = text2publish $ publish1
       , bibliography  = fmap (\f -> toFilePath $ (doughDir layout) </> makeRelFileT f) bibliography1
       , bibliographyGroup = bibliographyGroup1
@@ -103,7 +103,7 @@ data MetaRec = MetaRec {
                                title :: Maybe Text -- ^ the title as shown
                               , abstract :: Maybe Text
                               , author :: Maybe Text
-                              , date :: Maybe UTCTime -- read the time early one to find errors
+                              , date ::  UTCTime -- read the time early one to find errors
                               , publicationState ::  PublicationState
                               , bibliography :: Maybe FilePath -- (Path Abs File)
                               , bibliographyGroup :: Maybe Text 
@@ -115,7 +115,7 @@ data MetaRec = MetaRec {
                               } deriving (Generic, Eq, Ord, Show, Read)
 
 instance Zeros MetaRec where
-  zero = MetaRec zero zero zero (Just year2000) zero zero zero zero zero zero zero
+  zero = MetaRec zero zero zero (year2000) zero zero zero zero zero zero zero
 --instance FromJSON IndexEntry
 instance ToJSON MetaRec
 instance FromJSON MetaRec where
