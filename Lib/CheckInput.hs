@@ -65,7 +65,7 @@ readMeta2rec layout meta2 = (ix, report)
       , author           = fromMaybe "" author1
       , date             = maybe year2000 (fromJustNote "readDate 408ds" . readDateMaybe) date1   -- test early for proper format
       , publicationState = text2publish $ publish1
-      , bibliography  = fmap (\f -> toFilePath $ (doughDir layout) </> makeRelFileT f) bibliography1
+      , bibliography  =   fmap (\f -> toFilePath $ (doughDir layout) </> makeRelFileT f) bibliography1
       , bibliographyGroup = bibliographyGroup1
       , keywords = keywords1
       , pageTemplate = fmap (\f -> toFilePath $ (templatesDir layout) </> makeRelFileT f) pageTemplate1
@@ -97,22 +97,23 @@ readMeta2rec layout meta2 = (ix, report)
   missingLabels =  unwords' . map fst . filter (isNothing . snd) $ zip keys2 vals2
 
 -- | the data in the meta/yaml part of the md files 
-data MetaRec = MetaRec {
-        -- text ::  Text  -- ^ naked filename -- not shown
-                              -- , link :: Text -- ^ the url relative to dough dir
-                               title ::  Text -- ^ the title as shown
-                              , abstract ::  Text
-                              , author ::  Text
-                              , date ::  UTCTime -- read the time early one to find errors
-                              , publicationState ::  PublicationState
-                              , bibliography :: Maybe FilePath -- (Path Abs File)
-                              , bibliographyGroup :: Maybe Text 
-                              , keywords :: Maybe Text 
-                              , pageTemplate:: Maybe FilePath -- (Path Abs File)
-                              , indexPage ::  Bool
-                              , indexSort :: SortArgs 
+data MetaRec = MetaRec  
+        {  -- nakedFN ::  Text  -- ^ naked filename -- not shown
+        -- , relURL :: Text -- ^ the url relative to dough dir
+          title ::  Text -- ^ the title as shown
+        , abstract ::  Text
+        , author ::  Text
+        , date ::  UTCTime -- read the time early one to find errors
+        , publicationState ::  PublicationState
+        , bibliography :: Maybe  FilePath --  (Path Abs File)
+              -- Path  reading in records is not working 
+        , bibliographyGroup :: Maybe Text 
+        , keywords :: Maybe Text 
+        , pageTemplate:: Maybe FilePath -- (Path Abs File)
+        , indexPage ::  Bool
+        , indexSort :: SortArgs 
 
-                              } deriving (Generic, Eq, Ord, Show, Read)
+        } deriving (Generic, Eq, Ord, Show, Read)
 
 instance Zeros MetaRec where
   zero = MetaRec zero zero zero (year2000) zero zero zero zero zero zero zero

@@ -38,7 +38,7 @@ library
         , uniform-time -any
         , uniform-json -any
         , uniform-pandoc
-        , uniform-convenience -any
+        , uniform-convenience ==0.0.9.5
         , uniform-watch 
         , uniform-webserver
 
