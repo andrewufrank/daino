@@ -31,7 +31,7 @@ import           Test.Framework
 import           Uniform.Test.TestHarness
 import           Uniform.Time (readDate3, UTCTime(..))
 import           Lib.CmdLineArgs (allFlags)
-import           Lib.CheckInput (MetaRec(..), SortArgs(..))
+import           Lib.CheckInput (MetaRec(..), SortArgs(..), PublicationState(..))
 import Lib.IndexMake
 
 blogDir = doughDir testLayout </> makeRelDir "Blog"
@@ -58,7 +58,7 @@ metaRec1t = MetaRec
   , abstract = Just "The directory for experiments."
   , author = Just "AUF"
   , date = Just "2066-06-06 00:00:00 UTC"
-  , publicationState = Nothing
+  , publicationState = PSpublish
   , bibliography = Nothing
   , bibliographyGroup = Nothing
   , keywords = Just "test"
@@ -76,7 +76,7 @@ resmo =  Just
   (IndexEntry{text2 = "postwk", link2 = "/Blog/postwk.html",
               title2 = "index for post",
               abstract2 = "The directory for experiments.", author2 = "AUF",
-              date2 = "2066-06-06 00:00:00 UTC", publish2 = "Nothing"})
+              date2 = "2066-06-06 00:00:00 UTC", publish2 = "publish"})
 
 
 test_getOneIndexEntryPure = assertEqual res22a 
@@ -86,7 +86,7 @@ test_getOneIndexEntryPure = assertEqual res22a
 res22a = IndexEntry{text2 = "postwk", link2 = "/Blog/postwk.html",
            title2 = "index for post",
            abstract2 = "The directory for experiments.", author2 = "AUF",
-           date2 = "2066-06-06 00:00:00 UTC", publish2 = "Nothing"}:: IndexEntry
+           date2 = "2066-06-06 00:00:00 UTC", publish2 = "publish"}:: IndexEntry
 
 test_makeIndex_1 = do
   res <- runErr
@@ -110,17 +110,17 @@ res2 =  Right
     IndexEntry{text2 = "postTufteStyled",
                 link2 = "/Blog/postTufteStyled.html", title2 = "postTufteStyle.md",
                 abstract2 = "A text with two levels of title", author2 = "auf",
-                date2 = "2019-01-04 00:00:00 UTC", publish2 = "Nothing"},
+                date2 = "2019-01-04 00:00:00 UTC", publish2 = "publish"},
     IndexEntry{text2 = "postwk", link2 = "/Blog/postwk.html",
                 title2 = "postwk.md",
                 abstract2 = "A silly text not needing an abstract.",
                 author2 = "AUF", date2 = "2019-01-04 00:00:00 UTC",
-                publish2 = "Nothing"},
+                publish2 = "publish"},
     IndexEntry{text2 = "postwkTufte", link2 = "/Blog/postwkTufte.html",
                 title2 = "postwkTufte.md",
                 abstract2 = "A silly text not needing an abstract updated.",
                 author2 = "auf", date2 = "2019-01-04 00:00:00 UTC",
-                publish2 = "Nothing"}]})
+                publish2 = "publish"}]})
   -- Right
   -- (MenuEntry
   --  { menu2 =

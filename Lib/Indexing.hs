@@ -88,13 +88,13 @@ getMetaRecs layout mdfile = do
     (_, metaRec, report) <- checkOneMdFile layout mdfile
     return (mdfile, metaRec)
             
-checkPubStateWithFlags :: PubFlags -> Maybe PublicationState -> Bool
+checkPubStateWithFlags :: PubFlags ->  PublicationState -> Bool
 
 -- check wether the pubstate corresponds to the flag
-checkPubStateWithFlags flags (Just PSpublish) = publishFlag flags
-checkPubStateWithFlags flags (Just PSdraft) = draftFlag flags
-checkPubStateWithFlags flags (Just PSold) = oldFlag flags
-checkPubStateWithFlags _ (Just PSzero) = False
-checkPubStateWithFlags flags Nothing = publishFlag flags
+checkPubStateWithFlags flags ( PSpublish) = publishFlag flags
+checkPubStateWithFlags flags ( PSdraft) = draftFlag flags
+checkPubStateWithFlags flags ( PSold) = oldFlag flags
+checkPubStateWithFlags _ ( PSzero) = False
+-- checkPubStateWithFlags flags Nothing = publishFlag flags
     
     

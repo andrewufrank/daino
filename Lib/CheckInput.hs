@@ -104,7 +104,7 @@ data MetaRec = MetaRec {
                               , abstract :: Maybe Text
                               , author :: Maybe Text
                               , date :: Maybe UTCTime -- read the time early one to find errors
-                              , publicationState :: Maybe PublicationState
+                              , publicationState ::  PublicationState
                               , bibliography :: Maybe FilePath -- (Path Abs File)
                               , bibliographyGroup :: Maybe Text 
                               , keywords :: Maybe Text 
@@ -120,16 +120,16 @@ instance Zeros MetaRec where
 instance ToJSON MetaRec
 instance FromJSON MetaRec where
 
-text2publish :: Maybe Text -> Maybe PublicationState
+text2publish :: Maybe Text ->  PublicationState
 -- convert a text to a publicationstate
-text2publish (Nothing) = Nothing
+text2publish (Nothing) = PSpublish
 --  the default is to publish 
 text2publish (Just tt) = case (toLower' tt) of
-  "true"    -> Just PSpublish
-  "publish" -> Just PSpublish
-  "draft"   -> Just PSdraft
-  "old"     -> Just PSold
-  _         -> Nothing
+  "true"    ->  PSpublish
+  "publish" ->  PSpublish
+  "draft"   ->  PSdraft
+  "old"     ->  PSold
+  _         -> PSzero  
 
 
 data PublicationState = PSpublish | PSdraft | PSold | PSzero

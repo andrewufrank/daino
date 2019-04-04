@@ -29,9 +29,9 @@ import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)
 
 
 psIn = ["true", "publish", "draft", "old", "", "xx", "Publish", "Draft", "OLD"]
-psRes =  [Just PSpublish, Just PSpublish, Just PSdraft, Just PSold,
-     Nothing, Nothing, 
-     Just PSpublish, Just PSdraft, Just PSold]
+psRes =  [ PSpublish,  PSpublish,  PSdraft,  PSold,
+     PSzero, PSzero, 
+      PSpublish,  PSdraft,  PSold]
      
 test_PS = assertEqual psRes (map (text2publish . Just) psIn)
 
@@ -40,7 +40,7 @@ saRes = [SAtitle, SAtitle, SAdate, SAreverseDate, SAzero, SAzero, SAtitle]
 
 test_SA = assertEqual saRes (map (text2sortargs . Just) sain)
 
-test_PSnothing = assertEqual Nothing (text2publish Nothing)
+-- test_PSnothing = assertEqual Nothing (text2publish PSzero)
 
 checkOneMdFilex = checkOneMdFile layoutDefaults
 ----
