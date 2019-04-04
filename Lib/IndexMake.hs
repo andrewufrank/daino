@@ -105,9 +105,9 @@ getOneIndexEntryPure :: MetaRec -> Text -> IndexEntry
 getOneIndexEntryPure metaRec linkName = IndexEntry
   { text2 = s2t . takeBaseName . t2s $ linkName
   , link2 = linkName
-  , abstract2 = fromMaybe "" $ abstract metaRec
-  , title2 = fromMaybe linkName $ title metaRec
-  , author2 = fromMaybe "" $ author metaRec
+  , abstract2 = abstract metaRec
+  , title2 = if isZero (title metaRec :: Text ) then  linkName  else title metaRec
+  , author2 =  author metaRec
   , date2 =   showT $ date metaRec
   , publish2 = shownice $ publicationState metaRec
   }

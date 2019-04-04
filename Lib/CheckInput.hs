@@ -60,9 +60,9 @@ readMeta2rec layout meta2 = (ix, report)
       {
         -- text     = s2t fnn
     -- , link     = ln
-        abstract         = abstract1
-      , title            = title1
-      , author           = author1
+        abstract         = fromMaybe "" abstract1
+      , title            = fromMaybe "" title1
+      , author           = fromMaybe "" author1
       , date             = maybe year2000 (fromJustNote "readDate 408ds" . readDateMaybe) date1   -- test early for proper format
       , publicationState = text2publish $ publish1
       , bibliography  = fmap (\f -> toFilePath $ (doughDir layout) </> makeRelFileT f) bibliography1
@@ -100,9 +100,9 @@ readMeta2rec layout meta2 = (ix, report)
 data MetaRec = MetaRec {
         -- text ::  Text  -- ^ naked filename -- not shown
                               -- , link :: Text -- ^ the url relative to dough dir
-                               title :: Maybe Text -- ^ the title as shown
-                              , abstract :: Maybe Text
-                              , author :: Maybe Text
+                               title ::  Text -- ^ the title as shown
+                              , abstract ::  Text
+                              , author ::  Text
                               , date ::  UTCTime -- read the time early one to find errors
                               , publicationState ::  PublicationState
                               , bibliography :: Maybe FilePath -- (Path Abs File)
