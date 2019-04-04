@@ -57,7 +57,8 @@ readMeta2rec :: SiteLayout -> Path Abs File -> Value -> (MetaRec, Text)
 readMeta2rec layout mdfn meta2 = (ix, report)
  where
   ix = MetaRec    
-      { nakedFN = s2t .  getNakedFileName  . toFilePath $ mdfn
+      { fn = -- s2t .  getNakedFileName  . 
+                    toFilePath $ mdfn
       , relURL     = toFilePathT . fromJustNote "readMeta2rec relURL wer234c" 
                 $ (stripPrefix (doughDir layout) mdfn :: Maybe (Path Rel File))
       ,  abstract         = fromMaybe "" abstract1
@@ -98,7 +99,7 @@ readMeta2rec layout mdfn meta2 = (ix, report)
 
 -- | the data in the meta/yaml part of the md files 
 data MetaRec = MetaRec  
-        { nakedFN ::  Text  -- ^ naked filename as text
+        { fn ::  FilePath  -- ^  filename abs file
         , relURL :: Text -- ^ the url relative to dough dir as text
         ,  title ::  Text -- ^ the title as shown
         , abstract ::  Text

@@ -102,7 +102,7 @@ docValToAllVal :: Bool
                 -> SiteLayout 
                -> PubFlags
                -> HTMLout
-               -> Path Abs File
+              --  -> Path Abs File
             --    -> Path Abs Dir
                -> MetaRec
                -> ErrIO DocValue
@@ -113,7 +113,8 @@ docValToAllVal :: Bool
 -- the current file is only necessary if it is an index file
 -- then to determine the current dir
 -- and to exclude it from index
-docValToAllVal debug layout flags htmlout pageFn  metaRec = do
+docValToAllVal debug layout flags htmlout   metaRec = do
+  let pageFn = makeAbsFile . fn $ metaRec 
   let mpageType = fmap makeAbsFile $ pageTemplate metaRec :: Maybe (Path Abs File)
   when debug $ putIOwords ["docValToAllVal"] -- , "mpt", showT mpageType]
   let pageType = maybe (defaultPageType layout) id mpageType :: Path Abs File
@@ -124,7 +125,7 @@ docValToAllVal debug layout flags htmlout pageFn  metaRec = do
   pageTypeYaml <- readYaml2value pageType
   settingsYaml <- readYaml2value (settingsFile flags)
   --        svalue <- decodeThrow . t2b . unYAML $ settings
-  ix <- makeIndex debug layout flags metaRec  (doughDir layout) pageFn
+  ix <- makeIndex debug layout flags metaRec  (doughDir layout) 
   -- now          <- getDateAsText
   fn2 <- stripProperPrefix' (doughDir layout) pageFn
   let bottomLines = BottomLines

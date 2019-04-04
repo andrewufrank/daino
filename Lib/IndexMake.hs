@@ -18,12 +18,13 @@ import           GHC.Exts (sortWith)
 import           Uniform.Json
 import           Uniform.Json (FromJSON(..))
 import           Uniform.Time (year2000)
+import Uniform.Filenames (makeAbsFile)
 import           Lib.CheckInput (MetaRec(..)
                                , SortArgs(..)
                                )
 
 makeBothIndex :: Path Abs Dir -> Path Abs File -> SortArgs 
-      -> [(Path Abs File, MetaRec)] -> [Path Abs Dir] -> MenuEntry
+      -> [MetaRec] -> [Path Abs Dir] -> MenuEntry
 makeBothIndex dough2 indexFn sortFlag metaRecs dirs =
   MenuEntry { menu2 = dirIxsSorted2 ++ fileIxsSorted }
   where
@@ -81,7 +82,7 @@ sortFileEntries sortArg fileIxsMs = case sortArg of
 makeIndexEntries :: Path Abs Dir
                  -> Path Abs File
                  -> SortArgs
-                 -> [(Path Abs File, MetaRec)]
+                 -> [MetaRec]
                  -> [IndexEntry]
 
 -- reduce the index entries 
@@ -90,14 +91,15 @@ makeIndexEntries dough indexFile sortArg pms =
 
 makeOneIndexEntry :: Path Abs Dir
                   -> Path Abs File
-                  -> (Path Abs File, MetaRec)
+                  -> MetaRec
                   -> Maybe IndexEntry
-makeOneIndexEntry dough2 indexFile (fn, metaRec) =
-  if hasExtension (makeExtensionT "md") fn || fn /= indexFile
+makeOneIndexEntry dough2 indexFile (metaRec) =
+  if hasExtension (makeExtensionT "md") fn1 || fn1 /= indexFile
   then Just $ getOneIndexEntryPure metaRec linkName
   else Nothing
   where
-    linkName = makeRelLink dough2 fn
+    linkName = makeRelLink dough2 fn1
+    fn1 = makeAbsFile $ fn metaRec
 
 getOneIndexEntryPure :: MetaRec -> Text -> IndexEntry
 -- | the pure code to compute an IndexEntry

@@ -69,7 +69,7 @@ test_pandoc_16_A_F = test1FileIO progName  "resultAD6" "resultAF6" pandocToConte
 --
 docVal2 :: HTMLout -> Path Abs File -> TripleDoc -> ErrIO DocValue
 docVal2 htmlout pagefn triple = docValToAllVal False testLayout allFlags 
-                              htmlout (pagefn)
+                              htmlout  
                  (snd3 triple)
 
 test_pandoc_11_F_G, test_pandoc_12_F_G :: IO ()

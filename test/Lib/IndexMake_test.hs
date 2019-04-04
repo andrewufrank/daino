@@ -54,7 +54,23 @@ test_relLink =  assertEqual (resLink)  $
 resLink = "/Blog/postwk.html" :: Text
 
 metaRec1t = MetaRec
-  { nakedFN = "postwk.html"
+  { fn = toFilePath (doughDir testLayout </> makeRelFile  "Blog/index.md" :: Path Abs File)
+  , relURL = "/Blog/index.html"
+  , title =  "index for post"
+  , abstract =  "The directory for experiments."
+  , author =  "AUF"
+  , date =  "2066-06-06 00:00:00 UTC"
+  , publicationState = PSpublish
+  , bibliography = Nothing
+  , bibliographyGroup = Nothing
+  , keywords = Just "test"
+  , pageTemplate = Just "page3.yaml"
+  , indexPage =  True
+  , indexSort = SAtitle
+  }
+
+metaRec95 = MetaRec
+  { fn = toFilePath linkIn
   , relURL = "/Blog/postwk.html"
   , title =  "index for post"
   , abstract =  "The directory for experiments."
@@ -73,7 +89,7 @@ test_makeRelLink = assertEqual resmr (makeRelLink dough2 linkIn)
 resmr = "/Blog/postwk.html"
 
 test_makeOneIndexEntry = assertEqual resmo (makeOneIndexEntry dough2 indexIn 
-          (linkIn, metaRec1t))
+          metaRec95)
 resmo =  Just
   (IndexEntry{text2 = "postwk", link2 = "/Blog/postwk.html",
               title2 = "index for post",
@@ -98,7 +114,7 @@ test_makeIndex_1 = do
       allFlags  -- not include drafts!
       metaRec1t
       (doughDir testLayout)
-      blogindexfn
+      -- blogindexfn
   -- 
   assertEqual res2 res
 

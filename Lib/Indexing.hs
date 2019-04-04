@@ -33,31 +33,32 @@ makeIndex :: Bool
           -> PubFlags
           -> MetaRec
           -> Path Abs Dir
-          -> Path Abs File
+        --   -> Path Abs File
           -> ErrIO MenuEntry
 
 -- | make the index text, will be moved into the page template with templating
 -- return zero if not index page
-makeIndex debug layout flags metaRec dough2 indexpageFn  = do
+makeIndex debug layout flags metaRec dough2   = do
     -- let doindex = indexPage metaRec
   -- let indexSort1 = indexSort metaRec :: SortArgs
     when debug $ putIOwords ["makeIndex", "doindex", showT (indexPage metaRec)]
     if not (indexPage metaRec)
        then return zero 
        else do
+            let indexpageFn = makeAbsFile $ fn metaRec 
             let pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir
             fs2 :: [FilePath] <- getDirContentFiles (toFilePath pageFn)
             dirs2 :: [FilePath] <- getDirectoryDirs' (toFilePath pageFn) 
             when debug $ do 
                 putIOline  "makeIndexForDir 2 for" pageFn
-                putIOline "index file" indexpageFn
+                putIOline "index file" (fn metaRec) -- indexpageFn
                 putIOline "sort"  (indexSort metaRec)
                 putIOline "flags" flags
                 putIOlineList "files found" fs2
                 putIOlineList "dirs found"  dirs2
                     
             let fs4 = filter (indexpageFn /=) . map makeAbsFile $ fs2 :: [Path Abs File]
-            metaRecs2 :: [(Path Abs File, MetaRec)]
+            metaRecs2 :: [MetaRec]
                 <- mapM (getMetaRecs layout) fs4
             
             --   let fileIxsSorted =
@@ -69,9 +70,9 @@ makeIndex debug layout flags metaRec dough2 indexpageFn  = do
             --   --     else []
             let menu1 = makeBothIndex
                     dough2
-                    indexpageFn
+                    indexpageFn 
                     (indexSort metaRec)
-                    (filter (checkPubStateWithFlags flags . publicationState . snd) metaRecs2)
+                    (filter (checkPubStateWithFlags flags . publicationState) metaRecs2)
                     (map makeAbsDir dirs2)
             -- MenuEntry { menu2 = dirIxsSorted2 ++ fileIxsSorted }
             when debug
@@ -83,10 +84,10 @@ makeIndex debug layout flags metaRec dough2 indexpageFn  = do
             return menu1
 
 
-getMetaRecs :: SiteLayout -> Path Abs File -> ErrIO (Path Abs File, MetaRec)
+getMetaRecs :: SiteLayout -> Path Abs File -> ErrIO MetaRec
 getMetaRecs layout mdfile = do
     (_, metaRec, report) <- checkOneMdFile layout mdfile
-    return (mdfile, metaRec)
+    return metaRec
             
 checkPubStateWithFlags :: PubFlags ->  PublicationState -> Bool
 

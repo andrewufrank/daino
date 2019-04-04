@@ -63,7 +63,7 @@ bakeOneFile debug flags pageFn layout ht2 =
       htmlout :: HTMLout <- pandocToContentHtml debug pandoc2 -- content.docval  AD -> AF
       -- index :: MenuEntry           <- makeIndex debug flags docval pageFn metaRec
 
-      val    <- docValToAllVal debug layout flags htmlout pageFn  metaRec
+      val    <- docValToAllVal debug layout flags htmlout  metaRec
       html2  <- putValinMaster debug val (templatesDir layout)
       write8 ht2 htmloutFileType html2
                                  --            putIOwords ["bakeOneFile outhtml
