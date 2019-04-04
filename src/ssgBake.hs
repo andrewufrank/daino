@@ -39,6 +39,7 @@ main = startProg
   (do
      flags :: PubFlags <- parseArgs2input
        settingsFileName
+      --  add a delete flag
        (unlinesT
           [ "the flags to select what is included:"
           , "default is nothing included"

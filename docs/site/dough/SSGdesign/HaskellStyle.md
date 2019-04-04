@@ -42,7 +42,19 @@ changes and avoiding redoing if not required).
 Third: for each transformation, separate pure operations from the IO 
 related one. For the pure functions, provide test cases.
 
-## Testing while development
+## Structure 
+
+1. Call a second level main in ErrIO and assure errors are properly reported back.
+Use, for example, the function  `startProg` from `uniform-convenience`.
+
+2. Read command line arguments; start with nothing and add switches as 
+needed.
+
+Maintaining results up-to-date: use `uniform-watch` to re-run functions when files change.
+
+Manage file based processing:  Use `uniform-shake` to manage files. 
+
+### Testing while development
 For each module start a corresponding module in the `tests` directory. 
 Whenever a function is not immediately producing the correct result, 
 produce a test case and leave it to re-test always. 
