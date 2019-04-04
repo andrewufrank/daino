@@ -26,19 +26,19 @@ import           Lib.CheckInput (MetaRec(..), checkOneMdFile
                                , PublicationState(..))
 -- , readMeta2rec
 -- , checkOneMdFile
-import           Lib.Foundation (SiteLayout)
+import           Lib.Foundation (SiteLayout, doughDir)
 import Lib.IndexMake (makeBothIndex, MenuEntry, IndexEntry)
 makeIndex :: Bool
           -> SiteLayout
           -> PubFlags
           -> MetaRec
-          -> Path Abs Dir
+        --   -> Path Abs Dir
         --   -> Path Abs File
           -> ErrIO MenuEntry
 
 -- | make the index text, will be moved into the page template with templating
 -- return zero if not index page
-makeIndex debug layout flags metaRec dough2   = do
+makeIndex debug layout flags metaRec    = do
     -- let doindex = indexPage metaRec
   -- let indexSort1 = indexSort metaRec :: SortArgs
     when debug $ putIOwords ["makeIndex", "doindex", showT (indexPage metaRec)]
@@ -69,7 +69,7 @@ makeIndex debug layout flags metaRec dough2   = do
             --   --     then dirIxsSorted ++ [zero { title2 = "------" }]
             --   --     else []
             let menu1 = makeBothIndex
-                    dough2
+                    (doughDir layout)
                     indexpageFn 
                     (indexSort metaRec)
                     (filter (checkPubStateWithFlags flags . publicationState) metaRecs2)

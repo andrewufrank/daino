@@ -21,6 +21,7 @@ import           Uniform.Time (year2000)
 import Uniform.Filenames (makeAbsFile)
 import           Lib.CheckInput (MetaRec(..)
                                , SortArgs(..)
+                               , makeRelPath
                                )
 
 makeBothIndex :: Path Abs Dir -> Path Abs File -> SortArgs 
@@ -58,14 +59,15 @@ formatOneDirIndexEntry :: Path Abs Dir -> Path Abs Dir -> IndexEntry
 -- fn is name of dir, the link should to to ../index.html 
 formatOneDirIndexEntry dough2 fn = zero
   { text2 = s2t (getNakedDir fn :: FilePath)
-  , link2 = linkName
+  , link2 = s2t $ makeRelPath dough2 (fn </> (makeRelFile "index.html") :: Path Abs File)
   , title2 = baseName1 <> " (subdirectory)"
   }
   where
     baseName1 = s2t (getNakedDir fn :: FilePath)
 
     -- s2t . takeBaseName . toFilePath $ fn
-    linkName = makeRelLink dough2 (fn </> (makeRelFile "index.mt"))
+    -- linkName = makeRelLink2  "index.md" 
+    -- dough2 (fn </> (makeRelFile "index.mt"))
 
 
 ---------------- F O R    F I L E S 
@@ -95,38 +97,50 @@ makeOneIndexEntry :: Path Abs Dir
                   -> Maybe IndexEntry
 makeOneIndexEntry dough2 indexFile (metaRec) =
   if hasExtension (makeExtensionT "md") fn1 || fn1 /= indexFile
-  then Just $ getOneIndexEntryPure metaRec linkName
+  then Just $ getOneIndexEntryPure metaRec 
   else Nothing
   where
-    linkName = makeRelLink dough2 fn1
+    -- linkName = makeRelLink2 $ toFilePath fn1 -- dough2 fn1
     fn1 = makeAbsFile $ fn metaRec
 
-getOneIndexEntryPure :: MetaRec -> Text -> IndexEntry
+getOneIndexEntryPure :: MetaRec  -> IndexEntry
 -- | the pure code to compute an IndexEntry
 -- Text should be "/Blog/postTufteStyled.html"
-getOneIndexEntryPure metaRec linkName = IndexEntry
-  { text2 = s2t . takeBaseName . t2s $ linkName
-  , link2 = linkName
+getOneIndexEntryPure metaRec  = IndexEntry
+  { text2 = s2t . takeBaseName . fn $ metaRec 
+  , link2 = s2t $ setExtension "html". removeExtension . relURL $ metaRec 
   , abstract2 = abstract metaRec
-  , title2 = if isZero (title metaRec :: Text ) then  linkName  else title metaRec
+  , title2 = if isZero (title metaRec :: Text ) 
+        then  (s2t . takeBaseName . fn $ metaRec )  
+        else title metaRec
   , author2 =  author metaRec
   , date2 =   showT $ date metaRec
   , publish2 = shownice $ publicationState metaRec
   }
 
-makeRelLink :: Path Abs Dir -> Path Abs a -> Text
--- | convert a filepath to a relative link 
-makeRelLink dough2 mdfile = s2t
-  $ ("/" <>)
-  --   . toFilePath 
-  . setExtension "html" -- (makeExtensionT "html")
-  . removeExtension
-  . toFilePath
-  $ rel2root
-  where
-    rel2root =
-      fromJustNote "makeRelLink 2321cv" $ stripProperPrefixM dough2 mdfile
+-- makeRelLinkZ :: Path Abs Dir -> Path Abs a -> Text
+-- -- | convert a filepath to a relative link 
+-- makeRelLinkZ dough2 mdfile = s2t
+--   $ ("/" <>)
+--   --   . toFilePath 
+--   . setExtension "html" -- (makeExtensionT "html")
+--   . removeExtension
+--   . toFilePath
+--   $ rel2root
+--   where
+--     rel2root =
+--       fromJustNote "makeRelLink 2321cv" $ stripProperPrefixM dough2 mdfile
 
+
+-- makeRelLink2 :: FilePath -> Text
+-- -- | convert a relative filepath 
+-- makeRelLink2   mdfileRel = s2t
+--   $ ("/" <>)
+--   --   . toFilePath 
+--   . setExtension "html" -- (makeExtensionT "html")
+--   . removeExtension
+--   -- . toFilePath
+--   $ mdfileRel
 
       ------  S U P P O R T 
 

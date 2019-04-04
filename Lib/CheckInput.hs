@@ -39,16 +39,8 @@ checkOneMdFile  layout mdfn = do
   -- putIOwords ["checkOneMdFile meta2", showT meta2]
 
   let (metaRec1,report1) = readMeta2rec layout mdfn meta2
-  -- ixEntry                       <- getOneIndexEntry allFlags dough2 (dough2 </> mdfn)
-  -- what needs to be checked ?  -- check with all flags true 
-
-  -- let doindex1 =  maybe False ("True"==) $ getMaybeStringAtKey meta2 "indexPage"  :: Bool
-  -- let doindex2 = maybe False id $ getAtKey meta2 "indexPage" :: Bool
 
   let report2 = unwords' ["\n ------------------",  "\n", report1]
-  -- putIOwords [ "checkOneMdFile end metaRec1"     -- , showT meta2
-  --   , showT   metaRec1]
-  -- putIOwords ["report2 \n"     , showT  report2, "\n"    ]
   return (pandoc, metaRec1, report2) 
 
 readMeta2rec :: SiteLayout -> Path Abs File -> Value -> (MetaRec, Text)
@@ -58,9 +50,8 @@ readMeta2rec layout mdfn meta2 = (ix, report)
  where
   ix = MetaRec    
       { fn = -- s2t .  getNakedFileName  . 
-                    toFilePath $ mdfn
-      , relURL     = toFilePathT . fromJustNote "readMeta2rec relURL wer234c" 
-                $ (stripPrefix (doughDir layout) mdfn :: Maybe (Path Rel File))
+                    toFilePath $ (mdfn :: Path Abs File)
+      , relURL     = makeRelPath (doughDir layout) mdfn -- (Path Rel File))
       ,  abstract         = fromMaybe "" abstract1
       , title            = fromMaybe "" title1
       , author           = fromMaybe "" author1
@@ -100,7 +91,7 @@ readMeta2rec layout mdfn meta2 = (ix, report)
 -- | the data in the meta/yaml part of the md files 
 data MetaRec = MetaRec  
         { fn ::  FilePath  -- ^  filename abs file
-        , relURL :: Text -- ^ the url relative to dough dir as text
+        , relURL :: FilePath -- ^ the filepath relative to dough dir  
         ,  title ::  Text -- ^ the title as shown
         , abstract ::  Text
         , author ::  Text
@@ -133,6 +124,10 @@ text2publish (Just tt) = case (toLower' tt) of
   "old"     ->  PSold
   _         -> PSzero  
 
+makeRelPath :: Path Abs Dir -> Path Abs File -> FilePath
+makeRelPath dough2  mdfn = ("/" <>)   .toFilePath . fromJustNote "readMeta2rec relURL wer234c" 
+  $ (stripPrefix dough2 mdfn :: Maybe (Path Rel File))
+  -- the references must be absolute (relative to the root, which is doug/)
 
 data PublicationState = PSpublish | PSdraft | PSold | PSzero
                   deriving (Generic,  Show, Read, Ord, Eq)

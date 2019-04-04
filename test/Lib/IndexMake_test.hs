@@ -31,7 +31,7 @@ import           Test.Framework
 import           Uniform.Test.TestHarness
 import           Uniform.Time (readDate3, UTCTime(..))
 import           Lib.CmdLineArgs (allFlags)
-import           Lib.CheckInput (MetaRec(..), SortArgs(..), PublicationState(..))
+import           Lib.CheckInput (MetaRec(..), SortArgs(..), PublicationState(..), makeRelPath)
 import Lib.IndexMake
 
 blogDir = doughDir testLayout </> makeRelDir "Blog"
@@ -48,14 +48,15 @@ res2a = "Blog" :: FilePath
 
 linkIn = doughDir testLayout </> makeRelFile  "Blog/postwk.md" :: Path Abs File
 indexIn = doughDir testLayout </> makeRelFile  "Blog/index.md" :: Path Abs File
-test_relLink =  assertEqual (resLink)  $ 
-                    makeRelLink (doughDir testLayout :: Path Abs Dir) linkIn
+test_relLink =  assertEqual (resLink)  $ setExtension "html". removeExtension $
+                    makeRelPath dough2 linkIn
+                      -- (doughDir testLayout :: Path Abs Dir) linkIn
         
-resLink = "/Blog/postwk.html" :: Text
+resLink = "/Blog/postwk.html" :: FilePath
 
 metaRec1t = MetaRec
   { fn = toFilePath (doughDir testLayout </> makeRelFile  "Blog/index.md" :: Path Abs File)
-  , relURL = "/Blog/index.html"
+  , relURL = "/Blog/index.md"
   , title =  "index for post"
   , abstract =  "The directory for experiments."
   , author =  "AUF"
@@ -85,8 +86,16 @@ metaRec95 = MetaRec
   , indexSort = SAtitle
   }
 
-test_makeRelLink = assertEqual resmr (makeRelLink dough2 linkIn)
-resmr = "/Blog/postwk.html"
+linkIn2 = toFilePath . fromJustNote "readMeta2rec relURL wer234c" 
+    $ (stripPrefix (doughDir testLayout) linkIn :: Maybe (Path Rel File))
+
+test_url = assertEqual "/Blog/postwk.md" $ makeRelPath dough2 linkIn 
+
+      -- toFilePath . fromJustNote "readMeta2rec relURL wer234c" 
+      --           $ (stripPrefix (doughDir layout) mdfn :: Maybe (Path Rel File)) linkIn2 
+
+test_makeRelLink = assertEqual resmr (makeRelPath dough2  linkIn)
+resmr = "/Blog/postwk.md"
 
 test_makeOneIndexEntry = assertEqual resmo (makeOneIndexEntry dough2 indexIn 
           metaRec95)
@@ -99,7 +108,7 @@ resmo =  Just
 
 test_getOneIndexEntryPure = assertEqual res22a 
         (getOneIndexEntryPure  
-           metaRec1t resmr)
+           metaRec95)
 
 res22a = IndexEntry{text2 = "postwk", link2 = "/Blog/postwk.html",
            title2 = "index for post",
@@ -113,7 +122,7 @@ test_makeIndex_1 = do
       testLayout 
       allFlags  -- not include drafts!
       metaRec1t
-      (doughDir testLayout)
+      -- (doughDir testLayout)
       -- blogindexfn
   -- 
   assertEqual res2 res
