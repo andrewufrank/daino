@@ -47,6 +47,7 @@ import {-@ HTF_TESTS @-} Lib.Pandoc_test
  -- -- not used -- import {-@ HTF_TESTS @-} Lib.Indexing_test
 import {-@ HTF_TESTS @-} Lib.IndexMake_test
 import {-@ HTF_TESTS @-} Lib.Templating_test  -- AG -> EG 
+import {-@ HTF_TESTS @-} Lib.Shake2_test  -- AG -> EG 
 -- --import {-@ HTF_TESTS @-} Lib.BibTex_test
 --
 --
@@ -65,4 +66,8 @@ main =  do  -- with tests in other modules
     putStrLn ("HTF end ExampleTest.hs test:\n" ++ show p ++ "\nEND HTF ExampleTest")
     return ()
 
+main2 :: IO () 
+main2 = do -- just a simple bake for test
+          putStrLn "main2"
+          return () 
 

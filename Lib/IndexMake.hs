@@ -27,9 +27,11 @@ import           Lib.CheckInput (MetaRec(..)
 makeBothIndex :: Path Abs Dir -> Path Abs File -> SortArgs 
       -> [MetaRec] -> [Path Abs Dir] -> MenuEntry
 makeBothIndex dough2 indexFn sortFlag metaRecs dirs =
-  MenuEntry { menu2 = dirIxsSorted2 ++ fileIxsSorted }
+  MenuEntry { menu2 = dirIxsSorted2 ++ fileIndexs ++ [zero{title2 = "------"}] ++ fileContent }
   where
     fileIxsSorted = makeIndexEntries dough2 indexFn sortFlag metaRecs
+    fileIndexs = filter (isIndex) fileIxsSorted
+    fileContent = filter (not . isIndex) fileIxsSorted 
 
     dirIxsSorted2 = makeIndexEntriesDirs dough2 dirs
 
@@ -118,6 +120,7 @@ getOneIndexEntryPure metaRec  = IndexEntry
   , author2 =  author metaRec
   , date2 =   showT $ date metaRec
   , publish2 = shownice $ publicationState metaRec
+  , isIndex = indexPage metaRec
   }
 
 
@@ -145,11 +148,12 @@ data IndexEntry =
     , author2 :: Text
     , date2 :: Text -- UTCTime -- read the time early one to find errors
     , publish2 :: Text
+    , isIndex :: Bool -- mark for index entries 
     }
   deriving (Generic, Eq, Ord, Show, Read)
 
 instance Zeros IndexEntry where
-  zero = IndexEntry zero zero zero zero zero zero zero
+  zero = IndexEntry zero zero zero zero zero zero zero False
 
 --instance FromJSON IndexEntry
 instance ToJSON IndexEntry
