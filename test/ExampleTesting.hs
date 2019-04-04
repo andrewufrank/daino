@@ -15,6 +15,9 @@ module Main     where      -- must have Main (main) or Main where
 import           Test.Framework
 import Lib.Shake2  -- just to test ghci
 import Uniform.FileIO
+import Uniform.WebServer(runScotty)
+import Lib.CmdLineArgs (allFlags)
+import           Lib.Foundation (SiteLayout(..), settingsFileName)
 -- import Uniform.Error
 
 -- import {-@ HTF_TESTS @-} Lib.Shake2_test 
@@ -69,5 +72,11 @@ main =  do  -- with tests in other modules
 main2 :: IO () 
 main2 = do -- just a simple bake for test
           putStrLn "main2"
-          return () 
+          runErrorVoid $ do 
+                    shakeAll testLayout allFlags ""
+         -- the last is the filename that caused the shake call
+         --  let landing = makeRelFile "landingPage.html"
+          
+                    runScotty 3099 (bakedDir testLayout) (landingPage testLayout)
+                    return () 
 
