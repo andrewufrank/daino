@@ -39,10 +39,10 @@ makeIndex :: Bool
 -- | make the index text, will be moved into the page template with templating
 -- return zero if not index page
 makeIndex debug layout flags metaRec dough2 indexpageFn  = do
-    let doindex = fromMaybe False $ indexPage metaRec
+    -- let doindex = indexPage metaRec
   -- let indexSort1 = indexSort metaRec :: SortArgs
-    when debug $ putIOwords ["makeIndex", "doindex", showT doindex]
-    if not doindex
+    when debug $ putIOwords ["makeIndex", "doindex", showT (indexPage metaRec)]
+    if not (indexPage metaRec)
        then return zero 
        else do
             let pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir

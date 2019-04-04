@@ -63,7 +63,7 @@ metaRec1t = MetaRec
   , bibliographyGroup = Nothing
   , keywords = Just "test"
   , pageTemplate = Just "page3.yaml"
-  , indexPage = Just True
+  , indexPage =  True
   , indexSort = SAtitle
   }
 

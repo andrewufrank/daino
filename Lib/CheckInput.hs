@@ -69,7 +69,7 @@ readMeta2rec layout meta2 = (ix, report)
       , bibliographyGroup = bibliographyGroup1
       , keywords = keywords1
       , pageTemplate = fmap (\f -> toFilePath $ (templatesDir layout) </> makeRelFileT f) pageTemplate1
-      , indexPage = indexPage1
+      , indexPage = fromMaybe False indexPage1
       , indexSort = text2sortargs indexSort1
           -- default is publish
       }
@@ -109,7 +109,7 @@ data MetaRec = MetaRec {
                               , bibliographyGroup :: Maybe Text 
                               , keywords :: Maybe Text 
                               , pageTemplate:: Maybe FilePath -- (Path Abs File)
-                              , indexPage :: Maybe Bool
+                              , indexPage ::  Bool
                               , indexSort :: SortArgs 
 
                               } deriving (Generic, Eq, Ord, Show, Read)
