@@ -11,5 +11,4 @@ publish: draft
 Some draft text without meaning; draft
 
 
-
   An example post. draft 

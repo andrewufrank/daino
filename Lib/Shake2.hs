@@ -21,7 +21,8 @@ import           Uniform.Error (ErrIO, callIO, liftIO)
 import           Uniform.Shake 
 import           Uniform.Strings (putIOwords, showT)
 import           Lib.Foundation (SiteLayout(..), resourcesDirName, staticDirName
-                               , templatesDirName, templatesDir, templatesImgDirName)
+                               , templatesDirName, templatesDir, templatesImgDirName
+                               , imagesDirName)
 import           Lib.CmdLineArgs (PubFlags(..))
 import           Lib.Bake (bakeOneFile)
 
@@ -65,13 +66,16 @@ shakeAll layout flags filepath = do
       templatesP = templatesDir layout 
       bakedP = bakedDir layout
       bannerImageFileName = (bannerImage layout)
+      bannerImage2 = templatesImgDirName `addFileName` bannerImageFileName
+
+       
+
   setCurrentDir doughP  -- must be done earlier to find settings file!
   deleteDirRecursive bakedP
   -- delete all the previous stuff for a new start 
   -- covers the delete issue, which shake does not handle well
   -- copy resources and banner   not easy to do with shake
   -- only the html and the pdf files (possible the jpg) are required
-  let bannerImage2 = templatesImgDirName `addFileName` bannerImageFileName
   -- copyOneFile
   --   (templatesP `addFileName` bannerImage2)
   --   (bakedP </> staticDirName </> bannerImage2)
@@ -99,6 +103,8 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
           masterTemplateP = makeRelFile "master4.dtpl" :: Path Rel File
           settingsYamlP = makeRelFile "settings2.yaml" :: Path Rel File
           masterSettings_yaml = doughP </> settingsYamlP :: Path Abs File
+          imagesP = doughP </> resourcesDirName </> imagesDirName 
+          imagesTargetP = staticP </> imagesDirName
       let bannerImageTarget = bakedP </> staticDirName </> bannerImage2
         -- let bannerImageFP =    bannerImage2
       
@@ -166,6 +172,16 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
           let yamlPageFiles2 = [templatesP </> y | y <- yamlPageFiles]
           putIOwords ["shake bakedP", "yamlPages", showT yamlPageFiles2]
           needP yamlPageFiles2
+
+          -- images for blog 
+          imgFiles :: [Path Rel File]
+              <- getDirectoryFilesP imagesP ["*.JPG", "*.jpg"]  -- no subdirs (may change in future)
+          let imagesFiles2 = [imagesTargetP </> i  | i <- imgFiles]
+          putIOwords ["shake imgFiles", showT imagesP, "found", showT imagesFiles2]
+          needP imagesFiles2
+
+
+
           cssFiles22 :: [Path Rel File]
             <- getDirectoryFilesP templatesP ["*.css"] -- no subdirs
           liftIO
@@ -194,7 +210,7 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
           -- l--iftIO $ putIOwords ["\nshakeMD - bakedP html 3 - md1 ", showT md1]
           let md2 = doughP </> (stripProperPrefixP bakedP md) :: Path Abs File
           -- liftIO $ putIOwords ["\nshakeMD - bakedP html 4 - md2 ", showT md2]
-          res <- runErr2action $ bakeOneFile True flags md2 layout outP
+          res <- runErr2action $ bakeOneFile False flags md2 layout outP
           return ()
 
       (toFilePath staticP <> "**/*.html")
@@ -236,6 +252,18 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
           let fromfile = resourcesP </> (makeRelativeP staticP outP)
           liftIO
             $ putIOwords ["\nshakeMD - staticP  pdf - fromfile ", showT fromfile]
+          copyFileChangedP fromfile outP
+      return ()
+
+      [toFilePath imagesTargetP <> "/*.JPG"
+        , toFilePath imagesTargetP <> "/*.jpg"]
+        |%> \out                  -- insert img files -- no subdir (for now)
+        -> do
+          let outP = makeAbsFile out :: Path Abs File
+          liftIO $ putIOwords ["\nshakeMD - image jpg", showT outP]
+          let fromfile = imagesP </> (makeRelativeP imagesTargetP outP)
+          liftIO
+            $ putIOwords ["\nshakeMD - staticP  img=age jpg- fromfile ", showT fromfile]
           copyFileChangedP fromfile outP
       return ()
 
