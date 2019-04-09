@@ -7,7 +7,7 @@
 -----------------------------------------------------------------------------
   {-# LANGUAGE
   MultiParamTypeClasses
-  , TypeSynonymInstances
+  -- , TypeSynonymInstances
 --    , FunctionalDependencies
   , FlexibleInstances
   , FlexibleContexts
@@ -40,7 +40,7 @@ data LitArgs = LitArgs
   , testSwitch  -- ^ t
   , serverSwitch -- ^ s 
   , watchSwitch -- ^ w 
-  -- , uploadSwitch -- ^ u  -- not yet used  
+  , uploadSwitch -- ^ u  -- not yet used  
          :: Bool
   -- , settingsFileString  ::  String  -- ^ f  -- not yet used 
   -- , workingDir :: String -- ^ w  -- not yet used 
@@ -65,9 +65,13 @@ cmdArgs defaultSetting =
     <*> switch
           (long "server" <> short 's' <> help "start a server on port 3001")
     <*> switch
-          (long "watch" <> short 'w' <> help
-            "start the watch of files for restarting bake"
-          )
+        (long "watch" <> short 'w' <> help
+          "start the watch of files for restarting bake"
+        )
+    <*> switch
+        (long "upload" <> short 'u' <> help
+          "upload to external server"
+        )
           --   <*> strOption
           -- (  long "settingsFile (optional)"
           -- <> short 'g'
@@ -91,6 +95,7 @@ data PubFlags = PubFlags
         , testFlag
         , watchFlag
         , serverFlag:: Bool
+        , uploadFlag :: Bool 
         , settingsFile :: Path Abs File
         -- set in call or by test flag 
         -- , portNumber :: Int
@@ -100,8 +105,9 @@ data PubFlags = PubFlags
         } deriving (Show, Read, Eq)
 
 instance Zeros PubFlags where 
-    zero = PubFlags zero zero zero zero zero zero zero
+    zero = PubFlags zero zero zero zero zero zero zero zero
 
+allFlags :: PubFlags
 allFlags = zero {publishFlag = True  -- not including draft
   , oldFlag = True 
   , draftFlag = False
@@ -128,7 +134,7 @@ parseArgs2input settingsFN t1 t2 = do
                          , watchFlag    = watchSwitch args1
                          , serverFlag   = serverSwitch args1
                          , settingsFile = workingdir1 </> settingsFN
-                      --  , workingDir = workingdir1 
+                        ,  uploadFlag = uploadSwitch args1
                          }
 
   let flags2 = if testFlag flags1

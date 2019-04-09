@@ -9,7 +9,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE DeriveGeneric #-}
+-- {-# LANGUAGE DeriveGeneric #-}
 
 module Lib.Indexing (module Lib.Indexing, getAtKey
             , module Lib.IndexMake 
@@ -92,10 +92,10 @@ getMetaRecs layout mdfile = do
 checkPubStateWithFlags :: PubFlags ->  PublicationState -> Bool
 
 -- check wether the pubstate corresponds to the flag
-checkPubStateWithFlags flags ( PSpublish) = publishFlag flags
-checkPubStateWithFlags flags ( PSdraft) = draftFlag flags
-checkPubStateWithFlags flags ( PSold) = oldFlag flags
-checkPubStateWithFlags _ ( PSzero) = False
+checkPubStateWithFlags flags  PSpublish = publishFlag flags
+checkPubStateWithFlags flags  PSdraft = draftFlag flags
+checkPubStateWithFlags flags  PSold = oldFlag flags
+checkPubStateWithFlags _  PSzero = False
 -- checkPubStateWithFlags flags Nothing = publishFlag flags
     
     

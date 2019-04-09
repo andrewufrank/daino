@@ -5,39 +5,31 @@
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 
-module Main     where      -- must have Main (main) or Main where
-
+module Main where      -- must have Main (main) or Main where
 
 --import System.Exit
 -- import System.Directory (createDirectoryIfMissing)
 -- keep this because it is in IO (not ErrIO)
-
 import           Test.Framework
-import Lib.Shake2  -- just to test ghci
-import Uniform.FileIO
-import Uniform.WebServer(runScotty)
-import Lib.CmdLineArgs (allFlags)
+import           Lib.Shake2  -- just to test ghci
+import           Uniform.FileIO
+import           Uniform.WebServer (runScotty)
+import           Lib.CmdLineArgs (allFlags, PubFlags(..))
 import           Lib.Foundation (SiteLayout(..), settingsFileName)
 -- import Uniform.Error
-
 -- import {-@ HTF_TESTS @-} Lib.Shake2_test 
-     -- tests shake for test dough
-     -- issue with rule not producing file
-
+-- tests shake for test dough
+-- issue with rule not producing file
 -- import {-@ HTF_TESTS @-} ShakeStartTests
 -- -- must run first because it produces the test values used later
 -- -- uses layoutDefaults, not settings2.yaml
 -- -- test dir must be ~/.SSG  -- the program name in foundation
-
 -- ordinary tests (run without shakeStartTest)
-import {-@ HTF_TESTS @-} Lib.Foundation_test  -- sets pageFn 
-import {-@ HTF_TESTS @-} Lib.CheckInputs_test
-
-
+import   {-@ HTF_TESTS @-}        Lib.Foundation_test  -- sets pageFn 
+import    {-@ HTF_TESTS @-}       Lib.CheckInputs_test
 -- ----    -- writes A : testLayout
 -- ----    --  pageFn :: abs pandoc filenames
-
-import {-@ HTF_TESTS @-} Lib.Pandoc_test
+import   {-@ HTF_TESTS @-}        Lib.Pandoc_test
 --             --  -> AD markdownToPandoc
 --             -- -> AF pandocToContentHtml
 --             -- -> AG (docValToAllVal)
@@ -47,10 +39,11 @@ import {-@ HTF_TESTS @-} Lib.Pandoc_test
 -- --    -- AD -> AF :: DocValue
 -- --import {-@ HTF_TESTS @-} Lib.Bake_test
 -- --import {-@ HTF_TESTS @-} Lib.ReadSettingFile_test
- -- -- not used -- import {-@ HTF_TESTS @-} Lib.Indexing_test
-import {-@ HTF_TESTS @-} Lib.IndexMake_test
-import {-@ HTF_TESTS @-} Lib.Templating_test  -- AG -> EG 
-import {-@ HTF_TESTS @-} Lib.Shake2_test  -- AG -> EG 
+-- -- not used -- import {-@ HTF_TESTS @-} Lib.Indexing_test
+import  {-@ HTF_TESTS @-}         Lib.IndexMake_test
+import    {-@ HTF_TESTS @-}       Lib.Templating_test  -- AG -> EG 
+import   {-@ HTF_TESTS @-}        Lib.Shake2_test  -- AG -> EG 
+
 -- --import {-@ HTF_TESTS @-} Lib.BibTex_test
 --
 --
@@ -59,24 +52,31 @@ import {-@ HTF_TESTS @-} Lib.Shake2_test  -- AG -> EG
 ----     r <- htfMain htf_thisModulesTests
 ----     putStrLn ("HTF end ExampleTesting.hs test:\n" ++ show r)
 ----     return ()
-main ::  IO ()
-main =  do  -- with tests in other modules
+main :: IO ()
+main        -- with tests in other modules
+  = do
     putStrLn "HTF ExampleTest.hs:\n"
     runErrorVoid $ createDirIfMissing' "/home/frank/.SSG"
     -- is in settings.yaml testDir  - must correspond
-
     p <- htfMain htf_importedTests
-    putStrLn ("HTF end ExampleTest.hs test:\n" ++ show p ++ "\nEND HTF ExampleTest")
+    putStrLn
+      ("HTF end ExampleTest.hs test:\n" ++ show p ++ "\nEND HTF ExampleTest")
     return ()
 
-main2 :: IO () 
-main2 = do -- just a simple bake for test
-          putStrLn "main2"
-          runErrorVoid $ do 
-                    shakeAll testLayout allFlags ""
-         -- the last is the filename that caused the shake call
-         --  let landing = makeRelFile "landingPage.html"
-          
-                    runScotty 3099 (bakedDir testLayout) (landingPage testLayout)
-                    return () 
+main2 :: IO ()
+main2      -- just a simple bake for test
+  = do
+    putStrLn "main2"
+    runErrorVoid
+      $ do
+        shakeAll testLayout testFlags ""
+        -- the last is the filename that caused the shake call
+        --  let landing = makeRelFile "landingPage.html"
+        runScotty 3099 (bakedDir testLayout) (landingPage testLayout)
+        return ()
 
+testFlags = zero { testFlag = True
+                 , publishFlag = True
+                 , serverFlag = True
+                 , watchFlag = True
+                 }

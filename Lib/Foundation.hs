@@ -81,7 +81,8 @@ templatesDir layout = themeDir layout `addFileName` templatesDirName
 
 staticDirName = makeRelDir "static"
 resourcesDirName :: Path Rel Dir
-resourcesDirName = makeRelDir "resources"
+resourcesDirName = makeRelDir "resources"  
+imagesDirName :: Path Rel Dir
 imagesDirName = makeRelDir "img"
 -- imagesResourcesDirName = resourcesDirName </> imagesDirName 
 

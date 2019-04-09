@@ -4,8 +4,12 @@
 :set -fno-warn-unused-do-bind 
 :set -fno-warn-missing-signatures
 :set -fno-warn-orphans
-:set -isrc
-:set -itest
+:set -fno-warn-type-defaults 
+:set -fno-warn-dodgy-imports 
+:set -fno-warn-unused-matches 
+:set -fno-warn-warnings-deprecations 
+:set -fno-warn-duplicate-exports
+:set -itests
 :set -i.stack-work/dist/x86_64-linux-tinfo6/Cabal-2.4.0.1/build/autogen/
-:load test/ExampleTesting.hs
+:load tests/ExampleTesting.hs
 --test:=ssgTest

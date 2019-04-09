@@ -22,24 +22,12 @@ import Uniform.Test.TestHarness
 
 import Lib.Foundation (progName, SiteLayout (..), templatesDirName)
 import Lib.Shake2
--- import Lib.FileMgt
 import Lib.Foundation_test (testLayout)
 import Lib.Foundation (templatesImgDirName, bannerImageFileName)
 import Lib.CmdLineArgs (allFlags)
--- import Lib.Foundation (templatesDirName)
--- import Uniform.Json (AtKey(..), Value(..))
--- import Uniform.Pandoc -- (DocValue(..), unDocValue, docValueFileType)
---import Lib.Templating (Gtemplate(..), gtmplFileType, Dtemplate(..))
--- import Control.Lens
---import Data.Aeson
--- import Data.Aeson.Lens
--- import Data.Aeson
---import Data.Aeson.Encode.Pretty (encodePretty)
---import Data.ByteString.Lazy as BS (putStrLn)
 
 test_shakeMD = 
     do 
-        -- res <-  runErr $ do
         res <- shakeMD testLayout allFlags
                             (doughDir testLayout)
                             ((themeDir $ testLayout) `addFileName` ( templatesDirName)

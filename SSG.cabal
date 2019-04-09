@@ -41,6 +41,7 @@ library
         , uniform-convenience ==0.0.9.5
         , uniform-watch 
         , uniform-webserver
+        , uniform-ftp
 
         , optparse-applicative
         , optparse-generic
@@ -78,7 +79,7 @@ executable ssgbake
 test-suite ssgTest
     type: exitcode-stdio-1.0
     main-is: ExampleTesting.hs
-    hs-source-dirs: test
+    hs-source-dirs: tests
     other-modules:
         ShakeStartTests
         Lib.Bake_test

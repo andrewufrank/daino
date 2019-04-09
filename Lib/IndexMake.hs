@@ -17,7 +17,7 @@ import           Uniform.Shake
 import           GHC.Exts (sortWith)
 import           Uniform.Json
 import           Uniform.Json (FromJSON(..))
-import           Uniform.Time (year2000)
+-- import           Uniform.Time (year2000)
 import Uniform.Filenames (makeAbsFile)
 import           Lib.CheckInput (MetaRec(..)
                                , SortArgs(..)
@@ -30,7 +30,7 @@ makeBothIndex dough2 indexFn sortFlag metaRecs dirs =
   MenuEntry { menu2 = dirIxsSorted2 ++ fileIndexs ++ [zero{title2 = "------"}] ++ fileContent }
   where
     fileIxsSorted = makeIndexEntries dough2 indexFn sortFlag metaRecs
-    fileIndexs = filter (isIndex) fileIxsSorted
+    fileIndexs = filter isIndex fileIxsSorted
     fileContent = filter (not . isIndex) fileIxsSorted 
 
     dirIxsSorted2 = makeIndexEntriesDirs dough2 dirs
@@ -59,15 +59,16 @@ formatOneDirIndexEntry :: Path Abs Dir -> Path Abs Dir -> IndexEntry
 
 -- format an entry for a subdir
 -- fn is name of dir, the link should to to ../index.html 
-formatOneDirIndexEntry dough2 fn = zero
-  { text2 = s2t (getNakedDir fn :: FilePath)
-  , link2 = s2t $ makeRelPath dough2 (fn </> (makeRelFile "index.html") :: Path Abs File)
+formatOneDirIndexEntry dough2 fn1 = zero
+  { text2 = s2t (getNakedDir fn1 :: FilePath)
+  , link2 = s2t $ makeRelPath dough2 
+        (fn1 </> (makeRelFile "index.html") :: Path Abs File)
   -- should add to the index file (to be found by search for index set in metaRec)
 
   , title2 = baseName1 <> " (subdirectory)"
   }
   where
-    baseName1 = s2t (getNakedDir fn :: FilePath)
+    baseName1 = s2t (getNakedDir fn1 :: FilePath)
 
     -- s2t . takeBaseName . toFilePath $ fn
     -- linkName = makeRelLink2  "index.md" 
@@ -92,8 +93,9 @@ makeIndexEntries :: Path Abs Dir
                  -> [IndexEntry]
 
 -- reduce the index entries 
-makeIndexEntries dough indexFile sortArg pms =
-  sortFileEntries sortArg . map (makeOneIndexEntry dough indexFile) $ pms
+makeIndexEntries dough indexFile sortArg =
+      sortFileEntries sortArg 
+      . map (makeOneIndexEntry dough indexFile) 
 
 makeOneIndexEntry :: Path Abs Dir
                   -> Path Abs File
@@ -130,7 +132,8 @@ getOneIndexEntryPure metaRec  = IndexEntry
 newtype MenuEntry = MenuEntry { menu2 :: [IndexEntry] }
   deriving (Generic, Eq, Ord, Show)
 
-instance NiceStrings MenuEntry
+instance NiceStrings MenuEntry where 
+    shownice = showNice
 
 instance Zeros MenuEntry where
   zero = MenuEntry zero

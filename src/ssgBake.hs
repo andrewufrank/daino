@@ -36,31 +36,33 @@ main :: IO ()
 main = startProg
   programName
   progTitle
-  (do
-     flags :: PubFlags <- parseArgs2input
-       settingsFileName
-      --  add a delete flag
-       (unlinesT
-          [ "the flags to select what is included:"
-          , "default is nothing included"
-          , "\n -p publish"
-          , "\n -d drafts"
-          , "\n -o old"
-          , "\n -t test (use data in package)"
-          , "\n -w start to watch the files for changes and rebake"
-          , "\n -s start server (port is fixed in settings)"])
-       "list flags to include"
-     (layout2, port2) <- readSettings (settingsFile flags)
-     if watchFlag flags
-       then do
-         mainWatch layout2 flags port2
-       else do
-         shakeAll layout2 flags ""
-         -- the last is the filename that caused the shake call
-         --  let landing = makeRelFile "landingPage.html"
-         when (serverFlag flags)
-           $ runScotty port2 (bakedDir layout2) (landingPage layout2)
-     -- callIO $ scotty port2 (site (bakedDir layout2))
-     putIOwords ["ssgBake done"]
-     return ())
+  (do 
+      flags :: PubFlags <- parseArgs2input
+        settingsFileName
+        --  add a delete flag
+        (unlinesT
+            [ "the flags to select what is included:"
+            , "default is nothing included"
+            , "\n -p publish"
+            , "\n -d drafts"
+            , "\n -o old"
+            , "\n -t test (use data in package)"
+            , "\n -w start to watch the files for changes and rebake (implies -s server"
+            , "\n -s start local server (port is fixed in settings)"
+            , "\n -u upload to external server"])
+        "list flags to include"
+      (layout2, port2) <- readSettings (settingsFile flags)
+      if watchFlag flags  -- implies server
+        then  
+          mainWatch layout2 flags port2
+        else do  
+          shakeAll layout2 flags ""
+          -- the last is the filename that caused the shake call
+          --  let landing = makeRelFile "landingPage.html"
+
+          when (serverFlag flags) $  
+            runScotty port2 (bakedDir layout2) (landingPage layout2)
+      -- callIO $ scotty port2 (site (bakedDir layout2))
+      putIOwords ["ssgBake done"]
+      return ())
 

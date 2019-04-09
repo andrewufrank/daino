@@ -21,7 +21,7 @@ module Lib.Pandoc
     , flattenMeta
     , readMarkdown2) where
 
-import           Lib.Foundation (settingsFileName, defaultPageType, SiteLayout(..))
+import           Lib.Foundation (defaultPageType, SiteLayout(..))
 import           Lib.Indexing -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
 --            , unDocValue, DocValue (..) )
 import           Paths_SSG (version)
@@ -29,8 +29,8 @@ import           Uniform.Convenience.DataVarious (showVersionT)
 import           Uniform.FileIO hiding (Meta, at)
 import           Uniform.Pandoc -- hiding (Meta(..))
 import           Uniform.BibTex
-import           Uniform.Json
-import           Uniform.Time (getDateAsText, year2000)
+-- import           Uniform.Json
+import           Uniform.Time (year2000)
 import           Lib.CheckInput (MetaRec(..), PublicationState(..)
                                  -- , readMeta2rec
                                , checkOneMdFile, TripleDoc)
@@ -51,7 +51,7 @@ markdownToPandocBiblio
   -> PubFlags
   -> Path Abs Dir
   -> TripleDoc
-  -> ErrIO (Pandoc)
+  -> ErrIO Pandoc
 
 -- process the markdown (including if necessary the BibTex treatment)
 -- the bibliography must be in the metadata
@@ -117,7 +117,7 @@ docValToAllVal debug layout flags htmlout   metaRec = do
   let pageFn = makeAbsFile . fn $ metaRec 
   let mpageType = fmap makeAbsFile $ pageTemplate metaRec :: Maybe (Path Abs File)
   when debug $ putIOwords ["docValToAllVal"] -- , "mpt", showT mpageType]
-  let pageType = maybe (defaultPageType layout) id mpageType :: Path Abs File
+  let pageType = fromMaybe (defaultPageType layout)  mpageType :: Path Abs File
   -- page0default defined in theme
   when debug $ putIOwords ["docValToAllVal filename", showT pageFn, showT pageType
             , showT (settingsFile flags)]

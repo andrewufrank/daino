@@ -34,6 +34,7 @@ mainWatch layout flags bakedPort = do
   bracketErrIO
     (do
        -- first
+       putIOwords ["mainWatch started"]
        shakeAll layout flags ""
        watchDoughTID <- callIO
          $ forkIO (runErrorVoid $ watchDough layout flags)

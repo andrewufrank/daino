@@ -14,6 +14,7 @@ The use case is my own homepage with [requirements](Principles.html) typical for
 - Reduce maintenance efforts with 
     - Demonstrate integration using the "uniform" approach to wrap packages in integratable interfaces. 
     - Streamline the design to use the least amount of packages.
+    - Upload automatically to an (inexpensive) host server with FTP.
  
 I want a strict separation of content and presentation (dough & theme). 
 The use case does not push for performance but rather simple handling and 

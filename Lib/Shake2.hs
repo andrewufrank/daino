@@ -21,7 +21,7 @@ import           Uniform.Error (ErrIO, callIO, liftIO)
 import           Uniform.Shake 
 import           Uniform.Strings (putIOwords, showT)
 import           Lib.Foundation (SiteLayout(..), resourcesDirName, staticDirName
-                               , templatesDirName, templatesDir, templatesImgDirName
+                               , templatesDir, templatesImgDirName
                                , imagesDirName)
 import           Lib.CmdLineArgs (PubFlags(..))
 import           Lib.Bake (bakeOneFile)
@@ -30,7 +30,7 @@ shakeDelete :: SiteLayout -> FilePath -> ErrIO ()
 -- ^ experimental - twich found delete of md
 -- not yet used 
 
-shakeDelete _ filepath = do
+shakeDelete _ filepath = 
   putIOwords
     [ "\n\n*******************************************"
     , "experimental -- twich found  DELETED MD file "
@@ -41,13 +41,13 @@ shakeArgs2 :: Path b t -> Rules () -> IO ()
 -- | set the arguments for shake and call the ruls 
 shakeArgs2 bakedP = do
   -- putIOwords ["shakeArgs2", "bakedP", s2t . toFilePath $ bakedP]
-  res <- shake  -- not shakeArgs, which would include the cmd line args
-    shakeOptions { shakeFiles = toFilePath bakedP
+    res <- shake  -- not shakeArgs, which would include the cmd line args
+            shakeOptions { shakeFiles = toFilePath bakedP
                  , shakeVerbosity = Chatty -- Loud
                  , shakeLint = Just LintBasic
                  }
   -- putIOwords ["shakeArgs2", "done"]
-  return res
+    return res
 
 shakeAll :: SiteLayout -> PubFlags -> FilePath -> ErrIO ()
 -- ^ bake all md files and copy the resources
@@ -97,6 +97,7 @@ shakeMD :: SiteLayout
 shakeMD layout flags doughP templatesP bakedP bannerImage2 = 
   shakeArgs2 bakedP $
     do
+      let debug = False
       let staticP = bakedP </> staticDirName :: Path Abs Dir
       let resourcesP = doughP </> resourcesDirName :: Path Abs Dir
       let masterTemplate = templatesP </> masterTemplateP :: Path Abs File
@@ -127,49 +128,50 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
                 [Path Abs File]
           -- , not $ isInfixOf' "index.md" md]
           -- let htmlFiles3 = map (replaceExtension "html") htmlFiles2 :: [Path Abs File]
-          liftIO
+          when debug $ liftIO
             $ putIOwords
               [ "============================\nshakeMD - mdFile 1"
               , showT mdFiles1]
-          liftIO $ putIOwords ["\nshakeMD - htmlFile 2", showT htmlFiles3]
+          when debug $ liftIO $ putIOwords ["\nshakeMD - htmlFile 2", showT htmlFiles3]
           needP htmlFiles3  -- includes the index files 
     
           cssFiles1 :: [Path Rel File]
             <- getDirectoryFilesP templatesP ["*.css"] -- no subdirs
           let cssFiles2 = [staticP </> c | c <- cssFiles1] :: [Path Abs File]
-          liftIO
+          when debug $ liftIO
             $ putIOwords
               [ "========================\nshakeMD - css files 1"
               , showT cssFiles1]
-          liftIO $ putIOwords ["\nshakeMD - css files", showT cssFiles2]
+          when debug $ liftIO $ putIOwords ["\nshakeMD - css files", showT cssFiles2]
           needP cssFiles2
 
           pdfFiles1 :: [Path Rel File]
             <- getDirectoryFilesP resourcesP ["**/*.pdf"] -- subdirs
           let pdfFiles2 = [staticP </> c | c <- pdfFiles1]
-          liftIO
+          when debug $ liftIO
             $ putIOwords
               ["===================\nshakeMD - pdf files1", showT pdfFiles1]
-          liftIO $ putIOwords ["\nshakeMD - pdf files 2", showT pdfFiles2]
+          when debug $ liftIO $ putIOwords ["\nshakeMD - pdf files 2", showT pdfFiles2]
           needP pdfFiles2
           -- --
           -- static html files 
           htmlFiles11 :: [Path Rel File]
             <- getDirectoryFilesP resourcesP ["**/*.html"] -- subdirs
           let htmlFiles22 = [staticP </> c | c <- htmlFiles11]
-          liftIO
+          when debug $ liftIO
             $ putIOwords
               ["===================\nshakeMD - html 11 files", showT htmlFiles11]
-          liftIO $ putIOwords ["\nshakeMD - html 22 files", showT htmlFiles22]
+          when debug $ liftIO $ putIOwords ["\nshakeMD - html 22 files", showT htmlFiles22]
           needP htmlFiles22
 
           biblio :: [Path Rel File] <- getDirectoryFilesP resourcesP ["*.bib"]
           let biblio2 = [resourcesP </> b | b <- biblio] :: [Path Abs File]
-          putIOwords ["shake bakedP", "biblio", showT biblio2]
+          when debug $ putIOwords ["shake bakedP", "biblio", showT biblio2]
           needP biblio2
 
           yamlPageFiles <- getDirectoryFilesP templatesP ["*.yaml"]
           let yamlPageFiles2 = [templatesP </> y | y <- yamlPageFiles]
+          -- when debug $ 
           putIOwords ["shake bakedP", "yamlPages", showT yamlPageFiles2]
           needP yamlPageFiles2
 
@@ -177,7 +179,7 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
           imgFiles :: [Path Rel File]
               <- getDirectoryFilesP imagesP ["*.JPG", "*.jpg"]  -- no subdirs (may change in future)
           let imagesFiles2 = [imagesTargetP </> i  | i <- imgFiles]
-          putIOwords ["shake imgFiles", showT imagesP, "found", showT imagesFiles2]
+          when debug $ putIOwords ["shake imgFiles", showT imagesP, "found", showT imagesFiles2]
           needP imagesFiles2
 
 
@@ -253,7 +255,7 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
           liftIO
             $ putIOwords ["\nshakeMD - staticP  pdf - fromfile ", showT fromfile]
           copyFileChangedP fromfile outP
-      return ()
+      -- return ()
 
       [toFilePath imagesTargetP <> "/*.JPG"
         , toFilePath imagesTargetP <> "/*.jpg"]
@@ -265,7 +267,7 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
           liftIO
             $ putIOwords ["\nshakeMD - staticP  img=age jpg- fromfile ", showT fromfile]
           copyFileChangedP fromfile outP
-      return ()
+      -- return ()
 
       (toFilePath bannerImageTarget) %> \out -> do 
           -- let bannerImage3 = makeRelFile out
@@ -275,5 +277,5 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
           liftIO
             $ putIOwords ["\nbannerImage fromfile ", showT fromfile]
           copyFileChangedP fromfile outP
-      return ()
+      -- return ()
   -- copyFileChangedP source destDir = copyFileChanged (toFilePath source) (toFilePath destDir)
