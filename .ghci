@@ -9,6 +9,7 @@
 :set -fno-warn-unused-matches 
 :set -fno-warn-warnings-deprecations 
 :set -fno-warn-duplicate-exports
+:set -fno-warn-missing-methods
 :set -itests
 :set -i.stack-work/dist/x86_64-linux-tinfo6/Cabal-2.4.0.1/build/autogen/
 :load tests/ExampleTesting.hs

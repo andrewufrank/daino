@@ -13,4 +13,4 @@ Some text without meaning; really? with an image
 
   An example post.  postwk but in blog - not in SubBlog
 with some additional text 
-a change
+a change more 

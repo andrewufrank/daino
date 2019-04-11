@@ -43,6 +43,7 @@ import   {-@ HTF_TESTS @-}        Lib.Pandoc_test
 import  {-@ HTF_TESTS @-}         Lib.IndexMake_test
 import    {-@ HTF_TESTS @-}       Lib.Templating_test  -- AG -> EG 
 import   {-@ HTF_TESTS @-}        Lib.Shake2_test  -- AG -> EG 
+import Uniform.Ftp 
 
 -- --import {-@ HTF_TESTS @-} Lib.BibTex_test
 --
@@ -77,6 +78,13 @@ main2      -- just a simple bake for test
 
 testFlags = zero { testFlag = True
                  , publishFlag = True
-                 , serverFlag = True
-                 , watchFlag = True
+                 , serverFlag = False
+                 , watchFlag = False
                  }
+
+main3 = runErrorVoid $ do 
+    (a,s)  <- runStateT  
+                 (ftpUploadDirsRecurse (bakedDir testLayout) (makeAbsDir "/test.gerastree.at/"))
+                 ftp0
+                 
+    return () 

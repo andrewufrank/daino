@@ -1,5 +1,5 @@
 name: SSG
-version: 0.0.1
+version: 0.0.1.1
 license-file: LICENSE
 build-type: Simple
 cabal-version: >=1.10
@@ -33,12 +33,12 @@ library
         ,  uniform-algebras -any
         ,  uniform-strings -any
         ,  uniform-shake
-        ,  uniform-fileio==0.0.14.3
+        ,  uniform-fileio 
         , uniform-error -any
         , uniform-time -any
         , uniform-json -any
         , uniform-pandoc
-        , uniform-convenience ==0.0.9.5
+        , uniform-convenience 
         , uniform-watch 
         , uniform-webserver
         , uniform-ftp
@@ -61,6 +61,7 @@ executable ssgbake
         uniform-error
         , uniform-shake
         ,uniform-webserver  
+        , uniform-ftp
         -- , uniform-watch 
         , SSG -any
  
