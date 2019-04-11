@@ -54,7 +54,7 @@ bakeOneFile debug flags pageFn layout ht2 =
                  --        let resourcesPath = doughP </> resourcesDirName :: Path Abs Dir
       (pandoc, metaRec, report) <- checkOneMdFile layout pageFn
       -- how are errors dealt with 
-      let debug = True
+      -- let debug = True
       pandoc2 :: Pandoc <- markdownToPandocBiblio debug flags (doughDir layout) (pandoc, metaRec, report) -- AG -> AD
                         -- withSettings.pandoc
                          -- produce html and put into contentHtml key
