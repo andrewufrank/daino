@@ -14,8 +14,11 @@ import           Test.Framework
 import           Lib.Shake2  -- just to test ghci
 import           Uniform.FileIO
 import           Uniform.WebServer (runScotty)
+import Uniform.Time 
+import Uniform.Ftp 
 import           Lib.CmdLineArgs (allFlags, PubFlags(..))
-import           Lib.Foundation (SiteLayout(..), settingsFileName)
+import           Lib.Foundation (SiteLayout(..)
+      , settingsFileName, testSettingsFileName)
 -- import Uniform.Error
 -- import {-@ HTF_TESTS @-} Lib.Shake2_test 
 -- tests shake for test dough
@@ -73,18 +76,24 @@ main2      -- just a simple bake for test
         shakeAll testLayout testFlags ""
         -- the last is the filename that caused the shake call
         --  let landing = makeRelFile "landingPage.html"
-        runScotty 3099 (bakedDir testLayout) (landingPage testLayout)
+        when (serverFlag testFlags) $
+            runScotty 3099 (bakedDir testLayout) (landingPage testLayout)
         return ()
 
 testFlags = zero { testFlag = True
                  , publishFlag = True
                  , serverFlag = False
                  , watchFlag = False
+                 , settingsFile = testSettingsFileName  
                  }
 
 main3 = runErrorVoid $ do 
     (a,s)  <- runStateT  
-                 (ftpUploadDirsRecurse (bakedDir testLayout) (makeAbsDir "/test.gerastree.at/"))
+                 (ftpUploadDirsRecurse test1 (bakedDir testLayout) 
+                      (makeAbsDir "/test.gerastree.at/"))
                  ftp0
                  
     return () 
+
+lastUpload = read "2019-04-11 12:00:00 UTC" :: UTCTime
+test1 = testNewerModTime lastUpload 

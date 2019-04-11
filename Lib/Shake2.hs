@@ -71,7 +71,7 @@ shakeAll layout flags filepath = do
        
 
   setCurrentDir doughP  -- must be done earlier to find settings file!
-  deleteDirRecursive bakedP
+  -- deleteDirRecursive bakedP
   -- delete all the previous stuff for a new start 
   -- covers the delete issue, which shake does not handle well
   -- copy resources and banner   not easy to do with shake
@@ -97,7 +97,7 @@ shakeMD :: SiteLayout
 shakeMD layout flags doughP templatesP bakedP bannerImage2 = 
   shakeArgs2 bakedP $
     do
-      let debug = False
+      let debug = True
       let staticP = bakedP </> staticDirName :: Path Abs Dir
       let resourcesP = doughP </> resourcesDirName :: Path Abs Dir
       let masterTemplate = templatesP </> masterTemplateP :: Path Abs File
@@ -132,7 +132,8 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
             $ putIOwords
               [ "============================\nshakeMD - mdFile 1"
               , showT mdFiles1]
-          when debug $ liftIO $ putIOwords ["\nshakeMD - htmlFile 2", showT htmlFiles3]
+          when debug $ liftIO $ putIOwords ["\nshakeMD - htmlFile ", showT htmlFiles3]
+          needP mdFiles1
           needP htmlFiles3  -- includes the index files 
     
           cssFiles1 :: [Path Rel File]
@@ -212,6 +213,9 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
           -- l--iftIO $ putIOwords ["\nshakeMD - bakedP html 3 - md1 ", showT md1]
           let md2 = doughP </> (stripProperPrefixP bakedP md) :: Path Abs File
           -- liftIO $ putIOwords ["\nshakeMD - bakedP html 4 - md2 ", showT md2]
+
+          liftIO $ putIOwords ["\nshakeMD - bakedP - *.html", showT outP, showT md2]
+
           res <- runErr2action $ bakeOneFile False flags md2 layout outP
           return ()
 

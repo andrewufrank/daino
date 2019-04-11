@@ -61,7 +61,8 @@ executable ssgbake
         uniform-error
         , uniform-shake
         ,uniform-webserver  
-        , uniform-ftp
+        , uniform-ftp ==0.0.1.4
+        , uniform-time
         -- , uniform-watch 
         , SSG -any
  
@@ -113,5 +114,7 @@ test-suite ssgTest
         uniform-cmdLineArgs,
         uniform-shake,
         uniform-watch ,
+        uniform-time,
+        uniform-ftp ==0.0.1.3,
         SSG -any
 

@@ -24,15 +24,18 @@ import           Uniform.WebServer (runScotty)
 import           Lib.CmdLineArgs (PubFlags(..), parseArgs2input)
 import           Lib.Shake2 (shakeAll)
 import           Lib.ReadSettingFile (readSettings)
-import           Lib.Foundation (SiteLayout(..), settingsFileName)
+import           Lib.Foundation (SiteLayout(..)
+          , settingsFileName, testLastUploadFileName)
 import           Lib.Watch (mainWatch)
 import Uniform.Ftp 
 import Uniform.FileIO
+import Uniform.Time 
 
 programName, progTitle :: Text
 programName = "SSG10" :: Text
 
 progTitle = "constructing a static site generator x6" :: Text
+-- the process is still centered on the current working dir 
 
 main :: IO ()
 main = startProg
@@ -54,6 +57,12 @@ main = startProg
             , "\n -u upload to external server"])
         "list flags to include"
       (layout2, port2) <- readSettings (settingsFile flags)
+
+      -- read the time of the last upload 
+      lastUpload1 <- readFile2 testLastUploadFileName   
+      let lastUpload = read lastUpload1 :: UTCTime 
+      let testWithLastTime  = testNewerModTime  lastUpload
+                      -- compare with year2000 if all should be uploaded
       if watchFlag flags  -- implies server
         then  
           mainWatch layout2 flags port2
@@ -63,13 +72,19 @@ main = startProg
           --  let landing = makeRelFile "landingPage.html"
           when (serverFlag flags) $  
             runScotty port2 (bakedDir layout2) (landingPage layout2)
-          when (uploadFlag flags) $ do 
+          when (uploadFlag flags) $ do
+                let test = testNewerModTime lastUpload  
                 (a,s) <- runStateT
-                    (ftpUploadDirsRecurse (bakedDir layout2) 
-                        (if (testFlag flags) then (makeAbsDir "/ssg.gerastree.at/"))
-                                  else (makeAbsDir "/frank.gerastree.at/")
-                    ftp0
-                return ()
+                    (ftpUploadDirsRecurse testWithLastTime (bakedDir layout2) 
+                        (if (testFlag flags) then (makeAbsDir "/ssg.gerastree.at/")
+                                  else (makeAbsDir "/frank.gerastree.at/"))
+                    )
+                        ftp0
+                currentTime <- getCurrentTimeUTC 
+                writeFile2 testLastUploadFileName (show currentTime)
+        
+                putIOwords ["uploadTest completed", showT currentTime]             
+          -- return ()
         
       putIOwords ["ssgBake done"]
       return ())

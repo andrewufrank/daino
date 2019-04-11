@@ -28,6 +28,7 @@ putValinMaster :: Bool -> DocValue -> Path Abs Dir -> ErrIO HTMLout
 -- ^ get the master html template and put the val into it
 -- takes the master filename from val
 putValinMaster debug val templatesP = do
+     when debug $ putIOwords ["putValinMaster", "templatesP", showT templatesP]
      let mmt = getAtKey val "masterTemplate" :: Maybe Text
      let mf = maybe masterTemplateFileName (makeRelFile . t2s) mmt
 

@@ -85,7 +85,7 @@ resourcesDirName = makeRelDir "resources"
 imagesDirName :: Path Rel Dir
 imagesDirName = makeRelDir "img"
 -- imagesResourcesDirName = resourcesDirName </> imagesDirName 
-
+lastUploadFileName = makeRelFile "lastload.txt" :: Path Rel File 
         
 templatesImgDirName :: Path Rel Dir
 templatesImgDirName = makeRelDir "img"
@@ -99,7 +99,9 @@ testSettingsFileName :: Path Abs File
 -- the settings file for tests 
 testSettingsFileName =
     sourceDir </> (makeRelDirT "docs/site/dough/") </> settingsFileName
-
+testLastUploadFileName = sourceDir </> 
+        (makeRelDirT "docs/site/dough/") </> lastUploadFileName 
+        :: Path Abs File 
 
 masterTemplateFileName :: Path Rel File
 -- ^ the name of the master template
