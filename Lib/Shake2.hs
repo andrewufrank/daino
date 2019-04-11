@@ -173,14 +173,14 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
           yamlPageFiles <- getDirectoryFilesP templatesP ["*.yaml"]
           let yamlPageFiles2 = [templatesP </> y | y <- yamlPageFiles]
           -- when debug $ 
-          putIOwords ["shake bakedP", "yamlPages", showT yamlPageFiles2]
+          putIOwords ["===================\nshakeMD", "yamlPages", showT yamlPageFiles2]
           needP yamlPageFiles2
 
           -- images for blog 
           imgFiles :: [Path Rel File]
               <- getDirectoryFilesP imagesP ["*.JPG", "*.jpg"]  -- no subdirs (may change in future)
           let imagesFiles2 = [imagesTargetP </> i  | i <- imgFiles]
-          when debug $ putIOwords ["shake imgFiles", showT imagesP, "found", showT imagesFiles2]
+          when debug $ putIOwords ["===================\nshakeMD", "shake imgFiles", showT imagesP, "found", showT imagesFiles2]
           needP imagesFiles2
 
 
@@ -189,7 +189,7 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
             <- getDirectoryFilesP templatesP ["*.css"] -- no subdirs
           liftIO
             $ putIOwords
-              ["\nshakeWrapped - bakedP html - cssFiles1 ", showT cssFiles22]
+              ["===================\nshakeMD - cssFiles1 ", showT cssFiles22]
           -- let cssFiles2 = [replaceDirectoryP templatesP staticP c | c <- cssFiles1]  -- flipped args
           let cssFiles3 = [staticP </> c | c <- cssFiles22] -- flipped args
           needP cssFiles3
@@ -197,6 +197,8 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
           needP [masterTemplate]
           
           needP [bannerImageTarget]
+
+          putIOwords ["=================== \n P R O D U C T I O N \n\n"]
 
       (\x -> ((toFilePath bakedP <> "**/*.html") ?== x)
         && not ((toFilePath staticP <> "**/*.html") ?== x) -- with subdir
@@ -276,10 +278,10 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
       (toFilePath bannerImageTarget) %> \out -> do 
           -- let bannerImage3 = makeRelFile out
           let outP = makeAbsFile out 
-          liftIO $ putIOwords ["\nbannerImage TargetF", showT outP]
+          liftIO $ putIOwords ["\nshakeMD - bannerImage TargetF", showT outP]
           let fromfile = templatesP `addFileName` (makeRelativeP staticP outP)
           liftIO
-            $ putIOwords ["\nbannerImage fromfile ", showT fromfile]
+            $ putIOwords ["\nshakeMD - bannerImage fromfile ", showT fromfile]
           copyFileChangedP fromfile outP
       -- return ()
   -- copyFileChangedP source destDir = copyFileChanged (toFilePath source) (toFilePath destDir)
