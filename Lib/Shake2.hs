@@ -130,78 +130,78 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
           -- let htmlFiles3 = map (replaceExtension "html") htmlFiles2 :: [Path Abs File]
           when debug $ liftIO
             $ putIOwords
-              [ "============================\nshakeMD - mdFile 1"
+              [ "============================\nshakeMD - htmlFiles3 1"
               -- , showT mdFiles1]
           -- when debug $ liftIO $ putIOwords ["\nshakeMD - htmlFile "
               , showT htmlFiles3]
           -- needP mdFiles1
           needP htmlFiles3  -- includes the index files 
     
-          -- cssFiles1 :: [Path Rel File]
-          --   <- getDirectoryFilesP templatesP ["*.css"] -- no subdirs
-          -- let cssFiles2 = [staticP </> c | c <- cssFiles1] :: [Path Abs File]
-          -- when debug $ liftIO
-          --   $ putIOwords
-          --     [ "========================\nshakeMD - css files 1"
-          --     , showT cssFiles1]
-          -- when debug $ liftIO $ putIOwords ["\nshakeMD - css files", showT cssFiles2]
-          -- needP cssFiles2
+          cssFiles1 :: [Path Rel File]
+            <- getDirectoryFilesP templatesP ["*.css"] -- no subdirs
+          let cssFiles2 = [staticP </> c | c <- cssFiles1] :: [Path Abs File]
+          when debug $ liftIO
+            $ putIOwords
+              [ "========================\nshakeMD - css files 1"
+              , showT cssFiles1]
+          when debug $ liftIO $ putIOwords ["\nshakeMD - css files", showT cssFiles2]
+          needP cssFiles2
 
-          -- pdfFiles1 :: [Path Rel File]
-          --   <- getDirectoryFilesP resourcesP ["**/*.pdf"] -- subdirs
-          -- let pdfFiles2 = [staticP </> c | c <- pdfFiles1]
-          -- when debug $ liftIO
-          --   $ putIOwords
-          --     ["===================\nshakeMD - pdf files1", showT pdfFiles1]
-          -- when debug $ liftIO $ putIOwords ["\nshakeMD - pdf files 2", showT pdfFiles2]
-          -- needP pdfFiles2
-          -- -- --
-          -- -- static html files 
-          -- htmlFiles11 :: [Path Rel File]
-          --   <- getDirectoryFilesP resourcesP ["**/*.html"] -- subdirs
-          -- let htmlFiles22 = [staticP </> c | c <- htmlFiles11]
-          -- when debug $ liftIO
-          --   $ putIOwords
-          --     ["===================\nshakeMD - html 11 files", showT htmlFiles11]
-          -- when debug $ liftIO $ putIOwords ["\nshakeMD - html 22 files", showT htmlFiles22]
-          -- needP htmlFiles22
+          pdfFiles1 :: [Path Rel File]
+            <- getDirectoryFilesP resourcesP ["**/*.pdf"] -- subdirs
+          let pdfFiles2 = [staticP </> c | c <- pdfFiles1]
+          when debug $ liftIO
+            $ putIOwords
+              ["===================\nshakeMD - pdf files1", showT pdfFiles1]
+          when debug $ liftIO $ putIOwords ["\nshakeMD - pdf files 2", showT pdfFiles2]
+          needP pdfFiles2
+          -- --
+          -- static html files 
+          htmlFiles11 :: [Path Rel File]
+            <- getDirectoryFilesP resourcesP ["**/*.html"] -- subdirs
+          let htmlFiles22 = [staticP </> c | c <- htmlFiles11]
+          when debug $ liftIO
+            $ putIOwords
+              ["===================\nshakeMD - html 11 files", showT htmlFiles11]
+          when debug $ liftIO $ putIOwords ["\nshakeMD - html 22 files", showT htmlFiles22]
+          needP htmlFiles22
 
-          -- biblio :: [Path Rel File] <- getDirectoryFilesP resourcesP ["*.bib"]
-          -- let biblio2 = [resourcesP </> b | b <- biblio] :: [Path Abs File]
-          -- when debug $ putIOwords ["shake bakedP", "biblio", showT biblio2]
-          -- needP biblio2
+          biblio :: [Path Rel File] <- getDirectoryFilesP resourcesP ["*.bib"]
+          let biblio2 = [resourcesP </> b | b <- biblio] :: [Path Abs File]
+          when debug $ putIOwords ["shake bakedP", "biblio", showT biblio2]
+          needP biblio2
 
-          -- yamlPageFiles <- getDirectoryFilesP templatesP ["*.yaml"]
-          -- let yamlPageFiles2 = [templatesP </> y | y <- yamlPageFiles]
-          -- -- when debug $ 
-          -- putIOwords ["===================\nshakeMD", "yamlPages", showT yamlPageFiles2]
-          -- needP yamlPageFiles2
+          yamlPageFiles <- getDirectoryFilesP templatesP ["*.yaml"]
+          let yamlPageFiles2 = [templatesP </> y | y <- yamlPageFiles]
+          -- when debug $ 
+          putIOwords ["===================\nshakeMD", "yamlPages", showT yamlPageFiles2]
+          needP yamlPageFiles2
 
-          -- -- images for blog 
-          -- imgFiles :: [Path Rel File]
-          --     <- getDirectoryFilesP imagesP ["*.JPG", "*.jpg"]  -- no subdirs (may change in future)
-          -- let imagesFiles2 = [imagesTargetP </> i  | i <- imgFiles]
-          -- when debug $ putIOwords ["===================\nshakeMD", "shake imgFiles", showT imagesP, "found", showT imagesFiles2]
-          -- needP imagesFiles2
+          -- images for blog 
+          imgFiles :: [Path Rel File]
+              <- getDirectoryFilesP imagesP ["*.JPG", "*.jpg"]  -- no subdirs (may change in future)
+          let imagesFiles2 = [imagesTargetP </> i  | i <- imgFiles]
+          when debug $ putIOwords ["===================\nshakeMD", "shake imgFiles", showT imagesP, "found", showT imagesFiles2]
+          needP imagesFiles2
 
 
 
-          -- cssFiles22 :: [Path Rel File]
-          --   <- getDirectoryFilesP templatesP ["*.css"] -- no subdirs
-          -- liftIO
-          --   $ putIOwords
-          --     ["===================\nshakeMD - cssFiles1 ", showT cssFiles22]
-          -- -- let cssFiles2 = [replaceDirectoryP templatesP staticP c | c <- cssFiles1]  -- flipped args
-          -- let cssFiles3 = [staticP </> c | c <- cssFiles22] -- flipped args
-          -- needP cssFiles3
-          -- needP [masterSettings_yaml]
-          -- needP [masterTemplate]
+          cssFiles22 :: [Path Rel File]
+            <- getDirectoryFilesP templatesP ["*.css"] -- no subdirs
+          liftIO
+            $ putIOwords
+              ["===================\nshakeMD - cssFiles1 ", showT cssFiles22]
+          -- let cssFiles2 = [replaceDirectoryP templatesP staticP c | c <- cssFiles1]  -- flipped args
+          let cssFiles3 = [staticP </> c | c <- cssFiles22] -- flipped args
+          needP cssFiles3
+          needP [masterSettings_yaml]
+          needP [masterTemplate]
           
-          -- needP [bannerImageTarget]
+          needP [bannerImageTarget]
 
 
       (\x -> ((toFilePath bakedP <> "**/*.html") ?== x)
-        -- && not ((toFilePath staticP <> "**/*.html") ?== x) -- with subdir
+        && not ((toFilePath staticP <> "**/*.html") ?== x) -- with subdir
         )  ?> \out ->
         -- liftIO $ putIOwords ["\nshakeMD - bakedP html -  out ", showT out]
         -- hakeMD - bakedP html -  out  "/home/frank/.SSG/bakedTest/SSGdesign/index.html"
@@ -221,67 +221,67 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
           res <- runErr2action $ bakeOneFile False flags md2 layout outP
           return ()
 
-  --     (toFilePath staticP <> "**/*.html")
-  --       %> \out -- with subdir
-  --       -> do
-  --         let outP = makeAbsFile out :: Path Abs File
-  --         liftIO
-  --           $ putIOwords
-  --             [ "\nshakeMD - staticP ok - *.html"
-  --             , showT staticP
-  --             , "file"
-  --             , showT outP
-  --             , "out"
-  --             , showT out]
-  --         let fromfile = resourcesP </> (makeRelativeP staticP outP)
-  --         liftIO $ putIOwords ["\nshakeMD - staticP - fromfile ", showT fromfile]
-  --         copyFileChangedP (fromfile) outP
+      (toFilePath staticP <> "**/*.html")
+        %> \out -- with subdir
+        -> do
+          let outP = makeAbsFile out :: Path Abs File
+          liftIO
+            $ putIOwords
+              [ "\nshakeMD - staticP ok - *.html"
+              , showT staticP
+              , "file"
+              , showT outP
+              , "out"
+              , showT out]
+          let fromfile = resourcesP </> (makeRelativeP staticP outP)
+          liftIO $ putIOwords ["\nshakeMD - staticP - fromfile ", showT fromfile]
+          copyFileChangedP (fromfile) outP
 
-  --     (toFilePath staticP <> "/*.css")
-  --       %> \out                  -- insert css -- no subdir
-  --       -> do
-  --         let outP = makeAbsFile out :: Path Abs File
-  --         liftIO
-  --           $ putIOwords
-  --             [ "\nshakeMD - staticP - *.css\n"
-  --             , showT outP
-  --             , "\nTemplatesP"
-  --             , showT templatesP]
-  --         let fromfile = templatesP </> (makeRelativeP staticP outP)
-  --         liftIO
-  --           $ putIOwords ["\nshakeMD - staticP css- fromfile ", showT fromfile]
-  --         copyFileChangedP fromfile outP
+      (toFilePath staticP <> "/*.css")
+        %> \out                  -- insert css -- no subdir
+        -> do
+          let outP = makeAbsFile out :: Path Abs File
+          liftIO
+            $ putIOwords
+              [ "\nshakeMD - staticP - *.css\n"
+              , showT outP
+              , "\nTemplatesP"
+              , showT templatesP]
+          let fromfile = templatesP </> (makeRelativeP staticP outP)
+          liftIO
+            $ putIOwords ["\nshakeMD - staticP css- fromfile ", showT fromfile]
+          copyFileChangedP fromfile outP
           
-  --     (toFilePath staticP <> "**/*.pdf")
-  --       %> \out                  -- insert pdfFIles1 -- with subdir
-  --       -> do
-  --         let outP = makeAbsFile out :: Path Abs File
-  --         liftIO $ putIOwords ["\nshakeMD - staticP - *.pdf", showT outP]
-  --         let fromfile = resourcesP </> (makeRelativeP staticP outP)
-  --         liftIO
-  --           $ putIOwords ["\nshakeMD - staticP  pdf - fromfile ", showT fromfile]
-  --         copyFileChangedP fromfile outP
-  --     -- return ()
+      (toFilePath staticP <> "**/*.pdf")
+        %> \out                  -- insert pdfFIles1 -- with subdir
+        -> do
+          let outP = makeAbsFile out :: Path Abs File
+          liftIO $ putIOwords ["\nshakeMD - staticP - *.pdf", showT outP]
+          let fromfile = resourcesP </> (makeRelativeP staticP outP)
+          liftIO
+            $ putIOwords ["\nshakeMD - staticP  pdf - fromfile ", showT fromfile]
+          copyFileChangedP fromfile outP
+      -- return ()
 
-  --     [toFilePath imagesTargetP <> "/*.JPG"
-  --       , toFilePath imagesTargetP <> "/*.jpg"]
-  --       |%> \out                  -- insert img files -- no subdir (for now)
-  --       -> do
-  --         let outP = makeAbsFile out :: Path Abs File
-  --         liftIO $ putIOwords ["\nshakeMD - image jpg", showT outP]
-  --         let fromfile = imagesP </> (makeRelativeP imagesTargetP outP)
-  --         liftIO
-  --           $ putIOwords ["\nshakeMD - staticP  img=age jpg- fromfile ", showT fromfile]
-  --         copyFileChangedP fromfile outP
-  --     -- return ()
+      [toFilePath imagesTargetP <> "/*.JPG"
+        , toFilePath imagesTargetP <> "/*.jpg"]
+        |%> \out                  -- insert img files -- no subdir (for now)
+        -> do
+          let outP = makeAbsFile out :: Path Abs File
+          liftIO $ putIOwords ["\nshakeMD - image jpg", showT outP]
+          let fromfile = imagesP </> (makeRelativeP imagesTargetP outP)
+          liftIO
+            $ putIOwords ["\nshakeMD - staticP  img=age jpg- fromfile ", showT fromfile]
+          copyFileChangedP fromfile outP
+      -- return ()
 
-  --     (toFilePath bannerImageTarget) %> \out -> do 
-  --         -- let bannerImage3 = makeRelFile out
-  --         let outP = makeAbsFile out 
-  --         liftIO $ putIOwords ["\nshakeMD - bannerImage TargetF", showT outP]
-  --         let fromfile = templatesP `addFileName` (makeRelativeP staticP outP)
-  --         liftIO
-  --           $ putIOwords ["\nshakeMD - bannerImage fromfile ", showT fromfile]
-  --         copyFileChangedP fromfile outP
-  --     -- return ()
-  -- -- copyFileChangedP source destDir = copyFileChanged (toFilePath source) (toFilePath destDir)
+      (toFilePath bannerImageTarget) %> \out -> do 
+          -- let bannerImage3 = makeRelFile out
+          let outP = makeAbsFile out 
+          liftIO $ putIOwords ["\nshakeMD - bannerImage TargetF", showT outP]
+          let fromfile = templatesP `addFileName` (makeRelativeP staticP outP)
+          liftIO
+            $ putIOwords ["\nshakeMD - bannerImage fromfile ", showT fromfile]
+          copyFileChangedP fromfile outP
+      -- return ()
+  -- copyFileChangedP source destDir = copyFileChanged (toFilePath source) (toFilePath destDir)

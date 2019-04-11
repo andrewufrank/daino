@@ -13,6 +13,6 @@ Some text without meaning; really? with an image
 
   An example post.  postwk but in blog - not in SubBlog
 with some additional text 
-which is always changed and more
-and more but not rebaked?
-and some 
+which is always changed  
+
+addition
