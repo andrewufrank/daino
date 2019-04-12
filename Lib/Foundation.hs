@@ -43,8 +43,8 @@ data SiteLayout = SiteLayout
 instance NiceStrings SiteLayout where
     shownice d = replace' ", " ",\n " (showT d)
 
-sourceDir :: Path Abs Dir
-sourceDir = makeAbsDir "/home/frank/Workspace8/ssg"
+sourceDirTest :: Path Abs Dir
+sourceDirTest = makeAbsDir "/home/frank/Workspace8/ssg"
 
 bannerImageFileName :: Path Rel File
 bannerImageFileName = makeRelFileT "cropped-DSC05127-1024x330.jpg"
@@ -63,11 +63,11 @@ layoutDefaults :: SiteLayout
 -- used for finding the test cases
 -- must correspond to the settings2.yaml in source code repository
 layoutDefaults = SiteLayout
-    { doughDir    = sourceDir </> makeRelDir "docs/site/dough"
-    , bakedDir    = sourceDir </> makeRelDir "docs/site/baked"
+    { doughDir    = sourceDirTest </> makeRelDir "docs/site/dough"
+    , bakedDir    = sourceDirTest </> makeRelDir "docs/site/baked"
     , reportFile  = makeAbsFile "/home/frank/SSGreport.txt"
 --            , templateDir = makeAbsDir "templates"
-    , themeDir    = sourceDir </> makeRelDir "theme"
+    , themeDir    = sourceDirTest </> makeRelDir "theme"
     , testDir     = makeAbsDir
                     $   ("/home/frank" :: FilePath)
                     </> ("." <> t2s progName)
@@ -104,9 +104,9 @@ settingsFileName = makeRelFile "settings2" -- the yaml file
 testSettingsFileName :: Path Abs File
 -- the settings file for tests 
 testSettingsFileName =
-    sourceDir </> makeRelDirT "docs/site/dough/" </> settingsFileName
+    sourceDirTest </> makeRelDirT "docs/site/dough/" </> settingsFileName
 testLastUploadFileName :: Path Abs File
-testLastUploadFileName = sourceDir </> 
+testLastUploadFileName = sourceDirTest </> 
         makeRelDirT "docs/site/dough/" </> lastUploadFileName 
         :: Path Abs File 
 

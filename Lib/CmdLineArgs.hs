@@ -139,7 +139,7 @@ parseArgs2input settingsFN t1 t2 = do
 
   let flags2 = if testFlag flags1
         then flags1 { settingsFile = testSettingsFileName }
-                    --  ,  PortNumber = sourceDir
+                    --  ,  PortNumber = sourceDirTest
         else flags1
 
   putIOwords ["parseArgs2input:  inputs ", showT flags2]

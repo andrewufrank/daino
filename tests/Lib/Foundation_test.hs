@@ -21,17 +21,8 @@ module Lib.Foundation_test  -- (openMain, htf_thisModuelsTests)
 import           Test.Framework
 import Uniform.Test.TestHarness
 
---import Uniform.Strings
 import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)
---import Uniform.Filenames
 
---testLayout = layoutDefaults {
---            doughDir = makeAbsDir "/home/frank/.SSG/dough"
---            , bakedDir = makeAbsDir "/home/frank/.SSG/baked"
---            , reportFile = makeAbsFile "/home/frank/.SSG/reportshakeAll.txt"
-----            , templateDir = makeAbsDir "templates"
---            , themeDir = makeAbsDir "/home/frank/.SSG/theme"
---            }
 
 testLayout = layoutDefaults
 --templateFile = addDir (themeDir testLayout) ("Templates/page33.dtpl" :: FilePath)
