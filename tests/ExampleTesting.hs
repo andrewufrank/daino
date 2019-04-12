@@ -83,10 +83,10 @@ main2      -- just a simple bake for test
 
 testFlags = zero { testFlag = True
                  , publishFlag = True
-                 , serverFlag = False
-                 , watchFlag = False
+                 , serverFlag = True
+                 , watchFlag = True
                  , settingsFile = testSettingsFileName  
-                 , uploadFlag = True
+                 , uploadFlag = False
                  }
 
 main3 = runErrorVoid $ do 

@@ -50,17 +50,17 @@ readMeta2rec layout mdfn meta2 = (ix, report)
  where
   ix = MetaRec    
       { fn = -- s2t .  getNakedFileName  . 
-                    toFilePath $ (mdfn :: Path Abs File)
+                    toFilePath  (mdfn :: Path Abs File)
       , relURL     = makeRelPath (doughDir layout) mdfn -- (Path Rel File))
       ,  abstract         = fromMaybe "" abstract1
       , title            = fromMaybe "" title1
       , author           = fromMaybe "" author1
       , date             = maybe year2000 (fromJustNote "readDate 408ds" . readDateMaybe) date1   -- test early for proper format
-      , publicationState = text2publish $ publish1
-      , bibliography  =   fmap (\f -> toFilePath $ (doughDir layout) </> makeRelFileT f) bibliography1
+      , publicationState = text2publish  publish1
+      , bibliography  =   fmap (\f -> toFilePath $ doughDir layout </> makeRelFileT f) bibliography1
       , bibliographyGroup = bibliographyGroup1
       , keywords = keywords1
-      , pageTemplate = fmap (\f -> toFilePath $ (templatesDir layout) </> makeRelFileT f) pageTemplate1
+      , pageTemplate = fmap (\f -> toFilePath $ templatesDir layout </> makeRelFileT f) pageTemplate1
       , indexPage = fromMaybe False indexPage1
       , indexSort = text2sortargs indexSort1
           -- default is publish
@@ -117,7 +117,7 @@ text2publish :: Maybe Text ->  PublicationState
 -- convert a text to a publicationstate
 text2publish (Nothing) = PSpublish
 --  the default is to publish 
-text2publish (Just tt) = case (toLower' tt) of
+text2publish (Just tt) = case toLower' tt of
   "true"    ->  PSpublish
   "publish" ->  PSpublish
   "draft"   ->  PSdraft
@@ -153,7 +153,7 @@ instance FromJSON SortArgs
 
 text2sortargs :: (CharChains a, IsString a) => Maybe a -> SortArgs
 text2sortargs (Nothing) = SAzero
-text2sortargs (Just tt) = case (toLower' tt) of 
+text2sortargs (Just tt) = case toLower' tt of 
     "title" -> SAtitle 
     "titel" -> SAtitle
     "date" -> SAdate

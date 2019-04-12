@@ -59,7 +59,8 @@ makeIndex debug layout flags metaRec    = do
                 putIOlineList "files found" fs2
                 putIOlineList "dirs found"  dirs2
                     
-            let fs4 = filter (indexpageFn /=) . map makeAbsFile $ fs2 :: [Path Abs File]
+            let fs4 = filter (indexpageFn /=) . map makeAbsFile 
+                        . filter (hasExtension "md") $ fs2 :: [Path Abs File]
             metaRecs2 :: [MetaRec]
                 <- mapM (getMetaRecs layout) fs4
             
