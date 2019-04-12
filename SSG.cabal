@@ -7,6 +7,7 @@ cabal-version: >=1.10
 library
     exposed-modules:
         Lib.Bake
+        Lib.StartSSGprocess
         Lib.Shake2
         -- Lib.Shake
         -- Lib.FileMgtw

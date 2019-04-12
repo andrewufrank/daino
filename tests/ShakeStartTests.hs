@@ -32,7 +32,7 @@ import Test.Framework
 import Uniform.Error
 import Uniform.FileIO            hiding ((<.>), (</>)) -- (resourcesDirName)
 import Uniform.Pandoc -- (applyTemplate3, Pandoc, DocValue, doc HTMLout, htmloutFileType)
-import Uniform.Shake
+-- import Uniform.Shake
 import Lib.CmdLineArgs (allFlags, PubFlags)
 import Lib.CheckInput (checkOneMdFile, MetaRec(..), TripleDoc(..))
 import Uniform.Pointless (fst3)
@@ -102,7 +102,7 @@ shakeTestWrapped flags layout doughP  templatesP testP =
     (toFilePath testP <> "//*.tripleDoc") %> \out -> do
         --        liftIO $ putIOwords ["\n.withSettings.pandoc", s2t out]
                 let outP = makeAbsFile out :: Path Abs File
-                let source = doughP </> (makeRelativeP testP  (outP $--<.> "md"))
+                let source = doughP </> makeRelativeP testP  (outP $--<.> "md")
                 needP [source]
                 runErr2action $
                         do

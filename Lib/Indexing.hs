@@ -15,10 +15,12 @@ module Lib.Indexing (module Lib.Indexing, getAtKey
             , module Lib.IndexMake 
             ) where
 
-import           Uniform.Shake
-import           Uniform.FileIO (getDirectoryDirs', getDirContentFiles )
+-- import           Uniform.Shake
+import           Uniform.FileIO -- (getDirectoryDirs', getDirContentFiles )
+-- import Uniform.Filenames (takeBaseName)
 import           Uniform.Pandoc (getAtKey)
 import Uniform.Strings (putIOline, putIOlineList)
+-- import Uniform.Error 
 -- DocValue(..)
 -- , unDocValue
 import           Lib.CmdLineArgs (PubFlags(..))
@@ -76,7 +78,7 @@ makeIndex debug layout flags metaRec    = do
                     (map makeAbsDir dirs2)
             -- MenuEntry { menu2 = dirIxsSorted2 ++ fileIxsSorted }
             when debug
-                $ putIOwords ["makeIndexForDir 4", "index for dirs sorted ", showT $ menu1]
+                $ putIOwords ["makeIndexForDir 4", "index for dirs sorted ", showT  menu1]
             -- let dirIxs = map formatOneDirIndexEntry (map makeAbsDir dirs) :: [IndexEntry]
             -- -- format the subdir entries
             -- let dirIxsSorted = sortWith title2 dirIxs

@@ -8,6 +8,7 @@ storage:
     # create dir in ExampleTesting
     # filename must be homedir + program name (in Foundation) - hidden
     # fixed in testharness
+    uploadServer: "sgg.gerastree.at"
 localhostPort: 3000
 
 # master yaml - applies to all pages

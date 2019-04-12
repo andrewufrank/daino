@@ -18,7 +18,7 @@ packages:
 - ../fromOthers/bibtex
 - ../fromOthers/path
 - ../fromOthers/path-io
-- ../fromOthers/pretty-show
+#- ../fromOthers/pretty-show
 # - ../fromOthers/shake-path
 
 extra-deps:

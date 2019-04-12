@@ -10,7 +10,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE TypeSynonymInstances #-}
+-- {-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 {-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans #-}
@@ -54,36 +54,20 @@ shakeAll :: SiteLayout -> PubFlags -> FilePath -> ErrIO ()
 -- sets the current dir to doughDir
 -- copies banner image 
 
-shakeAll layout flags filepath = do
-  --  where the layout is used, rest in shakeWrapped
-  putIOwords
-    [ "\n\n=====================================shakeAll start"
-    , "\n flags"
-    , showT flags
-    , "caused by"
-    , s2t filepath]
-  let doughP = doughDir layout -- the regular dough
-      templatesP = templatesDir layout 
-      bakedP = bakedDir layout
-      bannerImageFileName = (bannerImage layout)
-      bannerImage2 = templatesImgDirName `addFileName` bannerImageFileName
+shakeAll layout flags filepath = 
+  do 
+    --  where the layout is used, rest in shakeWrapped
+    putIOwords  [ "\n\n=====================================shakeAll start", "\n flags"
+            , showT flags , "caused by", s2t filepath]
+    let doughP = doughDir layout -- the regular dough
+        templatesP = templatesDir layout 
+        bakedP = bakedDir layout
+        bannerImageFileName = (bannerImage layout)
+        bannerImage2 = templatesImgDirName `addFileName` bannerImageFileName
+    setCurrentDir doughP  
+    callIO $ shakeMD layout flags doughP templatesP bakedP bannerImage2
+    -- return ()
 
-       
-
-  setCurrentDir doughP  -- must be done earlier to find settings file!
-  -- deleteDirRecursive bakedP
-  -- delete all the previous stuff for a new start 
-  -- covers the delete issue, which shake does not handle well
-  -- copy resources and banner   not easy to do with shake
-  -- only the html and the pdf files (possible the jpg) are required
-  -- copyOneFile
-  --   (templatesP `addFileName` bannerImage2)
-  --   (bakedP </> staticDirName </> bannerImage2)
-  -- convert md files and copy css
-  callIO $ shakeMD layout flags doughP templatesP bakedP bannerImage2
-  return ()
-
---    copyDirRecursive (doughP `addDir` resourcesDirName)   (bakedP `addDir` staticDirName)
 shakeMD :: SiteLayout
         -> PubFlags
         -> Path Abs Dir
@@ -213,7 +197,7 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
           -- liftIO $ putIOwords ["\nshakeMD - bakedP html 2 -  md ", showT md]
           -- --let md1 =  stripProperPrefixP bakedP md :: Path Rel File 
           -- l--iftIO $ putIOwords ["\nshakeMD - bakedP html 3 - md1 ", showT md1]
-          let md2 = doughP </> (stripProperPrefixP bakedP md) :: Path Abs File
+          let md2 = doughP </> stripProperPrefixP bakedP md :: Path Abs File
           -- liftIO $ putIOwords ["\nshakeMD - bakedP html 4 - md2 ", showT md2]
           need [toFilePath md2]  
           liftIO $ putIOwords ["\nshakeMD - bakedP - *.html", showT outP, showT md2]
@@ -233,9 +217,9 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
               , showT outP
               , "out"
               , showT out]
-          let fromfile = resourcesP </> (makeRelativeP staticP outP)
+          let fromfile = resourcesP </> makeRelativeP staticP outP
           liftIO $ putIOwords ["\nshakeMD - staticP - fromfile ", showT fromfile]
-          copyFileChangedP (fromfile) outP
+          copyFileChangedP fromfile outP
 
       (toFilePath staticP <> "/*.css")
         %> \out                  -- insert css -- no subdir
@@ -247,7 +231,7 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
               , showT outP
               , "\nTemplatesP"
               , showT templatesP]
-          let fromfile = templatesP </> (makeRelativeP staticP outP)
+          let fromfile = templatesP </> makeRelativeP staticP outP
           liftIO
             $ putIOwords ["\nshakeMD - staticP css- fromfile ", showT fromfile]
           copyFileChangedP fromfile outP
@@ -257,7 +241,7 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
         -> do
           let outP = makeAbsFile out :: Path Abs File
           liftIO $ putIOwords ["\nshakeMD - staticP - *.pdf", showT outP]
-          let fromfile = resourcesP </> (makeRelativeP staticP outP)
+          let fromfile = resourcesP </> makeRelativeP staticP outP
           liftIO
             $ putIOwords ["\nshakeMD - staticP  pdf - fromfile ", showT fromfile]
           copyFileChangedP fromfile outP
@@ -269,7 +253,7 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
         -> do
           let outP = makeAbsFile out :: Path Abs File
           liftIO $ putIOwords ["\nshakeMD - image jpg", showT outP]
-          let fromfile = imagesP </> (makeRelativeP imagesTargetP outP)
+          let fromfile = imagesP </> makeRelativeP imagesTargetP outP
           liftIO
             $ putIOwords ["\nshakeMD - staticP  img=age jpg- fromfile ", showT fromfile]
           copyFileChangedP fromfile outP
@@ -279,7 +263,7 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
           -- let bannerImage3 = makeRelFile out
           let outP = makeAbsFile out 
           liftIO $ putIOwords ["\nshakeMD - bannerImage TargetF", showT outP]
-          let fromfile = templatesP `addFileName` (makeRelativeP staticP outP)
+          let fromfile = templatesP `addFileName` makeRelativeP staticP outP
           liftIO
             $ putIOwords ["\nshakeMD - bannerImage fromfile ", showT fromfile]
           copyFileChangedP fromfile outP

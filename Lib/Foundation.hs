@@ -37,6 +37,7 @@ data SiteLayout = SiteLayout
     , testDir :: Path Abs Dir -- ^ the directory the test results go
     , bannerImage :: Path Rel File -- ^ the name of the banner image, needs special copy of
     , landingPage :: Path Rel File -- ^ the name of the landing page (html), where web server sarts                   
+    , uploadServer :: Text 
     } deriving (Show, Ord, Eq, Read)
 
 instance NiceStrings SiteLayout where
@@ -72,7 +73,11 @@ layoutDefaults = SiteLayout
                     </> ("." <> t2s progName)
     , bannerImage = bannerImageFileName
     , landingPage = landingPageName
+    , uploadServer = uploadServerTest
     }
+
+uploadServerTest :: Text
+uploadServerTest = "test.gerastree.at"
 
 templatesDirName, staticDirName :: Path Rel Dir
 templatesDirName = makeRelDir "templates"
@@ -85,6 +90,7 @@ resourcesDirName = makeRelDir "resources"
 imagesDirName :: Path Rel Dir
 imagesDirName = makeRelDir "img"
 -- imagesResourcesDirName = resourcesDirName </> imagesDirName 
+lastUploadFileName :: Path Rel File
 lastUploadFileName = makeRelFile "lastload.txt" :: Path Rel File 
         
 templatesImgDirName :: Path Rel Dir
@@ -98,9 +104,10 @@ settingsFileName = makeRelFile "settings2" -- the yaml file
 testSettingsFileName :: Path Abs File
 -- the settings file for tests 
 testSettingsFileName =
-    sourceDir </> (makeRelDirT "docs/site/dough/") </> settingsFileName
+    sourceDir </> makeRelDirT "docs/site/dough/" </> settingsFileName
+testLastUploadFileName :: Path Abs File
 testLastUploadFileName = sourceDir </> 
-        (makeRelDirT "docs/site/dough/") </> lastUploadFileName 
+        makeRelDirT "docs/site/dough/" </> lastUploadFileName 
         :: Path Abs File 
 
 masterTemplateFileName :: Path Rel File

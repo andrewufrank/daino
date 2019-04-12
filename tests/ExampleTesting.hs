@@ -47,7 +47,7 @@ import  {-@ HTF_TESTS @-}         Lib.IndexMake_test
 import    {-@ HTF_TESTS @-}       Lib.Templating_test  -- AG -> EG 
 import   {-@ HTF_TESTS @-}        Lib.Shake2_test  -- AG -> EG 
 import Uniform.Ftp 
-
+import Lib.StartSSGprocess
 -- --import {-@ HTF_TESTS @-} Lib.BibTex_test
 --
 --
@@ -78,6 +78,7 @@ main2      -- just a simple bake for test
         --  let landing = makeRelFile "landingPage.html"
         when (serverFlag testFlags) $
             runScotty 3099 (bakedDir testLayout) (landingPage testLayout)
+        
         return ()
 
 testFlags = zero { testFlag = True
@@ -85,6 +86,7 @@ testFlags = zero { testFlag = True
                  , serverFlag = False
                  , watchFlag = False
                  , settingsFile = testSettingsFileName  
+                 , uploadFlag = True
                  }
 
 main3 = runErrorVoid $ do 
@@ -97,3 +99,5 @@ main3 = runErrorVoid $ do
 
 lastUpload = read "2019-04-11 12:00:00 UTC" :: UTCTime
 test1 = testNewerModTime lastUpload 
+
+main4 = runErrorVoid $ ssgProcess testFlags

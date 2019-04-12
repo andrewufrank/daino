@@ -13,12 +13,13 @@
 
 module Lib.IndexMake (module Lib.IndexMake) where
 
-import           Uniform.Shake
+-- import           Uniform.Shake
 import           GHC.Exts (sortWith)
 import           Uniform.Json
-import           Uniform.Json (FromJSON(..))
+-- import           Uniform.Json (FromJSON(..))
 -- import           Uniform.Time (year2000)
-import Uniform.Filenames (makeAbsFile)
+-- import Uniform.Filenames (takeBaseName')
+import Uniform.Filenames
 import           Lib.CheckInput (MetaRec(..)
                                , SortArgs(..)
                                , makeRelPath
@@ -46,14 +47,6 @@ makeIndexEntriesDirs dough dirs =
 
     dirIxs = map (formatOneDirIndexEntry dough) dirs :: [IndexEntry]
 
--- filterIndexForFiles :: Path Abs File -> [FilePath] -> [Path Abs File]
--- filterIndexForFiles indexFn fs = fs4
---   where
---     fs2 = filter (/= toFilePath indexFn) fs -- exclude index
-
---     fs3 = filter (hasExtension "md") fs2
-
---     fs4 = map makeAbsFile fs3
 
 formatOneDirIndexEntry :: Path Abs Dir -> Path Abs Dir -> IndexEntry
 
@@ -62,18 +55,13 @@ formatOneDirIndexEntry :: Path Abs Dir -> Path Abs Dir -> IndexEntry
 formatOneDirIndexEntry dough2 fn1 = zero
   { text2 = s2t (getNakedDir fn1 :: FilePath)
   , link2 = s2t $ makeRelPath dough2 
-        (fn1 </> (makeRelFile "index.html") :: Path Abs File)
+        (fn1 </> makeRelFile "index.html" :: Path Abs File)
   -- should add to the index file (to be found by search for index set in metaRec)
 
   , title2 = baseName1 <> " (subdirectory)"
   }
   where
     baseName1 = s2t (getNakedDir fn1 :: FilePath)
-
-    -- s2t . takeBaseName . toFilePath $ fn
-    -- linkName = makeRelLink2  "index.md" 
-    -- dough2 (fn </> (makeRelFile "index.mt"))
-
 
 ---------------- F O R    F I L E S 
 
@@ -82,7 +70,8 @@ sortFileEntries sortArg fileIxsMs = case sortArg of
   SAtitle       -> sortWith title2 fileIxs
   SAdate        -> sortWith date2 fileIxs
   SAreverseDate -> reverse $ sortWith date2 fileIxs
-  SAzero        -> fileIxs --    errorT ["makeIndexForDir fileIxsSorted", showT SAzero]
+  SAzero        -> fileIxs 
+    --    errorT ["makeIndexForDir fileIxsSorted", showT SAzero]
   where
     fileIxs = catMaybes fileIxsMs
 
@@ -101,7 +90,7 @@ makeOneIndexEntry :: Path Abs Dir
                   -> Path Abs File
                   -> MetaRec
                   -> Maybe IndexEntry
-makeOneIndexEntry dough2 indexFile (metaRec) =
+makeOneIndexEntry dough2 indexFile metaRec =
   if hasExtension (makeExtensionT "md") fn1 || fn1 /= indexFile
   then Just $ getOneIndexEntryPure metaRec 
   else Nothing
@@ -113,11 +102,11 @@ getOneIndexEntryPure :: MetaRec  -> IndexEntry
 -- | the pure code to compute an IndexEntry
 -- Text should be "/Blog/postTufteStyled.html"
 getOneIndexEntryPure metaRec  = IndexEntry
-  { text2 = s2t . takeBaseName . fn $ metaRec 
+  { text2 = s2t . takeBaseName' . fn $ metaRec 
   , link2 = s2t $ setExtension "html". removeExtension . relURL $ metaRec 
   , abstract2 = abstract metaRec
   , title2 = if isZero (title metaRec :: Text ) 
-        then  (s2t . takeBaseName . fn $ metaRec )  
+        then  s2t . takeBaseName' . fn $ metaRec  
         else title metaRec
   , author2 =  author metaRec
   , date2 =   showT $ date metaRec

@@ -9,12 +9,12 @@
   MultiParamTypeClasses
   -- , TypeSynonymInstances
 --    , FunctionalDependencies
-  , FlexibleInstances
-  , FlexibleContexts
-  , ScopedTypeVariables
---    , UndecidableInstances
-  , OverloadedStrings
-  , TypeFamilies
+      , FlexibleInstances
+      , FlexibleContexts
+      , ScopedTypeVariables
+    --    , UndecidableInstances
+      , OverloadedStrings
+      , TypeFamilies
 
   #-}
 

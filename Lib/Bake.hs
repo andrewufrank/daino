@@ -33,6 +33,7 @@ import           Uniform.Pandoc                 ( Pandoc
 import           Lib.CmdLineArgs                ( PubFlags(..) )
 import Lib.CheckInput (checkOneMdFile)
 import Lib.Foundation (SiteLayout(..), templatesDir)
+
 bakeOneFile
   :: Bool
   -> PubFlags
