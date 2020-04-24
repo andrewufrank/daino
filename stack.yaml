@@ -15,9 +15,9 @@ packages:
 - ../uniform/uniform-shake
 - ../uniform/uniform-watch
 - ../uniform/uniform-webserver
-- ../fromOthers/bibtex
-- ../fromOthers/path
-- ../fromOthers/path-io
+- ../fromOthersInstalled/bibtex
+- ../fromOthersInstalled/path
+- ../fromOthersInstalled/path-io
 #- ../fromOthers/pretty-show
 # - ../fromOthers/shake-path
 

@@ -34,6 +34,7 @@ library
         ,  uniform-algebras -any
         ,  uniform-strings -any
         ,  uniform-shake
+        , shake
         ,  uniform-fileio 
         , uniform-error -any
         , uniform-time -any

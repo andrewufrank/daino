@@ -19,6 +19,7 @@ module Lib.Shake2 where
 
 import           Uniform.Error (ErrIO, callIO, liftIO)
 import           Uniform.Shake 
+import           Development.Shake -- (Rules(..))
 import           Uniform.Strings (putIOwords, showT)
 import           Lib.Foundation (SiteLayout(..), resourcesDirName, staticDirName
                                , templatesDir, templatesImgDirName
