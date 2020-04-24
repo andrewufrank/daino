@@ -16,8 +16,8 @@ module ShakeStartTests
      where
 
 
--- import Development.Shake
--- import Development.Shake.FilePath
+import Development.Shake
+import Development.Shake.FilePath
 import Lib.Bake
 import Lib.Foundation
 

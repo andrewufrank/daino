@@ -67,6 +67,7 @@ executable ssgbake
         , uniform-time
         -- , uniform-watch 
         , SSG -any
+        , shake
  
 -- executable ssg10
 --     main-is: ssg10.hs
@@ -115,6 +116,7 @@ test-suite ssgTest
         uniform-webserver,
         uniform-cmdLineArgs,
         uniform-shake,
+        shake,
         uniform-watch ,
         uniform-time,
         uniform-ftp ==0.0.1.3,
