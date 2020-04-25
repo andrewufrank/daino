@@ -121,6 +121,6 @@ test-suite ssgTest
         shake,
         uniform-watch ,
         uniform-time,
-        uniform-ftp ==0.0.1.3,
+        uniform-ftp ,
         SSG -any
 
