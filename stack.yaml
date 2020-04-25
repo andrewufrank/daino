@@ -31,4 +31,6 @@ extra-deps:
 # - scholdoc-types-0.1.3.1
 # - spawn-0.3
 # - fsutils-0.1.2
+#- path-0.7.0@sha256:f1629c247f4673650046a690f07958343abc63adc035b451610a550a8ac6055e,3177
+
 resolver: lts-13.12  # 26 seems to have a problem with pandoc
