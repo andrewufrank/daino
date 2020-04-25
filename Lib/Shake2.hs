@@ -20,7 +20,7 @@ module Lib.Shake2 where
 import           Uniform.Error (ErrIO, callIO, liftIO)
 import           Uniform.Shake 
 import           Development.Shake -- (Rules(..))
-import          Uniform.Shake.Path
+-- import          Uniform.Shake.Path
 import           Uniform.Strings (putIOwords, showT)
 import           Lib.Foundation (SiteLayout(..), resourcesDirName, staticDirName
                                , templatesDir, templatesImgDirName
@@ -200,7 +200,8 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
               , showT out]
           let fromfile = resourcesP </> makeRelativeP staticP outP
           liftIO $ putIOwords ["\nshakeMD - staticP - fromfile ", showT fromfile]
-          --copyFileChangedP fromfile outP
+          copyFileChangedP fromfile outP
+          liftIO $ putIOwords ["\n DONE shakeMD - staticP - fromfile ", showT fromfile]
 
       (toFilePath staticP <> "/*.css")
         %> \out                  -- insert css -- no subdir
@@ -273,6 +274,7 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
           -- need (map toFilePath yamlPageFiles2)
 
           res <- runErr2action $ bakeOneFile False flags md2 layout outP
+          liftIO $ putIOwords ["\nshake2 - return from bakeOneFile", showT res]
           return ()
 
 
