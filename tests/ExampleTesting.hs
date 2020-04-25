@@ -11,14 +11,14 @@ module Main where      -- must have Main (main) or Main where
 -- import System.Directory (createDirectoryIfMissing)
 -- keep this because it is in IO (not ErrIO)
 import           Test.Framework
-import           Lib.Shake2  -- just to test ghci
+-- import           Lib.Shake2  -- just to test ghci
 import           Uniform.FileIO
-import           Uniform.WebServer (runScotty)
-import Uniform.Time 
-import Uniform.Ftp 
-import           Lib.CmdLineArgs (allFlags, PubFlags(..))
-import           Lib.Foundation (SiteLayout(..)
-      , settingsFileName, testSettingsFileName)
+-- import           Uniform.WebServer (runScotty)
+-- import Uniform.Time 
+-- import Uniform.Ftp 
+-- import           Lib.CmdLineArgs (allFlags, PubFlags(..))
+-- import           Lib.Foundation (SiteLayout(..)
+--       , settingsFileName, testSettingsFileName)
 -- import Uniform.Error
 -- import {-@ HTF_TESTS @-} Lib.Shake2_test 
 -- tests shake for test dough
@@ -29,26 +29,26 @@ import           Lib.Foundation (SiteLayout(..)
 -- -- test dir must be ~/.SSG  -- the program name in foundation
 -- ordinary tests (run without shakeStartTest)
 import   {-@ HTF_TESTS @-}        Lib.Foundation_test  -- sets pageFn 
-import    {-@ HTF_TESTS @-}       Lib.CheckInputs_test
--- ----    -- writes A : testLayout
--- ----    --  pageFn :: abs pandoc filenames
-import   {-@ HTF_TESTS @-}        Lib.Pandoc_test
---             --  -> AD markdownToPandoc
---             -- -> AF pandocToContentHtml
---             -- -> AG (docValToAllVal)
--- --    -- test_pandoc_pageFn_pageMd_1 - pageFn -> pageMd : MarkdownText
--- --    -- AK :: MarkdownText -> BE  DocValue
--- --    -- Md ->AD :: Pandoc
--- --    -- AD -> AF :: DocValue
--- --import {-@ HTF_TESTS @-} Lib.Bake_test
--- --import {-@ HTF_TESTS @-} Lib.ReadSettingFile_test
--- -- not used -- import {-@ HTF_TESTS @-} Lib.Indexing_test
-import  {-@ HTF_TESTS @-}         Lib.IndexMake_test
-import    {-@ HTF_TESTS @-}       Lib.Templating_test  -- AG -> EG 
-import   {-@ HTF_TESTS @-}        Lib.Shake2_test  -- AG -> EG 
-import Uniform.Ftp 
-import Lib.StartSSGprocess
--- --import {-@ HTF_TESTS @-} Lib.BibTex_test
+-- import    {-@ HTF_TESTS @-}       Lib.CheckInputs_test
+-- -- ----    -- writes A : testLayout
+-- -- ----    --  pageFn :: abs pandoc filenames
+-- import   {-@ HTF_TESTS @-}        Lib.Pandoc_test
+-- --             --  -> AD markdownToPandoc
+-- --             -- -> AF pandocToContentHtml
+-- --             -- -> AG (docValToAllVal)
+-- -- --    -- test_pandoc_pageFn_pageMd_1 - pageFn -> pageMd : MarkdownText
+-- -- --    -- AK :: MarkdownText -> BE  DocValue
+-- -- --    -- Md ->AD :: Pandoc
+-- -- --    -- AD -> AF :: DocValue
+-- -- --import {-@ HTF_TESTS @-} Lib.Bake_test
+-- -- --import {-@ HTF_TESTS @-} Lib.ReadSettingFile_test
+-- -- -- not used -- import {-@ HTF_TESTS @-} Lib.Indexing_test
+-- import  {-@ HTF_TESTS @-}         Lib.IndexMake_test
+-- import    {-@ HTF_TESTS @-}       Lib.Templating_test  -- AG -> EG 
+-- import   {-@ HTF_TESTS @-}        Lib.Shake2_test  -- AG -> EG 
+-- import Uniform.Ftp 
+-- import Lib.StartSSGprocess
+-- -- --import {-@ HTF_TESTS @-} Lib.BibTex_test
 --
 --
 ---- main =  do  -- the local tests only
@@ -67,37 +67,37 @@ main        -- with tests in other modules
       ("HTF end ExampleTest.hs test:\n" ++ show p ++ "\nEND HTF ExampleTest")
     return ()
 
-main2 :: IO ()
-main2      -- just a simple bake for test
-  = do
-    putStrLn "main2"
-    runErrorVoid
-      $ do
-        shakeAll testLayout testFlags ""
-        -- the last is the filename that caused the shake call
-        --  let landing = makeRelFile "landingPage.html"
-        when (serverFlag testFlags) $
-            runScotty 3099 (bakedDir testLayout) (landingPage testLayout)
+-- main2 :: IO ()
+-- main2      -- just a simple bake for test
+--   = do
+--     putStrLn "main2"
+--     runErrorVoid
+--       $ do
+--         shakeAll testLayout testFlags ""
+--         -- the last is the filename that caused the shake call
+--         --  let landing = makeRelFile "landingPage.html"
+--         when (serverFlag testFlags) $
+--             runScotty 3099 (bakedDir testLayout) (landingPage testLayout)
         
-        return ()
+--         return ()
 
-testFlags = zero { testFlag = True
-                 , publishFlag = True
-                 , serverFlag = True
-                 , watchFlag = True
-                 , settingsFile = testSettingsFileName  
-                 , uploadFlag = False
-                 }
+-- testFlags = zero { testFlag = True
+--                  , publishFlag = True
+--                  , serverFlag = True
+--                  , watchFlag = True
+--                  , settingsFile = testSettingsFileName  
+--                  , uploadFlag = False
+--                  }
 
-main3 = runErrorVoid $ do 
-    (a,s)  <- runStateT  
-                 (ftpUploadDirsRecurse test1 (bakedDir testLayout) 
-                      (makeAbsDir "/test.gerastree.at/"))
-                 ftp0
+-- main3 = runErrorVoid $ do 
+--     (a,s)  <- runStateT  
+--                  (ftpUploadDirsRecurse test1 (bakedDir testLayout) 
+--                       (makeAbsDir "/test.gerastree.at/"))
+--                  ftp0
                  
-    return () 
+--     return () 
 
-lastUpload = read "2019-04-11 12:00:00 UTC" :: UTCTime
-test1 = testNewerModTime lastUpload 
+-- lastUpload = read "2019-04-11 12:00:00 UTC" :: UTCTime
+-- test1 = testNewerModTime lastUpload 
 
-main4 = runErrorVoid $ ssgProcess testFlags
+-- main4 = runErrorVoid $ ssgProcess testFlags

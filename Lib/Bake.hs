@@ -22,6 +22,7 @@ import           Uniform.Filenames
 import           Lib.Pandoc                     ( docValToAllVal
                                                 , markdownToPandocBiblio
                                                 , pandocToContentHtml
+                                                -- , MenuEntry(..)
                                                 )-- with a simplified Action ~ ErrIO
 
 import           Lib.Templating                 ( putValinMaster )
@@ -63,16 +64,22 @@ bakeOneFile debug flags pageFn layout ht2 =
       -- case mtripledoc of
       --   Just tripleDoc -> do
       htmlout :: HTMLout <- pandocToContentHtml debug pandoc2 -- content.docval  AD -> AF
-      -- index :: MenuEntry           <- makeIndex debug flags docval pageFn metaRec
+    --   index :: MenuEntry <- makeIndex debug flags metaRec
+    --   putIOwords ["bakeOneFile index", showT index, "\n"]
 
       val    <- docValToAllVal debug layout flags htmlout  metaRec
+      -- includes the directory list and injection, which should be in 
+      -- value "menu2"
       html2  <- putValinMaster debug val (templatesDir layout)
       write8 ht2 htmloutFileType html2
-                                 --            putIOwords ["bakeOneFile outhtml
-                                 --            (which was just written) \n", unHTMLout html2, "\n"]
-      when debug $ putIOwords
+        --            putIOwords ["bakeOneFile outhtml
+        --            (which was just written) \n", unHTMLout html2, "\n"]
+      when debug $  putIOwords
             ["bakeOneFile resultFile", showT ht2, "from", showT pageFn, "\n"]
-      when debug $ putIOwords ["......................"]
+      putIOwords
+            ["bakeOneFile resultvalue", showT val, "\n"
+                , showT html2]--   when debug $ 
+      putIOwords ["......................"]
       return . unwords' $ ["bakeOneFile outhtml ", showT pageFn, "done"]
         -- Nothing ->
         --   return

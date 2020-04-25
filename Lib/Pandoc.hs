@@ -19,7 +19,8 @@ module Lib.Pandoc
     , getAtKey
     , Pandoc(..)
     , flattenMeta
-    , readMarkdown2) where
+    , readMarkdown2
+    , MenuEntry(..)) where
 
 import           Lib.Foundation (defaultPageType, SiteLayout(..))
 import           Lib.Indexing -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
@@ -125,8 +126,10 @@ docValToAllVal debug layout flags htmlout   metaRec = do
   pageTypeYaml <- readYaml2value pageType
   settingsYaml <- readYaml2value (settingsFile flags)
   --        svalue <- decodeThrow . t2b . unYAML $ settings
-  ix <- makeIndex debug layout flags metaRec  -- (doughDir layout) 
+  ix :: MenuEntry <- makeIndex debug layout flags metaRec  -- (doughDir layout) 
   -- now          <- getDateAsText
+  putIOwords ["pandoc index produced", showT ix]  -- currently empty
+
   fn2 <- stripProperPrefix' (doughDir layout) pageFn
   let bottomLines = BottomLines
         { ssgversion = showVersionT version

@@ -169,18 +169,20 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
 
 
           mdFiles1 :: [Path Rel File]
-            <- getDirectoryFilesP doughP ["**/*.md"] -- subfiledirectories
+            <- getDirectoryFilesP doughP ["**/*.md"] -- includes subfiledirectories
           let htmlFiles3 = map (replaceExtension' "html" . (bakedP </>)) mdFiles1
                 :: [Path Abs File]
                 -- [( bakedP </>  md) -<.> "html" | md <- mdFiles1] 
                 
           -- , not $ isInfixOf' "index.md" md]
           -- let htmlFiles3 = map (replaceExtension "html") htmlFiles2 :: [Path Abs File]
-          when debug $ liftIO
+        --   when debug $ 
+          liftIO
             $ putIOwords
-              [ "============================\nshakeMD - htmlFiles3 1"
-              -- , showT mdFiles1]
-          -- when debug $ liftIO $ putIOwords ["\nshakeMD - htmlFile "
+              [ "============================\nshakeMD - mdFiles1"
+              , showT mdFiles1]
+          -- when debug $ 
+          liftIO $ putIOwords ["\nshakeMD - htmlFile3 "
                 , showT htmlFiles3]
           -- needP mdFiles1
           needP htmlFiles3  -- includes the index files 
@@ -250,7 +252,7 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
             $ putIOwords ["\nshakeMD - bannerImage fromfile ", showT fromfile]
           copyFileChangedP fromfile outP
     
-    
+      -- conversion md to html (excet for what is in static) 
       (\x -> ((toFilePath bakedP <> "**/*.html") ?== x)
         && not ((toFilePath staticP <> "**/*.html") ?== x) -- with subdir
         )  ?> \out ->
