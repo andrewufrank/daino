@@ -43,14 +43,15 @@ test_SA = assertEqual saRes (map (text2sortargs . Just) sain)
 -- test_PSnothing = assertEqual Nothing (text2publish PSzero)
 
 checkOneMdFilex = checkOneMdFile layoutDefaults
+checkOneMdFilex :: Path Abs File -> ErrIO TripleDoc
 ----
-test_checkOneMdFile_1, test_checkOneMdFile_2 :: IO ()
+test_checkOneMdFile_1 :: IO ()
 test_checkOneMdFile_1 = test1FileIO progName  "pageFn1" "TripleDoc1" checkOneMdFilex
 test_checkOneMdFile_2 = test1FileIO progName  "pageFn2" "TripleDoc2" checkOneMdFilex
-test_checkOneMdFile_3 = test1FileIO progName  "pageFn3" "TripleDoc3" checkOneMdFilex
-test_checkOneMdFile_4 = test1FileIO progName  "pageFn4" "TripleDoc4" checkOneMdFilex
-test_checkOneMdFile_5 = test1FileIO progName  "pageFn5" "TripleDoc5" checkOneMdFilex
-test_checkOneMdFile_6 = test1FileIO progName  "pageFn6" "TripleDoc6" checkOneMdFilex
+-- test_checkOneMdFile_3 = test1FileIO progName  "pageFn3" "TripleDoc3" checkOneMdFilex
+-- test_checkOneMdFile_4 = test1FileIO progName  "pageFn4" "TripleDoc4" checkOneMdFilex
+-- test_checkOneMdFile_5 = test1FileIO progName  "pageFn5" "TripleDoc5" checkOneMdFilex
+-- test_checkOneMdFile_6 = test1FileIO progName  "pageFn6" "TripleDoc6" checkOneMdFilex
 
 instance  ShowTestHarness TripleDoc
 
