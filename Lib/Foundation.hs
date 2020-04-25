@@ -21,7 +21,7 @@
 module Lib.Foundation  -- (openMain, htf_thisModuelsTests)
                       where
 
-import           Uniform.Strings         hiding ( (</>) )
+import           Uniform.Strings        -- hiding ( (</>) )
 import           Uniform.Filenames
 --import Uniform.FileStrings
 

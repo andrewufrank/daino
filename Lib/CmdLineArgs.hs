@@ -20,7 +20,7 @@
 
 module Lib.CmdLineArgs where
 
-import           Uniform.Strings         hiding ( (</>) )
+import           Uniform.Strings      --   hiding ( (</>) )
 import           Uniform.FileIO
 -- import           Uniform.Error
 import           Data.Semigroup                 ( (<>) )

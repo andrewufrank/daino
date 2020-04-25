@@ -16,7 +16,7 @@
 
 module Lib.CheckInput where
 
-import           Uniform.Strings         hiding ( (</>) )
+import           Uniform.Strings      --   hiding ( (</>) )
 import           Uniform.FileIO
 import           Uniform.Time                   (   readDateMaybe
                                                 , year2000
