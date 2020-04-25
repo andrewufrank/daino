@@ -90,7 +90,7 @@ metaRec95 = MetaRec
   , bibliographyGroup = Nothing
   , keywords = Just "test"
   , pageTemplate = Just "page3.yaml"
-  , indexPage = True
+  , indexPage = False
   , indexSort = SAtitle
   }
 
@@ -165,47 +165,53 @@ res2 = Right
                     , publish2 = ""
                     , isIndex = False 
                     }
-       , IndexEntry { text2 = "postTufteStyled"
-                    , link2 = "/Blog/postTufteStyled.html"
-                    , title2 = "postTufteStyle.md"
-                    , abstract2 = "A text with two levels of title"
-                    , author2 = "auf"
-                    , date2 = "2019-01-04 00:00:00 UTC"
-                    , publish2 = "publish"
-                    }
+    --    , IndexEntry { text2 = "postTufteStyled"
+    --                 , link2 = "/Blog/postTufteStyled.html"
+    --                 , title2 = "postTufteStyle.md"
+    --                 , abstract2 = "A text with two levels of title"
+    --                 , author2 = "auf"
+    --                 , date2 = "2019-01-04 00:00:00 UTC"
+    --                 , publish2 = "publish"
+    --                 , isIndex = False 
+    --                 }
        , IndexEntry { text2 = "postwk"
                     , link2 = "/Blog/postwk.html"
-                    , title2 = "postwk.md"
+                    , title2 = "postwk with image"
                     , abstract2 = "A silly text not needing an abstract."
                     , author2 = "AUF"
                     , date2 = "2019-01-04 00:00:00 UTC"
                     , publish2 = "publish"
+                    , isIndex = False 
                     }
-       , IndexEntry
-           { text2 = "postwkTufte"
-           , link2 = "/Blog/postwkTufte.html"
-           , title2 = "postwkTufte.md"
-           , abstract2 = "A silly text not needing an abstract updated."
-           , author2 = "auf"
-           , date2 = "2019-01-04 00:00:00 UTC"
-           , publish2 = "publish"
-           }
-       , IndexEntry { text2 = "index3"
-                    , link2 = "/Blog/index3.html"
-                    , title2 = "sort by data (reversed) index 3 for Blog"
-                    , abstract2 = "The directory for experiments."
-                    , author2 = "AUF"
-                    , date2 = "2019-01-04 00:00:00 UTC"
-                    , publish2 = "publish"
-                    }
-       , IndexEntry { text2 = "index2"
-                    , link2 = "/Blog/index2.html"
-                    , title2 = "sort by date index 2 for Blog"
-                    , abstract2 = "The directory for experiments."
-                    , author2 = "AUF"
-                    , date2 = "2019-01-04 00:00:00 UTC"
-                    , publish2 = "publish"
-                    }]
+        -- , IndexEntry
+        --             { text2 = "postwkTufte"
+        --             , link2 = "/Blog/postwkTufte.html"
+        --             , title2 = "postwkTufte.md"
+        --             , abstract2 = "A silly text not needing an abstract updated."
+        --             , author2 = "auf"
+        --             , date2 = "2019-01-04 00:00:00 UTC"
+        --             , publish2 = "publish"
+        --             , isIndex = False 
+        --    }
+    --    , IndexEntry { text2 = "index3"
+    --                 , link2 = "/Blog/index3.html"
+    --                 , title2 = "sort by data (reversed) index 3 for Blog"
+    --                 , abstract2 = "The directory for experiments."
+    --                 , author2 = "AUF"
+    --                 , date2 = "2019-01-04 00:00:00 UTC"
+    --                 , publish2 = "publish"
+    --                 , isIndex = False 
+    --                 }
+    --    , IndexEntry { text2 = "index2"
+    --                 , link2 = "/Blog/index2.html"
+    --                 , title2 = "sort by date index 2 for Blog"
+    --                 , abstract2 = "The directory for experiments."
+    --                 , author2 = "AUF"
+    --                 , date2 = "2019-01-04 00:00:00 UTC"
+    --                 , publish2 = "publish"
+    --                 , isIndex = False 
+    --                 }
+            ]
    })
 
 -- Right
