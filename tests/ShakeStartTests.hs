@@ -17,7 +17,7 @@ module ShakeStartTests
 
 
 import Development.Shake
-import Development.Shake.FilePath
+import Development.Shake.FilePath hiding ((<.>), (</>))
 import Lib.Bake
 import Lib.Foundation
 
@@ -32,9 +32,9 @@ import Test.Framework
 import Uniform.Error
 import Uniform.FileIO            hiding ((<.>), (</>)) -- (resourcesDirName)
 import Uniform.Pandoc -- (applyTemplate3, Pandoc, DocValue, doc HTMLout, htmloutFileType)
--- import Uniform.Shake
+import Uniform.Shake
 import Lib.CmdLineArgs (allFlags, PubFlags)
-import Lib.CheckInput (checkOneMdFile, MetaRec(..), TripleDoc(..))
+import Lib.CheckInput (checkOneMdFile, MetaRec(..), TripleDoc)
 import Uniform.Pointless (fst3)
 
 test_shake :: IO ()
@@ -146,7 +146,7 @@ shakeTestWrapped flags layout doughP  templatesP testP =
     (toFilePath testP <> "//*allyaml.docval") %> \out -> do
         let outP = makeAbsFile out :: Path Abs File
         let source = outP $--<.>   "content.docval"
-        let source2 = doughP </> makeRelativeP testP (outP $--<.> "md")
+        -- let source2 = doughP </> makeRelativeP testP (outP $--<.> "md")
         let triple = outP $--<.> "tripleDoc"
         needP [source]
         -- does not track the settingss and the pageN.yaml
@@ -157,7 +157,7 @@ shakeTestWrapped flags layout doughP  templatesP testP =
                 metarecText :: String <- readFile2 triple 
                 let metarec = readNote "read metarec 23243ou" metarecText :: MetaRec
                 p :: DocValue <- docValToAllVal True layout flags valText
-                                 ( source2) metarec 
+                                  metarec 
                 write8 ( outP) docValueFileType p
 
 
@@ -197,6 +197,7 @@ instance Exception Text
 -- --                        putIOwords ["runErr2action", "got return", showT a] --
 --                         return ()
 
-($--<.>) :: Path a File  -> Text  -> Path a File
--- take away two extensions and replace with a new oneLine
-f $--<.> ext =  (f $-<.> zero) $-<.> ext
+-- ($--<.>) :: Path a File  -> Text  -> Path a File
+-- -- take away two extensions and replace with a new oneLine
+-- f $--<.> ext =  (f $-<.> zero) $-<.> ext
+-- imported from Uniform.Shake

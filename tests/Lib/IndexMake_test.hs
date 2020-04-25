@@ -154,6 +154,7 @@ res2 = Right
                     , author2 = ""
                     , date2 = ""
                     , publish2 = ""
+                    , isIndex = False 
                     }
        , IndexEntry { text2 = ""
                     , link2 = ""
@@ -162,6 +163,7 @@ res2 = Right
                     , author2 = ""
                     , date2 = ""
                     , publish2 = ""
+                    , isIndex = False 
                     }
        , IndexEntry { text2 = "postTufteStyled"
                     , link2 = "/Blog/postTufteStyled.html"
