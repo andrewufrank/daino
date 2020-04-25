@@ -83,7 +83,7 @@ shakeMD :: SiteLayout
 shakeMD layout flags doughP templatesP bakedP bannerImage2 = 
   shakeArgs2 bakedP $
     do
-      let debug = True
+      let debug = False
       let staticP = bakedP </> staticDirName :: Path Abs Dir
       let resourcesP = doughP </> resourcesDirName :: Path Abs Dir
       let masterTemplate = templatesP </> masterTemplateP :: Path Abs File
