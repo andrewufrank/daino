@@ -20,7 +20,7 @@ module Lib.Pandoc
     , Pandoc(..)
     , flattenMeta
     , readMarkdown2
-    , MenuEntry(..)) where
+    , MenuEntry) where
 
 import           Lib.Foundation (defaultPageType, SiteLayout(..))
 import           Lib.Indexing -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout

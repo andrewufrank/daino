@@ -30,22 +30,17 @@ import           Lib.Templating
 import           Test.Framework
 --import Text.DocTemplates
 import           Uniform.Test.TestHarness
-import           Uniform.Time (readDate3, UTCTime(..))
+-- import           Uniform.Time (readDate3, UTCTime(..))
 import           Lib.CmdLineArgs (allFlags)
 import           Lib.CheckInput (MetaRec(..), SortArgs(..), PublicationState(..)
                                , makeRelPath)
 import           Lib.IndexMake
+import Lib.Indexing_test (metaRecPost1, metaRecIndex1)
+test_getOneIndexEntryPost1 = assertEqual indexEntryPost1 
+                                (getOneIndexEntryPure metaRecPost1)
 
--- TEST DIRS 
-dough2 = doughDir testLayout
-dough2path = makeAbsDir "/home/frank/Workspace8/ssg/docs/site/dough/"
-test_dough2 =  assertEqual dough2path dough2
-
--- resmr = "/Blog/postwk.md"
-blogDir = doughDir testLayout </> makeRelDir "Blog"
-test_blogDir = assertEqual blogDirPath blogDir
-blogDirPath = makeAbsDir "/home/frank/Workspace8/ssg/docs/site/dough/Blog"
-
+test_getOneIndexEntryIndex1 = assertEqual indexEntryIndex1 
+                                (getOneIndexEntryPure metaRecIndex1)
 
 -- blogindexfn = doughDir testLayout </> makeRelFile "Blog/index.md"
 
@@ -57,7 +52,6 @@ blogDirPath = makeAbsDir "/home/frank/Workspace8/ssg/docs/site/dough/Blog"
 
 -- res2a = "Blog" :: FilePath
 
--- linkIn = doughDir testLayout </> makeRelFile "Blog/postwk.md" :: Path Abs File
 
 -- indexIn = doughDir testLayout </> makeRelFile "Blog/index.md" :: Path Abs File
 
@@ -68,38 +62,9 @@ blogDirPath = makeAbsDir "/home/frank/Workspace8/ssg/docs/site/dough/Blog"
 -- -- (doughDir testLayout :: Path Abs Dir) linkIn
 -- resLink = "/Blog/postwk.html" :: FilePath
 
--- metaRec1t = MetaRec
---   { fn = toFilePath
---       (doughDir testLayout </> makeRelFile "Blog/index.md" :: Path Abs File)
---   , relURL = "/Blog/index.md"
---   , title = "index for post"
---   , abstract = "The directory for experiments."
---   , author = "AUF"
---   , date = "2066-06-06 00:00:00 UTC"
---   , publicationState = PSpublish
---   , bibliography = Nothing
---   , bibliographyGroup = Nothing
---   , keywords = Just "test"
---   , pageTemplate = Just "page3.yaml"
---   , indexPage = True
---   , indexSort = SAtitle
---   }
+ 
 
--- metaRec95 = MetaRec
---   { fn = toFilePath linkIn
---   , relURL = "/Blog/postwk.html"
---   , title = "index for post"
---   , abstract = "The directory for experiments."
---   , author = "AUF"
---   , date = "2066-06-06 00:00:00 UTC"
---   , publicationState = PSpublish
---   , bibliography = Nothing
---   , bibliographyGroup = Nothing
---   , keywords = Just "test"
---   , pageTemplate = Just "page3.yaml"
---   , indexPage = False
---   , indexSort = SAtitle
---   }
+
 
 -- linkIn2 = toFilePath . fromJustNote "readMeta2rec relURL wer234c"
 --   $ (stripPrefix (doughDir testLayout) linkIn :: Maybe (Path Rel File))
@@ -115,29 +80,27 @@ blogDirPath = makeAbsDir "/home/frank/Workspace8/ssg/docs/site/dough/Blog"
 -- test_makeOneIndexEntry =
 --   assertEqual resmo (makeOneIndexEntry dough2 indexIn metaRec95)
 
--- resmo = Just
---   (IndexEntry { text2 = "postwk"
---               , link2 = "/Blog/postwk.html"
---               , title2 = "index for post"
---               , abstract2 = "The directory for experiments."
---               , author2 = "AUF"
---               , date2 = "2066-06-06 00:00:00 UTC"
---               , publish2 = "publish"
---               , isIndex = False 
---               })
-
+indexEntryPost1 = IndexEntry { text2 = "postwk"
+              , link2 = "/Blog/postwk.html"
+              , title2 =  "postwk with image"
+              , abstract2 = "A silly text not needing an abstract."
+              , author2 = "AUF"
+              , date2 = "2019-01-04 00:00:00 UTC"
+              , publish2 = "publish"
+              , isIndex = False 
+              }
 -- test_getOneIndexEntryPure = assertEqual res22a (getOneIndexEntryPure metaRec95)
 
--- res22a = IndexEntry
---   { text2 = "postwk"
---   , link2 = "/Blog/postwk.html"
---   , title2 = "index for post"
---   , abstract2 = "The directory for experiments."
---   , author2 = "AUF"
---   , date2 = "2066-06-06 00:00:00 UTC"
---   , publish2 = "publish"
---   , isIndex = False 
---   } :: IndexEntry
+indexEntryIndex1 = IndexEntry
+  { text2 = "index"
+  , link2 = "/Blog/index.html"
+  , title2 = "primary index for Blog"
+  , abstract2 = "The directory for experiments."
+  , author2 = "AUF"
+  , date2 = "2019-01-04 00:00:00 UTC"
+  , publish2 = "publish"
+  , isIndex = True 
+  } :: IndexEntry
 
 -- test_makeIndex_1 = do
 --   res <- runErr
@@ -336,8 +299,7 @@ blogDirPath = makeAbsDir "/home/frank/Workspace8/ssg/docs/site/dough/Blog"
 -- --          }]
 -- --  })
 
-instance IsString UTCTime where
-  fromString = readNote "IsString UTCTime"
+
 
 -- test_3 = assertEqual r3 (index1)
 -- r3 = IndexEntry{text =
