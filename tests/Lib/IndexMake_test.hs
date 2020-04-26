@@ -42,6 +42,8 @@ test_getOneIndexEntryPost1 = assertEqual indexEntryPost1
 test_getOneIndexEntryIndex1 = assertEqual indexEntryIndex1 
                                 (getOneIndexEntryPure metaRecIndex1)
 
+-- test_makeBothIndexP = assertEqual res TODO
+
 -- blogindexfn = doughDir testLayout </> makeRelFile "Blog/index.md"
 
 -- test_parentDir = assertEqual res1a (getParentDir blogindexfn)

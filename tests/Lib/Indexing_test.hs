@@ -34,6 +34,7 @@ import           Lib.CmdLineArgs (allFlags)
 import           Lib.CheckInput (MetaRec(..), SortArgs(..)
                     , PublicationState(..), makeRelPath
                     , checkOneMdFile)
+import          Lib.IndexMake (MenuEntry(..), IndexEntry(..))
 -- import Uniform.Pointless (snd3)
 
     -- TEST DIRS 
@@ -60,6 +61,32 @@ test_MetaRec_index1 = do
     res <- runErr $   getMetaRecs testLayout linkIndex1 
     assertEqual (Right metaRecIndex1) res 
 
+test_makeIndexPost1 = do 
+    res <- runErr $ makeIndex True testLayout allFlags metaRecPost1
+    assertEqual (Right menuEntryPost1) res 
+
+menuEntryPost1 = zero :: MenuEntry 
+
+test_makeIndexIndex1 = do 
+    res <- runErr $ makeIndex True testLayout allFlags metaRecIndex1
+    assertEqual (Right menuEntryIndex1) res 
+
+menuEntryIndex1 = 
+    MenuEntry{menu2 =
+        [IndexEntry{text2 = "SubBlog", link2 = "/Blog/SubBlog/index.html",
+                    title2 = "SubBlog (subdirectory)", abstract2 = "", author2 = "",
+                    date2 = "", publish2 = "", isIndex = False},
+        IndexEntry{text2 = "", link2 = "", title2 = "------",
+                    abstract2 = "", author2 = "", date2 = "", publish2 = "",
+                    isIndex = False},
+        IndexEntry{text2 = "", link2 = "", title2 = "------",
+                    abstract2 = "", author2 = "", date2 = "", publish2 = "",
+                    isIndex = False},
+        IndexEntry{text2 = "postwk", link2 = "/Blog/postwk.html",
+                    title2 = "postwk with image",
+                    abstract2 = "A silly text not needing an abstract.",
+                    author2 = "AUF", date2 = "2019-01-04 00:00:00 UTC",
+                    publish2 = "publish", isIndex = False}]} :: MenuEntry 
 
 metaRecPost1 = MetaRec
   { fn = toFilePath linkIn
