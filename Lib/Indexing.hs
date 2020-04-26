@@ -91,9 +91,9 @@ makeIndex debug layout flags metaRec    = do
             --   when debug $ putIOwords ["makeIndexForDir 8", "menu1", showT menu1]
             return menu1
 
-
-getMetaRecs :: SiteLayout -> Path Abs File -> ErrIO MetaRec
-getMetaRecs layout mdfile = do
+-- | find the metaRec to a path 
+getMetaRec :: SiteLayout -> Path Abs File -> ErrIO MetaRec
+getMetaRec layout mdfile = do
     (_, metaRec, report) <- checkOneMdFile layout mdfile
     return metaRec
             

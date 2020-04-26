@@ -51,14 +51,14 @@ test_linkIn = assertEqual "/Blog/postwk.md" $ makeRelPath dough2 linkIn
 linkIn = doughDir testLayout </> makeRelFile "Blog/postwk.md" :: Path Abs File
 
 test_MetaRec_postwk = do 
-    res <- runErr $   getMetaRecs testLayout linkIn 
+    res <- runErr $   getMetaRec testLayout linkIn 
     assertEqual (Right metaRecPost1) res 
 
 linkIndex1 = doughDir testLayout </> makeRelFile "Blog/index.md" 
                         :: Path Abs File 
 
 test_MetaRec_index1 = do 
-    res <- runErr $   getMetaRecs testLayout linkIndex1 
+    res <- runErr $   getMetaRec testLayout linkIndex1 
     assertEqual (Right metaRecIndex1) res 
 
 test_makeIndexPost1 = do 
