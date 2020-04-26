@@ -14,14 +14,15 @@
 -- {-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-{-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-unused-imports 
+{-# OPTIONS -fno-warn-missing-signatures 
+    -fno-warn-orphans -fno-warn-unused-imports 
       -fno-warn-missing-fields #-}
 
 module Lib.IndexMake_test where
 
 -- import Lib.FileMgt
 import           Lib.Foundation (layoutDefaults, doughDir
-                                  , progName, SiteLayout(..), templatesDirName)
+                        , progName, SiteLayout(..), templatesDirName)
 import           Lib.Foundation_test (testLayout)
 --import Uniform.Strings
 import           Lib.Indexing -- (applyTemplate2, convGmaster)
@@ -32,36 +33,68 @@ import           Test.Framework
 import           Uniform.Test.TestHarness
 -- import           Uniform.Time (readDate3, UTCTime(..))
 import           Lib.CmdLineArgs (allFlags)
-import           Lib.CheckInput (MetaRec(..), SortArgs(..), PublicationState(..)
+import           Lib.CheckInput (MetaRec(..), SortArgs(..)
+                        , PublicationState(..)
                                , makeRelPath)
 import           Lib.IndexMake (makeBothIndex, IndexEntry(..)
                     , getOneIndexEntryPure)
 
-import Lib.Indexing_test (metaRecPost1, metaRecIndex1, blogDirPath)
+import Lib.Indexing_test (metaRecPost1, metaRecIndex1, blogDirPath, linkIn)
 
 
 test_getOneIndexEntryPost1 = assertEqual indexEntryPost1 
                                 (getOneIndexEntryPure metaRecPost1)
 
-metaRecsPost1 = ["/home/frank/Workspace8/ssg/docs/site/dough/Blog/postwk.md",
-   "/home/frank/Workspace8/ssg/docs/site/dough/Blog/index.md"] :: [FilePath]
-dirsPost1 = ["/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog"] 
-
 test_getOneIndexEntryIndex1 = assertEqual indexEntryIndex1 
                              (getOneIndexEntryPure metaRecIndex1)
 
+dirContentPost1 = 
+    ["/home/frank/Workspace8/ssg/docs/site/dough/Blog/postwk.md",
+   "/home/frank/Workspace8/ssg/docs/site/dough/Blog/index.md"] :: [FilePath]
+dirsPost1 = ["/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog"] 
+                :: [FilePath]
+
+
 test_DirContentBlog = do 
-        res <- runErr $ getDirContentFiles (toFilePath blogDirPath)
-        assertEqual (Right metaRecsPost1) res
+    res <- runErr $ getDirContentFiles (toFilePath blogDirPath)
+    assertEqual (Right dirContentPost1) res
 
 test_DirsBlog =  do 
-        res <- runErr $ getDirectoryDirs' (toFilePath blogDirPath)
-        assertEqual (Right dirsPost1)  res
-                             
+    res <- runErr $ getDirectoryDirs' (toFilePath blogDirPath)
+    assertEqual (Right dirsPost1)  res
 
--- test_makeBothIndexP = assertEqual indexP (makeBothIndex2
+test_getMetaRecsAfterFilter = do 
+    res <- runErr $ do getMetaRecsAfterFilter layoutDefaults linkIn dirContentPost1
+    assertEqual (Right metaRecs) res
+
+metaRecs = [MetaRec
+    {fn = "/home/frank/Workspace8/ssg/docs/site/dough/Blog/index.md",
+    relURL = "/Blog/index.md", 
+    title = "primary index for Blog",
+    abstract = "The directory for experiments.", 
+    author = "AUF",
+    date = "2019-01-04 00:00:00 UTC", 
+    publicationState = PSpublish,
+    bibliography = Nothing, 
+    bibliographyGroup = Nothing,
+    keywords = Just "test",
+    pageTemplate = Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+    indexPage = True, indexSort = SAtitle}] :: [MetaRec]
+
+
+-- | filter the content and retrieve metarecs
+--    keep md files (but not indexpage)
+getMetaRecsAfterFilter :: SiteLayout -> Path Abs File -> [FilePath] -> ErrIO [MetaRec]
+getMetaRecsAfterFilter layout indexpageFn dirContent = do 
+        let fs4 = filter (indexpageFn /=) . map makeAbsFile 
+                        . filter (hasExtension "md") $ dirContent :: [Path Abs File]
+        metaRecs2 :: [MetaRec]
+                <- mapM (getMetaRec layout) fs4 -- noch ok    let 
+        return metaRecs2 
+
+-- test_makeBothIndexP = assertEqual indexP (makeBothIndex
 --                     (doughDir testLayout)
---                     testLayout 
+--                     linkIn SAzero 
 --                     metaRecsPost1 
 --                     dirsPost1
 --                     )
@@ -69,6 +102,7 @@ test_DirsBlog =  do
 -- makeBothIndex2 :: Path Abs Dir -> Path Abs File -> SortArgs 
 --       -> [MetaRec] -> [Path Abs Dir] -> MenuEntry
 -- makeBothIndex2 doughDir metaRec flags = makeBothIndex 
+--             doughDir
 --             indexpageFn
 --             (indexSort metaRec)
 --             metaRecs3
@@ -80,6 +114,7 @@ test_DirsBlog =  do
 --                             metaRecs2
 --         pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir
 --         dirs2 = []
+
 -- indexP = zero 
 
 
