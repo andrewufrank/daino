@@ -24,7 +24,7 @@ import Uniform.Strings (putIOline, putIOlineList)
 -- DocValue(..)
 -- , unDocValue
 import           Lib.CmdLineArgs (PubFlags(..))
-import           Lib.CheckInput (MetaRec(..), checkOneMdFile
+import           Lib.CheckInput (MetaRec(..), getTripleDoc
                                , PublicationState(..))
 -- , readMeta2rec
 -- , checkOneMdFile
@@ -64,7 +64,7 @@ makeIndex debug layout flags metaRec    = do
             let fs4 = filter (indexpageFn /=) . map makeAbsFile 
                         . filter (hasExtension "md") $ fs2 :: [Path Abs File]
             metaRecs2 :: [MetaRec]
-                <- mapM (getMetaRecs layout) fs4 -- noch ok
+                <- mapM (getMetaRec layout) fs4 -- noch ok
             
             --   let fileIxsSorted =
             --         makeIndexEntries dough2 indexFn (indexSort metaRec) metaRecs
@@ -94,7 +94,7 @@ makeIndex debug layout flags metaRec    = do
 -- | find the metaRec to a path 
 getMetaRec :: SiteLayout -> Path Abs File -> ErrIO MetaRec
 getMetaRec layout mdfile = do
-    (_, metaRec, report) <- checkOneMdFile layout mdfile
+    (_, metaRec, report) <- getTripleDoc layout mdfile
     return metaRec
             
 checkPubStateWithFlags :: PubFlags ->  PublicationState -> Bool

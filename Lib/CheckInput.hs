@@ -30,13 +30,14 @@ import Lib.Foundation (SiteLayout(..), templatesDir)
 
 type TripleDoc = (Pandoc, MetaRec, Text)
 
-checkOneMdFile :: SiteLayout ->   Path Abs File -> ErrIO (Pandoc, MetaRec, Text)
--- check one input file, return the values parsed
--- uses doughP to construct file names to abs file 
-checkOneMdFile  layout mdfn = do
-  -- putIOwords ["checkOneMdFile start", showT mdfn]
+getTripleDoc :: SiteLayout ->   Path Abs File -> ErrIO TripleDoc
+-- get one input file, return the values parsed
+-- check validity
+-- uses siteLayout to construct file names to abs file 
+getTripleDoc  layout mdfn = do
+  -- putIOwords ["getTripleDoc start", showT mdfn]
   (pandoc, meta2) :: (Pandoc, Value) <- readMd2meta mdfn -- (dough2 </> mdfn)
-  -- putIOwords ["checkOneMdFile meta2", showT meta2]
+  -- putIOwords ["getTripleDoc meta2", showT meta2]
 
   let (metaRec1,report1) = readMeta2rec layout mdfn meta2
 

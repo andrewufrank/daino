@@ -34,7 +34,7 @@ import           Uniform.BibTex
 import           Uniform.Time (year2000)
 import           Lib.CheckInput (MetaRec(..), PublicationState(..)
                                  -- , readMeta2rec
-                               , checkOneMdFile, TripleDoc)
+                               , getTripleDoc, TripleDoc)
 import           Lib.CmdLineArgs (PubFlags(..))
 
 -- import Text.Pandoc.Definition (Meta(..))

@@ -33,7 +33,7 @@ import           Uniform.Time (readDate3, UTCTime(..))
 import           Lib.CmdLineArgs (allFlags)
 import           Lib.CheckInput (MetaRec(..), SortArgs(..)
                     , PublicationState(..), makeRelPath
-                    , checkOneMdFile)
+                    , getTripleDoc)
 import          Lib.IndexMake (MenuEntry(..), IndexEntry(..))
 -- import Uniform.Pointless (snd3)
 
