@@ -141,6 +141,7 @@ indexP = MenuEntry{menu2 =
         --         abstract2 = "The directory for experiments.", author2 = "AUF",
         --         date2 = "2019-01-04 00:00:00 UTC", publish2 = "publish",
         --         isIndex = True},
+                -- TODO here should be the postwk.md file 
         IndexEntry{text2 = "", link2 = "", title2 = "------",
                 abstract2 = "", author2 = "", date2 = "", publish2 = "",
                 isIndex = False}]} :: MenuEntry

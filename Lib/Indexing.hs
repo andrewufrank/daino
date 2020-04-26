@@ -53,8 +53,7 @@ makeIndex debug layout flags metaRec    = do
             let pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir
             fs2 :: [FilePath] <- getDirContentFiles (toFilePath pageFn)
             dirs2 :: [FilePath] <- getDirectoryDirs' (toFilePath pageFn) 
-            -- when debug $ 
-            do 
+            when False $  do 
                 putIOline  "makeIndexForDir 2 for" pageFn
                 putIOline "index file" (fn metaRec) -- indexpageFn
                 putIOline "sort"  (indexSort metaRec)
@@ -73,8 +72,8 @@ makeIndex debug layout flags metaRec    = do
             --   -- if not (null dirIxsSorted)
             --   --     then dirIxsSorted ++ [zero { title2 = "------" }]
             --   --     else []
-            putIOwords ["makeIndexForDir 3 fs4",  showT  fs4,"/n"]
-            putIOwords ["makeIndexForDir 3 metaRecs2", showT metaRecs2]        
+            -- putIOwords ["makeIndexForDir 3 fs4",  showT  fs4,"/n"]
+            -- putIOwords ["makeIndexForDir 3 metaRecs2", showT metaRecs2]        
             let menu1 = makeBothIndex
                     (doughDir layout)
                     indexpageFn 
@@ -83,7 +82,7 @@ makeIndex debug layout flags metaRec    = do
                     (map makeAbsDir dirs2)
             -- MenuEntry { menu2 = dirIxsSorted2 ++ fileIxsSorted }
             -- when debug $ 
-            putIOwords ["makeIndexForDir 4", "index for dirs sorted ", showT  menu1]
+            -- putIOwords ["makeIndexForDir 4", "index for dirs sorted ", showT  menu1]
                     -- is empty
             -- let dirIxs = map formatOneDirIndexEntry (map makeAbsDir dirs) :: [IndexEntry]
             -- -- format the subdir entries
