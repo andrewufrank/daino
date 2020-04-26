@@ -34,15 +34,54 @@ import           Uniform.Test.TestHarness
 import           Lib.CmdLineArgs (allFlags)
 import           Lib.CheckInput (MetaRec(..), SortArgs(..), PublicationState(..)
                                , makeRelPath)
-import           Lib.IndexMake
-import Lib.Indexing_test (metaRecPost1, metaRecIndex1)
+import           Lib.IndexMake (makeBothIndex, IndexEntry(..)
+                    , getOneIndexEntryPure)
+
+import Lib.Indexing_test (metaRecPost1, metaRecIndex1, blogDirPath)
+
+
 test_getOneIndexEntryPost1 = assertEqual indexEntryPost1 
                                 (getOneIndexEntryPure metaRecPost1)
 
-test_getOneIndexEntryIndex1 = assertEqual indexEntryIndex1 
-                                (getOneIndexEntryPure metaRecIndex1)
+metaRecsPost1 = ["/home/frank/Workspace8/ssg/docs/site/dough/Blog/postwk.md",
+   "/home/frank/Workspace8/ssg/docs/site/dough/Blog/index.md"] :: [FilePath]
+dirsPost1 = ["/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog"] 
 
--- test_makeBothIndexP = assertEqual res TODO
+test_getOneIndexEntryIndex1 = assertEqual indexEntryIndex1 
+                             (getOneIndexEntryPure metaRecIndex1)
+
+test_DirContentBlog = do 
+        res <- runErr $ getDirContentFiles (toFilePath blogDirPath)
+        assertEqual (Right metaRecsPost1) res
+
+test_DirsBlog =  do 
+        res <- runErr $ getDirectoryDirs' (toFilePath blogDirPath)
+        assertEqual (Right dirsPost1)  res
+                             
+
+-- test_makeBothIndexP = assertEqual indexP (makeBothIndex2
+--                     (doughDir testLayout)
+--                     testLayout 
+--                     metaRecsPost1 
+--                     dirsPost1
+--                     )
+-- -- | processing of an index file (if not index then zero TODO)
+-- makeBothIndex2 :: Path Abs Dir -> Path Abs File -> SortArgs 
+--       -> [MetaRec] -> [Path Abs Dir] -> MenuEntry
+-- makeBothIndex2 doughDir metaRec flags = makeBothIndex 
+--             indexpageFn
+--             (indexSort metaRec)
+--             metaRecs3
+--             (map makeAbsDir dirs2)           
+--     where   
+--         indexpageFn = makeAbsFile $ fn metaRec
+--         metaRecs2 = mapM (getMetaRecs layout) fs4 
+--         metaRecs3 = filter (checkPubStateWithFlags flags . publicationState) 
+--                             metaRecs2
+--         pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir
+--         dirs2 = []
+-- indexP = zero 
+
 
 -- blogindexfn = doughDir testLayout </> makeRelFile "Blog/index.md"
 
