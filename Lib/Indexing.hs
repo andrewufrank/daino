@@ -15,19 +15,12 @@ module Lib.Indexing (module Lib.Indexing, getAtKey
             , module Lib.IndexMake 
             ) where
 
--- import           Uniform.Shake
 import           Uniform.FileIO -- (getDirectoryDirs', getDirContentFiles )
--- import Uniform.Filenames (takeBaseName)
 import           Uniform.Pandoc (getAtKey)
 import Uniform.Strings (putIOline, putIOlineList)
--- import Uniform.Error 
--- DocValue(..)
--- , unDocValue
 import           Lib.CmdLineArgs (PubFlags(..))
 import           Lib.CheckInput (MetaRec(..), getTripleDoc
                                , PublicationState(..))
--- , readMeta2rec
--- , checkOneMdFile
 import           Lib.Foundation (SiteLayout, doughDir)
 import Lib.IndexMake (MenuEntry, IndexEntry
                 , convert2index)
@@ -77,12 +70,6 @@ makeIndex1 debug layout flags metaRec    = do
         then return zero 
         else do 
             (dirs, files) <- getDirContent2metarec metaRec
-        
-            -- -- let indexpageFn = makeAbsFile $ fn metaRec 
-            -- -- let pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir
-            -- -- fs2 :: [FilePath] <- getDirContentFiles (toFilePath pageFn)
-
-            -- -- dirs2 :: [FilePath] <- getDirectoryDirs' (toFilePath pageFn) 
             when debug  $  do 
                 -- putIOline  "makeIndexForDir 2 for" pageFn
                 putIOline "index file" (fn metaRec) -- indexpageFn
@@ -91,9 +78,10 @@ makeIndex1 debug layout flags metaRec    = do
                 putIOlineList "files found" (map show files)  -- is found
                 putIOlineList "dirs found"  (map show dirs) 
 
-            -- let fs4 =   filter (hasExtension ".md") $ files :: [Path Abs File]
+            let files2 =   filter (hasExtension . makeExtension $".md") 
+                                    $ files :: [Path Abs File]
             metaRecsThis :: [MetaRec]
-                <- mapM (getMetaRec layout) files -- not filtered md yet!
+                <- mapM (getMetaRec layout) files2 -- not filtered md yet!
             
             let subindex = map (\d -> d </> (makeRelFile "index.md")) dirs
             when debug $ putIOline "subindex" (map show subindex)
@@ -101,30 +89,6 @@ makeIndex1 debug layout flags metaRec    = do
 
             menu1 <- return (metaRec, metaRecsThis, metaRecsSub)
                 -- the metarecs for the index in the subdirs 
-            
-            -- --   let fileIxsSorted =
-            -- --         makeIndexEntries dough2 indexFn (indexSort metaRec) metaRecs
-            -- --   --  sortFileEntries (indexSort metaRec)  fileIxs1
-            -- --   let dirIxsSorted2 = makeIndexEntriesDirs (map makeAbsDir dirs)
-            -- --   -- if not (null dirIxsSorted)
-            -- --   --     then dirIxsSorted ++ [zero { title2 = "------" }]
-            -- --   --     else []
-            -- -- putIOwords ["makeIndexForDir 3 fs4",  showT  fs4,"/n"]
-            -- -- putIOwords ["makeIndexForDir 3 metaRecs2", showT metaRecs2]        
-            -- let menu1 = makeBothIndex
-            --         (doughDir layout)
-            --         indexpageFn 
-            --         (indexSort metaRec)
-            --         (filter (checkPubStateWithFlags flags . publicationState) metaRecs2)
-            --         (map makeAbsDir dirs2)
-            -- -- MenuEntry { menu2 = dirIxsSorted2 ++ fileIxsSorted }
-            -- -- when debug $ 
-            -- -- putIOwords ["makeIndexForDir 4", "index for dirs sorted ", showT  menu1]
-            --         -- is empty
-            -- -- let dirIxs = map formatOneDirIndexEntry (map makeAbsDir dirs) :: [IndexEntry]
-            -- -- -- format the subdir entries
-            -- -- let dirIxsSorted = sortWith title2 dirIxs
-            -- --   when debug $ putIOwords ["makeIndexForDir 8", "menu1", showT menu1]
             return menu1
 
 -- | find the metaRec to a path 

@@ -19,16 +19,12 @@
 module Lib.Indexing_test where
 
 import Uniform.Pointless
--- import Lib.FileMgt
 import           Lib.Foundation (layoutDefaults, doughDir)
 import           Lib.Foundation (progName, SiteLayout(..), templatesDirName)
 import           Lib.Foundation_test (testLayout)
---import Uniform.Strings
 import           Lib.Indexing -- (applyTemplate2, convGmaster)
---import Uniform.Filenames
 import           Lib.Templating
 import           Test.Framework
---import Text.DocTemplates
 import           Uniform.Test.TestHarness
 import           Uniform.Time (readDate3, UTCTime(..))
 import           Lib.CmdLineArgs (allFlags)
@@ -36,7 +32,6 @@ import           Lib.CheckInput (MetaRec(..), SortArgs(..)
                     , PublicationState(..), makeRelPath
                     , getTripleDoc)
 import          Lib.IndexMake (MenuEntry(..), IndexEntry(..))
--- import Uniform.Pointless (snd3)
 
     -- TEST DIRS 
 test_dough2 =  assertEqual dough2path dough2  
@@ -129,13 +124,10 @@ makeIndexBlog =
             indexPage = True, indexSort = SAtitle}]) 
         :: (MetaRec, [MetaRec], [MetaRec])
 
--- test_makeIndexPost1 = do 
---     res <- runErr $ makeIndex True testLayout allFlags metaRecPost1
---     assertEqual (Right menuEntryPost1) res 
 
 test_convert2index = assertEqual menuEntryIndex1 
             (convert2index makeIndexBlog )
-    -- OLD
+
 menuEntryIndex1 = 
 
     MenuEntry{menu2 =
@@ -160,22 +152,6 @@ menuEntryIndex1 =
                         abstract2 = "The subdirectory experiment", author2 = "AUF",
                         date2 = "2019-01-04 00:00:00 UTC", publish2 = "publish",
                         isIndex = True}]}   
-                        
-                        --  MenuEntry{menu2 =
-        -- [IndexEntry{text2 = "SubBlog", link2 = "/Blog/SubBlog/index.html",
-        --             title2 = "SubBlog (subdirectory)", abstract2 = "", author2 = "",
-        --             date2 = "", publish2 = "", isIndex = False},
-        -- IndexEntry{text2 = "", link2 = "", title2 = "------",
-        --             abstract2 = "", author2 = "", date2 = "", publish2 = "",
-        --             isIndex = False},
-        -- IndexEntry{text2 = "", link2 = "", title2 = "------",
-        --             abstract2 = "", author2 = "", date2 = "", publish2 = "",
-        --             isIndex = False},
-        -- IndexEntry{text2 = "postwk", link2 = "/Blog/postwk.html",
-        --             title2 = "postwk with image",
-        --             abstract2 = "A silly text not needing an abstract.",
-        --             author2 = "AUF", date2 = "2019-01-04 00:00:00 UTC",
-        --             publish2 = "publish", isIndex = False}]} 
                 :: MenuEntry 
 
 
