@@ -18,6 +18,7 @@
 
 module Lib.Indexing_test where
 
+import Uniform.Pointless
 -- import Lib.FileMgt
 import           Lib.Foundation (layoutDefaults, doughDir)
 import           Lib.Foundation (progName, SiteLayout(..), templatesDirName)
@@ -54,6 +55,34 @@ test_MetaRec_postwk = do
     res <- runErr $   getMetaRec testLayout linkIn 
     assertEqual (Right metaRecPost1) res 
 
+metaRecPost1 = MetaRec
+  { fn = toFilePath linkIn
+  , relURL = "/Blog/postwk.md"
+  , title = "postwk with image"
+  , abstract = "A silly text not needing an abstract."
+  , author = "AUF"
+  , date = "2019-01-04 00:00:00 UTC"
+  , publicationState = PSpublish
+  , bibliography = Nothing
+  , bibliographyGroup = Nothing
+  , keywords = Just "test"
+  , pageTemplate = Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml"
+  , indexPage = False
+  , indexSort = SAzero
+  }
+  
+
+test_getDirContent2metarec = do 
+    res <- runErr $ getDirContent2metarec testLayout metaRecIndex1 
+                -- the metarec of the index in the current dir 
+    assertEqual contentPost1 
+            (cross (map toFilePath, map toFilePath) . fromRight zero  $ res) 
+
+contentPost1 = (["/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/"],
+    ["/home/frank/Workspace8/ssg/docs/site/dough/Blog/postwk.md"]) 
+        :: ([FilePath], [FilePath])
+
+    
 linkIndex1 = doughDir testLayout </> makeRelFile "Blog/index.md" 
                         :: Path Abs File 
 
@@ -67,9 +96,9 @@ test_makeIndexPost1 = do
 
 menuEntryPost1 = zero :: MenuEntry 
 
-test_makeIndexIndex1 = do 
-    res <- runErr $ makeIndex True testLayout allFlags metaRecIndex1
-    assertEqual (Right menuEntryIndex1) res 
+-- test_makeIndexIndex1 = do 
+--     res <- runErr $ makeIndex True testLayout allFlags metaRecIndex1
+--     assertEqual (Right menuEntryIndex1) res 
 
 menuEntryIndex1 = 
     MenuEntry{menu2 =
@@ -88,21 +117,7 @@ menuEntryIndex1 =
                     author2 = "AUF", date2 = "2019-01-04 00:00:00 UTC",
                     publish2 = "publish", isIndex = False}]} :: MenuEntry 
 
-metaRecPost1 = MetaRec
-  { fn = toFilePath linkIn
-  , relURL = "/Blog/postwk.md"
-  , title = "postwk with image"
-  , abstract = "A silly text not needing an abstract."
-  , author = "AUF"
-  , date = "2019-01-04 00:00:00 UTC"
-  , publicationState = PSpublish
-  , bibliography = Nothing
-  , bibliographyGroup = Nothing
-  , keywords = Just "test"
-  , pageTemplate = Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml"
-  , indexPage = False
-  , indexSort = SAzero
-  }
+
 
 
 metaRecIndex1 = MetaRec

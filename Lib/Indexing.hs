@@ -31,64 +31,75 @@ import           Lib.CheckInput (MetaRec(..), getTripleDoc
 import           Lib.Foundation (SiteLayout, doughDir)
 import Lib.IndexMake (makeBothIndex, MenuEntry, IndexEntry)
 
-makeIndex :: Bool
-          -> SiteLayout
-          -> PubFlags
-          -> MetaRec
-        --   -> Path Abs Dir
-        --   -> Path Abs File
-          -> ErrIO MenuEntry
+-- | get the conents, separated into dirs and files 
+-- indexfile itself is removed 
 
--- | make the index text, will be moved into the page template with templating
--- return zero if not index page
+getDirContent2metarec :: SiteLayout -> MetaRec -> ErrIO ([Path Abs Dir], [Path Abs File])
+
+getDirContent2metarec layout metaRec = do 
+    -- let ixFilenameOnly = makeRelFile (fn metaRec) 
+    --             :: Path Rel File  
+    let indexpageFn =  makeAbsFile (fn metaRec)  :: Path Abs File
+    let pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir
+     
+    dirs1 :: [Path Abs Dir] <-  getDirectoryDirs' pageFn
+    files1 :: [Path Abs File] <-  getDirContentFiles pageFn
+    return  (dirs1, filter (indexpageFn /=)  files1)
+
+-- | make the index text, 
+-- will be moved into the page template with templating
+-- return zero if not index page  
 makeIndex debug layout flags metaRec    = do
     -- let doindex = indexPage metaRec
   -- let indexSort1 = indexSort metaRec :: SortArgs
     -- when debug $ 
     putIOwords ["makeIndex", "doindex", showT (indexPage metaRec)]
     if not (indexPage metaRec)
-       then return zero 
-       else do
-            let indexpageFn = makeAbsFile $ fn metaRec 
-            let pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir
-            fs2 :: [FilePath] <- getDirContentFiles (toFilePath pageFn)
-            dirs2 :: [FilePath] <- getDirectoryDirs' (toFilePath pageFn) 
-            when False $  do 
-                putIOline  "makeIndexForDir 2 for" pageFn
-                putIOline "index file" (fn metaRec) -- indexpageFn
-                putIOline "sort"  (indexSort metaRec)
-                putIOline "flags" flags
-                putIOlineList "files found" fs2  -- is found
-                putIOlineList "dirs found"  dirs2
-            let fs4 = filter (indexpageFn /=) . map makeAbsFile 
-                        . filter (hasExtension "md") $ fs2 :: [Path Abs File]
-            metaRecs2 :: [MetaRec]
-                <- mapM (getMetaRec layout) fs4 -- noch ok
+        then return zero 
+        else do return zero 
+            -- (dirs, files) <- getDirContent2metarec metaRec
+        
+            -- -- let indexpageFn = makeAbsFile $ fn metaRec 
+            -- -- let pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir
+            -- -- fs2 :: [FilePath] <- getDirContentFiles (toFilePath pageFn)
+
+            -- -- dirs2 :: [FilePath] <- getDirectoryDirs' (toFilePath pageFn) 
+            -- when True $  do 
+            --     -- putIOline  "makeIndexForDir 2 for" pageFn
+            --     putIOline "index file" (fn metaRec) -- indexpageFn
+            --     putIOline "sort"  (indexSort metaRec)
+            --     putIOline "flags" flags
+            --     putIOlineList "files found" (map show files)  -- is found
+            --     putIOlineList "dirs found"  (map show dirs)
+
+            -- let fs4 =   filter (hasExtension ".md") $ files :: [Path Abs File]
+            -- metaRecs2 :: [MetaRec]
+            --     <- mapM (getMetaRec layout) fs4 -- noch ok
             
-            --   let fileIxsSorted =
-            --         makeIndexEntries dough2 indexFn (indexSort metaRec) metaRecs
-            --   --  sortFileEntries (indexSort metaRec)  fileIxs1
-            --   let dirIxsSorted2 = makeIndexEntriesDirs (map makeAbsDir dirs)
-            --   -- if not (null dirIxsSorted)
-            --   --     then dirIxsSorted ++ [zero { title2 = "------" }]
-            --   --     else []
-            -- putIOwords ["makeIndexForDir 3 fs4",  showT  fs4,"/n"]
-            -- putIOwords ["makeIndexForDir 3 metaRecs2", showT metaRecs2]        
-            let menu1 = makeBothIndex
-                    (doughDir layout)
-                    indexpageFn 
-                    (indexSort metaRec)
-                    (filter (checkPubStateWithFlags flags . publicationState) metaRecs2)
-                    (map makeAbsDir dirs2)
-            -- MenuEntry { menu2 = dirIxsSorted2 ++ fileIxsSorted }
-            -- when debug $ 
-            -- putIOwords ["makeIndexForDir 4", "index for dirs sorted ", showT  menu1]
-                    -- is empty
-            -- let dirIxs = map formatOneDirIndexEntry (map makeAbsDir dirs) :: [IndexEntry]
-            -- -- format the subdir entries
-            -- let dirIxsSorted = sortWith title2 dirIxs
-            --   when debug $ putIOwords ["makeIndexForDir 8", "menu1", showT menu1]
-            return menu1
+            -- --   let fileIxsSorted =
+            -- --         makeIndexEntries dough2 indexFn (indexSort metaRec) metaRecs
+            -- --   --  sortFileEntries (indexSort metaRec)  fileIxs1
+            -- --   let dirIxsSorted2 = makeIndexEntriesDirs (map makeAbsDir dirs)
+            -- --   -- if not (null dirIxsSorted)
+            -- --   --     then dirIxsSorted ++ [zero { title2 = "------" }]
+            -- --   --     else []
+            -- -- putIOwords ["makeIndexForDir 3 fs4",  showT  fs4,"/n"]
+            -- -- putIOwords ["makeIndexForDir 3 metaRecs2", showT metaRecs2]        
+            -- let menu1 = makeBothIndex
+            --         (doughDir layout)
+            --         indexpageFn 
+            --         (indexSort metaRec)
+            --         (filter (checkPubStateWithFlags flags . publicationState) metaRecs2)
+            --         (map makeAbsDir dirs2)
+            -- -- MenuEntry { menu2 = dirIxsSorted2 ++ fileIxsSorted }
+            -- -- when debug $ 
+            -- -- putIOwords ["makeIndexForDir 4", "index for dirs sorted ", showT  menu1]
+            --         -- is empty
+            -- -- let dirIxs = map formatOneDirIndexEntry (map makeAbsDir dirs) :: [IndexEntry]
+            -- -- -- format the subdir entries
+            -- -- let dirIxsSorted = sortWith title2 dirIxs
+            -- --   when debug $ putIOwords ["makeIndexForDir 8", "menu1", showT menu1]
+            -- return menu1
 
 -- | find the metaRec to a path 
 getMetaRec :: SiteLayout -> Path Abs File -> ErrIO MetaRec

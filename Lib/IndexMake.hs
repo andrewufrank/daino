@@ -28,7 +28,8 @@ import           Lib.CheckInput (MetaRec(..)
 makeBothIndex :: Path Abs Dir -> Path Abs File -> SortArgs 
       -> [MetaRec] -> [Path Abs Dir] -> MenuEntry
 makeBothIndex dough2 indexFn sortFlag metaRecs dirs =
-  MenuEntry { menu2 = dirIxsSorted2 ++ fileIndexs ++ [zero{title2 = "------"}] ++ fileContent }
+  MenuEntry { menu2 = dirIxsSorted2 ++ [zero { title2 = "---subdirs---" }] 
+            ++ fileIndexs ++ [zero{title2 = "---content---"}] ++ fileContent }
   where
     fileIxsSorted = makeIndexEntries dough2 indexFn sortFlag metaRecs
     fileIndexs = filter isIndex fileIxsSorted
@@ -40,7 +41,7 @@ makeBothIndex dough2 indexFn sortFlag metaRecs dirs =
 makeIndexEntriesDirs :: Path Abs Dir -> [Path Abs Dir] -> [IndexEntry]
 makeIndexEntriesDirs dough dirs =
   if not (null dirIxsSorted)
-  then dirIxsSorted ++ [zero { title2 = "------" }]
+  then dirIxsSorted 
   else []
   where
     dirIxsSorted = sortWith title2 dirIxs

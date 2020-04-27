@@ -37,10 +37,11 @@ import           Lib.CheckInput (MetaRec(..), SortArgs(..)
                         , PublicationState(..)
                                , makeRelPath)
 import           Lib.IndexMake (makeBothIndex, IndexEntry(..)
-                    , getOneIndexEntryPure, MenuEntry(..))
+                    , getOneIndexEntryPure, MenuEntry(..)
+                   , makeIndexEntriesDirs, makeIndexEntries)
 
 import Lib.Indexing_test (metaRecPost1, metaRecIndex1, blogDirPath
-                            ,linkIndex1 , linkIn)
+                            ,linkIndex1 , linkIn , menuEntryIndex1)
 
 
 test_getOneIndexEntryPost1 = assertEqual indexEntryPost1 
@@ -96,7 +97,8 @@ test_getExtension = assertEqual (makeExtension ".md")
 
 -- | filter the content and retrieve metarecs
 --    keep md files (but not indexpage)
-getMetaRecsAfterFilter :: SiteLayout -> Path Abs File -> [Path Abs File] -> ErrIO [MetaRec]
+getMetaRecsAfterFilter :: SiteLayout -> Path Abs File 
+    -> [Path Abs File] -> ErrIO [MetaRec]
 getMetaRecsAfterFilter layout indexpageFn dirContent = do 
         let fs4 = filter (indexpageFn /=) 
                     . filter (hasExtension . makeExtension $ ".md") 
@@ -105,13 +107,39 @@ getMetaRecsAfterFilter layout indexpageFn dirContent = do
                 <- mapM (getMetaRec layout) fs4 -- noch ok    let 
         return metaRecs2 
 
-test_makeBothIndexP = assertEqual indexP (makeBothIndex
-                    (doughDir testLayout)
-                    linkIn  
-                    SAzero
-                    metaRecsAfterFilter 
-                    (map makeAbsDir dirsPost1)
-                    )
+-- test_makeBothIndexP = assertEqual menuEntryIndex1 -- indexP
+--              (makeBothIndex
+--                     (doughDir testLayout)
+--                     linkIn  
+--                     SAzero
+--                     metaRecsAfterFilter 
+--                     (map makeAbsDir dirContentPost1)
+--                     )
+
+-- test_makeIndexEntriesDirs = assertEqual ixEntriesDirs 
+--         (makeIndexEntriesDirs (doughDir testLayout)
+--                                     (map makeAbsDir dirContentPost1))
+
+ixEntriesDirs = [IndexEntry{text2 = "index.md",
+            link2 = "/Blog/index.md/index.html",
+            title2 = "index.md (subdirectory)", abstract2 = "", author2 = "",
+            date2 = "", publish2 = "", isIndex = False},
+ IndexEntry{text2 = "postwk.md",
+            link2 = "/Blog/postwk.md/index.html",
+            title2 = "postwk.md (subdirectory)", abstract2 = "", author2 = "",
+            date2 = "", publish2 = "", isIndex = False},
+ IndexEntry{text2 = "", link2 = "", title2 = "------",
+            abstract2 = "", author2 = "", date2 = "", publish2 = "",
+            isIndex = False}] :: [IndexEntry]   
+
+-- test_makeIndexEntries = assertEqual ixs1 
+--         (makeIndexEntries doughDir
+--                     (makeAbsFile "/Blog/index.html")
+--                     metaRecsAfterFilter
+--                     metaRecs3
+--                     )
+-- ixs1 = zero :: [IndexEntry]
+
 -- -- | processing of an index file (if not index then zero TODO)
 -- makeBothIndex2 :: Path Abs Dir -> Path Abs File -> SortArgs 
 --       -> [MetaRec] -> [Path Abs Dir] -> MenuEntry
