@@ -128,12 +128,18 @@ makeIndexBlog =
 test_convert2index = assertEqual menuEntryIndex1 
             (convert2index makeIndexBlog )
 
-menuEntryIndex1 = 
-
-    MenuEntry{menu2 =
-            [IndexEntry{text2 = "index", link2 = "/Blog/index.html",
+menuEntryIndex1 =  MenuEntry{menu2 =
+        [IndexEntry{text2 = "index", link2 = "/Blog/index.html",
                         title2 = "primary index for Blog",
                         abstract2 = "The directory for experiments.", author2 = "AUF",
+                        date2 = "2019-01-04 00:00:00 UTC", publish2 = "publish",
+                        isIndex = True},
+             IndexEntry{text2 = "", link2 = "", title2 = "--- subdir ---",
+                        abstract2 = "", author2 = "", date2 = "", publish2 = "",
+                        isIndex = False},
+             IndexEntry{text2 = "index", link2 = "/Blog/SubBlog/index.html",
+                        title2 = "index for subdir",
+                        abstract2 = "The subdirectory experiment", author2 = "AUF",
                         date2 = "2019-01-04 00:00:00 UTC", publish2 = "publish",
                         isIndex = True},
              IndexEntry{text2 = "", link2 = "", title2 = "--- content ---",
@@ -143,16 +149,8 @@ menuEntryIndex1 =
                         title2 = "postwk with image",
                         abstract2 = "A silly text not needing an abstract.",
                         author2 = "AUF", date2 = "2019-01-04 00:00:00 UTC",
-                        publish2 = "publish", isIndex = False},
-             IndexEntry{text2 = "", link2 = "", title2 = "--- subdir ---",
-                        abstract2 = "", author2 = "", date2 = "", publish2 = "",
-                        isIndex = False},
-             IndexEntry{text2 = "index", link2 = "/Blog/SubBlog/index.html",
-                        title2 = "index for subdir",
-                        abstract2 = "The subdirectory experiment", author2 = "AUF",
-                        date2 = "2019-01-04 00:00:00 UTC", publish2 = "publish",
-                        isIndex = True}]}   
-                :: MenuEntry 
+                        publish2 = "publish", isIndex = False}]
+              } :: MenuEntry 
 
 
 

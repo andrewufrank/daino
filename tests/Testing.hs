@@ -28,9 +28,9 @@ import           Uniform.FileIO
 -- -- uses layoutDefaults, not settings2.yaml
 -- -- test dir must be ~/.SSG  -- the program name in foundation
 -- ordinary tests (run without shakeStartTest)
-import   {-@ HTF_TESTS @-}        Lib.Foundation_test  
+-- import   {-@ HTF_TESTS @-}        Lib.Foundation_test  
                         -- sets pageFn 
-import    {-@ HTF_TESTS @-}       Lib.CheckInputs_test
+-- import    {-@ HTF_TESTS @-}       Lib.CheckInputs_test
 -- -- ----    -- writes A : testLayout
 -- -- ----    --  pageFn :: abs pandoc filenames
 import   {-@ HTF_TESTS @-}        Lib.Pandoc_test
@@ -58,7 +58,9 @@ import  {-@ HTF_TESTS @-}         Lib.IndexMake_test
 ----     putStrLn ("HTF end ExampleTesting.hs test:\n" ++ show r)
 ----     return ()
 main :: IO ()
-main        -- with tests in other modules
+main = mainTest  -- for a different function name (main is in ssgbake)
+
+mainTest        -- with tests in other modules
   = do
     putStrLn "HTF ExampleTest.hs:\n"
     runErrorVoid $ createDirIfMissing' "/home/frank/.SSG"

@@ -58,9 +58,10 @@ shakeAll :: SiteLayout -> PubFlags -> FilePath -> ErrIO ()
 
 shakeAll layout flags filepath = 
   do 
+    let debug = False
     --  where the layout is used, rest in shakeWrapped
     putIOwords  [ "\n\n=====================================shakeAll start", "\n flags"
-            , showT flags , "caused by", s2t filepath]
+            , showT flags , "caused by", s2t filepath, "."]
     let doughP = doughDir layout -- the regular dough
         templatesP = templatesDir layout 
         bakedP = bakedDir layout
@@ -101,7 +102,7 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
           , showT staticP
           , "\n\tbakedP"
           , showT bakedP
-          , "\nresourcesDir"
+          , "\n\tresourcesDir"
           , showT resourcesP]
       want ["allMarkdownConversion"]
       phony "allMarkdownConversion" $ 
@@ -135,8 +136,8 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
 
           yamlPageFiles <- getDirectoryFilesP templatesP ["*.yaml"]
           let yamlPageFiles2 = [templatesP </> y | y <- yamlPageFiles]
-          -- when debug $ 
-          putIOwords ["===================\nshakeMD", "yamlPages", showT yamlPageFiles2]
+          when debug $ 
+            putIOwords ["===================\nshakeMD", "yamlPages", showT yamlPageFiles2]
 
           -- images for blog 
           imgFiles :: [Path Rel File]
@@ -176,13 +177,12 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
                 
           -- , not $ isInfixOf' "index.md" md]
           -- let htmlFiles3 = map (replaceExtension "html") htmlFiles2 :: [Path Abs File]
-        --   when debug $ 
-          liftIO
+          when debug $  liftIO
             $ putIOwords
               [ "============================\nshakeMD - mdFiles1"
               , showT mdFiles1]
-          -- when debug $ 
-          liftIO $ putIOwords ["\nshakeMD - htmlFile3 "
+          when debug $ 
+            liftIO $ putIOwords ["\nshakeMD - htmlFile3 x"
                 , showT htmlFiles3]
           -- needP mdFiles1
           needP htmlFiles3  -- includes the index files 
@@ -192,7 +192,7 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
         %> \out -- with subdir
         -> do
           let outP = makeAbsFile out :: Path Abs File
-          liftIO
+          when debug $ liftIO
             $ putIOwords
               [ "\nshakeMD - staticP ok - *.html"
               , showT staticP
@@ -201,22 +201,22 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
               , "out"
               , showT out]
           let fromfile = resourcesP </> makeRelativeP staticP outP
-          liftIO $ putIOwords ["\nshakeMD - staticP - fromfile ", showT fromfile]
+          when debug $ liftIO $ putIOwords ["\nshakeMD - staticP - fromfile ", showT fromfile]
           copyFileChangedP fromfile outP
-          liftIO $ putIOwords ["\n DONE shakeMD - staticP - fromfile ", showT fromfile]
+          when debug $ liftIO $ putIOwords ["\n DONE shakeMD - staticP - fromfile ", showT fromfile]
 
       (toFilePath staticP <> "/*.css")
         %> \out                  -- insert css -- no subdir
         -> do
           let outP = makeAbsFile out :: Path Abs File
-          liftIO
+          when debug $ liftIO
             $ putIOwords
               [ "\nshakeMD - staticP - *.css\n"
               , showT outP
               , "\nTemplatesP"
               , showT templatesP]
           let fromfile = templatesP </> makeRelativeP staticP outP
-          liftIO
+          when debug $ liftIO
             $ putIOwords ["\nshakeMD - staticP css- fromfile ", showT fromfile]
           copyFileChangedP fromfile outP
           
@@ -224,9 +224,9 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
         %> \out                  -- insert pdfFIles1 -- with subdir
         -> do
           let outP = makeAbsFile out :: Path Abs File
-          liftIO $ putIOwords ["\nshakeMD - staticP - *.pdf", showT outP]
+          when debug $ liftIO $ putIOwords ["\nshakeMD - staticP - *.pdf", showT outP]
           let fromfile = resourcesP </> makeRelativeP staticP outP
-          liftIO
+          when debug $ liftIO
             $ putIOwords ["\nshakeMD - staticP  pdf - fromfile ", showT fromfile]
           copyFileChangedP fromfile outP
       -- return ()
@@ -236,9 +236,9 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
         |%> \out                  -- insert img files -- no subdir (for now)
         -> do
           let outP = makeAbsFile out :: Path Abs File
-          liftIO $ putIOwords ["\nshakeMD - image jpg", showT outP]
+          when debug $ liftIO $ putIOwords ["\nshakeMD - image jpg", showT outP]
           let fromfile = imagesP </> makeRelativeP imagesTargetP outP
-          liftIO
+          when debug $ liftIO
             $ putIOwords ["\nshakeMD - staticP  img=age jpg- fromfile ", showT fromfile]
           copyFileChangedP fromfile outP
       -- return ()
@@ -246,10 +246,9 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
       toFilePath bannerImageTarget %> \out -> do 
           -- let bannerImage3 = makeRelFile out
           let outP = makeAbsFile out 
-          liftIO $ putIOwords ["\nshakeMD - bannerImage TargetF", showT outP]
+          when debug $ liftIO $ putIOwords ["\nshakeMD - bannerImage TargetF", showT outP]
           let fromfile = templatesP `addFileName` makeRelativeP staticP outP
-          liftIO
-            $ putIOwords ["\nshakeMD - bannerImage fromfile ", showT fromfile]
+          when debug $ liftIO $ putIOwords ["\nshakeMD - bannerImage fromfile ", showT fromfile]
           copyFileChangedP fromfile outP
     
       -- conversion md to html (excet for what is in static) 
@@ -269,7 +268,7 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
           let md2 = doughP </> stripProperPrefixP bakedP md :: Path Abs File
           -- liftIO $ putIOwords ["\nshakeMD - bakedP html 4 - md2 ", showT md2]
           need [toFilePath md2]  
-          liftIO $ putIOwords ["\nshakeMD - bakedP - *.html", showT outP, showT md2]
+          when debug $ liftIO $ putIOwords ["\nshakeMD - bakedP - *.html", showT outP, showT md2]
           
           need [toFilePath masterSettings_yaml]
           need [toFilePath masterTemplate]

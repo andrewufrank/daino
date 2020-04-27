@@ -49,7 +49,7 @@ bakeOneFile
 --test in bake_tests:
 bakeOneFile debug flags pageFn layout ht2 =
   do
-      putIOwords ["\n-----------------", "bakeOneFile fn", showT pageFn]
+      putIOwords ["\n-----------------", "bakeOneFile fn", showT pageFn, "debug", showT debug]
                          -- currently only for md files
                  --        pageMd :: MarkdownText <- read8 pageFn markdownFileType -- pageFn -> pageMd
                          -- process the md file (including bibtex citations)
@@ -76,7 +76,7 @@ bakeOneFile debug flags pageFn layout ht2 =
         --            (which was just written) \n", unHTMLout html2, "\n"]
       when debug $  putIOwords
             ["bakeOneFile resultFile", showT ht2, "from", showT pageFn, "\n"]
-      putIOwords
+      when debug $ putIOwords
             ["bakeOneFile resultvalue", showT val, "\n"
                 , showT html2]--   when debug $ 
       putIOwords ["......................"]
