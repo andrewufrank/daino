@@ -20,6 +20,9 @@ import           Lib.CheckInput (MetaRec(..)
                                , SortArgs(..)
                                , makeRelPath
                                )
+
+-- | convert the metarecs and put some divider between
+-- TODO  - avoid dividers if list empty
 convert2index :: (MetaRec, [MetaRec], [MetaRec])
                         -> MenuEntry
 convert2index  (this, content, subix) = MenuEntry {menu2 = 

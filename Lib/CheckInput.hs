@@ -31,6 +31,8 @@ checkOneMdFile :: SiteLayout ->   Path Abs File -> ErrIO (Pandoc, MetaRec, Text)
 -- uses doughP to construct file names to abs file 
 checkOneMdFile  layout mdfn = do
   -- putIOwords ["checkOneMdFile start", showT mdfn]
+  -- TODO check for md extension ! 
+  -- used - duplicating getTripleDoc?
   (pandoc, meta2) :: (Pandoc, Value) <- readMd2meta mdfn -- (dough2 </> mdfn)
   -- putIOwords ["checkOneMdFile meta2", showT meta2]
 
@@ -43,7 +45,7 @@ type TripleDoc = (Pandoc, MetaRec, Text)
 
 getTripleDoc :: SiteLayout ->   Path Abs File -> ErrIO TripleDoc
 -- get one input file, return the values parsed
--- check validity
+-- check validity   -- TODO check for md extension ! 
 -- uses siteLayout to construct file names to abs file 
 getTripleDoc  layout mdfn = do
   -- putIOwords ["getTripleDoc start", showT mdfn]
