@@ -1,15 +1,15 @@
 ---
-title: primary index for Blog 
-author: AUF
-date: Jan. 4, 2019
-keywords: test
-abstract: The directory for experiments.
-pageTemplate: page3.yaml
-indexPage: True 
-indexSort: title
+title: index of all blogs
+#author: AUF
+#date: Jan. 4, 2019
+#keywords: blogs
+#abstract: index of all blogs.
+#pageTemplate: page3.yaml
+#indexPage: True 
+#indexSort: reversedate
 ---
 
-an index page for Blog 
+The index for all blogs - not yet structured! 
 
 
 
