@@ -29,7 +29,8 @@ import           Lib.CheckInput (MetaRec(..), getTripleDoc
 -- , readMeta2rec
 -- , checkOneMdFile
 import           Lib.Foundation (SiteLayout, doughDir)
-import Lib.IndexMake (makeBothIndex, MenuEntry, IndexEntry)
+import Lib.IndexMake (makeBothIndex, MenuEntry, IndexEntry
+                , convert2index)
 
 -- | get the conents, separated into dirs and files 
 -- indexfile itself is removed 
@@ -42,10 +43,32 @@ getDirContent2metarec  metaRec = do
     files1 :: [Path Abs File] <-  getDirContentFiles pageFn
     return  (dirs1, filter (indexpageFn /=)  files1)
 
+-- | produces the index as text 
+makeIndex :: Bool           -- ^ debug
+          -> SiteLayout     -- ^ layout 
+          -> PubFlags       -- ^ flags 
+          -> MetaRec        -- ^ the metarec of the current index.md
+        --   -> Path Abs Dir
+        --   -> Path Abs File
+          -> ErrIO MenuEntry
+
+makeIndex debug layout flags metaRec = do 
+    metarecs <- makeIndex1 debug layout flags metaRec
+    return . convert2index $ metarecs
+
+
 -- | make the index text, 
 -- will be moved into the page template with templating
--- return zero if not index page  
-makeIndex debug layout flags metaRec    = do
+-- return zero if not index page 
+makeIndex1 :: Bool           -- ^ debug
+          -> SiteLayout     -- ^ layout 
+          -> PubFlags       -- ^ flags 
+          -> MetaRec        -- ^ the metarec of the current index.md
+        --   -> Path Abs Dir
+        --   -> Path Abs File
+          -> ErrIO (MetaRec, [MetaRec], [MetaRec])
+            -- ^ of this index, the mds and the sub/index.md 
+makeIndex1 debug layout flags metaRec    = do
     -- let doindex = indexPage metaRec
   -- let indexSort1 = indexSort metaRec :: SortArgs
     -- when debug $ 
@@ -66,11 +89,18 @@ makeIndex debug layout flags metaRec    = do
                 putIOline "sort"  (indexSort metaRec)
                 putIOline "flags" flags
                 putIOlineList "files found" (map show files)  -- is found
-                putIOlineList "dirs found"  (map show dirs)
+                putIOlineList "dirs found"  (map show dirs) 
 
             -- let fs4 =   filter (hasExtension ".md") $ files :: [Path Abs File]
-            metaRecs2 :: [MetaRec]
-                <- mapM (getMetaRec layout) fs4 -- noch ok
+            metaRecsThis :: [MetaRec]
+                <- mapM (getMetaRec layout) files -- not filtered md yet!
+            
+            let subindex = map (\d -> d </> (makeRelFile "index.md")) dirs
+            putIOline "subindex" (map show subindex)
+            metaRecsSub :: [MetaRec] <- mapM (getMetaRec layout) subindex
+
+            menu1 <- return (metaRec, metaRecsThis, metaRecsSub)
+                -- the metarecs for the index in the subdirs 
             
             -- --   let fileIxsSorted =
             -- --         makeIndexEntries dough2 indexFn (indexSort metaRec) metaRecs
@@ -95,7 +125,7 @@ makeIndex debug layout flags metaRec    = do
             -- -- -- format the subdir entries
             -- -- let dirIxsSorted = sortWith title2 dirIxs
             -- --   when debug $ putIOwords ["makeIndexForDir 8", "menu1", showT menu1]
-            -- return menu1
+            return menu1
 
 -- | find the metaRec to a path 
 getMetaRec :: SiteLayout -> Path Abs File -> ErrIO MetaRec

@@ -24,7 +24,10 @@ import           Lib.CheckInput (MetaRec(..)
                                , SortArgs(..)
                                , makeRelPath
                                )
-
+convert2index :: (MetaRec, [MetaRec], [MetaRec])
+                        -> MenuEntry
+convert2index  (this, content, subix) = zero 
+ 
 makeBothIndex :: Path Abs Dir -> Path Abs File -> SortArgs 
       -> [MetaRec] -> [Path Abs Dir] -> MenuEntry
 makeBothIndex dough2 indexFn sortFlag metaRecs dirs =

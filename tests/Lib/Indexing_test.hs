@@ -90,16 +90,50 @@ test_MetaRec_index1 = do
     res <- runErr $   getMetaRec testLayout linkIndex1 
     assertEqual (Right metaRecIndex1) res 
 
-test_makeIndexPost1 = do 
-    res <- runErr $ makeIndex True testLayout allFlags metaRecPost1
-    assertEqual (Right menuEntryPost1) res 
+-- test_makeIndexPost1 = do 
+--     res <- runErr $ makeIndex True testLayout allFlags metaRecPost1
+--     assertEqual (Right menuEntryPost1) res 
 
 menuEntryPost1 = zero :: MenuEntry 
 
--- test_makeIndexIndex1 = do 
---     res <- runErr $ makeIndex True testLayout allFlags metaRecIndex1
---     assertEqual (Right menuEntryIndex1) res 
+test_makeIndexIndex1 = do 
+    res <- runErr $ makeIndex1 True testLayout allFlags metaRecIndex1
+    assertEqual (Right makeIndexBlog) res 
 
+makeIndexBlog = 
+  (MetaRec{fn =
+             "/home/frank/Workspace8/ssg/docs/site/dough/Blog/index.md",
+           relURL = "/Blog/index.md", title = "primary index for Blog",
+           abstract = "The directory for experiments.", author = "AUF",
+           date = "2019-01-04 00:00:00 UTC", publicationState = PSpublish,
+           bibliography = Nothing, bibliographyGroup = Nothing,
+           keywords = Just "test",
+           pageTemplate =
+             Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+           indexPage = True, indexSort = SAtitle},
+   [MetaRec{fn =
+              "/home/frank/Workspace8/ssg/docs/site/dough/Blog/postwk.md",
+            relURL = "/Blog/postwk.md", title = "postwk with image",
+            abstract = "A silly text not needing an abstract.", author = "AUF",
+            date = "2019-01-04 00:00:00 UTC", publicationState = PSpublish,
+            bibliography = Nothing, bibliographyGroup = Nothing,
+            keywords = Just "test",
+            pageTemplate =
+              Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+            indexPage = False, indexSort = SAzero}],
+   [MetaRec{fn =
+              "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/index.md",
+            relURL = "/Blog/SubBlog/index.md", title = "index for subdir",
+            abstract = "The subdirectory experiment", author = "AUF",
+            date = "2019-01-04 00:00:00 UTC", publicationState = PSpublish,
+            bibliography = Nothing, bibliographyGroup = Nothing,
+            keywords = Just "test",
+            pageTemplate =
+              Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+            indexPage = True, indexSort = SAtitle}]) :: (MetaRec, [MetaRec], [MetaRec])
+
+
+    -- OLD
 menuEntryIndex1 = 
     MenuEntry{menu2 =
         [IndexEntry{text2 = "SubBlog", link2 = "/Blog/SubBlog/index.html",
