@@ -1,7 +1,7 @@
 ---
 title: TransformationOfPost.md
 author: auf 
-date: Jan 27, 2019
+date: Jan. 27, 2019
 keywords: SSGdesign
 abstract: Process of transformations of input
 ---
@@ -66,7 +66,10 @@ The body of the page is put into the YAML key `contentHtml`
 TODO: how to deal with content in other formats? 
 
 ### index pages
-A page with a key `index : True` is added a menu list of the files in the current directory. 
+A page with a key `index : True` is adding a menu list of the files in the current directory.  
+
+TODO: is this really needed. Describe.  
+TODO: sorting keywords 
 
 
 

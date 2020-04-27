@@ -33,12 +33,8 @@ import Lib.IndexMake (makeBothIndex, MenuEntry, IndexEntry)
 
 -- | get the conents, separated into dirs and files 
 -- indexfile itself is removed 
-
-getDirContent2metarec :: SiteLayout -> MetaRec -> ErrIO ([Path Abs Dir], [Path Abs File])
-
-getDirContent2metarec layout metaRec = do 
-    -- let ixFilenameOnly = makeRelFile (fn metaRec) 
-    --             :: Path Rel File  
+getDirContent2metarec ::   MetaRec -> ErrIO ([Path Abs Dir], [Path Abs File])
+getDirContent2metarec  metaRec = do 
     let indexpageFn =  makeAbsFile (fn metaRec)  :: Path Abs File
     let pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir
      
@@ -56,25 +52,25 @@ makeIndex debug layout flags metaRec    = do
     putIOwords ["makeIndex", "doindex", showT (indexPage metaRec)]
     if not (indexPage metaRec)
         then return zero 
-        else do return zero 
-            -- (dirs, files) <- getDirContent2metarec metaRec
+        else do 
+            (dirs, files) <- getDirContent2metarec metaRec
         
             -- -- let indexpageFn = makeAbsFile $ fn metaRec 
             -- -- let pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir
             -- -- fs2 :: [FilePath] <- getDirContentFiles (toFilePath pageFn)
 
             -- -- dirs2 :: [FilePath] <- getDirectoryDirs' (toFilePath pageFn) 
-            -- when True $  do 
-            --     -- putIOline  "makeIndexForDir 2 for" pageFn
-            --     putIOline "index file" (fn metaRec) -- indexpageFn
-            --     putIOline "sort"  (indexSort metaRec)
-            --     putIOline "flags" flags
-            --     putIOlineList "files found" (map show files)  -- is found
-            --     putIOlineList "dirs found"  (map show dirs)
+            when True $  do 
+                -- putIOline  "makeIndexForDir 2 for" pageFn
+                putIOline "index file" (fn metaRec) -- indexpageFn
+                putIOline "sort"  (indexSort metaRec)
+                putIOline "flags" flags
+                putIOlineList "files found" (map show files)  -- is found
+                putIOlineList "dirs found"  (map show dirs)
 
             -- let fs4 =   filter (hasExtension ".md") $ files :: [Path Abs File]
-            -- metaRecs2 :: [MetaRec]
-            --     <- mapM (getMetaRec layout) fs4 -- noch ok
+            metaRecs2 :: [MetaRec]
+                <- mapM (getMetaRec layout) fs4 -- noch ok
             
             -- --   let fileIxsSorted =
             -- --         makeIndexEntries dough2 indexFn (indexSort metaRec) metaRecs

@@ -73,7 +73,7 @@ metaRecPost1 = MetaRec
   
 
 test_getDirContent2metarec = do 
-    res <- runErr $ getDirContent2metarec testLayout metaRecIndex1 
+    res <- runErr $ getDirContent2metarec  metaRecIndex1 
                 -- the metarec of the index in the current dir 
     assertEqual contentPost1 
             (cross (map toFilePath, map toFilePath) . fromRight zero  $ res) 

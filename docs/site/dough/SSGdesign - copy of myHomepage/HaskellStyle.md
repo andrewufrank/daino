@@ -16,7 +16,7 @@ adhering to expected standards. Typically:
 - obscure shortcuts and infix function names,
 - ...
 
-I try to give here some rules how to write readable Haskell I try to adhere to.
+I try to give here some rules how to write readable Haskell
  
 The overall goal is to make functionality easy to understand to assure
 that I can read the code again and establish conventions on which a 

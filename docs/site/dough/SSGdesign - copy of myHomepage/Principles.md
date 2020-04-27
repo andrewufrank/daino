@@ -1,7 +1,7 @@
 ---
 title: 10. Principles.md
 #author: auf 
-date: Mar  5, 2019
+date: March 5, 2019
 keywords: SSGdesign
 abstract: 'Why "yet another static site generator"? Pandoc provides nearly everything and 
     gives the desired functionality (code in Haskell, markdown as primary text input, 

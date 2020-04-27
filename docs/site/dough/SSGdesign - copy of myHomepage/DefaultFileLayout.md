@@ -1,7 +1,7 @@
 ---
 title: 20. DefaultFileLayout.md
 #author: auf 
-date: Mar  5, 2019
+date: March 5, 2019
 keywords: SSGdesign
 abstract: Layout of the files used to construct a site.
 ---
@@ -26,7 +26,9 @@ relatively independent from the settings in the theme.
 The theme includes the templates which are eventually filled with content; 
 the labels which determine where content must be injected must correspond 
 to the tags for the pieces of content (see
-[How a content is transformed](TransformationOfPost.html)
+[How a content is transformed](TransformationOfPost.html).  
+The default theme folder is in the same folder as the code because
+some keywords in the theme files and in the code must correspond.
  
 ## Main Menu
 The menu structure is in the settings2.yaml file as a YAML structure, with link and text fields.
