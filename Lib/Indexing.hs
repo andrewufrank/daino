@@ -29,7 +29,7 @@ import           Lib.CheckInput (MetaRec(..), getTripleDoc
 -- , readMeta2rec
 -- , checkOneMdFile
 import           Lib.Foundation (SiteLayout, doughDir)
-import Lib.IndexMake (makeBothIndex, MenuEntry, IndexEntry
+import Lib.IndexMake (MenuEntry, IndexEntry
                 , convert2index)
 
 -- | get the conents, separated into dirs and files 

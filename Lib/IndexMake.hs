@@ -26,81 +26,91 @@ import           Lib.CheckInput (MetaRec(..)
                                )
 convert2index :: (MetaRec, [MetaRec], [MetaRec])
                         -> MenuEntry
-convert2index  (this, content, subix) = zero 
+convert2index  (this, content, subix) = MenuEntry {menu2 = 
+            [a]  ++ 
+            [zero{title2= "--- content ---"}] ++ b 
+            ++ [zero{title2= "--- subdir ---"}] ++ c 
+            }
+
+    where 
+        a = getOneIndexEntryPure this
+        b = map getOneIndexEntryPure content 
+        c = map getOneIndexEntryPure subix 
+
  
-makeBothIndex :: Path Abs Dir -> Path Abs File -> SortArgs 
-      -> [MetaRec] -> [Path Abs Dir] -> MenuEntry
-makeBothIndex dough2 indexFn sortFlag metaRecs dirs =
-  MenuEntry { menu2 = dirIxsSorted2 ++ [zero { title2 = "---subdirs---" }] 
-            ++ fileIndexs ++ [zero{title2 = "---content---"}] ++ fileContent }
-  where
-    fileIxsSorted = makeIndexEntries dough2 indexFn sortFlag metaRecs
-    fileIndexs = filter isIndex fileIxsSorted
-    fileContent = filter (not . isIndex) fileIxsSorted 
+-- makeBothIndex :: Path Abs Dir -> Path Abs File -> SortArgs 
+--       -> [MetaRec] -> [Path Abs Dir] -> MenuEntry
+-- makeBothIndex dough2 indexFn sortFlag metaRecs dirs =
+--   MenuEntry { menu2 = dirIxsSorted2 ++ [zero { title2 = "---subdirs---" }] 
+--             ++ fileIndexs ++ [zero{title2 = "---content---"}] ++ fileContent }
+--   where
+--     fileIxsSorted = makeIndexEntries dough2 indexFn sortFlag metaRecs
+--     fileIndexs = filter isIndex fileIxsSorted
+--     fileContent = filter (not . isIndex) fileIxsSorted 
 
-    dirIxsSorted2 = makeIndexEntriesDirs dough2 dirs
+--     dirIxsSorted2 = makeIndexEntriesDirs dough2 dirs
 
-    ------------ F O R   D I R 
-makeIndexEntriesDirs :: Path Abs Dir -> [Path Abs Dir] -> [IndexEntry]
-makeIndexEntriesDirs dough dirs =
-  if not (null dirIxsSorted)
-  then dirIxsSorted 
-  else []
-  where
-    dirIxsSorted = sortWith title2 dirIxs
+--     ------------ F O R   D I R 
+-- makeIndexEntriesDirs :: Path Abs Dir -> [Path Abs Dir] -> [IndexEntry]
+-- makeIndexEntriesDirs dough dirs =
+--   if not (null dirIxsSorted)
+--   then dirIxsSorted 
+--   else []
+--   where
+--     dirIxsSorted = sortWith title2 dirIxs
 
-    dirIxs = map (formatOneDirIndexEntry dough) dirs :: [IndexEntry]
+--     dirIxs = map (formatOneDirIndexEntry dough) dirs :: [IndexEntry]
 
 
-formatOneDirIndexEntry :: Path Abs Dir -> Path Abs Dir -> IndexEntry
+-- formatOneDirIndexEntry :: Path Abs Dir -> Path Abs Dir -> IndexEntry
 
--- format an entry for a subdir
--- fn is name of dir, the link should to to ../index.html 
-formatOneDirIndexEntry dough2 fn1 = zero
-  { text2 = s2t (getNakedDir fn1 :: FilePath)
-  , link2 = s2t $ makeRelPath dough2 
-        (fn1 </> makeRelFile "index.html" :: Path Abs File)
-  -- should add to the index file (to be found by search for index set in metaRec)
+-- -- format an entry for a subdir
+-- -- fn is name of dir, the link should to to ../index.html 
+-- formatOneDirIndexEntry dough2 fn1 = zero
+--   { text2 = s2t (getNakedDir fn1 :: FilePath)
+--   , link2 = s2t $ makeRelPath dough2 
+--         (fn1 </> makeRelFile "index.html" :: Path Abs File)
+--   -- should add to the index file (to be found by search for index set in metaRec)
 
-  , title2 = baseName1 <> " (subdirectory)"
-  }
-  where
-    baseName1 = s2t (getNakedDir fn1 :: FilePath)
+--   , title2 = baseName1 <> " (subdirectory)"
+--   }
+--   where
+--     baseName1 = s2t (getNakedDir fn1 :: FilePath)
 
----------------- F O R    F I L E S 
+-- ---------------- F O R    F I L E S 
 
-sortFileEntries :: SortArgs -> [Maybe IndexEntry] -> [IndexEntry]
-sortFileEntries sortArg fileIxsMs = case sortArg of
-  SAtitle       -> sortWith title2 fileIxs
-  SAdate        -> sortWith date2 fileIxs
-  SAreverseDate -> reverse $ sortWith date2 fileIxs
-  SAzero        -> fileIxs 
-    --    errorT ["makeIndexForDir fileIxsSorted", showT SAzero]
-  where
-    fileIxs = catMaybes fileIxsMs
+-- sortFileEntries :: SortArgs -> [Maybe IndexEntry] -> [IndexEntry]
+-- sortFileEntries sortArg fileIxsMs = case sortArg of
+--   SAtitle       -> sortWith title2 fileIxs
+--   SAdate        -> sortWith date2 fileIxs
+--   SAreverseDate -> reverse $ sortWith date2 fileIxs
+--   SAzero        -> fileIxs 
+--     --    errorT ["makeIndexForDir fileIxsSorted", showT SAzero]
+--   where
+--     fileIxs = catMaybes fileIxsMs
 
-makeIndexEntries :: Path Abs Dir
-                 -> Path Abs File
-                 -> SortArgs
-                 -> [MetaRec]
-                 -> [IndexEntry]
+-- makeIndexEntries :: Path Abs Dir
+--                  -> Path Abs File
+--                  -> SortArgs
+--                  -> [MetaRec]
+--                  -> [IndexEntry]
 
--- reduce the index entries 
-makeIndexEntries dough indexFile sortArg =
-      sortFileEntries sortArg 
-      . map (makeOneIndexEntry dough indexFile) 
+-- -- reduce the index entries 
+-- makeIndexEntries dough indexFile sortArg =
+--       sortFileEntries sortArg 
+--       . map (makeOneIndexEntry dough indexFile) 
 
-makeOneIndexEntry :: Path Abs Dir
-                  -> Path Abs File
-                  -> MetaRec
-                  -> Maybe IndexEntry
-makeOneIndexEntry dough2 indexFile metaRec =
-  if hasExtension (makeExtensionT "md") fn1 || fn1 /= indexFile
-  then Just $ getOneIndexEntryPure metaRec 
-  else Nothing
-  where
-    -- linkName = makeRelLink2 $ toFilePath fn1 -- dough2 fn1
-    fn1 = makeAbsFile $ fn metaRec
+-- makeOneIndexEntry :: Path Abs Dir
+--                   -> Path Abs File
+--                   -> MetaRec
+--                   -> Maybe IndexEntry
+-- makeOneIndexEntry dough2 indexFile metaRec =
+--   if hasExtension (makeExtensionT "md") fn1 || fn1 /= indexFile
+--   then Just $ getOneIndexEntryPure metaRec 
+--   else Nothing
+--   where
+--     -- linkName = makeRelLink2 $ toFilePath fn1 -- dough2 fn1
+--     fn1 = makeAbsFile $ fn metaRec
 
 getOneIndexEntryPure :: MetaRec  -> IndexEntry
 -- | the pure code to compute an IndexEntry

@@ -90,10 +90,6 @@ test_MetaRec_index1 = do
     res <- runErr $   getMetaRec testLayout linkIndex1 
     assertEqual (Right metaRecIndex1) res 
 
--- test_makeIndexPost1 = do 
---     res <- runErr $ makeIndex True testLayout allFlags metaRecPost1
---     assertEqual (Right menuEntryPost1) res 
-
 menuEntryPost1 = zero :: MenuEntry 
 
 test_makeIndexIndex1 = do 
@@ -130,26 +126,57 @@ makeIndexBlog =
             keywords = Just "test",
             pageTemplate =
               Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
-            indexPage = True, indexSort = SAtitle}]) :: (MetaRec, [MetaRec], [MetaRec])
+            indexPage = True, indexSort = SAtitle}]) 
+        :: (MetaRec, [MetaRec], [MetaRec])
 
+-- test_makeIndexPost1 = do 
+--     res <- runErr $ makeIndex True testLayout allFlags metaRecPost1
+--     assertEqual (Right menuEntryPost1) res 
 
+test_convert2index = assertEqual menuEntryIndex1 
+            (convert2index makeIndexBlog )
     -- OLD
 menuEntryIndex1 = 
+
     MenuEntry{menu2 =
-        [IndexEntry{text2 = "SubBlog", link2 = "/Blog/SubBlog/index.html",
-                    title2 = "SubBlog (subdirectory)", abstract2 = "", author2 = "",
-                    date2 = "", publish2 = "", isIndex = False},
-        IndexEntry{text2 = "", link2 = "", title2 = "------",
-                    abstract2 = "", author2 = "", date2 = "", publish2 = "",
-                    isIndex = False},
-        IndexEntry{text2 = "", link2 = "", title2 = "------",
-                    abstract2 = "", author2 = "", date2 = "", publish2 = "",
-                    isIndex = False},
-        IndexEntry{text2 = "postwk", link2 = "/Blog/postwk.html",
-                    title2 = "postwk with image",
-                    abstract2 = "A silly text not needing an abstract.",
-                    author2 = "AUF", date2 = "2019-01-04 00:00:00 UTC",
-                    publish2 = "publish", isIndex = False}]} :: MenuEntry 
+            [IndexEntry{text2 = "index", link2 = "/Blog/index.html",
+                        title2 = "primary index for Blog",
+                        abstract2 = "The directory for experiments.", author2 = "AUF",
+                        date2 = "2019-01-04 00:00:00 UTC", publish2 = "publish",
+                        isIndex = True},
+             IndexEntry{text2 = "", link2 = "", title2 = "--- content ---",
+                        abstract2 = "", author2 = "", date2 = "", publish2 = "",
+                        isIndex = False},
+             IndexEntry{text2 = "postwk", link2 = "/Blog/postwk.html",
+                        title2 = "postwk with image",
+                        abstract2 = "A silly text not needing an abstract.",
+                        author2 = "AUF", date2 = "2019-01-04 00:00:00 UTC",
+                        publish2 = "publish", isIndex = False},
+             IndexEntry{text2 = "", link2 = "", title2 = "--- subdir ---",
+                        abstract2 = "", author2 = "", date2 = "", publish2 = "",
+                        isIndex = False},
+             IndexEntry{text2 = "index", link2 = "/Blog/SubBlog/index.html",
+                        title2 = "index for subdir",
+                        abstract2 = "The subdirectory experiment", author2 = "AUF",
+                        date2 = "2019-01-04 00:00:00 UTC", publish2 = "publish",
+                        isIndex = True}]}   
+                        
+                        --  MenuEntry{menu2 =
+        -- [IndexEntry{text2 = "SubBlog", link2 = "/Blog/SubBlog/index.html",
+        --             title2 = "SubBlog (subdirectory)", abstract2 = "", author2 = "",
+        --             date2 = "", publish2 = "", isIndex = False},
+        -- IndexEntry{text2 = "", link2 = "", title2 = "------",
+        --             abstract2 = "", author2 = "", date2 = "", publish2 = "",
+        --             isIndex = False},
+        -- IndexEntry{text2 = "", link2 = "", title2 = "------",
+        --             abstract2 = "", author2 = "", date2 = "", publish2 = "",
+        --             isIndex = False},
+        -- IndexEntry{text2 = "postwk", link2 = "/Blog/postwk.html",
+        --             title2 = "postwk with image",
+        --             abstract2 = "A silly text not needing an abstract.",
+        --             author2 = "AUF", date2 = "2019-01-04 00:00:00 UTC",
+        --             publish2 = "publish", isIndex = False}]} 
+                :: MenuEntry 
 
 
 

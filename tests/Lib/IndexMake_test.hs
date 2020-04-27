@@ -36,9 +36,8 @@ import           Lib.CmdLineArgs (allFlags)
 import           Lib.CheckInput (MetaRec(..), SortArgs(..)
                         , PublicationState(..)
                                , makeRelPath)
-import           Lib.IndexMake (makeBothIndex, IndexEntry(..)
-                    , getOneIndexEntryPure, MenuEntry(..)
-                   , makeIndexEntriesDirs, makeIndexEntries)
+import           Lib.IndexMake (IndexEntry(..)
+                    , getOneIndexEntryPure, MenuEntry(..) )
 
 import Lib.Indexing_test (metaRecPost1, metaRecIndex1, blogDirPath
                             ,linkIndex1 , linkIn , menuEntryIndex1)
