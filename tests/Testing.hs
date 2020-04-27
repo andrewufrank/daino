@@ -28,12 +28,12 @@ import           Uniform.FileIO
 -- -- uses layoutDefaults, not settings2.yaml
 -- -- test dir must be ~/.SSG  -- the program name in foundation
 -- ordinary tests (run without shakeStartTest)
--- import   {-@ HTF_TESTS @-}        Lib.Foundation_test  
+import   {-@ HTF_TESTS @-}        Lib.Foundation_test  
                         -- sets pageFn 
 import    {-@ HTF_TESTS @-}       Lib.CheckInputs_test
 -- -- ----    -- writes A : testLayout
 -- -- ----    --  pageFn :: abs pandoc filenames
--- import   {-@ HTF_TESTS @-}        Lib.Pandoc_test
+import   {-@ HTF_TESTS @-}        Lib.Pandoc_test
 -- --             --  -> AD markdownToPandoc
 -- --             -- -> AF pandocToContentHtml
 -- --             -- -> AG (docValToAllVal)

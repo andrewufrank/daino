@@ -93,7 +93,7 @@ test_MetaRec_index1 = do
 menuEntryPost1 = zero :: MenuEntry 
 
 test_makeIndexIndex1 = do 
-    res <- runErr $ makeIndex1 True testLayout allFlags metaRecIndex1
+    res <- runErr $ makeIndex1 False testLayout allFlags metaRecIndex1
     assertEqual (Right makeIndexBlog) res 
 
 makeIndexBlog = 

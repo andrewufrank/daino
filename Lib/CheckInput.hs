@@ -26,7 +26,18 @@ import           Uniform.Time                   (   readDateMaybe
 import           Uniform.Pandoc
 import Lib.Foundation (SiteLayout(..), templatesDir)
 
+checkOneMdFile :: SiteLayout ->   Path Abs File -> ErrIO (Pandoc, MetaRec, Text)
+-- check one input file, return the values parsed
+-- uses doughP to construct file names to abs file 
+checkOneMdFile  layout mdfn = do
+  -- putIOwords ["checkOneMdFile start", showT mdfn]
+  (pandoc, meta2) :: (Pandoc, Value) <- readMd2meta mdfn -- (dough2 </> mdfn)
+  -- putIOwords ["checkOneMdFile meta2", showT meta2]
 
+  let (metaRec1,report1) = readMeta2rec layout mdfn meta2
+
+  let report2 = unwords' ["\n ------------------",  "\n", report1]
+  return (pandoc, metaRec1, report2) 
 
 type TripleDoc = (Pandoc, MetaRec, Text)
 

@@ -83,7 +83,7 @@ makeIndex1 debug layout flags metaRec    = do
             -- -- fs2 :: [FilePath] <- getDirContentFiles (toFilePath pageFn)
 
             -- -- dirs2 :: [FilePath] <- getDirectoryDirs' (toFilePath pageFn) 
-            when True $  do 
+            when debug  $  do 
                 -- putIOline  "makeIndexForDir 2 for" pageFn
                 putIOline "index file" (fn metaRec) -- indexpageFn
                 putIOline "sort"  (indexSort metaRec)
@@ -96,7 +96,7 @@ makeIndex1 debug layout flags metaRec    = do
                 <- mapM (getMetaRec layout) files -- not filtered md yet!
             
             let subindex = map (\d -> d </> (makeRelFile "index.md")) dirs
-            putIOline "subindex" (map show subindex)
+            when debug $ putIOline "subindex" (map show subindex)
             metaRecsSub :: [MetaRec] <- mapM (getMetaRec layout) subindex
 
             menu1 <- return (metaRec, metaRecsThis, metaRecsSub)
@@ -134,7 +134,7 @@ getMetaRec layout mdfile = do
     return metaRec
             
 checkPubStateWithFlags :: PubFlags ->  PublicationState -> Bool
-
+-- TODO check pubstate!
 -- check wether the pubstate corresponds to the flag
 checkPubStateWithFlags flags  PSpublish = publishFlag flags
 checkPubStateWithFlags flags  PSdraft = draftFlag flags
