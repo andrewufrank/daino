@@ -22,7 +22,8 @@ import Lib.CmdLineArgs                ( PubFlags(..) )
 
 -- import Lib.CmdLineArgs (PubFlags(..))
 import Lib.Foundation (SiteLayout(..)
-          , settingsFileName, testLastUploadFileName)
+          , settingsFileName, testLastUploadFileName
+          , landingPageName)
 -- import Lib.Foundation (SiteLayout(..), templatesDir)
 -- import Lib.Pandoc                     ( docValToAllVal
 --                                                 , markdownToPandocBiblio
@@ -72,7 +73,8 @@ ssgProcess flags = do
           -- the last is the filename that caused the shake call
           --  let landing = makeRelFile "landingPage.html"
           when (serverFlag flags) $  
-            runScotty port2 (bakedDir layout2) (landingPage layout2)
+            runScotty port2 (bakedDir layout2) landingPageName
+                        -- sollte default index.html sein (landingPage layout2)
           when (uploadFlag flags) $ do
                 (a,s) <- runStateT
                     (ftpUploadDirsRecurse testWithLastTime (bakedDir layout2) 

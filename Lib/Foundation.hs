@@ -36,7 +36,7 @@ data SiteLayout = SiteLayout
     , reportFile :: Path Abs File  -- ^ the report from processing baked with pipe
     , testDir :: Path Abs Dir -- ^ the directory the test results go
     , bannerImage :: Path Rel File -- ^ the name of the banner image, needs special copy of
-    , landingPage :: Path Rel File -- ^ the name of the landing page (html), where web server sarts                   
+    -- , landingPage :: Path Rel File -- ^ the name of the landing page (html), where web server sarts                   
     , uploadServer :: Text 
     } deriving (Show, Ord, Eq, Read)
 
@@ -55,8 +55,9 @@ defaultPageType :: SiteLayout -> Path Abs File
 defaultPageType layout = templatesDir layout </> defaultPageTypeName
 
 --testDir = makeAbsDir $ ("/home/frank" :: FilePath)   </> (t2s progName)
-landingPageName :: Path Rel File
+-- landingPageName :: Path Rel File
 landingPageName = makeRelFile "index.html"  -- "landingPage.html"
+-- this is default value for browser for page to start with 
 -- settingsFileName = makeRelFile "settings2"
 
 layoutDefaults :: SiteLayout
@@ -72,7 +73,7 @@ layoutDefaults = SiteLayout
                     $   ("/home/frank" :: FilePath)
                     </> ("." <> t2s progName)
     , bannerImage = bannerImageFileName
-    , landingPage = landingPageName
+    -- , landingPage = landingPageName
     , uploadServer = uploadServerTest
     }
 

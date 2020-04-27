@@ -18,7 +18,8 @@ module Lib.Watch where
 
 import           Uniform.Strings hiding ((</>))
 import           Uniform.Filenames
-import           Lib.Foundation (SiteLayout(..), templatesDirName)
+import           Lib.Foundation (SiteLayout(..), templatesDirName
+                    , landingPageName)
 import           Lib.Shake2 (shakeAll)
 import           Lib.CmdLineArgs (PubFlags(..))
 import           Uniform.Watch (watchMain, Glob (..), WatchOpType
@@ -42,7 +43,9 @@ mainWatch layout flags bakedPort = do
           , Glob "**/*.jpg", Glob "**/*.JPG"]
 
   watchMain [watchDough2, watchThemes2] 
-            (runScotty bakedPort bakedPath (landingPage layout))
+            (runScotty bakedPort bakedPath 
+                landingPageName -- default  (landingPage layout)
+                )
   -- [WatchOpType] -> ErrIO () ->  ErrIO () 
   -- bracketErrIO
   --   (do

@@ -2,7 +2,7 @@
 # values for the page individually
 pageTemplate : page3
 page-title : MyBlog
-page-title-postfix : landingPage.md
+#page-title-postfix : index.md
 #pagetitle : landingPage  # the same as title
 #subtitle : subtitle text
 #title-prefix : MyBlog

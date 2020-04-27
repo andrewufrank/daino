@@ -35,22 +35,22 @@ import Uniform.Pandoc -- (DocValue(..), unDocValue, docValueFileType)
 --import Data.Aeson.Encode.Pretty (encodePretty)
 --import Data.ByteString.Lazy as BS (putStrLn)
 
-test_cmdLineArgs =
-    do
-        res <-  runErr $ do
-                    let source = "/home/frank/.SSG/landingPage.content.docval"
-                    val :: DocValue <- read8 (makeAbsFile source)  docValueFileType
-                    let val2 = unDocValue val  ::Value
+-- test_cmdLineArgs =
+--     do
+--         res <-  runErr $ do
+--                     let source = "/home/frank/.SSG/landingPage.content.docval"
+--                     val :: DocValue <- read8 (makeAbsFile source)  docValueFileType
+--                     let val2 = unDocValue val  ::Value
 
-                    putIOwords ["test_findTemplate", "val2\n" ] -- ,  shownice $ val2]
---                    liftIO $ BS.putStrLn ( encodePretty$ val2)
-                    let ptemplate = getAtKey val2 "pageTemplate" 
-                        -- (val2) ^? key "pageTemplate" . _String
---                                :: Maybe FilePath
-                    putIOwords ["test_findTemplate", "found", showT ptemplate]
-                    return   ptemplate
+--                     putIOwords ["test_findTemplate", "val2\n" ] -- ,  shownice $ val2]
+-- --                    liftIO $ BS.putStrLn ( encodePretty$ val2)
+--                     let ptemplate = getAtKey val2 "pageTemplate" 
+--                         -- (val2) ^? key "pageTemplate" . _String
+-- --                                :: Maybe FilePath
+--                     putIOwords ["test_findTemplate", "found", showT ptemplate]
+--                     return   ptemplate
 
-        assertEqual (Right (Just "page3"::Maybe Text))  res
+--         assertEqual (Right (Just "page3"::Maybe Text))  res
 
 --markdownToHTML4xdebug intext = do
 --    pandoc <- markdownToPandoc False intext

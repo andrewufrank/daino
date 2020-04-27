@@ -71,7 +71,7 @@ readSettings2 debug (YamlText t) = do
                                                             reportFile2
             , testDir = makeAbsDir . t2s $ fromJustNote "testdir xxdwe" testDir2
             , bannerImage = makeRelFile "cropped-DSC05127-1024x330.jpg"
-            , landingPage = makeRelFile "index.html" 
+            -- , landingPage = makeRelFile "index.html" 
             , uploadServer = uploadServerTest                 
             }
   --    let layout3 = F.layoutDefaults
