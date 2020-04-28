@@ -37,11 +37,6 @@ import           Lib.CheckInput (MetaRec(..), PublicationState(..)
                                , getTripleDoc, TripleDoc)
 import           Lib.CmdLineArgs (PubFlags(..))
 
--- import Text.Pandoc.Definition (Meta(..))
--- import           GHC.Generics
--- (flattenMeta, getMeta, getAtKey
---                 , putAtKey, readMarkdown2, unPandocM)
--- import Lib.YamlBlocks (readMd2meta, yaml2value, mergeAll, readYaml2value)
 -- | Convert markdown text into a 'Value';
 -- The 'Value'  has a "content" key containing rendered HTML
 -- Metadata is assigned on the respective keys in the 'Value'
@@ -95,10 +90,6 @@ pandocToContentHtml debug pandoc2 = do
   text2x <- writeHtml5String2 pandoc2
   return text2x
 
--- let meta2       = flattenMeta (getMeta pandoc2) :: Value
--- let withContent = putAtKey "contentHtml" (unHTMLout text2x) meta2
--- return . DocValue $ withContent
---    ( meta2) & _Object . at "contentHtml" ?~ String (unHTMLout text2)
 docValToAllVal :: Bool
                 -> SiteLayout 
                -> PubFlags
@@ -137,7 +128,6 @@ docValToAllVal debug layout flags htmlout   metaRec = do
           -- avoids changes during debug
         , filename = showT fn2
         }
-  -- let htmlout2 = 
   -- when True
   --   $ do
   -- putIOwords ["pandoc settings2.yaml", showT settingsYaml]
