@@ -110,7 +110,7 @@ docValToAllVal debug layout flags htmlout   metaRec = do
   let mpageType = fmap makeAbsFile $ pageTemplate metaRec :: Maybe (Path Abs File)
   when debug $ putIOwords ["docValToAllVal"] -- , "mpt", showT mpageType]
   let pageType = fromMaybe (defaultPageType layout)  mpageType :: Path Abs File
-  -- page0default defined in theme
+  -- page0default defined in theme - changed to actual value, i.e page3.yaml
   when debug $ putIOwords ["docValToAllVal filename", showT pageFn, showT pageType
             , showT (settingsFile flags)]
 

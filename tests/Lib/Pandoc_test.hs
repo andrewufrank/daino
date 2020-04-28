@@ -18,14 +18,16 @@ module Lib.Pandoc_test  -- (openMain, htf_thisModuelsTests)
 
 import           Test.Framework
 import Uniform.Test.TestHarness
-import Lib.Foundation (progName, SiteLayout(..))
+import Lib.Foundation (progName, SiteLayout(..)
+    , layoutDefaults, defaultPageType)
 -- import Lib.FileMgt
 --import Lib.YamlBlocks (readMd2meta)
 import Lib.Pandoc
 import Uniform.Pandoc
 import Lib.Foundation_test (testLayout)
 import Lib.CmdLineArgs (allFlags)
-import Lib.CheckInput (TripleDoc)
+import Lib.CheckInput (TripleDoc, MetaRec(..)
+    ,SortArgs(..), PublicationState(..))
 import Uniform.Pointless (snd3)
 --import Text.Pandoc.Definition as PD
 
@@ -91,7 +93,31 @@ test_pandoc_12_F_G = test3FileIO progName  "resultAF2" "pageFn2" "TripleDoc2" "r
 -- test_pandoc_11_B_E = test1FileIO progName   "resultB1" "resultBE1"  markdownToHTML4xdebug
 -- test_pandoc_12_B_E = test1FileIO progName   "resultB2" "resultBE2" markdownToHTML4xdebug
 
+test_defaultPageType =   assertEqual defPT 
+        $ pt
+    where 
+        mpageType :: Maybe (Path Abs File)
+        mpageType = fmap makeAbsFile $ pageTemplate metaRecIndex1
+        pt :: Path Abs File 
+        pt = fromMaybe (defaultPageType layoutDefaults)  mpageType
 
+
+defPT = (makeAbsFile "/home/frank/Workspace8/ssg/theme/templates/page3.yaml") :: Path Abs File 
+
+    -- example copied from indexing_test
+metaRecIndex1 = MetaRec
+  {fn = "/home/frank/Workspace8/ssg/docs/site/dough/Blog/index.md"
+  , relURL = "/Blog/index.md"
+  , title = "primary index for Blog"
+  , abstract = "The directory for experiments.", author = "AUF",
+   date = "2019-01-04 00:00:00 UTC", 
+   publicationState = PSpublish,
+   bibliography = Nothing, 
+   bibliographyGroup = Nothing,
+    keywords = Just "test",
+    pageTemplate = Nothing,
+    --     Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+    indexPage = True, indexSort = SAreverseDate}
 instance  ShowTestHarness MarkdownText where
 
 instance  ShowTestHarness DocValue where

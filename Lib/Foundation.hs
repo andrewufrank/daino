@@ -50,7 +50,7 @@ bannerImageFileName :: Path Rel File
 bannerImageFileName = makeRelFileT "cropped-DSC05127-1024x330.jpg"
 
 defaultPageTypeName :: Path Rel File
-defaultPageTypeName = makeRelFileT "page3.yaml"
+defaultPageTypeName = makeRelFileT "page3.yaml"  -- the current best
 defaultPageType :: SiteLayout -> Path Abs File
 defaultPageType layout = templatesDir layout </> defaultPageTypeName
 
