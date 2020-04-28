@@ -95,13 +95,16 @@ makeIndexBlog =
   (MetaRec{fn =
              "/home/frank/Workspace8/ssg/docs/site/dough/Blog/index.md",
            relURL = "/Blog/index.md", title = "primary index for Blog",
-           abstract = "The directory for experiments.", author = "AUF",
+           abstract = "The directory for experiments." 
+                    -- "index of all blogs."
+           , author = "AUF",
            date = "2019-01-04 00:00:00 UTC", publicationState = PSpublish,
            bibliography = Nothing, bibliographyGroup = Nothing,
            keywords = Just "test",
            pageTemplate =
              Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
-           indexPage = True, indexSort = SAtitle},
+           indexPage = True, indexSort = SAreverseDate
+           },
    [MetaRec{fn =
               "/home/frank/Workspace8/ssg/docs/site/dough/Blog/postwk.md",
             relURL = "/Blog/postwk.md", title = "postwk with image",
@@ -156,17 +159,15 @@ menuEntryIndex1 =  MenuEntry{menu2 =
 
 
 metaRecIndex1 = MetaRec
-  { fn = toFilePath linkIndex1
+  {fn = "/home/frank/Workspace8/ssg/docs/site/dough/Blog/index.md"
   , relURL = "/Blog/index.md"
   , title = "primary index for Blog"
-  , abstract = "The directory for experiments."
-  , author = "AUF"
-  , date = "2019-01-04 00:00:00 UTC"
-  , publicationState = PSpublish
-  , bibliography = Nothing
-  , bibliographyGroup = Nothing
-  , keywords = Just "test"
-  , pageTemplate = Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml"
-  , indexPage = True
-  , indexSort = SAtitle
-  }
+  , abstract = "The directory for experiments.", author = "AUF",
+   date = "2019-01-04 00:00:00 UTC", 
+   publicationState = PSpublish,
+   bibliography = Nothing, 
+   bibliographyGroup = Nothing,
+    keywords = Just "test",
+    pageTemplate =
+        Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+    indexPage = True, indexSort = SAreverseDate}

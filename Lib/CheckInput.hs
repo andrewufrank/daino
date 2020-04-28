@@ -172,5 +172,6 @@ text2sortargs (Just tt) = case toLower' tt of
     "titel" -> SAtitle
     "date" -> SAdate
     "reversedate" -> SAreverseDate
+    "reverseDate" -> SAreverseDate
     _ -> SAzero 
 

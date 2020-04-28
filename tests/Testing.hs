@@ -33,7 +33,7 @@ import           Uniform.FileIO
 -- import    {-@ HTF_TESTS @-}       Lib.CheckInputs_test
 -- -- ----    -- writes A : testLayout
 -- -- ----    --  pageFn :: abs pandoc filenames
-import   {-@ HTF_TESTS @-}        Lib.Pandoc_test
+-- import   {-@ HTF_TESTS @-}        Lib.Pandoc_test
 -- --             --  -> AD markdownToPandoc
 -- --             -- -> AF pandocToContentHtml
 -- --             -- -> AG (docValToAllVal)
