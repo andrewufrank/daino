@@ -26,10 +26,12 @@ import           Lib.CheckInput (MetaRec(..)
 convert2index :: (MetaRec, [MetaRec], [MetaRec])
                         -> MenuEntry
 convert2index  (this, content, subix) = MenuEntry {menu2 = 
-            [a]   
-            ++ [zero{title2= "--- subdir ---"}] ++ c 
-            ++ [zero{title2= "--- content ---"}] ++ b 
-            }
+    [a]   
+    ++ (if null c then zero else 
+          [zero{title2= "--- subdir ---"}] ++ c)
+    ++ (if null b then zero else 
+            [zero{title2= "--- content ---"}] ++ b) 
+    }
 
     where 
         a = getOneIndexEntryPure this
