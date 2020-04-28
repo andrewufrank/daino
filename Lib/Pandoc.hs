@@ -24,16 +24,13 @@ module Lib.Pandoc
 
 import           Lib.Foundation (defaultPageType, SiteLayout(..))
 import           Lib.Indexing -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
---            , unDocValue, DocValue (..) )
 import           Paths_SSG (version)
 import           Uniform.Convenience.DataVarious (showVersionT)
 import           Uniform.FileIO hiding (Meta, at)
 import           Uniform.Pandoc -- hiding (Meta(..))
 import           Uniform.BibTex
--- import           Uniform.Json
 import           Uniform.Time (year2000)
 import           Lib.CheckInput (MetaRec(..), PublicationState(..)
-                                 -- , readMeta2rec
                                , getTripleDoc, TripleDoc)
 import           Lib.CmdLineArgs (PubFlags(..))
 
@@ -107,17 +104,23 @@ docValToAllVal :: Bool
 -- and to exclude it from index
 docValToAllVal debug layout flags htmlout   metaRec = do
   let pageFn = makeAbsFile . fn $ metaRec 
-  let mpageType = fmap makeAbsFile $ pageTemplate metaRec :: Maybe (Path Abs File)
-  when debug $ putIOwords ["docValToAllVal"] -- , "mpt", showT mpageType]
-  let pageType = fromMaybe (defaultPageType layout)  mpageType :: Path Abs File
+  let mpageType = 
+        fmap makeAbsFile $ pageTemplate metaRec :: Maybe (Path Abs File)
+  when debug $ putIOwords ["docValToAllVal"] 
+        -- , "mpt", showT mpageType]
+  let pageType = fromMaybe (defaultPageType layout)  
+        mpageType :: Path Abs File
   -- page0default defined in theme - changed to actual value, i.e page3.yaml
-  when debug $ putIOwords ["docValToAllVal filename", showT pageFn, showT pageType
+  
+  when debug $ putIOwords ["docValToAllVal filename"
+            , showT pageFn, showT pageType
             , showT (settingsFile flags)]
 
   pageTypeYaml <- readYaml2value pageType
   settingsYaml <- readYaml2value (settingsFile flags)
   --        svalue <- decodeThrow . t2b . unYAML $ settings
-  ix :: MenuEntry <- makeIndex debug layout flags metaRec  -- (doughDir layout) 
+  ix :: MenuEntry <- makeIndex debug layout flags metaRec  
+            -- (doughDir layout) 
   -- now          <- getDateAsText
   putIOwords ["pandoc index produced", showT ix]   
 
@@ -125,12 +128,11 @@ docValToAllVal debug layout flags htmlout   metaRec = do
   let bottomLines = BottomLines
         { ssgversion = showVersionT version
         , today = showT year2000
-          -- avoids changes during debug
+          -- TODO avoids changes during debug
         , filename = showT fn2
         }
-  -- when True
-  --   $ do
-  -- putIOwords ["pandoc settings2.yaml", showT settingsYaml]
+  when False
+    $ do  putIOwords ["pandoc settings2.yaml", showT settingsYaml]
   let val = mergeAll
         [ settingsYaml
         , pageTypeYaml
@@ -149,8 +151,3 @@ data BottomLines =
 
 instance ToJSON BottomLines
 
--- instance ToJSON HTMLout 
--- instance Zeros Pandoc where 
---     zero = Pandoc zero zero 
--- instance Zeros Meta where 
---     zero = mempty
