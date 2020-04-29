@@ -38,9 +38,9 @@ import           Lib.CheckInput (MetaRec(..), SortArgs(..)
                                , makeRelPath)
 import           Lib.IndexMake (IndexEntry(..)
                     , getOneIndexEntryPure, MenuEntry(..) )
-
-import Lib.Indexing_test (metaRecPost1, metaRecIndex1, blogDirPath
-                            ,linkIndex1 , linkIn , menuEntryIndex1)
+import Lib.CheckInputs_test(metaRecIndex1,linkIndex1)
+import Lib.Indexing_test (metaRecPost1,  blogDirPath
+                             , linkIn , menuEntryIndex1)
 
 
 test_getOneIndexEntryPost1 = assertEqual indexEntryPost1 

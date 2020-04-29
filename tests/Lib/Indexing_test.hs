@@ -32,6 +32,7 @@ import           Lib.CheckInput (MetaRec(..), SortArgs(..)
                     , PublicationState(..), makeRelPath
                     , getTripleDoc)
 import          Lib.IndexMake (MenuEntry(..), IndexEntry(..))
+import          Lib.CheckInputs_test (metaRecIndex1)
 
     -- TEST DIRS 
 test_dough2 =  assertEqual dough2path dough2  
@@ -78,13 +79,6 @@ contentPost1 = (["/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/"],
         :: ([FilePath], [FilePath])
 
     
-linkIndex1 = doughDir testLayout </> makeRelFile "Blog/index.md" 
-                        :: Path Abs File 
-
-test_MetaRec_index1 = do 
-    res <- runErr $   getMetaRec testLayout linkIndex1 
-    assertEqual (Right metaRecIndex1) res 
-
 menuEntryPost1 = zero :: MenuEntry 
 
 test_makeIndexIndex1 = do 
@@ -158,16 +152,3 @@ menuEntryIndex1 =  MenuEntry{menu2 =
 
 
 
-metaRecIndex1 = MetaRec
-  {fn = "/home/frank/Workspace8/ssg/docs/site/dough/Blog/index.md"
-  , relURL = "/Blog/index.md"
-  , title = "primary index for Blog"
-  , abstract = "The directory for experiments.", author = "AUF",
-   date = "2019-01-04 00:00:00 UTC", 
-   publicationState = PSpublish,
-   bibliography = Nothing, 
-   bibliographyGroup = Nothing,
-    keywords = Just "test",
-    pageTemplate =
-        Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
-    indexPage = True, indexSort = SAreverseDate}

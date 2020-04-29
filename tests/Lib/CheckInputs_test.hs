@@ -25,6 +25,8 @@ import           Uniform.Pandoc
 import Lib.Pandoc 
 
 import Lib.CheckInput
+import Lib.Indexing(getMetaRec)
+import           Lib.Foundation_test (testLayout)
 import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)
 
 
@@ -59,3 +61,26 @@ instance  ShowTestHarness TripleDoc
 
 instance ShowTestHarness (Path Abs File)
      --
+
+linkIndex1 = doughDir testLayout </> makeRelFile "Blog/index.md" 
+                        :: Path Abs File 
+
+test_MetaRec_index1 = do 
+    res <- runErr $   getMetaRec testLayout linkIndex1 
+    assertEqual (Right metaRecIndex1) res 
+
+
+metaRecIndex1 = MetaRec
+  {fn = "/home/frank/Workspace8/ssg/docs/site/dough/Blog/index.md"
+  , relURL = "/Blog/index.md"
+  , title = "primary index for Blog"
+  , abstract = "The directory for experiments.", author = "AUF",
+   date = "2019-01-04 00:00:00 UTC", 
+   -- remove date in md file - will be replaced with today
+   publicationState = PSpublish,
+   bibliography = Nothing, 
+   bibliographyGroup = Nothing,
+    keywords = Just "test",
+    pageTemplate =
+        Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+    indexPage = True, indexSort = SAreverseDate}

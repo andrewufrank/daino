@@ -37,7 +37,7 @@ library
         ,  uniform-strings -any
         ,  uniform-shake
         , shake
-        ,  uniform-fileio ==0.0.14.6
+        ,  uniform-fileio  
         , uniform-error -any
         , uniform-time -any
         , uniform-json -any
