@@ -34,7 +34,7 @@ import Uniform.FileIO            hiding ((<.>), (</>)) -- (resourcesDirName)
 import Uniform.Pandoc -- (applyTemplate3, Pandoc, DocValue, doc HTMLout, htmloutFileType)
 import Uniform.Shake
 import Lib.CmdLineArgs (allFlags, PubFlags)
-import Lib.CheckInput (checkOneMdFile, MetaRec(..), TripleDoc)
+import Lib.CheckInput (MetaRec(..), TripleDoc)
 import Uniform.Pointless (fst3)
 
 test_shake :: IO ()

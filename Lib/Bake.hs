@@ -32,7 +32,7 @@ import           Uniform.Pandoc                 ( Pandoc
                                                 , HTMLout (..)
                                                 )
 import           Lib.CmdLineArgs                ( PubFlags(..) )
-import Lib.CheckInput (checkOneMdFile)
+import Lib.CheckInput ()
 import Lib.Foundation (SiteLayout(..), templatesDir)
 
 bakeOneFile

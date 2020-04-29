@@ -47,10 +47,10 @@ data LitArgs = LitArgs
   -- , portNumber :: Int -- ^ port -- not yet used
    } deriving (Show)
 
-cmdArgs :: Path Rel File -> Parser LitArgs
+cmdArgs :: Parser LitArgs
 -- | strings which have no default result in enforced arguments
 -- order and type of arguments must correspod to LitArgs
-cmdArgs defaultSetting =
+cmdArgs  =
   LitArgs
     <$> switch
           (long "publish" <> short 'p' <> help
@@ -72,20 +72,7 @@ cmdArgs defaultSetting =
         (long "upload" <> short 'u' <> help
           "upload to external server"
         )
-          --   <*> strOption
-          -- (  long "settingsFile (optional)"
-          -- <> short 'g'
-          -- <> metavar "File1"
-          -- <> value (toFilePath defaultSetting)
-          -- <> help
-          --      (unwords
-          --        [ "not yet used"
-          --        , "settingsFile (default workingdir/"
-          --        , toFilePath defaultSetting
-          --        , ")"
-          --        ]
-          --      )
-          -- )
+
 
 -- | the switches for material to include
 data PubFlags = PubFlags
@@ -151,5 +138,5 @@ getArgsParsed fn t1 t2 = do
   args <- callIO $ execParser (opts fn)
   return args
  where
-  opts fn1 = info (helper <*> cmdArgs fn1)
+  opts fn1 = info (helper <*> cmdArgs)
                   (fullDesc <> (progDesc . t2s $ t1) <> (header . t2s $ t2))

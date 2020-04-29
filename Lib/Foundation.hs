@@ -55,7 +55,7 @@ defaultPageType :: SiteLayout -> Path Abs File
 defaultPageType layout = templatesDir layout </> defaultPageTypeName
 
 --testDir = makeAbsDir $ ("/home/frank" :: FilePath)   </> (t2s progName)
--- landingPageName :: Path Rel File
+landingPageName :: Path Rel File
 landingPageName = makeRelFile "index.html"  -- "landingPage.html"
 -- this is default value for browser for page to start with 
 -- settingsFileName = makeRelFile "settings2"
