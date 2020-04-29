@@ -36,20 +36,39 @@ import qualified Pipes.Prelude as PipePrelude
 
 test_null = assertEqual "a" "b"
 
-pipedDoIO :: Path Abs File -> Path Abs Dir -> (Path Abs File -> ErrIO Text) -> ErrIO ()
+pipedDoIO :: Path Abs File -> Path Abs Dir -> (Path Abs File -> Text) -> ErrIO ()
 -- | write to the first filename the operation applied to the dir tree in the second
 -- first path must not be non-readable dir or
 pipedDoIO file path transf =  do
     hand <-   openFile2handle file WriteMode
     Pipe.runEffect $
                getRecursiveContents path
-               >-> PipePrelude.map (fmap t2s . transf)  -- some IO type left?
+               >-> PipePrelude.map ( t2s . transf)  -- some IO type left?
                --    >-> P.stdoutLn
                >-> PipePrelude.toHandle hand
 --                >-> (\s -> PipePrelude.toHandle hand (s::String))
     
     closeFile2 hand
     return ()
+
+
+doughdir = makeAbsDir "/home/frank/Workspace8/ssg/docs/site/dough/" :: Path Abs Dir 
+resfil = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/resfile.txt" :: Path Abs File
+
+res11 :: ErrIO Text 
+res11 = do  
+            pipedDoIO resfil doughdir showT
+            putIOwords ["put re11"]
+            return "res11" 
+
+res111 = "res111"
+
+-- test_listFn = do 
+--     pipedDoIO resfil doughdir showT
+--     res <- runErr $ readFile2 resfil 
+--     assertEqual (Right res1) res 
+
+-- res1 = zero :: Text 
 
 -- psIn = ["true", "publish", "draft", "old", "", "xx", "Publish", "Draft", "OLD"]
 -- psRes =  [ PSpublish,  PSpublish,  PSdraft,  PSold,

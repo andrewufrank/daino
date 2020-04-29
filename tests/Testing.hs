@@ -33,9 +33,9 @@ import           Uniform.FileIO
 
 -- ordinary tests (run without shakeStartTest)
 
--- import   {-@ HTF_TESTS @-}        Lib.Foundation_test  
+import   {-@ HTF_TESTS @-}        Lib.Foundation_test  
                         -- sets pageFn 
-import    {-@ HTF_TESTS @-}       Lib.CheckInputs_test
+-- import    {-@ HTF_TESTS @-}       Lib.CheckInputs_test
 -- -- ----    -- writes A : testLayout
 -- -- ----    --  pageFn :: abs pandoc filenames
 -- import   {-@ HTF_TESTS @-}        Lib.Pandoc_test
@@ -48,7 +48,7 @@ import    {-@ HTF_TESTS @-}       Lib.CheckInputs_test
 -- -- --    -- AD -> AF :: DocValue
 -- -- --import {-@ HTF_TESTS @-} Lib.Bake_test
 -- -- --import {-@ HTF_TESTS @-} Lib.ReadSettingFile_test
-import {-@ HTF_TESTS @-} Lib.Indexing_test
+-- import {-@ HTF_TESTS @-} Lib.Indexing_test
 -- import  {-@ HTF_TESTS @-}         Lib.IndexMake_test
 -- import    {-@ HTF_TESTS @-}       Lib.Templating_test  -- AG -> EG 
 -- import   {-@ HTF_TESTS @-}        Lib.Shake2_test  -- AG -> EG 
@@ -78,19 +78,15 @@ mainTest        -- with tests in other modules
       ("HTF end ExampleTest.hs test:\n" ++ show p ++ "\nEND HTF ExampleTest")
     return ()
 
--- main2 :: IO ()
--- main2      -- just a simple bake for test
---   = do
---     putStrLn "main2"
---     runErrorVoid
---       $ do
---         shakeAll testLayout testFlags ""
---         -- the last is the filename that caused the shake call
---         --  let landing = makeRelFile "landingPage.html"
---         when (serverFlag testFlags) $
---             runScotty 3099 (bakedDir testLayout) (landingPage testLayout)
-        
---         return ()
+main2 :: IO ()
+main2      -- just a simple bake for test
+   = do
+    putStrLn "main2"
+    runErrorVoid  $ do
+            res <-  res11
+            putIOwords [s2t "res11", showT $ res] 
+            return ()
+    return ()
 
 -- testFlags = zero { testFlag = True
 --                  , publishFlag = True
