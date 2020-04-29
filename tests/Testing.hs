@@ -55,6 +55,9 @@ import {-@ HTF_TESTS @-} Lib.Indexing_test
 -- import Uniform.Ftp 
 -- import Lib.StartSSGprocess
 -- -- --import {-@ HTF_TESTS @-} Lib.BibTex_test
+
+    ---- for ssgCheck
+import {-@ HTF_TESTS @-} Lib.CheckProcess_test
 --
 --
 ---- main =  do  -- the local tests only

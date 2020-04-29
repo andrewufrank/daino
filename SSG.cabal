@@ -26,6 +26,7 @@ library
         Lib.CmdLineArgs
         Lib.Watch
         -- Paths_SSG
+        Lib.CheckProcess
         
     hs-source-dirs: .
     other-modules:
@@ -71,6 +72,7 @@ executable ssgbake
         -- , uniform-watch 
         , SSG -any
         , shake
+        -- , pipes
  
 executable ssgCheck
     main-is: ssgCheck.hs
@@ -82,11 +84,13 @@ executable ssgCheck
         uniform-convenience -any,
         uniform-fileio -any,
         uniform-error -any,
+
+        -- uniform-piped,
         SSG -any
 
 test-suite ssgTest
     type: exitcode-stdio-1.0
-    main-is: ExampleTesting.hs
+    main-is: Testing.hs
     hs-source-dirs: tests
     other-modules:
         ShakeStartTests
@@ -101,6 +105,7 @@ test-suite ssgTest
         Lib.Templating_test
         Lib.Indexing_test
         Lib.Shake2_test
+        Lib.Checking_test
         -- Lib.CmdLineArgs_test
     default-language: Haskell2010
     ghc-options: -Wall

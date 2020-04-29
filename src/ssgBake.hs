@@ -32,9 +32,9 @@ import           Lib.Foundation (SiteLayout(..)
 -- import Uniform.Time 
 import Lib.StartSSGprocess (ssgProcess)
 programName, progTitle :: Text
-programName = "SSG10" :: Text
+programName = "ssgBake" :: Text
 
-progTitle = "constructing a static site generator x6 0.0.2.0" :: Text
+progTitle = "constructing a static site generator x6 0.0.2.1" :: Text
 -- the process is still centered on the current working dir 
 
 main :: IO ()
