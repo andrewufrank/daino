@@ -108,35 +108,35 @@ getMetaRecsAfterFilter layout indexpageFn dirContent = do
 
 
 
-ixEntriesDirs = [IndexEntry{text2 = "index.md",
-            link2 = "/Blog/index.md/index.html",
-            title2 = "index.md (subdirectory)", abstract2 = "", author2 = "",
-            date2 = "", publish2 = "", isIndex = False},
- IndexEntry{text2 = "postwk.md",
-            link2 = "/Blog/postwk.md/index.html",
-            title2 = "postwk.md (subdirectory)", abstract2 = "", author2 = "",
-            date2 = "", publish2 = "", isIndex = False},
- IndexEntry{text2 = "", link2 = "", title2 = "------",
-            abstract2 = "", author2 = "", date2 = "", publish2 = "",
-            isIndex = False}] :: [IndexEntry]   
+-- ixEntriesDirs = [IndexEntry{text2 = "index.md",
+--             link2 = "/Blog/index.md/index.html",
+--             title2 = "index.md (subdirectory)", abstract2 = "", author2 = "",
+--             date2 = "", publish2 = "", isIndex = False},
+--  IndexEntry{text2 = "postwk.md",
+--             link2 = "/Blog/postwk.md/index.html",
+--             title2 = "postwk.md (subdirectory)", abstract2 = "", author2 = "",
+--             date2 = "", publish2 = "", isIndex = False},
+--  IndexEntry{text2 = "", link2 = "", title2 = "------",
+--             abstract2 = "", author2 = "", date2 = "", publish2 = "",
+--             isIndex = False}] :: [IndexEntry]   
 
 
-indexP = MenuEntry{menu2 =
-    [IndexEntry{text2 = "SubBlog", link2 = "/Blog/SubBlog/index.html",
-                title2 = "SubBlog (subdirectory)", abstract2 = "", author2 = "",
-                date2 = "", publish2 = "", isIndex = False},
-        IndexEntry{text2 = "", link2 = "", title2 = "------",
-                abstract2 = "", author2 = "", date2 = "", publish2 = "",
-                isIndex = False},
-        -- IndexEntry{text2 = "index", link2 = "/Blog/index.html",
-        --         title2 = "primary index for Blog",
-        --         abstract2 = "The directory for experiments.", author2 = "AUF",
-        --         date2 = "2019-01-04 00:00:00 UTC", publish2 = "publish",
-        --         isIndex = True},
-                -- TODO here should be the postwk.md file 
-        IndexEntry{text2 = "", link2 = "", title2 = "------",
-                abstract2 = "", author2 = "", date2 = "", publish2 = "",
-                isIndex = False}]} :: MenuEntry
+-- indexP = MenuEntry{menu2 =
+--     [IndexEntry{text2 = "SubBlog", link2 = "/Blog/SubBlog/index.html",
+--                 title2 = "SubBlog (subdirectory)", abstract2 = "", author2 = "",
+--                 date2 = "", publish2 = "", isIndex = False},
+--         IndexEntry{text2 = "", link2 = "", title2 = "------",
+--                 abstract2 = "", author2 = "", date2 = "", publish2 = "",
+--                 isIndex = False},
+--         -- IndexEntry{text2 = "index", link2 = "/Blog/index.html",
+--         --         title2 = "primary index for Blog",
+--         --         abstract2 = "The directory for experiments.", author2 = "AUF",
+--         --         date2 = "2019-01-04 00:00:00 UTC", publish2 = "publish",
+--         --         isIndex = True},
+--                 -- TODO here should be the postwk.md file 
+--         IndexEntry{text2 = "", link2 = "", title2 = "------",
+--                 abstract2 = "", author2 = "", date2 = "", publish2 = "",
+--                 isIndex = False}]} :: MenuEntry
 
 
 indexEntryPost1 = IndexEntry { text2 = "postwk"

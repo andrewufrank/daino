@@ -32,7 +32,7 @@ import           Lib.CheckInput (MetaRec(..), SortArgs(..)
                     , PublicationState(..), makeRelPath
                     , getTripleDoc)
 import          Lib.IndexMake (MenuEntry(..), IndexEntry(..))
-import          Lib.CheckInputs_test (metaRecIndex1)
+import          Lib.CheckInputs_test (metaRecIndex1, metaRecIndexSubSub)
 
     -- TEST DIRS 
 test_dough2 =  assertEqual dough2path dough2  
@@ -149,6 +149,68 @@ menuEntryIndex1 =  MenuEntry{menu2 =
                         publish2 = "publish", isIndex = False}]
               } :: MenuEntry 
 
+test_makeIndexIndexSubSub = do 
+    res <- runErr $ makeIndex1 False testLayout allFlags metaRecIndexSubSub
+    assertEqual (Right makeIndexSubSub) res 
+
+makeIndexSubSub = (MetaRec{fn =
+             "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/SubSub/index.md",
+           relURL = "/Blog/SubBlog/SubSub/index.md",
+           title = "index for subsubdir",
+           abstract = "The subdirectory experiment", author = "AUF",
+           date = "2019-01-04 00:00:00 UTC", publicationState = PSpublish,
+           bibliography = Nothing, bibliographyGroup = Nothing,
+           keywords = Just "test",
+           pageTemplate =
+             Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+           indexPage = True, indexSort = SAtitle},
+   [MetaRec{fn =
+              "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/SubSub/subsub1.md",
+            relURL = "/Blog/SubBlog/SubSub/subsub1.md", title = "postwk.md",
+            abstract = "A silly text not needing an abstract.", author = "AUF",
+            date = "2019-01-04 00:00:00 UTC", publicationState = PSpublish,
+            bibliography = Nothing, bibliographyGroup = Nothing,
+            keywords = Just "test",
+            pageTemplate =
+              Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+            indexPage = False, indexSort = SAzero},
+    MetaRec{fn =
+              "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/SubSub/subsubTest.md",
+            relURL = "/Blog/SubBlog/SubSub/subsubTest.md", title = "subsub z",
+            abstract = "A silly text not needing an abstract.", author = "AUF",
+            date = "2022-01-04 00:00:00 UTC", publicationState = PSpublish,
+            bibliography = Nothing, bibliographyGroup = Nothing,
+            keywords = Just "notest",
+            pageTemplate =
+              Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+            indexPage = False, indexSort = SAzero}],
+   [])
+
+
+test_convert2indexSubSub = assertEqual menuEntryIndexSubSub 
+            (convert2index makeIndexSubSub )
 
 
 
+menuEntryIndexSubSub = MenuEntry{menu2 =
+    [IndexEntry{text2 = "index",
+                link2 = "/Blog/SubBlog/SubSub/index.html",
+                title2 = "index for subsubdir",
+                abstract2 = "The subdirectory experiment", author2 = "AUF",
+                date2 = "2019-01-04 00:00:00 UTC", publish2 = "publish",
+                isIndex = True},
+        IndexEntry{text2 = "", link2 = "", title2 = "--- content ---",
+                abstract2 = "", author2 = "", date2 = "", publish2 = "",
+                isIndex = False},
+        IndexEntry{text2 = "subsub1",
+                link2 = "/Blog/SubBlog/SubSub/subsub1.html", title2 = "postwk.md",
+                abstract2 = "A silly text not needing an abstract.",
+                author2 = "AUF", date2 = "2019-01-04 00:00:00 UTC",
+                publish2 = "publish", isIndex = False},
+        IndexEntry{text2 = "subsubTest",
+                link2 = "/Blog/SubBlog/SubSub/subsubTest.html",
+                title2 = "subsub z",
+                abstract2 = "A silly text not needing an abstract.",
+                author2 = "AUF", date2 = "2022-01-04 00:00:00 UTC",
+                publish2 = "publish", isIndex = False}]}
+        :: MenuEntry

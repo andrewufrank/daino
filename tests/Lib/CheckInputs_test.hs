@@ -84,3 +84,22 @@ metaRecIndex1 = MetaRec
     pageTemplate =
         Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
     indexPage = True, indexSort = SAreverseDate}
+
+subsubDir = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/SubSub/index.md"
+
+test_MetaRec_indexSubSub = do 
+    res <- runErr $   getMetaRec testLayout subsubDir  
+    assertEqual (Right metaRecIndexSubSub) res 
+
+
+metaRecIndexSubSub = (MetaRec{fn =
+             "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/SubSub/index.md",
+           relURL = "/Blog/SubBlog/SubSub/index.md",
+           title = "index for subsubdir",
+           abstract = "The subdirectory experiment", author = "AUF",
+           date = "2019-01-04 00:00:00 UTC", publicationState = PSpublish,
+           bibliography = Nothing, bibliographyGroup = Nothing,
+           keywords = Just "test",
+           pageTemplate =
+             Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+           indexPage = True, indexSort = SAtitle})
