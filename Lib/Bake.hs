@@ -32,7 +32,7 @@ import           Uniform.Pandoc                 ( Pandoc
                                                 , HTMLout (..)
                                                 )
 import           Lib.CmdLineArgs                ( PubFlags(..) )
-import Lib.CheckInput ()
+import Lib.CheckInput (getTripleDoc)
 import Lib.Foundation (SiteLayout(..), templatesDir)
 
 bakeOneFile
@@ -54,7 +54,7 @@ bakeOneFile debug flags pageFn layout ht2 =
                  --        pageMd :: MarkdownText <- read8 pageFn markdownFileType -- pageFn -> pageMd
                          -- process the md file (including bibtex citations)
                  --        let resourcesPath = doughP </> resourcesDirName :: Path Abs Dir
-      (pandoc, metaRec, report) <- checkOneMdFile layout pageFn
+      (pandoc, metaRec, report) <- getTripleDoc layout pageFn
       -- how are errors dealt with 
       -- let debug = True
       pandoc2 :: Pandoc <- markdownToPandocBiblio debug flags (doughDir layout) (pandoc, metaRec, report) -- AG -> AD

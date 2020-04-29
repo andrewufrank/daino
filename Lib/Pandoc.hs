@@ -30,8 +30,7 @@ import           Uniform.FileIO hiding (Meta, at)
 import           Uniform.Pandoc -- hiding (Meta(..))
 import           Uniform.BibTex
 import           Uniform.Time (year2000)
-import           Lib.CheckInput (MetaRec(..), PublicationState(..)
-                               , getTripleDoc, TripleDoc)
+import           Lib.CheckInput (MetaRec(..), TripleDoc)
 import           Lib.CmdLineArgs (PubFlags(..))
 
 -- | Convert markdown text into a 'Value';

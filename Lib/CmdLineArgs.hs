@@ -109,7 +109,7 @@ parseArgs2input :: Path Rel File -> Text -> Text -> ErrIO PubFlags
 -- is specific to the parser (and thus to the cmd line arguments
 
 parseArgs2input settingsFN t1 t2 = do
-  args1 <- getArgsParsed settingsFN t1 t2
+  args1 <- getArgsParsed t1 t2
   putIOwords ["parseArgs2input: args found", showT args1]
   workingdir1 :: Path Abs Dir <- currentDir
 
@@ -133,10 +133,10 @@ parseArgs2input settingsFN t1 t2 = do
   return flags2
 
 
-getArgsParsed :: Path Rel File -> Text -> Text -> ErrIO LitArgs
-getArgsParsed fn t1 t2 = do
-  args <- callIO $ execParser (opts fn)
-  return args
- where
-  opts fn1 = info (helper <*> cmdArgs)
+getArgsParsed :: Text -> Text -> ErrIO LitArgs
+getArgsParsed  t1 t2 = do
+        args <- callIO $ execParser opts
+        return args
+    where
+        opts  = info (helper <*> cmdArgs)
                   (fullDesc <> (progDesc . t2s $ t1) <> (header . t2s $ t2))

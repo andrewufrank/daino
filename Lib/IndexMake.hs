@@ -13,13 +13,10 @@
 
 module Lib.IndexMake (module Lib.IndexMake) where
 
-import           GHC.Exts (sortWith)
+-- import           GHC.Exts (sortWith)
 import           Uniform.Json
 import Uniform.Filenames
-import           Lib.CheckInput (MetaRec(..)
-                               , SortArgs(..)
-                               , makeRelPath
-                               )
+import           Lib.CheckInput (MetaRec(..),  makeRelPath)
 
 -- | convert the metarecs and put some divider between
 -- TODO  - avoid dividers if list empty

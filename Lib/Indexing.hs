@@ -21,7 +21,7 @@ import Uniform.Strings (putIOline, putIOlineList)
 import           Lib.CmdLineArgs (PubFlags(..))
 import           Lib.CheckInput (MetaRec(..), getTripleDoc
                                , PublicationState(..))
-import           Lib.Foundation (SiteLayout, doughDir)
+import           Lib.Foundation (SiteLayout)
 import Lib.IndexMake (MenuEntry, IndexEntry
                 , convert2index)
 
@@ -95,6 +95,10 @@ makeIndex1 debug layout flags metaRec    = do
 getMetaRec :: SiteLayout -> Path Abs File -> ErrIO MetaRec
 getMetaRec layout mdfile = do
     (_, metaRec, report) <- getTripleDoc layout mdfile
+    unless (null' report) $ 
+        putIOwords ["/n/n Problem with reading MetaRec ", showT mdfile
+                    , "/n", report,
+                    "/n---------------------------------/n"]
     return metaRec
             
 checkPubStateWithFlags :: PubFlags ->  PublicationState -> Bool

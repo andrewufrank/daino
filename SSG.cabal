@@ -1,10 +1,11 @@
 name: SSG
-version: 0.0.2.0
+version: 0.0.2.1
 license-file: LICENSE
 build-type: Simple
 cabal-version: >=1.10
 description: a static site generator
     version 0.0.2.0  used for myhomepage  - fixes
+    0.0.2.1 add check for all pages, study content pdf, tex
 
 library
     exposed-modules:
@@ -71,17 +72,17 @@ executable ssgbake
         , SSG -any
         , shake
  
--- executable ssg10
---     main-is: ssg10.hs
---     hs-source-dirs: src
---     default-language: Haskell2010
---     build-depends:
---         base ==4.*,
---         uniform-strings -any,
---         uniform-convenience -any,
---         uniform-fileio -any,
---         uniform-error -any,
---         SSG -any
+executable ssgCheck
+    main-is: ssgCheck.hs
+    hs-source-dirs: src
+    default-language: Haskell2010
+    build-depends:
+        base ==4.*,
+        uniform-strings -any,
+        uniform-convenience -any,
+        uniform-fileio -any,
+        uniform-error -any,
+        SSG -any
 
 test-suite ssgTest
     type: exitcode-stdio-1.0

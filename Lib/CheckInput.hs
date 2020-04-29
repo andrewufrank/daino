@@ -46,6 +46,7 @@ import Lib.Foundation (SiteLayout(..), templatesDir)
 --   return (pandoc, metaRec1, report2) 
 
 type TripleDoc = (Pandoc, MetaRec, Text)
+-- ^ the pandoc content, the metarec (from yaml) and the report from conversion)
 
 getTripleDoc :: SiteLayout ->   Path Abs File -> ErrIO TripleDoc
 -- get one input file, return the values parsed
@@ -96,7 +97,7 @@ readMeta2rec layout mdfn meta2 modificationTime = (ix, report)
     keys2  = ["abstract", "title", "author", "date", "publish", "bibliography", "bibliographyGroup"
                 , "keywords", "pageTemplate", "indexSort"]
     indexPage1 = getAtKey meta2 "indexPage" :: Maybe Bool 
-    date0 = getAtKey meta2 "date" :: Maybe Text 
+    -- date0 = getAtKey meta2 "date" :: Maybe Text 
     -- -- abstract1 = getAtKey meta2 "abstract" :: Maybe Text
     -- -- title1    = getAtKey meta2 "title" :: Maybe Text
     -- -- author1   = getAtKey meta2 "author" :: Maybe Text
