@@ -47,33 +47,33 @@ checkProcess debug filepath = do
         , "all md files checked\n"
         , s2t filepath]
 
--- using pipe to go recursively through all the files
--- started with the code from uniform-fileio - pipes
--- which I did not see how to generalize, but should be possible
+-- -- using pipe to go recursively through all the files
+-- -- started with the code from uniform-fileio - pipes
+-- -- which I did not see how to generalize, but should be possible
 
-getRecursiveContents2 :: -- (Path Abs File-> Pipe.Proxy Pipe.X () () String (ErrorT Text IO) ())
-                  Path Abs Dir
-                      -> Pipe.Proxy Pipe.X () () (Path Abs File) (ErrorT Text IO) ()
-getRecursiveContents2  fp = do
---    putIOwords ["recurseDir start", showT fp]
-    perm <-Pipe.lift $ getPermissions' fp
-    if not (Path.IO.readable perm && Path.IO.searchable perm)
-        then Pipe.lift $ putIOwords ["recurseDir not readable or not searchable", showT fp]
-        else do
-            symLink <- Pipe.lift $ checkSymbolicLink fp -- callIO $ xisSymbolicLink fp
-            if symLink
-                then  Pipe.lift $ putIOwords ["recurseDir symlink", showT fp]
-                else do
-                    (dirs, files) <- Pipe.lift $ listDir'  fp
-                    when False $ do
-                        Pipe.lift $ putIOwords ["recurseDir files\n", showT files]
-                        Pipe.lift $ putIOwords ["recurseDir directories\n", showT dirs]
+-- getRecursiveContents2 :: -- (Path Abs File-> Pipe.Proxy Pipe.X () () String (ErrorT Text IO) ())
+--                   Path Abs Dir
+--                       -> Pipe.Proxy Pipe.X () () (Path Abs File) (ErrorT Text IO) ()
+-- getRecursiveContents2  fp = do
+-- --    putIOwords ["recurseDir start", showT fp]
+--     perm <-Pipe.lift $ getPermissions' fp
+--     if not (Path.IO.readable perm && Path.IO.searchable perm)
+--         then Pipe.lift $ putIOwords ["recurseDir not readable or not searchable", showT fp]
+--         else do
+--             symLink <- Pipe.lift $ checkSymbolicLink fp -- callIO $ xisSymbolicLink fp
+--             if symLink
+--                 then  Pipe.lift $ putIOwords ["recurseDir symlink", showT fp]
+--                 else do
+--                     (dirs, files) <- Pipe.lift $ listDir'  fp
+--                     when False $ do
+--                         Pipe.lift $ putIOwords ["recurseDir files\n", showT files]
+--                         Pipe.lift $ putIOwords ["recurseDir directories\n", showT dirs]
 
-                    -- Prelude.mapM_ Pipe.yield (sort files)
---                                (Path.IO.sort (map unPath files))
-                    -- Prelude.mapM_ getRecursiveContents (sort dirs)
---                            (Path.IO.sort (map unPath dirs))
-                    return ()--    where processOneFile fp = Pipe.yield fp
+--                     -- Prelude.mapM_ Pipe.yield (sort files)
+-- --                                (Path.IO.sort (map unPath files))
+--                     -- Prelude.mapM_ getRecursiveContents (sort dirs)
+-- --                            (Path.IO.sort (map unPath dirs))
+--                     return ()--    where processOneFile fp = Pipe.yield fp
 
 
 -- -- | set the arguments for shake and call the ruls 

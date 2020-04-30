@@ -24,13 +24,14 @@ import Uniform.Test.TestHarness
 import           Uniform.Pandoc
 import Lib.Pandoc 
 
-import Lib.CheckProcess (getRecursiveContents2)
+import Lib.CheckProcess 
 import Lib.Indexing(getMetaRec)
 import           Lib.Foundation_test (testLayout)
 import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)
 
 import qualified Pipes as Pipe
 import  Pipes ((>->))
+import Uniform.Piped (getRecursiveContents)
 import qualified Pipes.Prelude as PipePrelude
 
 
