@@ -19,6 +19,7 @@ module Lib.CheckInputs_test  -- (openMain, htf_thisModuelsTests)
 
 
 import Test.Framework
+import Data.List ( (\\) )
 import Uniform.Strings
 import Uniform.Test.TestHarness
 import           Uniform.Pandoc
@@ -103,3 +104,9 @@ metaRecIndexSubSub = (MetaRec{fn =
            pageTemplate =
              Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
            indexPage = True, indexSort = SAtitle})
+
+keys2  = ["abstract", "title", "author", "date", "publish", "bibliography", "bibliographyGroup"
+                , "keywords", "pageTemplate", "indexSort"]:: [Text]
+requiredLabels = ["abstract", "title", "keywords", "pageTemplate", "indexSort"]:: [Text]
+    
+test_labelsDiff = assertEqual [] (keys2 \\ requiredLabels)

@@ -39,6 +39,7 @@ library
         ,  uniform-strings -any
         ,  uniform-shake
         , shake
+        , pipes
         ,  uniform-fileio ==0.0.15.1 
         , uniform-error -any
         , uniform-time -any
@@ -86,7 +87,8 @@ executable ssgCheck
         uniform-error -any,
 
         -- uniform-piped,
-        SSG -any
+        SSG -any,
+        pipes
 
 test-suite ssgTest
     type: exitcode-stdio-1.0
@@ -105,7 +107,7 @@ test-suite ssgTest
         Lib.Templating_test
         Lib.Indexing_test
         Lib.Shake2_test
-        Lib.Checking_test
+        Lib.CheckProcess_test
         -- Lib.CmdLineArgs_test
     default-language: Haskell2010
     ghc-options: -Wall
@@ -125,6 +127,7 @@ test-suite ssgTest
         uniform-cmdLineArgs,
         uniform-shake,
         shake,
+        pipes,
         uniform-watch ,
         uniform-time,
         uniform-ftp ,

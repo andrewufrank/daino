@@ -35,6 +35,13 @@ import Uniform.Piped (pipedDoIO)
 -- import Uniform.FileStrings
 import Uniform.FileStrings (readFile2)
 import Lib.CheckInput (getTripleDoc, TripleDoc)
+import Lib.Indexing(getMetaRec)
+import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)
+import Uniform.FileStrings (openFile2handle, closeFile2, IOMode(..))
+import qualified Pipes as Pipe
+import  Pipes ((>->))
+import Uniform.Piped (getRecursiveContents, pipedDoIO)
+import qualified Pipes.Prelude as PipePrelude
 
 checkProcess :: Bool -> FilePath  -> ErrIO ()
 -- ^ checking all md files 
@@ -53,17 +60,36 @@ checkProcess debug filepath = do
     -- trp <- allTriples layout2 doughP 
     -- putIOwords ["the triples\n", showT . take' 100 .  lines' $ trp]
 
+    report <- allReport layout2 doughP 
+    putIOwords ["the report on reading md files\n",
+            showList' . lines'  $report ]
+
     when debug $ putIOwords
         [ "\n\n*******************************************"
         , "all md files checked\n"
         , s2t filepath]
 
+-- what should be tested? insert here for all md files 
+
+testOneMd :: SiteLayout -> Path Abs File -> ErrIO String
+testOneMd layout f = do 
+    (_,_,report) <- getTripleDoc layout f   -- how to make presentable output?
+    return . t2s . showT $ report
+
+allReport :: SiteLayout -> Path Abs Dir -> ErrIO (Text) 
+allReport layout dirname = do 
+        pipedDoIO2 tmpResultFile dirname (testOneMd layout)
+        readFile2 tmpResultFile 
+
+tmpResultFile = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/resfile4checkProcess.txt" :: Path Abs File
+
 
 allFilenames3 :: Path Abs Dir -> ErrIO (Text) 
 allFilenames3 dirname = do 
-        pipedDoIO resfil2 dirname showT
-        readFile2 resfil2 
-resfil2 = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/resfile2.txt" :: Path Abs File
+        pipedDoIO tmpResultFile dirname showT
+        readFile2 tmpResultFile 
+
+-- resfil2 = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/resfile2.txt" :: Path Abs File
 
 -- allTriples :: SiteLayout -> Path Abs Dir -> ErrIO (Text) 
 -- allTriples layout dirname = do 
@@ -74,9 +100,30 @@ resfil2 = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/resfile2.txt" :: Pat
 -- -- opx :: (SiteLayout -> Path Abs File -> Text) 
 -- opx layout fn = showList' . map showTriple . getTripleDoc layout $ fn
 
-showTriple :: TripleDoc -> Text
-showTriple (a,b,c) =  concat' abc 
-    where abc = [showT a, showT b, showT c] :: [Text] 
+-- showTriple :: TripleDoc -> Text
+-- showTriple (a,b,c) =  concat' abc 
+--     where abc = [showT a, showT b, showT c] :: [Text] 
+
+-- a convenient function to go through a directory and 
+-- recursively apply a function to each file or directory
+-- filters for extension md
+
+pipedDoIO2 :: Path Abs File -> Path Abs Dir -> (Path Abs File -> ErrIO String) -> ErrIO ()
+pipedDoIO2 file path opex =  do
+    hand <-   openFile2handle file WriteMode
+    Pipe.runEffect $
+                getRecursiveContents path
+                >-> PipePrelude.filter (hasExtension (Extension "md"))
+                >-> PipePrelude.mapM opex 
+                >-> PipePrelude.toHandle hand    
+    closeFile2 hand
+    return ()
+
+
+
+
+--------- O L D 
+
 -- -- using pipe to go recursively through all the files
 -- -- started with the code from uniform-fileio - pipes
 -- -- which I did not see how to generalize, but should be possible

@@ -34,7 +34,7 @@ import Uniform.FileIO            hiding ((<.>), (</>)) -- (resourcesDirName)
 import Uniform.Pandoc -- (applyTemplate3, Pandoc, DocValue, doc HTMLout, htmloutFileType)
 import Uniform.Shake
 import Lib.CmdLineArgs (allFlags, PubFlags)
-import Lib.CheckInput (MetaRec(..), TripleDoc)
+import Lib.CheckInput (MetaRec(..), TripleDoc, getTripleDoc)
 import Uniform.Pointless (fst3)
 
 test_shake :: IO ()
@@ -108,7 +108,7 @@ shakeTestWrapped flags layout doughP  templatesP testP =
                         do
         --                    intext <- read8 (makeAbsFile source) markdownFileType
         --                    let resourcesPath = doughP `addDir` resourcesDirName :: Path Abs Dir
-                            triple <- checkOneMdFile layout source 
+                            triple <- getTripleDoc layout source 
                             -- p <- markdownToPandocBiblio True allFlags doughP triple 
                             -- case mp of
                             --     Nothing -> return ()

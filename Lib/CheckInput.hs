@@ -25,7 +25,7 @@ import           Uniform.Time                   (   readDateMaybe
 
 import           Uniform.Pandoc
 import Lib.Foundation (SiteLayout(..), templatesDir)
-
+import Data.List ( (\\) )
 -- checkOneMdFile :: SiteLayout ->   Path Abs File -> ErrIO (Pandoc, MetaRec, Text)
 -- -- check one input file, return the values parsed
 -- -- uses doughP to construct file names to abs file 
@@ -59,7 +59,8 @@ getTripleDoc  layout mdfn = do
     modificationTime <- getFileModificationUTCTime mdfn
     let (metaRec1,report1) = readMeta2rec layout mdfn meta2 modificationTime
 
-    let report2 = unwords' ["\n ------------------",  "\n", report1]
+    let report2 = report1 
+            -- unwords' ["\n ------------------",  "\n", report1]
     return (pandoc, metaRec1, report2) 
 
 readMeta2rec :: SiteLayout -> Path Abs File -> Value -> UTCTime -> (MetaRec, Text)
@@ -95,7 +96,7 @@ readMeta2rec layout mdfn meta2 modificationTime = (ix, report)
         , indexSort1] = vals2
     vals2  = map (getAtKey meta2) keys2
     keys2  = ["abstract", "title", "author", "date", "publish", "bibliography", "bibliographyGroup"
-                , "keywords", "pageTemplate", "indexSort"]
+                , "keywords", "pageTemplate", "indexSort"]:: [Text]
     indexPage1 = getAtKey meta2 "indexPage" :: Maybe Bool 
     -- date0 = getAtKey meta2 "date" :: Maybe Text 
     -- -- abstract1 = getAtKey meta2 "abstract" :: Maybe Text
@@ -111,7 +112,13 @@ readMeta2rec layout mdfn meta2 modificationTime = (ix, report)
 
     report = unwords' ["missing values: ", missingLabels, timeIssue]
 
-    missingLabels =  unwords' . map fst . filter (isNothing . snd) $ zip keys2 vals2
+    missingLabels =  unwords' . (\\ notRequiredLabels) . map fst . filter (isNothing . snd) $ zip keys2 vals2
+    -- what can be defaulted: author (remains blank), publish (defaults to publish)
+                -- bibliography (if not used) bibliographyGroup (if not used)
+                -- , "pageTemplate", "indexSort"
+    -- what must be provided: 
+    requiredLabels = ["abstract", "title", "keywords"]:: [Text]
+    notRequiredLabels = keys2 \\ requiredLabels :: [Text]
 
 _dateIssue :: Maybe Text ->   (Bool, Text)
 --  check if date is ok, if not set False and give text 
