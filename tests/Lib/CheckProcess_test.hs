@@ -31,22 +31,22 @@ import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)
 
 import qualified Pipes as Pipe
 import  Pipes ((>->))
-import Uniform.Piped (getRecursiveContents)
+import Uniform.Piped (getRecursiveContents, pipedDoIO)
 import qualified Pipes.Prelude as PipePrelude
 
--- pipedDo and DoIO are copied from Uniform.Piped (but there commented out?)
--- TODO 
-pipedDoIO :: Path Abs File -> Path Abs Dir -> (Path Abs File -> Text) -> ErrIO ()
--- | write to the first filename the operation applied to the dir tree in the second
--- first path must not be non-readable dir or
-pipedDoIO file path transf =  do
-    hand <-   openFile2handle file WriteMode
-    Pipe.runEffect $
-               getRecursiveContents path
-               >-> PipePrelude.map ( t2s . transf)  -- some IO type left?
-               >-> PipePrelude.toHandle hand    
-    closeFile2 hand
-    return ()
+-- -- pipedDo and DoIO are copied from Uniform.Piped (but there commented out?)
+-- -- TODO 
+-- pipedDoIO :: Path Abs File -> Path Abs Dir -> (Path Abs File -> Text) -> ErrIO ()
+-- -- | write to the first filename the operation applied to the dir tree in the second
+-- -- first path must not be non-readable dir or
+-- pipedDoIO file path transf =  do
+--     hand <-   openFile2handle file WriteMode
+--     Pipe.runEffect $
+--                getRecursiveContents path
+--                >-> PipePrelude.map ( t2s . transf)  -- some IO type left?
+--                >-> PipePrelude.toHandle hand    
+--     closeFile2 hand
+--     return ()
 
 
 doughdir = makeAbsDir "/home/frank/Workspace8/ssg/docs/site/dough/" :: Path Abs Dir 

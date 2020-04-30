@@ -20,18 +20,20 @@ import           Uniform.Error (ErrIO, callIO, liftIO)
 -- import           Development.Shake -- (Rules(..))
 -- import          Uniform.Shake.Path
 import           Uniform.Strings (putIOwords, showT)
-import           Lib.Foundation (SiteLayout(..), resourcesDirName, staticDirName
-                               , templatesDir, templatesImgDirName
-                               , imagesDirName)
+import           Lib.Foundation (SiteLayout(..))
+                --   resourcesDirName, staticDirName
+                --             --    , templatesDir, templatesImgDirName
+                --                , imagesDirName)
 import Lib.ReadSettingFile (readSettings)
 -- import           Lib.Bake (bakeOneFile)
-import qualified Pipes as Pipe
-import  Pipes ((>->))
-import qualified Pipes.Prelude as PipePrelude
-import qualified Path.IO  (searchable, readable)
+-- import qualified Pipes as Pipe
+-- import  Pipes ((>->))
+-- import qualified Pipes.Prelude as PipePrelude
+-- import qualified Path.IO  (searchable, readable)
 import Uniform.Filenames
-import Uniform.FileStrings
-
+import Uniform.Piped (pipedDoIO)
+-- import Uniform.FileStrings
+import Uniform.FileStrings (readFile2)
 
 checkProcess :: Bool -> FilePath  -> ErrIO ()
 -- ^ checking all md files 
@@ -41,11 +43,22 @@ checkProcess debug filepath = do
     (layout2, _) <- readSettings settingsFileName
     let doughP = doughDir layout2 -- the regular dough
     putIOwords ["\nstart with \n", "settingsFileName", showT settingsFileName 
-                , "\ndoughDir", showT doughP]
-    putIOwords
+                , "\ndoughDir", showT doughP
+                , "\nfilepath", showT filepath]
+
+    res1 <- allFilenames3 doughP
+    putIOwords ["the filenames\n", showList' . lines' $ res1]
+    when debug $ putIOwords
         [ "\n\n*******************************************"
         , "all md files checked\n"
         , s2t filepath]
+
+
+allFilenames3 :: Path Abs Dir -> ErrIO (Text) 
+allFilenames3 dirname = do 
+        pipedDoIO resfil2 dirname showT
+        readFile2 resfil2 
+resfil2 = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/resfile2.txt" :: Path Abs File
 
 -- -- using pipe to go recursively through all the files
 -- -- started with the code from uniform-fileio - pipes

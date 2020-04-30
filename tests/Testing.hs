@@ -58,6 +58,7 @@ import   {-@ HTF_TESTS @-}        Lib.Foundation_test
 
     ---- for ssgCheck
 import {-@ HTF_TESTS @-} Lib.CheckProcess_test
+import Lib.CheckProcess         -- for direct calls 
 --
 --
 ---- main =  do  -- the local tests only
@@ -86,6 +87,18 @@ main2      -- just a simple bake for test
             res <-  res11
             putIOwords [s2t "res11", showT $ res] 
             return ()
+    return ()
+
+mainCheck :: IO ()
+mainCheck      -- just a simple bake for test
+   = do
+    putStrLn "mainCheck"
+    runErrorVoid  $ do
+        -- sitefn :: FilePath 
+        let sitefn = "/home/frank/Workspace8/ssg/docs/site/dough/settings2" 
+        res <-  checkProcess True sitefn 
+        putIOwords [s2t "res11", showT $ res] 
+        return ()
     return ()
 
 -- testFlags = zero { testFlag = True
