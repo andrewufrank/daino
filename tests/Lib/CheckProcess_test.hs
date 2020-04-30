@@ -34,11 +34,8 @@ import  Pipes ((>->))
 import Uniform.Piped (getRecursiveContents)
 import qualified Pipes.Prelude as PipePrelude
 
-
-test_null = assertEqual "a" "b"
-
-
 -- pipedDo and DoIO are copied from Uniform.Piped (but there commented out?)
+-- TODO 
 pipedDoIO :: Path Abs File -> Path Abs Dir -> (Path Abs File -> Text) -> ErrIO ()
 -- | write to the first filename the operation applied to the dir tree in the second
 -- first path must not be non-readable dir or
@@ -47,23 +44,10 @@ pipedDoIO file path transf =  do
     Pipe.runEffect $
                getRecursiveContents path
                >-> PipePrelude.map ( t2s . transf)  -- some IO type left?
-               --    >-> P.stdoutLn
-               >-> PipePrelude.toHandle hand
---                >-> (\s -> PipePrelude.toHandle hand (s::String))
-    
+               >-> PipePrelude.toHandle hand    
     closeFile2 hand
     return ()
 
-
--- pipedDo :: Path Abs Dir -> (Path Abs File -> Text) -> ErrIO ([String])
--- pipedDo path transf =  do
---     Pipe.runEffect $
---         getRecursiveContents path
---         >-> PipePrelude.map (t2s . transf)
---         -- >-> PipePrelude.stdoutLn
---         >-> PipePrelude.concat
-
--- end copy
 
 doughdir = makeAbsDir "/home/frank/Workspace8/ssg/docs/site/dough/" :: Path Abs Dir 
 resfil = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/resfile.txt" :: Path Abs File
@@ -79,28 +63,28 @@ res111 = "res111"
 opOnFile :: Path Abs File -> Text 
 opOnFile = showT 
 
-test_listFn = do 
-    -- pipedDoIO resfil doughdir showT
-    res <- runErr $ do 
-                    pipedDoIO resfil doughdir showT
-                    readFile2 resfil 
-    assertEqual (Right res1) res 
+-- test_listFn = do 
+--     -- pipedDoIO resfil doughdir showT
+--     res <- runErr $ do 
+--                     pipedDoIO resfil doughdir showT
+--                     readFile2 resfil 
+--     assertEqual (Right res1) res 
 
-res1 = zero :: Text 
+-- res1 = zero :: Text 
 
-allFilenames :: Path Abs Dir -> ErrIO (Text) 
-allFilenames dirname = do 
-        pipedDoIO resfil dirname showT
-        return "x"
+-- allFilenames :: Path Abs Dir -> ErrIO (Text) 
+-- allFilenames dirname = do 
+--         pipedDoIO resfil dirname showT
+--         return "x"
 
 allFilenames2 :: Path Abs Dir -> ErrIO (Text) 
 allFilenames2 dirname = do 
         pipedDoIO resfil dirname showT
         readFile2 resfil 
 
-test_allFilenames = do 
-    res <- runErr $ allFilenames2 doughdir
-    assertEqual (Right "x") res 
+-- test_allFilenames = do 
+--     res <- runErr $ allFilenames2 doughdir
+--     assertEqual (Right "x") res 
 
 test_allFilenames2 :: IO () 
 test_allFilenames2 = testVar0FileIO progName doughdir "allFilenames" (allFilenames2 )
