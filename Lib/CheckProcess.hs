@@ -34,6 +34,7 @@ import Uniform.Filenames
 import Uniform.Piped (pipedDoIO)
 -- import Uniform.FileStrings
 import Uniform.FileStrings (readFile2)
+import Lib.CheckInput (getTripleDoc, TripleDoc)
 
 checkProcess :: Bool -> FilePath  -> ErrIO ()
 -- ^ checking all md files 
@@ -46,8 +47,12 @@ checkProcess debug filepath = do
                 , "\ndoughDir", showT doughP
                 , "\nfilepath", showT filepath]
 
-    res1 <- allFilenames3 doughP
-    putIOwords ["the filenames\n", showList' . lines' $ res1]
+    fns <- allFilenames3 doughP
+    putIOwords ["the filenames\n", showList' . lines' $ fns]
+
+    -- trp <- allTriples layout2 doughP 
+    -- putIOwords ["the triples\n", showT . take' 100 .  lines' $ trp]
+
     when debug $ putIOwords
         [ "\n\n*******************************************"
         , "all md files checked\n"
@@ -60,6 +65,18 @@ allFilenames3 dirname = do
         readFile2 resfil2 
 resfil2 = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/resfile2.txt" :: Path Abs File
 
+-- allTriples :: SiteLayout -> Path Abs Dir -> ErrIO (Text) 
+-- allTriples layout dirname = do 
+--         pipedDoIO alltriplesfile dirname (opx layout)
+--         readFile2 alltriplesfile 
+-- alltriplesfile = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/alltriples.txt" :: Path Abs File
+
+-- -- opx :: (SiteLayout -> Path Abs File -> Text) 
+-- opx layout fn = showList' . map showTriple . getTripleDoc layout $ fn
+
+showTriple :: TripleDoc -> Text
+showTriple (a,b,c) =  concat' abc 
+    where abc = [showT a, showT b, showT c] :: [Text] 
 -- -- using pipe to go recursively through all the files
 -- -- started with the code from uniform-fileio - pipes
 -- -- which I did not see how to generalize, but should be possible

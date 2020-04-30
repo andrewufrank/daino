@@ -23,7 +23,7 @@ import Uniform.Strings
 import Uniform.Test.TestHarness
 import           Uniform.Pandoc
 import Lib.Pandoc 
-
+import Lib.CheckInput (MetaRec(..))
 import Lib.CheckProcess 
 import Lib.Indexing(getMetaRec)
 import           Lib.Foundation_test (testLayout)
@@ -88,6 +88,35 @@ allFilenames2 dirname = do
 
 test_allFilenames2 :: IO () 
 test_allFilenames2 = testVar0FileIO progName doughdir "allFilenames" (allFilenames2 )
+
+
+-- a convenient function to go through a directory and 
+-- recursively apply a function to each file or directory
+pipedDoIO2 :: Path Abs File -> Path Abs Dir -> (Path Abs File -> ErrIO String) -> ErrIO ()
+pipedDoIO2 file path transf =  do
+    hand <-   openFile2handle file WriteMode
+    Pipe.runEffect $
+                getRecursiveContents path
+                >-> PipePrelude.filter (hasExtension (Extension "md"))
+                >-> PipePrelude.mapM opex 
+                >-> PipePrelude.toHandle hand    
+    closeFile2 hand
+    return ()
+
+opex :: Path Abs File -> ErrIO String
+opex f = do 
+    mr <- getMetaRec testLayout  f
+    return . t2s . showT $ mr 
+
+test_allMetaRec :: IO () 
+test_allMetaRec = testVar0FileIO progName doughdir "allMetaRec" allMetaRec 
+
+allMetaRec :: Path Abs Dir -> ErrIO (Text) 
+allMetaRec dirname = do 
+        pipedDoIO2 resfil dirname opex
+        readFile2 resfil 
+test_hasExtension = assertBool $ hasExtension (Extension "md") (makeRelFile "test/test.md")
+
 -- 
 -- testVar0FileIO :: (Zeros b, Eq b, Show b, Read b, ShowTestHarness b)
 --             => Text -> a -> FilePath -> (a-> ErrIO b) -> IO ()
