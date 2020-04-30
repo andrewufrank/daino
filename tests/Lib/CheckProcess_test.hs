@@ -37,6 +37,8 @@ import qualified Pipes.Prelude as PipePrelude
 
 test_null = assertEqual "a" "b"
 
+
+-- pipedDo and DoIO are copied from Uniform.Piped (but there commented out?)
 pipedDoIO :: Path Abs File -> Path Abs Dir -> (Path Abs File -> Text) -> ErrIO ()
 -- | write to the first filename the operation applied to the dir tree in the second
 -- first path must not be non-readable dir or
@@ -53,23 +55,59 @@ pipedDoIO file path transf =  do
     return ()
 
 
+-- pipedDo :: Path Abs Dir -> (Path Abs File -> Text) -> ErrIO ([String])
+-- pipedDo path transf =  do
+--     Pipe.runEffect $
+--         getRecursiveContents path
+--         >-> PipePrelude.map (t2s . transf)
+--         -- >-> PipePrelude.stdoutLn
+--         >-> PipePrelude.concat
+
+-- end copy
+
 doughdir = makeAbsDir "/home/frank/Workspace8/ssg/docs/site/dough/" :: Path Abs Dir 
 resfil = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/resfile.txt" :: Path Abs File
 
 res11 :: ErrIO Text 
 res11 = do  
-            pipedDoIO resfil doughdir showT
+            pipedDoIO resfil doughdir opOnFile 
             putIOwords ["put re11"]
             return "res11" 
 
 res111 = "res111"
 
--- test_listFn = do 
---     pipedDoIO resfil doughdir showT
---     res <- runErr $ readFile2 resfil 
---     assertEqual (Right res1) res 
+opOnFile :: Path Abs File -> Text 
+opOnFile = showT 
 
--- res1 = zero :: Text 
+test_listFn = do 
+    -- pipedDoIO resfil doughdir showT
+    res <- runErr $ do 
+                    pipedDoIO resfil doughdir showT
+                    readFile2 resfil 
+    assertEqual (Right res1) res 
+
+res1 = zero :: Text 
+
+allFilenames :: Path Abs Dir -> ErrIO (Text) 
+allFilenames dirname = do 
+        pipedDoIO resfil dirname showT
+        return "x"
+
+allFilenames2 :: Path Abs Dir -> ErrIO (Text) 
+allFilenames2 dirname = do 
+        pipedDoIO resfil dirname showT
+        readFile2 resfil 
+
+test_allFilenames = do 
+    res <- runErr $ allFilenames2 doughdir
+    assertEqual (Right "x") res 
+
+test_allFilenames2 :: IO () 
+test_allFilenames2 = testVar0FileIO progName doughdir "allFilenames" (allFilenames2 )
+-- 
+-- testVar0FileIO :: (Zeros b, Eq b, Show b, Read b, ShowTestHarness b)
+--             => Text -> a -> FilePath -> (a-> ErrIO b) -> IO ()
+-- write a list of all filenams on .SSG/res
 
 -- psIn = ["true", "publish", "draft", "old", "", "xx", "Publish", "Draft", "OLD"]
 -- psRes =  [ PSpublish,  PSpublish,  PSdraft,  PSold,
