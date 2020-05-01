@@ -78,7 +78,7 @@ makeIndex1 debug layout flags metaRec    = do
                 putIOlineList "files found" (map show files)  -- is found
                 putIOlineList "dirs found"  (map show dirs) 
 
-            let files2 =   filter (hasExtension . makeExtension $".md") 
+            let files2 =   filter (hasExtension . makeExtension $"md") 
                                     $ files :: [Path Abs File]
             metaRecsThis :: [MetaRec]
                 <- mapM (getMetaRec layout) files2 -- not filtered md yet!

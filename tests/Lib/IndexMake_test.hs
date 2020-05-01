@@ -89,9 +89,9 @@ metaRecsAfterFilter = [MetaRec
   , indexSort = SAzero}] :: [MetaRec]
 
 test_hasExtension = assertEqual True 
-                $ (hasExtension . makeExtension $ ".md") linkIndex1
+                $ (hasExtension . makeExtension $ "md") linkIndex1
 
-test_getExtension = assertEqual (makeExtension ".md")
+test_getExtension = assertEqual (makeExtension "md")
                          $ getExtension linkIndex1
 
 -- | filter the content and retrieve metarecs
@@ -100,7 +100,7 @@ getMetaRecsAfterFilter :: SiteLayout -> Path Abs File
     -> [Path Abs File] -> ErrIO [MetaRec]
 getMetaRecsAfterFilter layout indexpageFn dirContent = do 
         let fs4 = filter (indexpageFn /=) 
-                    . filter (hasExtension . makeExtension $ ".md") 
+                    . filter (hasExtension . makeExtension $ "md") 
                      $ dirContent :: [Path Abs File]
         metaRecs2 :: [MetaRec]
                 <- mapM (getMetaRec layout) fs4 -- noch ok    let 
