@@ -1,28 +1,37 @@
-"\n\tmissing required label values: \"title\"b"
-"none"
-"none"
-"none"
-"none"
-"none"
-"none"
-"none"
-"none"
-"none"
-"none"
-"none"
-"none"
-"\n\tmissing required label values: \"abstract title keywords\"\n\ttime issues: n"
-"none"
-"none"
-"none"
-"none"
-"none"
-"none"
-"none"
-"none"
-"\n\tmissing required label values: \"abstract title keywords\"\n\ttime issues: n"
-"none"
-"none"
-"none"
-"\n\tmissing required label values: \"abstract\"\n\ttime issues: n"
-"\n\tmissing required label values: \"abstract\"\n\ttime issues: n"
+
+	missing required label values: "title"b
+none
+none
+none
+none
+none
+none
+none
+none
+none
+none
+none
+none
+
+	missing required label values: "abstract title keywords"
+	time issues: n
+none
+none
+none
+none
+none
+none
+none
+none
+
+	missing required label values: "abstract title keywords"
+	time issues: n
+none
+none
+none
+
+	missing required label values: "abstract"
+	time issues: n
+
+	missing required label values: "abstract"
+	time issues: n

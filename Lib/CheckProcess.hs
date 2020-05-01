@@ -64,9 +64,8 @@ checkProcess debug filepath = do
     -- trp <- allTriples layout2 doughP 
     -- putIOwords ["the triples\n", showT . take' 100 .  lines' $ trp]
 
-    report <- allReport layout2 doughP 
-    putIOwords ["the report on reading md files\n",
-            showList' . lines'  $report ]
+    report <- allMetaRecReport layout2 doughP 
+    putIOwords ["the report on reading md files\n", report ]
 
     when debug $ putIOwords
         [ "\n\n*******************************************"
@@ -78,7 +77,7 @@ checkProcess debug filepath = do
 testOneMd :: SiteLayout -> Path Abs File -> ErrIO String
 testOneMd layout f = do 
     (_,_,report) <- getTripleDoc layout f   -- how to make presentable output?
-    return . t2s . showT $ report
+    return $ t2s  report
 
 allReport :: SiteLayout -> Path Abs Dir -> ErrIO (Text) 
 allReport layout dirname = do 
@@ -96,15 +95,17 @@ allFilenames3 dirname = do
 --  produce file for reports form getMetaRec
 report_metaRec :: SiteLayout -> Path Abs File -> ErrIO String
 report_metaRec layout f = do 
-    mr <- getMetaRec layout  f
-    return . t2s . showT $ mr 
+    (_, metaRec, report1) <- getTripleDoc layout f
+    return . t2s  $ report1
+    -- mr <- getMetaRec layout  f
+    -- return . t2s . showT $ mr 
 
 allMetaRecReport :: SiteLayout -> Path Abs Dir -> ErrIO Text
 allMetaRecReport layout dirname = do 
                 pipedDoIO2 tmpResultFile dirname (report_metaRec layout)
-                res <- readFile2 tmpResultFile  
-                let res2 = res
-                return res2        
+                res1 :: Text <- readFile2 tmpResultFile  
+                let res2 =  filter (not . isPrefixOf' "none") . lines' $  res1 :: [Text]
+                return . unlines' $ res2        
 
 -- resfil2 = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/resfile2.txt" :: Path Abs File
 

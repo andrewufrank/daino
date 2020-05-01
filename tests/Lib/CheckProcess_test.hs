@@ -107,7 +107,8 @@ allMetaRec dirname = do
 
 test_hasExtension = assertBool $ hasExtension (Extension "md") (makeRelFile "test/test.md")
 
-    
+-- test_startNone = assertEqual True (isPrefixOf' "none" ("\"none\""::Text))
+ 
 -- 
 -- testVar0FileIO :: (Zeros b, Eq b, Show b, Read b, ShowTestHarness b)
 --             => Text -> a -> FilePath -> (a-> ErrIO b) -> IO ()
