@@ -84,7 +84,7 @@ metaRecsAfterFilter = [MetaRec
   , bibliography = Nothing
   , bibliographyGroup = Nothing
   , keywords = Just "test"
-  , pageTemplate = Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml"
+  , pageTemplate =   "/home/frank/Workspace8/ssg/theme/templates/page3.yaml"
   , indexPage = False
   , indexSort = SAzero}] :: [MetaRec]
 

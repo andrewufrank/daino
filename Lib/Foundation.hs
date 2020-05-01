@@ -51,6 +51,7 @@ bannerImageFileName = makeRelFileT "cropped-DSC05127-1024x330.jpg"
 
 defaultPageTypeName :: Path Rel File
 defaultPageTypeName = makeRelFileT "page3.yaml"  -- the current best
+                -- use this and complete locally!
 defaultPageType :: SiteLayout -> Path Abs File
 defaultPageType layout = templatesDir layout </> defaultPageTypeName
 

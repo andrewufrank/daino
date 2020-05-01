@@ -93,16 +93,16 @@ test_pandoc_12_F_G = test3FileIO progName  "resultAF2" "pageFn2" "TripleDoc2" "r
 -- test_pandoc_11_B_E = test1FileIO progName   "resultB1" "resultBE1"  markdownToHTML4xdebug
 -- test_pandoc_12_B_E = test1FileIO progName   "resultB2" "resultBE2" markdownToHTML4xdebug
 
-test_defaultPageType =   assertEqual defPT 
-        $ pt
-    where 
-        mpageType :: Maybe (Path Abs File)
-        mpageType = fmap makeAbsFile $ pageTemplate metaRecIndex1
-        pt :: Path Abs File 
-        pt = fromMaybe (defaultPageType layoutDefaults)  mpageType
+-- test_defaultPageType =   assertEqual defPT 
+--         $ pt
+--     where 
+--         mpageType ::  (Path Abs File)
+--         mpageType =  makeAbsFile $ pageTemplate metaRecIndex1
+--         pt :: Path Abs File 
+--         pt = fromMaybe (defaultPageType layoutDefaults)  mpageType
 
 
-defPT = (makeAbsFile "/home/frank/Workspace8/ssg/theme/templates/page3.yaml") :: Path Abs File 
+-- defPT = (makeAbsFile "/home/frank/Workspace8/ssg/theme/templates/page3.yaml") :: Path Abs File 
 
     -- example copied from indexing_test
 metaRecIndex1 = MetaRec
@@ -115,8 +115,8 @@ metaRecIndex1 = MetaRec
    bibliography = Nothing, 
    bibliographyGroup = Nothing,
     keywords = Just "test",
-    pageTemplate = Nothing,
-    --     Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+    pageTemplate = -- Nothing,
+         "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
     indexPage = True, indexSort = SAreverseDate}
 instance  ShowTestHarness MarkdownText where
 

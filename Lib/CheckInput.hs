@@ -24,8 +24,9 @@ import           Uniform.Time                   (   readDateMaybe
                                                 )
 
 import           Uniform.Pandoc
-import Lib.Foundation (SiteLayout(..), templatesDir)
+import Lib.Foundation (SiteLayout(..), templatesDir, defaultPageTypeName)
 import Data.List ( (\\) )
+import qualified Data.Map as M
 -- checkOneMdFile :: SiteLayout ->   Path Abs File -> ErrIO (Pandoc, MetaRec, Text)
 -- -- check one input file, return the values parsed
 -- -- uses doughP to construct file names to abs file 
@@ -63,34 +64,42 @@ getTripleDoc  layout mdfn = do
 readMeta2rec :: SiteLayout -> Path Abs File -> Value -> UTCTime -> (MetaRec, Maybe Text)
 -- | read the metadata in a record and check for validity
 -- and information what is missing
+-- TODO should provide warning if there is a value, but not readable? 
 readMeta2rec layout mdfn meta2 modificationTime = (ix, reportEssence)
     where
         ix = MetaRec    
             { fn = toFilePath  (mdfn :: Path Abs File)
             , relURL     = makeRelPath (doughDir layout) mdfn -- (Path Rel File))
-            ,  abstract         = fromMaybe "" abstract1
-            , title            = fromMaybe "" title1
-            , author           = fromMaybe "" author1
+            ,  abstract         = fromMaybe "" (reduceMaybe2 (M.lookup Abstract labelVals))
+            , title            = fromMaybe "" (reduceMaybe2 (M.lookup Title labelVals))
+            , author           = fromMaybe "" (reduceMaybe2 (M.lookup Author labelVals))
             , date             = if timeOK 
                                     then fromJustNote "readDate 408ds" . readDateMaybe 
-                                            . fromJustNote "readData 1112fad" $ date1 
+                                            . fromJustNote "readData 1112fad" $ 
+                                                    (reduceMaybe2 (M.lookup Date labelVals)) 
                                     else  modificationTime
                         -- maybe year2000 
                             -- (fromJustNote "readDate 408ds" . readDateMaybe) date1   
                             -- test early for proper format
-            , publicationState = text2publish  publish1
-            , bibliography  =   fmap (\f -> toFilePath $ doughDir layout </> makeRelFileT f) bibliography1
-            , bibliographyGroup = bibliographyGroup1
-            , keywords = keywords1
-            , pageTemplate = fmap (\f -> toFilePath $ templatesDir layout </> makeRelFileT f) pageTemplate1
-            , indexPage = fromMaybe False indexPage1
-            , indexSort = text2sortargs indexSort1
+            , publicationState = text2publish  (reduceMaybe2 (M.lookup Publish labelVals))
+            , bibliography  =   fmap (\f -> toFilePath $ doughDir layout </> makeRelFileT f) 
+                        (reduceMaybe2 (M.lookup Bibliography labelVals))
+            , bibliographyGroup = (reduceMaybe2 (M.lookup BibliographyGroup labelVals))
+            , keywords = (reduceMaybe2 (M.lookup Keywords labelVals))  
+            , pageTemplate = (\f -> toFilePath $ templatesDir layout </>   f)
+                            $ fromMaybe ( defaultPageTypeName)  
+                               (fmap (makeRelFile . t2s) $ reduceMaybe2 (M.lookup PageTemplate labelVals))
+            , indexPage = fromMaybe False $ getAtKey meta2 "indexPage" ::  Bool 
+                        -- indexPage1
+            , indexSort = text2sortargs (reduceMaybe2 (M.lookup IndexSort labelVals))
+                    -- indexSort1
                 -- default is publish
             }
         vals2  = map (getAtKey meta2) (map (toLower' . showT) allLabels) :: [Maybe Text] 
-        [abstract1, title1, author1, date1, publish1
-            , bibliography1, bibliographyGroup1, keywords1, pageTemplate1
-            , indexSort1] = vals2
+        -- [abstract1, title1, author1, date1, publish1
+        --     , bibliography1, bibliographyGroup1, keywords1, pageTemplate1
+        --     , indexSort1] = vals2
+        labelVals = M.fromList (zip allLabels vals2) :: M.Map Label (Maybe Text)
         -- better approach - this depends on the same order!
 
         indexPage1 = getAtKey meta2 "indexPage" :: Maybe Bool 
@@ -101,9 +110,12 @@ readMeta2rec layout mdfn meta2 modificationTime = (ix, reportEssence)
         -- -- date1     = getAtKey meta2 "date" :: Maybe Text
         -- -- publish1  = getAtKey meta2 "publish" :: Maybe Text
 
-        (timeOK, timeIssue) = _dateIssue date1 :: (Bool, Maybe Text)
+        (timeOK, timeIssue) = _dateIssue (reduceMaybe2 (M.lookup Date labelVals)) :: (Bool, Maybe Text)
 
         reportEssence = convertToReport vals2 (missingLabels  vals2) timeIssue :: Maybe Text 
+
+reduceMaybe2 (Just a) =   a
+reduceMaybe2 (Nothing) = Nothing 
 
 convertToReport :: [Maybe Text] ->  [Label] ->  Maybe Text -> Maybe Text 
 convertToReport vals2 missing timeIssue  = if null mt then Nothing else Just . concatT $ mt
@@ -158,8 +170,8 @@ data MetaRec = MetaRec
               -- Path  reading in records is not working 
         , bibliographyGroup :: Maybe Text 
         , keywords :: Maybe Text 
-        , pageTemplate:: Maybe FilePath -- (Path Abs File)
-        , indexPage ::  Bool
+        , pageTemplate::  FilePath -- the template, defaulted here 
+        , indexPage ::  Bool  -- is this an index page?
         , indexSort :: SortArgs 
 
         } deriving (Generic, Eq, Ord, Show, Read)

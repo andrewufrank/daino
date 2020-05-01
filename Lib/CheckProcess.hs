@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --
 -- Module      :  the process to check the input files 
---
+-- TODO - check for filenames with blanks (specially at end)
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}

@@ -62,7 +62,7 @@ metaRecPost1 = MetaRec
   , bibliography = Nothing
   , bibliographyGroup = Nothing
   , keywords = Just "test"
-  , pageTemplate = Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml"
+  , pageTemplate =   "/home/frank/Workspace8/ssg/theme/templates/page3.yaml"
   , indexPage = False
   , indexSort = SAzero
   }
@@ -96,7 +96,7 @@ makeIndexBlog =
            bibliography = Nothing, bibliographyGroup = Nothing,
            keywords = Just "test",
            pageTemplate =
-             Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+               "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
            indexPage = True, indexSort = SAreverseDate
            },
    [MetaRec{fn =
@@ -107,7 +107,7 @@ makeIndexBlog =
             bibliography = Nothing, bibliographyGroup = Nothing,
             keywords = Just "test",
             pageTemplate =
-              Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+               "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
             indexPage = False, indexSort = SAzero}],
    [MetaRec{fn =
               "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/index.md",
@@ -117,7 +117,7 @@ makeIndexBlog =
             bibliography = Nothing, bibliographyGroup = Nothing,
             keywords = Just "test",
             pageTemplate =
-              Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+                "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
             indexPage = True, indexSort = SAtitle}]) 
         :: (MetaRec, [MetaRec], [MetaRec])
 
@@ -162,7 +162,7 @@ makeIndexSubSub = (MetaRec{fn =
            bibliography = Nothing, bibliographyGroup = Nothing,
            keywords = Just "test",
            pageTemplate =
-             Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+               "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
            indexPage = True, indexSort = SAtitle},
    [MetaRec{fn =
               "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/SubSub/subsub1.md",
@@ -172,7 +172,7 @@ makeIndexSubSub = (MetaRec{fn =
             bibliography = Nothing, bibliographyGroup = Nothing,
             keywords = Just "test",
             pageTemplate =
-              Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+                "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
             indexPage = False, indexSort = SAzero},
     MetaRec{fn =
               "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/SubSub/subsubTest.md",
@@ -182,7 +182,7 @@ makeIndexSubSub = (MetaRec{fn =
             bibliography = Nothing, bibliographyGroup = Nothing,
             keywords = Just "notest",
             pageTemplate =
-              Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+                "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
             indexPage = False, indexSort = SAzero}],
    [])
 

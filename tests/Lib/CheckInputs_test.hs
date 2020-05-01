@@ -82,9 +82,8 @@ metaRecIndex1 = MetaRec
    bibliography = Nothing, 
    bibliographyGroup = Nothing,
     keywords = Just "test",
-    pageTemplate =
-        Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
-    indexPage = True, indexSort = SAreverseDate}
+    pageTemplate =  "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+    indexPage = True, indexSort = SAzero}
 
 subsubDir = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/SubSub/index.md"
 
@@ -101,9 +100,8 @@ metaRecIndexSubSub = (MetaRec{fn =
            date = "2019-01-04 00:00:00 UTC", publicationState = PSpublish,
            bibliography = Nothing, bibliographyGroup = Nothing,
            keywords = Just "test",
-           pageTemplate =
-             Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
-           indexPage = True, indexSort = SAtitle})
+           pageTemplate =  "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+           indexPage = True, indexSort = SAzero})
 
 keys2  = ["abstract", "title", "author", "date", "publish", "bibliography", "bibliographyGroup"
                 , "keywords", "pageTemplate", "indexSort"]:: [Text]
@@ -115,3 +113,11 @@ labDiff = ["author", "date", "publish", "bibliography", "bibliographyGroup"]
 -- the non-essential labels
 
 test_null1 = assertBool (null' (""::Text))
+
+test_Maybe21 = assertEqual (Just ("a"::Text)) $ reduce (Just (Just ("a"::Text)))
+test_Maybe22 = assertEqual ((Nothing::Maybe Text)) $ reduce (Just (Nothing::Maybe Text))
+test_Maybe23 = assertEqual ((Nothing::Maybe Text)) $ reduce (Just (Nothing::Maybe Text))
+
+reduce :: Maybe (Maybe a) -> Maybe a 
+reduce (Just a) =   a
+reduce (Nothing) = Nothing 

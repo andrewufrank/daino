@@ -75,9 +75,11 @@ test_allMetaRec :: IO ()
 test_allMetaRec = testVar0FileIO progName doughdir "allMetaRec" allMetaRec 
 
 allMetaRec :: Path Abs Dir -> ErrIO (Text) 
-allMetaRec dirname = do 
-        pipedDoIOwithFilter resfil dirname (Extension "md") opex
-        readFile2 resfil 
+allMetaRec dirname = allMetaRecReport layoutDefaults dirname
+
+    -- do 
+    --     pipedDoIOwithFilter resfil dirname (Extension "md") opex
+    --     readFile2 resfil 
 
 test_hasExtension = assertBool $ hasExtension (Extension "md") (makeRelFile "test/test.md")
 

@@ -103,12 +103,12 @@ docValToAllVal :: Bool
 -- and to exclude it from index
 docValToAllVal debug layout flags htmlout   metaRec = do
   let pageFn = makeAbsFile . fn $ metaRec 
-  let mpageType = 
-        fmap makeAbsFile $ pageTemplate metaRec :: Maybe (Path Abs File)
+  let pageType = makeAbsFile $ 
+                pageTemplate metaRec ::  (Path Abs File)
   when debug $ putIOwords ["docValToAllVal"] 
         -- , "mpt", showT mpageType]
-  let pageType = fromMaybe (defaultPageType layout)  
-        mpageType :: Path Abs File
+--   let pageType = fromMaybe (defaultPageType layout)  
+--         mpageType :: Path Abs File
   -- page0default defined in theme - changed to actual value, i.e page3.yaml
   
   when debug $ putIOwords ["docValToAllVal filename"

@@ -40,6 +40,8 @@ library
         ,  uniform-shake
         , shake
         , pipes
+        , containers
+
         ,  uniform-fileio ==0.0.15.1 
         , uniform-error -any
         , uniform-time -any
