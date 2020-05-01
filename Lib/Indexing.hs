@@ -91,14 +91,17 @@ makeIndex1 debug layout flags metaRec    = do
                 -- the metarecs for the index in the subdirs 
             return menu1
 
--- | find the metaRec to a path 
+-- | find the metaRec to a path and report on errors in input data  
 getMetaRec :: SiteLayout -> Path Abs File -> ErrIO MetaRec
 getMetaRec layout mdfile = do
-    (_, metaRec, report) <- getTripleDoc layout mdfile
-    unless (null' report) $ 
-        putIOwords ["/n/n Problem with reading MetaRec ", showT mdfile
-                    , "/n", report,
-                    "/n---------------------------------/n"]
+    (_, metaRec, report1) <- getTripleDoc layout mdfile
+    let reportX :: Text 
+        reportX = if  (("none"::Text) == report1) then "xx" 
+         else (concat'["", report1, "X"] :: Text)
+                -- unlines' ["Problem with reading MetaRec ", showT . fn $ metaRec
+                --     , "\n", report1,
+                --     "\n---------------------------------\n"]  
+    putIOwords [reportX]
     return metaRec
             
 checkPubStateWithFlags :: PubFlags ->  PublicationState -> Bool

@@ -57,73 +57,82 @@ getTripleDoc  layout mdfn = do
     (pandoc, meta2) :: (Pandoc, Value) <- readMd2meta mdfn -- (dough2 </> mdfn)
     -- putIOwords ["getTripleDoc meta2", showT meta2]
     modificationTime <- getFileModificationUTCTime mdfn
-    let (metaRec1,report1) = readMeta2rec layout mdfn meta2 modificationTime
-
-    let report2 = report1 
-            -- unwords' ["\n ------------------",  "\n", report1]
-    return (pandoc, metaRec1, report2) 
+    let (metaRec1, report1) = readMeta2rec layout mdfn meta2 modificationTime
+    return (pandoc, metaRec1, report1) 
 
 readMeta2rec :: SiteLayout -> Path Abs File -> Value -> UTCTime -> (MetaRec, Text)
 -- | read the metadata in a record and check for validity
 -- and information what is missing
-readMeta2rec layout mdfn meta2 modificationTime = (ix, report)
-  where
-    ix = MetaRec    
-        { fn = -- s2t .  getNakedFileName  . 
-                        toFilePath  (mdfn :: Path Abs File)
-        , relURL     = makeRelPath (doughDir layout) mdfn -- (Path Rel File))
-        ,  abstract         = fromMaybe "" abstract1
-        , title            = fromMaybe "" title1
-        , author           = fromMaybe "" author1
-        , date             = if timeOK 
-                                then fromJustNote "readDate 408ds" . readDateMaybe 
-                                        . fromJustNote "readData 1112fad" $ date1 
-                                else  modificationTime
-                    -- maybe year2000 
-                        -- (fromJustNote "readDate 408ds" . readDateMaybe) date1   
-                        -- test early for proper format
-        , publicationState = text2publish  publish1
-        , bibliography  =   fmap (\f -> toFilePath $ doughDir layout </> makeRelFileT f) bibliography1
-        , bibliographyGroup = bibliographyGroup1
-        , keywords = keywords1
-        , pageTemplate = fmap (\f -> toFilePath $ templatesDir layout </> makeRelFileT f) pageTemplate1
-        , indexPage = fromMaybe False indexPage1
-        , indexSort = text2sortargs indexSort1
-            -- default is publish
-        }
-    [abstract1, title1, author1, date1, publish1
-        , bibliography1, bibliographyGroup1, keywords1, pageTemplate1
-        , indexSort1] = vals2
-    vals2  = map (getAtKey meta2) keys2
-    keys2  = ["abstract", "title", "author", "date", "publish", "bibliography", "bibliographyGroup"
-                , "keywords", "pageTemplate", "indexSort"]:: [Text]
-    indexPage1 = getAtKey meta2 "indexPage" :: Maybe Bool 
-    -- date0 = getAtKey meta2 "date" :: Maybe Text 
-    -- -- abstract1 = getAtKey meta2 "abstract" :: Maybe Text
-    -- -- title1    = getAtKey meta2 "title" :: Maybe Text
-    -- -- author1   = getAtKey meta2 "author" :: Maybe Text
-    -- -- date1     = getAtKey meta2 "date" :: Maybe Text
-    -- -- publish1  = getAtKey meta2 "publish" :: Maybe Text
+readMeta2rec layout mdfn meta2 modificationTime = (ix, reportEssence)
+    where
+        ix = MetaRec    
+            { fn = -- s2t .  getNakedFileName  . 
+                            toFilePath  (mdfn :: Path Abs File)
+            , relURL     = makeRelPath (doughDir layout) mdfn -- (Path Rel File))
+            ,  abstract         = fromMaybe "" abstract1
+            , title            = fromMaybe "" title1
+            , author           = fromMaybe "" author1
+            , date             = if timeOK 
+                                    then fromJustNote "readDate 408ds" . readDateMaybe 
+                                            . fromJustNote "readData 1112fad" $ date1 
+                                    else  modificationTime
+                        -- maybe year2000 
+                            -- (fromJustNote "readDate 408ds" . readDateMaybe) date1   
+                            -- test early for proper format
+            , publicationState = text2publish  publish1
+            , bibliography  =   fmap (\f -> toFilePath $ doughDir layout </> makeRelFileT f) bibliography1
+            , bibliographyGroup = bibliographyGroup1
+            , keywords = keywords1
+            , pageTemplate = fmap (\f -> toFilePath $ templatesDir layout </> makeRelFileT f) pageTemplate1
+            , indexPage = fromMaybe False indexPage1
+            , indexSort = text2sortargs indexSort1
+                -- default is publish
+            }
+        vals2  = map (getAtKey meta2) allLabels
+        [abstract1, title1, author1, date1, publish1
+            , bibliography1, bibliographyGroup1, keywords1, pageTemplate1
+            , indexSort1] = vals2
+        indexPage1 = getAtKey meta2 "indexPage" :: Maybe Bool 
+        -- date0 = getAtKey meta2 "date" :: Maybe Text 
+        -- -- abstract1 = getAtKey meta2 "abstract" :: Maybe Text
+        -- -- title1    = getAtKey meta2 "title" :: Maybe Text
+        -- -- author1   = getAtKey meta2 "author" :: Maybe Text
+        -- -- date1     = getAtKey meta2 "date" :: Maybe Text
+        -- -- publish1  = getAtKey meta2 "publish" :: Maybe Text
 
-    (timeOK, timeIssue) = _dateIssue date1
-    -- date2 :: UTCTime 
-    -- date2 = if timeOK then zero -- fromJustNote "wer2342" date1 else ("some"::Text)
-    --             else modificationTime -- putAtKey meta2 "date" (showT modificationTime) 
+        (timeOK, timeIssue) = _dateIssue date1 :: (Bool, Text)
+        -- date2 :: UTCTime 
+        -- date2 = if timeOK then zero -- fromJustNote "wer2342" date1 else ("some"::Text)
+        --             else modificationTime -- putAtKey meta2 "date" (showT modificationTime) 
 
-    report = unwords' ["missing values: ", missingLabels, timeIssue]
+        reportEssence = convertToReport vals2 (missingLabels  vals2) timeIssue
 
-    missingLabels =  unwords' . (\\ notRequiredLabels) . map fst . filter (isNothing . snd) $ zip keys2 vals2
-    -- what can be defaulted: author (remains blank), publish (defaults to publish)
-                -- bibliography (if not used) bibliographyGroup (if not used)
-                -- , "pageTemplate", "indexSort"
-    -- what must be provided: 
-    requiredLabels = ["abstract", "title", "keywords"]:: [Text]
-    notRequiredLabels = keys2 \\ requiredLabels :: [Text]
+convertToReport vals2 missing timeIssue  = 
+    if (null' missing && null' timeIssue) 
+                then "none" :: Text
+                else concatT [if null' missing then "a" else (concatT ["\n\tmissing required label values: ",showT missing]), 
+                            if null' timeIssue then "b" else "\n\ttime issues: ", timeIssue] :: Text
+                 
+
+     
+    
+
+allLabels = ["abstract", "title", "author", "date", "publish", "bibliography", "bibliographyGroup"
+                    , "keywords", "pageTemplate", "indexSort"]:: [Text]
+    
+missingLabels  vals =  unwords' . (\\ notRequiredLabels) . map fst . filter (isNothing . snd) $ zip allLabels vals
+    where 
+        -- what can be defaulted: author (remains blank), publish (defaults to publish)
+                    -- bibliography (if not used) bibliographyGroup (if not used)
+                    -- , "pageTemplate", "indexSort"
+        -- what must be provided: 
+        requiredLabels = ["abstract", "title", "keywords"]:: [Text]
+        notRequiredLabels = allLabels \\ requiredLabels :: [Text]
 
 _dateIssue :: Maybe Text ->   (Bool, Text)
 --  check if date is ok, if not set False and give text 
 _dateIssue date1x  = case date1x of
-    Nothing -> (False, "no date supplied - use file modificatin date")
+    Nothing -> (False, "n")  -- "no date supplied - use file modificatin date")
     Just d  -> case readDateMaybe d of
       Nothing -> (False, unwords' ["date", showT date1x
                         , "not readable - use file modification date"])

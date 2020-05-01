@@ -10,6 +10,7 @@
 {-# LANGUAGE TypeFamilies #-}
 -- {-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE RankNTypes, Trustworthy #-}
 
 {-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans #-}
 
@@ -30,7 +31,7 @@ import Lib.ReadSettingFile (readSettings)
 -- import  Pipes ((>->))
 -- import qualified Pipes.Prelude as PipePrelude
 -- import qualified Path.IO  (searchable, readable)
-import Uniform.Filenames
+import Uniform.Filenames hiding (handle)
 import Uniform.Piped (pipedDoIO)
 -- import Uniform.FileStrings
 import Uniform.FileStrings (readFile2)
@@ -42,6 +43,7 @@ import qualified Pipes as Pipe
 import  Pipes ((>->))
 import Uniform.Piped (getRecursiveContents, pipedDoIO)
 import qualified Pipes.Prelude as PipePrelude
+import qualified System.IO as IO
 
 checkProcess :: Bool -> FilePath  -> ErrIO ()
 -- ^ checking all md files 
@@ -107,7 +109,6 @@ allFilenames3 dirname = do
 -- a convenient function to go through a directory and 
 -- recursively apply a function to each file or directory
 -- filters for extension md
-
 pipedDoIO2 :: Path Abs File -> Path Abs Dir -> (Path Abs File -> ErrIO String) -> ErrIO ()
 pipedDoIO2 file path opex =  do
     hand <-   openFile2handle file WriteMode
@@ -115,10 +116,19 @@ pipedDoIO2 file path opex =  do
                 getRecursiveContents path
                 >-> PipePrelude.filter (hasExtension (Extension "md"))
                 >-> PipePrelude.mapM opex 
-                >-> PipePrelude.toHandle hand    
+                >-> toHandlex hand    
     closeFile2 hand
     return ()
 
+-- | Write 'String's to a 'IO.Handle' using 'IO.hPutStr' -- changed af: no Ln 
+toHandlex :: MonadIO m => IO.Handle -> Pipe.Consumer' String m r
+toHandlex handle = Pipe.for Pipe.cat (\str -> liftIO (IO.hPutStr handle str))
+-- {-# INLINABLE toHandle #-}
+
+-- {-# RULES
+--     "p >-> toHandle handle" forall p handle .
+--         p >-> toHandle handle = Pipe.for p (\str -> liftIO (IO.hPutStr handle str))
+--   #-}
 
 
 
