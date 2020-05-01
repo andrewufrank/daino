@@ -34,19 +34,6 @@ import  Pipes ((>->))
 import Uniform.Piped (getRecursiveContents, pipedDoIO)
 import qualified Pipes.Prelude as PipePrelude
 
--- -- pipedDo and DoIO are copied from Uniform.Piped (but there commented out?)
--- -- TODO 
--- pipedDoIO :: Path Abs File -> Path Abs Dir -> (Path Abs File -> Text) -> ErrIO ()
--- -- | write to the first filename the operation applied to the dir tree in the second
--- -- first path must not be non-readable dir or
--- pipedDoIO file path transf =  do
---     hand <-   openFile2handle file WriteMode
---     Pipe.runEffect $
---                getRecursiveContents path
---                >-> PipePrelude.map ( t2s . transf)  -- some IO type left?
---                >-> PipePrelude.toHandle hand    
---     closeFile2 hand
---     return ()
 
 
 doughdir = makeAbsDir "/home/frank/Workspace8/ssg/docs/site/dough/" :: Path Abs Dir 
@@ -62,20 +49,7 @@ res111 = "res111"
 
 opOnFile :: Path Abs File -> Text 
 opOnFile = showT 
-
--- test_listFn = do 
---     -- pipedDoIO resfil doughdir showT
---     res <- runErr $ do 
---                     pipedDoIO resfil doughdir showT
---                     readFile2 resfil 
---     assertEqual (Right res1) res 
-
--- res1 = zero :: Text 
-
--- allFilenames :: Path Abs Dir -> ErrIO (Text) 
--- allFilenames dirname = do 
---         pipedDoIO resfil dirname showT
---         return "x"
+ 
 
 allFilenames2 :: Path Abs Dir -> ErrIO (Text) 
 allFilenames2 dirname = do 
@@ -102,7 +76,7 @@ test_allMetaRec = testVar0FileIO progName doughdir "allMetaRec" allMetaRec
 
 allMetaRec :: Path Abs Dir -> ErrIO (Text) 
 allMetaRec dirname = do 
-        pipedDoIO2 resfil dirname opex
+        pipedDoIOwithFilter resfil dirname (Extension "md") opex
         readFile2 resfil 
 
 test_hasExtension = assertBool $ hasExtension (Extension "md") (makeRelFile "test/test.md")

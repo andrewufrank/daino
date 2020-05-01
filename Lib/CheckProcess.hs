@@ -35,7 +35,7 @@ import Uniform.Filenames hiding (handle)
 import Uniform.Piped (pipedDoIO)
 -- import Uniform.FileStrings
 import Uniform.FileStrings (readFile2)
-import Lib.CheckInput (getTripleDoc, TripleDoc)
+import Lib.CheckInput (getTripleDoc, TripleDoc, MetaRec(..))
 import Lib.Indexing(getMetaRec)
 import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)
 import Uniform.FileStrings (openFile2handle, closeFile2, IOMode(..))
@@ -61,9 +61,6 @@ checkProcess debug filepath = do
     fns <- allFilenames3 doughP
     putIOwords ["the filenames\n", showList' . lines' $ fns]
 
-    -- trp <- allTriples layout2 doughP 
-    -- putIOwords ["the triples\n", showT . take' 100 .  lines' $ trp]
-
     report <- allMetaRecReport layout2 doughP 
     putIOwords ["the report on reading md files\n", report ]
 
@@ -72,17 +69,6 @@ checkProcess debug filepath = do
         , "all md files checked\n"
         , s2t filepath]
 
--- what should be tested? insert here for all md files 
-
-testOneMd :: SiteLayout -> Path Abs File -> ErrIO String
-testOneMd layout f = do 
-    (_,_,report) <- getTripleDoc layout f   -- how to make presentable output?
-    return $ t2s  report
-
-allReport :: SiteLayout -> Path Abs Dir -> ErrIO (Text) 
-allReport layout dirname = do 
-        pipedDoIO2 tmpResultFile dirname (testOneMd layout)
-        readFile2 tmpResultFile 
 
 tmpResultFile = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/resfile4checkProcess.txt" :: Path Abs File
 
@@ -96,41 +82,31 @@ allFilenames3 dirname = do
 report_metaRec :: SiteLayout -> Path Abs File -> ErrIO String
 report_metaRec layout f = do 
     (_, metaRec, report1) <- getTripleDoc layout f
-    return . t2s  $ report1
-    -- mr <- getMetaRec layout  f
-    -- return . t2s . showT $ mr 
+    let report2 = if isNothing report1 then ""  
+                        else concatT ["filex ", s2t $ relURL metaRec
+                                    , fromJustNote "report metarec xxweer" report1]
+        -- report3 = unlines' .filter (/= "\n") . lines' $ report2
+    return . t2s  $ report2
 
 allMetaRecReport :: SiteLayout -> Path Abs Dir -> ErrIO Text
 allMetaRecReport layout dirname = do 
-                pipedDoIO2 tmpResultFile dirname (report_metaRec layout)
-                res1 :: Text <- readFile2 tmpResultFile  
-                let res2 =  filter (not . isPrefixOf' "none") . lines' $  res1 :: [Text]
-                return . unlines' $ res2        
+    pipedDoIOwithFilter tmpResultFile dirname (Extension "md") (report_metaRec layout)
+    res1 :: Text <- readFile2 tmpResultFile  
+    -- let res2 =  filter (not . isPrefixOf' "none") . lines' $  res1 :: [Text]
+    let res2 =  filter (not . null') . lines' $  res1 :: [Text]
+    return . unlines' $ res2        
 
--- resfil2 = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/resfile2.txt" :: Path Abs File
 
--- allTriples :: SiteLayout -> Path Abs Dir -> ErrIO (Text) 
--- allTriples layout dirname = do 
---         pipedDoIO alltriplesfile dirname (opx layout)
---         readFile2 alltriplesfile 
--- alltriplesfile = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/alltriples.txt" :: Path Abs File
-
--- -- opx :: (SiteLayout -> Path Abs File -> Text) 
--- opx layout fn = showList' . map showTriple . getTripleDoc layout $ fn
-
--- showTriple :: TripleDoc -> Text
--- showTriple (a,b,c) =  concat' abc 
---     where abc = [showT a, showT b, showT c] :: [Text] 
 
 -- a convenient function to go through a directory and 
 -- recursively apply a function to each file or directory
 -- filters for extension md
-pipedDoIO2 :: Path Abs File -> Path Abs Dir -> (Path Abs File -> ErrIO String) -> ErrIO ()
-pipedDoIO2 file path opex =  do
+pipedDoIOwithFilter :: Path Abs File -> Path Abs Dir -> Extension -> (Path Abs File -> ErrIO String) -> ErrIO ()
+pipedDoIOwithFilter file path ext opex =  do
     hand <-   openFile2handle file WriteMode
     Pipe.runEffect $
                 getRecursiveContents path
-                >-> PipePrelude.filter (hasExtension (Extension "md"))
+                >-> PipePrelude.filter (hasExtension ext)
                 >-> PipePrelude.mapM opex 
                 >-> PipePrelude.toHandle hand    
     closeFile2 hand

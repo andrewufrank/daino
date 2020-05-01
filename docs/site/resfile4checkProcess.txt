@@ -1,37 +1,33 @@
+filex /index.md
+	missing required label values: [Title]
 
-	missing required label values: "title"b
-none
-none
-none
-none
-none
-none
-none
-none
-none
-none
-none
-none
 
-	missing required label values: "abstract title keywords"
-	time issues: n
-none
-none
-none
-none
-none
-none
-none
-none
 
-	missing required label values: "abstract title keywords"
-	time issues: n
-none
-none
-none
 
-	missing required label values: "abstract"
-	time issues: n
 
-	missing required label values: "abstract"
-	time issues: n
+
+
+
+
+
+
+
+filex /SSGdesign/DefaultFileLayout.md
+	missing required label values: [Abstract,Title,Keywords]
+
+
+
+
+
+
+
+
+filex /SSGdesign/ServingAHomepage.md
+	missing required label values: [Abstract,Title,Keywords]
+
+
+
+filex /SSGdesign/index.md
+	missing required label values: [Abstract]
+filex /SSGdesign/indexByDate.md
+	missing required label values: [Abstract]

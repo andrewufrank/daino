@@ -45,7 +45,7 @@ import Data.List ( (\\) )
 --   let report2 = unwords' ["\n ------------------",  "\n", report1]
 --   return (pandoc, metaRec1, report2) 
 
-type TripleDoc = (Pandoc, MetaRec, Text)
+type TripleDoc = (Pandoc, MetaRec, Maybe Text)
 -- ^ the pandoc content, the metarec (from yaml) and the report from conversion)
 
 getTripleDoc :: SiteLayout ->   Path Abs File -> ErrIO TripleDoc
@@ -60,14 +60,13 @@ getTripleDoc  layout mdfn = do
     let (metaRec1, report1) = readMeta2rec layout mdfn meta2 modificationTime
     return (pandoc, metaRec1, report1) 
 
-readMeta2rec :: SiteLayout -> Path Abs File -> Value -> UTCTime -> (MetaRec, Text)
+readMeta2rec :: SiteLayout -> Path Abs File -> Value -> UTCTime -> (MetaRec, Maybe Text)
 -- | read the metadata in a record and check for validity
 -- and information what is missing
 readMeta2rec layout mdfn meta2 modificationTime = (ix, reportEssence)
     where
         ix = MetaRec    
-            { fn = -- s2t .  getNakedFileName  . 
-                            toFilePath  (mdfn :: Path Abs File)
+            { fn = toFilePath  (mdfn :: Path Abs File)
             , relURL     = makeRelPath (doughDir layout) mdfn -- (Path Rel File))
             ,  abstract         = fromMaybe "" abstract1
             , title            = fromMaybe "" title1
@@ -88,10 +87,12 @@ readMeta2rec layout mdfn meta2 modificationTime = (ix, reportEssence)
             , indexSort = text2sortargs indexSort1
                 -- default is publish
             }
-        vals2  = map (getAtKey meta2) allLabels
+        vals2  = map (getAtKey meta2) (map (toLower' . showT) allLabels) :: [Maybe Text] 
         [abstract1, title1, author1, date1, publish1
             , bibliography1, bibliographyGroup1, keywords1, pageTemplate1
             , indexSort1] = vals2
+        -- better approach - this depends on the same order!
+
         indexPage1 = getAtKey meta2 "indexPage" :: Maybe Bool 
         -- date0 = getAtKey meta2 "date" :: Maybe Text 
         -- -- abstract1 = getAtKey meta2 "abstract" :: Maybe Text
@@ -100,43 +101,49 @@ readMeta2rec layout mdfn meta2 modificationTime = (ix, reportEssence)
         -- -- date1     = getAtKey meta2 "date" :: Maybe Text
         -- -- publish1  = getAtKey meta2 "publish" :: Maybe Text
 
-        (timeOK, timeIssue) = _dateIssue date1 :: (Bool, Text)
-        -- date2 :: UTCTime 
-        -- date2 = if timeOK then zero -- fromJustNote "wer2342" date1 else ("some"::Text)
-        --             else modificationTime -- putAtKey meta2 "date" (showT modificationTime) 
+        (timeOK, timeIssue) = _dateIssue date1 :: (Bool, Maybe Text)
 
-        reportEssence = convertToReport vals2 (missingLabels  vals2) timeIssue
+        reportEssence = convertToReport vals2 (missingLabels  vals2) timeIssue :: Maybe Text 
 
-convertToReport vals2 missing timeIssue  = 
-    if (null' missing && null' timeIssue) 
-                then "none" :: Text
-                else concatT [if null' missing then "a" else (concatT ["\n\tmissing required label values: ",showT missing]), 
-                            if null' timeIssue then "b" else "\n\ttime issues: ", timeIssue] :: Text
+convertToReport :: [Maybe Text] ->  [Label] ->  Maybe Text -> Maybe Text 
+convertToReport vals2 missing timeIssue  = if null mt then Nothing else Just . concatT $ mt
+     
+    where
+        mt = catMaybes [m,t] :: [Text]
+        m = if null missing then Nothing 
+                    else Just . concatT $ ["\n\tmissing required label values: "
+                            , concatT [showT missing] ]
+                            ::  Maybe Text 
+        t = fmap ( ("\n\ttime issues: " <>)) timeIssue  ::  Maybe Text 
                  
 
-     
-    
+data Label =  Abstract | Title | Author | Date | Publish | Bibliography | BibliographyGroup 
+                    | Keywords | PageTemplate | IndexSort 
+                    deriving (Show, Enum, Read, Eq, Ord)
 
-allLabels = ["abstract", "title", "author", "date", "publish", "bibliography", "bibliographyGroup"
-                    , "keywords", "pageTemplate", "indexSort"]:: [Text]
-    
-missingLabels  vals =  unwords' . (\\ notRequiredLabels) . map fst . filter (isNothing . snd) $ zip allLabels vals
-    where 
+allLabels = [Abstract .. IndexSort]
+
+-- data Labels = "abstract", "title", "author", "date", "publish", "bibliography", "bibliographyGroup"
+--                     , "keywords", "pageTemplate", "indexSort
+
+missingLabels :: [Maybe Text] ->  [Label]   
+missingLabels  vals =  
+            (\\ notRequiredLabels) . map fst .  filter (isNothing . snd) $ zip allLabels vals
         -- what can be defaulted: author (remains blank), publish (defaults to publish)
                     -- bibliography (if not used) bibliographyGroup (if not used)
                     -- , "pageTemplate", "indexSort"
-        -- what must be provided: 
-        requiredLabels = ["abstract", "title", "keywords"]:: [Text]
-        notRequiredLabels = allLabels \\ requiredLabels :: [Text]
+    where     -- what must be provided: 
+        requiredLabels =  [Abstract, Title, Keywords]:: [Label]
+        notRequiredLabels = allLabels \\ requiredLabels :: [Label]
 
-_dateIssue :: Maybe Text ->   (Bool, Text)
+_dateIssue :: Maybe Text ->   (Bool, Maybe Text)
 --  check if date is ok, if not set False and give text 
 _dateIssue date1x  = case date1x of
-    Nothing -> (False, "n")  -- "no date supplied - use file modificatin date")
+    Nothing -> (False, Nothing)  -- "no date supplied - use file modificatin date")
     Just d  -> case readDateMaybe d of
-      Nothing -> (False, unwords' ["date", showT date1x
+      Nothing -> (False, Just $ unwords' ["date", showT date1x
                         , "not readable - use file modification date"])
-      Just _  -> (True, "")
+      Just _  -> (True, Nothing)
 
 -- | the data in the meta/yaml part of the md files 
 data MetaRec = MetaRec  
