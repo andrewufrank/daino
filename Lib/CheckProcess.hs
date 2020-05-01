@@ -44,6 +44,8 @@ import  Pipes ((>->))
 import Uniform.Piped (getRecursiveContents, pipedDoIO)
 import qualified Pipes.Prelude as PipePrelude
 import qualified System.IO as IO
+-- import Uniform.FileStrings (readFile2)
+-- import Uniform.FileeIOalgebra 
 
 checkProcess :: Bool -> FilePath  -> ErrIO ()
 -- ^ checking all md files 
@@ -91,6 +93,19 @@ allFilenames3 dirname = do
         pipedDoIO tmpResultFile dirname showT
         readFile2 tmpResultFile 
 
+--  produce file for reports form getMetaRec
+report_metaRec :: SiteLayout -> Path Abs File -> ErrIO String
+report_metaRec layout f = do 
+    mr <- getMetaRec layout  f
+    return . t2s . showT $ mr 
+
+allMetaRecReport :: SiteLayout -> Path Abs Dir -> ErrIO Text
+allMetaRecReport layout dirname = do 
+                pipedDoIO2 tmpResultFile dirname (report_metaRec layout)
+                res <- readFile2 tmpResultFile  
+                let res2 = res
+                return res2        
+
 -- resfil2 = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/resfile2.txt" :: Path Abs File
 
 -- allTriples :: SiteLayout -> Path Abs Dir -> ErrIO (Text) 
@@ -116,19 +131,20 @@ pipedDoIO2 file path opex =  do
                 getRecursiveContents path
                 >-> PipePrelude.filter (hasExtension (Extension "md"))
                 >-> PipePrelude.mapM opex 
-                >-> toHandlex hand    
+                >-> PipePrelude.toHandle hand    
     closeFile2 hand
     return ()
 
--- | Write 'String's to a 'IO.Handle' using 'IO.hPutStr' -- changed af: no Ln 
-toHandlex :: MonadIO m => IO.Handle -> Pipe.Consumer' String m r
-toHandlex handle = Pipe.for Pipe.cat (\str -> liftIO (IO.hPutStr handle str))
--- {-# INLINABLE toHandle #-}
+-- -- | Write 'String's to a 'IO.Handle' using 'IO.hPutStr' -- changed af: no Ln 
+-- -- seems not to work??
+-- toHandlex :: MonadIO m => IO.Handle -> Pipe.Consumer' String m r
+-- toHandlex handle = Pipe.for Pipe.cat (\str -> liftIO (IO.hPutStr handle str))
+-- -- {-# INLINABLE toHandle #-}
 
--- {-# RULES
---     "p >-> toHandle handle" forall p handle .
---         p >-> toHandle handle = Pipe.for p (\str -> liftIO (IO.hPutStr handle str))
---   #-}
+-- -- {-# RULES
+-- --     "p >-> toHandle handle" forall p handle .
+-- --         p >-> toHandle handle = Pipe.for p (\str -> liftIO (IO.hPutStr handle str))
+-- --   #-}
 
 
 

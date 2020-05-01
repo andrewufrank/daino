@@ -96,12 +96,12 @@ getMetaRec :: SiteLayout -> Path Abs File -> ErrIO MetaRec
 getMetaRec layout mdfile = do
     (_, metaRec, report1) <- getTripleDoc layout mdfile
     let reportX :: Text 
-        reportX = if  (("none"::Text) == report1) then "xx" 
+        reportX = if  (("none"::Text) == report1) then "" 
          else (concat'["", report1, "X"] :: Text)
                 -- unlines' ["Problem with reading MetaRec ", showT . fn $ metaRec
                 --     , "\n", report1,
                 --     "\n---------------------------------\n"]  
-    putIOwords [reportX]
+    -- putIOwords [reportX]
     return metaRec
             
 checkPubStateWithFlags :: PubFlags ->  PublicationState -> Bool
