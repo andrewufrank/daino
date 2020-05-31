@@ -121,7 +121,7 @@ docValToAllVal debug layout flags htmlout   metaRec = do
   ix :: MenuEntry <- makeIndex debug layout flags metaRec  
             -- (doughDir layout) 
   -- now          <- getDateAsText
-  putIOwords ["pandoc index produced", showT ix]   
+  when debug $ putIOwords ["pandoc index produced", showT ix]   
 
   fn2 <- stripProperPrefix' (doughDir layout) pageFn
   let bottomLines = BottomLines

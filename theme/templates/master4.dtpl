@@ -107,12 +107,13 @@
 
 <!-- new content section -->
     $beforeContent$
-    $contentHtml$
+    $if(abstract)$$abstract$ 
+    $endif$$contentHtml$
     $afterContent$
 
 
         <p class=tiny>
-        Produced with SGG $ssgversion$ on $today$ from $filename$.
+        Produced with SGG $ssgversion$ on $today$ from $filename$ with master4.dtpl.
         </p>
 
         $for(include-after)$
