@@ -49,15 +49,6 @@ markdownToPandocBiblio
 -- the bibliography must be in the metadata
 -- the settings are in the markdownText (at end - to let page specific have precedence)
 markdownToPandocBiblio debug flags doughP (pandoc, metaRec, _) = do
-  -- (pandoc, meta2) <- readMd2meta mdfile
-  -- (pandoc, metaRec, report) <- checkOneMdFile doughP templatemdfile
-  -- -- let publishTest = getAtKey meta2 "publish" :: Maybe Text
-  -- if  -- checkPubStateWithFlags flags (publicationState metaRec)
-  --     True -- all md files must produce an output in shake
-  --     then 
-  -- do
-  -- let bib          = getAtKey meta2 "bibliography" :: Maybe Text
-  -- let nociteNeeded = getAtKey meta2 "bibliographyGroup" :: Maybe Text
   when debug $ putIOwords ["markdownToPandocBiblio", showT metaRec]
   pandoc2 <- case (bibliography metaRec) of
     Nothing    -> return pandoc
@@ -72,12 +63,6 @@ markdownToPandocBiblio debug flags doughP (pandoc, metaRec, _) = do
          -- here the dir is used for processing in my code
   return pandoc2
 
--- else do
---     -- putIOwords ["markdownToPandoc", "NOT PUBLISH", showT publishTest]
---     return Nothing
---    pandoc   <- readMarkdown2
---    let meta2 = flattenMeta (getMeta pandoc)
---            putIOwords ["markdownToPandoc", "publish", showT publish]
 pandocToContentHtml :: Bool -> Pandoc -> ErrIO HTMLout
 
 -- convert the pandoc to html in the contentHtml key
@@ -107,9 +92,6 @@ docValToAllVal debug layout flags htmlout   metaRec = do
                 pageTemplate metaRec ::  (Path Abs File)
   when debug $ putIOwords ["docValToAllVal"] 
         -- , "mpt", showT mpageType]
---   let pageType = fromMaybe (defaultPageType layout)  
---         mpageType :: Path Abs File
-  -- page0default defined in theme - changed to actual value, i.e page3.yaml
   
   when debug $ putIOwords ["docValToAllVal filename"
             , showT pageFn, showT pageType
@@ -119,8 +101,6 @@ docValToAllVal debug layout flags htmlout   metaRec = do
   settingsYaml <- readYaml2value (settingsFile flags)
   --        svalue <- decodeThrow . t2b . unYAML $ settings
   ix :: MenuEntry <- makeIndex debug layout flags metaRec  
-            -- (doughDir layout) 
-  -- now          <- getDateAsText
   when debug $ putIOwords ["pandoc index produced", showT ix]   
 
   fn2 <- stripProperPrefix' (doughDir layout) pageFn

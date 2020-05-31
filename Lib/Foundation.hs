@@ -8,7 +8,6 @@
 --            the bibliographies could go with the blog
 --            all themes in the theme dir (templates and css, possibly images
 --
-
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}

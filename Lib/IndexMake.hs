@@ -53,10 +53,8 @@ getOneIndexEntryPure metaRec  = IndexEntry
   , isIndex = indexPage metaRec
   }
 
-
       ------  S U P P O R T 
-
-      
+     
 newtype MenuEntry = MenuEntry { menu2 :: [IndexEntry] }
   deriving (Generic, Eq, Ord, Show)
 

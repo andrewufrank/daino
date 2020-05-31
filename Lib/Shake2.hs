@@ -10,7 +10,6 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeFamilies #-}
--- {-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 {-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans #-}
@@ -106,10 +105,7 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
           , showT resourcesP]
       want ["allMarkdownConversion"]
       phony "allMarkdownConversion" $ 
-        do
-     
-          
-
+        do    
           pdfFiles1 :: [Path Rel File]
             <- getDirectoryFilesP resourcesP ["**/*.pdf"] -- subdirs
           let pdfFiles2 = [staticP </> c | c <- pdfFiles1]
@@ -156,16 +152,6 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
           when debug $ liftIO $ putIOwords ["\nshakeMD - css files", showT cssFiles2]
           needP cssFiles2
 
-          -- cssFiles22 :: [Path Rel File]
-          --   <- getDirectoryFilesP templatesP ["*.css"] -- no subdirs
-          -- liftIO
-          --   $ putIOwords
-          --     ["===================\nshakeMD - cssFiles1 ", showT cssFiles22]
-          -- -- let cssFiles2 = [replaceDirectoryP templatesP staticP c | c <- cssFiles1]  -- flipped args
-          -- let cssFiles3 = [staticP </> c | c <- cssFiles22] -- flipped args
-          -- liftIO $ putIOwords ["***", if cssFiles3 == cssFiles2 then "" 
-          --                 else "******************************************"] 
-          -- files which are copied and not influence the bake 
           needP [bannerImageTarget]
 
 
@@ -277,7 +263,3 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 =
           res <- runErr2action $ bakeOneFile False flags md2 layout outP
           liftIO $ putIOwords ["\nshake2 - return from bakeOneFile", showT res]
           return ()
-
-
-  -- return ()
-  -- copyFileChangedP source destDir = copyFileChanged (toFilePath source) (toFilePath destDir)

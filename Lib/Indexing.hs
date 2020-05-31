@@ -62,8 +62,6 @@ makeIndex1 :: Bool           -- ^ debug
           -> ErrIO (MetaRec, [MetaRec], [MetaRec])
             -- ^ of this index, the mds and the sub/index.md 
 makeIndex1 debug layout flags metaRec    = do
-    -- let doindex = indexPage metaRec
-  -- let indexSort1 = indexSort metaRec :: SortArgs
     -- when debug $ 
     putIOwords ["makeIndex", "doindex", showT (indexPage metaRec)]
     if not (indexPage metaRec)

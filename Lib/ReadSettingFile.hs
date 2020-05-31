@@ -80,12 +80,3 @@ readSettings2 debug (YamlText t) = do
   --    when debug $
     when debug $ putIOwords ["readSettings2 port", showT port2]
     return (layout3, port2)--instance FromJSON Settings
---
---data Settings = Settings
---    { themeDir :: Text -- ^ the place of the  theme files (includes templates)
---    , doughDir                  -- ^ where the content is originally (includes resources)
---    , bakedDir :: Text -- ^ where all the files serving are
---    , reportFile :: Text  -- ^ the report from processing baked with pipe
---    , testDir :: Text -- ^ the directory the test results go
---                        -- not important
---    } deriving (Show, Generic)

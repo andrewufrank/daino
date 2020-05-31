@@ -27,25 +27,6 @@ import           Uniform.Pandoc
 import Lib.Foundation (SiteLayout(..), templatesDir, defaultPageTypeName)
 import Data.List ( (\\) )
 import qualified Data.Map as M
--- checkOneMdFile :: SiteLayout ->   Path Abs File -> ErrIO (Pandoc, MetaRec, Text)
--- -- check one input file, return the values parsed
--- -- uses doughP to construct file names to abs file 
--- -- TODO duplicate in functionality?
--- checkOneMdFile  layout mdfn = do
---   -- putIOwords ["checkOneMdFile start", showT mdfn]
---   -- TODO check for md extension ! 
---   -- used - duplicating getTripleDoc?
---   (pandoc, meta2) :: (Pandoc, Value) <- readMd2meta mdfn -- (dough2 </> mdfn)
---   -- putIOwords ["checkOneMdFile meta2", showT meta2]
-
---   modificationTime <- getFileModificationUTCTime mdfn
---     -- modification time is inserted in the date field if not set
-
---   let (metaRec1,report1) = readMeta2rec layout mdfn meta2 modificationTime
-
---   let report2 = unwords' ["\n ------------------",  "\n", report1]
---   return (pandoc, metaRec1, report2) 
-
 type TripleDoc = (Pandoc, MetaRec, Maybe Text)
 -- ^ the pandoc content, the metarec (from yaml) and the report from conversion)
 
@@ -78,9 +59,6 @@ readMeta2rec layout mdfn meta2 modificationTime = (ix, reportEssence)
                                             . fromJustNote "readData 1112fad" $ 
                                                     (reduceMaybe2 (M.lookup Date labelVals)) 
                                     else  modificationTime
-                        -- maybe year2000 
-                            -- (fromJustNote "readDate 408ds" . readDateMaybe) date1   
-                            -- test early for proper format
             , publicationState = text2publish  (reduceMaybe2 (M.lookup Publish labelVals))
             , bibliography  =   fmap (\f -> toFilePath $ doughDir layout </> makeRelFileT f) 
                         (reduceMaybe2 (M.lookup Bibliography labelVals))
@@ -90,7 +68,6 @@ readMeta2rec layout mdfn meta2 modificationTime = (ix, reportEssence)
                             $ fromMaybe ( defaultPageTypeName)  
                                (fmap (makeRelFile . t2s) $ reduceMaybe2 (M.lookup PageTemplate labelVals))
             , indexPage = fromMaybe False $ getAtKey meta2 "indexPage" ::  Bool 
-                        -- indexPage1
             , indexSort = text2sortargs (reduceMaybe2 (M.lookup IndexSort labelVals))
                     -- indexSort1
                 -- default is publish
@@ -100,7 +77,7 @@ readMeta2rec layout mdfn meta2 modificationTime = (ix, reportEssence)
         --     , bibliography1, bibliographyGroup1, keywords1, pageTemplate1
         --     , indexSort1] = vals2
         labelVals = M.fromList (zip allLabels vals2) :: M.Map Label (Maybe Text)
-        -- better approach - this depends on the same order!
+        -- better approach - this enforces the same order!
 
         indexPage1 = getAtKey meta2 "indexPage" :: Maybe Bool 
         -- date0 = getAtKey meta2 "date" :: Maybe Text 
@@ -118,25 +95,20 @@ reduceMaybe2 (Just a) =   a
 reduceMaybe2 (Nothing) = Nothing 
 
 convertToReport :: [Maybe Text] ->  [Label] ->  Maybe Text -> Maybe Text 
-convertToReport vals2 missing timeIssue  = if null mt then Nothing else Just . concatT $ mt
-     
+convertToReport vals2 missing timeIssue  = if null mt then Nothing else Just . concatT $ mt  
     where
         mt = catMaybes [m,t] :: [Text]
         m = if null missing then Nothing 
                     else Just . concatT $ ["\n\tmissing required label values: "
                             , concatT [showT missing] ]
                             ::  Maybe Text 
-        t = fmap ( ("\n\ttime issues: " <>)) timeIssue  ::  Maybe Text 
-                 
+        t = fmap ( ("\n\ttime issues: " <>)) timeIssue  ::  Maybe Text                 
 
 data Label =  Abstract | Title | Author | Date | Publish | Bibliography | BibliographyGroup 
                     | Keywords | PageTemplate | IndexSort 
                     deriving (Show, Enum, Read, Eq, Ord)
 
 allLabels = [Abstract .. IndexSort]
-
--- data Labels = "abstract", "title", "author", "date", "publish", "bibliography", "bibliographyGroup"
---                     , "keywords", "pageTemplate", "indexSort
 
 missingLabels :: [Maybe Text] ->  [Label]   
 missingLabels  vals =  
@@ -178,7 +150,6 @@ data MetaRec = MetaRec
 
 instance Zeros MetaRec where
   zero = MetaRec zero zero zero zero zero (year2000) zero zero zero zero zero zero zero
---instance FromJSON IndexEntry
 instance ToJSON MetaRec
 instance FromJSON MetaRec where
 

@@ -7,20 +7,9 @@
 
 module Main where      -- must have Main (main) or Main where
 
--- import System.Exit
--- import System.Directory (createDirectoryIfMissing)
--- keep this because it is in IO (not ErrIO)
 import           Test.Framework
--- import           Lib.Shake2  -- just to test ghci
-import           Uniform.FileIO
--- import           Uniform.WebServer (runScotty)
--- import Uniform.Time 
--- import Uniform.Ftp 
--- import           Lib.CmdLineArgs (allFlags, PubFlags(..))
--- import           Lib.Foundation (SiteLayout(..)
---       , settingsFileName, testSettingsFileName)
--- import Uniform.Error
 
+import           Uniform.FileIO
 
 -- import {-@ HTF_TESTS @-} Lib.Shake2_test 
 -- tests shake for test dough

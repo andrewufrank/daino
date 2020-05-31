@@ -42,9 +42,6 @@ data LitArgs = LitArgs
   , watchSwitch -- ^ w 
   , uploadSwitch -- ^ u  -- not yet used  
          :: Bool
-  -- , settingsFileString  ::  String  -- ^ f  -- not yet used 
-  -- , workingDir :: String -- ^ w  -- not yet used 
-  -- , portNumber :: Int -- ^ port -- not yet used
    } deriving (Show)
 
 cmdArgs :: Parser LitArgs
@@ -73,7 +70,6 @@ cmdArgs  =
           "upload to external server"
         )
 
-
 -- | the switches for material to include
 data PubFlags = PubFlags
         {publishFlag
@@ -84,11 +80,6 @@ data PubFlags = PubFlags
         , serverFlag:: Bool
         , uploadFlag :: Bool 
         , settingsFile :: Path Abs File
-        -- set in call or by test flag 
-        -- , portNumber :: Int
-        -- is in the settings
-        -- , workingDir :: Path Abs Dir 
-        -- should not be needed, all dirs set in settings
         } deriving (Show, Read, Eq)
 
 instance Zeros PubFlags where 
