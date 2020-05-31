@@ -13,6 +13,7 @@
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE DeriveGeneric     #-}
+{-# OPTIONS -fno-warn-unused-matches #-}
 
 module Lib.CheckInput where
 
@@ -79,7 +80,7 @@ readMeta2rec layout mdfn meta2 modificationTime = (ix, reportEssence)
         labelVals = M.fromList (zip allLabels vals2) :: M.Map Label (Maybe Text)
         -- better approach - this enforces the same order!
 
-        indexPage1 = getAtKey meta2 "indexPage" :: Maybe Bool 
+        -- indexPage1 = getAtKey meta2 "indexPage" :: Maybe Bool 
         -- date0 = getAtKey meta2 "date" :: Maybe Text 
         -- -- abstract1 = getAtKey meta2 "abstract" :: Maybe Text
         -- -- title1    = getAtKey meta2 "title" :: Maybe Text
@@ -91,11 +92,12 @@ readMeta2rec layout mdfn meta2 modificationTime = (ix, reportEssence)
 
         reportEssence = convertToReport vals2 (missingLabels  vals2) timeIssue :: Maybe Text 
 
+reduceMaybe2 :: Maybe (Maybe a) -> Maybe a
 reduceMaybe2 (Just a) =   a
 reduceMaybe2 (Nothing) = Nothing 
 
 convertToReport :: [Maybe Text] ->  [Label] ->  Maybe Text -> Maybe Text 
-convertToReport vals2 missing timeIssue  = if null mt then Nothing else Just . concatT $ mt  
+convertToReport vals missing timeIssue  = if null mt then Nothing else Just . concatT $ mt  
     where
         mt = catMaybes [m,t] :: [Text]
         m = if null missing then Nothing 
@@ -108,6 +110,7 @@ data Label =  Abstract | Title | Author | Date | Publish | Bibliography | Biblio
                     | Keywords | PageTemplate | IndexSort 
                     deriving (Show, Enum, Read, Eq, Ord)
 
+allLabels :: [Label]
 allLabels = [Abstract .. IndexSort]
 
 missingLabels :: [Maybe Text] ->  [Label]   

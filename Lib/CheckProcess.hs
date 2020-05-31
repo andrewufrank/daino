@@ -16,22 +16,22 @@
 
 module Lib.CheckProcess where
 
-import           Uniform.Error (ErrIO, callIO, liftIO)
+import           Uniform.Error (ErrIO) -- , callIO, liftIO)
 import           Uniform.Strings (putIOwords, showT)
 import           Lib.Foundation (SiteLayout(..))
 import Lib.ReadSettingFile (readSettings)
 import Uniform.Filenames hiding (handle)
 import Uniform.Piped (pipedDoIO)
 import Uniform.FileStrings (readFile2)
-import Lib.CheckInput (getTripleDoc, TripleDoc, MetaRec(..))
-import Lib.Indexing(getMetaRec)
-import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)
+import Lib.CheckInput (getTripleDoc, MetaRec(..))
+-- import Lib.Indexing(getMetaRec)
+-- import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)
 import Uniform.FileStrings (openFile2handle, closeFile2, IOMode(..))
 import qualified Pipes as Pipe
 import  Pipes ((>->))
-import Uniform.Piped (getRecursiveContents, pipedDoIO)
+import Uniform.Piped (getRecursiveContents)
 import qualified Pipes.Prelude as PipePrelude
-import qualified System.IO as IO
+-- import qualified System.IO as IO
 
 checkProcess :: Bool -> FilePath  -> ErrIO ()
 -- ^ checking all md files 

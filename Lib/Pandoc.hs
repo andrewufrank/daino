@@ -9,7 +9,7 @@
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
-
+{-# OPTIONS -fno-warn-unused-matches #-}
 -- {-# LANGUAGE TypeSynonymInstances  #-}
 module Lib.Pandoc
     ( markdownToPandocBiblio
@@ -22,7 +22,7 @@ module Lib.Pandoc
     , readMarkdown2
     , MenuEntry) where
 
-import           Lib.Foundation (defaultPageType, SiteLayout(..))
+import           Lib.Foundation ( SiteLayout(..))
 import           Lib.Indexing -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
 import           Paths_SSG (version)
 import           Uniform.Convenience.DataVarious (showVersionT)
