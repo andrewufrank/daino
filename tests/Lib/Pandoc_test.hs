@@ -12,14 +12,14 @@
 -- {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans #-}
-
+{-# OPTIONS_GHC -fno-warn-unused-matches #-}
 module Lib.Pandoc_test  -- (openMain, htf_thisModuelsTests)
      where
 
 import           Test.Framework
 import Uniform.Test.TestHarness
-import Lib.Foundation (progName, SiteLayout(..)
-    , layoutDefaults, defaultPageType)
+import Lib.Foundation (progName, SiteLayout(..))
+    -- , layoutDefaults, defaultPageType)
 -- import Lib.FileMgt
 --import Lib.YamlBlocks (readMd2meta)
 import Lib.Pandoc

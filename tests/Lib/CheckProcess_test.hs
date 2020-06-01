@@ -13,26 +13,26 @@
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE StandaloneDeriving     #-}
-
-module Lib.CheckProcess_test  -- (openMain, htf_thisModuelsTests)
+{-# OPTIONS -fno-warn-missing-signatures #-}
+module Lib.CheckProcess_test -- (module Lib.CheckProcess_test) -- , openMain, htf_thisModuelsTests)
      where
 
 
 import Test.Framework
 import Uniform.Strings
 import Uniform.Test.TestHarness
-import           Uniform.Pandoc
-import Lib.Pandoc 
-import Lib.CheckInput (MetaRec(..))
+-- import           Uniform.Pandoc
+-- import Lib.Pandoc 
+-- import Lib.CheckInput (MetaRec(..))
 import Lib.CheckProcess 
 import Lib.Indexing(getMetaRec)
 import           Lib.Foundation_test (testLayout)
-import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)
+import Lib.Foundation (progName,  layoutDefaults)
 
-import qualified Pipes as Pipe
-import  Pipes ((>->))
-import Uniform.Piped (getRecursiveContents, pipedDoIO)
-import qualified Pipes.Prelude as PipePrelude
+-- import qualified Pipes as Pipe
+-- import  Pipes ((>->))
+import Uniform.Piped (pipedDoIO) --getRecursiveContents
+-- import qualified Pipes.Prelude as PipePrelude
 
 
 

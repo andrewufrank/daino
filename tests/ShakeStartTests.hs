@@ -11,6 +11,7 @@
 -- {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-unused-imports#-}
+{-# OPTIONS -fno-warn-unused-matches#-}
 
 module ShakeStartTests
      where

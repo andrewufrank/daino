@@ -16,10 +16,11 @@
 -- {-# LANGUAGE PartialTypeSignatures     #-}
 module Lib.Watch where
 
-import           Uniform.Strings hiding ((</>))
+-- import           Uniform.Strings -- hiding ((</>))
 import           Uniform.Filenames
-import           Lib.Foundation (SiteLayout(..), templatesDirName
-                    , landingPageName)
+import           Lib.Foundation (SiteLayout(..),landingPageName)
+--                      , templatesDirName
+--                     , )
 import           Lib.Shake2 (shakeAll)
 import           Lib.CmdLineArgs (PubFlags(..))
 import           Uniform.Watch (watchMain, Glob (..), WatchOpType

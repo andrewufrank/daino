@@ -1,5 +1,3 @@
-filex /index.md
-	missing required label values: [Title]
 
 
 
@@ -12,8 +10,6 @@ filex /index.md
 
 
 
-filex /SSGdesign/DefaultFileLayout.md
-	missing required label values: [Abstract,Title,Keywords]
 
 
 
@@ -22,12 +18,14 @@ filex /SSGdesign/DefaultFileLayout.md
 
 
 
-filex /SSGdesign/ServingAHomepage.md
-	missing required label values: [Abstract,Title,Keywords]
 
 
 
-filex /SSGdesign/index.md
-	missing required label values: [Abstract]
-filex /SSGdesign/indexByDate.md
-	missing required label values: [Abstract]
+
+
+
+
+
+
+
+

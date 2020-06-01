@@ -24,30 +24,30 @@ import           Uniform.FileIO
 
 import   {-@ HTF_TESTS @-}        Lib.Foundation_test  
                         -- sets pageFn 
-import    {-@ HTF_TESTS @-}       Lib.CheckInputs_test
--- -- ----    -- writes A : testLayout
--- -- ----    --  pageFn :: abs pandoc filenames
--- import   {-@ HTF_TESTS @-}        Lib.Pandoc_test
--- --             --  -> AD markdownToPandoc
--- --             -- -> AF pandocToContentHtml
--- --             -- -> AG (docValToAllVal)
--- -- --    -- test_pandoc_pageFn_pageMd_1 - pageFn -> pageMd : MarkdownText
--- -- --    -- AK :: MarkdownText -> BE  DocValue
--- -- --    -- Md ->AD :: Pandoc
--- -- --    -- AD -> AF :: DocValue
--- -- --import {-@ HTF_TESTS @-} Lib.Bake_test
--- -- --import {-@ HTF_TESTS @-} Lib.ReadSettingFile_test
-import {-@ HTF_TESTS @-} Lib.Indexing_test
-import  {-@ HTF_TESTS @-}         Lib.IndexMake_test
--- import    {-@ HTF_TESTS @-}       Lib.Templating_test  -- AG -> EG 
--- import   {-@ HTF_TESTS @-}        Lib.Shake2_test  -- AG -> EG 
--- import Uniform.Ftp 
--- import Lib.StartSSGprocess
--- -- --import {-@ HTF_TESTS @-} Lib.BibTex_test
+-- import    {-@ HTF_TESTS @-}       Lib.CheckInputs_test
+-- -- -- ----    -- writes A : testLayout
+-- -- -- ----    --  pageFn :: abs pandoc filenames
+-- -- import   {-@ HTF_TESTS @-}        Lib.Pandoc_test
+-- -- --             --  -> AD markdownToPandoc
+-- -- --             -- -> AF pandocToContentHtml
+-- -- --             -- -> AG (docValToAllVal)
+-- -- -- --    -- test_pandoc_pageFn_pageMd_1 - pageFn -> pageMd : MarkdownText
+-- -- -- --    -- AK :: MarkdownText -> BE  DocValue
+-- -- -- --    -- Md ->AD :: Pandoc
+-- -- -- --    -- AD -> AF :: DocValue
+-- -- -- --import {-@ HTF_TESTS @-} Lib.Bake_test
+-- -- -- --import {-@ HTF_TESTS @-} Lib.ReadSettingFile_test
+-- import {-@ HTF_TESTS @-} Lib.Indexing_test
+-- import  {-@ HTF_TESTS @-}         Lib.IndexMake_test
+-- -- import    {-@ HTF_TESTS @-}       Lib.Templating_test  -- AG -> EG 
+import   {-@ HTF_TESTS @-}  Lib.Shake2_test  -- AG -> EG 
+-- -- import Uniform.Ftp 
+-- -- import Lib.StartSSGprocess
+-- -- -- --import {-@ HTF_TESTS @-} Lib.BibTex_test
 
-    ---- for ssgCheck
-import {-@ HTF_TESTS @-} Lib.CheckProcess_test
-import Lib.CheckProcess         -- for direct calls 
+--     ---- for ssgCheck
+import {-@ HTF_TESTS @-} Lib.CheckProcess_test  -- (res11)
+import Lib.CheckProcess        -- for direct calls 
 --
 --
 ---- main =  do  -- the local tests only
@@ -80,6 +80,7 @@ main2      -- just a simple bake for test
 
 mainCheck :: IO ()
 mainCheck      -- just a simple bake for test
+                -- checks the completeness of labels 
    = do
     putStrLn "mainCheck"
     runErrorVoid  $ do

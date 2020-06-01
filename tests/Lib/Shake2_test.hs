@@ -29,10 +29,10 @@ import Lib.CmdLineArgs (allFlags)
 test_shakeMD = 
     do 
         res <- shakeMD testLayout allFlags
-                            (doughDir testLayout)
-                            ((themeDir $ testLayout) `addFileName` ( templatesDirName)
-                                        :: Path Abs Dir)
-                            (makeAbsDir "/home/frank/.SSG/bakedTest")
-                            (templatesImgDirName `addFileName` bannerImageFileName)
+                (doughDir testLayout)
+                ((themeDir $ testLayout) `addFileName` ( templatesDirName)
+                            :: Path Abs Dir)
+                (makeAbsDir "/home/frank/.SSG/bakedTest")
+                (templatesImgDirName `addFileName` bannerImageFileName)
         assertEqual res ()
         --  "Lib.Shake_test - files written to /home/frank/.SSG/bakedTest"

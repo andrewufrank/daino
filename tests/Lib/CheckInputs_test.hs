@@ -13,6 +13,7 @@
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE StandaloneDeriving     #-}
+{-# OPTIONS_GHC -fno-warn-missing-signatures -fno-warn-orphans #-}
 
 module Lib.CheckInputs_test  -- (openMain, htf_thisModuelsTests)
      where
@@ -22,13 +23,13 @@ import Test.Framework
 import Data.List ( (\\) )
 import Uniform.Strings
 import Uniform.Test.TestHarness
-import           Uniform.Pandoc
-import Lib.Pandoc 
+-- import           Uniform.Pandoc
+-- import Lib.Pandoc 
 
 import Lib.CheckInput
 import Lib.Indexing(getMetaRec)
 import           Lib.Foundation_test (testLayout)
-import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)
+import Lib.Foundation ( SiteLayout (..), layoutDefaults)
 
 
 psIn = ["true", "publish", "draft", "old", "", "xx", "Publish", "Draft", "OLD"]
@@ -112,8 +113,10 @@ test_labelsDiff = assertEqual labDiff (keys2 \\ requiredLabels)
 labDiff = ["author", "date", "publish", "bibliography", "bibliographyGroup"]
 -- the non-essential labels
 
+test_null1 :: IO ()
 test_null1 = assertBool (null' (""::Text))
 
+test_Maybe23, test_Maybe22, test_Maybe21 :: IO ()
 test_Maybe21 = assertEqual (Just ("a"::Text)) $ reduce (Just (Just ("a"::Text)))
 test_Maybe22 = assertEqual ((Nothing::Maybe Text)) $ reduce (Just (Nothing::Maybe Text))
 test_Maybe23 = assertEqual ((Nothing::Maybe Text)) $ reduce (Just (Nothing::Maybe Text))

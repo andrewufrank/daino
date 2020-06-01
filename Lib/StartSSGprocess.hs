@@ -41,11 +41,11 @@ ssgProcess flags = do
     uploadFileExist <- doesFileExist' testLastUploadFileName 
     lastUpload <- if uploadFileExist 
                     then do
-                    lastUpload1 <- readFile2 testLastUploadFileName   
-                    let lastUpload = read lastUpload1 :: UTCTime 
-                    return lastUpload
+                        lastUpload1 <- readFile2 testLastUploadFileName   
+                        let lastUpload = read lastUpload1 :: UTCTime 
+                        return lastUpload
                     else 
-                    return year2000 
+                        return year2000 
 
     let testWithLastTime  = testNewerModTime  lastUpload
                     -- compare with year2000 if all should be uploaded
@@ -57,7 +57,7 @@ ssgProcess flags = do
             -- the last is the filename that caused the shake call
             --  let landing = makeRelFile "landingPage.html"
             when (serverFlag flags) $  
-            runScotty port2 (bakedDir layout2) landingPageName
+                runScotty port2 (bakedDir layout2) landingPageName
                         -- sollte default index.html sein (landingPage layout2)
             when (uploadFlag flags) $ do
                 (a,s) <- runStateT
