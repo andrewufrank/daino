@@ -46,7 +46,7 @@ import   {-@ HTF_TESTS @-}  Lib.Shake2_test  -- AG -> EG
 -- -- -- --import {-@ HTF_TESTS @-} Lib.BibTex_test
 
 --     ---- for ssgCheck
-import {-@ HTF_TESTS @-} Lib.CheckProcess_test  -- (res11)
+-- import {-@ HTF_TESTS @-} Lib.CheckProcess_test  -- (res11)
 import Lib.CheckProcess        -- for direct calls 
 --
 --
@@ -68,15 +68,15 @@ mainTest        -- with tests in other modules
       ("HTF end ExampleTest.hs test:\n" ++ show p ++ "\nEND HTF ExampleTest")
     return ()
 
-main2 :: IO ()
-main2      -- just a simple bake for test
-   = do
-    putStrLn "main2"
-    runErrorVoid  $ do
-            res <-  res11
-            putIOwords [s2t "res11", showT $ res] 
-            return ()
-    return ()
+-- main2 :: IO ()
+-- main2      -- just a simple bake for test
+--    = do
+--     putStrLn "main2"
+--     runErrorVoid  $ do
+--             res <-  res11  -- from checkProcess_test
+--             putIOwords [s2t "res11", showT $ res] 
+--             return ()
+--     return ()
 
 mainCheck :: IO ()
 mainCheck      -- just a simple bake for test
@@ -91,6 +91,7 @@ mainCheck      -- just a simple bake for test
         return ()
     return ()
 
+    
 -- testFlags = zero { testFlag = True
 --                  , publishFlag = True
 --                  , serverFlag = True

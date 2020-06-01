@@ -36,3 +36,12 @@ test_shakeMD =
                 (templatesImgDirName `addFileName` bannerImageFileName)
         assertEqual res ()
         --  "Lib.Shake_test - files written to /home/frank/.SSG/bakedTest"
+
+-- doughP = makeAbsDir "/home/frank/Workspace8/ssg/docs/site/dough"
+
+-- test_directoryToBake_null = do 
+--     res <-  getDirectoryToBake "zzzzzzzzzzzxxxxxxxxx"
+--                 doughP ["*.txt"]
+--     assertEqual [] res  
+        --    propably impossible to construct
+        -- no undo of action given 

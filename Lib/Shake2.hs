@@ -241,11 +241,12 @@ produceBannerImage debug templatesP staticP out = do
         copyFileChangedP fromfile outP
 
 
--- the bakeXX are files to construct what files are required       
+-- the bakeXX are files to construct what files are required 
+-- perhaps establish need for a file      
 -- bakepdf :: _         
 bakePDF debug resourcesP staticP = do 
         pdfFiles1 :: [Path Rel File]
-            <- getDirectoryFilesP resourcesP ["**/*.pdf"] -- subdirs
+            <- getDirectoryToBake "DNB" resourcesP ["**/*.pdf"] -- subdirs
         let pdfFiles2 = [staticP </> c | c <- pdfFiles1]
         when debug $ liftIO
             $ putIOwords
@@ -256,7 +257,7 @@ bakePDF debug resourcesP staticP = do
        -- static html files 
 bakeStaticHTML debug resourcesP staticP = do 
         htmlFiles11 :: [Path Rel File]
-            <- getDirectoryFilesP resourcesP ["**/*.html"] -- subdirs
+            <- getDirectoryToBake "DNB" resourcesP ["**/*.html"] -- subdirs
         let htmlFiles22 = [staticP </> c | c <- htmlFiles11]
         when debug $ liftIO
             $ putIOwords
@@ -265,12 +266,12 @@ bakeStaticHTML debug resourcesP staticP = do
         return htmlFiles22
 
 bakeBiblio debug resourcesP = do 
-        biblio :: [Path Rel File] <- getDirectoryFilesP resourcesP ["*.bib"]
+        biblio :: [Path Rel File] <- getDirectoryToBake "DNB" resourcesP ["*.bib"]
         let biblio2 = [resourcesP </> b | b <- biblio] :: [Path Abs File]
         when debug $ putIOwords ["shake bakedP", "biblio", showT biblio2]
         return biblio2
  
-        -- yamlPageFiles <- getDirectoryFilesP templatesP ["*.yaml"]
+        -- yamlPageFiles <- getDirectoryToBake "DNB" templatesP ["*.yaml"]
         -- let yamlPageFiles2 = [templatesP </> y | y <- yamlPageFiles]
         -- when debug $ 
         --     putIOwords ["===================\nshakeMD", "yamlPages", showT yamlPageFiles2]
@@ -278,15 +279,15 @@ bakeBiblio debug resourcesP = do
 bakeImagesForBlog debug imagesP imagesTargetP = do 
         -- images for blog 
         imgFiles :: [Path Rel File]
-            <- getDirectoryFilesP imagesP ["*.JPG", "*.jpg"]  -- no subdirs (may change in future)
+            <- getDirectoryToBake "DNB" imagesP ["*.JPG", "*.jpg"]  -- no subdirs (may change in future)
         let imagesFiles2 = [imagesTargetP </> i  | i <- imgFiles]
-        when debug $ putIOwords ["===================\nshakeMD"
+        when True $ putIOwords ["===================\nshakeMD"
                     , "shake imgFiles", showT imagesP, "found", showT imagesFiles2]
         return imagesFiles2
 
 bakeCSS debug templatesP staticP = do 
         cssFiles1 :: [Path Rel File]
-            <- getDirectoryFilesP templatesP ["*.css"] -- no subdirs
+            <- getDirectoryToBake "DNB" templatesP ["*.css"] -- no subdirs
         let cssFiles2 = [staticP </> c | c <- cssFiles1] :: [Path Abs File]
         when debug $ liftIO
             $ putIOwords
@@ -298,7 +299,7 @@ bakeCSS debug templatesP staticP = do
 
 bakeMDfiles debug doughP bakedP = do 
     mdFiles1 :: [Path Rel File]
-        <- getDirectoryFilesP doughP ["**/*.md"] -- includes subfiledirectories
+        <- getDirectoryToBake "DNB" doughP ["**/*.md"] -- includes subfiledirectories
     let htmlFiles3 = map 
             (replaceExtension' "html" . (bakedP </>)) mdFiles1 :: [Path Abs File]
         -- [( bakedP </>  md) -<.> "html" | md <- mdFiles1] 
@@ -317,12 +318,14 @@ bakeMDfiles debug doughP bakedP = do
 
 ---------- utilities - may go to uniform.shake 
 
-getDirectoryToBake :: Text -> Path Abs Dir -> [FilePattern] -> Action [Path Rel File]
+getDirectoryToBake :: Text -> Path Abs Dir -> [FilePattern] 
+        -> Action [Path Rel File]
 -- get all files according to the FilePattern (see Shake docs)
 -- but excludes all filepath which contain one of the strings in 
 -- the first argument to allow directories which are not baked
 
 getDirectoryToBake exclude d p = do
     res :: [Path Rel File] <- getDirectoryFilesP d p
-    let filtered = filter (not . (isInfixOf' $ exclude) . toFilePathT  ) res
-    return filtered
+    let filtered = filter (not . (isInfixOf' exclude) . toFilePathT  ) res
+    -- putIOwords [unlines' $ map (s2t . toFilePath) filtered]
+    return   filtered

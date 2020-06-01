@@ -4,7 +4,7 @@ Path Abs File /home/frank/Workspace8/ssg/docs/site/dough/lastload.txt
 Path Abs File /home/frank/Workspace8/ssg/docs/site/dough/settings2.yaml
 Path Abs File /home/frank/Workspace8/ssg/docs/site/dough/Blog/index.md
 Path Abs File /home/frank/Workspace8/ssg/docs/site/dough/Blog/postwk.md
-Path Abs File /home/frank/Workspace8/ssg/docs/site/dough/Blog/.Untitled Folder/nothingTest.txt
+Path Abs File /home/frank/Workspace8/ssg/docs/site/dough/Blog/DNB_Untitled Folder/nothingTest.txt
 Path Abs File /home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/index.md
 Path Abs File /home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/postwk9sub.md
 Path Abs File /home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/testSort.md
