@@ -79,19 +79,28 @@ makeIndex1 debug layout flags metaRec    = do
             let files2 =   filter (hasExtension . makeExtension $"md") 
                                     $ files :: [Path Abs File]
             metaRecsThis :: [MetaRec]
-                <- mapM (getMetaRec layout) files2 -- not filtered md yet!
+                <- mapM (getMetaRec debug layout) files2 -- not filtered md yet!
+            when debug $ putIOline "metaRecsThis 1" metaRecsThis
+
+            let subindexDirs = map (\d -> d </> (makeRelFile "index.md")) dirs
+            -- only the index files existing 
+            when debug $ putIOline "subindexDirs 1" subindexDirs
+            subindexDirs2 <- filterM (doesFileExist' ) subindexDirs 
+            -- only the dirs with an index file
+            metaRecsSub :: [MetaRec] <- mapM (getMetaRec debug layout) subindexDirs2
             
-            let subindex = map (\d -> d </> (makeRelFile "index.md")) dirs
-            when debug $ putIOline "subindex" (map show subindex)
-            metaRecsSub :: [MetaRec] <- mapM (getMetaRec layout) subindex
+            when debug $ putIOline "subindex 2 - metarecSub\n"   metaRecsSub 
 
             menu1 <- return (metaRec, metaRecsThis, metaRecsSub)
                 -- the metarecs for the index in the subdirs 
+            when debug $ putIOwords ["subindex", "end"]
             return menu1
 
 -- | find the metaRec to a path and report on errors in input data  
-getMetaRec :: SiteLayout -> Path Abs File -> ErrIO MetaRec
-getMetaRec layout mdfile = do
+getMetaRec :: Bool -> SiteLayout -> Path Abs File -> ErrIO MetaRec
+getMetaRec debug layout mdfile = do
+    when debug $ putIOwords ["getMetaRec mdfile", showT mdfile]
+
     (_, metaRec, report1) <- getTripleDoc layout mdfile
     let reportX :: Text 
         reportX = if  isNothing report1 then ""

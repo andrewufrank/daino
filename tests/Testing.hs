@@ -22,7 +22,7 @@ import           Uniform.FileIO
 
 -- ordinary tests (run without shakeStartTest)
 
-import   {-@ HTF_TESTS @-}        Lib.Foundation_test  
+-- import   {-@ HTF_TESTS @-}        Lib.Foundation_test  
                         -- sets pageFn 
 -- import    {-@ HTF_TESTS @-}       Lib.CheckInputs_test
 -- -- -- ----    -- writes A : testLayout

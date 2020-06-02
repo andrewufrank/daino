@@ -49,7 +49,7 @@ bakeOneFile
 --test in bake_tests:
 bakeOneFile debug flags pageFn layout ht2 =
   do
-    putIOwords ["\n-----------------", "bakeOneFile fn", showT pageFn, "debug", showT debug]
+    putIOwords ["\n-----------------", "bakeOneFile 1 fn", showT pageFn, "debug", showT debug]
     (pandoc, metaRec, report) <- getTripleDoc layout pageFn
     -- how are errors dealt with 
     -- let debug = True
@@ -58,7 +58,11 @@ bakeOneFile debug flags pageFn layout ht2 =
                     -- withSettings.pandoc
                         -- produce html and put into contentHtml key
                         -- can be nothing if the md file is not ready to publish
+    when debug $  putIOwords ["\n-----------------", "bakeOneFile 2 fn", showT pageFn ]
+
     htmlout :: HTMLout <- pandocToContentHtml debug pandoc2 -- content.docval  AD -> AF
+
+    when debug $  putIOwords ["\n-----------------", "bakeOneFile 3 fn", showT pageFn ]
 
     val    <- docValToAllVal debug layout flags htmlout  metaRec
     -- includes the directory list and injection, which should be in 

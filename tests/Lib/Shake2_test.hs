@@ -28,19 +28,19 @@ import Lib.CmdLineArgs (allFlags)
 
     -- tests a conversion, is always ok
     --  "Lib.Shake_test - files written to /home/frank/.SSG/bakedTest"
-test_shakeMD = 
-    do 
-        res <- shakeMD testLayout allFlags
-                (doughDir testLayout)
-                ((themeDir $ testLayout) `addFileName` ( templatesDirName)
-                            :: Path Abs Dir)
-                (makeAbsDir "/home/frank/.SSG/bakedTest0")
-                (templatesImgDirName `addFileName` bannerImageFileName)
-        assertEqual () res  
+-- test_shakeMD = 
+--     do 
+--         res <- shakeMD testLayout allFlags
+--                 (doughDir testLayout)
+--                 ((themeDir $ testLayout) `addFileName` ( templatesDirName)
+--                             :: Path Abs Dir)
+--                 (makeAbsDir "/home/frank/.SSG/bakedTest0")
+--                 (templatesImgDirName `addFileName` bannerImageFileName)
+--         assertEqual () res  
 
 test_shakeAll = 
     do  
-        res <- runErr $ shakeAll testLayout allFlags "TEST"
+        res <- runErr $ shakeAll True testLayout allFlags "TEST"
         assertEqual (Right ()) res
 
 -- shakeOp :: Text -> ErrIO Text 

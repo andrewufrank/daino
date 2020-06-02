@@ -62,12 +62,12 @@ shakeArgs2 bakedP = do
   -- putIOwords ["shakeArgs2", "done"]
     return res
 
-shakeAll :: SiteLayout -> PubFlags -> FilePath -> ErrIO ()
+shakeAll :: Bool -> SiteLayout -> PubFlags -> FilePath -> ErrIO ()
 -- ^ bake all md files and copy the resources
 -- sets the current dir to doughDir
 -- copies banner image 
 
-shakeAll layout flags filepath = 
+shakeAll debug layout flags filepath = 
   do 
     -- let debug = False
     --  where the layout is used, rest in shakeWrapped
@@ -79,10 +79,10 @@ shakeAll layout flags filepath =
         bannerImageFileName = (bannerImage layout)
         bannerImage2 = templatesImgDirName `addFileName` bannerImageFileName
     setCurrentDir doughP  
-    callIO $ shakeMD layout flags doughP templatesP bakedP bannerImage2
+    callIO $ shakeMD debug layout flags doughP templatesP bakedP bannerImage2
     -- return ()
 
-shakeMD :: SiteLayout
+shakeMD :: Bool -> SiteLayout
         -> PubFlags
         -> Path Abs Dir
         -> Path Abs Dir
@@ -94,9 +94,9 @@ shakeMD :: SiteLayout
 -- copies banner image 
 -- in IO
 -- TOP shake call 
-shakeMD layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 bakedP $
+shakeMD debug layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 bakedP $
   do
-    let debug = False
+     
     let staticP = bakedP </> staticDirName :: Path Abs Dir
     -- should not be needed -- will be resourcesDirName
     let resourcesP = doughP </> resourcesDirName :: Path Abs Dir

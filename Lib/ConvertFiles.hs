@@ -44,7 +44,7 @@ produceMD2HTML debug bakedP doughP
         when debug $ liftIO $ putIOwords ["\nproduceMD2HTML - bakedP - *.html", showT outP, showT md2]
         
 
-        res <- runErr2action $ bakeOneFile False flags md2 layout outP
+        res <- runErr2action $ bakeOneFile debug flags md2 layout outP
         liftIO $ putIOwords ["\nproduceMD2HTML - return from bakeOneFile", showT res]
         return ()
 
@@ -80,9 +80,9 @@ produceCSS debug templatesP staticP out = do
 
 producePDF debug doughP bakedP out =  do
         let outP = makeAbsFile out :: Path Abs File
-        when debug $ liftIO $ putIOwords ["\nproducePDF - staticP - *.pdf", showT outP]
+        when True $ liftIO $ putIOwords ["\nproducePDF - staticP - *.pdf", showT outP]
         let fromfile = doughP </> makeRelativeP bakedP outP
-        when debug $ liftIO
+        when True $ liftIO
             $ putIOwords ["\nproducePDF - staticP  pdf - fromfile ", showT fromfile]
         copyFileChangedP fromfile outP
     -- return ()

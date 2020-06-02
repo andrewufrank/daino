@@ -87,39 +87,49 @@ docValToAllVal :: Bool
 -- then to determine the current dir
 -- and to exclude it from index
 docValToAllVal debug layout flags htmlout   metaRec = do
-  let pageFn = makeAbsFile . fn $ metaRec 
-  let pageType = makeAbsFile $ 
+    let pageFn = makeAbsFile . fn $ metaRec 
+    let pageType = makeAbsFile $ 
                 pageTemplate metaRec ::  (Path Abs File)
-  when debug $ putIOwords ["docValToAllVal"] 
+    when debug $ putIOwords ["docValToAllVal"] 
         -- , "mpt", showT mpageType]
-  
-  when debug $ putIOwords ["docValToAllVal filename"
-            , showT pageFn, showT pageType
-            , showT (settingsFile flags)]
 
-  pageTypeYaml <- readYaml2value pageType
-  settingsYaml <- readYaml2value (settingsFile flags)
-  --        svalue <- decodeThrow . t2b . unYAML $ settings
-  ix :: MenuEntry <- makeIndex debug layout flags metaRec  
-  when debug $ putIOwords ["pandoc index produced", showT ix]   
+    when debug $ putIOwords [
+        "docValToAllVal filename", showT pageFn
+        , "\npageType\t" , showT pageType
+        , "\nsettings\t"    , showT (settingsFile flags)]
 
-  fn2 <- stripProperPrefix' (doughDir layout) pageFn
-  let bottomLines = BottomLines
-        { ssgversion = showVersionT version
-        , today = showT year2000
-          -- TODO avoids changes during debug
-        , filename = showT fn2
-        }
-  when False
-    $ do  putIOwords ["pandoc settings2.yaml", showT settingsYaml]
-  let val = mergeAll
-        [ settingsYaml
-        , pageTypeYaml
-        -- , unDocValue docval
-        , toJSON htmlout
-        , toJSON ix
-        , toJSON bottomLines]
-  return val
+    pageTypeYaml <- readYaml2value pageType
+    settingsYaml <- readYaml2value (settingsFile flags)
+
+    when debug $ putIOwords [
+        "pandoc pagetype", showT pageTypeYaml
+        , "\nsettingsYaml", showT settingsYaml
+        ,"\n---1"] 
+    
+    --  svalue <- decodeThrow . t2b . unYAML $ settings
+
+    ix :: MenuEntry <- makeIndex debug layout flags metaRec  
+    when debug $ putIOwords [
+        "pandoc index produced", showT ix
+        ,"\n---2"]   
+
+    fn2 <- stripProperPrefix' (doughDir layout) pageFn
+    let bottomLines = BottomLines
+            { ssgversion = showVersionT version
+            , today = showT year2000
+            -- TODO avoids changes during debug
+            , filename = showT fn2
+            }
+    when False
+        $ do  putIOwords ["pandoc settings2.yaml", showT settingsYaml]
+    let val = mergeAll
+            [ settingsYaml
+            , pageTypeYaml
+            -- , unDocValue docval
+            , toJSON htmlout
+            , toJSON ix
+            , toJSON bottomLines]
+    return val
 
 data BottomLines =
   BottomLines { ssgversion :: Text
