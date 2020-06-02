@@ -36,7 +36,12 @@ test_shakeMD =
                             :: Path Abs Dir)
                 (makeAbsDir "/home/frank/.SSG/bakedTest0")
                 (templatesImgDirName `addFileName` bannerImageFileName)
-        assertEqual res ()
+        assertEqual () res  
+
+test_shakeAll = 
+    do  
+        res <- runErr $ shakeAll testLayout allFlags "TEST"
+        assertEqual (Right ()) res
 
 -- shakeOp :: Text -> ErrIO Text 
 --         -- SiteLayout -> PubFlags -> FilePath -> ErrIO ()

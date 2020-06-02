@@ -19,7 +19,7 @@ module Lib.Bake (bakeOneFile)
 
 import           Uniform.FileStrings            ( ) -- for instances
 import           Uniform.Filenames
-import           Lib.Pandoc                     ( docValToAllVal
+import           Lib.Pandoc ( docValToAllVal
                                                 , markdownToPandocBiblio
                                                 , pandocToContentHtml
                                                 -- , MenuEntry(..)

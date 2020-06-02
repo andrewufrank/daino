@@ -49,8 +49,7 @@ shakeDelete _ filepath =
     , s2t filepath]
 
 shakeArgs2 :: Path b t -> Rules () -> IO ()
-
--- | set the arguments for shake and call the rules 
+-- | set the options for shake  
 shakeArgs2 bakedP = do
   -- putIOwords ["shakeArgs2", "bakedP", s2t . toFilePath $ bakedP]
     res <- shake  -- not shakeArgs, which would include the cmd line args
@@ -88,9 +87,11 @@ shakeMD :: SiteLayout
         -> Path Abs Dir
         -> Path Rel File 
         -> IO ()
--- ^ process all md files (currently only the MD)
+-- ^ bake all md files and copy the resources
+-- sets the current dir to doughDir
+-- copies banner image 
 -- in IO
-
+-- TOP shake call 
 shakeMD layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 bakedP $
   do
     let debug = False
@@ -119,17 +120,27 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 bakedP $
       do 
         -- these are functions to construct the desired results
         -- which then produce them
-        needP [bannerImageTarget]
+        pdfs <- bakePDF debug resourcesP staticP
+        htmls <- bakeStaticHTML debug resourcesP staticP
+        bibs <- bakeBiblio debug resourcesP
+        imgs <- bakeImagesForBlog debug imagesP imagesTargetP 
+        csss <- bakeCSS debug templatesP staticP
+        mds :: [Path Abs File] <-  bakeMDfiles debug doughP bakedP
+   
+    -- convert to needs (perhaps wants better)
+    -- no restriction on order    
+    
+        needPaths [bannerImageTarget]
 
-        needP <- bakePDF debug resourcesP staticP
-        needP <- bakeStaticHTML debug resourcesP staticP
-        needP <- bakeBiblio debug resourcesP
-        needP <- bakeImagesForBlog debug imagesP imagesTargetP 
-        needP <- bakeCSS debug templatesP staticP
-        needP <- bakeMDfiles debug doughP bakedP
-        -- moved from inside MD2HTML 
-        need [toFilePath masterSettings_yaml]
-        need [toFilePath masterTemplate]
+        needPaths pdfs 
+        needPaths htmls
+        needPaths bibs 
+        needPaths imgs
+        needPaths csss 
+        needPaths mds 
+        -- -- moved from inside MD2HTML 
+        needPaths [masterSettings_yaml]
+        needPaths  [masterTemplate]
         -- need (map toFilePath yamlPageFiles2)
     return ()
 
@@ -164,6 +175,7 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 bakedP $
 
       -- liftIO $ putIOwords ["\nshakeMD - bakedP html -  out ", showT out]
       -- hakeMD - bakedP html -  out  "/home/frank/.SSG/bakedTest/SSGdesign/index.html"
+produceMD2HTML :: Bool -> Path Abs Dir -> Path Abs Dir -> PubFlags -> SiteLayout -> FilePath -> Action () 
 produceMD2HTML debug bakedP doughP 
     -- masterSettings_yaml   masterTemplate 
     flags layout out = do
@@ -243,7 +255,7 @@ produceBannerImage debug templatesP staticP out = do
 
 -- the bakeXX are files to construct what files are required 
 -- perhaps establish need for a file      
--- bakepdf :: _         
+bakePDF :: Bool -> Path Abs Dir -> Path Abs Dir -> Action [Path Abs File]
 bakePDF debug resourcesP staticP = do 
         pdfFiles1 :: [Path Rel File]
             <- getDirectoryToBake "DNB" resourcesP ["**/*.pdf"] -- subdirs
@@ -329,3 +341,6 @@ getDirectoryToBake exclude d p = do
     let filtered = filter (not . (isInfixOf' exclude) . toFilePathT  ) res
     -- putIOwords [unlines' $ map (s2t . toFilePath) filtered]
     return   filtered
+
+needPaths :: [Path Abs File] -> Action () 
+needPaths fps = need $ (map toFilePath) fps 
