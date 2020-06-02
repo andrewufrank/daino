@@ -28,13 +28,13 @@ import           Lib.Bake (bakeOneFile)
       -- liftIO $ putIOwords ["\nshakeMD - bakedP html -  out ", showT out]
       -- hakeMD - bakedP html -  out  "/home/frank/.SSG/bakedTest/SSGdesign/index.html"
 produceMD2HTML :: Bool -> Path Abs Dir -> Path Abs Dir -> PubFlags -> SiteLayout -> FilePath -> Action () 
-produceMD2HTML debug bakedP doughP flags layout out = do
+produceMD2HTML debug doughP bakedP flags layout out = do
     -- masterSettings_yaml   masterTemplate 
 
     let outP = makeAbsFile out :: Path Abs File
 
     let md = replaceExtension' "md" outP :: Path Abs File --  <-    out2 -<.> "md"  
-    -- liftIO $ putIOwords ["\nshakeMD - bakedP html 2 -  md ", showT md]
+    liftIO $ putIOwords ["\nproduceMD2HTML - bakedP html 2 -  md ", showT md]
     -- --let md1 =  stripProperPrefixP bakedP md :: Path Rel File 
     -- l--iftIO $ putIOwords ["\nshakeMD - bakedP html 3 - md1 ", showT md1]
     -- determine if this must be constructed from md 
@@ -50,21 +50,31 @@ produceMD2HTML debug bakedP doughP flags layout out = do
     liftIO $ putIOwords ["\nproduceMD2HTML - return from bakeOneFile", showT res]
     return ()
 
+produceHTML :: Bool -> Path Abs Dir -> Path Abs Dir -> PubFlags -> SiteLayout -> FilePath -> Action () 
 -- the producers/convertes of the files         
-produceHTML debug staticP resourcesP out = do
+produceHTML debug doughP bakedP flags layout out = do
     let outP = makeAbsFile out :: Path Abs File
     when debug $ liftIO
         $ putIOwords
-            [ "\nproduceHTML - staticP ok - *.html"
-            , showT staticP
-            , "file"
-            , showT outP
-            , "out"
+            [ "\nproduceHTML  *.html"
+            -- , showT staticP
+            , "file out"
+            -- , showT outP
+            -- , "out"
             , showT out]
-    let fromfile = resourcesP </> makeRelativeP staticP outP
-    when debug $ liftIO $ putIOwords ["\nproduceHTML - staticP - fromfile ", showT fromfile]
-    copyFileChangedP fromfile outP
-    when debug $ liftIO $ putIOwords ["\n DONE produceHTML - staticP - fromfile ", showT fromfile]
+    let fromfile = doughP </> makeRelativeP bakedP outP
+    xishtml   <-  liftIO $ runErr $ doesFileExist' fromfile
+    let ishtml = case xishtml of 
+                    Left msg -> errorT [msg] 
+                    Right b -> b 
+    when debug $ liftIO $ putIOwords ["\nproduceHTML - fromfile exist", showT ishtml
+        , "\nfile", showT fromfile]
+    if ishtml 
+        then do 
+            copyFileChangedP fromfile outP
+            when debug $ liftIO $ putIOwords ["\n DONE produceHTML - staticP - fromfile ", showT 
+                fromfile]
+        else produceMD2HTML debug doughP bakedP flags layout out
     return () 
 
 produceCSS debug templatesP staticP out = do

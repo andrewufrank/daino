@@ -97,26 +97,27 @@ shakeMD :: Bool -> SiteLayout
 shakeMD debug layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 bakedP $
   do
      
-    let staticP = bakedP </> staticDirName :: Path Abs Dir
+    -- let staticP = bakedP </> staticDirName :: Path Abs Dir
     -- should not be needed -- will be resourcesDirName
-    let resourcesP = doughP </> resourcesDirName :: Path Abs Dir
+    -- let resourcesP = doughP </> resourcesDirName :: Path Abs Dir
     let masterTemplate = templatesP </> masterTemplateP :: Path Abs File
         masterTemplateP = makeRelFile "master4.dtpl" :: Path Rel File
         settingsYamlP = makeRelFile "settings2.yaml" :: Path Rel File
         masterSettings_yaml = doughP </> settingsYamlP :: Path Abs File
-        imagesP = doughP </> resourcesDirName </> imagesDirName 
-        imagesTargetP = staticP </> imagesDirName
+        -- imagesP = doughP </> resourcesDirName </> imagesDirName 
+        -- imagesTargetP = staticP </> imagesDirName
     let bannerImageTarget = bakedP </> staticDirName </> bannerImage2
     -- let bannerImageFP =    bannerImage2
     
     liftIO $ putIOwords
         [ "\nshakeMD dirs\n"
-        , "\n\tstaticP\n"
-        , showT staticP
+        , "\n\tstaticDirName\n"
+        , showT staticDirName
         , "\n\tbakedP\n"
         , showT bakedP
-        , "\n\tresourcesDir\n"
-        , showT resourcesP]
+        -- , "\n\tresourcesDir\n"
+        -- , showT resourcesP
+        ]
     want ["allMarkdownConversion"]
 
     phony "allMarkdownConversion" $ 
@@ -128,7 +129,8 @@ shakeMD debug layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 ba
         -- given html
         bibs <- bakeBiblio debug doughP bakedP
         imgs <- bakeImagesForBlog debug doughP bakedP
-        csss <- bakeCSS debug templatesP staticP -- exception
+        csss <- bakeCSS debug templatesP 
+                (bakedP </> staticDirName) -- exception
         mds :: [Path Abs File] <-  bakeMDfiles debug doughP bakedP 
         -- given md
    
@@ -149,32 +151,33 @@ shakeMD debug layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 ba
         -- need (map toFilePath yamlPageFiles2)
     return ()
 
-    (toFilePath staticP <> "**/*.html") %> \out -- with subdirproduceHTML
-            -> produceHTML debug staticP resourcesP out
+    (toFilePath bakedP <> "**/*.html") %> \out -- with subdirproduceHTML
+            -> produceHTML debug doughP bakedP flags layout out
 
  
-    (toFilePath staticP <> "/*.css")  %> \out  -- insert css -- no subdir
-      -> produceCSS debug templatesP staticP out 
+    (toFilePath (bakedP </> staticDirName) <> "/*.css")  %> \out  -- insert css -- no subdir
+      -> produceCSS debug templatesP 
+                (bakedP </> staticDirName) out 
         
     (toFilePath bakedP <> "**/*.pdf") %> \out -- insert pdfFIles1 
                                             -- with subdir
       -> producePDF debug doughP bakedP  out 
       
-    [toFilePath imagesTargetP <> "/*.JPG"
-      , toFilePath imagesTargetP <> "/*.jpg"]
+    [toFilePath bakedP <> "/*.JPG"
+      , toFilePath bakedP <> "/*.jpg"]
                                     |%> \out -- insert img files 
                                             -- no subdir (for now)
-      -> produceJPG debug imagesTargetP imagesP out
+      -> produceJPG debug doughP bakedP out
 
     toFilePath bannerImageTarget %> \out 
-        -> produceBannerImage debug templatesP staticP out 
+        -> produceBannerImage debug doughP bakedP out 
         
 
-    -- conversion md to html (excet for what is in static) 
-    (\x -> ((toFilePath bakedP <> "**/*.html") ?== x)
-      && not ((toFilePath staticP <> "**/*.html") ?== x) -- with subdir
-      )  ?> \out -> produceMD2HTML debug bakedP doughP 
-                        -- masterSettings_yaml masterTemplate 
-                        flags layout out 
+    -- -- conversion md to html (excet for what is in static) 
+    -- (\x -> ((toFilePath bakedP <> "**/*.html") ?== x)
+    --   && not ((toFilePath staticP <> "**/*.html") ?== x) -- with subdir
+    --   )  ?> \out -> produceMD2HTML debug bakedP doughP 
+    --                     -- masterSettings_yaml masterTemplate 
+    --                     flags layout out 
 
 
