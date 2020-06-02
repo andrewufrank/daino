@@ -37,6 +37,8 @@ import           Lib.Foundation (SiteLayout(..), resourcesDirName, staticDirName
                                , imagesDirName)
 import           Lib.CmdLineArgs (PubFlags(..))
 import           Lib.Bake (bakeOneFile)
+import Lib.FilesNeeded 
+import Lib.ConvertFiles
 
 shakeDelete :: SiteLayout -> FilePath -> ErrIO ()
 -- ^ experimental - twich found delete of md
@@ -96,6 +98,7 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 bakedP $
   do
     let debug = False
     let staticP = bakedP </> staticDirName :: Path Abs Dir
+    -- should not be needed -- will be resourcesDirName
     let resourcesP = doughP </> resourcesDirName :: Path Abs Dir
     let masterTemplate = templatesP </> masterTemplateP :: Path Abs File
         masterTemplateP = makeRelFile "master4.dtpl" :: Path Rel File
@@ -107,12 +110,12 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 bakedP $
     -- let bannerImageFP =    bannerImage2
     
     liftIO $ putIOwords
-        [ "\nshakeMD dirs"
-        , "\n\tstaticP"
+        [ "\nshakeMD dirs\n"
+        , "\n\tstaticP\n"
         , showT staticP
-        , "\n\tbakedP"
+        , "\n\tbakedP\n"
         , showT bakedP
-        , "\n\tresourcesDir"
+        , "\n\tresourcesDir\n"
         , showT resourcesP]
     want ["allMarkdownConversion"]
 
@@ -130,17 +133,17 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 bakedP $
     -- convert to needs (perhaps wants better)
     -- no restriction on order    
     
-        needPaths [bannerImageTarget]
+        needP [bannerImageTarget]
 
-        needPaths pdfs 
-        needPaths htmls
-        needPaths bibs 
-        needPaths imgs
-        needPaths csss 
-        needPaths mds 
+        needP pdfs 
+        needP htmls
+        needP bibs 
+        needP imgs
+        needP csss 
+        needP mds 
         -- -- moved from inside MD2HTML 
-        needPaths [masterSettings_yaml]
-        needPaths  [masterTemplate]
+        needP [masterSettings_yaml]
+        needP  [masterTemplate]
         -- need (map toFilePath yamlPageFiles2)
     return ()
 
@@ -151,9 +154,9 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 bakedP $
     (toFilePath staticP <> "/*.css")  %> \out  -- insert css -- no subdir
       -> produceCSS debug templatesP staticP out 
         
-    (toFilePath staticP <> "**/*.pdf") %> \out -- insert pdfFIles1 
+    (toFilePath bakedP <> "**/*.pdf") %> \out -- insert pdfFIles1 
                                             -- with subdir
-      -> producePDF debug resourcesP staticP out 
+      -> producePDF debug doughP bakedP  out 
       
     [toFilePath imagesTargetP <> "/*.JPG"
       , toFilePath imagesTargetP <> "/*.jpg"]
@@ -173,174 +176,3 @@ shakeMD layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 bakedP $
                         flags layout out 
 
 
-      -- liftIO $ putIOwords ["\nshakeMD - bakedP html -  out ", showT out]
-      -- hakeMD - bakedP html -  out  "/home/frank/.SSG/bakedTest/SSGdesign/index.html"
-produceMD2HTML :: Bool -> Path Abs Dir -> Path Abs Dir -> PubFlags -> SiteLayout -> FilePath -> Action () 
-produceMD2HTML debug bakedP doughP 
-    -- masterSettings_yaml   masterTemplate 
-    flags layout out = do
-        let outP = makeAbsFile out :: Path Abs File
-        -- --needs to know if this is abs or rel file !
-        -- --liftIO $ putIOwords ["\nshakeMD - bakedP html -  out2 ", showT outP] 
-        let md = replaceExtension' "md" outP :: Path Abs File --  <-    out2 -<.> "md"  
-        -- liftIO $ putIOwords ["\nshakeMD - bakedP html 2 -  md ", showT md]
-        -- --let md1 =  stripProperPrefixP bakedP md :: Path Rel File 
-        -- l--iftIO $ putIOwords ["\nshakeMD - bakedP html 3 - md1 ", showT md1]
-        let md2 = doughP </> stripProperPrefixP bakedP md :: Path Abs File
-        -- liftIO $ putIOwords ["\nshakeMD - bakedP html 4 - md2 ", showT md2]
-        need [toFilePath md2]  
-        when debug $ liftIO $ putIOwords ["\nshakeMD - bakedP - *.html", showT outP, showT md2]
-        
-
-        res <- runErr2action $ bakeOneFile False flags md2 layout outP
-        liftIO $ putIOwords ["\nshake2 - return from bakeOneFile", showT res]
-        return ()
-
--- the producers/convertes of the files         
-produceHTML debug staticP resourcesP out = do
-        let outP = makeAbsFile out :: Path Abs File
-        when debug $ liftIO
-            $ putIOwords
-                [ "\nshakeMD - staticP ok - *.html"
-                , showT staticP
-                , "file"
-                , showT outP
-                , "out"
-                , showT out]
-        let fromfile = resourcesP </> makeRelativeP staticP outP
-        when debug $ liftIO $ putIOwords ["\nshakeMD - staticP - fromfile ", showT fromfile]
-        copyFileChangedP fromfile outP
-        when debug $ liftIO $ putIOwords ["\n DONE shakeMD - staticP - fromfile ", showT fromfile]
-        return () 
-
-produceCSS debug templatesP staticP out = do
-    let outP = makeAbsFile out :: Path Abs File
-    when debug $ liftIO
-        $ putIOwords
-        [ "\nshakeMD - staticP - *.css\n"
-        , showT outP
-        , "\nTemplatesP"
-        , showT templatesP]
-    let fromfile = templatesP </> makeRelativeP staticP outP
-    when debug $ liftIO
-        $ putIOwords ["\nshakeMD - staticP css- fromfile ", showT fromfile]
-    copyFileChangedP fromfile outP
-
-producePDF debug resourcesP staticP out =  do
-        let outP = makeAbsFile out :: Path Abs File
-        when debug $ liftIO $ putIOwords ["\nshakeMD - staticP - *.pdf", showT outP]
-        let fromfile = resourcesP </> makeRelativeP staticP outP
-        when debug $ liftIO
-            $ putIOwords ["\nshakeMD - staticP  pdf - fromfile ", showT fromfile]
-        copyFileChangedP fromfile outP
-    -- return ()
-
-produceJPG debug imagesTargetP imagesP out = do
-        let outP = makeAbsFile out :: Path Abs File
-        when debug $ liftIO $ putIOwords ["\nshakeMD - image jpg", showT outP]
-        let fromfile = imagesP </> makeRelativeP imagesTargetP outP
-        when debug $ liftIO
-            $ putIOwords ["\nshakeMD - staticP  img=age jpg- fromfile ", showT fromfile]
-        copyFileChangedP fromfile outP
-    -- return ()
- 
-produceBannerImage debug templatesP staticP out = do 
-        -- let bannerImage3 = makeRelFile out
-        let outP = makeAbsFile out 
-        when debug $ liftIO $ putIOwords ["\nshakeMD - bannerImage TargetF", showT outP]
-        let fromfile = templatesP `addFileName` makeRelativeP staticP outP
-        when debug $ liftIO $ putIOwords ["\nshakeMD - bannerImage fromfile ", showT fromfile]
-        copyFileChangedP fromfile outP
-
-
--- the bakeXX are files to construct what files are required 
--- perhaps establish need for a file      
-bakePDF :: Bool -> Path Abs Dir -> Path Abs Dir -> Action [Path Abs File]
-bakePDF debug resourcesP staticP = do 
-        pdfFiles1 :: [Path Rel File]
-            <- getDirectoryToBake "DNB" resourcesP ["**/*.pdf"] -- subdirs
-        let pdfFiles2 = [staticP </> c | c <- pdfFiles1]
-        when debug $ liftIO
-            $ putIOwords
-                ["===================\nshakeMD - pdf files1", showT pdfFiles1]
-        when debug $ liftIO $ putIOwords ["\nshakeMD - pdf files 2", showT pdfFiles2]
-        return pdfFiles2
-        -- --
-       -- static html files 
-bakeStaticHTML debug resourcesP staticP = do 
-        htmlFiles11 :: [Path Rel File]
-            <- getDirectoryToBake "DNB" resourcesP ["**/*.html"] -- subdirs
-        let htmlFiles22 = [staticP </> c | c <- htmlFiles11]
-        when debug $ liftIO
-            $ putIOwords
-                ["===================\nshakeMD - html 11 files", showT htmlFiles11]
-        when debug $ liftIO $ putIOwords ["\nshakeMD - html 22 files", showT htmlFiles22]
-        return htmlFiles22
-
-bakeBiblio debug resourcesP = do 
-        biblio :: [Path Rel File] <- getDirectoryToBake "DNB" resourcesP ["*.bib"]
-        let biblio2 = [resourcesP </> b | b <- biblio] :: [Path Abs File]
-        when debug $ putIOwords ["shake bakedP", "biblio", showT biblio2]
-        return biblio2
- 
-        -- yamlPageFiles <- getDirectoryToBake "DNB" templatesP ["*.yaml"]
-        -- let yamlPageFiles2 = [templatesP </> y | y <- yamlPageFiles]
-        -- when debug $ 
-        --     putIOwords ["===================\nshakeMD", "yamlPages", showT yamlPageFiles2]
-
-bakeImagesForBlog debug imagesP imagesTargetP = do 
-        -- images for blog 
-        imgFiles :: [Path Rel File]
-            <- getDirectoryToBake "DNB" imagesP ["*.JPG", "*.jpg"]  -- no subdirs (may change in future)
-        let imagesFiles2 = [imagesTargetP </> i  | i <- imgFiles]
-        when True $ putIOwords ["===================\nshakeMD"
-                    , "shake imgFiles", showT imagesP, "found", showT imagesFiles2]
-        return imagesFiles2
-
-bakeCSS debug templatesP staticP = do 
-        cssFiles1 :: [Path Rel File]
-            <- getDirectoryToBake "DNB" templatesP ["*.css"] -- no subdirs
-        let cssFiles2 = [staticP </> c | c <- cssFiles1] :: [Path Abs File]
-        when debug $ liftIO
-            $ putIOwords
-                [ "========================\nshakeMD - css files 1"
-                , showT cssFiles1]
-        when debug $ liftIO $ putIOwords ["\nshakeMD - css files", showT cssFiles2]
-        return cssFiles2
-
-
-bakeMDfiles debug doughP bakedP = do 
-    mdFiles1 :: [Path Rel File]
-        <- getDirectoryToBake "DNB" doughP ["**/*.md"] -- includes subfiledirectories
-    let htmlFiles3 = map 
-            (replaceExtension' "html" . (bakedP </>)) mdFiles1 :: [Path Abs File]
-        -- [( bakedP </>  md) -<.> "html" | md <- mdFiles1] 
-        
-    -- , not $ isInfixOf' "index.md" md]
-    -- let htmlFiles3 = map (replaceExtension "html") htmlFiles2 :: [Path Abs File]
-    when debug $  liftIO
-        $ putIOwords
-            [ "============================\nshakeMD - mdFiles1"
-            , showT mdFiles1]
-    when debug $ 
-        liftIO $ putIOwords ["\nshakeMD - htmlFile3 x"
-            , showT htmlFiles3]
-    -- needP mdFiles1
-    return htmlFiles3  -- includes the index files 
-
----------- utilities - may go to uniform.shake 
-
-getDirectoryToBake :: Text -> Path Abs Dir -> [FilePattern] 
-        -> Action [Path Rel File]
--- get all files according to the FilePattern (see Shake docs)
--- but excludes all filepath which contain one of the strings in 
--- the first argument to allow directories which are not baked
-
-getDirectoryToBake exclude d p = do
-    res :: [Path Rel File] <- getDirectoryFilesP d p
-    let filtered = filter (not . (isInfixOf' exclude) . toFilePathT  ) res
-    -- putIOwords [unlines' $ map (s2t . toFilePath) filtered]
-    return   filtered
-
-needPaths :: [Path Abs File] -> Action () 
-needPaths fps = need $ (map toFilePath) fps 
