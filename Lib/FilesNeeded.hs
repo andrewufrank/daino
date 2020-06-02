@@ -31,57 +31,58 @@ import           Lib.Bake (bakeOneFile)
 -- the bakeXX are  files to construct what files are required 
 -- perhaps establish need for a file      
 bakePDF :: Bool -> Path Abs Dir -> Path Abs Dir -> Action [Path Abs File]
-bakePDF debug doughP _ = do 
+bakePDF debug doughP bakedP = do 
         pdfFiles1 :: [Path Rel File]
             <- getDirectoryToBake "DNB" doughP ["**/*.pdf"] -- subdirs
-        let pdfFiles2 = [doughP </> c | c <- pdfFiles1]
+        let pdfFiles2 = [bakedP </> c | c <- pdfFiles1]
         when debug $ liftIO
             $ putIOwords
                 ["===================\nbakePDF - pdf files1", showT pdfFiles1]
         when debug $ liftIO $ putIOwords ["\nbakePDF - pdf files 2", showT pdfFiles2]
         return pdfFiles2
-        -- --
+         
+bakeStaticHTML :: Bool -> Path Abs Dir -> Path Abs Dir -> Action [Path Abs File]
        -- static html files 
-bakeStaticHTML debug resourcesP staticP = do 
-        htmlFiles11 :: [Path Rel File]
-            <- getDirectoryToBake "DNB" resourcesP ["**/*.html"] -- subdirs
-        let htmlFiles22 = [staticP </> c | c <- htmlFiles11]
-        when debug $ liftIO
-            $ putIOwords
-                ["===================\nbakeStaticHTML - html 11 files", showT htmlFiles11]
-        when debug $ liftIO $ putIOwords ["\nbakeStaticHTML - html 22 files", showT htmlFiles22]
-        return htmlFiles22
+bakeStaticHTML debug doughP bakedP = do 
+    htmlFiles11 :: [Path Rel File]
+        <- getDirectoryToBake "DNB" doughP ["**/*.html"] -- subdirs
+    let htmlFiles22 = [bakedP </> c | c <- htmlFiles11]
+    when debug $ liftIO
+        $ putIOwords
+            ["===================\nbakeStaticHTML - html 11 files", showT htmlFiles11]
+    when debug $ liftIO $ putIOwords ["\nbakeStaticHTML - html 22 files", showT htmlFiles22]
+    return htmlFiles22
 
-bakeBiblio debug resourcesP = do 
-        biblio :: [Path Rel File] <- getDirectoryToBake "DNB" resourcesP ["*.bib"]
-        let biblio2 = [resourcesP </> b | b <- biblio] :: [Path Abs File]
-        when debug $ putIOwords ["shake bakeBiblio", "biblio", showT biblio2]
-        return biblio2
- 
-        -- yamlPageFiles <- getDirectoryToBake "DNB" templatesP ["*.yaml"]
-        -- let yamlPageFiles2 = [templatesP </> y | y <- yamlPageFiles]
-        -- when debug $ 
-        --     putIOwords ["===================\nshakeMD", "yamlPages", showT yamlPageFiles2]
+bakeBiblio debug doughP bakedP = do 
+    biblio :: [Path Rel File] <- getDirectoryToBake "DNB" doughP ["*.bib"]
+    let biblio2 = [bakedP </> b | b <- biblio] :: [Path Abs File]
+    when debug $ putIOwords ["shake bakeBiblio", "biblio", showT biblio2]
+    return biblio2
 
-bakeImagesForBlog debug imagesP imagesTargetP = do 
-        -- images for blog 
-        imgFiles :: [Path Rel File]
-            <- getDirectoryToBake "DNB" imagesP ["*.JPG", "*.jpg"]  -- no subdirs (may change in future)
-        let imagesFiles2 = [imagesTargetP </> i  | i <- imgFiles]
-        when True $ putIOwords ["===================\nbakeImagesForBlog"
-                    , "shake imgFiles", showT imagesP, "found", showT imagesFiles2]
-        return imagesFiles2
+    -- yamlPageFiles <- getDirectoryToBake "DNB" templatesP ["*.yaml"]
+    -- let yamlPageFiles2 = [templatesP </> y | y <- yamlPageFiles]
+    -- when debug $ 
+    --     putIOwords ["===================\nshakeMD", "yamlPages", showT yamlPageFiles2]
+
+bakeImagesForBlog debug doughP bakedP = do 
+    -- images for blog 
+    imgFiles :: [Path Rel File]
+        <- getDirectoryToBake "DNB" doughP ["*.JPG", "*.jpg"]  -- no subdirs (may change in future)
+    let imagesFiles2 = [staticDirName </> i  | i <- imgFiles]
+    when True $ putIOwords ["===================\nbakeImagesForBlog"
+            , "found", showT imagesFiles2]
+    return imagesFiles2
 
 bakeCSS debug templatesP staticP = do 
-        cssFiles1 :: [Path Rel File]
-            <- getDirectoryToBake "DNB" templatesP ["*.css"] -- no subdirs
-        let cssFiles2 = [staticP </> c | c <- cssFiles1] :: [Path Abs File]
-        when debug $ liftIO
-            $ putIOwords
-                [ "========================\nbakeCSS - css files 1"
-                , showT cssFiles1]
-        when debug $ liftIO $ putIOwords ["\nbakeCSS - css files", showT cssFiles2]
-        return cssFiles2
+    cssFiles1 :: [Path Rel File]
+        <- getDirectoryToBake "DNB" templatesP ["*.css"] -- no subdirs
+    let cssFiles2 = [staticP </> c | c <- cssFiles1] :: [Path Abs File]
+    when debug $ liftIO
+        $ putIOwords
+            [ "========================\nbakeCSS - css files 1"
+            , showT cssFiles1]
+    when debug $ liftIO $ putIOwords ["\nbakeCSS - css files", showT cssFiles2]
+    return cssFiles2
 
 
 bakeMDfiles debug doughP bakedP = do 

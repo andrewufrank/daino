@@ -123,12 +123,14 @@ shakeMD debug layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 ba
       do 
         -- these are functions to construct the desired results
         -- which then produce them
-        pdfs <- bakePDF debug resourcesP staticP
-        htmls <- bakeStaticHTML debug resourcesP staticP
-        bibs <- bakeBiblio debug resourcesP
-        imgs <- bakeImagesForBlog debug imagesP imagesTargetP 
-        csss <- bakeCSS debug templatesP staticP
-        mds :: [Path Abs File] <-  bakeMDfiles debug doughP bakedP
+        pdfs <- bakePDF debug doughP bakedP
+        htmls <- bakeStaticHTML debug doughP bakedP
+        -- given html
+        bibs <- bakeBiblio debug doughP bakedP
+        imgs <- bakeImagesForBlog debug doughP bakedP
+        csss <- bakeCSS debug templatesP staticP -- exception
+        mds :: [Path Abs File] <-  bakeMDfiles debug doughP bakedP 
+        -- given md
    
     -- convert to needs (perhaps wants better)
     -- no restriction on order    
