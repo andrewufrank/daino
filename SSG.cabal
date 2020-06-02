@@ -1,11 +1,12 @@
 name: SSG
-version: 0.0.2.1
+version: 0.0.3.0
 license-file: LICENSE
 build-type: Simple
 cabal-version: >=1.10
 description: a static site generator
     version 0.0.2.0  used for myhomepage  - fixes
     0.0.2.1 add check for all pages, study content pdf, tex
+    0.0.3.0 copy all structure (exclude with DNB)
 
 library
     exposed-modules:
