@@ -21,3 +21,5 @@ docs/site/baked/.shake.database
 *.bak
 .haskell-code-explorer
 **/*.sync-conflict-*
+**/baked*
+
