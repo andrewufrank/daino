@@ -166,26 +166,26 @@ shakeMD debug layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 ba
 
  
     (toFilePath (bakedP) <> "/*.css")  %> \out  -- insert css -- no subdir
-      -> produceCSS debug doughP bakedP out 
+      -> copyFileToBaked debug doughP bakedP out 
     (toFilePath (bakedP) <> "/*.csl")  %> \out  -- insert css -- no subdir
-      -> produceCSS debug doughP bakedP out 
+      -> copyFileToBaked debug doughP bakedP out 
                 -- templatesP 
                 -- (bakedP </> staticDirName) out 
         
     (toFilePath bakedP <> "**/*.pdf") %> \out -- insert pdfFIles1 
                                             -- with subdir
-      -> producePDF debug doughP bakedP  out 
+      -> copyFileToBaked debug doughP bakedP  out 
       
     [toFilePath bakedP <> "/*.JPG"
       , toFilePath bakedP <> "/*.jpg"]
                                     |%> \out -- insert img files 
                                             -- no subdir (for now)
-      -> produceJPG debug doughP bakedP out
+      -> copyFileToBaked debug doughP bakedP out
 
     -- toFilePath bannerImageTarget %> \out 
     --     -> produceBannerImage debug doughP bakedP out 
     (toFilePath bakedP <> "**/*.bib") %> \out 
-        -> produceBiblio debug doughP bakedP out 
+        -> copyFileToBaked debug doughP bakedP out 
         
 
     -- -- conversion md to html (excet for what is in static) 
@@ -223,3 +223,13 @@ getNeeds debug doughP bakedP extSource extTarget = do
         putIOwords ["\nbakePDF -  target files 2"
                 , "for ext", extTarget, "files\n", showT filesWithTarget]
     return filesWithTarget
+
+copyFileToBaked debug doughP bakedP out = do
+        let outP = makeAbsFile out :: Path Abs File
+        when debug $ liftIO $ 
+            putIOwords ["\ncopyFileToBaked outP", showT outP]
+        let fromfile = doughP </> makeRelativeP bakedP outP
+        when debug $ liftIO $ 
+            putIOwords ["\ncopyFileToBaked fromfile ", showT fromfile]
+        copyFileChangedP fromfile outP
+
