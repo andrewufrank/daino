@@ -96,17 +96,21 @@ shakeMD :: Bool -> SiteLayout
 -- TOP shake call 
 shakeMD debug layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 bakedP $
   do
+    -- the special filenames which are necessary
+    -- because the file types are not automatically 
+    -- copied 
      
     -- let staticP = bakedP </> staticDirName :: Path Abs Dir
     -- should not be needed -- will be resourcesDirName
     -- let resourcesP = doughP </> resourcesDirName :: Path Abs Dir
-    let masterTemplate = templatesP </> masterTemplateP :: Path Abs File
+    let 
+        masterTemplate = templatesP </> masterTemplateP :: Path Abs File
         masterTemplateP = makeRelFile "master4.dtpl" :: Path Rel File
         settingsYamlP = makeRelFile "settings2.yaml" :: Path Rel File
         masterSettings_yaml = doughP </> settingsYamlP :: Path Abs File
         -- imagesP = doughP </> resourcesDirName </> imagesDirName 
         -- imagesTargetP = staticP </> imagesDirName
-    let bannerImageTarget = bakedP </> staticDirName </> bannerImage2
+    -- let bannerImageTarget = bakedP </> staticDirName </> bannerImage2
     -- let bannerImageFP =    bannerImage2
     
     liftIO $ putIOwords
@@ -129,21 +133,23 @@ shakeMD debug layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 ba
         -- given html
         bibs <- bakeBiblio debug doughP bakedP
         imgs <- bakeImagesForBlog debug doughP bakedP
-        csss <- bakeCSS debug templatesP 
-                (bakedP </> staticDirName) -- exception
+        csss <- bakeCSS debug doughP bakedP
+                -- templatesP 
+                -- (bakedP </> staticDirName) -- exception
         mds :: [Path Abs File] <-  bakeMDfiles debug doughP bakedP 
         -- given md
-   
+        csls <- bakeCSL debug doughP bakedP 
     -- convert to needs (perhaps wants better)
     -- no restriction on order    
     
-        needP [bannerImageTarget]
+        -- needP [bannerImageTarget]
 
         needP pdfs 
         needP htmls
         needP bibs 
         needP imgs
         needP csss 
+        needP csls
         needP mds 
         -- -- moved from inside MD2HTML 
         needP [masterSettings_yaml]
@@ -151,13 +157,17 @@ shakeMD debug layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 ba
         -- need (map toFilePath yamlPageFiles2)
     return ()
 
-    (toFilePath bakedP <> "**/*.html") %> \out -- with subdirproduceHTML
+    (toFilePath bakedP <> "**/*.html") %> \out 
+        -- calls the copy html and the conversion from md
             -> produceHTML debug doughP bakedP flags layout out
 
  
-    (toFilePath (bakedP </> staticDirName) <> "/*.css")  %> \out  -- insert css -- no subdir
-      -> produceCSS debug templatesP 
-                (bakedP </> staticDirName) out 
+    (toFilePath (bakedP) <> "/*.css")  %> \out  -- insert css -- no subdir
+      -> produceCSS debug doughP bakedP out 
+    (toFilePath (bakedP) <> "/*.csl")  %> \out  -- insert css -- no subdir
+      -> produceCSS debug doughP bakedP out 
+                -- templatesP 
+                -- (bakedP </> staticDirName) out 
         
     (toFilePath bakedP <> "**/*.pdf") %> \out -- insert pdfFIles1 
                                             -- with subdir
@@ -169,8 +179,10 @@ shakeMD debug layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 ba
                                             -- no subdir (for now)
       -> produceJPG debug doughP bakedP out
 
-    toFilePath bannerImageTarget %> \out 
-        -> produceBannerImage debug doughP bakedP out 
+    -- toFilePath bannerImageTarget %> \out 
+    --     -> produceBannerImage debug doughP bakedP out 
+    (toFilePath bakedP <> "**/*.bib") %> \out 
+        -> produceBiblio debug doughP bakedP out 
         
 
     -- -- conversion md to html (excet for what is in static) 

@@ -1,10 +1,11 @@
 {
 	"folders": [
-        {
-            "path": "."
-        },
-        {
-            "path": "../uniform"
-        }
-    ]
+		{
+			"path": "."
+		},
+		{
+			"path": "../uniform"
+		}
+	],
+    "settings": {}
 }
