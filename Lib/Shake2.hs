@@ -30,7 +30,7 @@ module Lib.Shake2 where
 import           Uniform.Error (ErrIO, callIO, liftIO)
 import           Uniform.Shake 
 import           Development.Shake -- (Rules(..))
--- import          Uniform.Shake.Path
+-- import          Development.Shake.FilePath (replaceExtensions)
 import           Uniform.Strings (putIOwords, showT)
 import           Lib.Foundation (SiteLayout(..), resourcesDirName, staticDirName
                                , templatesDir, templatesImgDirName
@@ -128,8 +128,8 @@ shakeMD debug layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 ba
       do 
         -- these are functions to construct the desired results
         -- which then produce them
-        pdfs <- bakePDF debug doughP bakedP
-        htmls <- bakeStaticHTML debug doughP bakedP
+        pdfs <- getNeeds debug doughP bakedP "pdf" "pdf"
+        htmls <- getNeeds debug doughP bakedP "html" "html"
         -- given html
         bibs <- bakeBiblio debug doughP bakedP
         imgs <- bakeImagesForBlog debug doughP bakedP
@@ -193,3 +193,30 @@ shakeMD debug layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 ba
     --                     flags layout out 
 
 
+getNeeds :: Bool -> Path Abs Dir -> Path Abs Dir -> Text -> Text -> Action [Path Abs File]
+-- ^ find the files which are needed
+--  from source with extension ext
+getNeeds debug doughP bakedP extSource extTarget = do
+    let sameExt  = extSource == extTarget
+    when debug $ liftIO
+        $ putIOwords
+            ["===================\ngetNeeds extSource", extSource
+                , "extTarget", extSource
+                , "sameExt", showT sameExt]
+
+    filesWithSource :: [Path Rel File]
+        <- getDirectoryToBake "DNB" doughP [ ("**/*." <> t2s extSource)] 
+                -- subdirs
+    let filesWithTarget = if sameExt 
+        then
+             [bakedP </> c | c <- filesWithSource]
+        else map 
+            (replaceExtension' extTarget . (bakedP </>)) filesWithSource 
+                    :: [Path Abs File]
+    when debug $ liftIO $ do 
+        putIOwords
+            ["===================\nbakePDF -  source files 1"
+                , "for ext", extSource, "files\n", showT filesWithSource]
+        putIOwords ["\nbakePDF -  target files 2"
+                , "for ext", extTarget, "files\n", showT filesWithTarget]
+    return filesWithTarget
