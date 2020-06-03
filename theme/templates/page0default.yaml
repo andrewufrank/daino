@@ -3,7 +3,7 @@ beforeContent: "<section class=header>"
 afterContent: "</section>"
 testVal: testValpage0default
 css: 
-    - /static/style.css
+    - /templates/static/style.css
 
 
 
