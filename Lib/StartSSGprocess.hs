@@ -32,8 +32,8 @@ import Uniform.Ftp
 import Uniform.Time
 import Uniform.WebServer (runScotty)
 
-ssgProcess :: PubFlags -> ErrIO ()
-ssgProcess flags = do  
+ssgProcess :: Bool -> PubFlags -> ErrIO ()
+ssgProcess debug flags = do  
       
     (layout2, port2) <- readSettings (settingsFile flags)
 
@@ -51,9 +51,9 @@ ssgProcess flags = do
                     -- compare with year2000 if all should be uploaded
     if watchFlag flags  -- implies server
         then  
-            mainWatch layout2 flags port2
+            mainWatch debug layout2 flags port2
         else do  
-            shakeAll layout2 flags ""
+            shakeAll debug layout2 flags ""
             -- the last is the filename that caused the shake call
             --  let landing = makeRelFile "landingPage.html"
             when (serverFlag flags) $  

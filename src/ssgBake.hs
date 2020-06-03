@@ -56,7 +56,7 @@ main = startProg
             , "\n -s start local server (port is fixed in settings)"
             , "\n -u upload to external server"])
         "list flags to include"  
-      ssgProcess flags
+      ssgProcess False flags
     )
 
 
