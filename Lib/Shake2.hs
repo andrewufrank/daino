@@ -37,7 +37,7 @@ import           Lib.Foundation (SiteLayout(..), resourcesDirName, staticDirName
                                , imagesDirName)
 import           Lib.CmdLineArgs (PubFlags(..))
 import           Lib.Bake (bakeOneFile)
-import Lib.FilesNeeded 
+-- import Lib.FilesNeeded 
 import Lib.ConvertFiles
 
 shakeDelete :: SiteLayout -> FilePath -> ErrIO ()
@@ -131,14 +131,16 @@ shakeMD debug layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 ba
         pdfs <- getNeeds debug doughP bakedP "pdf" "pdf"
         htmls <- getNeeds debug doughP bakedP "html" "html"
         -- given html
-        bibs <- bakeBiblio debug doughP bakedP
-        imgs <- bakeImagesForBlog debug doughP bakedP
-        csss <- bakeCSS debug doughP bakedP
+        bibs <- getNeeds debug doughP bakedP "bib" "bib"
+        imgs <- getNeeds debug doughP bakedP "jpg" "jpg"
+        imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
+                 
+        csss <- getNeeds debug doughP bakedP "css" "css"
                 -- templatesP 
                 -- (bakedP </> staticDirName) -- exception
-        mds :: [Path Abs File] <-  bakeMDfiles debug doughP bakedP 
+        mds :: [Path Abs File] <-  getNeeds debug doughP bakedP "md" "html"
         -- given md
-        csls <- bakeCSL debug doughP bakedP 
+        csls <- getNeeds debug doughP bakedP "csl" "csl"
     -- convert to needs (perhaps wants better)
     -- no restriction on order    
     
@@ -148,6 +150,7 @@ shakeMD debug layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 ba
         needP htmls
         needP bibs 
         needP imgs
+        needP imgs2
         needP csss 
         needP csls
         needP mds 
