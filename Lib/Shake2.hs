@@ -29,14 +29,17 @@ module Lib.Shake2 where
 
 import           Uniform.Error (ErrIO, callIO, liftIO)
 import           Uniform.Shake 
-import           Development.Shake -- (Rules(..))
+import           Development.Shake (Rules, (|%>))
 -- import          Development.Shake.FilePath (replaceExtensions)
 import           Uniform.Strings (putIOwords, showT)
-import           Lib.Foundation (SiteLayout(..), resourcesDirName, staticDirName
-                               , templatesDir, templatesImgDirName
-                               , imagesDirName)
+import           Lib.Foundation (SiteLayout(..)
+        -- , resourcesDirName
+        , staticDirName
+                            --    , templatesDir, templatesImgDirName
+                            --    , imagesDirName
+                               )
 import           Lib.CmdLineArgs (PubFlags(..))
-import           Lib.Bake (bakeOneFile)
+-- import           Lib.Bake (bakeOneFile)
 -- import Lib.FilesNeeded 
 import Lib.ConvertFiles
 
@@ -74,27 +77,27 @@ shakeAll debug layout flags filepath =
     putIOwords  [ "\n\n=====================================shakeAll start", "\n flags"
             , showT flags , "caused by", s2t filepath, "."]
     let doughP = doughDir layout -- the regular dough
-        templatesP = templatesDir layout 
+        -- templatesP = templatesDir layout 
         bakedP = bakedDir layout
-        bannerImageFileName = (bannerImage layout)
-        bannerImage2 = templatesImgDirName `addFileName` bannerImageFileName
+        -- bannerImageFileName = (bannerImage layout)
+        -- bannerImage2 = templatesImgDirName `addFileName` bannerImageFileName
     setCurrentDir doughP  
-    callIO $ shakeMD debug layout flags doughP templatesP bakedP bannerImage2
+    callIO $ shakeMD debug layout flags doughP  bakedP 
     -- return ()
 
 shakeMD :: Bool -> SiteLayout
         -> PubFlags
-        -> Path Abs Dir
-        -> Path Abs Dir
-        -> Path Abs Dir
-        -> Path Rel File 
+        -> Path Abs Dir -- dough (source for files)
+        -> Path Abs Dir -- baked (target dir for site)
+        -- -> Path Abs Dir
+        -- -> Path Rel File 
         -> IO ()
 -- ^ bake all md files and copy the resources
 -- sets the current dir to doughDir
 -- copies banner image 
 -- in IO
 -- TOP shake call 
-shakeMD debug layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 bakedP $
+shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $
   do
     -- the special filenames which are necessary
     -- because the file types are not automatically 
@@ -103,11 +106,11 @@ shakeMD debug layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 ba
     -- let staticP = bakedP </> staticDirName :: Path Abs Dir
     -- should not be needed -- will be resourcesDirName
     -- let resourcesP = doughP </> resourcesDirName :: Path Abs Dir
-    let 
-        masterTemplate = templatesP </> masterTemplateP :: Path Abs File
-        masterTemplateP = makeRelFile "master4.dtpl" :: Path Rel File
-        settingsYamlP = makeRelFile "settings2.yaml" :: Path Rel File
-        masterSettings_yaml = doughP </> settingsYamlP :: Path Abs File
+    -- let 
+        -- masterTemplate = templatesP </> masterTemplateP :: Path Abs File
+        -- masterTemplateP = makeRelFile "master4.dtpl" :: Path Rel File
+        -- settingsYamlP = makeRelFile "settings2.yaml" :: Path Rel File
+        -- masterSettings_yaml = doughP </> settingsYamlP :: Path Abs File
         -- imagesP = doughP </> resourcesDirName </> imagesDirName 
         -- imagesTargetP = staticP </> imagesDirName
     -- let bannerImageTarget = bakedP </> staticDirName </> bannerImage2
@@ -154,36 +157,34 @@ shakeMD debug layout flags doughP templatesP bakedP bannerImage2 = shakeArgs2 ba
         needP csss 
         needP csls
         needP mds 
-        -- -- moved from inside MD2HTML 
-        needP [masterSettings_yaml]
-        needP  [masterTemplate]
+        --  
+        -- needP [masterSettings_yaml] -- checks only that file exists
+        -- needP  [masterTemplate]
         -- need (map toFilePath yamlPageFiles2)
     return ()
 
     (toFilePath bakedP <> "**/*.html") %> \out 
         -- calls the copy html and the conversion from md
-            -> produceHTML debug doughP bakedP flags layout out
+        -> produceHTML debug doughP bakedP flags layout out
 
  
     (toFilePath (bakedP) <> "/*.css")  %> \out  -- insert css -- no subdir
       -> copyFileToBaked debug doughP bakedP out 
     (toFilePath (bakedP) <> "/*.csl")  %> \out  -- insert css -- no subdir
-      -> copyFileToBaked debug doughP bakedP out 
+        -> copyFileToBaked debug doughP bakedP out 
                 -- templatesP 
                 -- (bakedP </> staticDirName) out 
         
     (toFilePath bakedP <> "**/*.pdf") %> \out -- insert pdfFIles1 
                                             -- with subdir
-      -> copyFileToBaked debug doughP bakedP  out 
+        -> copyFileToBaked debug doughP bakedP  out 
       
     [toFilePath bakedP <> "/*.JPG"
       , toFilePath bakedP <> "/*.jpg"]
-                                    |%> \out -- insert img files 
+            |%> \out -- insert img files 
                                             -- no subdir (for now)
-      -> copyFileToBaked debug doughP bakedP out
+        -> copyFileToBaked debug doughP bakedP out
 
-    -- toFilePath bannerImageTarget %> \out 
-    --     -> produceBannerImage debug doughP bakedP out 
     (toFilePath bakedP <> "**/*.bib") %> \out 
         -> copyFileToBaked debug doughP bakedP out 
         
@@ -224,12 +225,4 @@ getNeeds debug doughP bakedP extSource extTarget = do
                 , "for ext", extTarget, "files\n", showT filesWithTarget]
     return filesWithTarget
 
-copyFileToBaked debug doughP bakedP out = do
-        let outP = makeAbsFile out :: Path Abs File
-        when debug $ liftIO $ 
-            putIOwords ["\ncopyFileToBaked outP", showT outP]
-        let fromfile = doughP </> makeRelativeP bakedP outP
-        when debug $ liftIO $ 
-            putIOwords ["\ncopyFileToBaked fromfile ", showT fromfile]
-        copyFileChangedP fromfile outP
 

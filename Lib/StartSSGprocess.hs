@@ -18,7 +18,8 @@ module Lib.StartSSGprocess (ssgProcess)
 import Lib.CmdLineArgs                ( PubFlags(..) )
 
 import Lib.Foundation (SiteLayout(..)
-          , settingsFileName, testLastUploadFileName
+        --   , settingsFileName
+          , testLastUploadFileName
           , landingPageName)
 import Lib.ReadSettingFile (readSettings)
 import Lib.Shake2 (shakeAll) 
@@ -60,7 +61,7 @@ ssgProcess debug flags = do
                 runScotty port2 (bakedDir layout2) landingPageName
                         -- sollte default index.html sein (landingPage layout2)
             when (uploadFlag flags) $ do
-                (a,s) <- runStateT
+                (_,_) <- runStateT
                     (ftpUploadDirsRecurse testWithLastTime (bakedDir layout2) 
                         (if testFlag flags then makeAbsDir "/ssg.gerastree.at/"
                                     else makeAbsDir "/frank.gerastree.at/")

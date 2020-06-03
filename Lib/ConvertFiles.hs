@@ -15,14 +15,16 @@
 
 module Lib.ConvertFiles where
 
-import           Uniform.Error (ErrIO, callIO, liftIO)
+import           Uniform.Error (liftIO)
 import           Uniform.Shake 
-import           Development.Shake -- (Rules(..))
+-- import           Development.Shake -- (Rules(..))
 -- import          Uniform.Shake.Path
 import           Uniform.Strings (putIOwords, showT)
-import           Lib.Foundation (SiteLayout(..), resourcesDirName, staticDirName
-                               , templatesDir, templatesImgDirName
-                               , imagesDirName)
+import           Lib.Foundation (SiteLayout(..)
+                -- , resourcesDirName, staticDirName
+                --                , templatesDir, templatesImgDirName
+                --                , imagesDirName
+                               )
 import           Lib.CmdLineArgs (PubFlags(..))
 import           Lib.Bake (bakeOneFile)
 
@@ -79,50 +81,16 @@ produceHTML debug doughP bakedP flags layout out = do
         else produceMD2HTML debug doughP bakedP flags layout out
     return () 
 
-produceCSS debug doughP bakedP out = do
-    let outP = makeAbsFile out :: Path Abs File
-    when debug $ liftIO
-        $ putIOwords
-        [ "\nproduceCSS - staticP - *.css\n"
-        , showT outP
-        -- , "\nTemplatesP"
-        -- , showT templatesP
-        ]
-    let fromfile = doughP </> makeRelativeP bakedP outP
-    when debug $ liftIO
-        $ putIOwords ["\nproduceCSS - staticP css- fromfile ", showT fromfile]
-    copyFileChangedP fromfile outP
-
-producePDF debug doughP bakedP out =  do
+-- the generic copy for all the files 
+-- which can just be copied 
+-- (exceptions md, which are a special case of needed)
+copyFileToBaked debug doughP bakedP out = do
         let outP = makeAbsFile out :: Path Abs File
-        when True $ liftIO $ putIOwords ["\nproducePDF - staticP - *.pdf", showT outP]
+        when debug $ liftIO $ 
+            putIOwords ["\ncopyFileToBaked outP", showT outP]
         let fromfile = doughP </> makeRelativeP bakedP outP
-        when True $ liftIO
-            $ putIOwords ["\nproducePDF - staticP  pdf - fromfile ", showT fromfile]
-        copyFileChangedP fromfile outP
-    -- return ()
-
-produceJPG debug doughP bakedP out = do
-        let outP = makeAbsFile out :: Path Abs File
-        when debug $ liftIO $ putIOwords ["\nproducePDF - image jpg", showT outP]
-        let fromfile = doughP </> makeRelativeP bakedP outP
-        when debug $ liftIO
-            $ putIOwords ["\nproducePDF - staticP  img=age jpg- fromfile ", showT fromfile]
+        when debug $ liftIO $ 
+            putIOwords ["\ncopyFileToBaked fromfile ", showT fromfile]
         copyFileChangedP fromfile outP
 
-produceBiblio debug doughP bakedP out = do
-        let outP = makeAbsFile out :: Path Abs File
-        when debug $ liftIO $ putIOwords ["\nproducePDF - biblio jpg", showT outP]
-        let fromfile = doughP </> makeRelativeP bakedP outP
-        when debug $ liftIO
-            $ putIOwords ["\nproducePDF - biblio - fromfile ", showT fromfile]
-        copyFileChangedP fromfile outP
- 
--- produceBannerImage debug templatesP staticP out = do 
---         -- let bannerImage3 = makeRelFile out
---         let outP = makeAbsFile out 
---         when debug $ liftIO $ putIOwords ["\nproduceBannerImage - bannerImage TargetF", showT outP]
---         let fromfile = templatesP `addFileName` makeRelativeP staticP outP
---         when debug $ liftIO $ putIOwords ["\nproduceBannerImage - bannerImage fromfile ", showT fromfile]
---         copyFileChangedP fromfile outP
 
