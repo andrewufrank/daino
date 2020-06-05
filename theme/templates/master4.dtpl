@@ -47,7 +47,7 @@
     #example1 {
     border: 2px solid black;
     padding: 25px;
-    background: url('/templates/img/cropped-DSC05127-1024x330.jpg');
+    background: url('/templates/img/DSC05127.JPG');
     background-repeat: no-repeat;
     background-size: auto;
     }
@@ -71,7 +71,7 @@
 
 
     <section class="hero">
-        <div style="background-image: url('/templates/img/cropped-DSC05127-1024x330.jpg');"> 
+        <div id="example1"> 
             <h1><br><br><a href="/"> 
                 <span style="text-shadow: 2px 2px 8px black"
                 >$settings.sitename$</span></a></h1>
