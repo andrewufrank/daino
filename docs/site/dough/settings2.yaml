@@ -13,15 +13,17 @@ localhostPort: 3000
 
 # master yaml - applies to all pages
 quotes: True 
-css :
-    - /templates/static/style.css  # relative to root of site - so called absolute
-    - /templates/static/menu.css 
+# css :
+#     - /templates/static/style.css  # relative to root of site - so called absolute
+#     - /templates/static/menu.css 
+#   values taken from page3/yaml
 
 author : Author of Settings 
 date: 2019-01-01
 settings : 
     sitename : siteNameExample
     byline : siteByLineExample
+    banner: /templates/img/DSC05127.JPG
 
 menu:
      - link: /Blog/index.html

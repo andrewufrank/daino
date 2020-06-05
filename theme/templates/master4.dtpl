@@ -50,8 +50,8 @@
             }
 
             .hero-image {
-            background-image: url('/templates/img/DSC05127.JPG');
-            background-color: #cccccc;
+            background-image: url('$settings.banner$');
+            background-color: white;
             height: 200px;
             background-position: center;
             background-repeat: no-repeat;
