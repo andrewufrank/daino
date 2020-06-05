@@ -43,7 +43,24 @@
 
 	<title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$</title>
 	
+    <style>
+    #example1 {
+    border: 2px solid black;
+    padding: 25px;
+    background: url('/templates/img/cropped-DSC05127-1024x330.jpg');
+    background-repeat: no-repeat;
+    background-size: auto;
+    }
 
+    #example2 {
+    border: 2px solid black;
+    padding: 25px;
+    background: url('/templates/img/cropped-DSC05127-1024x330.jpg');
+    background-repeat: no-repeat;
+    background-size: 300px 100px;
+    }
+
+    </style>
     </head>
 
     <body>
@@ -54,7 +71,7 @@
 
 
     <section class="hero">
-        <div> 
+        <div style="background-image: url('/templates/img/cropped-DSC05127-1024x330.jpg');"> 
             <h1><br><br><a href="/"> 
                 <span style="text-shadow: 2px 2px 8px black"
                 >$settings.sitename$</span></a></h1>
