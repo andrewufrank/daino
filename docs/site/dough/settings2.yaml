@@ -23,7 +23,7 @@ date: 2019-01-01
 settings : 
     sitename : siteNameExample
     byline : siteByLineExample
-    banner: /templates/img/DSC05127.JPG
+    banner: /templates/img/symmetricGeras2.jpg
 
 menu:
      - link: /Blog/index.html
