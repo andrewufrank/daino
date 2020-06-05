@@ -52,7 +52,7 @@
             .hero-image {
             background-image: url('/templates/img/DSC05127.JPG');
             background-color: #cccccc;
-            height: 500px;
+            height: 200px;
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
@@ -60,12 +60,11 @@
             }
 
             .hero-text {
-            text-align: center;
-            position: absolute;
-            top: 50%;
-            left: 50%;
             transform: translate(-50%, -50%);
             color: white;
+            text-shadow: 2px 2px 8px black;
+            font-weight: bold;
+            vertical-align: top;
             }
         </style>
     </head>
@@ -79,12 +78,9 @@
 
     <section class="hero">
         <div class="hero-image">
-            <div class="hero-text">
-                <h1 style="font-size:50px">$settings.sitename$</h1>
+            
+                <h1>$settings.sitename$</h1>
                 <h3>$settings.byline$</h3>
-                
-                
-            </div>
         <div/>
     </section>
     <section class="header">

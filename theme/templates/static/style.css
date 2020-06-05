@@ -24,12 +24,13 @@ body {
 }
 
 a {
-    color: #15100c;
+    color: #3e662a;
+    font-weight: bold;
     text-decoration: none;
 }
 
 a:visited {
-    color: #2a4127;
+    color: #416e2b;
 }
 
 a:hover {
@@ -56,9 +57,6 @@ hr {
     background-size: cover;
     background-position: 50% 40%;
     color: white;
-    text-shadow: 2px 2px 8px black;
-    font-weight: bold;
-    vertical-align: top;
 }
 
 .hero h1 {
@@ -66,6 +64,9 @@ hr {
     line-height: 1.5;
     margin: 0;
     padding: 0;
+    text-shadow: 2px 2px 8px black;
+    font-weight: bold;
+    vertical-align: top;
 }
 
 .hero h3 {
