@@ -54,10 +54,12 @@
 
 
     <section class="hero">
+        <div> 
             <h1><br><br><a href="/"> 
                 <span style="text-shadow: 2px 2px 8px black"
                 >$settings.sitename$</span></a></h1>
             <h3>$settings.byline$</h3>
+        </div>
     </section>
     <section class="header">
 
