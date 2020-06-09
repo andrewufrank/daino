@@ -121,7 +121,8 @@ docValToAllVal debug layout flags htmlout   metaRec = do
             , filename = showT fn2
             }
     when False
-        $ do  putIOwords ["pandoc settings2.yaml", showT settingsYaml]
+        $ do  putIOwords ["pandoc settings2.yaml"
+                            , showT settingsYaml]
     let val = mergeAll
             [ settingsYaml
             , pageTypeYaml
