@@ -29,7 +29,7 @@ import Uniform.Error -- for instances
 import Uniform.FileIO
 
 import Uniform.FileStrings            ( )
-import Uniform.Ftp
+-- import Uniform.Ftp
 import Uniform.Time
 import Uniform.WebServer (runScotty)
 

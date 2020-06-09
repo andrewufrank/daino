@@ -23,7 +23,7 @@ module Lib.CmdLineArgs where
 import           Uniform.Strings      --   hiding ( (</>) )
 import           Uniform.FileIO
 -- import           Uniform.Error
-import           Data.Semigroup                 ( (<>) )
+-- import           Data.Semigroup                 ( (<>) )
 import           Options.Applicative.Builder
 import           Options.Applicative
 

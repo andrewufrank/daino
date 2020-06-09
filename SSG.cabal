@@ -1,5 +1,5 @@
 name: SSG
-version: 0.0.3.0
+version: 0.0.3.1
 license-file: LICENSE
 build-type: Simple
 cabal-version: >=1.10
@@ -7,6 +7,7 @@ description: a static site generator
     version 0.0.2.0  used for myhomepage  - fixes
     0.0.2.1 add check for all pages, study content pdf, tex
     0.0.3.0 copy all structure (exclude with DNB)
+    0.0.3.1 change to 15.13 (pandoc not resolvable)
 
 library
     exposed-modules:
@@ -45,15 +46,15 @@ library
         , pipes
         , containers
 
-        ,  uniform-fileio ==0.0.15.1 
+        ,  uniform-fileio  
         , uniform-error -any
         , uniform-time -any
         , uniform-json -any
-        , uniform-pandoc
+        , uniform-pandoc  
         , uniform-convenience 
         , uniform-watch 
         , uniform-webserver
-        , uniform-ftp
+        -- , uniform-ftp
 
         , optparse-applicative
         , optparse-generic
@@ -73,7 +74,7 @@ executable ssgbake
         uniform-error
         , uniform-shake
         ,uniform-webserver  
-        , uniform-ftp ==0.0.1.4
+        -- , uniform-ftp  
         , uniform-time
         -- , uniform-watch 
         , SSG -any
@@ -135,6 +136,6 @@ test-suite ssgTest
         pipes,
         uniform-watch ,
         uniform-time,
-        uniform-ftp ,
+        -- uniform-ftp ,
         SSG -any
 

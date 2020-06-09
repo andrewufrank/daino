@@ -5,43 +5,29 @@
 
 packages:
 - completed:
+    hackage: shake-0.17.5@sha256:c6fb0dfb1a5b3a4c174b9b3af06ac7b94ba88df68ed990210b037b56a80456ce,14604
+    pantry-tree:
+      size: 11598
+      sha256: 3ad7638204c2e0c08facd6f31ce59a19f00d140c6576abf79310492f2fb82172
+  original:
+    hackage: shake-0.17.5
+- completed:
     hackage: test-invariant-0.4.5.0@sha256:d1aa6b61e0057a4065eeff3286208e947a0b44c6a2186210399f5e5e7fb0d0dd,1902
     pantry-tree:
       size: 326
       sha256: 4a43697da369287edfe604a1a9d38f07fd50a49816028f25054b07842567cfa2
   original:
-    hackage: test-invariant-0.4.5.0
+    hackage: test-invariant-0.4.5.0@sha256:d1aa6b61e0057a4065eeff3286208e947a0b44c6a2186210399f5e5e7fb0d0dd,1902
 - completed:
     hackage: twitch-0.1.7.2@sha256:146a887da4d2d21e489ff823a6058add40c1f9c5ee8e0d00356b497092c9c624,2988
     pantry-tree:
       size: 1138
       sha256: 7e4db8b9ef3e634e68d68155901a7c3affb873b3cf9a9dca4dcc0ebb4b6eb527
   original:
-    hackage: twitch-0.1.7.2
-- completed:
-    hackage: yaml-union-0.0.3@sha256:c44e861672bef471e84aa99635b6e74afad1e9e76d67b339d05543a953efadeb,2566
-    pantry-tree:
-      size: 710
-      sha256: f6f6bf9bc91f0ce9814a1a70ff6cf1f63a026b5ef71cb3348deec8dce0ae3557
-  original:
-    hackage: yaml-union-0.0.3
-- completed:
-    hackage: shake-ext-3.1.0.0@sha256:0714f61a165ea72c087e2eaa3e184d1ca33fe719840207795ac3cc29aab631eb,1384
-    pantry-tree:
-      size: 637
-      sha256: a1d0d09a354b8454a36b1349fe39efd5720f0e2033b9879b6d849587f531ed13
-  original:
-    hackage: shake-ext-3.1.0.0
-- completed:
-    hackage: ftphs-1.0.9.2@sha256:3165cec1cd7a1df06f62a4abdca1508defdf8c5358558512ab6367977b65f6d7,1607
-    pantry-tree:
-      size: 775
-      sha256: e58bc65b57a7071112dbf7e7c6589ad92b3f3acfd2fcb508f49a47cd330c200f
-  original:
-    hackage: ftphs-1.0.9.2
+    hackage: twitch-0.1.7.2@sha256:146a887da4d2d21e489ff823a6058add40c1f9c5ee8e0d00356b497092c9c624,2988
 snapshots:
 - completed:
-    size: 496635
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/13/12.yaml
-    sha256: 67b74d6acad1342ba8089b75f415c1c63897e3f32091863c921104e8d0bdcfa0
-  original: lts-13.12
+    size: 531237
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/16/0.yaml
+    sha256: 210e15b7043e2783115afe16b0d54914b1611cdaa73f3ca3ca7f8e0847ff54e5
+  original: lts-16.0
