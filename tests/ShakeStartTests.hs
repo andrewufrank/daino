@@ -180,7 +180,7 @@ shakeTestWrapped flags layout doughP  templatesP testP =
              mdSource2 = doughP </> makeRelativeP testP  (mdSource1 $-<.> "md")
         needP [mdSource2, masterSettings, masterTemplate]
         runErr2action $ do 
-                    r <- bakeOneFile False flags ( mdSource2)
+                    r <- bakeOneFile2html False flags ( mdSource2)
                             layout
                             ( outP)
                     return ()

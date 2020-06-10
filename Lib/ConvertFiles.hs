@@ -26,7 +26,7 @@ import           Lib.Foundation (SiteLayout(..)
                 --                , imagesDirName
                                )
 import           Lib.CmdLineArgs (PubFlags(..))
-import           Lib.Bake (bakeOneFile)
+import           Lib.Bake (bakeOneFile2html, bakeOneFile2tex)
 
       -- liftIO $ putIOwords ["\nshakeMD - bakedP html -  out ", showT out]
       -- hakeMD - bakedP html -  out  "/home/frank/.SSG/bakedTest/SSGdesign/index.html"
@@ -50,8 +50,11 @@ produceMD2HTML debug doughP bakedP flags layout out = do
     when debug $ liftIO $ putIOwords ["\nproduceMD2HTML - bakedP - *.html", showT outP, showT md2]
     
 
-    res <- runErr2action $ bakeOneFile False flags md2 layout outP
-    liftIO $ putIOwords ["\nproduceMD2HTML - return from bakeOneFile", showT res]
+    resHtml <- runErr2action $ bakeOneFile2html False flags md2 layout outP
+    liftIO $ putIOwords ["\nproduceMD2HTML - return from bakeOneFile2html", showT resHtml]
+
+    resTex <- runErr2action $ bakeOneFile2tex False flags md2 layout outP
+    liftIO $ putIOwords ["\nproduceMD2HTML - return from bakeOneFile2html", showT resTex]
     return ()
 
 produceHTML :: Bool -> Path Abs Dir -> Path Abs Dir -> PubFlags -> SiteLayout -> FilePath -> Action () 

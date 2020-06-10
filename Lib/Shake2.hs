@@ -33,14 +33,9 @@ import           Development.Shake (Rules, (|%>))
 -- import          Development.Shake.FilePath (replaceExtensions)
 import           Uniform.Strings (putIOwords, showT)
 import           Lib.Foundation (SiteLayout(..)
-        -- , resourcesDirName
-        , staticDirName
-                            --    , templatesDir, templatesImgDirName
-                            --    , imagesDirName
+                             , staticDirName
                                )
 import           Lib.CmdLineArgs (PubFlags(..))
--- import           Lib.Bake (bakeOneFile)
--- import Lib.FilesNeeded 
 import Lib.ConvertFiles
 
 shakeDelete :: SiteLayout -> FilePath -> ErrIO ()

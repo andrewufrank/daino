@@ -66,10 +66,10 @@ test_allFilenames2 = testVar0FileIO progName doughdir "allFilenames" (allFilenam
 
 
 
-opex :: Path Abs File -> ErrIO String
-opex f = do 
-    mr <- getMetaRec testLayout  f
-    return . t2s . showT $ mr 
+-- opex :: Path Abs File -> ErrIO String
+-- opex f = do 
+--     mr <- getMetaRec testLayout  f
+--     return . t2s . showT $ mr 
 
 test_allMetaRec :: IO () 
 test_allMetaRec = testVar0FileIO progName doughdir "allMetaRec" allMetaRec 

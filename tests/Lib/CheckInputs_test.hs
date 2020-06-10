@@ -67,9 +67,9 @@ instance ShowTestHarness (Path Abs File)
 linkIndex1 = doughDir testLayout </> makeRelFile "Blog/index.md" 
                         :: Path Abs File 
 
-test_MetaRec_index1 = do 
-    res <- runErr $   getMetaRec testLayout linkIndex1 
-    assertEqual (Right metaRecIndex1) res 
+-- test_MetaRec_index1 = do 
+--     res <- runErr $   getMetaRec testLayout linkIndex1 
+--     assertEqual (Right metaRecIndex1) res 
 
 
 metaRecIndex1 = MetaRec
@@ -88,9 +88,9 @@ metaRecIndex1 = MetaRec
 
 subsubDir = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/SubSub/index.md"
 
-test_MetaRec_indexSubSub = do 
-    res <- runErr $   getMetaRec testLayout subsubDir  
-    assertEqual (Right metaRecIndexSubSub) res 
+-- test_MetaRec_indexSubSub = do 
+--     res <- runErr $   getMetaRec testLayout subsubDir  
+--     assertEqual (Right metaRecIndexSubSub) res 
 
 
 metaRecIndexSubSub = (MetaRec{fn =

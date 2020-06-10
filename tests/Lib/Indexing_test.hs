@@ -47,9 +47,9 @@ blogDirPath = makeAbsDir "/home/frank/Workspace8/ssg/docs/site/dough/Blog"
 test_linkIn = assertEqual "/Blog/postwk.md" $ makeRelPath dough2 linkIn
 linkIn = doughDir testLayout </> makeRelFile "Blog/postwk.md" :: Path Abs File
 
-test_MetaRec_postwk = do 
-    res <- runErr $   getMetaRec testLayout linkIn 
-    assertEqual (Right metaRecPost1) res 
+-- test_MetaRec_postwk = do 
+--     res <- runErr $   getMetaRec testLayout linkIn 
+--     assertEqual (Right metaRecPost1) res 
 
 metaRecPost1 = MetaRec
   { fn = toFilePath linkIn

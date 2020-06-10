@@ -48,7 +48,7 @@ ssgProcess debug flags = do
                     else 
                         return year2000 
 
-    let testWithLastTime  = testNewerModTime  lastUpload
+    -- let testWithLastTime  = testNewerModTime  lastUpload
                     -- compare with year2000 if all should be uploaded
     if watchFlag flags  -- implies server
         then  
@@ -60,17 +60,17 @@ ssgProcess debug flags = do
             when (serverFlag flags) $  
                 runScotty port2 (bakedDir layout2) landingPageName
                         -- sollte default index.html sein (landingPage layout2)
-            when (uploadFlag flags) $ do
-                (_,_) <- runStateT
-                    (ftpUploadDirsRecurse testWithLastTime (bakedDir layout2) 
-                        (if testFlag flags then makeAbsDir "/ssg.gerastree.at/"
-                                    else makeAbsDir "/frank.gerastree.at/")
-                    )
-                        ftp0
-                currentTime <- getCurrentTimeUTC 
-                writeFile2 testLastUploadFileName (show currentTime)
+            -- when (uploadFlag flags) $ do
+            --     (_,_) <- runStateT
+            --         (ftpUploadDirsRecurse testWithLastTime (bakedDir layout2) 
+            --             (if testFlag flags then makeAbsDir "/ssg.gerastree.at/"
+            --                         else makeAbsDir "/frank.gerastree.at/")
+            --         )
+            --             ftp0
+            --     currentTime <- getCurrentTimeUTC 
+            --     writeFile2 testLastUploadFileName (show currentTime)
         
-                putIOwords ["uploadTest completed", showT currentTime]             
+            --     putIOwords ["uploadTest completed", showT currentTime]             
         -- return ()
     
     putIOwords ["ssgBake done"]
