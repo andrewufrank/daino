@@ -110,7 +110,7 @@ docValToAllVal debug layout flags htmlout   metaRec = do
 
     ix :: MenuEntry <- makeIndex debug layout flags metaRec  
     when debug $ putIOwords [
-        "pandoc index produced", showT ix
+        "docValToAllVal pandoc index produced", showT ix
         ,"\n---2"]   
 
     fn2 <- stripProperPrefix' (doughDir layout) pageFn
@@ -120,8 +120,8 @@ docValToAllVal debug layout flags htmlout   metaRec = do
             -- TODO avoids changes during debug
             , filename = showT fn2
             }
-    when False
-        $ do  putIOwords ["pandoc settings2.yaml"
+    when debug
+        $ do  putIOwords ["docValToAllVal pandoc settings2.yaml"
                             , showT settingsYaml]
     let val = mergeAll
             [ settingsYaml
@@ -130,6 +130,9 @@ docValToAllVal debug layout flags htmlout   metaRec = do
             , toJSON htmlout
             , toJSON ix
             , toJSON bottomLines]
+    when debug
+        $ do  putIOwords ["docValToAllVal val"
+                            , showT val]
     return val
 
 data BottomLines =

@@ -49,14 +49,15 @@ produceMD2HTML debug doughP bakedP flags layout out = do
     need [toFilePath md2]  
     when debug $ liftIO $ putIOwords ["\nproduceMD2HTML - bakedP - *.html", showT outP, showT md2]
     
-
+    let debug2 = True 
     resHtml <- runErr2action $ bakeOneFile2html False flags md2 layout outP
     liftIO $ putIOwords ["\nproduceMD2HTML - return from bakeOneFile2html", showT resHtml]
 
-    resTex <- runErr2action $ bakeOneFile2tex False flags md2 layout outP
+    resTex <- runErr2action $ bakeOneFile2tex  False flags md2 layout outP
     liftIO $ putIOwords ["\nproduceMD2HTML - return from bakeOneFile2html", showT resTex]
 
-    resTex <- runErr2action $ bakeOneFile2pdf False flags md2 layout outP
+    resTex <- runErr2action $ bakeOneFile2pdf True flags outP layout outP
+    -- the handling of the extension is by the file types
     liftIO $ putIOwords ["\nproduceMD2HTML - return from bakeOneFile2pdf", showT resTex]
     return ()
 

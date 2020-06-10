@@ -40,8 +40,8 @@ import Lib.CmdLineArgs (allFlags)
 
 test_shakeAll = 
     do  
-        res <- runErr $ shakeAll True testLayout allFlags "TEST"
-        assertEqual (Right ()) res
+        res <- runErr $ shakeAll False testLayout allFlags "TEST"
+        putIOwords ["\nthe return from test_shakeAll\n", showT res]
 
 -- shakeOp :: Text -> ErrIO Text 
 --         -- SiteLayout -> PubFlags -> FilePath -> ErrIO ()

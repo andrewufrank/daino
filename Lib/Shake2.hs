@@ -112,10 +112,10 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $
     -- let bannerImageFP =    bannerImage2
     
     liftIO $ putIOwords
-        [ "\nshakeMD dirs\n"
-        , "\n\tstaticDirName\n"
+        [ "shakeMD dirs\n"
+        , "\tstaticDirName"
         , showT staticDirName
-        , "\n\tbakedP\n"
+        , "\tbakedP\n"
         , showT bakedP
         -- , "\n\tresourcesDir\n"
         -- , showT resourcesP
@@ -158,36 +158,38 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $
         -- need (map toFilePath yamlPageFiles2)
     return ()
 
+    let debug2 = True 
+
     (toFilePath bakedP <> "**/*.html") %> \out 
         -- calls the copy html and the conversion from md
         -> produceHTML debug doughP bakedP flags layout out
 
  
     (toFilePath (bakedP) <> "/*.css")  %> \out  -- insert css -- no subdir
-      -> copyFileToBaked debug doughP bakedP out 
+      -> copyFileToBaked debug2 doughP bakedP out 
     (toFilePath (bakedP) <> "/*.csl")  %> \out  -- insert css -- no subdir
-        -> copyFileToBaked debug doughP bakedP out 
+        -> copyFileToBaked debug2 doughP bakedP out 
                 -- templatesP 
                 -- (bakedP </> staticDirName) out 
         
     (toFilePath bakedP <> "**/*.pdf") %> \out -- insert pdfFIles1 
                                             -- with subdir
-        -> copyFileToBaked debug doughP bakedP  out 
+        -> copyFileToBaked debug2 doughP bakedP  out 
       
     [toFilePath bakedP <> "/*.JPG"
       , toFilePath bakedP <> "/*.jpg"]
             |%> \out -- insert img files 
                                             -- no subdir (for now)
-        -> copyFileToBaked debug doughP bakedP out
+        -> copyFileToBaked debug2 doughP bakedP out
 
     (toFilePath bakedP <> "**/*.bib") %> \out 
-        -> copyFileToBaked debug doughP bakedP out 
+        -> copyFileToBaked debug2 doughP bakedP out 
         
 
     -- -- conversion md to html (excet for what is in static) 
     -- (\x -> ((toFilePath bakedP <> "**/*.html") ?== x)
     --   && not ((toFilePath staticP <> "**/*.html") ?== x) -- with subdir
-    --   )  ?> \out -> produceMD2HTML debug bakedP doughP 
+    --   )  ?> \out -> produceMD2HTML debug2 bakedP doughP 
     --                     -- masterSettings_yaml masterTemplate 
     --                     flags layout out 
 

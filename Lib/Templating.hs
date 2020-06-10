@@ -37,6 +37,8 @@ putValinMaster debug val templatesP = do
 
   let masterfn = templatesP </> mf
   template <- read8 masterfn dtmplFileType
+  when debug $ putIOwords ["putValinMaster", "template", take' 300 $ showT template]
+  when debug $ putIOwords ["putValinMaster", "val", take' 300 $ showT val]
   html2    <- applyTemplate3 template val  -- inTemplate.html
   when debug $ putIOwords ["putValinMaster", showT html2]
   return html2

@@ -19,6 +19,9 @@ module Lib.Bake (bakeOneFile2html, bakeOneFile2tex, bakeOneFile2pdf)
 
 import           Uniform.FileStrings            ( ) -- for instances
 import           Uniform.Filenames
+import Uniform.FileIO (read8)
+import           Uniform.Shake (replaceExtension')
+-- todo - check replaceextension in fileio 
 import           Lib.Pandoc ( docValToAllVal
                                                 , markdownToPandocBiblio
                                                 , pandocToContentHtml
@@ -53,10 +56,10 @@ bakeOneFile2html
 -- separate html content and put in contentHtml
 -- get pageType, read file and process
 --test in bake_tests:
-bakeOneFile2html debug flags pageFn layout ht2 =
+bakeOneFile2html debug flags inputFn layout ht2 =
   do
-    putIOwords ["\n-----------------", "bakeOneFile2html 1 fn", showT pageFn, "debug", showT debug]
-    (pandoc, metaRec, report) <- getTripleDoc layout pageFn
+    putIOwords ["\n-----------------", "bakeOneFile2html 1 fn", showT inputFn, "debug", showT debug]
+    (pandoc, metaRec, report) <- getTripleDoc layout inputFn
     -- how are errors dealt with 
     -- let debug = True
 
@@ -64,35 +67,36 @@ bakeOneFile2html debug flags pageFn layout ht2 =
                     -- withSettings.pandoc
                         -- produce html and put into contentHtml key
                         -- can be nothing if the md file is not ready to publish
-    when debug $  putIOwords ["\n-----------------", "bakeOneFile2html 2 fn", showT pageFn ]
+    when debug $  putIOwords ["\n-----------------", "bakeOneFile2html 2 fn", showT inputFn ]
 
     htmlout :: HTMLout <- pandocToContentHtml debug pandoc2 -- content.docval  AD -> AF
 
-    when debug $  putIOwords ["\n-----------------", "bakeOneFile2html 3 fn", showT pageFn ]
+    when debug $  putIOwords ["\n-----------------", "bakeOneFile2html 3 fn", showT inputFn ]
 
     val    <- docValToAllVal debug layout flags htmlout  metaRec
     -- includes the directory list and injection, which should be in 
     -- value "menu2"
-    html2  <- putValinMaster debug val (templatesDir layout)
+    html2  <- putValinMaster False val (templatesDir layout)
     write8 ht2 htmloutFileType html2
 
     when debug $  putIOwords
-        ["bakeOneFile2html resultFile", showT ht2, "from", showT pageFn, "\n"]
+        ["bakeOneFile2html resultFile", showT ht2, "from", showT inputFn, "\n"]
     when debug $ putIOwords
-        ["bakeOneFile2html resultvalue", showT val, "\n"
-            , showT html2]--   when debug $ 
+        ["bakeOneFile2html resultvalue", take' 300 $ showT val, "\n"
+            , take' 300 $ showT html2]--   when debug $ 
     putIOwords ["......................"]
-    return . unwords' $ ["bakeOneFile2html outhtml ", showT pageFn, "done"]
+    return . unwords' $ ["bakeOneFile2html outhtml ", take' 300 $ showT inputFn, "done"]
 
   `catchError` 
     (\e -> 
         do
             let errmsg2 =
                     [ "\n****************"
-                    , "bakeOneFile catchError"
-                    , showT e
-                    , "for "
-                    , showT pageFn
+                    , "bakeOneFile2html catchError"
+                    , "\nfor "
+                    , showT inputFn
+                    , "\n"
+                    , take' 300 . showT $ e
                     , "\n****************"
                     ]
             putIOwords errmsg2
@@ -113,10 +117,10 @@ bakeOneFile2tex
 
     -- TODO remove duplication in code 
 
-bakeOneFile2tex debug flags pageFn layout texFn2 =
+bakeOneFile2tex debug flags inputFn layout texFn2 =
   do
-    putIOwords ["\n-----------------", "bakeOneFile2tex 1 fn", showT pageFn, "debug", showT debug]
-    (pandoc, metaRec, report) <- getTripleDoc layout pageFn
+    putIOwords ["\n-----------------", "bakeOneFile2tex 1 fn", showT inputFn, "debug", showT debug]  
+    (pandoc, metaRec, report) <- getTripleDoc layout inputFn
     -- how are errors dealt with 
     -- let debug = True
 
@@ -124,7 +128,7 @@ bakeOneFile2tex debug flags pageFn layout texFn2 =
                     -- withSettings.pandoc
                         -- produce html and put into contentHtml key
                         -- can be nothing if the md file is not ready to publish
-    when debug $  putIOwords ["\n-----------------", "bakeOneFile2tex 2 fn", showT pageFn ]
+    when debug $  putIOwords ["\n-----------------", "bakeOneFile2tex 2 fn", showT inputFn ]
 
     -- here start with tex 
    
@@ -133,11 +137,11 @@ bakeOneFile2tex debug flags pageFn layout texFn2 =
     write8 texFn2 texFileType texText
 
     when debug $  putIOwords
-        ["bakeOneFile2tex resultFile", showT texFn2, "from", showT pageFn, "\n"]
+        ["bakeOneFile2tex resultFile", showT texFn2, "from", showT inputFn, "\n"]
     when debug $ putIOwords
         ["bakeOneFile2tex result TeX", texText]--   when debug $ 
     putIOwords ["......................"]
-    return . unwords' $ ["bakeOneFile2tex tetfn ", showT pageFn, "done"]
+    return . unwords' $ ["bakeOneFile2tex tetfn ", showT inputFn, "done"]
 
   `catchError` 
     (\e -> 
@@ -145,9 +149,10 @@ bakeOneFile2tex debug flags pageFn layout texFn2 =
             let errmsg2 =
                     [ "\n****************"
                     , "bakeOneFile2tex catchError"
-                    , showT e
-                    , "for "
-                    , showT pageFn
+                    , "\nfor "
+                    , showT inputFn
+                    , "\n"
+                    , take' 300 . showT $ e
                     , "\n****************"
                     ]
             putIOwords errmsg2
@@ -167,31 +172,44 @@ bakeOneFile2pdf
 
     -- TODO remove duplication in code 
 
-bakeOneFile2pdf debug flags pageFn layout pdfFn2 =
+bakeOneFile2pdf debug flags inputFn layout pdfFn2 =
   do
-    putIOwords ["\n-----------------", "bakeOneFile2pdf 1 fn", showT pageFn, "pdfFn", showT pdfFn2, "debug", showT debug]
-    (pandoc, metaRec, report) <- getTripleDoc layout pageFn
+    putIOwords ["\n-----------------", "bakeOneFile2pdf 1 fn", showT inputFn, "beomces pdfFn2", showT pdfFn2, "debug", showT debug]
+            -- inputFn has html extension, same as pdfn2
+
+            --  Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/index.html pdfFn Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/index.html debug True
+
+    -- (pandoc, metaRec, report) <- getTripleDoc layout inputFn
     -- how are errors dealt with 
     -- let debug = True
 
-    pandoc2 :: Pandoc <- markdownToPandocBiblio debug flags (doughDir layout) (pandoc, metaRec, report) -- AG -> AD
-                    -- withSettings.pandoc
-                        -- produce html and put into contentHtml key
-                        -- can be nothing if the md file is not ready to publish
-    when debug $  putIOwords ["\n-----------------", "bakeOneFile2pdf 2 fn", showT pageFn ]
+    -- pandoc2 :: Pandoc <- markdownToPandocBiblio debug flags (doughDir layout) (pandoc, metaRec, report) -- AG -> AD
+    --                 -- withSettings.pandoc
+    --                     -- produce html and put into contentHtml key
+    --                     -- can be nothing if the md file is not ready to publish
+    let texfn = replaceExtension' "tex" inputFn :: Path Abs File
+    putIOwords ["bakeOneFile2pdf texfn" , showT texfn]
+    inputTex <- read8 texfn texFileType
 
-    -- here start with tex 
+    when debug $  putIOwords ["\n-----------------", "bakeOneFile2pdf 2 fn", showT texfn 
+        , "the tex file\n"
+        , take' 200 $ inputTex]
+
+    -- here start with tex, this path is for regular files,
+    --      booklets later
    
-    pdfText :: Text <- writePDF2text pandoc2 
+    writePDF2text debug inputTex pdfFn2
+    -- converts the text into latex, stored in the file pdfFn2
 
-    write8 pdfFn2 pdfFileType pdfText
+    -- write8 pdfFn2 pdfFileType respdf   -- assume the correct 
+    -- write8 pdfFn2 pdfFileType pdfText
 
     when debug $  putIOwords
-        ["bakeOneFile2pdf resultFile", showT pdfFn2, "from", showT pageFn, "\n"]
-    when debug $ putIOwords
-        ["bakeOneFile2pdf result TeX", pdfText]--   when debug $ 
+        ["bakeOneFile2pdf resultFile", showT pdfFn2, "from", showT inputFn, "\n"
+        ]
+     
     putIOwords ["......................"]
-    return . unwords' $ ["bakeOneFile2pdf pdfText ", showT pageFn, "done"]
+    return . unwords' $ ["bakeOneFile2pdf pdfText ", showT inputFn, "done"]
 
   `catchError` 
     (\e -> 
@@ -199,9 +217,10 @@ bakeOneFile2pdf debug flags pageFn layout pdfFn2 =
             let errmsg2 =
                     [ "\n****************"
                     , "bakeOneFile2pdf catchError"
-                    , showT e
-                    , "for "
-                    , showT pageFn
+                    , "\nfor "
+                    , showT inputFn
+                    , "\n"
+                    , take' 300 . showT $ e
                     , "\n****************"
                     ]
             putIOwords errmsg2

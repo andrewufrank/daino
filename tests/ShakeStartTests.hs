@@ -157,7 +157,7 @@ shakeTestWrapped flags layout doughP  templatesP testP =
                                                 htmloutFileType
                 metarecText :: String <- readFile2 triple 
                 let metarec = readNote "read metarec 23243ou" metarecText :: MetaRec
-                p :: DocValue <- docValToAllVal True layout flags valText
+                p :: DocValue <- docValToAllVal debug layout flags valText
                                   metarec 
                 write8 ( outP) docValueFileType p
 

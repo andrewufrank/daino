@@ -47,7 +47,7 @@ import   {-@ HTF_TESTS @-}  Lib.Shake2_test  -- AG -> EG
 
 --     ---- for ssgCheck
 -- import {-@ HTF_TESTS @-} Lib.CheckProcess_test  -- (res11)
-import Lib.CheckProcess        -- for direct calls 
+-- import Lib.CheckProcess        -- for direct calls 
 --
 --
 ---- main =  do  -- the local tests only
@@ -78,18 +78,18 @@ mainTest        -- with tests in other modules
 --             return ()
 --     return ()
 
-mainCheck :: IO ()
-mainCheck      -- just a simple bake for test
-                -- checks the completeness of labels 
-   = do
-    putStrLn "mainCheck"
-    runErrorVoid  $ do
-        -- sitefn :: FilePath 
-        let sitefn = "/home/frank/Workspace8/ssg/docs/site/dough/settings2" 
-        res <-  checkProcess True sitefn 
-        putIOwords [s2t "res11", showT $ res] 
-        return ()
-    return ()
+-- mainCheck :: IO ()
+-- mainCheck      -- just a simple bake for test
+--                 -- checks the completeness of labels 
+--    = do
+--     putStrLn "mainCheck"
+--     runErrorVoid  $ do
+--         -- sitefn :: FilePath 
+--         let sitefn = "/home/frank/Workspace8/ssg/docs/site/dough/settings2" 
+--         res <-  checkProcess True sitefn 
+--         putIOwords [s2t "res11", showT $ res] 
+--         return ()
+--     return ()
 
     
 -- testFlags = zero { testFlag = True
