@@ -26,7 +26,7 @@ import           Lib.Foundation (SiteLayout(..)
                 --                , imagesDirName
                                )
 import           Lib.CmdLineArgs (PubFlags(..))
-import           Lib.Bake (bakeOneFile2html, bakeOneFile2tex)
+import           Lib.Bake (bakeOneFile2html, bakeOneFile2tex, bakeOneFile2pdf)
 
       -- liftIO $ putIOwords ["\nshakeMD - bakedP html -  out ", showT out]
       -- hakeMD - bakedP html -  out  "/home/frank/.SSG/bakedTest/SSGdesign/index.html"
@@ -55,6 +55,9 @@ produceMD2HTML debug doughP bakedP flags layout out = do
 
     resTex <- runErr2action $ bakeOneFile2tex False flags md2 layout outP
     liftIO $ putIOwords ["\nproduceMD2HTML - return from bakeOneFile2html", showT resTex]
+
+    resTex <- runErr2action $ bakeOneFile2pdf False flags md2 layout outP
+    liftIO $ putIOwords ["\nproduceMD2HTML - return from bakeOneFile2pdf", showT resTex]
     return ()
 
 produceHTML :: Bool -> Path Abs Dir -> Path Abs Dir -> PubFlags -> SiteLayout -> FilePath -> Action () 
@@ -81,7 +84,7 @@ produceHTML debug doughP bakedP flags layout out = do
             copyFileChangedP fromfile outP
             when debug $ liftIO $ putIOwords ["\n DONE produceHTML - staticP - fromfile ", showT 
                 fromfile]
-        else produceMD2HTML debug doughP bakedP flags layout out
+        else produceMD2HTML True doughP bakedP flags layout out
     return () 
 
 -- the generic copy for all the files 
