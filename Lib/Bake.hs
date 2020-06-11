@@ -167,13 +167,16 @@ bakeOneFile2pdf
   -> Path Abs File
   -> ErrIO Text
 -- files exist
--- convert a file md2, process citations if any
--- produce latex raw file (no standalone)
-
-    -- TODO remove duplication in code 
+-- convert a tex file,  form standalone latex and 
+-- process with luatex, the result file is not the name
+-- of the md file with just replaced the extension 
+-- issue: the standalone latex must not have the same name
+-- as the tex (body only) file
 
 bakeOneFile2pdf debug flags inputFn layout pdfFn2 =
   do
+    let infn = setExtension extTex fn
+    let medfn1 = setExtension extTex fn  -- for the standalone file 
     putIOwords ["\n-----------------", "bakeOneFile2pdf 1 fn", showT inputFn, "beomces pdfFn2", showT pdfFn2, "debug", showT debug]
             -- inputFn has html extension, same as pdfn2
 
@@ -226,3 +229,14 @@ bakeOneFile2pdf debug flags inputFn layout pdfFn2 =
             putIOwords errmsg2
             return . unwords' $ errmsg2
             )
+
+    --- the preamble and the end -- escape \
+pre1 = ["%%% eval: (setenv \"LANG\" \"en_US.UTF-8\")"
+        , "\\documentclass[a4paper,10pt]{scrbook}"
+        , "\\usepackage[german]{babel}"
+        -- necessary for the pandoc produced TeX files: 
+        , "\\usepackage[colorlinks]{hyperref}" 
+        , "\\newenvironment{cslreferences}{}{\\par}"
+        , "\\begin{document}"] :: [Text]
+
+end9    = ["\\end{document}"]

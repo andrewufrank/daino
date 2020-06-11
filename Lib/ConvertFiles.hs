@@ -56,8 +56,11 @@ produceMD2HTML debug doughP bakedP flags layout out = do
     resTex <- runErr2action $ bakeOneFile2tex  False flags md2 layout outP
     liftIO $ putIOwords ["\nproduceMD2HTML - return from bakeOneFile2html", showT resTex]
 
-    resTex <- runErr2action $ bakeOneFile2pdf True flags outP layout outP
+    let filenamePrpoper = removeExtension (toFilePath outP)
+    let standaloneFn = makeAbsFile (filenameProper <> "Doc")
+    liftIO $ putIOwords ["\nproduceMD2HTML - return from bakeOneFile2pdf", showT resTex]    resPdf <- runErr2action $ bakeOneFile2pdf True flags outP layout outP
     -- the handling of the extension is by the file types
+    -- but the result must not be the same name as the md file
     liftIO $ putIOwords ["\nproduceMD2HTML - return from bakeOneFile2pdf", showT resTex]
     return ()
 
