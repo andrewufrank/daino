@@ -38,7 +38,8 @@ import Uniform.Piped (pipedDoIO) --getRecursiveContents
 
 doughdir = makeAbsDir "/home/frank/Workspace8/ssg/docs/site/dough/" :: Path Abs Dir 
 resfil = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/resfile.txt" :: Path Abs File
-
+ mdfil = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/postwk9sub.md"
+ 
 res11 :: ErrIO Text 
 res11 = do  
             pipedDoIO resfil doughdir opOnFile 
@@ -72,7 +73,8 @@ test_allFilenames2 = testVar0FileIO progName doughdir "allFilenames" (allFilenam
 --     return . t2s . showT $ mr 
 
 test_allMetaRec :: IO () 
-test_allMetaRec = testVar0FileIO progName doughdir "allMetaRec" allMetaRec 
+test_allMetaRec = testVar0FileIO progName doughdir 
+            "allMetaRec" allMetaRec 
 
 allMetaRec :: Path Abs Dir -> ErrIO (Text) 
 allMetaRec dirname = allMetaRecReport layoutDefaults dirname
@@ -82,6 +84,13 @@ allMetaRec dirname = allMetaRecReport layoutDefaults dirname
     --     readFile2 resfil 
 
 test_hasExtension = assertBool $ hasExtension (Extension "md") (makeRelFile "test/test.md")
+
+test_bakeOneFile2html = testVarOfileIO programName mdfil "bakeOne2html"
+    (op_bakeOneFile2html)
+        
+op_bakeOneFile2html mdf =  do 
+        res <- bakeOneFile2html True flagsDefault mdf layoutDefaults
+        return res 
 
 -- test_startNone = assertEqual True (isPrefixOf' "none" ("\"none\""::Text))
  

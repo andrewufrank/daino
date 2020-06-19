@@ -20,6 +20,8 @@ module Lib.Pandoc
     , Pandoc(..)
     , flattenMeta
     , readMarkdown2
+    , HTMLout(..)
+    , htmloutFileType
     , MenuEntry) where
 
 import           Lib.Foundation ( SiteLayout(..))
@@ -27,6 +29,9 @@ import           Lib.Indexing -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
 import           Paths_SSG (version)
 import           Uniform.Convenience.DataVarious (showVersionT)
 import           Uniform.FileIO hiding (Meta, at)
+import Uniform.HTMLout ( HTMLout(..), writeHtml5String2, htmloutFileType )
+import Uniform.DocValue (mergeAll)
+import Uniform.Markdown (readMarkdown2)
 import           Uniform.Pandoc -- hiding (Meta(..))
 import           Uniform.BibTex
 import           Uniform.Time (year2000)

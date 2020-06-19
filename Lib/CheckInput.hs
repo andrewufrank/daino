@@ -24,7 +24,10 @@ import           Uniform.Time                   (   readDateMaybe
                                                 , UTCTime(..)
                                                 )
 
-import           Uniform.Pandoc (ToJSON, FromJSON, Pandoc, Value, getAtKey, readMd2meta)
+import           Uniform.Pandoc (ToJSON, FromJSON, Pandoc, Value, getAtKey
+        -- , readMd2meta
+        )
+import Uniform.Markdown (readMd2meta)
 import Lib.Foundation (SiteLayout(..), templatesDir, defaultPageTypeName)
 import Data.List ( (\\) )
 import qualified Data.Map as M

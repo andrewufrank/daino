@@ -23,22 +23,19 @@ import Uniform.FileIO (read8)
 import           Uniform.Shake (replaceExtension')
 -- todo - check replaceextension in fileio 
 import           Lib.Pandoc ( docValToAllVal
-                                                , markdownToPandocBiblio
-                                                , pandocToContentHtml
-                                                -- , MenuEntry(..)
-                                                )-- with a simplified Action ~ ErrIO
+                            , markdownToPandocBiblio
+                            , pandocToContentHtml
+                            ,  htmloutFileType 
+                            , HTMLout (..)
+                            , writeLatex2text
+                            -- , MenuEntry(..)
+                            )-- with a simplified Action ~ ErrIO
 
 import           Lib.Templating                 ( putValinMaster )
-import           Uniform.Pandoc                 ( Pandoc
-                                                , htmloutFileType
-                                                , write8
-                                                , HTMLout (..)
-                                                , extTex
-                                                , writeLatex2text
-                                                , texFileType
-                                                , pdfFileType, extPDF
-                                                , writePDF2text
-                                                )
+import Uniform.ProcessPDF (writePDF2text, extPDF, pdfFileType, texFileType,  extTex)
+-- writeLatex2text,
+import           Uniform.Pandoc    ( Pandoc , write8)
+                                     
 import           Lib.CmdLineArgs                ( PubFlags(..) )
 import Lib.CheckInput (getTripleDoc)
 import Lib.Foundation (SiteLayout(..), templatesDir)
@@ -47,7 +44,7 @@ import Lib.Foundation (SiteLayout(..), templatesDir)
 bakeOneFile2html
   :: Bool
   -> PubFlags
-  -> Path Abs File
+  -> Path Abs File  -- ^ md file 
   -> SiteLayout
   -> Path Abs File
   -> ErrIO Text
@@ -175,9 +172,9 @@ bakeOneFile2pdf
 
 bakeOneFile2pdf debug flags inputFn layout pdfFn2 =
   do
-    let infn = setExtension extTex fn
-    let medfn1 = setExtension extTex fn  -- for the standalone file 
-    putIOwords ["\n-----------------", "bakeOneFile2pdf 1 fn", showT inputFn, "beomces pdfFn2", showT pdfFn2, "debug", showT debug]
+    let infn = setExtension extTex inputFn
+    let medfn1 = setExtension extTex inputFn  -- for the standalone file 
+    putIOwords ["\n-----------------", "bakeOneFile2pdf 1 inputFn", showT inputFn, "beomces \n\tinfn", showT infn, "\n\tmedfn1", showT medfn1, "debug", showT debug]
             -- inputFn has html extension, same as pdfn2
 
             --  Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/index.html pdfFn Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/index.html debug True
