@@ -3,16 +3,28 @@
 -- Module      :  with Path  the  process to convert
 --              files in any input format to html
 --              orginals are found in dire doughDir and go to bakeDir
+--------------------------------------------------------------------------
 {-  die struktur geht von den files aus, die man braucht und 
-    diese rekonstruieren die directories wieder, wenn sie kreiert werden.   
+    diese rekonstruieren die directories wieder, wenn sie kreiert werden.
 
-    welche directories nicht einschliessen: enthalten 
-    um files aus direktories nicht einzuschliessen braucht es:
-    - die files die in diesen gefunden werden, nicht zum umwandeln 
+    wird moeglicherweise ein filetyp (durch extension fixiert) aus zwei quellen produziert so muss dass in der regel fuer die generation
+        beruecksichtigt werden 
+        (probleme html - entweder durch uebersestzen oder als resource eingestellt
+        (problem pfd - dito )
+        )   
+
+    ausgeschlossene directories werden durch DNB  markiert
+    die files die in diesen gefunden werden, nicht zum umwandeln 
         anzumelden, indem deren namen nicht in "want" eingeschlossen 
         werden.
 
-    
+    pdf werden aus tex erzeugt, die aus texsnip erzeugt werden.
+    jedes md ergibt ein texsnip
+    jedes texsnip gibt ein tex 
+        die indexseiten, die grosse themen zusammenfassen
+        produzieren ein tex mit includes fuer die subseiten 
+    jedes tex gibt ein pdf 
+    das heisst: jedes md gibt ein pdf (auch eingestellte)
     -}
 --
 -----------------------------------------------------------------------------

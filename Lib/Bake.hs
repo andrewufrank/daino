@@ -21,18 +21,20 @@ import           Uniform.FileStrings            ( ) -- for instances
 import           Uniform.Filenames
 import Uniform.FileIO (read8)
 import           Uniform.Shake (replaceExtension')
+import Uniform.Pandoc (writeLatex2, TexSnip, texSnipFileType)
+
 -- todo - check replaceextension in fileio 
 import           Lib.Pandoc ( docValToAllVal
                             , markdownToPandocBiblio
                             , pandocToContentHtml
                             ,  htmloutFileType 
                             , HTMLout (..)
-                            , writeLatex2text
+                            -- , writeLatex2
                             -- , MenuEntry(..)
                             )-- with a simplified Action ~ ErrIO
 
 import           Lib.Templating                 ( putValinMaster )
-import Uniform.ProcessPDF (writePDF2text, extPDF, pdfFileType, texFileType,  extTex)
+import Uniform.ProcessPDF (writePDF2text, extPDF, pdfFileType, texFileType,  extTex, Latex)
 -- writeLatex2text,
 import           Uniform.Pandoc    ( Pandoc , write8)
                                      
@@ -129,14 +131,14 @@ bakeOneFile2tex debug flags inputFn layout texFn2 =
 
     -- here start with tex 
    
-    texText :: Text <- writeLatex2text pandoc2 
+    texText :: TexSnip <- writeLatex2 pandoc2 
 
-    write8 texFn2 texFileType texText
+    write8 texFn2 texSnipFileType texText
 
     when debug $  putIOwords
         ["bakeOneFile2tex resultFile", showT texFn2, "from", showT inputFn, "\n"]
     when debug $ putIOwords
-        ["bakeOneFile2tex result TeX", texText]--   when debug $ 
+        ["bakeOneFile2tex result TeX", showT texText]--   when debug $ 
     putIOwords ["......................"]
     return . unwords' $ ["bakeOneFile2tex tetfn ", showT inputFn, "done"]
 
@@ -189,16 +191,17 @@ bakeOneFile2pdf debug flags inputFn layout pdfFn2 =
     --                     -- can be nothing if the md file is not ready to publish
     let texfn = replaceExtension' "tex" inputFn :: Path Abs File
     putIOwords ["bakeOneFile2pdf texfn" , showT texfn]
-    inputTex <- read8 texfn texFileType
+    -- inputTex <- read8 texfn texFileType
 
-    when debug $  putIOwords ["\n-----------------", "bakeOneFile2pdf 2 fn", showT texfn 
-        , "the tex file\n"
-        , take' 200 $ inputTex]
+    -- when debug $  putIOwords ["\n-----------------", "bakeOneFile2pdf 2 fn", showT texfn 
+    --     , "the tex file\n"
+    --     , take' 200 . showT $inputTex]
 
     -- here start with tex, this path is for regular files,
     --      booklets later
    
-    writePDF2text debug inputTex pdfFn2
+    writePDF2text debug texfn --  automatisch gleiche extension
+                            -- is this a problem here ? pdfFn2
     -- converts the text into latex, stored in the file pdfFn2
 
     -- write8 pdfFn2 pdfFileType respdf   -- assume the correct 

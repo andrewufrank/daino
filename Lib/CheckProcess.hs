@@ -12,8 +12,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RankNTypes, Trustworthy #-}
 
-{-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans #-}
-
+{-# OPTIONS_GHC -Wall -fno-warn-orphans 
+            -fno-warn-missing-signatures
+            -fno-warn-missing-methods 
+            -fno-warn-duplicate-exports 
+            -fno-warn-unused-imports 
+            #-}
+            
 module Lib.CheckProcess where
 
 import           Uniform.Error (ErrIO) -- , callIO, liftIO)

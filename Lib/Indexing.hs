@@ -10,7 +10,13 @@
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE OverloadedStrings #-}
 -- {-# LANGUAGE DeriveGeneric #-}
-
+{-# OPTIONS_GHC -Wall -fno-warn-orphans 
+            -fno-warn-missing-signatures
+            -fno-warn-missing-methods 
+            -fno-warn-duplicate-exports 
+            -fno-warn-unused-imports 
+            #-}
+            
 module Lib.Indexing (module Lib.Indexing, getAtKey
             , module Lib.IndexMake 
             ) where
