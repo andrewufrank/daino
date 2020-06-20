@@ -12,16 +12,22 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeFamilies #-}
 
+{-# OPTIONS_GHC -Wall -fno-warn-orphans 
+            -fno-warn-missing-signatures
+            -fno-warn-missing-methods 
+            -fno-warn-duplicate-exports 
+            -fno-warn-unused-imports 
+            #-}
+
 -- {-# LANGUAGE TypeSynonymInstances  #-}
-module Lib.Bake (bakeOneFile2html, bakeOneFile2tex, bakeOneFile2pdf) 
-  --  (openMain, htf_thisModuelsTests)
+module Lib.Bake (bakeOneFile2html, bakeOneFile2texsnip, bakeOneFile2pdf) 
                 where
 
 import           Uniform.FileStrings            ( ) -- for instances
 import           Uniform.Filenames
 import Uniform.FileIO (read8)
 import           Uniform.Shake (replaceExtension')
-import Uniform.Pandoc (writeLatex2, TexSnip, texSnipFileType)
+import Uniform.Pandoc (writeLatex2, TexSnip, texSnipFileType, extTexSnip)
 
 -- todo - check replaceextension in fileio 
 import           Lib.Pandoc ( docValToAllVal
@@ -29,15 +35,11 @@ import           Lib.Pandoc ( docValToAllVal
                             , pandocToContentHtml
                             ,  htmloutFileType 
                             , HTMLout (..)
-                            -- , writeLatex2
-                            -- , MenuEntry(..)
-                            )-- with a simplified Action ~ ErrIO
+                            )
 
 import           Lib.Templating                 ( putValinMaster )
 import Uniform.ProcessPDF (writePDF2text, extPDF, pdfFileType, texFileType,  extTex, Latex)
--- writeLatex2text,
 import           Uniform.Pandoc    ( Pandoc , write8)
-                                     
 import           Lib.CmdLineArgs                ( PubFlags(..) )
 import Lib.CheckInput (getTripleDoc)
 import Lib.Foundation (SiteLayout(..), templatesDir)
@@ -103,7 +105,7 @@ bakeOneFile2html debug flags inputFn layout ht2 =
             )
 
 
-bakeOneFile2tex
+bakeOneFile2texsnip
   :: Bool
   -> PubFlags
   -> Path Abs File
@@ -115,13 +117,13 @@ bakeOneFile2tex
 -- produce latex raw file (no standalone)
 
     -- TODO remove duplication in code 
+    -- TODO needs bib and rest of stuff done for html 
+    -- TODO produce docval files 
 
-bakeOneFile2tex debug flags inputFn layout texFn2 =
+bakeOneFile2texsnip debug flags inputFn layout texFn2 =
   do
     putIOwords ["\n-----------------", "bakeOneFile2tex 1 fn", showT inputFn, "debug", showT debug]  
     (pandoc, metaRec, report) <- getTripleDoc layout inputFn
-    -- how are errors dealt with 
-    -- let debug = True
 
     pandoc2 :: Pandoc <- markdownToPandocBiblio debug flags (doughDir layout) (pandoc, metaRec, report) -- AG -> AD
                     -- withSettings.pandoc
@@ -129,7 +131,7 @@ bakeOneFile2tex debug flags inputFn layout texFn2 =
                         -- can be nothing if the md file is not ready to publish
     when debug $  putIOwords ["\n-----------------", "bakeOneFile2tex 2 fn", showT inputFn ]
 
-    -- here start with tex 
+    -- here start with texsnip 
    
     texText :: TexSnip <- writeLatex2 pandoc2 
 
@@ -172,44 +174,28 @@ bakeOneFile2pdf
 -- issue: the standalone latex must not have the same name
 -- as the tex (body only) file
 
-bakeOneFile2pdf debug flags inputFn layout pdfFn2 =
+bakeOneFile2pdf debug flags inputFn  layout pdfFn2 =
   do
-    let infn = setExtension extTex inputFn
-    let medfn1 = setExtension extTex inputFn  -- for the standalone file 
-    putIOwords ["\n-----------------", "bakeOneFile2pdf 1 inputFn", showT inputFn, "beomces \n\tinfn", showT infn, "\n\tmedfn1", showT medfn1, "debug", showT debug]
+    -- let infn = setExtension extTex inputFn
+    -- let medfn1 = setExtension extTex inputFn  -- for the standalone file 
+    putIOwords ["\n-----------------", "bakeOneFile2pdf 1 inputFn", showT inputFn
+    -- , "beomces \n\tinfn", showT infn, "\n\tmedfn1", showT medfn1
+            , "debug", showT debug]
             -- inputFn has html extension, same as pdfn2
 
-            --  Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/index.html pdfFn Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/index.html debug True
-
     -- (pandoc, metaRec, report) <- getTripleDoc layout inputFn
-    -- how are errors dealt with 
-    -- let debug = True
 
     -- pandoc2 :: Pandoc <- markdownToPandocBiblio debug flags (doughDir layout) (pandoc, metaRec, report) -- AG -> AD
     --                 -- withSettings.pandoc
     --                     -- produce html and put into contentHtml key
     --                     -- can be nothing if the md file is not ready to publish
-    let texfn = replaceExtension' "tex" inputFn :: Path Abs File
-    putIOwords ["bakeOneFile2pdf texfn" , showT texfn]
-    -- inputTex <- read8 texfn texFileType
-
-    -- when debug $  putIOwords ["\n-----------------", "bakeOneFile2pdf 2 fn", showT texfn 
-    --     , "the tex file\n"
-    --     , take' 200 . showT $inputTex]
-
-    -- here start with tex, this path is for regular files,
-    --      booklets later
+    -- let texfn = replaceExtension' extTexSnip inputFn :: Path Abs File
+    putIOwords ["bakeOneFile2pdf texfn" , showT inputFn]
    
-    writePDF2text debug texfn --  automatisch gleiche extension
-                            -- is this a problem here ? pdfFn2
-    -- converts the text into latex, stored in the file pdfFn2
-
-    -- write8 pdfFn2 pdfFileType respdf   -- assume the correct 
-    -- write8 pdfFn2 pdfFileType pdfText
+    writePDF2text debug inputFn -- takes texsnip extension, produces pdf extension
 
     when debug $  putIOwords
-        ["bakeOneFile2pdf resultFile", showT pdfFn2, "from", showT inputFn, "\n"
-        ]
+        ["bakeOneFile2pdf resultFile   pdf", showT inputFn ]
      
     putIOwords ["......................"]
     return . unwords' $ ["bakeOneFile2pdf pdfText ", showT inputFn, "done"]
@@ -230,13 +216,13 @@ bakeOneFile2pdf debug flags inputFn layout pdfFn2 =
             return . unwords' $ errmsg2
             )
 
-    --- the preamble and the end -- escape \
-pre1 = ["%%% eval: (setenv \"LANG\" \"en_US.UTF-8\")"
-        , "\\documentclass[a4paper,10pt]{scrbook}"
-        , "\\usepackage[german]{babel}"
-        -- necessary for the pandoc produced TeX files: 
-        , "\\usepackage[colorlinks]{hyperref}" 
-        , "\\newenvironment{cslreferences}{}{\\par}"
-        , "\\begin{document}"] :: [Text]
+--     --- the preamble and the end -- escape \
+-- pre1 = ["%%% eval: (setenv \"LANG\" \"en_US.UTF-8\")"
+--         , "\\documentclass[a4paper,10pt]{scrbook}"
+--         , "\\usepackage[german]{babel}"
+--         -- necessary for the pandoc produced TeX files: 
+--         , "\\usepackage[colorlinks]{hyperref}" 
+--         , "\\newenvironment{cslreferences}{}{\\par}"
+--         , "\\begin{document}"] :: [Text]
 
-end9    = ["\\end{document}"]
+-- end9    = ["\\end{document}"]

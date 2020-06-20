@@ -35,7 +35,12 @@
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-{-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans #-}
+{-# OPTIONS_GHC -Wall -fno-warn-orphans 
+            -fno-warn-missing-signatures
+            -fno-warn-missing-methods 
+            -fno-warn-duplicate-exports 
+            -fno-warn-unused-imports 
+            #-}
 
 module Lib.Shake2 where
 
@@ -61,7 +66,8 @@ shakeDelete _ filepath =
     , s2t filepath]
 
 shakeArgs2 :: Path b t -> Rules () -> IO ()
--- | set the options for shake  
+-- | set the options for shake 
+-- called in shakeMD 
 shakeArgs2 bakedP = do
   -- putIOwords ["shakeArgs2", "bakedP", s2t . toFilePath $ bakedP]
     res <- shake  -- not shakeArgs, which would include the cmd line args
@@ -73,9 +79,7 @@ shakeArgs2 bakedP = do
     return res
 
 shakeAll :: Bool -> SiteLayout -> PubFlags -> FilePath -> ErrIO ()
--- ^ bake all md files and copy the resources
--- sets the current dir to doughDir
--- copies banner image 
+-- ^ calls shake in the IO monade. this is in the ErrIO  
 
 shakeAll debug layout flags filepath = 
   do 
@@ -84,10 +88,7 @@ shakeAll debug layout flags filepath =
     putIOwords  [ "\n\n=====================================shakeAll start", "\n flags"
             , showT flags , "caused by", s2t filepath, "."]
     let doughP = doughDir layout -- the regular dough
-        -- templatesP = templatesDir layout 
         bakedP = bakedDir layout
-        -- bannerImageFileName = (bannerImage layout)
-        -- bannerImage2 = templatesImgDirName `addFileName` bannerImageFileName
     setCurrentDir doughP  
     callIO $ shakeMD debug layout flags doughP  bakedP 
     -- return ()
@@ -96,8 +97,6 @@ shakeMD :: Bool -> SiteLayout
         -> PubFlags
         -> Path Abs Dir -- dough (source for files)
         -> Path Abs Dir -- baked (target dir for site)
-        -- -> Path Abs Dir
-        -- -> Path Rel File 
         -> IO ()
 -- ^ bake all md files and copy the resources
 -- sets the current dir to doughDir
@@ -110,27 +109,12 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $
     -- because the file types are not automatically 
     -- copied 
      
-    -- let staticP = bakedP </> staticDirName :: Path Abs Dir
-    -- should not be needed -- will be resourcesDirName
-    -- let resourcesP = doughP </> resourcesDirName :: Path Abs Dir
-    -- let 
-        -- masterTemplate = templatesP </> masterTemplateP :: Path Abs File
-        -- masterTemplateP = makeRelFile "master4.dtpl" :: Path Rel File
-        -- settingsYamlP = makeRelFile "settings2.yaml" :: Path Rel File
-        -- masterSettings_yaml = doughP </> settingsYamlP :: Path Abs File
-        -- imagesP = doughP </> resourcesDirName </> imagesDirName 
-        -- imagesTargetP = staticP </> imagesDirName
-    -- let bannerImageTarget = bakedP </> staticDirName </> bannerImage2
-    -- let bannerImageFP =    bannerImage2
-    
     liftIO $ putIOwords
         [ "shakeMD dirs\n"
         , "\tstaticDirName"
         , showT staticDirName
         , "\tbakedP\n"
         , showT bakedP
-        -- , "\n\tresourcesDir\n"
-        -- , showT resourcesP
         ]
     want ["allMarkdownConversion"]
 
@@ -149,13 +133,16 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $
                 -- templatesP 
                 -- (bakedP </> staticDirName) -- exception
         mds :: [Path Abs File] <-  getNeeds debug doughP bakedP "md" "html"
-        -- given md
+        pdf2 :: [Path Abs File] <-  getNeeds debug doughP bakedP "md" "pdf"
+        -- docvals :: [Path Abs File] <-  getNeeds debug doughP bakedP "md" "docval"
+        -- given md produce pdf and md files,
+        -- but produce the common precursor docval
+        -- TODO 
+
         csls <- getNeeds debug doughP bakedP "csl" "csl"
     -- convert to needs (perhaps wants better)
     -- no restriction on order    
     
-        -- needP [bannerImageTarget]
-
         needP pdfs 
         needP htmls
         needP bibs 
@@ -163,7 +150,9 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $
         needP imgs2
         needP csss 
         needP csls
-        needP mds 
+        needP mds   -- fuer html
+        needP pdf2  -- fuer pdf  
+        -- needP [bannerImageTarget]
         --  
         -- needP [masterSettings_yaml] -- checks only that file exists
         -- needP  [masterTemplate]
@@ -181,12 +170,10 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $
       -> copyFileToBaked debug2 doughP bakedP out 
     (toFilePath (bakedP) <> "/*.csl")  %> \out  -- insert css -- no subdir
         -> copyFileToBaked debug2 doughP bakedP out 
-                -- templatesP 
-                -- (bakedP </> staticDirName) out 
         
     (toFilePath bakedP <> "**/*.pdf") %> \out -- insert pdfFIles1 
                                             -- with subdir
-        -> copyFileToBaked debug2 doughP bakedP  out 
+        -> producePDF debug2 doughP bakedP flags layout out 
       
     [toFilePath bakedP <> "/*.JPG"
       , toFilePath bakedP <> "/*.jpg"]
@@ -197,17 +184,8 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $
     (toFilePath bakedP <> "**/*.bib") %> \out 
         -> copyFileToBaked debug2 doughP bakedP out 
         
-
-    -- -- conversion md to html (excet for what is in static) 
-    -- (\x -> ((toFilePath bakedP <> "**/*.html") ?== x)
-    --   && not ((toFilePath staticP <> "**/*.html") ?== x) -- with subdir
-    --   )  ?> \out -> produceMD2HTML debug2 bakedP doughP 
-    --                     -- masterSettings_yaml masterTemplate 
-    --                     flags layout out 
-
-
 getNeeds :: Bool -> Path Abs Dir -> Path Abs Dir -> Text -> Text -> Action [Path Abs File]
--- ^ find the files which are needed
+-- ^ find the files which are needed (generic)
 --  from source with extension ext
 getNeeds debug doughP bakedP extSource extTarget = do
     let sameExt  = extSource == extTarget

@@ -12,6 +12,13 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeFamilies #-}
 
+{-# OPTIONS_GHC -Wall -fno-warn-orphans 
+            -fno-warn-missing-signatures
+            -fno-warn-missing-methods 
+            -fno-warn-duplicate-exports 
+            -fno-warn-unused-imports 
+            #-}
+
 module Lib.StartSSGprocess (ssgProcess) 
                 where
 
