@@ -43,6 +43,7 @@ library
         ,  uniform-strings -any
         ,  uniform-shake
         , shake
+        , path-io
         , pipes
         , containers
 
@@ -133,6 +134,7 @@ test-suite ssgTest
         uniform-cmdLineArgs,
         uniform-shake,
         shake,
+        path-io,
         pipes,
         uniform-watch ,
         uniform-time,

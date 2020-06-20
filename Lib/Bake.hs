@@ -21,15 +21,18 @@
             #-}
 
 -- {-# LANGUAGE TypeSynonymInstances  #-}
-module Lib.Bake (bakeOneFile2html, bakeOneFile2texsnip, bakeOneTexSnip2pdf) 
+module Lib.Bake 
+    (module Lib.Bake
+    , bakeOneFile2docval, bakeOneFile2html, bakeOneFile2texsnip, bakeOneTexSnip2pdf, bakeOneTexSnip2pdf
+    ) 
                 where
 
 import           Uniform.FileStrings            ( ) -- for instances
 import           Uniform.Filenames
-import Uniform.FileIO (read8, write8, copyOneFile)
+import Uniform.FileIO (read8, write8, copyOneFileOver)
 import           Uniform.Shake (replaceExtension')
 import Uniform.Pandoc (writeLatex2, TexSnip, texSnipFileType, extTexSnip)
-
+import Uniform.DocValue (docValueFileType, docvalExt)
 -- todo - check replaceextension in fileio 
 import           Lib.Pandoc ( docValToAllVal
                             , markdownToPandocBiblio
@@ -45,6 +48,47 @@ import           Lib.CmdLineArgs                ( PubFlags(..) )
 import Lib.CheckInput (getTripleDoc)
 import Lib.Foundation (SiteLayout(..), templatesDir)
 import qualified Path.IO  as Path (getTempDir)
+
+bakeOneFile2docval
+  :: Bool
+  -> PubFlags
+  -> Path Abs File  -- ^ md file 
+  -> SiteLayout
+  -> Path Abs File
+  -> ErrIO Text
+-- files exist
+-- convert a file md2, process citations if any
+-- separate html content and put in contentHtml
+-- get pageType, read file and process
+--test in bake_tests:
+bakeOneFile2docval debug flags inputFn layout ht2 =
+  do
+    putIOwords ["\n-----------------", "bakeOneFile2docval 1 fn", showT inputFn, "debug", showT debug]
+    (pandoc, metaRec, report) <- getTripleDoc layout inputFn
+    -- how are errors dealt with 
+    -- let debug = True
+
+    pandoc2 :: Pandoc <- markdownToPandocBiblio debug flags (doughDir layout) (pandoc, metaRec, report) -- AG -> AD
+                    -- withSettings.pandoc
+                        -- produce html and put into contentHtml key
+                        -- can be nothing if the md file is not ready to publish
+    when debug $  putIOwords ["\n-----------------", "bakeOneFile2docval 2 fn", showT inputFn ]
+
+    htmlout :: HTMLout <- pandocToContentHtml debug pandoc2 -- content.docval  AD -> AF
+
+    when debug $  putIOwords ["\n-----------------", "bakeOneFile2docval 3 fn", showT inputFn ]
+
+    val    <- docValToAllVal debug layout flags htmlout  metaRec
+    -- includes the directory list and injection, which should be in 
+    -- value "menu2"
+    when debug $  putIOwords ["\n-----------------", "bakeOneFile2docval 4 fn", showT inputFn ]
+
+    write8 inputFn docValueFileType val 
+
+    when debug $  putIOwords ["\n-----------------", "bakeOneFile2docval done fn", showT inputFn ]
+    return "ok bakeOneFile2docval"
+
+
 
 
 bakeOneFile2html
@@ -205,7 +249,7 @@ bakeOneTexSnip2pdf debug flags inputFn  layout pdfFn2 =
     when debug $  putIOwords
         ["bakeOneTexSnip2pdf pdeftempfile", showT pdftempfile
         , "\n pdfFn3", showT pdfFn3  ]
-    copyOneFile pdftempfile pdfFn3  -- does this have the extension pdf?
+    copyOneFileOver pdftempfile pdfFn3  -- does this have the extension pdf?
 
     when debug $  putIOwords
         ["bakeOneTexSnip2pdf resultFile   pdf", showT pdfFn2 ]
