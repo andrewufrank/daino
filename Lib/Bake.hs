@@ -272,9 +272,11 @@ bakeOneTexSnip2pdf
 bakeOneTexSnip2pdf debug flags inputFn  layout pdfFn2 =
   do
  
-    putIOwords ["\n-----------------", "bakeOneTexSnip2pdf 1 inputFn", showT inputFn
-            , "\n beomes \n pdfFn2", showT pdfFn2 
-            , "\n debug", showT debug]
+    putIOwords ["\n-----------------", "bakeOneTexSnip2pdf 1"
+            , "\n inputFn", showT inputFn
+            , "\n beomes pdfFn2", showT pdfFn2   -- same input and pdffn2
+            , "\n debug", showT debug]        -- both are from baked 
+                            -- texsnip are in baked!
 
     texsnip1 :: texsnip <- read8 inputFn texSnipFileType
     let latex1 = tex2latex [texsnip1]  -- :: [TexSnip] -> Latex
