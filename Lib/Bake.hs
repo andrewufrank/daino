@@ -21,12 +21,12 @@
             #-}
 
 -- {-# LANGUAGE TypeSynonymInstances  #-}
-module Lib.Bake (bakeOneFile2html, bakeOneFile2texsnip, bakeOneFile2pdf) 
+module Lib.Bake (bakeOneFile2html, bakeOneFile2texsnip, bakeOneTexSnip2pdf) 
                 where
 
 import           Uniform.FileStrings            ( ) -- for instances
 import           Uniform.Filenames
-import Uniform.FileIO (read8)
+import Uniform.FileIO (read8, write8, copyOneFile)
 import           Uniform.Shake (replaceExtension')
 import Uniform.Pandoc (writeLatex2, TexSnip, texSnipFileType, extTexSnip)
 
@@ -39,11 +39,12 @@ import           Lib.Pandoc ( docValToAllVal
                             )
 
 import           Lib.Templating                 ( putValinMaster )
-import Uniform.ProcessPDF (writePDF2text, extPDF, pdfFileType, texFileType,  extTex, Latex)
+import Uniform.ProcessPDF (writePDF2text, extPDF, pdfFileType, texFileType,  extTex, Latex(..),tex2latex)
 import           Uniform.Pandoc    ( Pandoc , write8)
 import           Lib.CmdLineArgs                ( PubFlags(..) )
 import Lib.CheckInput (getTripleDoc)
 import Lib.Foundation (SiteLayout(..), templatesDir)
+import qualified Path.IO  as Path (getTempDir)
 
 
 bakeOneFile2html
@@ -161,12 +162,12 @@ bakeOneFile2texsnip debug flags inputFn layout texFn2 =
             return . unwords' $ errmsg2
             )
 
-bakeOneFile2pdf
+bakeOneTexSnip2pdf
   :: Bool
   -> PubFlags
-  -> Path Abs File
+  -> Path Abs File  -- ^ texsnip
   -> SiteLayout
-  -> Path Abs File
+  -> Path Abs File  -- ^ target 
   -> ErrIO Text
 -- files exist
 -- convert a tex file,  form standalone latex and 
@@ -175,38 +176,42 @@ bakeOneFile2pdf
 -- issue: the standalone latex must not have the same name
 -- as the tex (body only) file
 
-bakeOneFile2pdf debug flags inputFn  layout pdfFn2 =
+bakeOneTexSnip2pdf debug flags inputFn  layout pdfFn2 =
   do
-    -- let infn = setExtension extTex inputFn
-    -- let medfn1 = setExtension extTex inputFn  -- for the standalone file 
-    putIOwords ["\n-----------------", "bakeOneFile2pdf 1 inputFn", showT inputFn
-    -- , "beomces \n\tinfn", showT infn, "\n\tmedfn1", showT medfn1
+ 
+    putIOwords ["\n-----------------", "bakeOneTexSnip2pdf 1 inputFn", showT inputFn
+            , "beomces \n pdfFn2", showT pdfFn2 
             , "debug", showT debug]
-            -- inputFn has html extension, same as pdfn2
 
-    -- (pandoc, metaRec, report) <- getTripleDoc layout inputFn
+    texsnip1 :: texsnip <- read8 inputFn texSnipFileType
+    let latex1 = tex2latex [texsnip1]  -- :: [TexSnip] -> Latex
+    putIOwords ["bakeOneTexSnip2pdf latex1" , unLatex latex1]
 
-    -- pandoc2 :: Pandoc <- markdownToPandocBiblio debug flags (doughDir layout) (pandoc, metaRec, report) -- AG -> AD
-    --                 -- withSettings.pandoc
-    --                     -- produce html and put into contentHtml key
-    --                     -- can be nothing if the md file is not ready to publish
-    -- let texfn = replaceExtension' extTexSnip inputFn :: Path Abs File
-    putIOwords ["bakeOneFile2pdf texfn" , showT inputFn]
+    -- write latex1 to tmp dir 
+
+    tempdir <- Path.getTempDir 
+    let nakedFn = getNakedFileName inputFn :: FilePath  
+    let tempfile = tempdir </> (makeRelFile nakedFn )
+    write8 tempfile texFileType latex1 
    
-    writePDF2text debug inputFn -- takes texsnip extension, produces pdf extension
+    writePDF2text debug tempfile -- takes texsnip extension, produces pdf extension (in the same dir)
+    -- the result filenames are: 
+    let pdftempfile = replaceExtension' (s2t . unExtension $ extPDF) tempfile 
+    let pdfFn3 = pdfFn2 <.> extPDF 
+    copyOneFile pdftempfile pdfFn3  -- does this have the extension pdf?
 
     when debug $  putIOwords
-        ["bakeOneFile2pdf resultFile   pdf", showT inputFn ]
+        ["bakeOneTexSnip2pdf resultFile   pdf", showT pdfFn2 ]
      
     putIOwords ["......................"]
-    return . unwords' $ ["bakeOneFile2pdf pdfText ", showT inputFn, "done"]
+    return . unwords' $ ["bakeOneTexSnip2pdf pdfText ", showT inputFn, "done"]
 
   `catchError` 
     (\e -> 
         do
             let errmsg2 =
                     [ "\n****************"
-                    , "bakeOneFile2pdf catchError"
+                    , "bakeOneTexSnip2pdf catchError"
                     , "\nfor "
                     , showT inputFn
                     , "\n"
