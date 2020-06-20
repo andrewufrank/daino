@@ -35,12 +35,12 @@ import           Uniform.FileIO
 -- -- -- --    -- AK :: MarkdownText -> BE  DocValue
 -- -- -- --    -- Md ->AD :: Pandoc
 -- -- -- --    -- AD -> AF :: DocValue
--- -- -- --import {-@ HTF_TESTS @-} Lib.Bake_test
+import {-@ HTF_TESTS @-} Lib.Bake_test
 -- -- -- --import {-@ HTF_TESTS @-} Lib.ReadSettingFile_test
 -- import {-@ HTF_TESTS @-} Lib.Indexing_test
 -- import  {-@ HTF_TESTS @-}         Lib.IndexMake_test
 -- -- import    {-@ HTF_TESTS @-}       Lib.Templating_test  -- AG -> EG 
-import   {-@ HTF_TESTS @-}  Lib.Shake2_test  -- AG -> EG 
+-- import   {-@ HTF_TESTS @-}  Lib.Shake2_test  -- AG -> EG 
 -- -- import Uniform.Ftp 
 -- -- import Lib.StartSSGprocess
 -- -- -- --import {-@ HTF_TESTS @-} Lib.BibTex_test

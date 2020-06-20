@@ -26,7 +26,7 @@ module Lib.Pandoc
 
 import           Lib.Foundation ( SiteLayout(..))
 import           Lib.Indexing -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
-import           Paths_SSG (version)
+-- import           Paths_SSG (version)
 import           Uniform.Convenience.DataVarious (showVersionT)
 import           Uniform.FileIO hiding (Meta, at)
 import Uniform.HTMLout ( HTMLout(..), writeHtml5String2, htmloutFileType )
@@ -120,10 +120,10 @@ docValToAllVal debug layout flags htmlout   metaRec = do
 
     fn2 <- stripProperPrefix' (doughDir layout) pageFn
     let bottomLines = BottomLines
-            { ssgversion = showVersionT version
-            , today = showT year2000
+            { filename = showT fn2
+                -- ssgversion = showVersionT version
+            -- , today = showT year2000
             -- TODO avoids changes during debug
-            , filename = showT fn2
             }
     when debug
         $ do  putIOwords ["docValToAllVal pandoc settings2.yaml"
