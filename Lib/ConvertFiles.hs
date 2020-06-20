@@ -16,6 +16,7 @@
             -fno-warn-missing-methods 
             -fno-warn-duplicate-exports 
             -fno-warn-unused-imports 
+            -fno-warn-unused-matches 
             #-}
 
 module Lib.ConvertFiles where
@@ -31,7 +32,8 @@ import           Lib.Foundation (SiteLayout(..)
                 --                , imagesDirName
                                )
 import           Lib.CmdLineArgs (PubFlags(..))
-import           Lib.Bake (bakeOneFile2html, bakeOneFile2texsnip, bakeOneFile2pdf)
+import           Lib.Bake 
+        -- (bakeOneFile2html, bakeOneFile2texsnip, bakeOneFile2pdf)
 
 produceMD2HTML :: Bool -> Path Abs Dir -> Path Abs Dir -> PubFlags -> SiteLayout -> FilePath -> Action () 
 -- ^ produce the html file (separated from pdf)
@@ -56,28 +58,28 @@ produceMD2HTML debug doughP bakedP flags layout out = do
     -- liftIO $ putIOwords ["\nproduceMD2HTML - return from bakeOneFile2pdf", showT resTex]
     return ()
 
-produceMD2PDF :: Bool -> Path Abs Dir -> Path Abs Dir -> PubFlags -> SiteLayout -> FilePath -> Action () 
--- ^ produce the PDF and the texsnip file
--- TODO break out the docval production and the texsnip 
-produceMD2PDF debug doughP bakedP flags layout out = do
+-- produceMD2PDF :: Bool -> Path Abs Dir -> Path Abs Dir -> PubFlags -> SiteLayout -> FilePath -> Action () 
+-- -- ^ produce the PDF and the texsnip file
+-- -- TODO break out the docval production and the texsnip 
+-- produceMD2PDF debug doughP bakedP flags layout out = do
 
-    let outP = makeAbsFile out :: Path Abs File
+--     let outP = makeAbsFile out :: Path Abs File
 
-    let md = replaceExtension' "md" outP :: Path Abs File --  <-    out2 -<.> "md"  
-    liftIO $ putIOwords ["\nproduceMD2PDF - bakedP html 2 -  md ", showT md]
-    let md2 = doughP </> stripProperPrefixP bakedP md :: Path Abs File
+--     let md = replaceExtension' "md" outP :: Path Abs File --  <-    out2 -<.> "md"  
+--     liftIO $ putIOwords ["\nproduceMD2PDF - bakedP html 2 -  md ", showT md]
+--     let md2 = doughP </> stripProperPrefixP bakedP md :: Path Abs File
 
-    need [toFilePath md2]  
-    when debug $ liftIO $ putIOwords ["\nproduceMD2PDF - bakedP - *.texsnip", showT outP, showT md2]
+--     need [toFilePath md2]  
+--     when debug $ liftIO $ putIOwords ["\nproduceMD2PDF - bakedP - *.texsnip", showT outP, showT md2]
 
-    resTex <- runErr2action $ bakeOneFile2texsnip  False flags md2 layout outP
-    liftIO $ putIOwords ["\nproduceMD2PDF - return from tex", showT resTex]
+--     resTex <- runErr2action $ bakeOneFile2texsnip  False flags md2 layout outP
+--     liftIO $ putIOwords ["\nproduceMD2PDF - return from tex", showT resTex]
 
-    resPdf <- runErr2action $ bakeOneFile2pdf True flags outP layout outP
-    -- the handling of the extension is by the file types
-    -- but the result must not be the same name as the md file
-    liftIO $ putIOwords ["\nproduceMD2PDF - return from bakeOneFile2pdf", showT resTex]
-    return ()
+--     resPdf <- runErr2action $ bakeOneFile2pdf True flags outP layout outP
+--     -- the handling of the extension is by the file types
+--     -- but the result must not be the same name as the md file
+--     liftIO $ putIOwords ["\nproduceMD2PDF - return from bakeOneFile2pdf", showT resTex]
+--     return ()
 
 produceHTML :: Bool -> Path Abs Dir -> Path Abs Dir -> PubFlags -> SiteLayout -> FilePath -> Action () 
 -- the producers/convertes of the files         
@@ -120,7 +122,8 @@ producePDF debug doughP bakedP flags layout out = do
             copyFileChangedP fromfile outP
             when debug $ liftIO $ putIOwords ["\n DONE producePDF - staticP - fromfile ", showT 
                 fromfile]
-        else produceMD2PDF True doughP bakedP flags layout out
+        else return ()
+            -- produceMD2PDF True doughP bakedP flags layout out
     return () 
 
 -- the generic copy for all the files 

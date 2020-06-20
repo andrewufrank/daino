@@ -17,6 +17,7 @@
             -fno-warn-missing-methods 
             -fno-warn-duplicate-exports 
             -fno-warn-unused-imports 
+            -fno-warn-unused-matches 
             #-}
 
 module Lib.StartSSGprocess (ssgProcess) 
