@@ -35,12 +35,17 @@ blog1res = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/checks/Blog/blog1" 
 test_bake2docval = testVar0FileIO "ssg" (blog1fn,blog1res) "bakeOneFile2docval" op2html
     where 
         op2html :: (Path Abs File, Path Abs File) -> ErrIO Text 
-        op2html (fn,resfn) = bakeOneFile2docval True allFlags fn testLayout resfn
+        op2html (fn,resfn) = bakeOneFile2docval False allFlags fn testLayout resfn
 
-test_bake2html = testVar0FileIO "ssg" (blog1fn,blog1res) "bake2html" op2html
+test_docVal2html = testVar0FileIO "ssg" (blog1res,blog1res) "bakeDocValue2html" op2html
     where 
         op2html :: (Path Abs File, Path Abs File) -> ErrIO Text 
-        op2html (fn,resfn) = bakeOneFile2html True allFlags fn testLayout resfn
+        op2html (fn,resfn) = bakeDocValue2html True allFlags fn testLayout resfn
+
+-- test_bake2html = testVar0FileIO "ssg" (blog1fn,blog1res) "bake2html" op2html
+--     where 
+--         op2html :: (Path Abs File, Path Abs File) -> ErrIO Text 
+--         op2html (fn,resfn) = bakeOneFile2html False allFlags fn testLayout resfn
     -- writes in same dir but different extension
 
 -- testVar0FileIO :: (Zeros b, Eq b, Show b, Read b, ShowTestHarness b)
@@ -51,12 +56,12 @@ test_bake2html = testVar0FileIO "ssg" (blog1fn,blog1res) "bake2html" op2html
 test_bake2texsnip = testVar0FileIO "ssg" (blog1fn,blog1res) "bake2texsnip" op2texsnip
     where 
         op2texsnip :: (Path Abs File, Path Abs File) -> ErrIO Text 
-        op2texsnip (fn,resfn) = bakeOneFile2texsnip True allFlags fn testLayout resfn
+        op2texsnip (fn,resfn) = bakeOneFile2texsnip False allFlags fn testLayout resfn
 
-test_bake2pdf = testVar0FileIO "ssg" (blog1res,blog1res) "bake2pdf" op2pdf
-    where 
-        op2pdf :: (Path Abs File, Path Abs File) -> ErrIO Text 
-        op2pdf (fn,resfn) = bakeOneTexSnip2pdf True allFlags fn testLayout resfn
+-- test_bake2pdf = testVar0FileIO "ssg" (blog1res,blog1res) "bake2pdf" op2pdf
+--     where 
+--         op2pdf :: (Path Abs File, Path Abs File) -> ErrIO Text 
+--         op2pdf (fn,resfn) = bakeOneTexSnip2pdf False allFlags fn testLayout resfn
 
 
 

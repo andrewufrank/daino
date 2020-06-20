@@ -24,6 +24,7 @@
 module Lib.Bake 
     (module Lib.Bake
     , bakeOneFile2docval, bakeOneFile2html, bakeOneFile2texsnip, bakeOneTexSnip2pdf, bakeOneTexSnip2pdf
+    , bakeDocValue2html
     ) 
                 where
 
@@ -61,9 +62,10 @@ bakeOneFile2docval
 -- separate html content and put in contentHtml
 -- get pageType, read file and process
 --test in bake_tests:
-bakeOneFile2docval debug flags inputFn layout ht2 =
+bakeOneFile2docval debug flags inputFn layout resfn2 =
   do
-    putIOwords ["\n-----------------", "bakeOneFile2docval 1 fn", showT inputFn, "debug", showT debug]
+    putIOwords ["\n-----------------", "bakeOneFile2docval 1 fn", showT inputFn, "debug", showT debug
+        , "\n resfn2", showT resfn2]
     (pandoc, metaRec, report) <- getTripleDoc layout inputFn
     -- how are errors dealt with 
     -- let debug = True
@@ -79,13 +81,14 @@ bakeOneFile2docval debug flags inputFn layout ht2 =
     when debug $  putIOwords ["\n-----------------", "bakeOneFile2docval 3 fn", showT inputFn ]
 
     val    <- docValToAllVal debug layout flags htmlout  metaRec
+    -- why from htmlout as a base? 
     -- includes the directory list and injection, which should be in 
     -- value "menu2"
     when debug $  putIOwords ["\n-----------------", "bakeOneFile2docval 4 fn", showT inputFn ]
 
-    write8 inputFn docValueFileType val 
+    write8 resfn2 docValueFileType val 
 
-    when debug $  putIOwords ["\n-----------------", "bakeOneFile2docval done fn", showT inputFn ]
+    when debug $  putIOwords ["\n-----------------", "bakeOneFile2docval done fn", showT resfn2 ]
     return "ok bakeOneFile2docval"
 
 
@@ -149,6 +152,71 @@ bakeOneFile2html debug flags inputFn layout ht2 =
             putIOwords errmsg2
             return . unwords' $ errmsg2
             )
+
+bakeDocValue2html
+  :: Bool
+  -> PubFlags
+  -> Path Abs File  -- ^ a docval file (no extension) 
+  -> SiteLayout
+  -> Path Abs File  -- ^ where the html should go 
+  -> ErrIO Text
+-- files exist
+-- convert a file md2, process citations if any
+-- separate html content and put in contentHtml
+-- get pageType, read file and process
+--test in bake_tests:
+bakeDocValue2html debug flags inputFn layout ht2 =
+  do
+    putIOwords ["\n-----------------", "bakeDocValue2html 1 fn", showT inputFn, "debug", showT debug]
+    -- (pandoc, metaRec, report) <- getTripleDoc layout inputFn
+    -- -- how are errors dealt with 
+    -- -- let debug = True
+
+    -- pandoc2 :: Pandoc <- markdownToPandocBiblio debug flags (doughDir layout) (pandoc, metaRec, report) -- AG -> AD
+    --                 -- withSettings.pandoc
+    --                     -- produce html and put into contentHtml key
+    --                     -- can be nothing if the md file is not ready to publish
+    -- when debug $  putIOwords ["\n-----------------", "bakeDocValue2html 2 fn", showT inputFn ]
+
+    -- htmlout :: HTMLout <- pandocToContentHtml debug pandoc2 -- content.docval  AD -> AF
+
+    -- when debug $  putIOwords ["\n-----------------", "bakeDocValue2html 3 fn", showT inputFn ]
+
+    -- val    <- docValToAllVal debug layout flags htmlout  metaRec
+    -- -- includes the directory list and injection, which should be in 
+    -- -- value "menu2"
+
+    val <- read8 inputFn docValueFileType 
+    when debug $  putIOwords
+        ["bakeDocValue2html docval read " ]
+    
+    html2  <- putValinMaster False val (templatesDir layout)
+    write8 ht2 htmloutFileType html2
+
+    when debug $  putIOwords
+        ["bakeDocValue2html resultFile", showT ht2, "from", showT inputFn, "\n"]
+    when debug $ putIOwords
+        ["bakeDocValue2html resultvalue", take' 300 $ showT val, "\n"
+            , take' 300 $ showT html2]--   when debug $ 
+    putIOwords ["......................"]
+    return . unwords' $ ["bakeDocValue2html outhtml ", take' 300 $ showT inputFn, "done"]
+
+  `catchError` 
+    (\e -> 
+        do
+            let errmsg2 =
+                    [ "\n****************"
+                    , "bakeDocValue2html catchError"
+                    , "\nfor "
+                    , showT inputFn
+                    , "\n"
+                    , take' 300 . showT $ e
+                    , "\n****************"
+                    ]
+            putIOwords errmsg2
+            return . unwords' $ errmsg2
+            )
+
 
 
 bakeOneFile2texsnip

@@ -1,4 +1,4 @@
-This is LuaTeX, Version 1.07.0 (TeX Live 2018)  (format=lualatex 2018.11.23)  20 JUN 2020 12:42
+This is LuaTeX, Version 1.07.0 (TeX Live 2018)  (format=lualatex 2018.11.23)  20 JUN 2020 14:20
  restricted system commands enabled.
 **/tmp/snip2pdf/blog1.tex
 (/tmp/snip2pdf/blog1.tex
@@ -48,7 +48,7 @@ Inserting `luaotfload.aux.set_capheight' at position 3 in `luaotfload.patch_font
 '.
 Inserting `luaotfload.rewrite_fontname' at position 4 in `luaotfload.patch_font'
 .
-luaotfload | main : initialization completed in 0.125 seconds
+luaotfload | main : initialization completed in 0.119 seconds
 (/usr/local/texlive/2018/texmf-dist/tex/latex/koma-script/scrbook.cls
 Document Class: scrbook 2018/03/30 v3.25 KOMA-Script document class (book)
 (/usr/local/texlive/2018/texmf-dist/tex/latex/koma-script/scrkbase.sty
