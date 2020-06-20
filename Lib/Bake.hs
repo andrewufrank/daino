@@ -1,7 +1,7 @@
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------
 --
 -- Module      :   the  process to convert
---              files in any input format to html
+--              files from md to all the formats required 
 --              orginals are found in dire doughDir and go to bakeDir
 --
 -----------------------------------------------------------------------------
@@ -32,7 +32,7 @@ import           Uniform.FileStrings            ( ) -- for instances
 import           Uniform.Filenames
 import Uniform.FileIO (read8, write8, copyOneFileOver)
 import           Uniform.Shake (replaceExtension')
-import Uniform.Pandoc (writeLatex2, TexSnip, texSnipFileType, extTexSnip)
+import Uniform.Pandoc (writeTexSnip2, TexSnip, texSnipFileType, extTexSnip)
 import Uniform.DocValue (docValueFileType, docvalExt)
 -- todo - check replaceextension in fileio 
 import           Lib.Pandoc ( docValToAllVal
@@ -58,10 +58,10 @@ bakeOneFile2docval
   -> Path Abs File
   -> ErrIO Text
 -- files exist
--- convert a file md2, process citations if any
--- separate html content and put in contentHtml
--- get pageType, read file and process
---test in bake_tests:
+-- convert a md file, process citations if any
+-- produce the docval (from which html texsnip are derived)
+-- 
+ 
 bakeOneFile2docval debug flags inputFn layout resfn2 =
   do
     putIOwords ["\n-----------------", "bakeOneFile2docval 1 fn", showT inputFn, "debug", showT debug
@@ -86,7 +86,7 @@ bakeOneFile2docval debug flags inputFn layout resfn2 =
     -- value "menu2"
     when debug $  putIOwords ["\n-----------------", "bakeOneFile2docval 4 fn", showT inputFn ]
 
-    write8 resfn2 docValueFileType val 
+    write8 resfn2 docValueFileType val   -- content is html style
 
     when debug $  putIOwords ["\n-----------------", "bakeOneFile2docval done fn", showT resfn2 ]
     return "ok bakeOneFile2docval"
@@ -94,64 +94,64 @@ bakeOneFile2docval debug flags inputFn layout resfn2 =
 
 
 
-bakeOneFile2html
-  :: Bool
-  -> PubFlags
-  -> Path Abs File  -- ^ md file 
-  -> SiteLayout
-  -> Path Abs File
-  -> ErrIO Text
--- files exist
--- convert a file md2, process citations if any
--- separate html content and put in contentHtml
--- get pageType, read file and process
---test in bake_tests:
-bakeOneFile2html debug flags inputFn layout ht2 =
-  do
-    putIOwords ["\n-----------------", "bakeOneFile2html 1 fn", showT inputFn, "debug", showT debug]
-    (pandoc, metaRec, report) <- getTripleDoc layout inputFn
-    -- how are errors dealt with 
-    -- let debug = True
+-- bakeOneFile2html
+--   :: Bool
+--   -> PubFlags
+--   -> Path Abs File  -- ^ md file 
+--   -> SiteLayout
+--   -> Path Abs File
+--   -> ErrIO Text
+-- -- files exist
+-- -- convert a file md2, process citations if any
+-- -- separate html content and put in contentHtml
+-- -- get pageType, read file and process
+-- --test in bake_tests:
+-- bakeOneFile2html debug flags inputFn layout ht2 =
+--   do
+--     putIOwords ["\n-----------------", "bakeOneFile2html 1 fn", showT inputFn, "debug", showT debug]
+--     (pandoc, metaRec, report) <- getTripleDoc layout inputFn
+--     -- how are errors dealt with 
+--     -- let debug = True
 
-    pandoc2 :: Pandoc <- markdownToPandocBiblio debug flags (doughDir layout) (pandoc, metaRec, report) -- AG -> AD
-                    -- withSettings.pandoc
-                        -- produce html and put into contentHtml key
-                        -- can be nothing if the md file is not ready to publish
-    when debug $  putIOwords ["\n-----------------", "bakeOneFile2html 2 fn", showT inputFn ]
+--     pandoc2 :: Pandoc <- markdownToPandocBiblio debug flags (doughDir layout) (pandoc, metaRec, report) -- AG -> AD
+--                     -- withSettings.pandoc
+--                         -- produce html and put into contentHtml key
+--                         -- can be nothing if the md file is not ready to publish
+--     when debug $  putIOwords ["\n-----------------", "bakeOneFile2html 2 fn", showT inputFn ]
 
-    htmlout :: HTMLout <- pandocToContentHtml debug pandoc2 -- content.docval  AD -> AF
+--     htmlout :: HTMLout <- pandocToContentHtml debug pandoc2 -- content.docval  AD -> AF
 
-    when debug $  putIOwords ["\n-----------------", "bakeOneFile2html 3 fn", showT inputFn ]
+--     when debug $  putIOwords ["\n-----------------", "bakeOneFile2html 3 fn", showT inputFn ]
 
-    val    <- docValToAllVal debug layout flags htmlout  metaRec
-    -- includes the directory list and injection, which should be in 
-    -- value "menu2"
-    html2  <- putValinMaster False val (templatesDir layout)
-    write8 ht2 htmloutFileType html2
+--     val    <- docValToAllVal debug layout flags htmlout  metaRec
+--     -- includes the directory list and injection, which should be in 
+--     -- value "menu2"
+--     html2  <- putValinMaster False val (templatesDir layout)
+--     write8 ht2 htmloutFileType html2
 
-    when debug $  putIOwords
-        ["bakeOneFile2html resultFile", showT ht2, "from", showT inputFn, "\n"]
-    when debug $ putIOwords
-        ["bakeOneFile2html resultvalue", take' 300 $ showT val, "\n"
-            , take' 300 $ showT html2]--   when debug $ 
-    putIOwords ["......................"]
-    return . unwords' $ ["bakeOneFile2html outhtml ", take' 300 $ showT inputFn, "done"]
+--     when debug $  putIOwords
+--         ["bakeOneFile2html resultFile", showT ht2, "from", showT inputFn, "\n"]
+--     when debug $ putIOwords
+--         ["bakeOneFile2html resultvalue", take' 300 $ showT val, "\n"
+--             , take' 300 $ showT html2]--   when debug $ 
+--     putIOwords ["......................"]
+--     return . unwords' $ ["bakeOneFile2html outhtml ", take' 300 $ showT inputFn, "done"]
 
-  `catchError` 
-    (\e -> 
-        do
-            let errmsg2 =
-                    [ "\n****************"
-                    , "bakeOneFile2html catchError"
-                    , "\nfor "
-                    , showT inputFn
-                    , "\n"
-                    , take' 300 . showT $ e
-                    , "\n****************"
-                    ]
-            putIOwords errmsg2
-            return . unwords' $ errmsg2
-            )
+--   `catchError` 
+--     (\e -> 
+--         do
+--             let errmsg2 =
+--                     [ "\n****************"
+--                     , "bakeOneFile2html catchError"
+--                     , "\nfor "
+--                     , showT inputFn
+--                     , "\n"
+--                     , take' 300 . showT $ e
+--                     , "\n****************"
+--                     ]
+--             putIOwords errmsg2
+--             return . unwords' $ errmsg2
+--             )
 
 bakeDocValue2html
   :: Bool
@@ -160,31 +160,10 @@ bakeDocValue2html
   -> SiteLayout
   -> Path Abs File  -- ^ where the html should go 
   -> ErrIO Text
--- files exist
--- convert a file md2, process citations if any
--- separate html content and put in contentHtml
--- get pageType, read file and process
---test in bake_tests:
+-- produce html from docval 
 bakeDocValue2html debug flags inputFn layout ht2 =
   do
     putIOwords ["\n-----------------", "bakeDocValue2html 1 fn", showT inputFn, "debug", showT debug]
-    -- (pandoc, metaRec, report) <- getTripleDoc layout inputFn
-    -- -- how are errors dealt with 
-    -- -- let debug = True
-
-    -- pandoc2 :: Pandoc <- markdownToPandocBiblio debug flags (doughDir layout) (pandoc, metaRec, report) -- AG -> AD
-    --                 -- withSettings.pandoc
-    --                     -- produce html and put into contentHtml key
-    --                     -- can be nothing if the md file is not ready to publish
-    -- when debug $  putIOwords ["\n-----------------", "bakeDocValue2html 2 fn", showT inputFn ]
-
-    -- htmlout :: HTMLout <- pandocToContentHtml debug pandoc2 -- content.docval  AD -> AF
-
-    -- when debug $  putIOwords ["\n-----------------", "bakeDocValue2html 3 fn", showT inputFn ]
-
-    -- val    <- docValToAllVal debug layout flags htmlout  metaRec
-    -- -- includes the directory list and injection, which should be in 
-    -- -- value "menu2"
 
     val <- read8 inputFn docValueFileType 
     when debug $  putIOwords
@@ -226,7 +205,7 @@ bakeOneFile2texsnip
   -> SiteLayout
   -> Path Abs File
   -> ErrIO Text
--- files exist
+-- TODO should use something like docvalue (pandoc and meta, completed with references and title from meta)
 -- convert a file md2, process citations if any
 -- produce latex raw file (no standalone)
 
@@ -247,7 +226,7 @@ bakeOneFile2texsnip debug flags inputFn layout texFn2 =
 
     -- here start with texsnip 
    
-    texText :: TexSnip <- writeLatex2 pandoc2 
+    texText :: TexSnip <- writeTexSnip2 pandoc2 
 
     write8 texFn2 texSnipFileType texText
 
