@@ -48,6 +48,11 @@ test_bake2texsnip = testVar0FileIO "bake2texsnip" (blog1fn,blog1res) "bake2texsn
         op2texsnip :: (Path Abs File, Path Abs File) -> ErrIO Text 
         op2texsnip (fn,resfn) = bakeOneFile2texsnip True allFlags fn testLayout resfn
 
+test_bake2pdf = testVar0FileIO "bake2pdf" (blog1fn,blog1res) "bake2pdf" op2pdf
+    where 
+        op2pdf :: (Path Abs File, Path Abs File) -> ErrIO Text 
+        op2pdf (fn,resfn) = bakeOneFile2pdf True allFlags fn testLayout resfn
+
 
 
 
