@@ -32,7 +32,7 @@ import Uniform.Pandoc -- (DocValue(..), unDocValue, docValueFileType)
 blog1fn = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/dough/Blog/blog1.md"  -- braucht extension
 blog1res = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/checks/Blog/blog1"  -- keine extension
 
-test_bake2html = testVar0FileIO "bake2html" (blog1fn,blog1res) "bake2html" op2html
+test_bake2html = testVar0FileIO "ssg" (blog1fn,blog1res) "bake2html" op2html
     where 
         op2html :: (Path Abs File, Path Abs File) -> ErrIO Text 
         op2html (fn,resfn) = bakeOneFile2html True allFlags fn testLayout resfn
@@ -43,12 +43,12 @@ test_bake2html = testVar0FileIO "bake2html" (blog1fn,blog1res) "bake2html" op2ht
 -- the arguments
 -- testVar0FileIO progName  a resfile op = do
 
-test_bake2texsnip = testVar0FileIO "bake2texsnip" (blog1fn,blog1res) "bake2texsnip" op2texsnip
+test_bake2texsnip = testVar0FileIO "ssg" (blog1fn,blog1res) "bake2texsnip" op2texsnip
     where 
         op2texsnip :: (Path Abs File, Path Abs File) -> ErrIO Text 
         op2texsnip (fn,resfn) = bakeOneFile2texsnip True allFlags fn testLayout resfn
 
-test_bake2pdf = testVar0FileIO "bake2pdf" (blog1res,blog1res) "bake2pdf" op2pdf
+test_bake2pdf = testVar0FileIO "ssg" (blog1res,blog1res) "bake2pdf" op2pdf
     where 
         op2pdf :: (Path Abs File, Path Abs File) -> ErrIO Text 
         op2pdf (fn,resfn) = bakeOneTexSnip2pdf True allFlags fn testLayout resfn

@@ -180,8 +180,8 @@ bakeOneTexSnip2pdf debug flags inputFn  layout pdfFn2 =
   do
  
     putIOwords ["\n-----------------", "bakeOneTexSnip2pdf 1 inputFn", showT inputFn
-            , "beomces \n pdfFn2", showT pdfFn2 
-            , "debug", showT debug]
+            , "\n beomces \n pdfFn2", showT pdfFn2 
+            , "\n debug", showT debug]
 
     texsnip1 :: texsnip <- read8 inputFn texSnipFileType
     let latex1 = tex2latex [texsnip1]  -- :: [TexSnip] -> Latex
@@ -190,14 +190,21 @@ bakeOneTexSnip2pdf debug flags inputFn  layout pdfFn2 =
     -- write latex1 to tmp dir 
 
     tempdir <- Path.getTempDir 
+    let tempdir2 = tempdir </> (makeRelDir "snip2pdf")
     let nakedFn = getNakedFileName inputFn :: FilePath  
-    let tempfile = tempdir </> (makeRelFile nakedFn )
+    let tempfile = tempdir2 </> (makeRelFile nakedFn )
     write8 tempfile texFileType latex1 
    
+    when debug $  putIOwords
+        ["bakeOneTexSnip2pdf tempFile", showT tempfile  ]
+
     writePDF2text debug tempfile -- takes texsnip extension, produces pdf extension (in the same dir)
     -- the result filenames are: 
     let pdftempfile = replaceExtension' (s2t . unExtension $ extPDF) tempfile 
     let pdfFn3 = pdfFn2 <.> extPDF 
+    when debug $  putIOwords
+        ["bakeOneTexSnip2pdf pdeftempfile", showT pdftempfile
+        , "\n pdfFn3", showT pdfFn3  ]
     copyOneFile pdftempfile pdfFn3  -- does this have the extension pdf?
 
     when debug $  putIOwords
