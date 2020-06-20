@@ -89,7 +89,7 @@ shakeAll debug layout flags filepath =
             , showT flags , "caused by", s2t filepath, "."]
     let doughP = doughDir layout -- the regular dough
         bakedP = bakedDir layout
-    setCurrentDir doughP  
+    setCurrentDir doughP  -- needed for citeproc in pandoc 
     callIO $ shakeMD debug layout flags doughP  bakedP 
     -- return ()
 
@@ -109,7 +109,7 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $
     -- because the file types are not automatically 
     -- copied 
      
-    liftIO $ putIOwords
+    putIOwords
         [ "shakeMD dirs\n"
         , "\tstaticDirName"
         , showT staticDirName

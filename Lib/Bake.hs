@@ -23,7 +23,9 @@
 -- {-# LANGUAGE TypeSynonymInstances  #-}
 module Lib.Bake 
     (module Lib.Bake
-    , bakeOneFile2docval, bakeOneFile2html, bakeOneFile2texsnip, bakeOneTexSnip2pdf, bakeOneTexSnip2pdf
+    , bakeOneFile2docval
+    -- , bakeOneFile2html
+    , bakeOneFile2texsnip, bakeOneTexSnip2pdf
     , bakeDocValue2html
     ) 
                 where
@@ -56,7 +58,7 @@ bakeOneFile2docval
   -> Path Abs File  -- ^ md file 
   -> SiteLayout
   -> Path Abs File
-  -> ErrIO Text
+  -> ErrIO ()
 -- files exist
 -- convert a md file, process citations if any
 -- produce the docval (from which html texsnip are derived)
@@ -89,7 +91,7 @@ bakeOneFile2docval debug flags inputFn layout resfn2 =
     write8 resfn2 docValueFileType val   -- content is html style
 
     when debug $  putIOwords ["\n-----------------", "bakeOneFile2docval done fn", showT resfn2 ]
-    return "ok bakeOneFile2docval"
+    return () -- "ok bakeOneFile2docval"
 
 
 
@@ -100,7 +102,7 @@ bakeOneFile2docval debug flags inputFn layout resfn2 =
 --   -> Path Abs File  -- ^ md file 
 --   -> SiteLayout
 --   -> Path Abs File
---   -> ErrIO Text
+--   -> ErrIO ()
 -- -- files exist
 -- -- convert a file md2, process citations if any
 -- -- separate html content and put in contentHtml
@@ -159,7 +161,7 @@ bakeDocValue2html
   -> Path Abs File  -- ^ a docval file (no extension) 
   -> SiteLayout
   -> Path Abs File  -- ^ where the html should go 
-  -> ErrIO Text
+  -> ErrIO ()
 -- produce html from docval 
 bakeDocValue2html debug flags inputFn layout ht2 =
   do
@@ -178,7 +180,7 @@ bakeDocValue2html debug flags inputFn layout ht2 =
         ["bakeDocValue2html resultvalue", take' 300 $ showT val, "\n"
             , take' 300 $ showT html2]--   when debug $ 
     putIOwords ["......................"]
-    return . unwords' $ ["bakeDocValue2html outhtml ", take' 300 $ showT inputFn, "done"]
+    -- return . unwords' $ ["bakeDocValue2html outhtml ", take' 300 $ showT inputFn, "done"]
 
   `catchError` 
     (\e -> 
@@ -193,7 +195,7 @@ bakeDocValue2html debug flags inputFn layout ht2 =
                     , "\n****************"
                     ]
             putIOwords errmsg2
-            return . unwords' $ errmsg2
+            -- return . unwords' $ errmsg2
             )
 
 
@@ -204,7 +206,7 @@ bakeOneFile2texsnip
   -> Path Abs File
   -> SiteLayout
   -> Path Abs File
-  -> ErrIO Text
+  -> ErrIO ()
 -- TODO should use something like docvalue (pandoc and meta, completed with references and title from meta)
 -- convert a file md2, process citations if any
 -- produce latex raw file (no standalone)
@@ -235,7 +237,7 @@ bakeOneFile2texsnip debug flags inputFn layout texFn2 =
     when debug $ putIOwords
         ["bakeOneFile2tex result TeX", showT texText]--   when debug $ 
     putIOwords ["......................"]
-    return . unwords' $ ["bakeOneFile2tex tetfn ", showT inputFn, "done"]
+    -- return . unwords' $ ["bakeOneFile2tex tetfn ", showT inputFn, "done"]
 
   `catchError` 
     (\e -> 
@@ -250,7 +252,7 @@ bakeOneFile2texsnip debug flags inputFn layout texFn2 =
                     , "\n****************"
                     ]
             putIOwords errmsg2
-            return . unwords' $ errmsg2
+            -- return . unwords' $ errmsg2
             )
 
 bakeOneTexSnip2pdf
@@ -259,7 +261,7 @@ bakeOneTexSnip2pdf
   -> Path Abs File  -- ^ texsnip
   -> SiteLayout
   -> Path Abs File  -- ^ target 
-  -> ErrIO Text
+  -> ErrIO ()
 -- files exist
 -- convert a tex file,  form standalone latex and 
 -- process with luatex, the result file is not the name
@@ -302,7 +304,7 @@ bakeOneTexSnip2pdf debug flags inputFn  layout pdfFn2 =
         ["bakeOneTexSnip2pdf resultFile   pdf", showT pdfFn2 ]
      
     putIOwords ["......................"]
-    return . unwords' $ ["bakeOneTexSnip2pdf pdfText ", showT inputFn, "done"]
+    -- return . unwords' $ ["bakeOneTexSnip2pdf pdfText ", showT inputFn, "done"]
 
   `catchError` 
     (\e -> 
@@ -317,7 +319,7 @@ bakeOneTexSnip2pdf debug flags inputFn  layout pdfFn2 =
                     , "\n****************"
                     ]
             putIOwords errmsg2
-            return . unwords' $ errmsg2
+            -- return . unwords' $ errmsg2
             )
 
 --     --- the preamble and the end -- escape \
