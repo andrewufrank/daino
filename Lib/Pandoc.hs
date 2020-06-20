@@ -121,8 +121,8 @@ docValToAllVal debug layout flags htmlout   metaRec = do
     fn2 <- stripProperPrefix' (doughDir layout) pageFn
     let bottomLines = BottomLines
             { filename = showT fn2
-                -- ssgversion = showVersionT version
-            -- , today = showT year2000
+            , ssgversion = "3.0" -- showVersionT version
+            , today = showT year2000
             -- TODO avoids changes during debug
             }
     when debug

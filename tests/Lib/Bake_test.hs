@@ -25,8 +25,36 @@ import Lib.Bake
 -- import Lib.FileMgt
 import Lib.Foundation_test (testLayout)
 import Lib.Foundation (templatesDirName)
+import Lib.CmdLineArgs (allFlags)
 import Uniform.Json (AtKey(..), Value(..))
 import Uniform.Pandoc -- (DocValue(..), unDocValue, docValueFileType)
+
+blog1fn = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/dough/Blog/blog1.md"  -- braucht extension
+blog1res = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/checks/Blog/blog1"  -- keine extension
+
+test_bake2html = testVar0FileIO "bake2html" (blog1fn,blog1res) "bake2html" op2html
+    where 
+        op2html :: (Path Abs File, Path Abs File) -> ErrIO Text 
+        op2html (fn,resfn) = bakeOneFile2html True allFlags fn testLayout resfn
+    -- writes in same dir but different extension
+
+-- testVar0FileIO :: (Zeros b, Eq b, Show b, Read b, ShowTestHarness b)
+--             => Text -> a -> FilePath -> (a-> ErrIO b) -> IO ()
+-- the arguments
+-- testVar0FileIO progName  a resfile op = do
+
+test_bake2texsnip = testVar0FileIO "bake2texsnip" (blog1fn,blog1res) "bake2texsnip" op2texsnip
+    where 
+        op2texsnip :: (Path Abs File, Path Abs File) -> ErrIO Text 
+        op2texsnip (fn,resfn) = bakeOneFile2texsnip True allFlags fn testLayout resfn
+
+
+
+
+
+    --- OLD june 2020
+
+
 --import Lib.Templating (Gtemplate(..), gtmplFileType, Dtemplate(..))
 -- import Control.Lens
 --import Data.Aeson
