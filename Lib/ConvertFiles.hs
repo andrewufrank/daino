@@ -54,7 +54,7 @@ produceMD2HTML debug doughP bakedP flags layout out = do
                 bakeOneFile2docval False flags md2 layout outP
                 -- the docval are written into the baked
                 bakeDocValue2html False flags outP layout outP
-    liftIO $ putIOwords ["\nproduceMD2HTML - return from bakeOneFile2html", showT resHtml]
+    putIOwords ["\nproduceMD2HTML - return from bakeOneFile2html", showT resHtml, "/n--------------/n"]
 
     -- resPdf <- runErr2action $ bakeOneFile2pdf True flags outP layout outP
     -- the handling of the extension is by the file types
@@ -66,7 +66,7 @@ produceMD2PDF :: Bool -> Path Abs Dir -> Path Abs Dir -> PubFlags -> SiteLayout 
 -- ^ produce the PDF and the texsnip file
 -- TODO break out the docval production and the texsnip 
 produceMD2PDF debug doughP bakedP flags layout out = do
-
+    putIOwords ["\nproduceMD2PDF - 1  -  md ", showT out]
     let outP = makeAbsFile out :: Path Abs File
 
     let md = replaceExtension' "md" outP :: Path Abs File --  <-    out2 -<.> "md"  
@@ -77,10 +77,10 @@ produceMD2PDF debug doughP bakedP flags layout out = do
     when debug $ liftIO $ putIOwords ["\nproduceMD2PDF - bakedP - *.texsnip", showT outP, showT md2]
 
     resTex <- runErr2action $ bakeOneFile2texsnip  False flags md2 layout outP
-    liftIO $ putIOwords ["\nproduceMD2PDF - return from tex", showT resTex]
+    liftIO $ putIOwords ["\nproduceMD2PDF - return from bakeOneFile2texsnip", showT resTex]
 
     resPdf <- runErr2action $ do 
-                    bakeOneFile2texsnip True flags outP layout outP
+                    bakeOneTexSnip2pdf True flags outP layout outP
     -- the handling of the extension is by the file types
     -- but the result must not be the same name as the md file
     liftIO $ putIOwords ["\nproduceMD2PDF - return from bakeOneFile2pdf", showT resTex]
@@ -109,18 +109,18 @@ produceHTML debug doughP bakedP flags layout out = do
     return () 
 
 producePDF :: Bool -> Path Abs Dir -> Path Abs Dir -> PubFlags -> SiteLayout -> FilePath -> Action () 
--- the producers/convertes of the files         
+-- produce pdf (either copy available or produce from texsnip )         
 producePDF debug doughP bakedP flags layout out = do
     let outP = makeAbsFile out :: Path Abs File
     when debug $ liftIO
         $ putIOwords [ "\nproducePDF  *.html"
-            , "file out", showT out]
+            , "\n file out", showT out]
     let fromfile = doughP </> makeRelativeP bakedP outP
     xishtml   <-  liftIO $ runErr $ doesFileExist' fromfile
     let ishtml = case xishtml of 
                     Left msg -> errorT [msg] 
                     Right b -> b 
-    when debug $ liftIO $ putIOwords ["\nproducePDF - fromfile exist"
+    when debug $ liftIO $ putIOwords ["\nproducePDF - fromfile exist:"
         , showT ishtml, "\nfile", showT fromfile]
     if ishtml 
         then do 

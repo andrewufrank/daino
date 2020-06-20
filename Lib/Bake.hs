@@ -91,7 +91,7 @@ bakeOneFile2docval debug flags inputFn layout resfn2 =
     write8 resfn2 docValueFileType val   -- content is html style
 
     when debug $  putIOwords ["\n-----------------", "bakeOneFile2docval done fn", showT resfn2 ]
-    return () -- "ok bakeOneFile2docval"
+    return () --"ok bakeOneFile2docval"
 
 
 
@@ -217,14 +217,14 @@ bakeOneFile2texsnip
 
 bakeOneFile2texsnip debug flags inputFn layout texFn2 =
   do
-    putIOwords ["\n-----------------", "bakeOneFile2tex 1 fn", showT inputFn, "debug", showT debug]  
+    putIOwords ["\n-----------------", "bakeOneFile2texsnip 1 fn", showT inputFn, "debug", showT debug]  
     (pandoc, metaRec, report) <- getTripleDoc layout inputFn
 
     pandoc2 :: Pandoc <- markdownToPandocBiblio debug flags (doughDir layout) (pandoc, metaRec, report) -- AG -> AD
                     -- withSettings.pandoc
                         -- produce html and put into contentHtml key
                         -- can be nothing if the md file is not ready to publish
-    when debug $  putIOwords ["\n-----------------", "bakeOneFile2tex 2 fn", showT inputFn ]
+    when debug $  putIOwords ["\n-----------------", "bakeOneFile2texsnip 2 fn", showT inputFn ]
 
     -- here start with texsnip 
    
@@ -233,18 +233,18 @@ bakeOneFile2texsnip debug flags inputFn layout texFn2 =
     write8 texFn2 texSnipFileType texText
 
     when debug $  putIOwords
-        ["bakeOneFile2tex resultFile", showT texFn2, "from", showT inputFn, "\n"]
+        ["bakeOneFile2texsnip resultFile", showT texFn2, "from", showT inputFn, "\n"]
     when debug $ putIOwords
-        ["bakeOneFile2tex result TeX", showT texText]--   when debug $ 
+        ["bakeOneFile2texsnip result TeX", showT texText]--   when debug $ 
     putIOwords ["......................"]
-    -- return . unwords' $ ["bakeOneFile2tex tetfn ", showT inputFn, "done"]
+    -- return . unwords' $ ["bakeOneFile2texsnip tetfn ", showT inputFn, "done"]
 
   `catchError` 
     (\e -> 
         do
             let errmsg2 =
                     [ "\n****************"
-                    , "bakeOneFile2tex catchError"
+                    , "bakeOneFile2texsnip catchError"
                     , "\nfor "
                     , showT inputFn
                     , "\n"
@@ -273,7 +273,7 @@ bakeOneTexSnip2pdf debug flags inputFn  layout pdfFn2 =
   do
  
     putIOwords ["\n-----------------", "bakeOneTexSnip2pdf 1 inputFn", showT inputFn
-            , "\n beomces \n pdfFn2", showT pdfFn2 
+            , "\n beomes \n pdfFn2", showT pdfFn2 
             , "\n debug", showT debug]
 
     texsnip1 :: texsnip <- read8 inputFn texSnipFileType
