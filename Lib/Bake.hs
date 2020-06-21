@@ -52,7 +52,6 @@ import           Lib.CmdLineArgs                ( PubFlags(..) )
 import Lib.CheckInput (getTripleDoc)
 import Lib.Foundation (SiteLayout(..), templatesDir)
 import qualified Path.IO  as Path (getTempDir)
-import qualified System.Process as Sys 
 
 bakeOneFile2docval
   :: Bool
@@ -282,9 +281,6 @@ bakeOneTexSnip2pdf debug flags inputFn  layout pdfFn2 =
     let latex1 = tex2latex [texsnip1]  -- :: [TexSnip] -> Latex
     putIOwords ["bakeOneTexSnip2pdf latex1" , unLatex latex1]
 
-    -- check for locale 
-    loc <- callIO $ Sys.callProcess "locale" []
-    putIOwords ["writePDF2text locale " ]
 
     -- write latex1 to tmp dir 
 
