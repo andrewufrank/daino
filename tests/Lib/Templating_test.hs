@@ -34,29 +34,29 @@ templateDir = addDir (themeDir testLayout) templatesDirName
 master3 = addDir templateDir masterTemplateFileName
 --page33 = addDir templateDir(makeRelFile "page33")
 --
-applyTemplate3x :: DocValue -> ErrIO Text
-applyTemplate3x dval = do
-     template <- read8 master3 dtmplFileType
-     ht       <- applyTemplate3 template dval
-     return . unHTMLout $ ht
-----                        (makeRelFile "pandocDefault.html"::Path Rel File)
+-- applyTemplate3x :: DocValue -> ErrIO Text
+-- applyTemplate3x dval = do
+--      template <- read8 master3 dtmplFileType
+--      ht       <- applyTemplate3 template dval
+--      return . unHTMLout $ ht
+-- ----                        (makeRelFile "pandocDefault.html"::Path Rel File)
 ----
 ----
 -- test_teplating_16_AF_EF = test1FileIO progName     "resultAF6" "resultEF6" applyTemplate3x
 
-test_templating_11_AG_EG, test_templating_12_AG_EG :: IO ()
-test_templating_11_AG_EG =
-     test1FileIO progName "resultAG1" "resultEG1" applyTemplate3x
-test_templating_12_AG_EG =
-     test1FileIO progName "resultAG2" "resultEG2" applyTemplate3x
-test_templating_13_AG_EG =
-     test1FileIO progName "resultAG3" "resultEG3" applyTemplate3x
-test_templating_14_AG_EG =
-     test1FileIO progName "resultAG4" "resultEG4" applyTemplate3x
-test_templating_15_AG_EG =
-     test1FileIO progName "resultAG5" "resultEG5" applyTemplate3x
-test_templating_16_AG_EG =
-     test1FileIO progName "resultAG6" "resultEG6" applyTemplate3x
+-- test_templating_11_AG_EG, test_templating_12_AG_EG :: IO ()
+-- test_templating_11_AG_EG =
+--      test1FileIO progName "resultAG1" "resultEG1" applyTemplate3x
+-- test_templating_12_AG_EG =
+--      test1FileIO progName "resultAG2" "resultEG2" applyTemplate3x
+-- test_templating_13_AG_EG =
+--      test1FileIO progName "resultAG3" "resultEG3" applyTemplate3x
+-- test_templating_14_AG_EG =
+--      test1FileIO progName "resultAG4" "resultEG4" applyTemplate3x
+-- test_templating_15_AG_EG =
+--      test1FileIO progName "resultAG5" "resultEG5" applyTemplate3x
+-- test_templating_16_AG_EG =
+--      test1FileIO progName "resultAG6" "resultEG6" applyTemplate3x
 
 -- test_readAF6 = do 
 --           res <-  runErr $ do 

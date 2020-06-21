@@ -67,11 +67,11 @@ test_DirsBlog =  do
                 getDirectoryDirs' (toFilePath blogDirPath)
     assertEqual (Right dirsPost1)  res
 
-test_getMetaRecsAfterFilter = do 
-    res <- runErr $  
-        getMetaRecsAfterFilter layoutDefaults linkIndex1 
-                    (map makeAbsFile dirContentPost1)
-    assertEqual (Right metaRecsAfterFilter) res
+-- test_getMetaRecsAfterFilter = do 
+--     res <- runErr $  
+--         getMetaRecsAfterFilter layoutDefaults linkIndex1 
+--                     (map makeAbsFile dirContentPost1)
+--     assertEqual (Right metaRecsAfterFilter) res
 
 metaRecsAfterFilter = [MetaRec
     {fn = toFilePath linkIn
@@ -94,17 +94,17 @@ test_hasExtension = assertEqual True
 test_getExtension = assertEqual (makeExtension "md")
                          $ getExtension linkIndex1
 
--- | filter the content and retrieve metarecs
---    keep md files (but not indexpage)
-getMetaRecsAfterFilter :: SiteLayout -> Path Abs File 
-    -> [Path Abs File] -> ErrIO [MetaRec]
-getMetaRecsAfterFilter layout indexpageFn dirContent = do 
-        let fs4 = filter (indexpageFn /=) 
-                    . filter (hasExtension . makeExtension $ "md") 
-                     $ dirContent :: [Path Abs File]
-        metaRecs2 :: [MetaRec]
-                <- mapM (getMetaRec layout) fs4 -- noch ok    let 
-        return metaRecs2 
+-- -- | filter the content and retrieve metarecs
+-- --    keep md files (but not indexpage)
+-- getMetaRecsAfterFilter :: SiteLayout -> Path Abs File 
+--     -> [Path Abs File] -> ErrIO [MetaRec]
+-- getMetaRecsAfterFilter layout indexpageFn dirContent = do 
+--         let fs4 = filter (indexpageFn /=) 
+--                     . filter (hasExtension . makeExtension $ "md") 
+--                      $ dirContent :: [Path Abs File]
+--         metaRecs2 :: [MetaRec]
+--                 <- mapM (getMetaRec layout) fs4 -- noch ok    let 
+--         return metaRecs2 
 
 
 

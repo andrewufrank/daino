@@ -85,12 +85,12 @@ allMetaRec dirname = allMetaRecReport layoutDefaults dirname
 
 test_hasExtension = assertBool $ hasExtension (Extension "md") (makeRelFile "test/test.md")
 
-test_bakeOneFile2html = testVarOfileIO programName mdfil "bakeOne2html"
-    (op_bakeOneFile2html)
+-- test_bakeOneFile2html = testVarOfileIO programName mdfil "bakeOne2html"
+--     (op_bakeOneFile2html)
         
-op_bakeOneFile2html mdf =  do 
-        res <- bakeOneFile2html True flagsDefault mdf layoutDefaults
-        return res 
+-- op_bakeOneFile2html mdf =  do 
+--         res <- bakeOneFile2html True flagsDefault mdf layoutDefaults
+--         return res 
 
 -- test_startNone = assertEqual True (isPrefixOf' "none" ("\"none\""::Text))
  

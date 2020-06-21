@@ -45,12 +45,14 @@ import           Lib.Pandoc ( docValToAllVal
                             )
 
 import           Lib.Templating                 ( putValinMaster )
-import Uniform.ProcessPDF (writePDF2text, extPDF, pdfFileType, texFileType,  extTex, Latex(..),tex2latex)
+import Uniform.ProcessPDF 
+    -- (writePDF2text, extPDF, pdfFileType, texFileType,  extTex, Latex(..),tex2latex)
 import           Uniform.Pandoc    ( Pandoc , write8)
 import           Lib.CmdLineArgs                ( PubFlags(..) )
 import Lib.CheckInput (getTripleDoc)
 import Lib.Foundation (SiteLayout(..), templatesDir)
 import qualified Path.IO  as Path (getTempDir)
+import qualified System.Process as Sys 
 
 bakeOneFile2docval
   :: Bool
@@ -264,10 +266,8 @@ bakeOneTexSnip2pdf
   -> ErrIO ()
 -- files exist
 -- convert a tex file,  form standalone latex and 
--- process with luatex, the result file is not the name
--- of the md file with just replaced the extension 
--- issue: the standalone latex must not have the same name
--- as the tex (body only) file
+-- process with luatex, given a texsnip and returns a pdf 
+-- with the same name (and directory)
 
 bakeOneTexSnip2pdf debug flags inputFn  layout pdfFn2 =
   do
@@ -282,6 +282,10 @@ bakeOneTexSnip2pdf debug flags inputFn  layout pdfFn2 =
     let latex1 = tex2latex [texsnip1]  -- :: [TexSnip] -> Latex
     putIOwords ["bakeOneTexSnip2pdf latex1" , unLatex latex1]
 
+    -- check for locale 
+    loc <- callIO $ Sys.callProcess "locale" []
+    putIOwords ["writePDF2text locale " ]
+
     -- write latex1 to tmp dir 
 
     tempdir <- Path.getTempDir 
@@ -290,20 +294,22 @@ bakeOneTexSnip2pdf debug flags inputFn  layout pdfFn2 =
     let tempfile = tempdir2 </> (makeRelFile nakedFn )
     write8 tempfile texFileType latex1 
    
+   -- compile 
     when debug $  putIOwords
-        ["bakeOneTexSnip2pdf tempFile", showT tempfile  ]
+        ["bakeOneTexSnip2pdf tempFile", showT tempfile 
+            , "\n pdfFn2", showT pdfFn2 ]
 
-    writePDF2text debug tempfile -- takes texsnip extension, produces pdf extension (in the same dir)
+    writePDF2text debug tempfile pdfFn2  -- takes tex extension, produces pdf extension (in the same dir)
     -- the result filenames are: 
-    let pdftempfile = replaceExtension' (s2t . unExtension $ extPDF) tempfile 
-    let pdfFn3 = pdfFn2 <.> extPDF 
-    when debug $  putIOwords
-        ["bakeOneTexSnip2pdf pdeftempfile", showT pdftempfile
-        , "\n pdfFn3", showT pdfFn3  ]
-    copyOneFileOver pdftempfile pdfFn3  -- does this have the extension pdf?
+    -- let pdftempfile = replaceExtension' (s2t . unExtension $ extPDF) tempfile 
+    -- let pdfFn3 = pdfFn2 <.> extPDF 
+    -- when debug $  putIOwords
+    --     ["bakeOneTexSnip2pdf pdeftempfile", showT pdftempfile
+    --     , "\n pdfFn3", showT pdfFn3  ]
+    -- copyOneFileOver pdftempfile pdfFn3  -- does this have the extension pdf?
 
-    when debug $  putIOwords
-        ["bakeOneTexSnip2pdf resultFile   pdf", showT pdfFn2 ]
+    -- when debug $  putIOwords
+    --     ["bakeOneTexSnip2pdf resultFile   pdf", showT pdfFn2 ]
      
     putIOwords ["......................"]
     -- return . unwords' $ ["bakeOneTexSnip2pdf pdfText ", showT inputFn, "done"]
@@ -321,6 +327,7 @@ bakeOneTexSnip2pdf debug flags inputFn  layout pdfFn2 =
                     , "\n****************"
                     ]
             putIOwords errmsg2
+            write8 pdfFn2 pdfFileType (PDFfile . unlines' $ errmsg2)
             -- return . unwords' $ errmsg2
             )
 

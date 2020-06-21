@@ -31,17 +31,17 @@ import Lib.CheckInput (TripleDoc, MetaRec(..)
 import Uniform.Pointless (snd3)
 --import Text.Pandoc.Definition as PD
 
-readMarkdownFile8 :: Path Abs File  -> ErrIO MarkdownText
-readMarkdownFile8 fnn =  read8   ( fnn) markdownFileType
----- uses files to be copied to dough
-----
-test_pandoc_pageFn_pageMd_1  :: IO ()
-test_pandoc_pageFn_pageMd_1 = test1FileIO progName  "pageFn1" "pageMd1" readMarkdownFile8
-test_pandoc_pageFn_pageMd_2 = test1FileIO progName  "pageFn2" "pageMd2" readMarkdownFile8
--- test_pandoc_pageFn_pageMd_3 = test1FileIO progName  "pageFn3" "pageMd3" readMarkdownFile8
--- test_pandoc_pageFn_pageMd_4 = test1FileIO progName  "pageFn4" "pageMd4" readMarkdownFile8
--- test_pandoc_pageFn_pageMd_5 = test1FileIO progName  "pageFn5" "pageMd5" readMarkdownFile8
--- test_pandoc_pageFn_pageMd_6 = test1FileIO progName  "pageFn6" "pageMd6" readMarkdownFile8
+-- readMarkdownFile8 :: Path Abs File  -> ErrIO MarkdownText
+-- readMarkdownFile8 fnn =  read8   ( fnn) markdownFileType
+-- ---- uses files to be copied to dough
+-- ----
+-- test_pandoc_pageFn_pageMd_1  :: IO ()
+-- test_pandoc_pageFn_pageMd_1 = test1FileIO progName  "pageFn1" "pageMd1" readMarkdownFile8
+-- test_pandoc_pageFn_pageMd_2 = test1FileIO progName  "pageFn2" "pageMd2" readMarkdownFile8
+-- -- test_pandoc_pageFn_pageMd_3 = test1FileIO progName  "pageFn3" "pageMd3" readMarkdownFile8
+-- -- test_pandoc_pageFn_pageMd_4 = test1FileIO progName  "pageFn4" "pageMd4" readMarkdownFile8
+-- -- test_pandoc_pageFn_pageMd_5 = test1FileIO progName  "pageFn5" "pageMd5" readMarkdownFile8
+-- -- test_pandoc_pageFn_pageMd_6 = test1FileIO progName  "pageFn6" "pageMd6" readMarkdownFile8
 
 doughP = doughDir testLayout
 
@@ -118,7 +118,8 @@ metaRecIndex1 = MetaRec
     pageTemplate = -- Nothing,
          "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
     indexPage = True, indexSort = SAreverseDate}
-instance  ShowTestHarness MarkdownText where
+
+-- instance  ShowTestHarness MarkdownText where
 
 instance  ShowTestHarness DocValue where
 instance  ShowTestHarness ( Pandoc) where
