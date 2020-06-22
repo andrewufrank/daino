@@ -79,7 +79,8 @@ bakeOneFile2docval debug flags inputFn layout resfn2 =
                         -- can be nothing if the md file is not ready to publish
     when debug $  putIOwords ["\n-----------------", "bakeOneFile2docval 2 fn", showT inputFn ]
 
-    htmlout :: HTMLout <- pandocToContentHtml debug pandoc2 -- content.docval  AD -> AF
+    htmlout :: HTMLout <- pandocToContentHtml debug pandoc2 
+        -- content.docval  AD -> AF
 
     when debug $  putIOwords ["\n-----------------", "bakeOneFile2docval 3 fn", showT inputFn ]
 

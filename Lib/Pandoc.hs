@@ -1,7 +1,10 @@
--- Module copied from Slick
--- i use it because it concentrates all funny pandoc stuff here (including the
--- writing of the json, cannot be imported, because it fixes there the Action monad
--- which i use here as a synonym to ErrIO
+------------------------------------------------------
+-- Module DocRep  (which is pandoc and metarec 
+
+    -- originally copied from Slick  because it concentrates all funny pandoc stuff here (including the
+    -- writing of the json
+
+----------------------------------------------------------
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -11,6 +14,7 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# OPTIONS -fno-warn-unused-matches #-}
 -- {-# LANGUAGE TypeSynonymInstances  #-}
+
 module Lib.Pandoc
     ( markdownToPandocBiblio
     , pandocToContentHtml
