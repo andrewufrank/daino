@@ -22,10 +22,11 @@
 -fno-warn-unused-matches 
 #-}
 module Lib.Pandoc
-    ( markdownToPandocBiblio
-    -- , pandocToContentHtml
+    ( module Lib.Pandoc
     , getMeta
     -- , docValToAllVal
+    -- , markdownToPandocBiblio
+    -- , pandocToContentHtml
     , getAtKey
     , Pandoc(..)
     , flattenMeta
@@ -59,35 +60,45 @@ import           Lib.CheckInput                 ( MetaRec(..)
                                                 )
 import           Lib.CmdLineArgs                ( PubFlags(..) )
 
--- | Convert markdown text into a 'Value';
--- The 'Value'  has a "content" key containing rendered HTML
--- Metadata is assigned on the respective keys in the 'Value'
--- includes reference replacement (pandoc-citeproc)
--- runs in the pandoc monad!
-markdownToPandocBiblio
-    :: Bool -> PubFlags -> Path Abs Dir -> TripleDoc -> ErrIO Pandoc
+-------------------
+docRepNeeds :: DocRep -> [FilePath]
+-- ^ collect the needs (bib, images, css?)
+docRepNeeds (DocRep y1 p1) =   map t2s . catMaybes $ [imgs, bibs]
+    where
+        imgs = getAtKey y1 "image"  :: Maybe Text
+        bibs = getAtKey y1 "bibliography"  :: Maybe Text
+        -- TODO should list be images? 
 
--- process the markdown (including if necessary the BibTex treatment)
--- the bibliography must be in the metadata
--- the settings are in the markdownText (at end - to let page specific have precedence)
-markdownToPandocBiblio debug flags doughP (pandoc, metaRec, _) = do
-    when debug $ putIOwords ["markdownToPandocBiblio", showT metaRec]
-    pandoc2 <- case (bibliography metaRec) of
-        Nothing    -> return pandoc
-        Just bibfp -> do
-            when debug $ putIOwords
-                [ "markdownToPandocBiblio"
-                , "start pandocProcessCites"
-                , showT doughP
-                , showT bibfp
-                , showT (bibliographyGroup metaRec)
-                ]
-            pandocProcessCites doughP  -- required to set the current dir 
-                               (makeAbsFile bibfp) -- (doughP </> (makeRelFile . t2s $ bibfp))
-                               (bibliographyGroup metaRec)
-                               pandoc
-           -- here the dir is used for processing in my code
-    return pandoc2
+
+-- -- | Convert markdown text into a 'Value';
+-- -- The 'Value'  has a "content" key containing rendered HTML
+-- -- Metadata is assigned on the respective keys in the 'Value'
+-- -- includes reference replacement (pandoc-citeproc)
+-- -- runs in the pandoc monad!
+-- markdownToPandocBiblio
+--     :: Bool -> PubFlags -> Path Abs Dir -> TripleDoc -> ErrIO Pandoc
+
+-- -- process the markdown (including if necessary the BibTex treatment)
+-- -- the bibliography must be in the metadata
+-- -- the settings are in the markdownText (at end - to let page specific have precedence)
+-- markdownToPandocBiblio debug flags doughP (pandoc, metaRec, _) = do
+--     when debug $ putIOwords ["markdownToPandocBiblio", showT metaRec]
+--     pandoc2 <- case (bibliography metaRec) of
+--         Nothing    -> return pandoc
+--         Just bibfp -> do
+--             when debug $ putIOwords
+--                 [ "markdownToPandocBiblio"
+--                 , "start pandocProcessCites"
+--                 , showT doughP
+--                 , showT bibfp
+--                 , showT (bibliographyGroup metaRec)
+--                 ]
+--             pandocProcessCites doughP  -- required to set the current dir 
+--                                (makeAbsFile bibfp) -- (doughP </> (makeRelFile . t2s $ bibfp))
+--                                (bibliographyGroup metaRec)
+--                                pandoc
+--            -- here the dir is used for processing in my code
+--     return pandoc2
 
 -- pandocToContentHtml :: Bool -> Pandoc -> ErrIO HTMLout
 

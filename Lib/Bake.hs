@@ -37,7 +37,8 @@ import           Uniform.FileIO                 ( read8
                                                 , write8
                                                 , copyOneFileOver
                                                 )
-import           Uniform.Shake                  ( replaceExtension' )
+ 
+import           Uniform.Shake                --  ( replaceExtension' )
 import           Uniform.Pandoc
             --  ( writeTexSnip2
             --                                     , TexSnip
@@ -99,12 +100,14 @@ bakeOneFile2docrep debug flags inputFn layout resfn2 = do
         , showT resfn2
         ]
 
-    md1                       <- read8 inputFn markdownFileType
+    md1      <- read8 inputFn markdownFileType
     -- readMarkdown2docrep :: MarkdownText -> ErrIO DocRep
 -- | read a md file into a DocRep
 -- all values from meta are moved to yam (meta is zero to avoid problems)
-    docrep1                   <- readMarkdown2docrep md1
-
+    docrep1   <- readMarkdown2docrep md1
+    -- TODO needs refs 
+    -- let needs1  = docRepNeeds docrep1  :: [FilePath]
+    -- need  needs1  -- TDO this is in the wrong monad
     write8 resfn2 docRepFileType docrep1   -- content is html style
 
     when debug $ putIOwords
@@ -125,12 +128,12 @@ bakeOneFile2html debug flags inputFn layout resfn2 = do
         , showT resfn2
         ]
 
-    dr1                      <- read8 inputFn docRepFileType
+    dr1    <- read8 inputFn docRepFileType
         -- docRep2html:: DocRep -> ErrIO HTMLout
         -- ^ transform a docrep to a html file 
         -- needs teh processing of the references with citeproc
                  
-    h1                   <- docRep2html dr1
+    h1      <- docRep2html dr1
 
     write8 resfn2 htmloutFileType h1   -- content is html style
 

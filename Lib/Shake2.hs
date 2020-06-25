@@ -153,24 +153,25 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         -- but produce the common precursor docval
         -- TODO 
 
-        csls                    <- getNeeds debug doughP bakedP "csl" "csl"
+        -- csls                    <- getNeeds debug doughP bakedP "csl" "csl"
     -- convert to needs (perhaps wants better)
     -- no restriction on order    
 
-        needP pdfs
-        needP htmls
         needP bibs
         needP imgs
         needP imgs2
         needP csss
-        needP csls
+        -- needP csls
         -- needP mds   -- fuer html
         -- needP pdf2  -- fuer pdf  
         -- needP [bannerImageTarget]
-        --  
+         
         -- needP [masterSettings_yaml] -- checks only that file exists
         -- needP  [masterTemplate]
         -- need (map toFilePath yamlPageFiles2)
+
+        needP pdfs
+        needP htmls
     return ()
 
     let debug2 = True

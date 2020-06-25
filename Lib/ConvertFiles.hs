@@ -131,7 +131,7 @@ convertAny debug doughP bakedP flags layout out anyop = do
         , "\nfile"
         , showT fromfile
         ]
-    if fileExists
+    if fileExists  -- gives recursion, if the file is produced in earlier run
         then do
             copyFileChangedP fromfile outP
             when debug $ liftIO $ putIOwords

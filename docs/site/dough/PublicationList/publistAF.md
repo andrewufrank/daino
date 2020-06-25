@@ -8,12 +8,12 @@ abstract: |
     produce a publist for af
 
 bibliographyGroup: authorAF
-
-bibliography: "resources/BibTexLatex.bib"
+style: "/home/frank/Workspace8/ssg/docs/site/dough/resources/chicago-fullnote-bibliography-bb.csl"
+bibliography: "/home/frank/Workspace8/ssg/docs/site/dough/resources/BibTexLatex.bib"
 
 
 ---
 
-An example publication list for AF  
+An example publication list for AF  -- but not the relative "resources/BibTexLatex.bib"
 
  
