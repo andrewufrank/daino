@@ -136,7 +136,8 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         -- which then produce them
         pdfs                    <- getNeeds debug doughP bakedP "pdf" "pdf"
         htmls                   <- getNeeds debug doughP bakedP "html" "html"
-        -- given html
+        
+        -- the next should not be put here 
         bibs                    <- getNeeds debug doughP bakedP "bib" "bib"
         imgs                    <- getNeeds debug doughP bakedP "jpg" "jpg"
         imgs2                   <- getNeeds debug doughP bakedP "JPG" "JPG"
@@ -178,6 +179,27 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         -- calls the copy html and the conversion from md
                 -> conv2HTML debug doughP bakedP flags layout out
 
+    (toFilePath bakedP <> "**/*.pdf")
+        %> \out -- insert pdfFIles1 
+                                            -- with subdir
+                -> conv2PDF debug2 doughP bakedP flags layout out
+
+    (toFilePath bakedP <> "**/*.tex")
+        %> \out -- insert pdfFIles1 
+                                            -- with subdir
+                -> conv2tex debug2 doughP bakedP flags layout out
+
+    (toFilePath bakedP <> "**/*.texsnip")
+        %> \out -- insert pdfFIles1 
+                                            -- with subdir
+                -> conv2texsnip debug2 doughP bakedP flags layout out
+
+    (toFilePath bakedP <> "**/*.docval")
+        %> \out -- insert pdfFIles1 
+                                            -- with subdir
+                -> conv2docrep debug2 doughP bakedP flags layout out
+                
+    -- rest are copies 
 
     (toFilePath (bakedP) <> "/*.css")
         %> \out  -- insert css -- no subdir
@@ -185,11 +207,6 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
     (toFilePath (bakedP) <> "/*.csl")
         %> \out  -- insert css -- no subdir
                 -> copyFileToBaked debug2 doughP bakedP out
-
-    (toFilePath bakedP <> "**/*.pdf")
-        %> \out -- insert pdfFIles1 
-                                            -- with subdir
-                -> conv2PDF debug2 doughP bakedP flags layout out
 
     [toFilePath bakedP <> "/*.JPG", toFilePath bakedP <> "/*.jpg"]
         |%> \out -- insert img files 

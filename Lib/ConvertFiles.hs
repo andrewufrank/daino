@@ -208,6 +208,16 @@ conv2PDF :: ConvertOp
 conv2PDF debug doughP bakedP flags layout out =
     convertAny debug doughP bakedP flags layout out convTex2pdf
 
+conv2tex :: ConvertOp
+-- produce pdf (either copy available or produce from texsnip )         
+conv2tex debug doughP bakedP flags layout out =
+    convertAny debug doughP bakedP flags layout out convTexsnip2tex
+
+conv2texsnip :: ConvertOp
+-- produce pdf (either copy available or produce from texsnip )         
+conv2texsnip debug doughP bakedP flags layout out =
+    convertAny debug doughP bakedP flags layout out convDocrep2texsnip
+
 conv2docrep :: ConvertOp
 -- produce pdf (either copy available or produce from texsnip )         
 conv2docrep debug doughP bakedP flags layout out =
@@ -235,6 +245,7 @@ convertAny debug doughP bakedP flags layout out anyop = do
     let outP = makeAbsFile out :: Path Abs File
     when debug $ liftIO $ putIOwords ["\nproduceAny", "\n file out", showT out]
     let fromfile = doughP </> makeRelativeP bakedP outP
+    needP [fromfile]
     fileExists <- io2bool $ doesFileExist' fromfile
     when debug $ liftIO $ putIOwords
         [ "\nproducePDF - fromfile exist:"
