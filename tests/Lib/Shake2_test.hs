@@ -41,7 +41,10 @@ import Lib.CmdLineArgs (allFlags)
 test_shakeAll = 
     do  
         res <- runErr $ shakeAll False testLayout allFlags "TEST"
-        putIOwords ["\nthe return from test_shakeAll\n", showT res]
+        let t = case res of 
+                    Left msg -> msg 
+                    Right a -> showT a 
+        putIOwords ["\nthe return from test_shakeAll\n",  t]
 
 -- shakeOp :: Text -> ErrIO Text 
 --         -- SiteLayout -> PubFlags -> FilePath -> ErrIO ()

@@ -49,7 +49,7 @@ import           Uniform.HTMLout
     --                                             , writeHtml5String2
     --                                             , htmloutFileType
     --                                             )
-import           Uniform.DocValue               ( mergeAll )
+-- import           Uniform.DocValue               ( mergeAll )
 import           Uniform.Markdown               ( readMarkdown2 )
 import           Uniform.Pandoc -- hiding (Meta(..))
 import           Uniform.BibTex

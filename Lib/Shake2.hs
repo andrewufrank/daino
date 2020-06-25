@@ -134,19 +134,20 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
     phony "allMarkdownConversion" $ do
         -- these are functions to construct the desired results
         -- which then produce them
-        pdfs                    <- getNeeds debug doughP bakedP "pdf" "pdf"
-        htmls                   <- getNeeds debug doughP bakedP "html" "html"
-        
-        -- the next should not be put here 
-        bibs                    <- getNeeds debug doughP bakedP "bib" "bib"
-        imgs                    <- getNeeds debug doughP bakedP "jpg" "jpg"
-        imgs2                   <- getNeeds debug doughP bakedP "JPG" "JPG"
+        -- the original start file are copied over 
+        pdfs  <- getNeeds debug bakedP bakedP "md" "pdf"
+        htmls      <- getNeeds debug bakedP bakedP "md" "html"
 
-        csss                    <- getNeeds debug doughP bakedP "css" "css"
+        -- the next should not be put here 
+        bibs         <- getNeeds debug doughP bakedP "bib" "bib"
+        imgs          <- getNeeds debug doughP bakedP "jpg" "jpg"
+        imgs2         <- getNeeds debug doughP bakedP "JPG" "JPG"
+
+        csss          <- getNeeds debug doughP bakedP "css" "css"
                 -- templatesP 
                 -- (bakedP </> staticDirName) -- exception
-        mds :: [Path Abs File]  <- getNeeds debug doughP bakedP "md" "html"
-        pdf2 :: [Path Abs File] <- getNeeds debug doughP bakedP "md" "pdf"
+        mds :: [Path Abs File]  <- getNeeds debug doughP bakedP "md" "md"
+        -- pdf2 :: [Path Abs File] <- getNeeds debug doughP bakedP "md" "pdf"
         -- docvals :: [Path Abs File] <-  getNeeds debug doughP bakedP "md" "docval"
         -- given md produce pdf and md files,
         -- but produce the common precursor docval
@@ -164,7 +165,7 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         needP csss
         needP csls
         needP mds   -- fuer html
-        needP pdf2  -- fuer pdf  
+        -- needP pdf2  -- fuer pdf  
         -- needP [bannerImageTarget]
         --  
         -- needP [masterSettings_yaml] -- checks only that file exists
@@ -177,30 +178,33 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
     (toFilePath bakedP <> "**/*.html")
         %> \out
         -- calls the copy html and the conversion from md
-                -> conv2HTML debug doughP bakedP flags layout out
+                -> convertAny debug bakedP bakedP flags layout out convDocrep2html
 
     (toFilePath bakedP <> "**/*.pdf")
         %> \out -- insert pdfFIles1 
                                             -- with subdir
-                -> conv2PDF debug2 doughP bakedP flags layout out
+                -> convertAny debug2 bakedP bakedP flags layout out convTex2pdf
 
     (toFilePath bakedP <> "**/*.tex")
         %> \out -- insert pdfFIles1 
                                             -- with subdir
-                -> conv2tex debug2 doughP bakedP flags layout out
+                -> convertAny debug2 bakedP bakedP flags layout out convTexsnip2tex
 
     (toFilePath bakedP <> "**/*.texsnip")
         %> \out -- insert pdfFIles1 
                                             -- with subdir
-                -> conv2texsnip debug2 doughP bakedP flags layout out
+                -> convertAny debug2 bakedP bakedP flags layout out convDocrep2texsnip
 
-    (toFilePath bakedP <> "**/*.docval")
+    (toFilePath bakedP <> "**/*.docrep")
         %> \out -- insert pdfFIles1 
                                             -- with subdir
-                -> conv2docrep debug2 doughP bakedP flags layout out
-                
+                -> convertAny debug2 bakedP bakedP flags layout out convMD2docrep
+
     -- rest are copies 
 
+    (toFilePath (bakedP) <> "/*.md")
+        %> \out  -- insert css -- no subdir
+                -> copyFileToBaked debug2 doughP bakedP out
     (toFilePath (bakedP) <> "/*.css")
         %> \out  -- insert css -- no subdir
                 -> copyFileToBaked debug2 doughP bakedP out
@@ -225,7 +229,7 @@ getNeeds
     -> Action [Path Abs File]
 -- ^ find the files which are needed (generic)
 --  from source with extension ext
-getNeeds debug doughP bakedP extSource extTarget = do
+getNeeds debug sourceP targetP extSource extTarget = do
     let sameExt = extSource == extTarget
     when debug $ liftIO $ putIOwords
         [ "===================\ngetNeeds extSource"
@@ -238,14 +242,14 @@ getNeeds debug doughP bakedP extSource extTarget = do
 
     filesWithSource :: [Path Rel File] <- getDirectoryToBake
         "DNB"
-        doughP
+        sourceP
         [("**/*." <> t2s extSource)]
                 -- subdirs
     let
         filesWithTarget = if sameExt
-            then [ bakedP </> c | c <- filesWithSource ]
+            then [ targetP </> c | c <- filesWithSource ]
             else
-                map (replaceExtension' extTarget . (bakedP </>)) filesWithSource :: [ Path
+                map (replaceExtension' extTarget . (targetP </>)) filesWithSource :: [ Path
                       Abs
                       File
                 ]
