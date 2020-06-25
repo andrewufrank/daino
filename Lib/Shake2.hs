@@ -176,7 +176,7 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
     (toFilePath bakedP <> "**/*.html")
         %> \out
         -- calls the copy html and the conversion from md
-                -> produceHTML debug doughP bakedP flags layout out
+                -> conv2HTML debug doughP bakedP flags layout out
 
 
     (toFilePath (bakedP) <> "/*.css")
@@ -189,7 +189,7 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
     (toFilePath bakedP <> "**/*.pdf")
         %> \out -- insert pdfFIles1 
                                             -- with subdir
-                -> producePDF debug2 doughP bakedP flags layout out
+                -> conv2PDF debug2 doughP bakedP flags layout out
 
     [toFilePath bakedP <> "/*.JPG", toFilePath bakedP <> "/*.jpg"]
         |%> \out -- insert img files 

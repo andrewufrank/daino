@@ -23,7 +23,7 @@
 -- {-# LANGUAGE TypeSynonymInstances  #-}
 module Lib.Bake 
     (module Lib.Bake
-    , bakeOneFile2docval
+    -- , bakeOneFile2docval
     -- , bakeOneFile2html
     , bakeOneFile2texsnip, bakeOneTexSnip2pdf
     , bakeDocValue2html
@@ -37,8 +37,7 @@ import           Uniform.Shake (replaceExtension')
 import Uniform.Pandoc (writeTexSnip2, TexSnip, texSnipFileType, extTexSnip)
 import Uniform.DocValue (docValueFileType, docvalExt)
 -- todo - check replaceextension in fileio 
-import           Lib.Pandoc ( docValToAllVal
-                            , markdownToPandocBiblio
+import           Lib.Pandoc ( markdownToPandocBiblio
                             , pandocToContentHtml
                             ,  htmloutFileType 
                             , HTMLout (..)
@@ -53,47 +52,60 @@ import Lib.CheckInput (getTripleDoc)
 import Lib.Foundation (SiteLayout(..), templatesDir)
 import qualified Path.IO  as Path (getTempDir)
 
-bakeOneFile2docval
-  :: Bool
+type BakeOp = Bool
   -> PubFlags
   -> Path Abs File  -- ^ md file 
   -> SiteLayout
   -> Path Abs File
   -> ErrIO ()
--- files exist
--- convert a md file, process citations if any
--- produce the docval (from which html texsnip are derived)
--- 
+
+bakeOneFile2docrep :: BakeOp 
+-- TODO 
+bakeOneFile2docrep debug flags inputFn layout resfn2 = 
+        return () 
+
+
+-- bakeOneFile2docval
+--   :: Bool
+--   -> PubFlags
+--   -> Path Abs File  -- ^ md file 
+--   -> SiteLayout
+--   -> Path Abs File
+--   -> ErrIO ()
+-- -- files exist
+-- -- convert a md file, process citations if any
+-- -- produce the docval (from which html texsnip are derived)
+-- -- 
  
-bakeOneFile2docval debug flags inputFn layout resfn2 =
-  do
-    putIOwords ["\n-----------------", "bakeOneFile2docval 1 fn", showT inputFn, "debug", showT debug
-        , "\n resfn2", showT resfn2]
-    (pandoc, metaRec, report) <- getTripleDoc layout inputFn
-    -- how are errors dealt with 
-    -- let debug = True
+-- bakeOneFile2docval debug flags inputFn layout resfn2 =
+--   do
+--     putIOwords ["\n-----------------", "bakeOneFile2docval 1 fn", showT inputFn, "debug", showT debug
+--         , "\n resfn2", showT resfn2]
+--     (pandoc, metaRec, report) <- getTripleDoc layout inputFn
+--     -- how are errors dealt with 
+--     -- let debug = True
 
-    pandoc2 :: Pandoc <- markdownToPandocBiblio debug flags (doughDir layout) (pandoc, metaRec, report) -- AG -> AD
-                    -- withSettings.pandoc
-                        -- produce html and put into contentHtml key
-                        -- can be nothing if the md file is not ready to publish
-    when debug $  putIOwords ["\n-----------------", "bakeOneFile2docval 2 fn", showT inputFn ]
+--     pandoc2 :: Pandoc <- markdownToPandocBiblio debug flags (doughDir layout) (pandoc, metaRec, report) -- AG -> AD
+--                     -- withSettings.pandoc
+--                         -- produce html and put into contentHtml key
+--                         -- can be nothing if the md file is not ready to publish
+--     when debug $  putIOwords ["\n-----------------", "bakeOneFile2docval 2 fn", showT inputFn ]
 
-    htmlout :: HTMLout <- pandocToContentHtml debug pandoc2 
-        -- content.docval  AD -> AF
+--     htmlout :: HTMLout <- pandocToContentHtml debug pandoc2 
+--         -- content.docval  AD -> AF
 
-    when debug $  putIOwords ["\n-----------------", "bakeOneFile2docval 3 fn", showT inputFn ]
+--     when debug $  putIOwords ["\n-----------------", "bakeOneFile2docval 3 fn", showT inputFn ]
 
-    val    <- docValToAllVal debug layout flags htmlout  metaRec
-    -- why from htmlout as a base? 
-    -- includes the directory list and injection, which should be in 
-    -- value "menu2"
-    when debug $  putIOwords ["\n-----------------", "bakeOneFile2docval 4 fn", showT inputFn ]
+--     val    <- docValToAllVal debug layout flags htmlout  metaRec
+--     -- why from htmlout as a base? 
+--     -- includes the directory list and injection, which should be in 
+--     -- value "menu2"
+--     when debug $  putIOwords ["\n-----------------", "bakeOneFile2docval 4 fn", showT inputFn ]
 
-    write8 resfn2 docValueFileType val   -- content is html style
+--     write8 resfn2 docValueFileType val   -- content is html style
 
-    when debug $  putIOwords ["\n-----------------", "bakeOneFile2docval done fn", showT resfn2 ]
-    return () --"ok bakeOneFile2docval"
+--     when debug $  putIOwords ["\n-----------------", "bakeOneFile2docval done fn", showT resfn2 ]
+--     return () --"ok bakeOneFile2docval"
 
 
 
