@@ -20,7 +20,7 @@ module Lib.Templating  -- (openMain, htf_thisModuelsTests)
 import           Lib.Foundation                 ( masterTemplateFileName )
 import           Lib.Indexing                   ( getAtKey )
 import           Uniform.Filenames
-import Uniform.DocValue (dtmplFileType,  DocValue(..))
+-- import Uniform.DocValue (dtmplFileType,  DocValue(..))
 import Uniform.HTMLout (HTMLout(..)
             -- applyTemplate3
                                                 )

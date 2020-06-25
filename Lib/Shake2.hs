@@ -134,9 +134,9 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
     phony "allMarkdownConversion" $ do
         -- these are functions to construct the desired results
         -- which then produce them
-        -- the original start file are copied over 
-        pdfs  <- getNeeds debug bakedP bakedP "md" "pdf"
-        htmls      <- getNeeds debug bakedP bakedP "md" "html"
+        -- the original start needs in baked (from the files in dough)  
+        pdfs  <- getNeeds debug doughP bakedP "md" "pdf"
+        htmls      <- getNeeds debug  doughP bakedP "md" "html"
 
         -- the next should not be put here 
         bibs         <- getNeeds debug doughP bakedP "bib" "bib"
@@ -146,7 +146,7 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         csss          <- getNeeds debug doughP bakedP "css" "css"
                 -- templatesP 
                 -- (bakedP </> staticDirName) -- exception
-        mds :: [Path Abs File]  <- getNeeds debug doughP bakedP "md" "md"
+        -- mds :: [Path Abs File]  <- getNeeds debug doughP bakedP "md" "md"
         -- pdf2 :: [Path Abs File] <- getNeeds debug doughP bakedP "md" "pdf"
         -- docvals :: [Path Abs File] <-  getNeeds debug doughP bakedP "md" "docval"
         -- given md produce pdf and md files,
@@ -164,7 +164,7 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         needP imgs2
         needP csss
         needP csls
-        needP mds   -- fuer html
+        -- needP mds   -- fuer html
         -- needP pdf2  -- fuer pdf  
         -- needP [bannerImageTarget]
         --  
@@ -181,24 +181,20 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
                 -> convertAny debug bakedP bakedP flags layout out convDocrep2html
 
     (toFilePath bakedP <> "**/*.pdf")
-        %> \out -- insert pdfFIles1 
-                                            -- with subdir
+        %> \out -- insert pdfFIles1  
                 -> convertAny debug2 bakedP bakedP flags layout out convTex2pdf
 
     (toFilePath bakedP <> "**/*.tex")
-        %> \out -- insert pdfFIles1 
-                                            -- with subdir
+        %> \out -- insert pdfFIles1  
                 -> convertAny debug2 bakedP bakedP flags layout out convTexsnip2tex
 
     (toFilePath bakedP <> "**/*.texsnip")
-        %> \out -- insert pdfFIles1 
-                                            -- with subdir
+        %> \out -- insert pdfFIles1   
                 -> convertAny debug2 bakedP bakedP flags layout out convDocrep2texsnip
 
     (toFilePath bakedP <> "**/*.docrep")
-        %> \out -- insert pdfFIles1 
-                                            -- with subdir
-                -> convertAny debug2 bakedP bakedP flags layout out convMD2docrep
+        %> \out -- insert pdfFIles1  -- here start with doughP
+                -> convertAny debug2 doughP bakedP flags layout out convMD2docrep
 
     -- rest are copies 
 
