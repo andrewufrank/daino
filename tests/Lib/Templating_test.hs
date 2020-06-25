@@ -66,7 +66,7 @@ master3 = addDir templateDir masterTemplateFileName
 --           assertEqual (Left text0) res
 
 
-instance  ShowTestHarness DocValue where
+-- instance  ShowTestHarness DocValue where
 instance ShowTestHarness HTMLout
 --
 --

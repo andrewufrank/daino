@@ -32,15 +32,15 @@ import Uniform.Pandoc -- (DocValue(..), unDocValue, docValueFileType)
 blog1fn = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/dough/Blog/blog1.md"  -- braucht extension
 blog1res = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/checks/Blog/blog1"  -- keine extension
 
-test_bake2docval = testVar0FileIO "ssg" (blog1fn,blog1res) "bakeOneFile2docval" op2html
-    where 
-        op2html :: (Path Abs File, Path Abs File) -> ErrIO ()
-        op2html (fn,resfn) = bakeOneFile2docval False allFlags fn testLayout resfn
+-- test_bake2docval = testVar0FileIO "ssg" (blog1fn,blog1res) "bakeOneFile2docval" op2html
+--     where 
+--         op2html :: (Path Abs File, Path Abs File) -> ErrIO ()
+--         op2html (fn,resfn) = bakeOneFile2docval False allFlags fn testLayout resfn
 
-test_docVal2html = testVar0FileIO "ssg" (blog1res,blog1res) "bakeDocValue2html" op2html
-    where 
-        op2html :: (Path Abs File, Path Abs File) -> ErrIO () 
-        op2html (fn,resfn) = bakeDocValue2html True allFlags fn testLayout resfn
+-- test_docVal2html = testVar0FileIO "ssg" (blog1res,blog1res) "bakeDocValue2html" op2html
+--     where 
+--         op2html :: (Path Abs File, Path Abs File) -> ErrIO () 
+--         op2html (fn,resfn) = bakeDocValue2html True allFlags fn testLayout resfn
 
 -- test_bake2html = testVar0FileIO "ssg" (blog1fn,blog1res) "bake2html" op2html
 --     where 

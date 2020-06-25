@@ -69,18 +69,18 @@ test_pandoc_12_A_F = test1FileIO progName  "resultAD2" "resultAF2" pandocToConte
 -- test_pandoc_15_A_F = test1FileIO progName  "resultAD5" "resultAF5" pandocToContentHtmlX
 -- test_pandoc_16_A_F = test1FileIO progName  "resultAD6" "resultAF6" pandocToContentHtmlX
 --
-docVal2 :: HTMLout -> Path Abs File -> TripleDoc -> ErrIO DocValue
-docVal2 htmlout pagefn triple = docValToAllVal False testLayout allFlags 
-                              htmlout  
-                 (snd3 triple)
+-- docVal2 :: HTMLout -> Path Abs File -> TripleDoc -> ErrIO DocValue
+-- docVal2 htmlout pagefn triple = docValToAllVal False testLayout allFlags 
+--                               htmlout  
+--                  (snd3 triple)
 
-test_pandoc_11_F_G  :: IO ()
-test_pandoc_11_F_G = test3FileIO progName  "resultAF1" "pageFn1" "TripleDoc1" "resultAG1" docVal2
-test_pandoc_12_F_G = test3FileIO progName  "resultAF2" "pageFn2" "TripleDoc2" "resultAG2" docVal2
--- test_pandoc_13_F_G = test3FileIO progName  "resultAF3" "pageFn3" "TripleDoc3" "resultAG3" docVal2
--- test_pandoc_14_F_G = test3FileIO progName  "resultAF4" "pageFn4" "TripleDoc4" "resultAG4" docVal2
--- test_pandoc_15_F_G = test3FileIO progName  "resultAF5" "pageFn5" "TripleDoc5" "resultAG5" docVal2
--- test_pandoc_16_F_G = test3FileIO progName  "resultAF6" "pageFn6" "TripleDoc6" "resultAG6" docVal2
+-- test_pandoc_11_F_G  :: IO ()
+-- test_pandoc_11_F_G = test3FileIO progName  "resultAF1" "pageFn1" "TripleDoc1" "resultAG1" docVal2
+-- test_pandoc_12_F_G = test3FileIO progName  "resultAF2" "pageFn2" "TripleDoc2" "resultAG2" docVal2
+-- -- test_pandoc_13_F_G = test3FileIO progName  "resultAF3" "pageFn3" "TripleDoc3" "resultAG3" docVal2
+-- -- test_pandoc_14_F_G = test3FileIO progName  "resultAF4" "pageFn4" "TripleDoc4" "resultAG4" docVal2
+-- -- test_pandoc_15_F_G = test3FileIO progName  "resultAF5" "pageFn5" "TripleDoc5" "resultAG5" docVal2
+-- -- test_pandoc_16_F_G = test3FileIO progName  "resultAF6" "pageFn6" "TripleDoc6" "resultAG6" docVal2
 
 
 -- markdownToHTML5xdebug ::  MarkdownText -> ErrIO DocValue
@@ -121,7 +121,7 @@ metaRecIndex1 = MetaRec
 
 -- instance  ShowTestHarness MarkdownText where
 
-instance  ShowTestHarness DocValue where
+-- instance  ShowTestHarness DocValue where
 instance  ShowTestHarness ( Pandoc) where
 instance  ShowTestHarness TripleDoc where
 instance  ShowTestHarness HTMLout where
