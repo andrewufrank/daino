@@ -48,11 +48,12 @@ import           Uniform.DocValue               ( docValueFileType
                                                 , docvalExt
                                                 )
 -- todo - check replaceextension in fileio 
-import           Lib.Pandoc                     ( markdownToPandocBiblio
-                                                , pandocToContentHtml
-                                                , htmloutFileType
-                                                , HTMLout(..)
-                                                )
+import           Lib.Pandoc                   
+--   ( markdownToPandocBiblio
+--                                                 , pandocToContentHtml
+--                                                 , htmloutFileType
+--                                                 , HTMLout(..)
+--                                                 )
 
 -- import           Lib.Templating                 ( putValinMaster )
 import           Uniform.ProcessPDF
@@ -75,27 +76,6 @@ type BakeOp
     -> SiteLayout
     -> Path Abs File
     -> ErrIO ()
-
--- bakeOneFile2docrep :: BakeOp
--- -- TODO 
--- bakeOneFile2docrep debug flags inputFn layout resfn2 = return ()
-
-bakeOneFile2html :: BakeOp
--- TODO 
-bakeOneFile2html debug flags inputFn layout resfn2 = return ()
-
-bakeOneFile2texsnip :: BakeOp
--- TODO 
-bakeOneFile2texsnip debug flags inputFn layout resfn2 = return ()
-
-bakeOneFile2tex :: BakeOp
--- TODO 
-bakeOneFile2tex debug flags inputFn layout resfn2 = return ()
-
-bakeOneFile2pdf :: BakeOp
--- TODO 
-bakeOneFile2pdf debug flags inputFn layout resfn2 = return ()
-
 
 bakeOneFile2docrep
     :: Bool
@@ -127,39 +107,126 @@ bakeOneFile2docrep debug flags inputFn layout resfn2 = do
 -- all values from meta are moved to yam (meta is zero to avoid problems)
     docrep1                   <- readMarkdown2docrep md1
 
-
-    -- (pandoc, metaRec, report) <- getTripleDoc layout inputFn
-    -- -- how are errors dealt with 
-    -- -- let debug = True
-
-    -- pandoc2 :: Pandoc <- markdownToPandocBiblio debug
-    --                                             flags
-    --                                             (doughDir layout)
-    --                                             (pandoc, metaRec, report) -- AG -> AD
-    --                 -- withSettings.pandoc
-    --                     -- produce html and put into contentHtml key
-    --                     -- can be nothing if the md file is not ready to publish
-    -- when debug $ putIOwords
-    --     ["\n-----------------", "bakeOneFile2docrep 2 fn", showT inputFn]
-
-    -- htmlout :: HTMLout <- pandocToContentHtml debug pandoc2
-    --     -- content.docval  AD -> AF
-
-    -- when debug $ putIOwords
-    --     ["\n-----------------", "bakeOneFile2docrep 3 fn", showT inputFn]
-
-    -- val <- docValToAllVal debug layout flags htmlout metaRec
-    -- -- why from htmlout as a base? 
-    -- -- includes the directory list and injection, which should be in 
-    -- -- value "menu2"
-    -- when debug $ putIOwords
-    --     ["\n-----------------", "bakeOneFile2docrep 4 fn", showT inputFn]
-
     write8 resfn2 docRepFileType docrep1   -- content is html style
 
     when debug $ putIOwords
         ["\n-----------------", "bakeOneFile2docrep done fn", showT resfn2]
     return () --"ok bakeOneFile2docrep"
+
+
+bakeOneFile2html :: BakeOp
+-- TODO 
+bakeOneFile2html debug flags inputFn layout resfn2 = do
+    putIOwords
+        [ "\n-----------------"
+        , "bakeOneFile2html 1 fn"
+        , showT inputFn
+        , "debug"
+        , showT debug
+        , "\n resfn2"
+        , showT resfn2
+        ]
+
+    dr1                      <- read8 inputFn docRepFileType
+        -- docRep2html:: DocRep -> ErrIO HTMLout
+        -- ^ transform a docrep to a html file 
+        -- needs teh processing of the references with citeproc
+                 
+    h1                   <- docRep2html dr1
+
+    write8 resfn2 htmloutFileType h1   -- content is html style
+
+    when debug $ putIOwords
+        ["\n-----------------", "bakeOneFile2html done fn", showT resfn2]
+    return () --"ok bakeOneFile2docrep"
+
+
+bakeOneFile2texsnip :: BakeOp
+-- TODO 
+bakeOneFile2texsnip debug flags inputFn layout resfn2 = do
+    putIOwords
+        [ "\n-----------------"
+        , "bakeOneFile2texsnip 1 fn"
+        , showT inputFn
+        , "debug"
+        , showT debug
+        , "\n resfn2"
+        , showT resfn2
+        ]
+
+    dr1                      <- read8 inputFn docRepFileType
+
+    -- docRep2texsnip :: DocRep -> ErrIO TexSnip
+    -- -- ^ transform a docrep to a texsnip 
+    -- -- does not need the references include in docRep
+    -- -- which is done by tex to pdf conversion
+                 
+    snip1                   <- docRep2texsnip dr1
+
+    write8 resfn2 texSnipFileType snip1   -- content is html style
+
+    when debug $ putIOwords
+        ["\n-----------------", "bakeOneFile2html done fn", showT resfn2]
+    return () --"ok bakeOneFile2docrep"
+
+
+bakeOneFile2tex :: BakeOp
+-- TODO 
+bakeOneFile2tex debug flags inputFn layout resfn2 = do
+    putIOwords
+        [ "\n-----------------"
+        , "bakeOneFile2tex 1 fn"
+        , showT inputFn
+        , "debug"
+        , showT debug
+        , "\n resfn2"
+        , showT resfn2
+        ]
+
+    snip1     <- read8 inputFn texSnipFileType
+
+    -- docRep2texsnip :: DocRep -> ErrIO TexSnip
+    -- -- ^ transform a docrep to a texsnip 
+    -- -- does not need the references include in docRep
+    -- -- which is done by tex to pdf conversion
+                 
+    let tex1   =   tex2latex [snip1]
+
+    write8 resfn2 texFileType tex1   -- content is html style
+
+    when debug $ putIOwords
+        ["\n-----------------", "bakeOneFile2tex done fn", showT resfn2]
+    return () --"ok bakeOneFile2docrep"
+
+
+bakeOneFile2pdf :: BakeOp
+-- TODO 
+bakeOneFile2pdf debug flags inputFn layout resfn2 = do
+    putIOwords
+        [ "\n-----------------"
+        , "bakeOneFile2pdf 1 fn"
+        , showT inputFn
+        , "debug"
+        , showT debug
+        , "\n resfn2"
+        , showT resfn2
+        ]
+
+    -- tex1     <- read8 inputFn texFileType
+
+    -- docRep2texsnip :: DocRep -> ErrIO TexSnip
+    -- -- ^ transform a docrep to a texsnip 
+    -- -- does not need the references include in docRep
+    -- -- which is done by tex to pdf conversion
+                 
+    -- writePDF2text :: Bool  ->   Path Abs File -> Path Abs File -> ErrIO ()
+
+    writePDF2text debug   inputFn resfn2   -- content is html style
+
+    when debug $ putIOwords
+        ["\n-----------------", "bakeOneFile2pdf done fn", showT resfn2]
+    return () --"ok bakeOneFile2docrep"
+
 
 
 

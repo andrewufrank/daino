@@ -23,7 +23,7 @@
 #-}
 module Lib.Pandoc
     ( markdownToPandocBiblio
-    , pandocToContentHtml
+    -- , pandocToContentHtml
     , getMeta
     -- , docValToAllVal
     , getAtKey
@@ -44,10 +44,11 @@ import           Uniform.Convenience.DataVarious
 import           Uniform.FileIO          hiding ( Meta
                                                 , at
                                                 )
-import           Uniform.HTMLout                ( HTMLout(..)
-                                                , writeHtml5String2
-                                                , htmloutFileType
-                                                )
+import           Uniform.HTMLout               
+    --  ( HTMLout(..)
+    --                                             , writeHtml5String2
+    --                                             , htmloutFileType
+    --                                             )
 import           Uniform.DocValue               ( mergeAll )
 import           Uniform.Markdown               ( readMarkdown2 )
 import           Uniform.Pandoc -- hiding (Meta(..))
@@ -88,13 +89,13 @@ markdownToPandocBiblio debug flags doughP (pandoc, metaRec, _) = do
            -- here the dir is used for processing in my code
     return pandoc2
 
-pandocToContentHtml :: Bool -> Pandoc -> ErrIO HTMLout
+-- pandocToContentHtml :: Bool -> Pandoc -> ErrIO HTMLout
 
--- convert the pandoc to html in the contentHtml key
--- the settings are initially put into the pandoc
-pandocToContentHtml debug pandoc2 = do
-    text2x <- writeHtml5String2 pandoc2
-    return text2x
+-- -- convert the pandoc to html in the contentHtml key
+-- -- the settings are initially put into the pandoc
+-- pandocToContentHtml debug pandoc2 = do
+--     text2x <- writeHtml5String2 pandoc2
+--     return text2x
 
 -- docValToAllVal :: Bool
 --                 -> SiteLayout 
