@@ -82,20 +82,20 @@ executable ssgbake
         , shake
         -- , pipes
  
-executable ssgCheck
-    main-is: ssgCheck.hs
-    hs-source-dirs: src
-    default-language: Haskell2010
-    build-depends:
-        base ==4.*,
-        uniform-strings -any,
-        uniform-convenience -any,
-        uniform-fileio -any,
-        uniform-error -any,
+-- executable ssgCheck
+--     main-is: ssgCheck.hs
+--     hs-source-dirs: src
+--     default-language: Haskell2010
+--     build-depends:
+--         base ==4.*,
+--         uniform-strings -any,
+--         uniform-convenience -any,
+--         uniform-fileio -any,
+--         uniform-error -any,
 
-        -- uniform-piped,
-        SSG -any,
-        pipes
+--         -- uniform-piped,
+--         SSG -any,
+--         pipes
 
 test-suite ssgTest
     type: exitcode-stdio-1.0

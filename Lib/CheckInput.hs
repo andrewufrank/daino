@@ -136,6 +136,7 @@ _dateIssue date1x  = case date1x of
       Just _  -> (True, Nothing)
 
 -- | the data in the meta/yaml part of the md files 
+-- todo remove and replace with json
 data MetaRec = MetaRec  
         { fn ::  FilePath  -- ^  filename abs file
         , relURL :: FilePath -- ^ the filepath relative to dough dir  
