@@ -101,31 +101,6 @@ convA2B debug sourceP targetP flags layout out sourceExtA bakeop = do
     return ()
 
 
--- conv2HTML :: ConvertOp
--- -- the producers/convertes of the files         
--- conv2HTML debug doughP bakedP flags layout out =
---     convertAny debug doughP bakedP flags layout out convDocrep2html
-
--- conv2PDF :: ConvertOp
--- -- produce pdf (either copy available or produce from texsnip )         
--- conv2PDF debug doughP bakedP flags layout out =
---     convertAny debug doughP bakedP flags layout out convTex2pdf
-
--- conv2tex :: ConvertOp
--- -- produce pdf (either copy available or produce from texsnip )         
--- conv2tex debug doughP bakedP flags layout out =
---     convertAny debug doughP bakedP flags layout out convTexsnip2tex
-
--- conv2texsnip :: ConvertOp
--- -- produce pdf (either copy available or produce from texsnip )         
--- conv2texsnip debug doughP bakedP flags layout out =
---     convertAny debug doughP bakedP flags layout out convDocrep2texsnip
-
--- conv2docrep :: ConvertOp
--- -- produce pdf (either copy available or produce from texsnip )         
--- conv2docrep debug doughP bakedP flags layout out =
---     convertAny debug doughP bakedP flags layout out convMD2docrep
-
 
 io2bool op = do         -- todo move 
     x <- liftIO $ runErr $ op
