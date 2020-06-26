@@ -92,8 +92,8 @@ convA2B debug sourceP targetP flags layout out sourceExtA bakeop = do
 
     let infile2 = sourceP </> stripProperPrefixP targetP infile1 :: Path Abs File
     need [toFilePath infile2]
-    when debug $ liftIO $ putIOwords
-        ["\n  convA2B - 3 needed", showT infile2]
+    when debug $  putIOwords
+        ["\n  convA2B - 3 needed", showT infile2 ]
 
     resfile <- runErr2action
         $ bakeop False flags infile2 layout outP
@@ -118,15 +118,15 @@ convertAny
     -> FilePath
     -> ConvertOp   -- ^ the operation to carry out 
     -> Action ()
--- produce any (either copy available or produce with anyop)         
+-- produce any (either copy available in baked or produce with anyop)         
 convertAny debug doughP bakedP flags layout out anyop = do
     let outP = makeAbsFile out :: Path Abs File
-    when debug $ liftIO $ putIOwords ["\nproduceAny", "\n file out", showT out]
+    when debug $   putIOwords ["\nproduceAny", "\n file out", showT out]
     let fromfile = doughP </> makeRelativeP bakedP outP
     -- needP [fromfile]
     fileExists <- io2bool $ doesFileExist' fromfile
-    when debug $ liftIO $ putIOwords
-        [ "\nproducePDF - fromfile exist:"
+    when debug $  putIOwords
+        [ "\nconvertAny - fromfile exist:"
         , showT fileExists
         , "\nfile"
         , showT fromfile
@@ -135,7 +135,7 @@ convertAny debug doughP bakedP flags layout out anyop = do
         then do
             copyFileChangedP fromfile outP
             when debug $ liftIO $ putIOwords
-                ["\n DONE producePDF - staticP - fromfile ", showT fromfile]
+                ["\n convertAny DONE   - staticP - fromfile ", showT fromfile]
         else anyop True doughP bakedP flags layout out
     return ()
 

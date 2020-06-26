@@ -58,21 +58,21 @@ test_pandoc_12_A_D = test1FileIO progName  "TripleDoc2" "resultAD2" markdownToPa
             -- 13 fails
 -- "/home/frank/Workspace8/ssg/site/dough/site/dough/resources/BibTexLatex.bib: openFile: does not exist (No such file or directory)"
 
-pandocToContentHtmlX ::  Pandoc -> ErrIO HTMLout
-pandocToContentHtmlX mp = pandocToContentHtml False mp -- (fromJustNote "fwerw" mp)
---
-test_pandoc_11_A_F  :: IO ()
-test_pandoc_11_A_F = test1FileIO progName  "resultAD1" "resultAF1" pandocToContentHtmlX
-test_pandoc_12_A_F = test1FileIO progName  "resultAD2" "resultAF2" pandocToContentHtmlX
--- test_pandoc_13_A_F = test1FileIO progName  "resultAD3" "resultAF3" pandocToContentHtmlX
--- test_pandoc_14_A_F = test1FileIO progName  "resultAD4" "resultAF4" pandocToContentHtmlX
--- test_pandoc_15_A_F = test1FileIO progName  "resultAD5" "resultAF5" pandocToContentHtmlX
--- test_pandoc_16_A_F = test1FileIO progName  "resultAD6" "resultAF6" pandocToContentHtmlX
---
--- docVal2 :: HTMLout -> Path Abs File -> TripleDoc -> ErrIO DocValue
--- docVal2 htmlout pagefn triple = docValToAllVal False testLayout allFlags 
---                               htmlout  
---                  (snd3 triple)
+-- pandocToContentHtmlX ::  Pandoc -> ErrIO HTMLout
+-- pandocToContentHtmlX mp = pandocToContentHtml False mp -- (fromJustNote "fwerw" mp)
+-- --
+-- test_pandoc_11_A_F  :: IO ()
+-- test_pandoc_11_A_F = test1FileIO progName  "resultAD1" "resultAF1" pandocToContentHtmlX
+-- test_pandoc_12_A_F = test1FileIO progName  "resultAD2" "resultAF2" pandocToContentHtmlX
+-- -- test_pandoc_13_A_F = test1FileIO progName  "resultAD3" "resultAF3" pandocToContentHtmlX
+-- -- test_pandoc_14_A_F = test1FileIO progName  "resultAD4" "resultAF4" pandocToContentHtmlX
+-- -- test_pandoc_15_A_F = test1FileIO progName  "resultAD5" "resultAF5" pandocToContentHtmlX
+-- -- test_pandoc_16_A_F = test1FileIO progName  "resultAD6" "resultAF6" pandocToContentHtmlX
+-- --
+-- -- docVal2 :: HTMLout -> Path Abs File -> TripleDoc -> ErrIO DocValue
+-- -- docVal2 htmlout pagefn triple = docValToAllVal False testLayout allFlags 
+-- --                               htmlout  
+-- --                  (snd3 triple)
 
 -- test_pandoc_11_F_G  :: IO ()
 -- test_pandoc_11_F_G = test3FileIO progName  "resultAF1" "pageFn1" "TripleDoc1" "resultAG1" docVal2

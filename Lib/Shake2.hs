@@ -101,7 +101,7 @@ shakeAll debug layout flags filepath = do
         ]
     let doughP = doughDir layout -- the regular dough
         bakedP = bakedDir layout
-    setCurrentDir doughP  -- needed for citeproc in pandoc 
+    -- setCurrentDir doughP  -- needed for citeproc in pandoc 
     callIO $ shakeMD debug layout flags doughP bakedP
     -- return ()
 

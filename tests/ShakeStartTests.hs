@@ -25,7 +25,7 @@ import Lib.Foundation
 import Lib.Foundation_test (testLayout) -- (progName, SiteLayout (..), layoutDefaults, templatesDirName)
 import Lib.Pandoc
 -- import Lib.FileMgt
-import Lib.Templating (putValinMaster )
+-- import Lib.Templating (putValinMaster )
 import Test.Framework 
          -- (markdownToPandoc, pandocToContentHtml,docValToAllVal)
         -- with a simplified Action ~ ErrIO
