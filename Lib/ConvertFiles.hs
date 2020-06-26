@@ -119,25 +119,30 @@ convertAny
     -> ConvertOp   -- ^ the operation to carry out 
     -> Action ()
 -- produce any (either copy available in baked or produce with anyop)         
-convertAny debug doughP bakedP flags layout out anyop = do
+convertAny debug sourceP targetP flags layout out anyop = do
     let outP = makeAbsFile out :: Path Abs File
     when debug $   putIOwords ["\nproduceAny", "\n file out", showT out]
-    let fromfile = doughP </> makeRelativeP bakedP outP
-    -- needP [fromfile]
-    fileExists <- io2bool $ doesFileExist' fromfile
-    when debug $  putIOwords
-        [ "\nconvertAny - fromfile exist:"
-        , showT fileExists
-        , "\nfile"
-        , showT fromfile
-        ]
-    if fileExists  -- gives recursion, if the file is produced in earlier run
-        then do
-            copyFileChangedP fromfile outP
-            when debug $ liftIO $ putIOwords
-                ["\n convertAny DONE   - staticP - fromfile ", showT fromfile]
-        else anyop True doughP bakedP flags layout out
-    return ()
+
+    if sourceP == targetP 
+        then anyop True sourceP targetP flags layout out
+        else 
+          do  
+            let fromfile = sourceP </> makeRelativeP targetP outP
+            -- needP [fromfile]
+            fileExists <- io2bool $ doesFileExist' fromfile
+            when debug $  putIOwords
+                [ "\nconvertAny - fromfile exist:"
+                , showT fileExists
+                , "\nfile"
+                , showT fromfile
+                ]
+            if fileExists  -- gives recursion, if the file is produced in earlier run
+                then do
+                    copyFileChangedP fromfile outP
+                    when debug $ liftIO $ putIOwords
+                        ["\n convertAny DONE   - staticP - fromfile ", showT fromfile]
+                else anyop True sourceP targetP flags layout out
+            return ()
 
 -- the generic copy for all the files 
 -- which can just be copied 
