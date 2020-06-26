@@ -61,6 +61,14 @@ import           Lib.CheckInput                 ( MetaRec(..)
 import           Lib.CmdLineArgs                ( PubFlags(..) )
 
 -------------------
+docRepNeeds2 :: Path Abs File -> ErrIO [FilePath]
+-- get the needs that are visible in the file 
+-- fix the path? TODO 
+docRepNeeds2 fnx = do 
+        dr1 <- read8 fnx docRepFileType
+        let n1 = docRepNeeds dr1 
+        return n1
+
 docRepNeeds :: DocRep -> [FilePath]
 -- ^ collect the needs (bib, images, css?)
 docRepNeeds (DocRep y1 p1) =   map t2s . catMaybes $ [imgs, bibs]

@@ -84,7 +84,7 @@ bakeOneFile2docrep
     -> Path Abs File  -- ^ md file 
     -> SiteLayout
     -> Path Abs File
-    -> ErrIO ()
+    -> ErrIO () -- return the needed files 
 -- convert a md file, process citations if any
 -- produce the docval (from which html texsnip are derived)
 -- todo include the index 
@@ -111,8 +111,10 @@ bakeOneFile2docrep debug flags inputFn layout resfn2 = do
     write8 resfn2 docRepFileType docrep1   -- content is html style
 
     when debug $ putIOwords
-        ["\n-----------------", "bakeOneFile2docrep done fn", showT resfn2]
-    return () --"ok bakeOneFile2docrep"
+        ["\n-----------------", "bakeOneFile2docrep done fn", showT resfn2
+            -- , "\n needs returned", showT needs1
+            ]
+    return () -- (needs1) --"ok bakeOneFile2docrep"
 
 
 bakeOneFile2html :: BakeOp

@@ -50,7 +50,7 @@ import           Uniform.Error                  ( ErrIO
                                                 )
 import           Uniform.Shake
 import           Development.Shake              ( Rules
-                                                , (|%>)
+                                                , (|%>) , priority
                                                 )
 -- import          Development.Shake.FilePath (replaceExtensions)
 import           Uniform.Strings                ( putIOwords
@@ -129,7 +129,7 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         , "\tbakedP\n"
         , showT bakedP
         ]
-    want ["allMarkdownConversion"]
+    want [ "allMarkdownConversion"]
 
     phony "allMarkdownConversion" $ do
         -- these are functions to construct the desired results
@@ -138,12 +138,6 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         pdfs  <- getNeeds debug doughP bakedP "md" "pdf"
         htmls      <- getNeeds debug  doughP bakedP "md" "html"
 
-        -- the next should not be put here 
-        bibs         <- getNeeds debug doughP bakedP "bib" "bib"
-        imgs          <- getNeeds debug doughP bakedP "jpg" "jpg"
-        imgs2         <- getNeeds debug doughP bakedP "JPG" "JPG"
-
-        csss          <- getNeeds debug doughP bakedP "css" "css"
                 -- templatesP 
                 -- (bakedP </> staticDirName) -- exception
         -- mds :: [Path Abs File]  <- getNeeds debug doughP bakedP "md" "md"
@@ -153,25 +147,20 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         -- but produce the common precursor docval
         -- TODO 
 
-        -- csls                    <- getNeeds debug doughP bakedP "csl" "csl"
-    -- convert to needs (perhaps wants better)
-    -- no restriction on order    
+        bibs         <- getNeeds debug doughP bakedP "bib" "bib"
+        imgs          <- getNeeds debug doughP bakedP "jpg" "jpg"
+        imgs2         <- getNeeds debug doughP bakedP "JPG" "JPG"
+
+        csss          <- getNeeds debug doughP bakedP "css" "css"
 
         needP bibs
         needP imgs
         needP imgs2
         needP csss
-        -- needP csls
-        -- needP mds   -- fuer html
-        -- needP pdf2  -- fuer pdf  
-        -- needP [bannerImageTarget]
-         
-        -- needP [masterSettings_yaml] -- checks only that file exists
-        -- needP  [masterTemplate]
-        -- need (map toFilePath yamlPageFiles2)
 
         needP pdfs
         needP htmls
+        
     return ()
 
     let debug2 = True
@@ -183,7 +172,12 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
 
     (toFilePath bakedP <> "**/*.pdf")
         %> \out -- insert pdfFIles1  
-                -> convertAny debug2 bakedP bakedP flags layout out convTex2pdf
+                -> do 
+                    putIOwords ["rule **/*.pdf", showT out]
+                    imgs2         <- getNeeds debug doughP bakedP "JPG" "JPG"
+                    needP imgs2
+                    putIOwords ["rule **/*.pdf need", showT imgs2]
+                    convertAny debug2 bakedP bakedP flags layout out convTex2pdf
 
     (toFilePath bakedP <> "**/*.tex")
         %> \out -- insert pdfFIles1  
@@ -228,7 +222,7 @@ getNeeds
 --  from source with extension ext
 getNeeds debug sourceP targetP extSource extTarget = do
     let sameExt = extSource == extTarget
-    when debug $ liftIO $ putIOwords
+    when debug $  putIOwords
         [ "===================\ngetNeeds extSource"
         , extSource
         , "extTarget"
@@ -250,7 +244,7 @@ getNeeds debug sourceP targetP extSource extTarget = do
                       Abs
                       File
                 ]
-    when debug $ liftIO $ do
+    when debug $  do
         putIOwords
             [ "===================\nbakePDF -  source files 1"
             , "for ext"

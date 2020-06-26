@@ -59,8 +59,10 @@ type ConvertA2BOp
 
 
 convMD2docrep :: ConvertOp
-convMD2docrep debug doughP bakedP flags layout out =
+convMD2docrep debug doughP bakedP flags layout out = do
     convA2B debug doughP bakedP flags layout out extMD bakeOneFile2docrep
+    -- needs1 <- docRepNeeds2  -- questionable 
+    -- need needs1
 
 convDocrep2html :: ConvertOp
 convDocrep2html debug doughP bakedP flags layout out =
