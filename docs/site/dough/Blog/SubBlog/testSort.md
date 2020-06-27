@@ -11,7 +11,8 @@ pageTemplate: page3.yaml
 another test with title z for testing sort order
 
 <!-- ![Alt text](DSC08138.JPG) -->
-![Alt text](/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG)
+![Alt text](DSC08138.JPG)
+<!-- ![Alt text](resources/DSC08138.JPG) -->
 
 statt einer relativen `resources/DSC08138.JPG` referenz. Problem in latex.
 

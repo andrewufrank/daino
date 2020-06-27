@@ -223,8 +223,8 @@ bakeOneFile2pdf debug flags inputFn layout resfn2 = do
     -- -- which is done by tex to pdf conversion
                  
     -- writePDF2text :: Bool  ->   Path Abs File -> Path Abs File -> ErrIO ()
-
-    writePDF2text debug   inputFn resfn2   -- content is html style
+    let refDir = makeAbsDir . getImmediateParentDir . toFilePath $ inputFn 
+    writePDF2 debug   inputFn resfn2  refDir  -- content is html style
 
     when debug $ putIOwords
         ["\n-----------------", "bakeOneFile2pdf done fn", showT resfn2]
