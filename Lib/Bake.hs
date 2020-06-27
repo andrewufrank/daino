@@ -207,11 +207,11 @@ bakeOneFile2pdf :: BakeOp
 bakeOneFile2pdf debug flags inputFn layout resfn2 = do
     putIOwords
         [ "\n-----------------"
-        , "bakeOneFile2pdf 1 fn"
+        , "bakeOneFile2pdf 1 fn:"
         , showT inputFn
-        , "debug"
+        , "\n\t debug:"
         , showT debug
-        , "\n resfn2"
+        , "\n\t resfn2:"
         , showT resfn2
         ]
 
@@ -223,7 +223,8 @@ bakeOneFile2pdf debug flags inputFn layout resfn2 = do
     -- -- which is done by tex to pdf conversion
                  
     -- writePDF2text :: Bool  ->   Path Abs File -> Path Abs File -> ErrIO ()
-    let refDir = makeAbsDir . getImmediateParentDir . toFilePath $ inputFn 
+    let refDir = makeAbsDir . getParentDir . toFilePath $ inputFn 
+            :: Path Abs Dir 
     writePDF2 debug   inputFn resfn2  refDir  -- content is html style
 
     when debug $ putIOwords
