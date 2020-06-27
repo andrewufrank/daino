@@ -171,7 +171,7 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         -- calls the copy html and the conversion from md
                 -> do 
                     csss          <- getNeeds debug doughP bakedP "css" "css"
-                    needP csss 
+                    -- needP csss 
                     putIOwords ["rule **/*.html need", showT csss]
                     imgs          <- getNeeds debug doughP bakedP "jpg" "jpg"
                     imgs2         <- getNeeds debug doughP bakedP "JPG" "JPG"
@@ -203,9 +203,9 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         %> \out -- insert pdfFIles1  -- here start with doughP
                 -> do 
                     bibs         <- getNeeds debug doughP bakedP "bib" "bib"
-                    needP bibs
+                    -- needP bibs
                     csls          <- getNeeds debug doughP bakedP "csl" "csl"
-                    needP csls 
+                    -- needP csls 
                     putIOwords ["rule **/*.docrep need", showT bibs]
                     putIOwords ["rule **/*.docrep need", showT csls]
 
