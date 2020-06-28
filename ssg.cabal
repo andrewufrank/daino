@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 8b6ff119b943c4bce4c2f1e93e15da8b8b6a33c3247a4662ba2e72cdd6c979fd
+-- hash: acfc47a626cc6bd7ffd0d5e46639e9535b2116be12b783ed1e4ececd16d1e24b
 
 name:           ssg
 version:        0.0.4
@@ -27,14 +27,15 @@ source-repository head
 
 library
   exposed-modules:
-      Lib.CmdLineArgs Lib.ConvertFiles Lib.Bake Lib.Foundation Lib.StartSSGprocess
+      Lib.CmdLineArgs Lib.StartSSGprocess Lib.Foundation Lib.Bake Lib.ConvertFiles Lib.IndexMake Lib.Indexing Lib.Pandoc Lib.ReadSettingFile Lib.Shake2 Lib.Watch
   other-modules:
       Lib.CheckInput
   hs-source-dirs:
       ./.
   ghc-options: -Wall
   build-depends:
-      base
+      aeson
+    , base
     , containers
     , optparse-applicative
     , optparse-generic
@@ -62,13 +63,15 @@ executable ssgbake
       src
   ghc-options: -Wall
   build-depends:
-      base
+      aeson
+    , base
     , containers
     , optparse-applicative
     , optparse-generic
     , path-io
     , pipes
     , shake
+    , ssg
     , uniform-algebras
     , uniform-convenience
     , uniform-error
@@ -87,16 +90,18 @@ executable ssgcheck
   other-modules:
       Paths_ssg
   hs-source-dirs:
-      driver
+      src
   ghc-options: -Wall
   build-depends:
-      base
+      aeson
+    , base
     , containers
     , optparse-applicative
     , optparse-generic
     , path-io
     , pipes
     , shake
+    , ssg
     , uniform-algebras
     , uniform-convenience
     , uniform-error
@@ -131,7 +136,8 @@ test-suite test
       tests
   ghc-options: -Wall
   build-depends:
-      base
+      aeson
+    , base
     , containers
     , optparse-applicative
     , optparse-generic

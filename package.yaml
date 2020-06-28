@@ -28,7 +28,7 @@ dependencies:  # are global
     - path-io
     - pipes
     - containers
-
+    - aeson
     -  uniform-fileio  
     - uniform-error  
     - uniform-time 
@@ -47,11 +47,16 @@ library:
   source-dirs: .
   exposed-modules: 
         Lib.CmdLineArgs
-        Lib.ConvertFiles
-        Lib.Bake 
-        Lib.Foundation
         Lib.StartSSGprocess
-
+        Lib.Foundation
+        Lib.Bake 
+        Lib.ConvertFiles
+        Lib.IndexMake
+        Lib.Indexing
+        Lib.Pandoc
+        Lib.ReadSettingFile
+        Lib.Shake2
+        Lib.Watch
   # exposed-modules: Lib
   other-modules:  Lib.CheckInput
       # - Lib.Foundation
@@ -80,10 +85,13 @@ executables:
   ssgbake:
     main: ssgBake.hs
     source-dirs: src
+    dependencies: 
+        ssg
   ssgcheck:
     main: ssgCheck.hs
-    source-dirs: driver
-#     # dependencies:
+    source-dirs: src
+    dependencies:
+        ssg
 # #  -         base ==4.*,
 # #  -         uniform-strings -any,
 # #  -         uniform-convenience -any,

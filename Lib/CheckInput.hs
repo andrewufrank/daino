@@ -57,8 +57,8 @@ data DocYaml = DocYaml {
 
 instance FromJSON DocYaml where
   parseJSON (Object o) = -- withObject "person" $ \o -> do 
-    docTitle <- o .:  "title"
-    docAbstract  <- o .: "abstrac"
+    -- docTitle <- o .:  "title"
+    -- docAbstract  <- o .: "abstrac"
     -- docLang <- o .:? "lang" .!= DLenglish  -- default 
     return DocYaml{..}
 
