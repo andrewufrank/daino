@@ -1,0 +1,131 @@
+name: ssg
+version: 0.0.4
+synopsis: A modern format for Haskell packages
+description: a static site generator
+    version 0.0.2.0  used for myhomepage  - fixes
+    0.0.2.1 add check for all pages, study content pdf, tex
+    0.0.3.0 copy all structure (exclude with DNB)
+    0.0.3.1 change to 15.13 (pandoc not resolvable)
+    0.0.4   start with hpack, lts-16.0 (8.8.)
+category: Development
+
+license-file: LICENSE
+author: Andrew U. Frank (frank@geoinfo.tuwien.ac.at)
+github:  frank/ssg
+
+spec-version: 0.30.0 # the hpack version minimally required 
+extra-source-files:
+  - changelog.md
+
+ghc-options: -Wall
+
+dependencies:  # are global
+    - base  
+    -  uniform-algebras 
+    -  uniform-strings  
+    -  uniform-shake
+    - shake
+    - path-io
+    - pipes
+    - containers
+
+    -  uniform-fileio  
+    - uniform-error  
+    - uniform-time 
+    - uniform-json 
+    - uniform-pandoc  
+    - uniform-convenience 
+    - uniform-watch 
+    - uniform-webserver
+    # -- - uniform-ftp
+
+    - optparse-applicative
+    - optparse-generic
+  # -- - pandoc-types
+
+library:
+  source-dirs: .
+  exposed-modules: 
+        Lib.CmdLineArgs
+        Lib.ConvertFiles
+        Lib.Bake 
+        Lib.Foundation
+        Lib.StartSSGprocess
+
+  # exposed-modules: Lib
+  other-modules:  Lib.CheckInput
+      # - Lib.Foundation
+#     -  Lib.Bake
+#  -         Lib.StartSSGprocess
+#  -         Lib.Shake2
+# #  -         -- Lib.FilesNeeded
+#  -         Lib.ConvertFiles
+# #  -         -- Lib.CheckInput
+# #  -         -- Lib.Shake
+# #  -         -- Lib.FileMgtw
+#  -         Lib.Templating
+#  -         Lib.Pandoc
+#  -         Lib.ReadSettingFile
+# #  -         -- Lib.Indexing
+# #  -         -- Lib.IndexMake
+# #  -         -- Lib.BibTex
+# #  -         -- Lib.YamlBlocks
+# #  -         -- Lib.CheckInput
+#  -         Lib.CmdLineArgs
+#  -         Lib.Watch
+# #  -         -- Paths_SSG
+#  -         Lib.CheckProcess
+
+executables:  
+  ssgbake:
+    main: ssgBake.hs
+    source-dirs: src
+  ssgcheck:
+    main: ssgCheck.hs
+    source-dirs: driver
+#     # dependencies:
+# #  -         base ==4.*,
+# #  -         uniform-strings -any,
+# #  -         uniform-convenience -any,
+# #  -         uniform-cmdLineArgs,
+# #  -         uniform-fileio -any,
+# #  -         uniform-error
+# #  -         , uniform-shake
+# #  -         ,uniform-webserver  
+# #  -         -- , uniform-ftp  
+# #  -         , uniform-time
+# #  -         -- , uniform-watch 
+# #  -         , SSG -any
+# #  -         , shake
+# #  -         -- , pipes
+
+tests:
+  test:
+#     # cpp-options: -DTEST
+    main: Testing.hs
+    source-dirs: tests
+#       # - src
+#     # dependencies:
+# #  -     HTF -any,
+# #  -         QuickCheck -any,
+# #  -         base ,
+# #  -         uniform-algebras, 
+# #  -         uniform-strings -any,
+# #  -         uniform-convenience -any,
+# #  -         uniform-fileio -any,
+# #  -         uniform-error -any,
+# #  -         uniform-time -any,
+# #  -         uniform-json,
+# #  -         uniform-pandoc,
+# #  -         uniform-webserver,
+# #  -         uniform-cmdLineArgs,
+# #  -         uniform-shake,
+# #  -         shake,
+# #  -         path-io,
+# #  -         pipes,
+# #  -         uniform-watch ,
+# #  -         uniform-time,
+# # #  -         -- uniform-ftp ,
+# #  -         SSG -any
+
+#     # build-tools:  

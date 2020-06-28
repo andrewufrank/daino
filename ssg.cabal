@@ -1,0 +1,152 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 8b6ff119b943c4bce4c2f1e93e15da8b8b6a33c3247a4662ba2e72cdd6c979fd
+
+name:           ssg
+version:        0.0.4
+synopsis:       A modern format for Haskell packages
+description:    a static site generator version 0.0.2.0  used for myhomepage  - fixes 0.0.2.1 add check for all pages, study content pdf, tex 0.0.3.0 copy all structure (exclude with DNB) 0.0.3.1 change to 15.13 (pandoc not resolvable) 0.0.4   start with hpack, lts-16.0 (8.8.)
+category:       Development
+homepage:       https://github.com/frank/ssg#readme
+bug-reports:    https://github.com/frank/ssg/issues
+author:         Andrew U. Frank (frank@geoinfo.tuwien.ac.at)
+maintainer:     Andrew U. Frank (frank@geoinfo.tuwien.ac.at)
+license:        BSD2
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    changelog.md
+
+source-repository head
+  type: git
+  location: https://github.com/frank/ssg
+
+library
+  exposed-modules:
+      Lib.CmdLineArgs Lib.ConvertFiles Lib.Bake Lib.Foundation Lib.StartSSGprocess
+  other-modules:
+      Lib.CheckInput
+  hs-source-dirs:
+      ./.
+  ghc-options: -Wall
+  build-depends:
+      base
+    , containers
+    , optparse-applicative
+    , optparse-generic
+    , path-io
+    , pipes
+    , shake
+    , uniform-algebras
+    , uniform-convenience
+    , uniform-error
+    , uniform-fileio
+    , uniform-json
+    , uniform-pandoc
+    , uniform-shake
+    , uniform-strings
+    , uniform-time
+    , uniform-watch
+    , uniform-webserver
+  default-language: Haskell2010
+
+executable ssgbake
+  main-is: ssgBake.hs
+  other-modules:
+      Paths_ssg
+  hs-source-dirs:
+      src
+  ghc-options: -Wall
+  build-depends:
+      base
+    , containers
+    , optparse-applicative
+    , optparse-generic
+    , path-io
+    , pipes
+    , shake
+    , uniform-algebras
+    , uniform-convenience
+    , uniform-error
+    , uniform-fileio
+    , uniform-json
+    , uniform-pandoc
+    , uniform-shake
+    , uniform-strings
+    , uniform-time
+    , uniform-watch
+    , uniform-webserver
+  default-language: Haskell2010
+
+executable ssgcheck
+  main-is: ssgCheck.hs
+  other-modules:
+      Paths_ssg
+  hs-source-dirs:
+      driver
+  ghc-options: -Wall
+  build-depends:
+      base
+    , containers
+    , optparse-applicative
+    , optparse-generic
+    , path-io
+    , pipes
+    , shake
+    , uniform-algebras
+    , uniform-convenience
+    , uniform-error
+    , uniform-fileio
+    , uniform-json
+    , uniform-pandoc
+    , uniform-shake
+    , uniform-strings
+    , uniform-time
+    , uniform-watch
+    , uniform-webserver
+  default-language: Haskell2010
+
+test-suite test
+  type: exitcode-stdio-1.0
+  main-is: Testing.hs
+  other-modules:
+      Lib.Bake_test
+      Lib.CheckInputs_test
+      Lib.CheckProcess_test
+      Lib.CmdLIneArgs_test
+      Lib.Foundation_test
+      Lib.Indexing_test
+      Lib.IndexMake_test
+      Lib.Pandoc_test
+      Lib.ReadSettingFile_test
+      Lib.Shake2_test
+      Lib.Templating_test
+      ShakeStartTests
+      Paths_ssg
+  hs-source-dirs:
+      tests
+  ghc-options: -Wall
+  build-depends:
+      base
+    , containers
+    , optparse-applicative
+    , optparse-generic
+    , path-io
+    , pipes
+    , shake
+    , uniform-algebras
+    , uniform-convenience
+    , uniform-error
+    , uniform-fileio
+    , uniform-json
+    , uniform-pandoc
+    , uniform-shake
+    , uniform-strings
+    , uniform-time
+    , uniform-watch
+    , uniform-webserver
+  default-language: Haskell2010
