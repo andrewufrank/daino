@@ -41,6 +41,7 @@ dependencies:  # are global
     - pipes
     - containers
     - aeson
+    - data-default
     -  uniform-fileio  
     - uniform-error  
     - uniform-time 

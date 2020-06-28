@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 7c87f72211ea6897f298ee9322bfc1ef93e5b73c59fe8961cc763c544900d56d
+-- hash: 7dce1150b560484f189592ef69311561d232adb395818682474dfb81b2e436d0
 
 name:           ssg
 version:        0.0.4.1
@@ -37,6 +37,7 @@ library
       aeson
     , base
     , containers
+    , data-default
     , optparse-applicative
     , optparse-generic
     , path-io
@@ -77,6 +78,7 @@ executable ssgbake
       aeson
     , base
     , containers
+    , data-default
     , optparse-applicative
     , optparse-generic
     , path-io
@@ -110,6 +112,7 @@ test-suite test
     , aeson
     , base
     , containers
+    , data-default
     , optparse-applicative
     , optparse-generic
     , path-io

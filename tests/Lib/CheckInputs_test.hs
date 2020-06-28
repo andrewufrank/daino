@@ -36,7 +36,7 @@ import Lib.Foundation ( SiteLayout (..), layoutDefaults)
 test_allLabels = do 
     res <- runErr $ do 
             dr1 <- read8 (makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep") docRepFileType
-            putIOwords ["test_allLabels", showT dr1]
+            putIOwords ["test_allLabels", showT . yam $ dr1]
             miss1x <- checkDocRep dr1 
             putIOwords ["\t missing", showT miss1x]
             return miss1x 

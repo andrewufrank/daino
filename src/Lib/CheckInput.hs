@@ -19,6 +19,7 @@
 module Lib.CheckInput where
 
 import GHC.Generics
+import Data.Default
 import           Uniform.Strings      --   hiding ( (</>) )
 import           Uniform.FileIO
 import           Uniform.Time                   (   readDateMaybe
@@ -55,20 +56,28 @@ data DocYaml = DocYaml {
 
             } deriving (Show, Read, Ord, Eq, Generic)
 
+instance Zeros DocYaml where 
+        zero = DocYaml zero DLenglish zero zero zero zero 
+instance Default DocYaml where 
+        def = zero {docLang = DLenglish}
+
 instance FromJSON DocYaml where
-  parseJSON (Object o) = -- withObject "person" $ \o -> do 
-    -- docTitle <- o .:  "title"
-    -- docAbstract  <- o .: "abstrac"
-    -- docLang <- o .:? "lang" .!= DLenglish  -- default 
-    return DocYaml{..}
+--   parseJSON (Object o) = -- withObject "person" $ \o -> 
+--   -- the yam part is an object    
+--       do 
+--         docTitle <- o .:  "title"
+--         docAbstract  <- o .: "abstrac"
+--         docLang <- o .:? "lang" .!= DLenglish  -- default 
+--         return DocYaml{..}
 
 checkDocRep :: DocRep -> ErrIO Text
 -- check the DocRep 
 -- first for completeness of metadata in yaml 
 -- returns the list of missing tags
 checkDocRep (DocRep y1 p1) = do 
-    dy :: DocRep <- fromJSONm y1 
-
+    putIOwords ["checkDocRep start"]
+    dy :: DocYaml <- fromJSONm y1 
+    putIOwords ["checkDocRep dy", showT dy]
     return (showT dy) 
 
 -- type TripleDoc = (Pandoc, MetaRec, Maybe Text)
