@@ -62,6 +62,7 @@ instance Default DocYaml where
         def = zero {docLang = DLenglish}
 
 instance FromJSON DocYaml where
+    -- generic works only when all fields are present
 --   parseJSON (Object o) = -- withObject "person" $ \o -> 
 --   -- the yam part is an object    
 --       do 
@@ -76,7 +77,12 @@ checkDocRep :: DocRep -> ErrIO Text
 -- returns the list of missing tags
 checkDocRep (DocRep y1 p1) = do 
     putIOwords ["checkDocRep start"]
-    dy :: DocYaml <- fromJSONm y1 
+    let resdy = fromJSON y1 :: Result DocYaml 
+    putIOwords ["checkDocRep 1"]
+    dy <- case resdy of 
+            Error msg -> error msg 
+            Success a -> return a 
+        
     putIOwords ["checkDocRep dy", showT dy]
     return (showT dy) 
 
