@@ -33,12 +33,12 @@ module Lib.Pandoc
     , readMarkdown2
     , HTMLout(..)
     , htmloutFileType
-    , MenuEntry
+    -- , MenuEntry
     )
 where
 
 import           Lib.Foundation                 ( SiteLayout(..) )
-import           Lib.Indexing -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
+-- import           Lib.Indexing -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
 -- import           Paths_SSG (version)
 import           Uniform.Convenience.DataVarious
                                                 ( showVersionT )
@@ -55,9 +55,9 @@ import           Uniform.Markdown               ( readMarkdown2 )
 import           Uniform.Pandoc -- hiding (Meta(..))
 import           Uniform.BibTex
 import           Uniform.Time                   ( year2000 )
-import           Lib.CheckInput                 ( MetaRec(..)
-                                                , TripleDoc
-                                                )
+-- import           Lib.CheckInput                 ( MetaRec(..)
+--                                                 , TripleDoc
+--                                                 )
 import           Lib.CmdLineArgs                ( PubFlags(..) )
 
 -------------------

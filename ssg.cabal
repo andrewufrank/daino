@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: acfc47a626cc6bd7ffd0d5e46639e9535b2116be12b783ed1e4ececd16d1e24b
+-- hash: f7c7e5bcdae3e204d1fc636dd80adc078b4682671bee1ebbbe83289aa145893e
 
 name:           ssg
 version:        0.0.4
@@ -27,7 +27,7 @@ source-repository head
 
 library
   exposed-modules:
-      Lib.CmdLineArgs Lib.StartSSGprocess Lib.Foundation Lib.Bake Lib.ConvertFiles Lib.IndexMake Lib.Indexing Lib.Pandoc Lib.ReadSettingFile Lib.Shake2 Lib.Watch
+      Lib.CmdLineArgs Lib.StartSSGprocess Lib.Foundation Lib.Bake Lib.ConvertFiles Lib.Pandoc Lib.ReadSettingFile Lib.Shake2 Lib.Watch
   other-modules:
       Lib.CheckInput
   hs-source-dirs:
@@ -57,36 +57,6 @@ library
 
 executable ssgbake
   main-is: ssgBake.hs
-  other-modules:
-      Paths_ssg
-  hs-source-dirs:
-      src
-  ghc-options: -Wall
-  build-depends:
-      aeson
-    , base
-    , containers
-    , optparse-applicative
-    , optparse-generic
-    , path-io
-    , pipes
-    , shake
-    , ssg
-    , uniform-algebras
-    , uniform-convenience
-    , uniform-error
-    , uniform-fileio
-    , uniform-json
-    , uniform-pandoc
-    , uniform-shake
-    , uniform-strings
-    , uniform-time
-    , uniform-watch
-    , uniform-webserver
-  default-language: Haskell2010
-
-executable ssgcheck
-  main-is: ssgCheck.hs
   other-modules:
       Paths_ssg
   hs-source-dirs:

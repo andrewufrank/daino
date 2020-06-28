@@ -51,12 +51,12 @@ library:
         Lib.Foundation
         Lib.Bake 
         Lib.ConvertFiles
-        Lib.IndexMake
-        Lib.Indexing
         Lib.Pandoc
         Lib.ReadSettingFile
         Lib.Shake2
         Lib.Watch
+        # Lib.Indexing
+        # Lib.IndexMake
   # exposed-modules: Lib
   other-modules:  Lib.CheckInput
       # - Lib.Foundation
@@ -87,11 +87,11 @@ executables:
     source-dirs: src
     dependencies: 
         ssg
-  ssgcheck:
-    main: ssgCheck.hs
-    source-dirs: src
-    dependencies:
-        ssg
+  # ssgcheck:
+  #   main: ssgCheck.hs
+  #   source-dirs: src
+  #   dependencies:
+  #       ssg
 # #  -         base ==4.*,
 # #  -         uniform-strings -any,
 # #  -         uniform-convenience -any,

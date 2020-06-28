@@ -63,7 +63,7 @@ import           Uniform.Pandoc                 ( Pandoc
                                                 , write8
                                                 )
 import           Lib.CmdLineArgs                ( PubFlags(..) )
-import           Lib.CheckInput                 ( getTripleDoc )
+-- import           Lib.CheckInput                 ( getTripleDoc )
 import           Lib.Foundation                 ( SiteLayout(..)
                                                 , templatesDir
                                                 )

@@ -18,7 +18,7 @@ module Lib.Templating  -- (openMain, htf_thisModuelsTests)
                       where
 
 import           Lib.Foundation                 ( masterTemplateFileName )
-import           Lib.Indexing                   ( getAtKey )
+-- import           Lib.Indexing                   ( getAtKey )
 import           Uniform.Filenames
 -- import Uniform.DocValue (dtmplFileType,  DocValue(..))
 import Uniform.HTMLout (HTMLout(..)
