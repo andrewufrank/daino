@@ -4,10 +4,10 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: f7c7e5bcdae3e204d1fc636dd80adc078b4682671bee1ebbbe83289aa145893e
+-- hash: 93047252ce0e865afe0f298bf8e233780848ac2280281ccd581779f355977d2f
 
 name:           ssg
-version:        0.0.4
+version:        0.0.4.1
 synopsis:       A modern format for Haskell packages
 description:    a static site generator version 0.0.2.0  used for myhomepage  - fixes 0.0.2.1 add check for all pages, study content pdf, tex 0.0.3.0 copy all structure (exclude with DNB) 0.0.3.1 change to 15.13 (pandoc not resolvable) 0.0.4   start with hpack, lts-16.0 (8.8.)
 category:       Development
@@ -32,7 +32,7 @@ library
       Lib.CheckInput
   hs-source-dirs:
       ./.
-  ghc-options: -Wall
+  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-unused-imports -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-dodgy-imports -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-duplicate-exports -fno-warn-missing-methods
   build-depends:
       aeson
     , base
@@ -61,7 +61,7 @@ executable ssgbake
       Paths_ssg
   hs-source-dirs:
       src
-  ghc-options: -Wall
+  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-unused-imports -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-dodgy-imports -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-duplicate-exports -fno-warn-missing-methods
   build-depends:
       aeson
     , base
@@ -104,7 +104,7 @@ test-suite test
       Paths_ssg
   hs-source-dirs:
       tests
-  ghc-options: -Wall
+  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-unused-imports -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-dodgy-imports -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-duplicate-exports -fno-warn-missing-methods
   build-depends:
       aeson
     , base

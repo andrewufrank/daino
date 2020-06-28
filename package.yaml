@@ -1,5 +1,5 @@
 name: ssg
-version: 0.0.4
+version: 0.0.4.1
 synopsis: A modern format for Haskell packages
 description: a static site generator
     version 0.0.2.0  used for myhomepage  - fixes
@@ -17,8 +17,20 @@ spec-version: 0.30.0 # the hpack version minimally required
 extra-source-files:
   - changelog.md
 
-ghc-options: -Wall
-
+ghc-options: 
+    -Wall
+    -fno-warn-unused-binds 
+    -fno-warn-unused-imports 
+    -fno-warn-deprecations 
+    -fno-warn-unused-do-bind 
+    -fno-warn-missing-signatures
+    -fno-warn-orphans
+    -fno-warn-type-defaults 
+    -fno-warn-dodgy-imports 
+    -fno-warn-unused-matches 
+    -fno-warn-warnings-deprecations 
+    -fno-warn-duplicate-exports
+    -fno-warn-missing-methods 
 dependencies:  # are global
     - base  
     -  uniform-algebras 

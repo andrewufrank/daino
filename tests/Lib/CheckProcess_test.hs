@@ -37,7 +37,7 @@ import Uniform.Piped (pipedDoIO) --getRecursiveContents
 
 
 doughdir = makeAbsDir "/home/frank/Workspace8/ssg/docs/site/dough/" :: Path Abs Dir 
-resfil = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/resfile.txt" :: Path Abs File
+resfil = makeAbsFile "/home/frank/Workspace8/ssg/dghcocs/site/resfile.txt" :: Path Abs File
 mdfil = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/postwk9sub.md"
  
 res11 :: ErrIO Text 

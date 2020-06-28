@@ -14,7 +14,10 @@
 :set -isrc
 :set -i.stack-work/dist/x86_64-linux-tinfo6/Cabal-2.4.0.1/build/autogen/
 :set -i.stack-work/dist/x86_64-linux/Cabal-2.4.0.1/build/autogen/
-:load tests/Testing.hs
--- :load src/ssgBake.hs  -- for main, but not working
-        -- because not correct dir
+:load src/ssgBake.hs  
+
+-- for main, but not working
+
+-- :load tests/Testing.hs
+-- because not correct dir
 -- :test:=ssgTest -- unknown command for ghci
