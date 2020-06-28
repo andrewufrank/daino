@@ -35,9 +35,10 @@ import Lib.Foundation ( SiteLayout (..), layoutDefaults)
 
 test_allLabels = do 
     res <- runErr $ do 
-            dr1 <- read8 (makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep") docRepFileType
+            let fn1 = (makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep")
+            dr1 <- read8  fn1 docRepFileType
             putIOwords ["test_allLabels", showT . yam $ dr1]
-            miss1x <- checkDocRep dr1 
+            miss1x <- checkDocRep fn1 dr1 
             putIOwords ["\t missing", showT miss1x]
             return miss1x 
     assertEqual (Right "()" ) res 

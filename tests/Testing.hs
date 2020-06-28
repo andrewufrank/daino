@@ -3,11 +3,13 @@
 -- Module      :   a test for HTF framework
 -- insert {-@ HTF_TESTS @-} for each import
 -----------------------------------------------------------------------------
-{-# OPTIONS_GHC -F -pgmF htfpp #-}
+{-# OPTIONS_GHC -F -pgmF htfpp #-} 
+{-# LANGUAGE PackageImports     #-}
+
 
 module Main where      -- must have Main (main) or Main where
 
-import           Test.Framework
+import    "HTF"       Test.Framework
 
 import           Uniform.FileIO
 

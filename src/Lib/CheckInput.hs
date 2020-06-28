@@ -34,9 +34,11 @@ import           Uniform.Pandoc
 -- import Uniform.Markdown (readMd2meta)
 import Lib.Foundation (SiteLayout(..), templatesDir, defaultPageTypeName)
 import Uniform.DocRep
+import Uniform.Time 
 
 import Data.List ( (\\) )
 import Data.Aeson 
+import Data.Aeson.Types
 import qualified Data.Map as M
 
 data DocLanguage = DLgerman | DLenglish deriving (Show, Read, Ord, Eq, Generic)
@@ -45,15 +47,14 @@ instance FromJSON DocLanguage
 
  
 
-data DocYaml = DocYaml { 
-                    docFn :: FilePath 
-                    , docLang :: DocLanguage 
-                    -- the fields of miniblog
-                    , docTitle :: Text
-                   ,  docAbstract :: Text 
-                    , date :: String 
-                    , keywords :: [Text]
-
+data DocYaml = DocYaml {docFn :: FilePath 
+                        , docLang :: DocLanguage 
+                        -- the fields of miniblog
+                        , docTitle :: Text
+                        ,  docAbstract :: Text 
+                        , docDate :: Maybe Text 
+                        -- ^ this is maybe a string, should be utctime 
+                        , docKeywords :: [Text]
             } deriving (Show, Read, Ord, Eq, Generic)
 
 instance Zeros DocYaml where 
@@ -63,28 +64,40 @@ instance Default DocYaml where
 
 instance FromJSON DocYaml where
     -- generic works only when all fields are present
---   parseJSON (Object o) = -- withObject "person" $ \o -> 
---   -- the yam part is an object    
---       do 
---         docTitle <- o .:  "title"
---         docAbstract  <- o .: "abstrac"
---         docLang <- o .:? "lang" .!= DLenglish  -- default 
---         return DocYaml{..}
+-- parseYam ::   Value -> Parser
+    parseJSON (Object o) = -- withObject "person" $ \o -> 
+  -- the yam part is an object  
+  -- these are the required fields  
+  -- at the moment default language is DLenglish 
+      do 
+        docTitle <- o .:  "title"
+        docAbstract  <- o .: "abstrac"
+        docLang <- o .:? "lang" .!= DLenglish  -- default 
+        docKeywords <- o .: "keywords"
+        docDate <- o .:? "date"  
+        return DocYaml{..}
 
-checkDocRep :: DocRep -> ErrIO Text
+checkDocRep :: Path Abs File ->  DocRep -> ErrIO Text
 -- check the DocRep 
 -- first for completeness of metadata in yaml 
--- returns the list of missing tags
-checkDocRep (DocRep y1 p1) = do 
+-- fails if required labels are not present
+checkDocRep fn (DocRep y1 p1) = do 
     putIOwords ["checkDocRep start"]
-    let resdy = fromJSON y1 :: Result DocYaml 
-    putIOwords ["checkDocRep 1"]
-    dy <- case resdy of 
-            Error msg -> error msg 
-            Success a -> return a 
-        
-    putIOwords ["checkDocRep dy", showT dy]
-    return (showT dy) 
+    let resdy = parseEither  parseJSON  y1 :: Either String DocYaml
+    case resdy of 
+        Left msg -> errorT ["checkDocRep not all required fields", s2t msg
+                , "in file", showT fn]
+        Right resdy1 -> do 
+            -- heute <- getCurrentTimeUTC 
+            let resdy2 = resdy1{docFn = toFilePath fn
+                                    }
+            putIOwords ["checkDocRep 1 resdy2", showT resdy2]
+            -- dy <- case resdy of 
+            --         Error msg -> error msg 
+            --         Success a -> return a 
+            let dy = resdy2   
+            putIOwords ["checkDocRep dy", showT dy]
+            return (showT dy) 
 
 -- type TripleDoc = (Pandoc, MetaRec, Maybe Text)
 -- -- ^ the pandoc content, the metarec (from yaml) and the report from conversion)
