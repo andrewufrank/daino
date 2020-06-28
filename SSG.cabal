@@ -46,7 +46,7 @@ library
         , path-io
         , pipes
         , containers
-
+        , aeson
         ,  uniform-fileio  
         , uniform-error -any
         , uniform-time -any
