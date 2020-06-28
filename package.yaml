@@ -60,39 +60,18 @@ library:
   exposed-modules: 
         Lib.CmdLineArgs
         Lib.StartSSGprocess
-        Lib.Foundation
-        Lib.Bake 
-        Lib.ConvertFiles
-        Lib.Pandoc
-        Lib.ReadSettingFile
         Lib.Shake2
-        Lib.Watch
+        Lib.ReadSettingFile
+        Lib.Foundation
+        Lib.ConvertFiles
+        Lib.Bake 
+        Lib.CheckInput
+        Lib.Pandoc
         # Lib.Indexing
         # Lib.IndexMake
-  # exposed-modules: Lib
-  other-modules:  Lib.CheckInput
-      # - Lib.Foundation
-#     -  Lib.Bake
-#  -         Lib.StartSSGprocess
-#  -         Lib.Shake2
-# #  -         -- Lib.FilesNeeded
-#  -         Lib.ConvertFiles
-# #  -         -- Lib.CheckInput
-# #  -         -- Lib.Shake
-# #  -         -- Lib.FileMgtw
-#  -         Lib.Templating
-#  -         Lib.Pandoc
-#  -         Lib.ReadSettingFile
-# #  -         -- Lib.Indexing
-# #  -         -- Lib.IndexMake
-# #  -         -- Lib.BibTex
-# #  -         -- Lib.YamlBlocks
-# #  -         -- Lib.CheckInput
-#  -         Lib.CmdLineArgs
-#  -         Lib.Watch
-# #  -         -- Paths_SSG
-#  -         Lib.CheckProcess
-
+  other-modules:  
+        Lib.Watch
+ 
 executables:  
   ssgbake:
     main: ssgBake.hs
@@ -104,30 +83,17 @@ executables:
   #   source-dirs: src
   #   dependencies:
   #       ssg
-# #  -         base ==4.*,
-# #  -         uniform-strings -any,
-# #  -         uniform-convenience -any,
-# #  -         uniform-cmdLineArgs,
-# #  -         uniform-fileio -any,
-# #  -         uniform-error
-# #  -         , uniform-shake
-# #  -         ,uniform-webserver  
-# #  -         -- , uniform-ftp  
-# #  -         , uniform-time
-# #  -         -- , uniform-watch 
-# #  -         , SSG -any
-# #  -         , shake
-# #  -         -- , pipes
-
 tests:
   test:
-#     # cpp-options: -DTEST
     main: Testing.hs
     source-dirs: tests
 #       # - src
-#     # dependencies:
-# #  -     HTF -any,
-# #  -         QuickCheck -any,
+    other-modules: 
+      - Lib.CheckInputs_test
+    dependencies:
+      - HTF 
+      - QuickCheck 
+      - ssg
 # #  -         base ,
 # #  -         uniform-algebras, 
 # #  -         uniform-strings -any,

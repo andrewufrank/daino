@@ -6,8 +6,5 @@ cradle:
     - path: "./src/ssgBake.hs"
       component: "ssg:exe:ssgbake"
 
-    - path: "./src/Paths_ssg.hs"
-      component: "ssg:exe:ssgbake"
-
     - path: "./tests"
       component: "ssg:test:test"

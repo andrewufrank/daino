@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 93047252ce0e865afe0f298bf8e233780848ac2280281ccd581779f355977d2f
+-- hash: 853810b1721b50d1279df5fb462fefe87fa22cafef70988c73503c9a2be439e7
 
 name:           ssg
 version:        0.0.4.1
@@ -27,9 +27,9 @@ source-repository head
 
 library
   exposed-modules:
-      Lib.CmdLineArgs Lib.StartSSGprocess Lib.Foundation Lib.Bake Lib.ConvertFiles Lib.Pandoc Lib.ReadSettingFile Lib.Shake2 Lib.Watch
+      Lib.CmdLineArgs Lib.StartSSGprocess Lib.Shake2 Lib.ReadSettingFile Lib.Foundation Lib.ConvertFiles Lib.Bake Lib.CheckInput Lib.Pandoc
   other-modules:
-      Lib.CheckInput
+      Lib.Watch
   hs-source-dirs:
       ./.
   ghc-options: -Wall -fno-warn-unused-binds -fno-warn-unused-imports -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-dodgy-imports -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-duplicate-exports -fno-warn-missing-methods
@@ -89,24 +89,14 @@ test-suite test
   type: exitcode-stdio-1.0
   main-is: Testing.hs
   other-modules:
-      Lib.Bake_test
       Lib.CheckInputs_test
-      Lib.CheckProcess_test
-      Lib.CmdLIneArgs_test
-      Lib.Foundation_test
-      Lib.Indexing_test
-      Lib.IndexMake_test
-      Lib.Pandoc_test
-      Lib.ReadSettingFile_test
-      Lib.Shake2_test
-      Lib.Templating_test
-      ShakeStartTests
-      Paths_ssg
   hs-source-dirs:
       tests
   ghc-options: -Wall -fno-warn-unused-binds -fno-warn-unused-imports -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-dodgy-imports -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-duplicate-exports -fno-warn-missing-methods
   build-depends:
-      aeson
+      HTF
+    , QuickCheck
+    , aeson
     , base
     , containers
     , optparse-applicative
@@ -114,6 +104,7 @@ test-suite test
     , path-io
     , pipes
     , shake
+    , ssg
     , uniform-algebras
     , uniform-convenience
     , uniform-error
