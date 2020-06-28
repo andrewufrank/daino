@@ -105,10 +105,13 @@ bakeOneFile2docrep debug flags inputFn layout resfn2 = do
 -- | read a md file into a DocRep
 -- all values from meta are moved to yam (meta is zero to avoid problems)
     docrep1   <- readMarkdown2docrep md1
+
+    yam1 <- checkDocRep md1 docrep1 
+
     -- TODO needs refs 
     -- let needs1  = docRepNeeds docrep1  :: [FilePath]
     -- need  needs1  -- TDO this is in the wrong monad
-    write8 resfn2 docRepFileType docrep1   -- content is html style
+    write8 resfn2 docRepFileType (docrep1{yam= yam1})   -- content is html style
 
     when debug $ putIOwords
         ["\n-----------------", "bakeOneFile2docrep done fn", showT resfn2

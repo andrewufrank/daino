@@ -1,7 +1,11 @@
 ------------------------------------------------------------------------------
 --
 -- Module      :  check all inputs and produce a record summary
---
+-- puts the content of doc yaml header in to DocYaml
+-- could the text, the pandoc etc. all go there? 
+-- fills the DocYaml with defaults and the filename 
+
+-- if more data are needed to describe an entry then add it here!
 
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
@@ -54,7 +58,7 @@ data DocYaml = DocYaml {docFn :: FilePath
                         ,  docAbstract :: Text 
                         , docDate :: Maybe Text 
                         -- ^ this is maybe a string, should be utctime 
-                        , docKeywords :: [Text]
+                        , docKeywords :: Text  -- should be [Text]
             } deriving (Show, Read, Ord, Eq, Generic)
 
 instance Zeros DocYaml where 
@@ -71,13 +75,14 @@ instance FromJSON DocYaml where
   -- at the moment default language is DLenglish 
       do 
         docTitle <- o .:  "title"
-        docAbstract  <- o .: "abstrac"
+        docAbstract  <- o .: "abstract"
         docLang <- o .:? "lang" .!= DLenglish  -- default 
         docKeywords <- o .: "keywords"
         docDate <- o .:? "date"  
+        docFn <- o .:? "fn" .!= ""  -- as a default, is overwritten but avoids error msg
         return DocYaml{..}
 
-checkDocRep :: Path Abs File ->  DocRep -> ErrIO Text
+checkDocRep :: Path Abs File ->  DocRep -> ErrIO DocYaml
 -- check the DocRep 
 -- first for completeness of metadata in yaml 
 -- fails if required labels are not present
@@ -97,7 +102,7 @@ checkDocRep fn (DocRep y1 p1) = do
             --         Success a -> return a 
             let dy = resdy2   
             putIOwords ["checkDocRep dy", showT dy]
-            return (showT dy) 
+            return dy
 
 -- type TripleDoc = (Pandoc, MetaRec, Maybe Text)
 -- -- ^ the pandoc content, the metarec (from yaml) and the report from conversion)

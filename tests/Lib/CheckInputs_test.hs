@@ -39,9 +39,13 @@ test_allLabels = do
             dr1 <- read8  fn1 docRepFileType
             putIOwords ["test_allLabels", showT . yam $ dr1]
             miss1x <- checkDocRep fn1 dr1 
-            putIOwords ["\t missing", showT miss1x]
+            putIOwords ["\t result yam", showT  miss1x]
             return miss1x 
-    assertEqual (Right "()" ) res 
+    assertEqual (Right exp1)  res 
+
+exp1 :: DocYaml 
+exp1 = DocYaml {docFn = "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep", docLang = DLenglish, docTitle = "Mein erster Blog", docAbstract = "Ein Blog ohne Sinn auf Deutsch", docDate = Just "2020-06-18", docKeywords = "Blog"}
+   
 
 -- psIn = ["true", "publish", "draft", "old", "", "xx", "Publish", "Draft", "OLD"]
 -- psRes =  [ PSpublish,  PSpublish,  PSdraft,  PSold,
