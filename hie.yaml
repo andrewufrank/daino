@@ -1,6 +1,6 @@
 cradle:
   stack:
-    - path: "././."
+    - path: "./src"
       component: "ssg:lib"
 
     - path: "./src/ssgBake.hs"

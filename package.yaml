@@ -56,7 +56,7 @@ dependencies:  # are global
   # -- - pandoc-types
 
 library:
-  source-dirs: .
+  source-dirs: src
   exposed-modules: 
         Lib.CmdLineArgs
         Lib.StartSSGprocess

@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 853810b1721b50d1279df5fb462fefe87fa22cafef70988c73503c9a2be439e7
+-- hash: 7c87f72211ea6897f298ee9322bfc1ef93e5b73c59fe8961cc763c544900d56d
 
 name:           ssg
 version:        0.0.4.1
@@ -31,7 +31,7 @@ library
   other-modules:
       Lib.Watch
   hs-source-dirs:
-      ./.
+      src
   ghc-options: -Wall -fno-warn-unused-binds -fno-warn-unused-imports -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-dodgy-imports -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-duplicate-exports -fno-warn-missing-methods
   build-depends:
       aeson
@@ -58,6 +58,17 @@ library
 executable ssgbake
   main-is: ssgBake.hs
   other-modules:
+      Lib.Bake
+      Lib.CheckInput
+      Lib.CmdLineArgs
+      Lib.ConvertFiles
+      Lib.Foundation
+      Lib.Pandoc
+      Lib.ReadSettingFile
+      Lib.Shake2
+      Lib.StartSSGprocess
+      Lib.Templating
+      Lib.Watch
       Paths_ssg
   hs-source-dirs:
       src
