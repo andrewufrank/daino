@@ -38,33 +38,25 @@ import           Lib.Foundation                 ( SiteLayout )
 -- import Lib.IndexMake (MenuEntry, IndexEntry
 --                 , convert2index)
 
-data IndexEntry = IndexEntry {ixFn :: Path Abs File   -- ^ the abs file path 
-                    , ixLink :: FilePath -- ^ the link for this page (relative)}
-                    , ixTitle :: Text
-                    , ixAbstract :: Text
-                    , ixAuthor :: Text
-                    , ixDate :: Text
-                    , ixPublish :: Bool
-                    , ixIsIndexPage :: Bool
-                    , ixDirEntries :: [IndexEntry]  -- def []
-                    , ixFileEntries :: [IndexEntry] -- def []
-                    } deriving (Show, Read, Eq, Ord, Generic)
-
-instance ToJSON IndexEntry 
-instance FromJSON IndexEntry
-
 addIndex2yam :: Bool -> DocRep -> ErrIO DocRep
 -- ^ the top call to form the index data into the DocYaml
 --later only the format for output must be fixed 
-addIndex2yam debug  dr@(DocRep yam1 _) = do 
+addIndex2yam _  dr@(DocRep yam1 _) = do 
+    putIOwords ["addIndex2yam", "start"]
     x1 :: IndexEntry <- fromJSONm yam1
-    if (not.ixIsIndexPage $ x1) 
+    putIOwords ["addIndex2yam", "x1", showT x1]
+    if (not.indexPage $ x1) 
         then return dr
         else do 
-            (dirs, files) <- getDirContent2dirs_files (ixFn $ x1)
-            let x2=x1{ixDirEntries = dirs, ixFileEntries = files}
+            putIOwords ["addIndex2yam", "is indexpage"]
+            (dirs, files) <- getDirContent2dirs_files (fn $ x1)
+            putIOwords ["addIndex2yam", "\n dirs", showT dirs, "\n files" , showT files]
+            let x2=x1{dirEntries = dirs, fileEntries = files}
+            putIOwords ["addIndex2yam", "x2", showT x2]
             let x2j = toJSON x2
+            putIOwords ["addIndex2yam", "x2j", showT x2j]
             let yam2 = mergeLeftPref [x2j, yam1]
+            putIOwords ["addIndex2yam", "yam2", showT yam2]
             return dr{yam=yam2}
 
  

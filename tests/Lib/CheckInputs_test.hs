@@ -45,8 +45,7 @@ test_allLabels = do
 
 
 exp1 :: DocYaml 
-exp1 = DocYaml {docFn = "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep", docLang = DLenglish, docTitle = "Mein erster Blog", docAbstract = "Ein Blog ohne Sinn auf Deutsch", docDate = Just "2020-06-18", docKeywords = "Blog",
-docBibliography = Nothing}
+exp1 = DocYaml {docFn = "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep", docLink = "", docLang = DLenglish, docTitle = "Mein erster Blog", docAbstract = "Ein Blog ohne Sinn auf Deutsch", docAuthor = "", docDate = Just "2020-06-18", docKeywords = "Blog", docBibliography = Nothing, docStyle = Nothing, docPublish = Nothing, docIsIndexPage = False, docDirEntries = [], docFileEntries = []}
    
 
 -- psIn = ["true", "publish", "draft", "old", "", "xx", "Publish", "Draft", "OLD"]

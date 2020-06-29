@@ -60,20 +60,50 @@ checkDocRep fn (DocRep y1 p1) = do
     let y3 = mergeLeftPref [(toJSON y2), y1]
     return (DocRep y3 p1)
 
+data IndexEntry = IndexEntry  
+                    { fn :: Path Abs File   -- ^ the abs file path 
+                    , link :: FilePath -- ^ the link for this page (relative)}
+                    , title :: Text
+                    , abstract :: Text
+                    , author :: Text
+                    , date :: Text
+                    , publish :: Bool
+                    , indexPage :: Bool
+                    , dirEntries :: [IndexEntry]  -- def []
+                    , fileEntries :: [IndexEntry] -- def []
+                    } deriving (Show, Read, Eq, Ord, Generic)
+
+instance ToJSON IndexEntry 
+instance FromJSON IndexEntry
+
+
+
 data DocYaml = DocYaml {docFn :: FilePath 
+                        , docLink :: FilePath 
                         , docLang :: DocLanguage 
                         -- the fields of miniblog
                         , docTitle :: Text
-                        ,  docAbstract :: Text 
+                        , docAbstract :: Text 
+
+                        , docAuthor :: Text 
                         , docDate :: Maybe Text 
                         -- ^ this is maybe a string, should be utctime 
                         , docKeywords :: Text  -- should be [Text]
-                        , docBibliography :: Maybe Text 
+                        , docBibliography :: Maybe Text
+                        , docStyle :: Maybe Text
+
+                        , docPublish :: Maybe Text 
+                        , docIsIndexPage :: Bool 
+                        , docDirEntries :: [IndexEntry]
+                        , docFileEntries :: [IndexEntry]
+ 
 
             } deriving (Show, Read, Ord, Eq, Generic)
 
 instance Zeros DocYaml where 
-        zero = DocYaml zero DLenglish zero zero zero zero zero
+        zero = DocYaml zero zero DLenglish zero zero 
+            zero zero zero zero zero 
+            zero zero [] []
 instance Default DocYaml where 
         def = zero {docLang = DLenglish}
         
@@ -89,11 +119,19 @@ instance FromJSON DocYaml where
       do 
         docTitle <- o .:  "title"
         docAbstract  <- o .: "abstract"
+        docAuthor <- o .:? "author" .!= ""
         docLang <- o .:? "lang" .!= DLenglish  -- default 
         docKeywords <- o .: "keywords"
         docDate <- o .:? "date"  
         docFn <- o .:? "fn" .!= ""  -- as a default, is overwritten but avoids error msg
-        docBibliography <- o  .:? "bibliography" -- nothing  
+        docLink <- o .:? "link" .!= "" -- ^ the relative link for html, derive from fn
+        docBibliography <- o  .:? "bibliography" -- the bib file if needed  
+        docStyle <- o .:? "style" -- the csl file 
+
+        docPublish <- o  .:? "publish" -- .!= ""
+        docIsIndexPage <- o  .:? "indexPage" .!= False
+        docDirEntries <- o  .:? "dirEntries" .!= []
+        docFileEntries <- o  .:? "fileEntries" .!= []
         return DocYaml{..}
 
 checkDocRep1 :: Path Abs File ->  Value -> ErrIO DocYaml
