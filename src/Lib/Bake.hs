@@ -39,6 +39,7 @@ import           Uniform.FileIO                 ( read8
                                                 )
  
 import           Uniform.Shake                --  ( replaceExtension' )
+import Uniform.DocRep 
 import           Uniform.Pandoc
             --  ( writeTexSnip2
             --                                     , TexSnip
@@ -49,7 +50,7 @@ import           Uniform.Pandoc
 --                                                 , docvalExt
 --                                                 )
 -- todo - check replaceextension in fileio 
-import           Lib.Pandoc                   
+-- import           Lib.Pandoc                   
 --   ( markdownToPandocBiblio
 --                                                 , pandocToContentHtml
 --                                                 , htmloutFileType
@@ -59,11 +60,11 @@ import           Lib.Pandoc
 -- import           Lib.Templating                 ( putValinMaster )
 import           Uniform.ProcessPDF
     -- (writePDF2text, extPDF, pdfFileType, texFileType,  extTex, Latex(..),tex2latex)
-import           Uniform.Pandoc                 ( Pandoc
-                                                , write8
-                                                )
+-- import           Uniform.Pandoc                 ( Pandoc
+--                                                 , write8
+--                                                 )
 import           Lib.CmdLineArgs                ( PubFlags(..) )
--- import           Lib.CheckInput                 ( getTripleDoc )
+import           Lib.CheckInput --                 ( getTripleDoc )
 import           Lib.Foundation                 ( SiteLayout(..)
                                                 , templatesDir
                                                 )
@@ -104,14 +105,16 @@ bakeOneFile2docrep debug flags inputFn layout resfn2 = do
     -- readMarkdown2docrep :: MarkdownText -> ErrIO DocRep
 -- | read a md file into a DocRep
 -- all values from meta are moved to yam (meta is zero to avoid problems)
-    docrep1   <- readMarkdown2docrep md1
+    dr1   <- readMarkdown2docrep md1
 
-    yam1 <- checkDocRep md1 docrep1 
-
+    dr2 <- checkDocRep inputFn dr1 
+    -- does this use the listed refs? 
+    dr3      <-   docRepAddRefs dr2
     -- TODO needs refs 
     -- let needs1  = docRepNeeds docrep1  :: [FilePath]
     -- need  needs1  -- TDO this is in the wrong monad
-    write8 resfn2 docRepFileType (docrep1{yam= yam1})   -- content is html style
+
+    write8 resfn2 docRepFileType dr3 
 
     when debug $ putIOwords
         ["\n-----------------", "bakeOneFile2docrep done fn", showT resfn2

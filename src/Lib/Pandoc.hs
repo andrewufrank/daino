@@ -78,20 +78,26 @@ docRepNeeds (DocRep y1 p1) =   map t2s . catMaybes $ [imgs, bibs]
         -- TODO should list be images? 
 
 
+-- moved to uniform-pandoc 
 -- -- | Convert markdown text into a 'Value';
 -- -- The 'Value'  has a "content" key containing rendered HTML
 -- -- Metadata is assigned on the respective keys in the 'Value'
 -- -- includes reference replacement (pandoc-citeproc)
 -- -- runs in the pandoc monad!
--- markdownToPandocBiblio
---     :: Bool -> PubFlags -> Path Abs Dir -> TripleDoc -> ErrIO Pandoc
 
--- -- process the markdown (including if necessary the BibTex treatment)
--- -- the bibliography must be in the metadata
--- -- the settings are in the markdownText (at end - to let page specific have precedence)
--- markdownToPandocBiblio debug flags doughP (pandoc, metaRec, _) = do
+-- markdownToPandocBiblio
+--     :: Bool -> PubFlags -> Path Abs Dir -> DocRep -> ErrIO DocRep
+
+-- process the markdown (including if necessary the BibTex treatment)
+-- the bibliography must be in the metadata
+-- the settings are in the markdownText (at end - to let page specific have precedence)
+
+
+-- -- the filename is in the record, if needed 
+--     -- the current dir is necessary to be set - same as tex2pdf issues!
+-- markdownToPandocBiblio debug flags doughP (DocRep yam pan) = do
 --     when debug $ putIOwords ["markdownToPandocBiblio", showT metaRec]
---     pandoc2 <- case (bibliography metaRec) of
+--     pandoc2 <- case (docBibliography yam) of
 --         Nothing    -> return pandoc
 --         Just bibfp -> do
 --             when debug $ putIOwords
@@ -99,7 +105,7 @@ docRepNeeds (DocRep y1 p1) =   map t2s . catMaybes $ [imgs, bibs]
 --                 , "start pandocProcessCites"
 --                 , showT doughP
 --                 , showT bibfp
---                 , showT (bibliographyGroup metaRec)
+--                 , showT (docBibliography yam)
 --                 ]
 --             pandocProcessCites doughP  -- required to set the current dir 
 --                                (makeAbsFile bibfp) -- (doughP </> (makeRelFile . t2s $ bibfp))

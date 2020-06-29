@@ -32,6 +32,21 @@ import Uniform.Pandoc -- (DocValue(..), unDocValue, docValueFileType)
 blog1fn = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/dough/Blog/blog1.md"  -- braucht extension
 blog1res = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/checks/Blog/blog1"  -- keine extension
 
+drfnRef = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference.docrep"
+-- drfnRefRes = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference.docrep"
+
+test_addRefs   = testVar0FileIO "ssg" (drfnRef) "AddRefs"
+         op2test
+    where 
+        op2test :: (Path Abs File ) -> ErrIO DocRep
+        op2test (fn ) = do 
+            dr1 <- read8 fn docRepFileType  
+            dr2 <- docRepAddRefs dr1 
+            -- drRes <- readMarkdown2docrep resfn
+            return dr2
+
+instance ShowTestHarness DocRep 
+
 -- test_bake2docval = testVar0FileIO "ssg" (blog1fn,blog1res) "bakeOneFile2docval" op2html
 --     where 
 --         op2html :: (Path Abs File, Path Abs File) -> ErrIO ()
