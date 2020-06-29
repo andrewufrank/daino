@@ -19,6 +19,7 @@
 {-# LANGUAGE RecordWildCards     #-}
 {-# LANGUAGE DeriveGeneric     #-}
 {-# OPTIONS -fno-warn-unused-matches #-}
+{-# OPTIONS -fno-warn-incomplete-patterns #-}
 
 module Lib.CheckInput where
 

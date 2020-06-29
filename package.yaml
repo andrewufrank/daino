@@ -68,7 +68,7 @@ library:
         Lib.Bake 
         Lib.CheckInput
         Lib.Pandoc
-        # Lib.Indexing
+        Lib.Indexing
         # Lib.IndexMake
   other-modules:  
         Lib.Watch

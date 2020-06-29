@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 7dce1150b560484f189592ef69311561d232adb395818682474dfb81b2e436d0
+-- hash: c2a135fb4299009105d88d848291063b6762fa70471db4843e21eab81c9be619
 
 name:           ssg
 version:        0.0.4.1
@@ -27,7 +27,7 @@ source-repository head
 
 library
   exposed-modules:
-      Lib.CmdLineArgs Lib.StartSSGprocess Lib.Shake2 Lib.ReadSettingFile Lib.Foundation Lib.ConvertFiles Lib.Bake Lib.CheckInput Lib.Pandoc
+      Lib.CmdLineArgs Lib.StartSSGprocess Lib.Shake2 Lib.ReadSettingFile Lib.Foundation Lib.ConvertFiles Lib.Bake Lib.CheckInput Lib.Pandoc Lib.Indexing
   other-modules:
       Lib.Watch
   hs-source-dirs:
@@ -64,6 +64,7 @@ executable ssgbake
       Lib.CmdLineArgs
       Lib.ConvertFiles
       Lib.Foundation
+      Lib.Indexing
       Lib.Pandoc
       Lib.ReadSettingFile
       Lib.Shake2
