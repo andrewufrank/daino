@@ -18,7 +18,7 @@
             #-}
             
 module Lib.Indexing (module Lib.Indexing, getAtKey
-            , module Lib.IndexMake 
+            -- , module Lib.IndexMake 
             ) where
 
 import           Uniform.FileIO -- (getDirectoryDirs', getDirContentFiles )
