@@ -80,6 +80,7 @@ instance Default DocYaml where
 instance ToJSON DocYaml 
 instance FromJSON DocYaml where
     -- generic works only when all fields are present
+    -- merge with metarec definition later in file 
 -- parseYam ::   Value -> Parser
     parseJSON (Object o) = -- withObject "person" $ \o -> 
   -- the yam part is an object  

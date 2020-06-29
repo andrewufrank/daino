@@ -4,5 +4,6 @@
     "spellright.documentTypes": [
         "markdown",
         "latex"
-    ]
+    ],
+    "editor.wrappingIndent": "deepIndent"
 }

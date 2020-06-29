@@ -68,6 +68,7 @@ import           Lib.CheckInput --                 ( getTripleDoc )
 import           Lib.Foundation                 ( SiteLayout(..)
                                                 , templatesDir
                                                 )
+import Lib.Indexing             
 import qualified Path.IO                       as Path
                                                 ( getTempDir )
 
@@ -113,9 +114,11 @@ bakeOneFile2docrep debug flags inputFn layout resfn2 = do
     -- TODO needs refs 
     -- let needs1  = docRepNeeds docrep1  :: [FilePath]
     -- need  needs1  -- TDO this is in the wrong monad
+    dr4 <- addIndex2yam debug dr3
 
-    write8 resfn2 docRepFileType dr3 
 
+    
+    write8 resfn2 docRepFileType dr4
     when debug $ putIOwords
         ["\n-----------------", "bakeOneFile2docrep done fn", showT resfn2
             -- , "\n needs returned", showT needs1
