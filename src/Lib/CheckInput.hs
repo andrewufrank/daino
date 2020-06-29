@@ -47,9 +47,17 @@ import qualified Data.Map as M
 
 data DocLanguage = DLgerman | DLenglish deriving (Show, Read, Ord, Eq, Generic)
 instance FromJSON DocLanguage
+instance ToJSON DocLanguage
     -- is this clever to have a new language datatype? 
 
- 
+checkDocRep :: Path Abs File ->  DocRep -> ErrIO DocRep 
+-- check the DocRep 
+-- first for completeness of metadata in yaml 
+-- fails if required labels are not present
+checkDocRep fn (DocRep y1 p1) = do 
+    y2 <- checkDocRep1 fn y1 
+    let y3 = mergeLeftPref [(toJSON y2), y1]
+    return (DocRep y3 p1)
 
 data DocYaml = DocYaml {docFn :: FilePath 
                         , docLang :: DocLanguage 
@@ -59,13 +67,16 @@ data DocYaml = DocYaml {docFn :: FilePath
                         , docDate :: Maybe Text 
                         -- ^ this is maybe a string, should be utctime 
                         , docKeywords :: Text  -- should be [Text]
+                        , docBibliography :: Maybe Text 
+
             } deriving (Show, Read, Ord, Eq, Generic)
 
 instance Zeros DocYaml where 
-        zero = DocYaml zero DLenglish zero zero zero zero 
+        zero = DocYaml zero DLenglish zero zero zero zero zero
 instance Default DocYaml where 
         def = zero {docLang = DLenglish}
-
+        
+instance ToJSON DocYaml 
 instance FromJSON DocYaml where
     -- generic works only when all fields are present
 -- parseYam ::   Value -> Parser
@@ -80,28 +91,29 @@ instance FromJSON DocYaml where
         docKeywords <- o .: "keywords"
         docDate <- o .:? "date"  
         docFn <- o .:? "fn" .!= ""  -- as a default, is overwritten but avoids error msg
+        docBibliography <- o  .:? "bibliography" -- nothing  
         return DocYaml{..}
 
-checkDocRep :: Path Abs File ->  DocRep -> ErrIO DocYaml
+checkDocRep1 :: Path Abs File ->  Value -> ErrIO DocYaml
 -- check the DocRep 
 -- first for completeness of metadata in yaml 
 -- fails if required labels are not present
-checkDocRep fn (DocRep y1 p1) = do 
-    putIOwords ["checkDocRep start"]
+checkDocRep1 fn y1 = do 
+    putIOwords ["checkDocRep1 start"]
     let resdy = parseEither  parseJSON  y1 :: Either String DocYaml
     case resdy of 
-        Left msg -> errorT ["checkDocRep not all required fields", s2t msg
+        Left msg -> errorT ["checkDocRep1 not all required fields", s2t msg
                 , "in file", showT fn]
         Right resdy1 -> do 
             -- heute <- getCurrentTimeUTC 
             let resdy2 = resdy1{docFn = toFilePath fn
                                     }
-            putIOwords ["checkDocRep 1 resdy2", showT resdy2]
+            putIOwords ["checkDocRep1 1 resdy2", showT resdy2]
             -- dy <- case resdy of 
             --         Error msg -> error msg 
             --         Success a -> return a 
             let dy = resdy2   
-            putIOwords ["checkDocRep dy", showT dy]
+            putIOwords ["checkDocRep1 dy", showT dy]
             return dy
 
 -- type TripleDoc = (Pandoc, MetaRec, Maybe Text)
