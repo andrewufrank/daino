@@ -59,7 +59,7 @@ blogDirPath = makeAbsDir "/home/frank/Workspace8/ssg/docs/site/dough/Blog"
 docrepfn =
     makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/Blog/index.docrep"   -- the index in the top directory of the blog 
 
-mdindexfn = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/dough/Blog/index.md"
+mdindexfn = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/Blog/index.md"
 
 test_addIndex = do
     res <- runErr $ do
