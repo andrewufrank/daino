@@ -28,7 +28,7 @@ import           Lib.Foundation                 ( progName
                                                 )
 import           Lib.Foundation_test            ( testLayout )
 import           Lib.Indexing -- (applyTemplate2, convGmaster)
-import           Lib.Templating
+-- import           Lib.Templating
 import           Test.Framework
 import           Uniform.Test.TestHarness
 import           Uniform.Time                   ( readDate3

@@ -43,7 +43,7 @@ addIndex2yam :: Bool -> DocRep -> ErrIO DocRep
 --later only the format for output must be fixed 
 addIndex2yam _  dr@(DocRep yam1 _) = do 
     putIOwords ["addIndex2yam", "start"]
-    x1 :: IndexEntry <- fromJSONm yam1
+    x1 :: IndexEntry <- fromJSONerrio yam1
     putIOwords ["addIndex2yam", "x1", showT x1]
     if (not.indexPage $ x1) 
         then return dr
@@ -84,7 +84,7 @@ getFile2index :: Path Abs File -> ErrIO IndexEntry
 -- produce separately to preserve the two groups 
 getFile2index fn = do 
     (DocRep y1 _) <- read8 fn docRepFileType 
-    ix1 <- fromJSONm y1 
+    ix1 <- fromJSONerrio y1 
     return ix1 
 
 -- -- | produces the index as text 
