@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: c2a135fb4299009105d88d848291063b6762fa70471db4843e21eab81c9be619
+-- hash: 6aa2ab8347d39d2262a13670a7fe046becc526a4104e30f16681f09d00cfd1af
 
 name:           ssg
 version:        0.0.4.1
@@ -116,6 +116,7 @@ test-suite test
     , data-default
     , optparse-applicative
     , optparse-generic
+    , pandoc-types
     , path-io
     , pipes
     , shake
@@ -131,4 +132,5 @@ test-suite test
     , uniform-time
     , uniform-watch
     , uniform-webserver
+    , unordered-containers
   default-language: Haskell2010

@@ -95,6 +95,8 @@ tests:
       - HTF 
       - QuickCheck 
       - ssg
+      - pandoc-types
+      - unordered-containers
 # #  -         base ,
 # #  -         uniform-algebras, 
 # #  -         uniform-strings -any,

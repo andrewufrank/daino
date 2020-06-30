@@ -42,7 +42,7 @@ addIndex2yam :: Bool -> DocRep -> ErrIO DocRep
 -- ^ the top call to form the index data into the DocYaml
 --later only the format for output must be fixed 
 addIndex2yam _  dr@(DocRep yam1 _) = do 
-    putIOwords ["addIndex2yam", "start"]
+    putIOwords ["addIndex2yam", "start", showT yam1]
     x1 :: IndexEntry <- fromJSONerrio yam1
     putIOwords ["addIndex2yam", "x1", showT x1]
     if (not.indexPage $ x1) 

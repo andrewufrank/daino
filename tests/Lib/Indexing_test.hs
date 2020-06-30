@@ -35,6 +35,7 @@ import           Uniform.Time                   ( readDate3
                                                 , UTCTime(..)
                                                 )
 import           Lib.CmdLineArgs                ( allFlags )
+-- import Lib.DocRep 
 import           Lib.CheckInput
                 -- (MetaRec(..), SortArgs(..)
                 --     , PublicationState(..), makeRelPath
@@ -42,6 +43,8 @@ import           Lib.CheckInput
 -- import          Lib.IndexMake (MenuEntry(..), IndexEntry(..))
 -- import          Lib.CheckInputs_test -- (metaRecIndex1, metaRecIndexSubSub)
 import           Uniform.DocRep
+import Uniform.Json (shownice)
+import Uniform.Markdown 
 
     -- TEST DIRS 
 test_dough2 = assertEqual dough2path dough2
@@ -56,18 +59,24 @@ blogDirPath = makeAbsDir "/home/frank/Workspace8/ssg/docs/site/dough/Blog"
 docrepfn =
     makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/Blog/index.docrep"   -- the index in the top directory of the blog 
 
+mdindexfn = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/dough/Blog/index.md"
 
 test_addIndex = do
     res <- runErr $ do
-        dr1 <- read8 docrepfn docRepFileType
-        -- add here checkinput
-        putIOwords ["test_addIndex",  showT $ dr1]
-        dr2 <- addIndex2yam True dr1
-        putIOwords ["test_addIndex end", take' 300 . showT $ dr2]
-        return dr2
+        -- corrections from readMarkdown activated
+        md1 <- read8 mdindexfn markdownFileType
+        dr1 <- readMarkdown2docrep md1 -- just reading, no ssg stuff
+        putIOwords ["test_addIndex dr1",  showT $ dr1, "\n"]
+        dr2 <- checkDocRep mdindexfn dr1 -- the ssg stuff
+        putIOwords ["test_addIndex dr2",  showT $ dr2, "\n"]
+        dr3 <- addIndex2yam True dr2
+        putIOwords ["test_addIndex end dr3", take' 300 . showT $ dr3]
+        return dr3
     assertEqual (Right res2) res
 
 res2 = zero
+-- res2 = DocRep {yam = Object (fromList [("fileEntries",Array []),("style",Null),("indexPage",Bool True),("link",String ""),("bibliography",Null),("lang",String "DLenglish"),("date",String "Jan. 4, 2019"),("indexSort",String "reverseDate"),("isIndexPage",Bool True),("keywords",String "test"),("author",String "AUF"),("dirEntries",Array []),("abstract",String "The directory for experiments."),("title",String "primary index for Blog"),("fn",String "/home/frank/Workspace8/ssg/docs/site/dough/Blog/index.md"),("pageTemplate",String "page3.yaml"),("publish",Null)]), pan = Pandoc (Meta {unMeta = fromList []}) [Para [Str "an",Space,Str "index",Space,Str "page",Space,Str "for",Space,Str "Blog"]]}
+
 
 -- test_linkIn = assertEqual "/Blog/postwk.md" $ makeRelPath dough2 linkIn
 -- linkIn = doughDir testLayout </> makeRelFile "Blog/postwk.md" :: Path Abs File

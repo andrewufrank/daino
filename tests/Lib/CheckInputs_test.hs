@@ -24,6 +24,10 @@ import Data.List ( (\\) )
 import Uniform.Strings
 import Uniform.Test.TestHarness
 import Uniform.DocRep 
+import Data.Map (fromList)
+import Text.Pandoc.Definition  hiding (Null)
+-- import Data.HashMap.Lazy (fromList)
+import Data.Aeson.Types 
 -- import           Uniform.Pandoc
 -- import Lib.Pandoc 
 
@@ -38,15 +42,29 @@ test_allLabels = do
             let fn1 = (makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep")
             dr1 <- read8  fn1 docRepFileType
             putIOwords ["test_allLabels", showT . yam $ dr1]
-            miss1x <- checkDocRep1 fn1 (yam dr1) 
-            putIOwords ["\t result yam", showT  miss1x]
-            return miss1x 
+            dr2 <- checkDocRep1 fn1 (yam dr1) 
+            putIOwords ["\t result yam", showT  dr2]
+            return dr2 
     assertEqual (Right exp1)  res 
 
 
 exp1 :: DocYaml 
-exp1 = DocYaml {docFn = "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep", docLink = "", docLang = DLenglish, docTitle = "Mein erster Blog", docAbstract = "Ein Blog ohne Sinn auf Deutsch", docAuthor = "", docDate = Just "2020-06-18", docKeywords = "Blog", docBibliography = Nothing, docStyle = Nothing, docPublish = Nothing, docIsIndexPage = False, docDirEntries = [], docFileEntries = []}
+exp1 = zero 
+-- exp1 = DocYaml {dyFn = "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep", dyLink = "", dyLang = DLenglish, dyTitle = "Mein erster Blog", dyAbstract = "Ein Blog ohne Sinn auf Deutsch", dyAuthor = "", dyDate = Just "2020-06-18", dyKeywords = "Blog", dyBibliography = Nothing, dyStyle = Nothing, dyPublish = Nothing, dyIsIndexPage = False, dyDirEntries = [], dyFileEntries = []}
    
+test_resultLabels = do 
+    res <- runErr $ do 
+            let fn1 = (makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep")
+            dr1 <- read8  fn1 docRepFileType
+            putIOwords ["test_allLabels", showT . yam $ dr1]
+            dr2 <- checkDocRep fn1 dr1 
+            putIOwords ["\t result dr2", showT  dr2]
+            return dr2 
+    assertEqual (Right exp2)  res 
+
+exp2 :: DocRep 
+exp2 = zero
+-- exp2 = DocRep {yam = Object (fromList [("fileEntries",Array []),("style",Null),("link",String ""),("bibliography",Null),("lang",String "DLenglish"),("date",String "2020-06-18"),("isIndexPage",Bool False),("keywords",String "Blog"),("author",String ""),("dirEntries",Array []),("abstract",String "Ein Blog ohne Sinn auf Deutsch"),("title",String "Mein erster Blog"),("fn",String "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep"),("publish",Null)]), pan = Pandoc (Meta {unMeta = fromList []}) [Header 1 ("ein-erster-abschnitt",[],[]) [Str "Ein",Space,Str "erster",Space,Str "Abschnitt"],Para [Str "Ein",Space,Str "Blog",Space,Str "ohne",Space,Str "Sinn",Space,Str "und",Space,Str "dem",Space,Str "einzigen",Space,Str "Zweck,",Space,Str "zu",Space,Str "testen,",Space,Str "wie",Space,Str "ein",Space,Str "Blog",Space,Str "in",SoftBreak,Str "ein",Space,Str "PDF",Space,Str "umgewandelt",Space,Str "wird."],Header 1 ("dies-ist-der-zweite-abschnitt",[],[]) [Str "Dies",Space,Str "ist",Space,Str "der",Space,Str "zweite",Space,Str "Abschnitt"],Para [Str "und",Space,Str "auch",Space,Str "ein",Space,Str "bischen",Space,Str "text."],Header 2 ("mit-einer-unterabschnitt",[],[]) [Str "mit",Space,Str "einer",Space,Str "unterabschnitt"],Para [Str "hier."],Para [Str "das",Space,Str "waers.",Space,Str "es",Space,Str "fehlt",Space,Str "Referenzen,",Space,Str "listen",Space,Str "und",Space,Str "aehnliches"]]}
 
 -- psIn = ["true", "publish", "draft", "old", "", "xx", "Publish", "Draft", "OLD"]
 -- psRes =  [ PSpublish,  PSpublish,  PSdraft,  PSold,

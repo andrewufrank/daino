@@ -23,136 +23,169 @@
 
 module Lib.CheckInput where
 
-import GHC.Generics
-import Data.Default
+import           GHC.Generics
+import           Data.Default
 import           Uniform.Strings      --   hiding ( (</>) )
 import           Uniform.FileIO
-import           Uniform.Time                   (   readDateMaybe
+import           Uniform.Time                   ( readDateMaybe
                                                 , year2000
                                                 , UTCTime(..)
                                                 )
 
-import           Uniform.Pandoc 
+import           Uniform.Pandoc
         -- (ToJSON, FromJSON, Pandoc, Value, getAtKey
         -- -- , readMd2meta
         -- )
 -- import Uniform.Markdown (readMd2meta)
-import Lib.Foundation (SiteLayout(..), templatesDir, defaultPageTypeName)
-import Uniform.DocRep
-import Uniform.Time 
+import           Lib.Foundation
+        -- (SiteLayout(..), templatesDir, defaultPageTypeName)
+import           Uniform.DocRep
+import           Uniform.Time
 
-import Data.List ( (\\) )
-import Data.Aeson 
-import Data.Aeson.Types
-import qualified Data.Map as M
+import           Data.List                      ( (\\) )
+import           Data.Aeson
+import           Data.Aeson.Types
+import qualified Data.Map                      as M
 
-data DocLanguage = DLgerman | DLenglish deriving (Show, Read, Ord, Eq, Generic)
+data DocLanguage = DLgerman | DLenglish
+        deriving (Show, Read, Ord, Eq, Generic)
 instance FromJSON DocLanguage
 instance ToJSON DocLanguage
     -- is this clever to have a new language datatype? 
 
-checkDocRep :: Path Abs File ->  DocRep -> ErrIO DocRep 
+checkDocRep :: Path Abs File -> DocRep -> ErrIO DocRep
 -- check the DocRep 
 -- first for completeness of metadata in yaml 
 -- fails if required labels are not present
-checkDocRep fn (DocRep y1 p1) = do 
-    y2 <- checkDocRep1 fn y1 
+checkDocRep fn (DocRep y1 p1) = do
+    y2 <- checkDocRep1 fn y1
     let y3 = mergeLeftPref [(toJSON y2), y1]
     return (DocRep y3 p1)
 
-data IndexEntry = IndexEntry  
-                    { fn :: Path Abs File   -- ^ the abs file path 
-                    , link :: FilePath -- ^ the link for this page (relative)}
+data IndexEntry = IndexEntry
+                    { fn :: Path Abs File
+                        -- ^ the abs file path 
+                    , link :: FilePath
+                        -- ^ the link for this page (relative)}
                     , title :: Text
                     , abstract :: Text
                     , author :: Text
                     , date :: Text
-                    , publish :: Bool
+                    , publish :: Maybe Text
                     , indexPage :: Bool
                     , dirEntries :: [IndexEntry]  -- def []
                     , fileEntries :: [IndexEntry] -- def []
                     } deriving (Show, Read, Eq, Ord, Generic)
 
-instance ToJSON IndexEntry 
+instance ToJSON IndexEntry
 instance FromJSON IndexEntry
 
 
 
-data DocYaml = DocYaml {docFn :: FilePath 
-                        , docLink :: FilePath 
-                        , docLang :: DocLanguage 
+data DocYaml = DocYaml {dyFn :: FilePath
+                        , dyLink :: FilePath
+                        , dyLang :: DocLanguage
                         -- the fields of miniblog
-                        , docTitle :: Text
-                        , docAbstract :: Text 
+                        , dyTitle :: Text
+                        , dyAbstract :: Text
 
-                        , docAuthor :: Text 
-                        , docDate :: Maybe Text 
-                        -- ^ this is maybe a string, should be utctime 
-                        , docKeywords :: Text  -- should be [Text]
-                        , docBibliography :: Maybe Text
-                        , docStyle :: Maybe Text
+                        , dyAuthor :: Text
+                        , dyDate :: Maybe Text
+                        -- ^ this is maybe a string, 
+                        --  should be utctime 
+                        , dyKeywords :: Text  -- should be [Text]
+                        , dyBibliography :: Maybe Text
+                        , dyStyle :: Maybe Text
 
-                        , docPublish :: Maybe Text 
-                        , docIsIndexPage :: Bool 
-                        , docDirEntries :: [IndexEntry]
-                        , docFileEntries :: [IndexEntry]
- 
+                        , dyPublish :: Maybe Text
+                        , dyIsIndexPage :: Bool
+                        , dyDirEntries :: [IndexEntry]
+                        , dyFileEntries :: [IndexEntry]
+
 
             } deriving (Show, Read, Ord, Eq, Generic)
 
-instance Zeros DocYaml where 
-        zero = DocYaml zero zero DLenglish zero zero 
-            zero zero zero zero zero 
-            zero zero [] []
-instance Default DocYaml where 
-        def = zero {docLang = DLenglish}
-        
-instance ToJSON DocYaml 
+instance Zeros DocYaml where
+    zero = DocYaml zero
+                   zero
+                   DLenglish
+                   zero
+                   zero
+                   zero
+                   zero
+                   zero
+                   zero
+                   zero
+                   zero
+                   zero
+                   []
+                   []
+instance Default DocYaml where
+    def = zero { dyLang = DLenglish }
+
+docyamlOptions =
+    defaultOptions 
+        {fieldLabelModifier = t2s . toLowerStart . s2t . drop 2 }
+instance ToJSON DocYaml where
+    toJSON = genericToJSON docyamlOptions
+
 instance FromJSON DocYaml where
+    parseJSON = genericParseJSON docyamlOptions
+
+
     -- generic works only when all fields are present
     -- merge with metarec definition later in file 
+    -- default values are set here and missing values to Nothing
 -- parseYam ::   Value -> Parser
-    parseJSON (Object o) = -- withObject "person" $ \o -> 
+parseJSONyaml (Object o) = -- withObject "person" $ \o -> 
   -- the yam part is an object  
   -- these are the required fields  
   -- at the moment default language is DLenglish 
-      do 
-        docTitle <- o .:  "title"
-        docAbstract  <- o .: "abstract"
-        docAuthor <- o .:? "author" .!= ""
-        docLang <- o .:? "lang" .!= DLenglish  -- default 
-        docKeywords <- o .: "keywords"
-        docDate <- o .:? "date"  
-        docFn <- o .:? "fn" .!= ""  -- as a default, is overwritten but avoids error msg
-        docLink <- o .:? "link" .!= "" -- ^ the relative link for html, derive from fn
-        docBibliography <- o  .:? "bibliography" -- the bib file if needed  
-        docStyle <- o .:? "style" -- the csl file 
+                           do
+    dyTitle        <- o .: "title"
+    dyAbstract     <- o .: "abstract"
+    dyAuthor       <- o .:? "author" .!= ""
+    dyLang         <- o .:? "lang" .!= DLenglish  -- default 
+    dyKeywords     <- o .: "keywords"
+    dyDate         <- o .:? "date"
+    dyFn           <- o .:? "fn" .!= ""
+            -- as a default, is overwritten but avoids error msg
+    dyLink         <- o .:? "link" .!= ""
+        -- ^ the relative link for html, derive from fn
+    dyBibliography <- o .:? "bibliography"
+        -- the bib file if needed  
+    dyStyle        <- o .:? "style" -- the csl file 
 
-        docPublish <- o  .:? "publish" -- .!= ""
-        docIsIndexPage <- o  .:? "indexPage" .!= False
-        docDirEntries <- o  .:? "dirEntries" .!= []
-        docFileEntries <- o  .:? "fileEntries" .!= []
-        return DocYaml{..}
+    dyPublish      <- o .:? "publish"  --  .!= Nothing 
+    dyIsIndexPage  <- o .:? "indexPage" .!= False
+    dyDirEntries   <- o .:? "dirEntries" .!= []
+    dyFileEntries  <- o .:? "fileEntries" .!= []
+    return DocYaml { .. }
 
-checkDocRep1 :: Path Abs File ->  Value -> ErrIO DocYaml
+checkDocRep1 :: Path Abs File -> Value -> ErrIO DocYaml
 -- check the DocRep 
 -- first for completeness of metadata in yaml 
 -- fails if required labels are not present
-checkDocRep1 fn y1 = do 
+checkDocRep1 fn y1 = do
     putIOwords ["checkDocRep1 start"]
-    let resdy = parseEither  parseJSON  y1 :: Either String DocYaml
-    case resdy of 
-        Left msg -> errorT ["checkDocRep1 not all required fields", s2t msg
-                , "in file", showT fn]
-        Right resdy1 -> do 
+    let resdy = parseEither parseJSONyaml y1 
+            :: Either String DocYaml
+    case resdy of
+        Left msg ->
+            errorT
+                [ "checkDocRep1 not all required fields"
+                , s2t msg
+                , "in file"
+                , showT fn
+                ]
+        Right resdy1 -> do
             -- heute <- getCurrentTimeUTC 
-            let resdy2 = resdy1{docFn = toFilePath fn
-                                    }
+            let resdy2 = resdy1 { dyFn = toFilePath fn }
             putIOwords ["checkDocRep1 1 resdy2", showT resdy2]
             -- dy <- case resdy of 
             --         Error msg -> error msg 
             --         Success a -> return a 
-            let dy = resdy2   
+            let dy = resdy2
             putIOwords ["checkDocRep1 dy", showT dy]
             return dy
 

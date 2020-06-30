@@ -103,10 +103,14 @@ bakeOneFile2docrep debug flags inputFn layout resfn2 = do
         ]
 
     md1      <- read8 inputFn markdownFileType
+
     -- readMarkdown2docrep :: MarkdownText -> ErrIO DocRep
 -- | read a md file into a DocRep
 -- all values from meta are moved to yam (meta is zero to avoid problems)
     dr1   <- readMarkdown2docrep md1
+
+-- check 
+-- the fields for the index are prepared 
 
     dr2 <- checkDocRep inputFn dr1 
     -- does this use the listed refs? 
