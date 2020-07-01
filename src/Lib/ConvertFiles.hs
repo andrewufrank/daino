@@ -89,8 +89,8 @@ convA2B debug sourceP targetP flags layout out sourceExtA bakeop = do
 
     let infile1 =
             replaceExtension' (s2t . unExtension $ sourceExtA) outP :: Path Abs File 
-    -- liftIO $ putIOwords ["\n  convA2B   2   ", showT infile1]
-    -- needP [infile1]
+    putIOwords ["\n  convA2B   2   ", showT infile1]
+    needP [infile1]
 
     let infile2 = sourceP </> stripProperPrefixP targetP infile1 :: Path Abs File
     need [toFilePath infile2]
@@ -151,7 +151,7 @@ convertAny debug sourceP targetP flags layout out anyop = do
 -- (exceptions md, which are a special case of needed)
 copyFileToBaked debug doughP bakedP out = do
     let outP = makeAbsFile out :: Path Abs File
-    when debug $ liftIO $ putIOwords ["\ncopyFileToBaked outP", showT outP]
+    when True $ liftIO $ putIOwords ["\ncopyFileToBaked outP", showT outP]
     let fromfile = doughP </> makeRelativeP bakedP outP
     when debug $ liftIO $ putIOwords
         ["\ncopyFileToBaked fromfile ", showT fromfile]

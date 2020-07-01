@@ -201,9 +201,9 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
     (toFilePath bakedP <> "**/*.docrep") %> \out -- insert pdfFIles1  -- here start with doughP
                                                  -> do
         bibs <- getNeeds debug doughP bakedP "bib" "bib"
-        -- needP bibs
+        needP bibs
         csls <- getNeeds debug doughP bakedP "csl" "csl"
-        -- needP csls 
+        needP csls 
         putIOwords ["rule **/*.docrep need", showT bibs]
         putIOwords ["rule **/*.docrep need", showT csls]
 
