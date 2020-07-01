@@ -63,6 +63,7 @@ checkDocRep :: Path Abs Dir -> Path Abs File -> DocRep -> ErrIO DocRep
 checkDocRep bakedP fn (DocRep y1 p1) = do
     y2 <- checkDocRep1 bakedP fn y1
     let y3 = mergeLeftPref [(toJSON y2), y1]
+    putIOwords ["checkDocRep", "y3", showT y3]
     return (DocRep y3 p1)
 
 data IndexEntry = IndexEntry
@@ -101,7 +102,7 @@ data DocYaml = DocYaml {dyFn :: FilePath
                         , dyStyle :: Maybe Text
 
                         , dyPublish :: Maybe Text
-                        , dyIsIndexPage :: Bool
+                        , dyIndexPage :: Bool
                         , dyDirEntries :: [IndexEntry]
                         , dyFileEntries :: [IndexEntry]
 
@@ -160,7 +161,7 @@ parseJSONyaml (Object o) = -- withObject "person" $ \o ->
     dyStyle        <- o .:? "style" -- the csl file 
 
     dyPublish      <- o .:? "publish"  --  .!= Nothing 
-    dyIsIndexPage  <- o .:? "indexPage" .!= False
+    dyIndexPage  <- o .:? "indexPage" .!= False
     dyDirEntries   <- o .:? "dirEntries" .!= []
     dyFileEntries  <- o .:? "fileEntries" .!= []
     return DocYaml { .. }

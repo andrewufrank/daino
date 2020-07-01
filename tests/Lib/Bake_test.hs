@@ -46,16 +46,19 @@ test_addRefs   = testVar0FileIO "ssg" (drfnRef) "AddRefs"
             return dr2
 
 instance ShowTestHarness DocRep 
+bakedP = bakedDir testLayout
 
--- test_bake2docval = testVar0FileIO "ssg" (blog1fn,blog1res) "bakeOneFile2docval" op2html
---     where 
---         op2html :: (Path Abs File, Path Abs File) -> ErrIO ()
---         op2html (fn,resfn) = bakeOneFile2docval False allFlags fn testLayout resfn
+test_bake2docrep = testVar0FileIO "ssg" (blog1fn,blog1res) "bakeOneFile2docrep" op2html
+    where 
+        op2html :: (Path Abs File, Path Abs File) -> ErrIO ()
+        op2html (fn,resfn) = bakeOneFile2docrep bakedP False allFlags fn testLayout resfn
+        -- ein argument mehr : 
+            --  bakedP um die relative path absolut zu machen
 
--- test_docVal2html = testVar0FileIO "ssg" (blog1res,blog1res) "bakeDocValue2html" op2html
---     where 
---         op2html :: (Path Abs File, Path Abs File) -> ErrIO () 
---         op2html (fn,resfn) = bakeDocValue2html True allFlags fn testLayout resfn
+test_docVal2html = testVar0FileIO "ssg" (blog1res,blog1res) "bakeDocValue2html" op2html
+    where 
+        op2html :: (Path Abs File, Path Abs File) -> ErrIO () 
+        op2html (fn,resfn) = bakeOneFile2html True allFlags fn testLayout resfn
 
 -- test_bake2html = testVar0FileIO "ssg" (blog1fn,blog1res) "bake2html" op2html
 --     where 
@@ -68,15 +71,19 @@ instance ShowTestHarness DocRep
 -- the arguments
 -- testVar0FileIO progName  a resfile op = do
 
-test_bake2texsnip = testVar0FileIO "ssg" (blog1fn,blog1res) "bake2texsnip" op2texsnip
+test_bake2texsnip = testVar0FileIO "ssg" (blog1res,blog1res) "bake2texsnip" op2texsnip
     where 
         op2texsnip :: (Path Abs File, Path Abs File) -> ErrIO () 
         op2texsnip (fn,resfn) = bakeOneFile2texsnip False allFlags fn testLayout resfn
 
--- test_bake2pdf = testVar0FileIO "ssg" (blog1res,blog1res) "bake2pdf" op2pdf
---     where 
---         op2pdf :: (Path Abs File, Path Abs File) -> ErrIO Text 
---         op2pdf (fn,resfn) = bakeOneTexSnip2pdf False allFlags fn testLayout resfn
+test_bake2tex = testVar0FileIO "ssg" (blog1res,blog1res) "bake2tex" op2pdf
+    where 
+        op2pdf :: (Path Abs File, Path Abs File) -> ErrIO () 
+        op2pdf (fn,resfn) = bakeOneFile2tex False allFlags fn testLayout resfn
+test_bake2pdf = testVar0FileIO "ssg" (blog1res,blog1res) "bake2pdf" op2pdf
+    where 
+        op2pdf :: (Path Abs File, Path Abs File) -> ErrIO () 
+        op2pdf (fn,resfn) = bakeOneFile2pdf False allFlags fn testLayout resfn
 
 
 instance ShowTestHarness () where

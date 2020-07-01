@@ -151,7 +151,10 @@ bakeOneFile2html debug flags inputFn layout resfn2 = do
         -- ^ transform a docrep to a html file 
         -- needs teh processing of the references with citeproc
 
-    h1  <- docRep2html dr1
+        -- do index 
+    dr4 <- addIndex2yam debug dr1
+
+    h1  <- docRep2html dr4
 
     write8 resfn2 htmloutFileType h1   -- content is html style
 
