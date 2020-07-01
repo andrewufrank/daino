@@ -12,7 +12,7 @@ nocite: |
   @navratil08
 
 bibliography: "resources/BibTexLatex.bib"
-style: "/home/frank/Workspace8/ssg/docs/site/dough/resources/chicago-fullnote-bibliography-bb.csl"
+style: "resources/chicago-fullnote-bibliography-bb.csl"
 references:
 - id: fenner2012a
   title: One-click science marketing

@@ -91,6 +91,7 @@ tests:
 #       # - src
     other-modules: 
       - Lib.CheckInputs_test
+      
     dependencies:
       - HTF 
       - QuickCheck 

@@ -1,0 +1,727 @@
+HTF ExampleTest.hs:
+
+[TEST] Lib.Shake2_test:shakeAll (tests/Lib/Shake2_test.hs:41)
+
+
+=====================================shakeAll start 
+ flags PubFlags {publishFlag = True, oldFlag = True, draftFlag = False, testFlag = False, watchFlag = False, serverFlag = False, uploadFlag = False, settingsFile = Path Abs File /home/frank/Workspace8/ssg/docs/site/dough/settings2} caused by TEST .
+shakeMD dirs
+ 	staticDirName Path Rel Dir static/ 	bakedP
+ Path Abs Dir /home/frank/Workspace8/ssg/docs/site/baked/
+# allMarkdownConversion
+===================
+getNeeds -  source files 1 for ext md files
+ [Path Rel File index.md,Path Rel File Blog/blog1.md,Path Rel File Blog/index.md,Path Rel File Blog/postwk.md,Path Rel File Blog/SubBlog/index.md,Path Rel File Blog/SubBlog/postwk9sub.md,Path Rel File Blog/SubBlog/testSort.md,Path Rel File Blog/SubBlog/SubSub/index.md,Path Rel File Blog/SubBlog/SubSub/subsub1.md,Path Rel File Blog/SubBlog/SubSub/subsubTest.md,Path Rel File PublicationList/index.md,Path Rel File PublicationList/postWithReference.md,Path Rel File PublicationList/publistAF.md]
+
+bakePDF -  target files 2 for ext pdf files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/index.pdf,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.pdf,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/index.pdf,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/postwk.pdf,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/index.pdf,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/postwk9sub.pdf,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/testSort.pdf,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/index.pdf,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsub1.pdf,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsubTest.pdf,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/PublicationList/index.pdf,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference.pdf,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/PublicationList/publistAF.pdf]
+===================
+getNeeds -  source files 1 for ext md files
+ [Path Rel File index.md,Path Rel File Blog/blog1.md,Path Rel File Blog/index.md,Path Rel File Blog/postwk.md,Path Rel File Blog/SubBlog/index.md,Path Rel File Blog/SubBlog/postwk9sub.md,Path Rel File Blog/SubBlog/testSort.md,Path Rel File Blog/SubBlog/SubSub/index.md,Path Rel File Blog/SubBlog/SubSub/subsub1.md,Path Rel File Blog/SubBlog/SubSub/subsubTest.md,Path Rel File PublicationList/index.md,Path Rel File PublicationList/postWithReference.md,Path Rel File PublicationList/publistAF.md]
+
+bakePDF -  target files 2 for ext html files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/index.html,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.html,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/index.html,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/postwk.html,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/index.html,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/postwk9sub.html,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/testSort.html,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/index.html,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsub1.html,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsubTest.html,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/PublicationList/index.html,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference.html,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/PublicationList/publistAF.html]
+# /home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference.pdf
+rule **/*.pdf "/home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference.pdf"
+===================
+getNeeds -  source files 1 for ext jpg files
+ [Path Rel File templates/img/cropped-DSC05127-1024x330.jpg,Path Rel File templates/img/symmetricGeras.jpg,Path Rel File templates/img/symmetricGeras2.jpg]
+
+bakePDF -  target files 2 for ext jpg files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/cropped-DSC05127-1024x330.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras2.jpg]
+# /home/frank/Workspace8/ssg/docs/site/baked/PublicationList/index.pdf
+rule **/*.pdf "/home/frank/Workspace8/ssg/docs/site/baked/PublicationList/index.pdf"
+===================
+getNeeds -  source files 1 for ext jpg files
+ [Path Rel File templates/img/cropped-DSC05127-1024x330.jpg,Path Rel File templates/img/symmetricGeras.jpg,Path Rel File templates/img/symmetricGeras2.jpg]
+
+bakePDF -  target files 2 for ext jpg files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/cropped-DSC05127-1024x330.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras2.jpg]
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsubTest.pdf
+rule **/*.pdf "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsubTest.pdf"
+===================
+getNeeds -  source files 1 for ext jpg files
+ [Path Rel File templates/img/cropped-DSC05127-1024x330.jpg,Path Rel File templates/img/symmetricGeras.jpg,Path Rel File templates/img/symmetricGeras2.jpg]
+
+bakePDF -  target files 2 for ext jpg files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/cropped-DSC05127-1024x330.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras2.jpg]
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsub1.pdf
+rule **/*.pdf "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsub1.pdf"
+===================
+getNeeds -  source files 1 for ext jpg files
+ [Path Rel File templates/img/cropped-DSC05127-1024x330.jpg,Path Rel File templates/img/symmetricGeras.jpg,Path Rel File templates/img/symmetricGeras2.jpg]
+
+bakePDF -  target files 2 for ext jpg files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/cropped-DSC05127-1024x330.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras2.jpg]
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/index.pdf
+rule **/*.pdf "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/index.pdf"
+===================
+getNeeds -  source files 1 for ext jpg files
+ [Path Rel File templates/img/cropped-DSC05127-1024x330.jpg,Path Rel File templates/img/symmetricGeras.jpg,Path Rel File templates/img/symmetricGeras2.jpg]
+
+bakePDF -  target files 2 for ext jpg files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/cropped-DSC05127-1024x330.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras2.jpg]
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/testSort.pdf
+rule **/*.pdf "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/testSort.pdf"
+===================
+getNeeds -  source files 1 for ext jpg files
+ [Path Rel File templates/img/cropped-DSC05127-1024x330.jpg,Path Rel File templates/img/symmetricGeras.jpg,Path Rel File templates/img/symmetricGeras2.jpg]
+
+bakePDF -  target files 2 for ext jpg files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/cropped-DSC05127-1024x330.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras2.jpg]
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/postwk9sub.pdf
+rule **/*.pdf "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/postwk9sub.pdf"
+===================
+getNeeds -  source files 1 for ext jpg files
+ [Path Rel File templates/img/cropped-DSC05127-1024x330.jpg,Path Rel File templates/img/symmetricGeras.jpg,Path Rel File templates/img/symmetricGeras2.jpg]
+
+bakePDF -  target files 2 for ext jpg files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/cropped-DSC05127-1024x330.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras2.jpg]
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/index.pdf
+rule **/*.pdf "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/index.pdf"
+===================
+getNeeds -  source files 1 for ext jpg files
+ [Path Rel File templates/img/cropped-DSC05127-1024x330.jpg,Path Rel File templates/img/symmetricGeras.jpg,Path Rel File templates/img/symmetricGeras2.jpg]
+
+bakePDF -  target files 2 for ext jpg files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/cropped-DSC05127-1024x330.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras2.jpg]
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/postwk.pdf
+rule **/*.pdf "/home/frank/Workspace8/ssg/docs/site/baked/Blog/postwk.pdf"
+===================
+getNeeds -  source files 1 for ext jpg files
+ [Path Rel File templates/img/cropped-DSC05127-1024x330.jpg,Path Rel File templates/img/symmetricGeras.jpg,Path Rel File templates/img/symmetricGeras2.jpg]
+
+bakePDF -  target files 2 for ext jpg files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/cropped-DSC05127-1024x330.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras2.jpg]
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/index.pdf
+rule **/*.pdf "/home/frank/Workspace8/ssg/docs/site/baked/Blog/index.pdf"
+===================
+getNeeds -  source files 1 for ext jpg files
+ [Path Rel File templates/img/cropped-DSC05127-1024x330.jpg,Path Rel File templates/img/symmetricGeras.jpg,Path Rel File templates/img/symmetricGeras2.jpg]
+
+bakePDF -  target files 2 for ext jpg files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/cropped-DSC05127-1024x330.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras2.jpg]
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.pdf
+rule **/*.pdf "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.pdf"
+===================
+getNeeds -  source files 1 for ext jpg files
+ [Path Rel File templates/img/cropped-DSC05127-1024x330.jpg,Path Rel File templates/img/symmetricGeras.jpg,Path Rel File templates/img/symmetricGeras2.jpg]
+
+bakePDF -  target files 2 for ext jpg files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/cropped-DSC05127-1024x330.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras2.jpg]
+# /home/frank/Workspace8/ssg/docs/site/baked/index.pdf
+rule **/*.pdf "/home/frank/Workspace8/ssg/docs/site/baked/index.pdf"
+===================
+getNeeds -  source files 1 for ext jpg files
+ [Path Rel File templates/img/cropped-DSC05127-1024x330.jpg,Path Rel File templates/img/symmetricGeras.jpg,Path Rel File templates/img/symmetricGeras2.jpg]
+
+bakePDF -  target files 2 for ext jpg files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/cropped-DSC05127-1024x330.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras2.jpg]
+===================
+getNeeds -  source files 1 for ext JPG files
+ [Path Rel File Blog/SubBlog/DSC08138.JPG,Path Rel File Blog/SubBlog/resources/DSC08138.JPG,Path Rel File resources/img/120-2026_IMG.JPG,Path Rel File resources/img/121-2117_IMG.JPG,Path Rel File resources/img/121-2118_IMG.JPG,Path Rel File resources/img/121-2127_IMG.JPG,Path Rel File resources/img/121-2128_IMG.JPG,Path Rel File resources/img/134-3437_IMG.JPG,Path Rel File resources/img/134-3448_IMG.JPG,Path Rel File templates/img/DSC05127.JPG]
+
+bakePDF -  target files 2 for ext JPG files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/120-2026_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/DSC05127.JPG]
+===================
+getNeeds -  source files 1 for ext JPG files
+ [Path Rel File Blog/SubBlog/DSC08138.JPG,Path Rel File Blog/SubBlog/resources/DSC08138.JPG,Path Rel File resources/img/120-2026_IMG.JPG,Path Rel File resources/img/121-2117_IMG.JPG,Path Rel File resources/img/121-2118_IMG.JPG,Path Rel File resources/img/121-2127_IMG.JPG,Path Rel File resources/img/121-2128_IMG.JPG,Path Rel File resources/img/134-3437_IMG.JPG,Path Rel File resources/img/134-3448_IMG.JPG,Path Rel File templates/img/DSC05127.JPG]
+
+bakePDF -  target files 2 for ext JPG files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/120-2026_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/DSC05127.JPG]
+===================
+getNeeds -  source files 1 for ext JPG files
+ [Path Rel File Blog/SubBlog/DSC08138.JPG,Path Rel File Blog/SubBlog/resources/DSC08138.JPG,Path Rel File resources/img/120-2026_IMG.JPG,Path Rel File resources/img/121-2117_IMG.JPG,Path Rel File resources/img/121-2118_IMG.JPG,Path Rel File resources/img/121-2127_IMG.JPG,Path Rel File resources/img/121-2128_IMG.JPG,Path Rel File resources/img/134-3437_IMG.JPG,Path Rel File resources/img/134-3448_IMG.JPG,Path Rel File templates/img/DSC05127.JPG]
+
+bakePDF -  target files 2 for ext JPG files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/120-2026_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/DSC05127.JPG]
+===================
+getNeeds -  source files 1 for ext JPG files
+ [Path Rel File Blog/SubBlog/DSC08138.JPG,Path Rel File Blog/SubBlog/resources/DSC08138.JPG,Path Rel File resources/img/120-2026_IMG.JPG,Path Rel File resources/img/121-2117_IMG.JPG,Path Rel File resources/img/121-2118_IMG.JPG,Path Rel File resources/img/121-2127_IMG.JPG,Path Rel File resources/img/121-2128_IMG.JPG,Path Rel File resources/img/134-3437_IMG.JPG,Path Rel File resources/img/134-3448_IMG.JPG,Path Rel File templates/img/DSC05127.JPG]
+
+bakePDF -  target files 2 for ext JPG files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/120-2026_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/DSC05127.JPG]
+===================
+getNeeds -  source files 1 for ext JPG files
+ [Path Rel File Blog/SubBlog/DSC08138.JPG,Path Rel File Blog/SubBlog/resources/DSC08138.JPG,Path Rel File resources/img/120-2026_IMG.JPG,Path Rel File resources/img/121-2117_IMG.JPG,Path Rel File resources/img/121-2118_IMG.JPG,Path Rel File resources/img/121-2127_IMG.JPG,Path Rel File resources/img/121-2128_IMG.JPG,Path Rel File resources/img/134-3437_IMG.JPG,Path Rel File resources/img/134-3448_IMG.JPG,Path Rel File templates/img/DSC05127.JPG]
+
+bakePDF -  target files 2 for ext JPG files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/120-2026_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/DSC05127.JPG]
+===================
+getNeeds -  source files 1 for ext JPG files
+ [Path Rel File Blog/SubBlog/DSC08138.JPG,Path Rel File Blog/SubBlog/resources/DSC08138.JPG,Path Rel File resources/img/120-2026_IMG.JPG,Path Rel File resources/img/121-2117_IMG.JPG,Path Rel File resources/img/121-2118_IMG.JPG,Path Rel File resources/img/121-2127_IMG.JPG,Path Rel File resources/img/121-2128_IMG.JPG,Path Rel File resources/img/134-3437_IMG.JPG,Path Rel File resources/img/134-3448_IMG.JPG,Path Rel File templates/img/DSC05127.JPG]
+
+bakePDF -  target files 2 for ext JPG files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/120-2026_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/DSC05127.JPG]
+===================
+getNeeds -  source files 1 for ext JPG files
+ [Path Rel File Blog/SubBlog/DSC08138.JPG,Path Rel File Blog/SubBlog/resources/DSC08138.JPG,Path Rel File resources/img/120-2026_IMG.JPG,Path Rel File resources/img/121-2117_IMG.JPG,Path Rel File resources/img/121-2118_IMG.JPG,Path Rel File resources/img/121-2127_IMG.JPG,Path Rel File resources/img/121-2128_IMG.JPG,Path Rel File resources/img/134-3437_IMG.JPG,Path Rel File resources/img/134-3448_IMG.JPG,Path Rel File templates/img/DSC05127.JPG]
+
+bakePDF -  target files 2 for ext JPG files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/120-2026_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/DSC05127.JPG]
+===================
+getNeeds -  source files 1 for ext JPG files
+ [Path Rel File Blog/SubBlog/DSC08138.JPG,Path Rel File Blog/SubBlog/resources/DSC08138.JPG,Path Rel File resources/img/120-2026_IMG.JPG,Path Rel File resources/img/121-2117_IMG.JPG,Path Rel File resources/img/121-2118_IMG.JPG,Path Rel File resources/img/121-2127_IMG.JPG,Path Rel File resources/img/121-2128_IMG.JPG,Path Rel File resources/img/134-3437_IMG.JPG,Path Rel File resources/img/134-3448_IMG.JPG,Path Rel File templates/img/DSC05127.JPG]
+
+bakePDF -  target files 2 for ext JPG files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/120-2026_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/DSC05127.JPG]
+===================
+getNeeds -  source files 1 for ext JPG files
+ [Path Rel File Blog/SubBlog/DSC08138.JPG,Path Rel File Blog/SubBlog/resources/DSC08138.JPG,Path Rel File resources/img/120-2026_IMG.JPG,Path Rel File resources/img/121-2117_IMG.JPG,Path Rel File resources/img/121-2118_IMG.JPG,Path Rel File resources/img/121-2127_IMG.JPG,Path Rel File resources/img/121-2128_IMG.JPG,Path Rel File resources/img/134-3437_IMG.JPG,Path Rel File resources/img/134-3448_IMG.JPG,Path Rel File templates/img/DSC05127.JPG]
+
+bakePDF -  target files 2 for ext JPG files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/120-2026_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/DSC05127.JPG]
+===================
+getNeeds -  source files 1 for ext JPG files
+ [Path Rel File Blog/SubBlog/DSC08138.JPG,Path Rel File Blog/SubBlog/resources/DSC08138.JPG,Path Rel File resources/img/120-2026_IMG.JPG,Path Rel File resources/img/121-2117_IMG.JPG,Path Rel File resources/img/121-2118_IMG.JPG,Path Rel File resources/img/121-2127_IMG.JPG,Path Rel File resources/img/121-2128_IMG.JPG,Path Rel File resources/img/134-3437_IMG.JPG,Path Rel File resources/img/134-3448_IMG.JPG,Path Rel File templates/img/DSC05127.JPG]
+
+bakePDF -  target files 2 for ext JPG files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/120-2026_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/DSC05127.JPG]
+===================
+getNeeds -  source files 1 for ext JPG files
+ [Path Rel File Blog/SubBlog/DSC08138.JPG,Path Rel File Blog/SubBlog/resources/DSC08138.JPG,Path Rel File resources/img/120-2026_IMG.JPG,Path Rel File resources/img/121-2117_IMG.JPG,Path Rel File resources/img/121-2118_IMG.JPG,Path Rel File resources/img/121-2127_IMG.JPG,Path Rel File resources/img/121-2128_IMG.JPG,Path Rel File resources/img/134-3437_IMG.JPG,Path Rel File resources/img/134-3448_IMG.JPG,Path Rel File templates/img/DSC05127.JPG]
+
+bakePDF -  target files 2 for ext JPG files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/120-2026_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/DSC05127.JPG]
+===================
+getNeeds -  source files 1 for ext JPG files
+ [Path Rel File Blog/SubBlog/DSC08138.JPG,Path Rel File Blog/SubBlog/resources/DSC08138.JPG,Path Rel File resources/img/120-2026_IMG.JPG,Path Rel File resources/img/121-2117_IMG.JPG,Path Rel File resources/img/121-2118_IMG.JPG,Path Rel File resources/img/121-2127_IMG.JPG,Path Rel File resources/img/121-2128_IMG.JPG,Path Rel File resources/img/134-3437_IMG.JPG,Path Rel File resources/img/134-3448_IMG.JPG,Path Rel File templates/img/DSC05127.JPG]
+
+bakePDF -  target files 2 for ext JPG files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/120-2026_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/DSC05127.JPG]
+rule **/*.pdf need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/cropped-DSC05127-1024x330.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras2.jpg] [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/120-2026_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/DSC05127.JPG]
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference.pdf"
+
+  convA2B    Extension "tex" "/home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference.pdf"
+rule **/*.pdf need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/cropped-DSC05127-1024x330.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras2.jpg] [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/120-2026_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/DSC05127.JPG]
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/PublicationList/index.pdf"
+
+  convA2B    Extension "tex" "/home/frank/Workspace8/ssg/docs/site/baked/PublicationList/index.pdf"
+rule **/*.pdf need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/cropped-DSC05127-1024x330.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras2.jpg] [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/120-2026_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/DSC05127.JPG]
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsubTest.pdf"
+
+  convA2B    Extension "tex" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsubTest.pdf"
+rule **/*.pdf need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/cropped-DSC05127-1024x330.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras2.jpg] [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/120-2026_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/DSC05127.JPG]
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsub1.pdf"
+
+  convA2B    Extension "tex" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsub1.pdf"
+rule **/*.pdf need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/cropped-DSC05127-1024x330.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras2.jpg] [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/120-2026_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/DSC05127.JPG]
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/index.pdf"
+
+  convA2B    Extension "tex" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/index.pdf"
+rule **/*.pdf need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/cropped-DSC05127-1024x330.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras2.jpg] [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/120-2026_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/DSC05127.JPG]
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/testSort.pdf"
+
+  convA2B    Extension "tex" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/testSort.pdf"
+rule **/*.pdf need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/cropped-DSC05127-1024x330.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras2.jpg] [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/120-2026_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/DSC05127.JPG]
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/postwk9sub.pdf"
+
+  convA2B    Extension "tex" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/postwk9sub.pdf"
+rule **/*.pdf need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/cropped-DSC05127-1024x330.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras2.jpg] [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/120-2026_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/DSC05127.JPG]
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/index.pdf"
+
+  convA2B    Extension "tex" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/index.pdf"
+rule **/*.pdf need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/cropped-DSC05127-1024x330.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras2.jpg] [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/120-2026_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/DSC05127.JPG]
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/postwk.pdf"
+
+  convA2B    Extension "tex" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/postwk.pdf"
+rule **/*.pdf need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/cropped-DSC05127-1024x330.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras2.jpg] [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/120-2026_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/DSC05127.JPG]
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/index.pdf"
+
+  convA2B    Extension "tex" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/index.pdf"
+rule **/*.pdf need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/cropped-DSC05127-1024x330.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras2.jpg] [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/120-2026_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/DSC05127.JPG]
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.pdf"
+
+  convA2B    Extension "tex" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.pdf"
+rule **/*.pdf need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/cropped-DSC05127-1024x330.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras.jpg,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/symmetricGeras2.jpg] [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/120-2026_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/templates/img/DSC05127.JPG]
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/index.pdf"
+
+  convA2B    Extension "tex" "/home/frank/Workspace8/ssg/docs/site/baked/index.pdf"
+# /home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference.tex
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference.tex"
+
+  convA2B    Extension "texsnip" "/home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference.tex"
+# /home/frank/Workspace8/ssg/docs/site/baked/PublicationList/index.tex
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/PublicationList/index.tex"
+
+  convA2B    Extension "texsnip" "/home/frank/Workspace8/ssg/docs/site/baked/PublicationList/index.tex"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsubTest.tex
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsubTest.tex"
+
+  convA2B    Extension "texsnip" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsubTest.tex"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsub1.tex
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsub1.tex"
+
+  convA2B    Extension "texsnip" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsub1.tex"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/index.tex
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/index.tex"
+
+  convA2B    Extension "texsnip" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/index.tex"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/testSort.tex
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/testSort.tex"
+
+  convA2B    Extension "texsnip" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/testSort.tex"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/postwk9sub.tex
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/postwk9sub.tex"
+
+  convA2B    Extension "texsnip" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/postwk9sub.tex"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/index.tex
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/index.tex"
+
+  convA2B    Extension "texsnip" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/index.tex"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/postwk.tex
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/postwk.tex"
+
+  convA2B    Extension "texsnip" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/postwk.tex"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/index.tex
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/index.tex"
+
+  convA2B    Extension "texsnip" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/index.tex"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.tex
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.tex"
+
+  convA2B    Extension "texsnip" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.tex"
+# /home/frank/Workspace8/ssg/docs/site/baked/index.tex
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/index.tex"
+
+  convA2B    Extension "texsnip" "/home/frank/Workspace8/ssg/docs/site/baked/index.tex"
+# /home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference.texsnip
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference.texsnip"
+
+  convA2B    Extension "docrep" "/home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference.texsnip"
+# /home/frank/Workspace8/ssg/docs/site/baked/PublicationList/index.texsnip
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/PublicationList/index.texsnip"
+
+  convA2B    Extension "docrep" "/home/frank/Workspace8/ssg/docs/site/baked/PublicationList/index.texsnip"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsubTest.texsnip
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsubTest.texsnip"
+
+  convA2B    Extension "docrep" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsubTest.texsnip"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsub1.texsnip
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsub1.texsnip"
+
+  convA2B    Extension "docrep" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsub1.texsnip"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/index.texsnip
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/index.texsnip"
+
+  convA2B    Extension "docrep" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/index.texsnip"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/testSort.texsnip
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/testSort.texsnip"
+
+  convA2B    Extension "docrep" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/testSort.texsnip"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/postwk9sub.texsnip
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/postwk9sub.texsnip"
+
+  convA2B    Extension "docrep" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/postwk9sub.texsnip"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/index.texsnip
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/index.texsnip"
+
+  convA2B    Extension "docrep" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/index.texsnip"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/postwk.texsnip
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/postwk.texsnip"
+
+  convA2B    Extension "docrep" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/postwk.texsnip"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/index.texsnip
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/index.texsnip"
+
+  convA2B    Extension "docrep" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/index.texsnip"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.texsnip
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.texsnip"
+
+  convA2B    Extension "docrep" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.texsnip"
+# /home/frank/Workspace8/ssg/docs/site/baked/index.texsnip
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/index.texsnip"
+
+  convA2B    Extension "docrep" "/home/frank/Workspace8/ssg/docs/site/baked/index.texsnip"
+# /home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference.docrep
+===================
+getNeeds -  source files 1 for ext bib files
+ [Path Rel File resources/BibTexExample.bib,Path Rel File resources/BibTexLatex.bib]
+
+bakePDF -  target files 2 for ext bib files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexExample.bib,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexLatex.bib]
+===================
+getNeeds -  source files 1 for ext csl files
+ [Path Rel File resources/apa-x.csl,Path Rel File resources/chicago-fullnote-bibliography-bb.csl]
+
+bakePDF -  target files 2 for ext csl files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/apa-x.csl,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/chicago-fullnote-bibliography-bb.csl]
+rule **/*.docrep need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexExample.bib,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexLatex.bib]
+rule **/*.docrep need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/apa-x.csl,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/chicago-fullnote-bibliography-bb.csl]
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference.docrep"
+
+convertAny - fromfile exist: False 
+file Path Abs File /home/frank/Workspace8/ssg/docs/site/dough/PublicationList/postWithReference.docrep
+
+  convA2B    Extension "md" "/home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference.docrep"
+# /home/frank/Workspace8/ssg/docs/site/baked/PublicationList/index.docrep
+===================
+getNeeds -  source files 1 for ext bib files
+ [Path Rel File resources/BibTexExample.bib,Path Rel File resources/BibTexLatex.bib]
+
+bakePDF -  target files 2 for ext bib files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexExample.bib,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexLatex.bib]
+===================
+getNeeds -  source files 1 for ext csl files
+ [Path Rel File resources/apa-x.csl,Path Rel File resources/chicago-fullnote-bibliography-bb.csl]
+
+bakePDF -  target files 2 for ext csl files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/apa-x.csl,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/chicago-fullnote-bibliography-bb.csl]
+rule **/*.docrep need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexExample.bib,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexLatex.bib]
+rule **/*.docrep need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/apa-x.csl,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/chicago-fullnote-bibliography-bb.csl]
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/PublicationList/index.docrep"
+
+convertAny - fromfile exist: False 
+file Path Abs File /home/frank/Workspace8/ssg/docs/site/dough/PublicationList/index.docrep
+
+  convA2B    Extension "md" "/home/frank/Workspace8/ssg/docs/site/baked/PublicationList/index.docrep"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsubTest.docrep
+===================
+getNeeds -  source files 1 for ext bib files
+ [Path Rel File resources/BibTexExample.bib,Path Rel File resources/BibTexLatex.bib]
+
+bakePDF -  target files 2 for ext bib files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexExample.bib,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexLatex.bib]
+===================
+getNeeds -  source files 1 for ext csl files
+ [Path Rel File resources/apa-x.csl,Path Rel File resources/chicago-fullnote-bibliography-bb.csl]
+
+bakePDF -  target files 2 for ext csl files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/apa-x.csl,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/chicago-fullnote-bibliography-bb.csl]
+rule **/*.docrep need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexExample.bib,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexLatex.bib]
+rule **/*.docrep need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/apa-x.csl,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/chicago-fullnote-bibliography-bb.csl]
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsubTest.docrep"
+
+convertAny - fromfile exist: False 
+file Path Abs File /home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/SubSub/subsubTest.docrep
+
+  convA2B    Extension "md" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsubTest.docrep"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsub1.docrep
+===================
+getNeeds -  source files 1 for ext bib files
+ [Path Rel File resources/BibTexExample.bib,Path Rel File resources/BibTexLatex.bib]
+
+bakePDF -  target files 2 for ext bib files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexExample.bib,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexLatex.bib]
+===================
+getNeeds -  source files 1 for ext csl files
+ [Path Rel File resources/apa-x.csl,Path Rel File resources/chicago-fullnote-bibliography-bb.csl]
+
+bakePDF -  target files 2 for ext csl files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/apa-x.csl,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/chicago-fullnote-bibliography-bb.csl]
+rule **/*.docrep need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexExample.bib,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexLatex.bib]
+rule **/*.docrep need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/apa-x.csl,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/chicago-fullnote-bibliography-bb.csl]
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsub1.docrep"
+
+convertAny - fromfile exist: False 
+file Path Abs File /home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/SubSub/subsub1.docrep
+
+  convA2B    Extension "md" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsub1.docrep"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/index.docrep
+===================
+getNeeds -  source files 1 for ext bib files
+ [Path Rel File resources/BibTexExample.bib,Path Rel File resources/BibTexLatex.bib]
+
+bakePDF -  target files 2 for ext bib files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexExample.bib,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexLatex.bib]
+===================
+getNeeds -  source files 1 for ext csl files
+ [Path Rel File resources/apa-x.csl,Path Rel File resources/chicago-fullnote-bibliography-bb.csl]
+
+bakePDF -  target files 2 for ext csl files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/apa-x.csl,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/chicago-fullnote-bibliography-bb.csl]
+rule **/*.docrep need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexExample.bib,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexLatex.bib]
+rule **/*.docrep need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/apa-x.csl,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/chicago-fullnote-bibliography-bb.csl]
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/index.docrep"
+
+convertAny - fromfile exist: False 
+file Path Abs File /home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/SubSub/index.docrep
+
+  convA2B    Extension "md" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/SubSub/index.docrep"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/testSort.docrep
+===================
+getNeeds -  source files 1 for ext bib files
+ [Path Rel File resources/BibTexExample.bib,Path Rel File resources/BibTexLatex.bib]
+
+bakePDF -  target files 2 for ext bib files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexExample.bib,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexLatex.bib]
+===================
+getNeeds -  source files 1 for ext csl files
+ [Path Rel File resources/apa-x.csl,Path Rel File resources/chicago-fullnote-bibliography-bb.csl]
+
+bakePDF -  target files 2 for ext csl files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/apa-x.csl,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/chicago-fullnote-bibliography-bb.csl]
+rule **/*.docrep need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexExample.bib,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexLatex.bib]
+rule **/*.docrep need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/apa-x.csl,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/chicago-fullnote-bibliography-bb.csl]
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/testSort.docrep"
+
+convertAny - fromfile exist: False 
+file Path Abs File /home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/testSort.docrep
+
+  convA2B    Extension "md" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/testSort.docrep"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/postwk9sub.docrep
+===================
+getNeeds -  source files 1 for ext bib files
+ [Path Rel File resources/BibTexExample.bib,Path Rel File resources/BibTexLatex.bib]
+
+bakePDF -  target files 2 for ext bib files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexExample.bib,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexLatex.bib]
+===================
+getNeeds -  source files 1 for ext csl files
+ [Path Rel File resources/apa-x.csl,Path Rel File resources/chicago-fullnote-bibliography-bb.csl]
+
+bakePDF -  target files 2 for ext csl files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/apa-x.csl,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/chicago-fullnote-bibliography-bb.csl]
+rule **/*.docrep need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexExample.bib,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexLatex.bib]
+rule **/*.docrep need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/apa-x.csl,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/chicago-fullnote-bibliography-bb.csl]
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/postwk9sub.docrep"
+
+convertAny - fromfile exist: False 
+file Path Abs File /home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/postwk9sub.docrep
+
+  convA2B    Extension "md" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/postwk9sub.docrep"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/index.docrep
+===================
+getNeeds -  source files 1 for ext bib files
+ [Path Rel File resources/BibTexExample.bib,Path Rel File resources/BibTexLatex.bib]
+
+bakePDF -  target files 2 for ext bib files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexExample.bib,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexLatex.bib]
+===================
+getNeeds -  source files 1 for ext csl files
+ [Path Rel File resources/apa-x.csl,Path Rel File resources/chicago-fullnote-bibliography-bb.csl]
+
+bakePDF -  target files 2 for ext csl files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/apa-x.csl,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/chicago-fullnote-bibliography-bb.csl]
+rule **/*.docrep need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexExample.bib,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexLatex.bib]
+rule **/*.docrep need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/apa-x.csl,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/chicago-fullnote-bibliography-bb.csl]
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/index.docrep"
+
+convertAny - fromfile exist: False 
+file Path Abs File /home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/index.docrep
+
+  convA2B    Extension "md" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog/index.docrep"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/postwk.docrep
+===================
+getNeeds -  source files 1 for ext bib files
+ [Path Rel File resources/BibTexExample.bib,Path Rel File resources/BibTexLatex.bib]
+
+bakePDF -  target files 2 for ext bib files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexExample.bib,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexLatex.bib]
+===================
+getNeeds -  source files 1 for ext csl files
+ [Path Rel File resources/apa-x.csl,Path Rel File resources/chicago-fullnote-bibliography-bb.csl]
+
+bakePDF -  target files 2 for ext csl files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/apa-x.csl,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/chicago-fullnote-bibliography-bb.csl]
+rule **/*.docrep need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexExample.bib,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexLatex.bib]
+rule **/*.docrep need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/apa-x.csl,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/chicago-fullnote-bibliography-bb.csl]
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/postwk.docrep"
+
+convertAny - fromfile exist: False 
+file Path Abs File /home/frank/Workspace8/ssg/docs/site/dough/Blog/postwk.docrep
+
+  convA2B    Extension "md" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/postwk.docrep"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/index.docrep
+===================
+getNeeds -  source files 1 for ext bib files
+ [Path Rel File resources/BibTexExample.bib,Path Rel File resources/BibTexLatex.bib]
+
+bakePDF -  target files 2 for ext bib files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexExample.bib,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexLatex.bib]
+===================
+getNeeds -  source files 1 for ext csl files
+ [Path Rel File resources/apa-x.csl,Path Rel File resources/chicago-fullnote-bibliography-bb.csl]
+
+bakePDF -  target files 2 for ext csl files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/apa-x.csl,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/chicago-fullnote-bibliography-bb.csl]
+rule **/*.docrep need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexExample.bib,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexLatex.bib]
+rule **/*.docrep need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/apa-x.csl,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/chicago-fullnote-bibliography-bb.csl]
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/index.docrep"
+
+convertAny - fromfile exist: False 
+file Path Abs File /home/frank/Workspace8/ssg/docs/site/dough/Blog/index.docrep
+
+  convA2B    Extension "md" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/index.docrep"
+# /home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep
+===================
+getNeeds -  source files 1 for ext bib files
+ [Path Rel File resources/BibTexExample.bib,Path Rel File resources/BibTexLatex.bib]
+
+bakePDF -  target files 2 for ext bib files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexExample.bib,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexLatex.bib]
+===================
+getNeeds -  source files 1 for ext csl files
+ [Path Rel File resources/apa-x.csl,Path Rel File resources/chicago-fullnote-bibliography-bb.csl]
+
+bakePDF -  target files 2 for ext csl files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/apa-x.csl,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/chicago-fullnote-bibliography-bb.csl]
+rule **/*.docrep need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexExample.bib,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexLatex.bib]
+rule **/*.docrep need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/apa-x.csl,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/chicago-fullnote-bibliography-bb.csl]
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep"
+
+convertAny - fromfile exist: False 
+file Path Abs File /home/frank/Workspace8/ssg/docs/site/dough/Blog/blog1.docrep
+
+  convA2B    Extension "md" "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep"
+# /home/frank/Workspace8/ssg/docs/site/baked/index.docrep
+===================
+getNeeds -  source files 1 for ext bib files
+ [Path Rel File resources/BibTexExample.bib,Path Rel File resources/BibTexLatex.bib]
+
+bakePDF -  target files 2 for ext bib files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexExample.bib,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexLatex.bib]
+===================
+getNeeds -  source files 1 for ext csl files
+ [Path Rel File resources/apa-x.csl,Path Rel File resources/chicago-fullnote-bibliography-bb.csl]
+
+bakePDF -  target files 2 for ext csl files
+ [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/apa-x.csl,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/chicago-fullnote-bibliography-bb.csl]
+rule **/*.docrep need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexExample.bib,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/BibTexLatex.bib]
+rule **/*.docrep need [Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/apa-x.csl,Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/resources/chicago-fullnote-bibliography-bb.csl]
+
+produceAny 
+ file out "/home/frank/Workspace8/ssg/docs/site/baked/index.docrep"
+
+convertAny - fromfile exist: False 
+file Path Abs File /home/frank/Workspace8/ssg/docs/site/dough/index.docrep
+
+  convA2B    Extension "md" "/home/frank/Workspace8/ssg/docs/site/baked/index.docrep"
+# /home/frank/Workspace8/ssg/docs/site/dough/PublicationList/postWithReference.md
+
+  convA2B - 3 needed Path Abs File /home/frank/Workspace8/ssg/docs/site/dough/PublicationList/postWithReference.md
+
+----------------- bakeOneFile2docrep 1 fn Path Abs File /home/frank/Workspace8/ssg/docs/site/dough/PublicationList/postWithReference.md debug False 
+ resfn2 Path Abs File /home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference.docrep
+checkDocRep1 start
+checkDocRep1 dy DocYaml {dyFn = "/home/frank/Workspace8/ssg/docs/site/dough/PublicationList/postWithReference.md", dyLink = "", dyLang = DLenglish, dyTitle = "postWithReference", dyAbstract = "What are the objects of ontologists .", dyAuthor = "", dyDate = Just "2010-07-29", dyKeywords = "homepage", dyBibliography = Just "resources/BibTexLatex.bib", dyStyle = Just "resources/chicago-fullnote-bibliography-bb.csl", dyPublish = Nothing, dyIsIndexPage = False, dyDirEntries = [], dyFileEntries = []}
+docRepAddRefs DocRep {yam = Object (fromList [("fileEntries",Array []),("style",String "resources/chicago-fullnote-bibliography-bb.csl"),("references",Array [Object (fromList [("volume",String "11"),("page",String "261-263"),("container-title",String "Nature Materials"),("author",Array [Object (fromList [("family",String "Fenner"),("given",String "Martin Beat")])]),("id",String "fenner2012a"),("issued",Object (fromList [("year",String "2212"),("month",String "3")])),("title",String "One-click science marketing"),("type",String "article-journal"),("publisher",String "Nature Publishing Group")])]),("link",String ""),("bibliography",String "resources/BibTexLatex.bib"),("lang",String "DLenglish"),("date",String "2010-07-29"),("isIndexPage",Bool False),("nocite",String "@navratil08"),("keywords",String "homepage"),("author",String ""),("dirEntries",Array []),("abstract",String "What are the objects of ontologists ."),("title",String "postWithReference"),("fn",String "/home/frank/Workspace8/ssg/docs/site/dough/PublicationList/postWithReference.md"),("pageTemplate",String "page3.yaml"),("publish",Null)]), pan = Pandoc (Meta {unMeta = fromList []}) [Para [Str "An",Space,Str "example",Space,Str "post",Space,Cite [Citation {citationId = "fenner2012a", citationPrefix = [], citationSuffix = [], citationMode = NormalCitation, citationNoteNum = 0, citationHash = 0}] [Str "[@fenner2012a]"],Str ".",Space,Str "With",Space,Str "a",Space,Str "reference",Space,Str "to",Space,Cite [Citation {citationId = "frank09geo", citationPrefix = [], citationSuffix = [], citationMode = NormalCitation, citationNoteNum = 0, citationHash = 0}] [Str "[@frank09geo]"],Space,Str "given",Space,Str "and",Space,Str "navratil08",Space,Str "as",Space,Str "nocite.",SoftBreak,Str "Not",Space,Str "including",Space,Str "the",Space,Str "\"TUxx9999\"",Space,Str "addition",Space,Str "in",Space,Str "brackets.",SoftBreak,Str "The",Space,Str "frank2010a",Space,Str "and",Space,Str "frank09geo",Space,Str "is",Space,Str "a",SoftBreak,Str "The",Space,Str "references",Space,Str "are",Space,Str "in",Space,Str "\"resources/BibTexLatex.bib\"."],Header 1 ("references",[],[]) [Str "References"]]} 
+
+addRefs2 DocRep {yam = Object (fromList [("fileEntries",Array []),("style",String "resources/chicago-fullnote-bibliography-bb.csl"),("references",Array [Object (fromList [("volume",String "11"),("page",String "261-263"),("container-title",String "Nature Materials"),("author",Array [Object (fromList [("family",String "Fenner"),("given",String "Martin Beat")])]),("id",String "fenner2012a"),("issued",Object (fromList [("year",String "2212"),("month",String "3")])),("title",String "One-click science marketing"),("type",String "article-journal"),("publisher",String "Nature Publishing Group")])]),("link",String ""),("bibliography",String "resources/BibTexLatex.bib"),("lang",String "DLenglish"),("date",String "2010-07-29"),("isIndexPage",Bool False),("nocite",String "@navratil08"),("keywords",String "homepage"),("author",String ""),("dirEntries",Array []),("abstract",String "What are the objects of ontologists ."),("title",String "postWithReference"),("fn",String "/home/frank/Workspace8/ssg/docs/site/dough/PublicationList/postWithReference.md"),("pageTemplate",String "page3.yaml"),("publish",Null)]), pan = Pandoc (Meta {unMeta = fromList []}) [Para [Str "An",Space,Str "example",Space,Str "post",Space,Cite [Citation {citationId = "fenner2012a", citationPrefix = [], citationSuffix = [], citationMode = NormalCitation, citationNoteNum = 0, citationHash = 0}] [Str "[@fenner2012a]"],Str ".",Space,Str "With",Space,Str "a",Space,Str "reference",Space,Str "to",Space,Cite [Citation {citationId = "frank09geo", citationPrefix = [], citationSuffix = [], citationMode = NormalCitation, citationNoteNum = 0, citationHash = 0}] [Str "[@frank09geo]"],Space,Str "given",Space,Str "and",Space,Str "navratil08",Space,Str "as",Space,Str "nocite.",SoftBreak,Str "Not",Space,Str "including",Space,Str "the",Space,Str "\"TUxx9999\"",Space,Str "addition",Space,Str "in",Space,Str "brackets.",SoftBreak,Str "The",Space,Str "frank2010a",Space,Str "and",Space,Str "frank09geo",Space,Str "is",Space,Str "a",SoftBreak,Str "The",Space,Str "references",Space,Str "are",Space,Str "in",Space,Str "\"resources/BibTexLatex.bib\"."],Header 1 ("references",[],[]) [Str "References"]]} 
+
+docRepAddRefs 
+ biblio "resources/BibTexLatex.bib" 
+ style Just "resources/chicago-fullnote-bibliography-bb.csl" 
+ refs Just (Array [Object (fromList [("volume",String "11"),("page",String "261-263"),("container-title",String "Nature Materials"),("author",Array [Object (fromList [("family",String "Fenner"),("given",String "Martin Beat")])]),("id",String "fenner2012a"),("issued",Object (fromList [("year",String "2212"),("month",String "3")])),("title",String "One-click science marketing"),("type",String "article-journal"),("publisher",String "Nature Publishing Group")])]) 
+ nocite Just "@navratil08"
+
+the return from test_shakeAll
+ Error when running Shake build system:
+  at src/Lib/Shake2.hs:133:5-35:
+* Depends on: allMarkdownConversion
+  at ./Uniform/Shake/Path.hs:47:9-13:
+* Depends on: /home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference.pdf
+  at src/Lib/ConvertFiles.hs:96:5-30:
+* Depends on: /home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference.tex
+  at src/Lib/ConvertFiles.hs:96:5-30:
+* Depends on: /home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference.texsnip
+  at src/Lib/ConvertFiles.hs:96:5-30:
+* Depends on: /home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference.docrep
+* Raised the exception:
+["runErr2action","resources/BibTexLatex.bib: openBinaryFile: does not exist (No such file or directory)"]
+
++++ OK (51ms)
+
+* Tests:     1
+* Passed:    1
+* Pending:   0
+* Failures:  0
+* Errors:    0
+* Timed out: 0
+* Filtered:  0
+
+Total execution time: 51ms

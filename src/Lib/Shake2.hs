@@ -260,9 +260,9 @@ getNeeds debug sourceP targetP extSource extTarget = do
             else
                 map (replaceExtension' extTarget . (targetP </>))
                     filesWithSource :: [Path Abs File]
-    when debug $ do
+    when True $ do
         putIOwords
-            [ "===================\nbakePDF -  source files 1"
+            [ "===================\ngetNeeds -  source files 1"
             , "for ext"
             , extSource
             , "files\n"

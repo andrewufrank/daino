@@ -81,7 +81,8 @@ type BakeOp
     -> ErrIO ()
 
 bakeOneFile2docrep
-    :: Bool
+    :: Path Abs Dir -- ^ the bakedP 
+    -> Bool
     -> PubFlags
     -> Path Abs File  -- ^ md file 
     -> SiteLayout
@@ -91,7 +92,7 @@ bakeOneFile2docrep
 -- produce the docval (from which html texsnip are derived)
 -- todo include the index 
 
-bakeOneFile2docrep debug flags inputFn layout resfn2 = do
+bakeOneFile2docrep bakedP debug flags  inputFn layout resfn2 = do
     putIOwords
         [ "\n-----------------"
         , "bakeOneFile2docrep 1 fn"
@@ -112,17 +113,17 @@ bakeOneFile2docrep debug flags inputFn layout resfn2 = do
 -- check 
 -- the fields for the index are prepared 
 
-    dr2 <- checkDocRep inputFn dr1
+    dr2 <- checkDocRep bakedP inputFn dr1
     -- does this use the listed refs? 
     dr3 <- docRepAddRefs dr2
+
     -- TODO needs refs 
     -- let needs1  = docRepNeeds docrep1  :: [FilePath]
     -- need  needs1  -- TDO this is in the wrong monad
-    dr4 <- addIndex2yam debug dr3
+    -- dr4 <- addIndex2yam debug dr3
+    -- this will be done twice in html and tex
 
-
-
-    write8 resfn2 docRepFileType dr4
+    write8 resfn2 docRepFileType dr3
     when debug $ putIOwords
         [ "\n-----------------"
         , "bakeOneFile2docrep done fn"
