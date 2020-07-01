@@ -37,9 +37,9 @@ import           Uniform.FileIO                 ( read8
                                                 , write8
                                                 , copyOneFileOver
                                                 )
- 
+
 import           Uniform.Shake                --  ( replaceExtension' )
-import Uniform.DocRep 
+import           Uniform.DocRep
 import           Uniform.Pandoc
             --  ( writeTexSnip2
             --                                     , TexSnip
@@ -68,7 +68,7 @@ import           Lib.CheckInput --                 ( getTripleDoc )
 import           Lib.Foundation                 ( SiteLayout(..)
                                                 , templatesDir
                                                 )
-import Lib.Indexing             
+import           Lib.Indexing
 import qualified Path.IO                       as Path
                                                 ( getTempDir )
 
@@ -102,31 +102,33 @@ bakeOneFile2docrep debug flags inputFn layout resfn2 = do
         , showT resfn2
         ]
 
-    md1      <- read8 inputFn markdownFileType
+    md1 <- read8 inputFn markdownFileType
 
     -- readMarkdown2docrep :: MarkdownText -> ErrIO DocRep
 -- | read a md file into a DocRep
 -- all values from meta are moved to yam (meta is zero to avoid problems)
-    dr1   <- readMarkdown2docrep md1
+    dr1 <- readMarkdown2docrep md1
 
 -- check 
 -- the fields for the index are prepared 
 
-    dr2 <- checkDocRep inputFn dr1 
+    dr2 <- checkDocRep inputFn dr1
     -- does this use the listed refs? 
-    dr3      <-   docRepAddRefs dr2
+    dr3 <- docRepAddRefs dr2
     -- TODO needs refs 
     -- let needs1  = docRepNeeds docrep1  :: [FilePath]
     -- need  needs1  -- TDO this is in the wrong monad
     dr4 <- addIndex2yam debug dr3
 
 
-    
+
     write8 resfn2 docRepFileType dr4
     when debug $ putIOwords
-        ["\n-----------------", "bakeOneFile2docrep done fn", showT resfn2
+        [ "\n-----------------"
+        , "bakeOneFile2docrep done fn"
+        , showT resfn2
             -- , "\n needs returned", showT needs1
-            ]
+        ]
     return () -- (needs1) --"ok bakeOneFile2docrep"
 
 
@@ -143,12 +145,12 @@ bakeOneFile2html debug flags inputFn layout resfn2 = do
         , showT resfn2
         ]
 
-    dr1    <- read8 inputFn docRepFileType
+    dr1 <- read8 inputFn docRepFileType
         -- docRep2html:: DocRep -> ErrIO HTMLout
         -- ^ transform a docrep to a html file 
         -- needs teh processing of the references with citeproc
-                 
-    h1      <- docRep2html dr1
+
+    h1  <- docRep2html dr1
 
     write8 resfn2 htmloutFileType h1   -- content is html style
 
@@ -170,14 +172,14 @@ bakeOneFile2texsnip debug flags inputFn layout resfn2 = do
         , showT resfn2
         ]
 
-    dr1                      <- read8 inputFn docRepFileType
+    dr1   <- read8 inputFn docRepFileType
 
     -- docRep2texsnip :: DocRep -> ErrIO TexSnip
     -- -- ^ transform a docrep to a texsnip 
     -- -- does not need the references include in docRep
     -- -- which is done by tex to pdf conversion
-                 
-    snip1                   <- docRep2texsnip dr1
+
+    snip1 <- docRep2texsnip dr1
 
     write8 resfn2 texSnipFileType snip1   -- content is html style
 
@@ -199,14 +201,14 @@ bakeOneFile2tex debug flags inputFn layout resfn2 = do
         , showT resfn2
         ]
 
-    snip1     <- read8 inputFn texSnipFileType
+    snip1 <- read8 inputFn texSnipFileType
 
     -- docRep2texsnip :: DocRep -> ErrIO TexSnip
     -- -- ^ transform a docrep to a texsnip 
     -- -- does not need the references include in docRep
     -- -- which is done by tex to pdf conversion
-                 
-    let tex1   =   tex2latex [snip1]
+
+    let tex1 = tex2latex [snip1]
 
     write8 resfn2 texFileType tex1   -- content is html style
 
@@ -234,11 +236,11 @@ bakeOneFile2pdf debug flags inputFn layout resfn2 = do
     -- -- ^ transform a docrep to a texsnip 
     -- -- does not need the references include in docRep
     -- -- which is done by tex to pdf conversion
-                 
+
     -- writePDF2text :: Bool  ->   Path Abs File -> Path Abs File -> ErrIO ()
-    let refDir = makeAbsDir . getParentDir . toFilePath $ inputFn 
-            :: Path Abs Dir 
-    writePDF2 debug   inputFn resfn2  refDir  -- content is html style
+    let refDir =
+            makeAbsDir . getParentDir . toFilePath $ inputFn :: Path Abs Dir
+    writePDF2 debug inputFn resfn2 refDir  -- content is html style
 
     when debug $ putIOwords
         ["\n-----------------", "bakeOneFile2pdf done fn", showT resfn2]

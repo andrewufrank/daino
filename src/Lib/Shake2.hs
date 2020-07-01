@@ -50,7 +50,8 @@ import           Uniform.Error                  ( ErrIO
                                                 )
 import           Uniform.Shake
 import           Development.Shake              ( Rules
-                                                , (|%>) , priority
+                                                , (|%>)
+                                                , priority
                                                 )
 -- import          Development.Shake.FilePath (replaceExtensions)
 import           Uniform.Strings                ( putIOwords
@@ -129,14 +130,14 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         , "\tbakedP\n"
         , showT bakedP
         ]
-    want [ "allMarkdownConversion"]
+    want ["allMarkdownConversion"]
 
     phony "allMarkdownConversion" $ do
         -- these are functions to construct the desired results
         -- which then produce them
         -- the original start needs in baked (from the files in dough)  
         pdfs  <- getNeeds debug doughP bakedP "md" "pdf"
-        htmls <- getNeeds debug  doughP bakedP "md" "html"
+        htmls <- getNeeds debug doughP bakedP "md" "html"
 
                 -- templatesP 
                 -- (bakedP </> staticDirName) -- exception
@@ -161,55 +162,52 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
 
         needP pdfs
         needP htmls
-        
+
     return ()
 
     let debug2 = True
 
-    (toFilePath bakedP <> "**/*.html")
-        %> \out
+    (toFilePath bakedP <> "**/*.html") %> \out
         -- calls the copy html and the conversion from md
-                -> do 
-                    csss          <- getNeeds debug doughP bakedP "css" "css"
-                    -- needP csss 
-                    putIOwords ["rule **/*.html need", showT csss]
-                    imgs          <- getNeeds debug doughP bakedP "jpg" "jpg"
-                    imgs2         <- getNeeds debug doughP bakedP "JPG" "JPG"
-                    needP imgs
-                    needP imgs2
-                    putIOwords ["rule **/*.html need", showT imgs, showT imgs2]
-                    convertAny debug bakedP bakedP flags layout out convDocrep2html
+                                               -> do
+        csss <- getNeeds debug doughP bakedP "css" "css"
+        -- needP csss 
+        putIOwords ["rule **/*.html need", showT csss]
+        imgs  <- getNeeds debug doughP bakedP "jpg" "jpg"
+        imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
+        needP imgs
+        needP imgs2
+        putIOwords ["rule **/*.html need", showT imgs, showT imgs2]
+        convertAny debug bakedP bakedP flags layout out convDocrep2html
 
-    (toFilePath bakedP <> "**/*.pdf")
-        %> \out -- insert pdfFIles1  
-                -> do 
-                    putIOwords ["rule **/*.pdf", showT out]
-                    imgs          <- getNeeds debug doughP bakedP "jpg" "jpg"
-                    imgs2         <- getNeeds debug doughP bakedP "JPG" "JPG"
-                    needP imgs
-                    needP imgs2
-                    putIOwords ["rule **/*.pdf need", showT imgs, showT imgs2]
-                    convertAny debug2 bakedP bakedP flags layout out convTex2pdf
+    (toFilePath bakedP <> "**/*.pdf") %> \out -- insert pdfFIles1  
+                                              -> do
+        putIOwords ["rule **/*.pdf", showT out]
+        imgs  <- getNeeds debug doughP bakedP "jpg" "jpg"
+        imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
+        needP imgs
+        needP imgs2
+        putIOwords ["rule **/*.pdf need", showT imgs, showT imgs2]
+        convertAny debug2 bakedP bakedP flags layout out convTex2pdf
 
-    (toFilePath bakedP <> "**/*.tex")
-        %> \out -- insert pdfFIles1  
-                -> convertAny debug2 bakedP bakedP flags layout out convTexsnip2tex
+    (toFilePath bakedP <> "**/*.tex") %> \out -- insert pdfFIles1  
+                                              ->
+        convertAny debug2 bakedP bakedP flags layout out convTexsnip2tex
 
-    (toFilePath bakedP <> "**/*.texsnip")
-        %> \out -- insert pdfFIles1   
-                -> convertAny debug2 bakedP bakedP flags layout out convDocrep2texsnip
+    (toFilePath bakedP <> "**/*.texsnip") %> \out -- insert pdfFIles1   
+                                                  ->
+        convertAny debug2 bakedP bakedP flags layout out convDocrep2texsnip
 
-    (toFilePath bakedP <> "**/*.docrep")
-        %> \out -- insert pdfFIles1  -- here start with doughP
-                -> do 
-                    bibs         <- getNeeds debug doughP bakedP "bib" "bib"
-                    -- needP bibs
-                    csls          <- getNeeds debug doughP bakedP "csl" "csl"
-                    -- needP csls 
-                    putIOwords ["rule **/*.docrep need", showT bibs]
-                    putIOwords ["rule **/*.docrep need", showT csls]
+    (toFilePath bakedP <> "**/*.docrep") %> \out -- insert pdfFIles1  -- here start with doughP
+                                                 -> do
+        bibs <- getNeeds debug doughP bakedP "bib" "bib"
+        -- needP bibs
+        csls <- getNeeds debug doughP bakedP "csl" "csl"
+        -- needP csls 
+        putIOwords ["rule **/*.docrep need", showT bibs]
+        putIOwords ["rule **/*.docrep need", showT csls]
 
-                    convertAny debug2 doughP bakedP flags layout out convMD2docrep
+        convertAny debug2 doughP bakedP flags layout out convMD2docrep
 
     -- rest are copies 
 
@@ -242,7 +240,7 @@ getNeeds
 --  from source with extension ext
 getNeeds debug sourceP targetP extSource extTarget = do
     let sameExt = extSource == extTarget
-    when debug $  putIOwords
+    when debug $ putIOwords
         [ "===================\ngetNeeds extSource"
         , extSource
         , "extTarget"
@@ -260,11 +258,9 @@ getNeeds debug sourceP targetP extSource extTarget = do
         filesWithTarget = if sameExt
             then [ targetP </> c | c <- filesWithSource ]
             else
-                map (replaceExtension' extTarget . (targetP </>)) filesWithSource :: [ Path
-                      Abs
-                      File
-                ]
-    when debug $  do
+                map (replaceExtension' extTarget . (targetP </>))
+                    filesWithSource :: [Path Abs File]
+    when debug $ do
         putIOwords
             [ "===================\nbakePDF -  source files 1"
             , "for ext"
