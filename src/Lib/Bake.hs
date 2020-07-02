@@ -80,7 +80,7 @@ type BakeOp
     -> Path Abs File
     -> ErrIO ()
 
-bakeOneFile2docrep
+bakeOneFile2docrep      --    MD -> DOCREP
     :: Path Abs Dir -- ^ the bakedP 
     -> Bool
     -> PubFlags
@@ -115,7 +115,7 @@ bakeOneFile2docrep bakedP debug flags  inputFn layout resfn2 = do
 
     dr2 <- checkDocRep bakedP inputFn dr1
     -- does this use the listed refs? 
-    dr3 <- docRepAddRefs dr2
+    dr3 <- addRefs dr2
 
     -- TODO needs refs 
     -- let needs1  = docRepNeeds docrep1  :: [FilePath]
@@ -132,8 +132,36 @@ bakeOneFile2docrep bakedP debug flags  inputFn layout resfn2 = do
         ]
     return () -- (needs1) --"ok bakeOneFile2docrep"
 
+bakeOneFile2panrep :: BakeOp   --  DOCREP -> PANREP
+-- TODO 
+bakeOneFile2panrep debug flags inputFn layout resfn2 = do
+    putIOwords
+        [ "\n-----------------"
+        , "bakeOneFile2panrep 1 fn"
+        , showT inputFn
+        , "debug"
+        , showT debug
+        , "\n resfn2"
+        , showT resfn2
+        ]
 
-bakeOneFile2html :: BakeOp
+    dr1 <- read8 inputFn docRepFileType
+
+    p1 <- docRep2panrep dr1     -- adds refs!   
+        -- do index 
+    p2 <- addIndex2yam debug p1  
+
+     
+
+    write8 resfn2 panrepFileType p2  -- content is html style
+
+    when debug $ putIOwords
+        ["\n-----------------", "bakeOneFile2panrep done fn", showT p2]
+    return () --"ok bakeOneFile2docrep"
+
+ 
+
+bakeOneFile2html :: BakeOp  --  PANREP -> HTML
 -- TODO 
 bakeOneFile2html debug flags inputFn layout resfn2 = do
     putIOwords
@@ -146,15 +174,15 @@ bakeOneFile2html debug flags inputFn layout resfn2 = do
         , showT resfn2
         ]
 
-    dr1 <- read8 inputFn docRepFileType
+    dr1 <- read8 inputFn panrepFileType
         -- docRep2html:: DocRep -> ErrIO HTMLout
         -- ^ transform a docrep to a html file 
         -- needs teh processing of the references with citeproc
 
         -- do index 
-    dr4 <- addIndex2yam debug dr1
+    -- dr4 <- addIndex2yam debug dr1  -- move to 
 
-    h1  <- docRep2html dr4
+    h1  <- panrep2html dr1
 
     write8 resfn2 htmloutFileType h1   -- content is html style
 
@@ -163,7 +191,7 @@ bakeOneFile2html debug flags inputFn layout resfn2 = do
     return () --"ok bakeOneFile2docrep"
 
 
-bakeOneFile2texsnip :: BakeOp
+bakeOneFile2texsnip :: BakeOp  --  PANREP -> TEXSNIP
 -- TODO 
 bakeOneFile2texsnip debug flags inputFn layout resfn2 = do
     putIOwords
@@ -176,14 +204,14 @@ bakeOneFile2texsnip debug flags inputFn layout resfn2 = do
         , showT resfn2
         ]
 
-    dr1   <- read8 inputFn docRepFileType
+    dr1   <- read8 inputFn panrepFileType
 
     -- docRep2texsnip :: DocRep -> ErrIO TexSnip
     -- -- ^ transform a docrep to a texsnip 
     -- -- does not need the references include in docRep
     -- -- which is done by tex to pdf conversion
 
-    snip1 <- docRep2texsnip dr1
+    snip1 <- panrep2texsnip dr1
 
     write8 resfn2 texSnipFileType snip1   -- content is html style
 
@@ -192,7 +220,7 @@ bakeOneFile2texsnip debug flags inputFn layout resfn2 = do
     return () --"ok bakeOneFile2docrep"
 
 
-bakeOneFile2tex :: BakeOp
+bakeOneFile2tex :: BakeOp  -- TEXSNIP -> TEX 
 -- TODO 
 bakeOneFile2tex debug flags inputFn layout resfn2 = do
     putIOwords
@@ -207,12 +235,10 @@ bakeOneFile2tex debug flags inputFn layout resfn2 = do
 
     snip1 <- read8 inputFn texSnipFileType
 
-    -- docRep2texsnip :: DocRep -> ErrIO TexSnip
-    -- -- ^ transform a docrep to a texsnip 
-    -- -- does not need the references include in docRep
-    -- -- which is done by tex to pdf conversion
-
-    let tex1 = tex2latex [snip1]
+    
+    -- latexParam :: LatexParam <- fromJSONerrio . snipyam $ snip1
+    -- putIOwords ["bakeOneFile2tex", showT latexParam]
+    let tex1 =  tex2latex zero [snip1]
 
     write8 resfn2 texFileType tex1   -- content is html style
 

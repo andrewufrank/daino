@@ -35,60 +35,60 @@ blog1res = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/checks/Blog/blog1" 
 drfnRef = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference.docrep"
 drfnRefRes = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/checks/PublicationList/postWithReference.docrep"
 
-test_addRefs   = testVar0FileIO "ssg" (drfnRef) "AddRefs"
-         op2test
-    where 
-        op2test :: (Path Abs File ) -> ErrIO DocRep
-        op2test (fn ) = do 
-            dr1 <- read8 fn docRepFileType  
-            dr2 <- docRepAddRefs dr1 
-            -- drRes <- readMarkdown2docrep resfn
-            return dr2
-
-instance ShowTestHarness DocRep 
-bakedP = bakedDir testLayout
-
-test_bake2docrep = testVar0FileIO "ssg" (blog1fn,blog1res) "bakeOneFile2docrep" op2dr
-test_bake2docrepRef = testVar0FileIO "ssg" (drfnRef,drfnRefRes) "bakeOneFile2docrep" op2dr
-
-op2dr :: (Path Abs File, Path Abs File) -> ErrIO ()
-op2dr (fn,resfn) = bakeOneFile2docrep bakedP False allFlags fn testLayout resfn
--- ein argument mehr : 
-    --  bakedP um die relative path absolut zu machen
-
-test_docVal2html = testVar0FileIO "ssg" (blog1res,blog1res) "bakeDocValue2html" op2html
-test_docVal2htmlRef = testVar0FileIO "ssg" (drfnRefRes,drfnRefRes) "bakeDocValue2html" op2html
-
-op2html :: (Path Abs File, Path Abs File) -> ErrIO () 
-op2html (fn,resfn) = bakeOneFile2html True allFlags fn testLayout resfn
-
--- test_bake2html = testVar0FileIO "ssg" (blog1fn,blog1res) "bake2html" op2html
+-- test_addRefs   = testVar0FileIO "ssg" (drfnRef) "AddRefs"
+--          op2test
 --     where 
---         op2html :: (Path Abs File, Path Abs File) -> ErrIO Text 
---         op2html (fn,resfn) = bakeOneFile2html False allFlags fn testLayout resfn
-    -- writes in same dir but different extension
+--         op2test :: (Path Abs File ) -> ErrIO DocRep
+--         op2test (fn ) = do 
+--             dr1 <- read8 fn docRepFileType  
+--             dr2 <- docRepAddRefs dr1 
+--             -- drRes <- readMarkdown2docrep resfn
+--             return dr2
 
--- testVar0FileIO :: (Zeros b, Eq b, Show b, Read b, ShowTestHarness b)
---             => Text -> a -> FilePath -> (a-> ErrIO b) -> IO ()
--- the arguments
--- testVar0FileIO progName  a resfile op = do
+-- instance ShowTestHarness DocRep 
+-- bakedP = bakedDir testLayout
 
-test_bake2texsnip = testVar0FileIO "ssg" (blog1res,blog1res) "bake2texsnip" op2texsnip
-test_bake2texsnipRef = testVar0FileIO "ssg" (drfnRefRes,drfnRefRes) "bake2texsnip" op2texsnip
-op2texsnip :: (Path Abs File, Path Abs File) -> ErrIO () 
-op2texsnip (fn,resfn) = bakeOneFile2texsnip False allFlags fn testLayout resfn
+-- test_bake2docrep = testVar0FileIO "ssg" (blog1fn,blog1res) "bakeOneFile2docrep" op2dr
+-- test_bake2docrepRef = testVar0FileIO "ssg" (drfnRef,drfnRefRes) "bakeOneFile2docrep" op2dr
 
-test_bake2tex = testVar0FileIO "ssg" (blog1res,blog1res) "bake2tex" op2tex
+-- op2dr :: (Path Abs File, Path Abs File) -> ErrIO ()
+-- op2dr (fn,resfn) = bakeOneFile2docrep bakedP False allFlags fn testLayout resfn
+-- -- ein argument mehr : 
+--     --  bakedP um die relative path absolut zu machen
+
+-- test_docVal2html = testVar0FileIO "ssg" (blog1res,blog1res) "bakeDocValue2html" op2html
+-- test_docVal2htmlRef = testVar0FileIO "ssg" (drfnRefRes,drfnRefRes) "bakeDocValue2html" op2html
+
+-- op2html :: (Path Abs File, Path Abs File) -> ErrIO () 
+-- op2html (fn,resfn) = bakeOneFile2html True allFlags fn testLayout resfn
+
+-- -- test_bake2html = testVar0FileIO "ssg" (blog1fn,blog1res) "bake2html" op2html
+-- --     where 
+-- --         op2html :: (Path Abs File, Path Abs File) -> ErrIO Text 
+-- --         op2html (fn,resfn) = bakeOneFile2html False allFlags fn testLayout resfn
+--     -- writes in same dir but different extension
+
+-- -- testVar0FileIO :: (Zeros b, Eq b, Show b, Read b, ShowTestHarness b)
+-- --             => Text -> a -> FilePath -> (a-> ErrIO b) -> IO ()
+-- -- the arguments
+-- -- testVar0FileIO progName  a resfile op = do
+
+-- test_bake2texsnip = testVar0FileIO "ssg" (blog1res,blog1res) "bake2texsnip" op2texsnip
+-- test_bake2texsnipRef = testVar0FileIO "ssg" (drfnRefRes,drfnRefRes) "bake2texsnip" op2texsnip
+-- op2texsnip :: (Path Abs File, Path Abs File) -> ErrIO () 
+-- op2texsnip (fn,resfn) = bakeOneFile2texsnip False allFlags fn testLayout resfn
+
+-- test_bake2tex = testVar0FileIO "ssg" (blog1res,blog1res) "bake2tex" op2tex
 test_bake2texRef = testVar0FileIO "ssg" (drfnRefRes,drfnRefRes) "bake2tex" op2tex
 op2tex :: (Path Abs File, Path Abs File) -> ErrIO () 
 op2tex (fn,resfn) = bakeOneFile2tex False allFlags fn testLayout resfn
 
 
-test_bake2pdf = testVar0FileIO "ssg" (blog1res,blog1res) "bake2pdf" op2pdf
-test_bake2pdfRef = testVar0FileIO "ssg" (drfnRefRes,drfnRefRes) "bake2pdf" op2pdf
+-- test_bake2pdf = testVar0FileIO "ssg" (blog1res,blog1res) "bake2pdf" op2pdf
+-- test_bake2pdfRef = testVar0FileIO "ssg" (drfnRefRes,drfnRefRes) "bake2pdf" op2pdf
 
-op2pdf :: (Path Abs File, Path Abs File) -> ErrIO () 
-op2pdf (fn,resfn) = bakeOneFile2pdf False allFlags fn testLayout resfn
+-- op2pdf :: (Path Abs File, Path Abs File) -> ErrIO () 
+-- op2pdf (fn,resfn) = bakeOneFile2pdf False allFlags fn testLayout resfn
 
 
 instance ShowTestHarness () where

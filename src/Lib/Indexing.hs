@@ -38,10 +38,10 @@ import           Lib.Foundation                 ( SiteLayout )
 -- import Lib.IndexMake (MenuEntry, IndexEntry
 --                 , convert2index)
 
-addIndex2yam :: Bool -> DocRep -> ErrIO DocRep
+addIndex2yam :: Bool -> Panrep -> ErrIO Panrep
 -- ^ the top call to form the index data into the DocYaml
 --later only the format for output must be fixed 
-addIndex2yam _  dr@(DocRep yam1 _) = do 
+addIndex2yam _  dr@(Panrep yam1 _) = do 
     putIOwords ["addIndex2yam", "start", showT yam1]
     x1 :: IndexEntry <- fromJSONerrio yam1
     putIOwords ["addIndex2yam", "x1", showT x1]
@@ -57,7 +57,7 @@ addIndex2yam _  dr@(DocRep yam1 _) = do
             putIOwords ["addIndex2yam", "x2j", showT x2j]
             let yam2 = mergeLeftPref [x2j, yam1]
             putIOwords ["addIndex2yam", "yam2", showT yam2]
-            return dr{yam=yam2}
+            return dr{panyam=yam2}
 
  
 -- | get the contents of a directory, separated into dirs and files 

@@ -3029,3 +3029,4 @@ the return from test_shakeAll
 * Filtered:  0
 
 Total execution time: 19078ms
+ghc: signal: 1

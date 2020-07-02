@@ -64,12 +64,16 @@ convMD2docrep debug doughP bakedP flags layout out = do
     -- needs1 <- docRepNeeds2  -- questionable 
     -- need needs1
 
-convDocrep2html :: ConvertOp
-convDocrep2html debug doughP bakedP flags layout out =
+convDocrep2panrep :: ConvertOp
+convDocrep2panrep debug doughP bakedP flags layout out = do
+    convA2B debug doughP bakedP flags layout out extMD (bakeOneFile2panrep)
+
+convPanrep2html :: ConvertOp
+convPanrep2html debug doughP bakedP flags layout out =
     convA2B debug doughP bakedP flags layout out extDocRep bakeOneFile2html
 
-convDocrep2texsnip :: ConvertOp
-convDocrep2texsnip debug doughP bakedP flags layout out =
+convPanrep2texsnip :: ConvertOp
+convPanrep2texsnip debug doughP bakedP flags layout out =
     convA2B debug doughP bakedP flags layout out extDocRep bakeOneFile2texsnip
 
 convTexsnip2tex :: ConvertOp
