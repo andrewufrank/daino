@@ -71,22 +71,26 @@ getDirContent2dirs_files  indexpageFn = do
     dirs1 :: [Path Abs Dir] <-  getDirectoryDirs' pageFn
     files1 :: [Path Abs File] <-  getDirContentFiles pageFn
     let files2 = filter (indexpageFn /=)   -- should not exclude all index pages but has only this one in this dir? 
-                        . filter (hasExtension extMD) $ files1
+                        . filter (hasExtension extDocRep) $ files1
     ixfiles <- mapM getFile2index files2 
-    let subindexDirs = map (\d -> d </> (makeRelFile "index.md")) dirs1
+    let subindexDirs = map (\d -> d </> (makeRelFile "index.docrep")) dirs1
     ixdirs <- mapM getFile2index subindexDirs 
 
-    return  (ixdirs, ixfiles)
+    return  (catMaybes ixdirs, catMaybes ixfiles)
 
-getFile2index :: Path Abs File -> ErrIO IndexEntry 
+getFile2index :: Path Abs File -> ErrIO (Maybe IndexEntry) 
 -- get a file and its index 
 -- the directories are represented by their index files 
 -- produce separately to preserve the two groups 
 getFile2index fn = do 
-    (DocRep y1 _) <- read8 fn docRepFileType 
-    ix1 <- fromJSONerrio y1 
-    return ix1 
-
+        (DocRep y1 _) <- read8 fn docRepFileType 
+        ix1 <- fromJSONerrio y1 
+        return . Just $ ix1 
+    `catchError`  (\e  -> do
+            putIOwords ["getFile2index error caught\n", "fn:"
+                , showT fn, "\n", showT e ] -- " showT msg])
+            return Nothing
+            )
 -- -- | produces the index as text 
 -- makeIndex :: Bool           -- ^ debug
 --           -> SiteLayout     -- ^ layout 
