@@ -149,9 +149,9 @@ bakeOneFile2panrep debug flags inputFn layout resfn2 = do
 
     p1 <- docRep2panrep dr1     -- adds refs!   
         -- do index 
-    p2 <- addIndex2yam debug p1  
+    -- p2 <- addIndex2yam debug p1  
 
-     
+    let p2=p1
 
     write8 resfn2 panrepFileType p2  -- content is html style
 

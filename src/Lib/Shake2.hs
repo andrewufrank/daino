@@ -215,7 +215,7 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
 
     -- rest are copies 
 
-    (toFilePath (bakedP) <> "/*.md")
+    (toFilePath (bakedP) <> "/*.md")        -- is this required??
         %> \out  -- insert css -- no subdir
                 -> copyFileToBaked debug2 doughP bakedP out
     (toFilePath (bakedP) <> "/*.css")
