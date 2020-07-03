@@ -37,12 +37,11 @@ import           Uniform.FileIO
 -- -- -- --    -- AK :: MarkdownText -> BE  DocValue
 -- -- -- --    -- Md ->AD :: Pandoc
 -- -- -- --    -- AD -> AF :: DocValue
--- import {-@ HTF_TESTS @-} Lib.Bake_test
 -- -- -- --import {-@ HTF_TESTS @-} Lib.ReadSettingFile_test
 -- import {-@ HTF_TESTS @-} Lib.Indexing_test
 -- import  {-@ HTF_TESTS @-}         Lib.IndexMake_test
 -- -- import    {-@ HTF_TESTS @-}       Lib.Templating_test  -- AG -> EG 
-import   {-@ HTF_TESTS @-}  Lib.Shake2_test  -- AG -> EG 
+-- import   {-@ HTF_TESTS @-}  Lib.Shake2_test  -- AG -> EG 
 -- -- import Uniform.Ftp 
 -- -- import Lib.StartSSGprocess
 -- -- -- --import {-@ HTF_TESTS @-} Lib.BibTex_test
@@ -51,6 +50,8 @@ import   {-@ HTF_TESTS @-}  Lib.Shake2_test  -- AG -> EG
 -- import {-@ HTF_TESTS @-} Lib.CheckProcess_test  -- (res11)
 -- import Lib.CheckProcess        -- for direct calls 
 --
+import {-@ HTF_TESTS @-} Lib.Bake_test
+
 --
 ---- main =  do  -- the local tests only
 ----     putStrLn "HTF ExampleTest.hs:\n"

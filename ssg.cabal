@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 6aa2ab8347d39d2262a13670a7fe046becc526a4104e30f16681f09d00cfd1af
+-- hash: e51f77c56e385e0d1ee03d52075e792086b9d884187e0addd15fbfa7e0262298
 
 name:           ssg
 version:        0.0.4.1
@@ -65,6 +65,7 @@ executable ssgbake
       Lib.ConvertFiles
       Lib.Foundation
       Lib.Indexing
+      Lib.IndexMake
       Lib.Pandoc
       Lib.ReadSettingFile
       Lib.Shake2

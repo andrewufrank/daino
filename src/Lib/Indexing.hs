@@ -62,6 +62,8 @@ addIndex2yam _  dr@(Panrep yam1 _) = do
  
 -- | get the contents of a directory, separated into dirs and files 
 -- the directory is given by the index file 
+-- which files to check: index.md (in dough) or index.docrep (in baked)
+-- currently checks index.docrep in dough (which are not existing)
 -- indexfile itself is removed and files which are not markdown
 getDirContent2dirs_files ::   Path Abs File  -> ErrIO ([IndexEntry], [IndexEntry])
 getDirContent2dirs_files  indexpageFn = do 
