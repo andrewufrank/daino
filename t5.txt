@@ -3814,3 +3814,5 @@ the return from test_shakeAll
 Total execution time: 11ms
 [ 8 of 12] Compiling Lib.Bake         ( src/Lib/Bake.hs, interpreted )
 Failed, 7 modules loaded.
+[ 8 of 12] Compiling Lib.Bake         ( src/Lib/Bake.hs, interpreted )
+Failed, 7 modules loaded.

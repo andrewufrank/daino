@@ -81,14 +81,14 @@ type BakeOp
     -> Path Abs File
     -> ErrIO ()
 
-bakeOneFile2docrep      --    MD -> DOCREP
+bakeOneFile2docrep  :: BakeOp    --    MD -> DOCREP
     -- :: Path Abs Dir -> Path Abs Dir -- ^ the doughP and the bakedP 
-    -> Bool
-    -> PubFlags
-    -> Path Abs File  -- ^ md file 
-    -> SiteLayout
-    -> Path Abs File
-    -> ErrIO () -- return the needed files 
+    -- Bool
+    -- -> PubFlags
+    -- -> Path Abs File  -- ^ md file 
+    -- -> SiteLayout
+    -- -> Path Abs File
+    -- -> ErrIO () -- return the needed files 
 -- convert a md file, process citations if any
 -- produce the docval (from which html texsnip are derived)
 -- todo include the index 
@@ -107,7 +107,7 @@ bakeOneFile2docrep debug flags  inputFn layout resfn2 = do
     md1 <- read8 inputFn markdownFileType
     let bakedP = bakedDir layout 
     let doughP = doughDir layout 
-    
+
     -- readMarkdown2docrep :: MarkdownText -> ErrIO DocRep
 -- | read a md file into a DocRep
 -- all values from meta are moved to yam (meta is zero to avoid problems)
