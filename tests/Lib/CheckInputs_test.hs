@@ -42,7 +42,8 @@ test_allLabels = do
             let fn1 = (makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep")
             dr1 <- read8  fn1 docRepFileType
             putIOwords ["test_allLabels", showT . yam $ dr1]
-            dr2 <- checkDocRep1 fn1 (yam dr1) 
+            let bakedP = bakedDir layoutDefaults
+            dr2 <- checkDocRep1 bakedP fn1 (yam dr1) 
             putIOwords ["\t result yam", showT  dr2]
             return dr2 
     assertEqual (Right exp1)  res 
@@ -57,7 +58,8 @@ test_resultLabels = do
             let fn1 = (makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep")
             dr1 <- read8  fn1 docRepFileType
             putIOwords ["test_allLabels", showT . yam $ dr1]
-            dr2 <- checkDocRep fn1 dr1 
+            let bakedP = bakedDir layoutDefaults
+            dr2 <- checkDocRep bakedP fn1 dr1 
             putIOwords ["\t result dr2", showT  dr2]
             return dr2 
     assertEqual (Right exp2)  res 
