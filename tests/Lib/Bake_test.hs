@@ -36,11 +36,13 @@ import Uniform.Pandoc -- (DocValue(..), unDocValue, docValueFileType)
 blog1fn = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/dough/Blog/blog1.md"  -- braucht extension
 blog1res = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/checks/Blog/blog1"  -- keine extension
 
-drfnRefFn = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference.docrep"
-drfnRefRes = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/checks/PublicationList/postWithReference.docrep"
+drfnRefFn = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference"
+drfnRefRes = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/checks/PublicationList/postWithReference"
 
-indexedFn = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/dough/Blog/index.md"
-indexedRes = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/checks/index.md"
+    -- index scheint hier nicht testbar! 
+indexedFn = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/dough/Blog/index"
+indexedBaked = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/Blog/index"
+indexedRes = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/checks/index"
 
 -- test_addRefs   = testVar0FileIO "ssg" (drfnRefRes) "AddRefs"
 --          op2test
@@ -54,10 +56,11 @@ indexedRes = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/checks/index.md"
 
 -- instance ShowTestHarness DocRep 
 bakedP = bakedDir testLayout
+doughP = doughDir testLayout 
 
 ---------- md -> docrep 
 op2dr :: (Path Abs File, Path Abs File) -> ErrIO ()
-op2dr (fn,resfn) = bakeOneFile2docrep bakedP False allFlags fn testLayout resfn
+op2dr (fn,resfn) = bakeOneFile2docrep doughP bakedP False allFlags fn testLayout resfn
 -- test_bake2docrep = testVar0FileIO "ssg" (blog1fn,blog1res) "test_bake2docrep" op2dr
 -- test_bake2docrepRef = testVar0FileIO "ssg" (drfnRefRes,drfnRefRes) "bakeOneFile2docrep" op2dr
 test_bake2docrepIx = testVar0FileIO "ssg" (indexedFn,indexedRes) "bakeOneFile2docrep" op2dr
@@ -67,11 +70,12 @@ test_bake2docrepIx = testVar0FileIO "ssg" (indexedFn,indexedRes) "bakeOneFile2do
 
 -- ---- docrep -> panrep 
 op2pan :: (Path Abs File, Path Abs File) -> ErrIO ()
-op2pan (fn,resfn) = bakeOneFile2panrep  False allFlags fn testLayout resfn
+op2pan (fn,resfn) = bakeOneFile2panrep  bakedP False allFlags fn testLayout resfn
 
 -- test_docVal2panrep = testVar0FileIO "ssg" (blog1res,blog1res) "test_docVal2panrep" op2pan
 -- test_docVal2htmlRef = testVar0FileIO "ssg" (drfnRefRes,drfnRefRes) "bakeDocValue2html" op2pan
-test_docVal2panrepIx = testVar0FileIO "ssg" (indexedRes,indexedRes) "test_docVal2panrepIx" op2pan
+test_docVal2panrepIx = testVar0FileIO "ssg" (indexedRes,indexedRes) "test_docVal2panrepIx" (op2pan bakedP)
+        -- braucht baked weil dort die docrep existieren -- falsch
 
 
 ----- panrep -> html 

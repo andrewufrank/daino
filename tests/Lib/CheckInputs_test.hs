@@ -43,7 +43,7 @@ test_allLabels = do
             dr1 <- read8  fn1 docRepFileType
             putIOwords ["test_allLabels", showT . yam $ dr1]
             let bakedP = bakedDir layoutDefaults
-            dr2 <- checkDocRep1 bakedP fn1 (yam dr1) 
+            dr2 <- checkDocRep1 doughP bakedP fn1 (yam dr1) 
             putIOwords ["\t result yam", showT  dr2]
             return dr2 
     assertEqual (Right exp1)  res 

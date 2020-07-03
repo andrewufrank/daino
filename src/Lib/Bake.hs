@@ -81,7 +81,7 @@ type BakeOp
     -> ErrIO ()
 
 bakeOneFile2docrep      --    MD -> DOCREP
-    :: Path Abs Dir -- ^ the bakedP 
+    :: Path Abs Dir -> Path Abs Dir -- ^ the doughP and the bakedP 
     -> Bool
     -> PubFlags
     -> Path Abs File  -- ^ md file 
@@ -92,7 +92,7 @@ bakeOneFile2docrep      --    MD -> DOCREP
 -- produce the docval (from which html texsnip are derived)
 -- todo include the index 
 
-bakeOneFile2docrep bakedP debug flags  inputFn layout resfn2 = do
+bakeOneFile2docrep doughP bakedP debug flags  inputFn layout resfn2 = do
     putIOwords
         [ "\n-----------------"
         , "bakeOneFile2docrep 1 fn"
@@ -113,7 +113,7 @@ bakeOneFile2docrep bakedP debug flags  inputFn layout resfn2 = do
 -- check 
 -- the fields for the index are prepared 
 
-    dr2 <- checkDocRep bakedP inputFn dr1
+    dr2 <- checkDocRep doughP bakedP inputFn dr1
     -- does this use the listed refs? 
     dr3 <- addRefs dr2
 
@@ -132,9 +132,9 @@ bakeOneFile2docrep bakedP debug flags  inputFn layout resfn2 = do
         ]
     return () -- (needs1) --"ok bakeOneFile2docrep"
 
-bakeOneFile2panrep :: BakeOp   --  DOCREP -> PANREP
+-- bakeOneFile2panrep :: BakeOp   --  DOCREP -> PANREP
 -- TODO 
-bakeOneFile2panrep debug flags inputFn layout resfn2 = do
+bakeOneFile2panrep bakedP debug flags inputFn layout resfn2 = do
     putIOwords
         [ "\n-----------------"
         , "bakeOneFile2panrep 1 fn"
@@ -151,7 +151,7 @@ bakeOneFile2panrep debug flags inputFn layout resfn2 = do
     -- adds refs but not yet used in tex2pdf!  
 
         
-    p2 <- addIndex2yam debug p1  
+    p2 <- addIndex2yam bakedP debug p1  
     -- but needs processing to use (indexMake)
 
 

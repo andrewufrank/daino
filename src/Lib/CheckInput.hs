@@ -31,7 +31,7 @@ import           Uniform.Time                   ( readDateMaybe
                                                 , year2000
                                                 , UTCTime(..)
                                                 )
-
+import Uniform.Shake (makeRelativeP)
 import           Uniform.Pandoc
         -- (ToJSON, FromJSON, Pandoc, Value, getAtKey
         -- -- , readMd2meta
@@ -54,14 +54,14 @@ instance FromJSON DocLanguage
 instance ToJSON DocLanguage
     -- is this clever to have a new language datatype? 
 
-checkDocRep :: Path Abs Dir -> Path Abs File -> DocRep -> ErrIO DocRep
+checkDocRep :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> DocRep -> ErrIO DocRep
 -- check the DocRep 
 -- the bakedP root is necessary to complete the style and bib entries
 -- as well as image? 
 -- first for completeness of metadata in yaml 
 -- fails if required labels are not present
-checkDocRep bakedP fn (DocRep y1 p1) = do
-    y2 <- checkDocRep1 bakedP fn y1
+checkDocRep doughP bakedP fn (DocRep y1 p1) = do
+    y2 <- checkDocRep1 doughP bakedP fn y1
     let y3 = mergeLeftPref [(toJSON y2), y1]
     putIOwords ["checkDocRep", "y3", showT y3]
     return (DocRep y3 p1)
@@ -86,8 +86,8 @@ instance FromJSON IndexEntry
 
 
 
-data DocYaml = DocYaml {dyFn :: FilePath
-                        , dyLink :: FilePath
+data DocYaml = DocYaml {dyFn :: FilePath  -- the original dough fn 
+                        , dyLink :: FilePath -- the relative filename
                         , dyLang :: DocLanguage
                         -- the fields of miniblog
                         , dyTitle :: Text
@@ -166,11 +166,12 @@ parseJSONyaml (Object o) = -- withObject "person" $ \o ->
     dyFileEntries  <- o .:? "fileEntries" .!= []
     return DocYaml { .. }
 
-checkDocRep1 :: Path Abs Dir -> Path Abs File -> Value -> ErrIO DocYaml
+checkDocRep1 :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> Value -> ErrIO DocYaml
 -- check the DocRep 
 -- first for completeness of metadata in yaml 
 -- fails if required labels are not present
-checkDocRep1 bakedP fn y1 = do
+-- sets filename 
+checkDocRep1 doughP bakedP fn y1 = do
     putIOwords ["checkDocRep1 start"]
     let resdy = parseEither parseJSONyaml y1 
             :: Either String DocYaml
@@ -184,10 +185,15 @@ checkDocRep1 bakedP fn y1 = do
                 ]
         Right resdy1 -> do
             -- heute <- getCurrentTimeUTC 
+            let nakFn = getNakedFileName fn
             let resdy2 = resdy1 
                     { dyFn = toFilePath fn
+                      , dyLink = toFilePath $ makeRelativeP doughP fn 
                      , dyStyle =  addBakedRoot bakedP ( dyStyle resdy1) 
-                     , dyBibliography = addBakedRoot bakedP (dyBibliography resdy1) }
+                     , dyBibliography = addBakedRoot bakedP 
+                                          (dyBibliography resdy1)
+                    , dyIndexPage = if nakFn == "index" then True else dyIndexPage resdy1 
+                    }
             when False $ putIOwords ["checkDocRep1 1 resdy2", showT resdy2]
             -- dy <- case resdy of 
             --         Error msg -> error msg 
