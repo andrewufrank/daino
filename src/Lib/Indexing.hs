@@ -86,13 +86,13 @@ getFile2index :: Path Abs File -> ErrIO (Maybe IndexEntry)
 -- collect data for indexentry (but not recursively, only this file)
 -- the directories are represented by their index files 
 -- produce separately to preserve the two groups 
-getFile2index fn = do 
-        (DocRep y1 _) <- read8 fn docRepFileType 
+getFile2index fnin = do 
+        (DocRep y1 _) <- read8 fnin docRepFileType 
         ix1 :: IndexEntry <- fromJSONerrio y1 
         return . Just $ ix1 
     `catchError`  (\e  -> do
             putIOwords ["getFile2index error caught\n", "fn:"
-                , showT fn, "\n", showT e ] -- " showT msg])
+                , showT fnin, "\n", showT e ] -- " showT msg])
             return Nothing
             )
 -- -- | produces the index as text 

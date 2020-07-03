@@ -350,17 +350,17 @@ addBakedRoot bakedP (Just fp) = Just. s2t . toFilePath $ addFileName bakedP . t2
 --   $ (stripPrefix dough2 mdfn :: Maybe (Path Rel File))
 --   -- the references must be absolute (relative to the root, which is doug/)
 
--- data PublicationState = PSpublish | PSdraft | PSold | PSzero
---                   deriving (Generic,  Show, Read, Ord, Eq)
--- -- ^ is this file ready to publish
+data PublicationState = PSpublish | PSdraft | PSold | PSzero
+                  deriving (Generic,  Show, Read, Ord, Eq)
+-- ^ is this file ready to publish
 
--- instance Zeros PublicationState where
---   zero = PSzero
--- instance NiceStrings PublicationState where
---   shownice = drop' 2 . showT
+instance Zeros PublicationState where
+  zero = PSzero
+instance NiceStrings PublicationState where
+  shownice = drop' 2 . showT
 
--- instance ToJSON PublicationState
--- instance FromJSON PublicationState
+instance ToJSON PublicationState
+instance FromJSON PublicationState
 
 -- data SortArgs = SAtitle | SAdate | SAreverseDate | SAzero 
 --       deriving (Generic,  Show, Read, Ord, Eq)

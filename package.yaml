@@ -69,7 +69,8 @@ library:
         Lib.CheckInput
         Lib.Pandoc
         Lib.Indexing
-        # Lib.IndexMake
+        Lib.IndexMake
+        Lib.Templating
   other-modules:  
         Lib.Watch
  

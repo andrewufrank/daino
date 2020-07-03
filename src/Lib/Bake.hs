@@ -57,7 +57,7 @@ import           Uniform.Pandoc
 --                                                 , HTMLout(..)
 --                                                 )
 
--- import           Lib.Templating                 ( putValinMaster )
+import           Lib.Templating                 ( putValinMaster )
 import           Uniform.ProcessPDF
     -- (writePDF2text, extPDF, pdfFileType, texFileType,  extTex, Latex(..),tex2latex)
 -- import           Uniform.Pandoc                 ( Pandoc
@@ -69,6 +69,7 @@ import           Lib.Foundation                 ( SiteLayout(..)
                                                 , templatesDir
                                                 )
 import           Lib.Indexing
+import Lib.IndexMake 
 import qualified Path.IO                       as Path
                                                 ( getTempDir )
 
@@ -81,7 +82,7 @@ type BakeOp
     -> ErrIO ()
 
 bakeOneFile2docrep      --    MD -> DOCREP
-    :: Path Abs Dir -> Path Abs Dir -- ^ the doughP and the bakedP 
+    -- :: Path Abs Dir -> Path Abs Dir -- ^ the doughP and the bakedP 
     -> Bool
     -> PubFlags
     -> Path Abs File  -- ^ md file 
@@ -92,7 +93,7 @@ bakeOneFile2docrep      --    MD -> DOCREP
 -- produce the docval (from which html texsnip are derived)
 -- todo include the index 
 
-bakeOneFile2docrep doughP bakedP debug flags  inputFn layout resfn2 = do
+bakeOneFile2docrep debug flags  inputFn layout resfn2 = do
     putIOwords
         [ "\n-----------------"
         , "bakeOneFile2docrep 1 fn"
@@ -104,7 +105,9 @@ bakeOneFile2docrep doughP bakedP debug flags  inputFn layout resfn2 = do
         ]
 
     md1 <- read8 inputFn markdownFileType
-
+    let bakedP = bakedDir layout 
+    let doughP = doughDir layout 
+    
     -- readMarkdown2docrep :: MarkdownText -> ErrIO DocRep
 -- | read a md file into a DocRep
 -- all values from meta are moved to yam (meta is zero to avoid problems)
@@ -132,9 +135,9 @@ bakeOneFile2docrep doughP bakedP debug flags  inputFn layout resfn2 = do
         ]
     return () -- (needs1) --"ok bakeOneFile2docrep"
 
--- bakeOneFile2panrep :: BakeOp   --  DOCREP -> PANREP
+bakeOneFile2panrep :: BakeOp   --  DOCREP -> PANREP
 -- TODO 
-bakeOneFile2panrep bakedP debug flags inputFn layout resfn2 = do
+bakeOneFile2panrep debug flags inputFn layout resfn2 = do
     putIOwords
         [ "\n-----------------"
         , "bakeOneFile2panrep 1 fn"
@@ -144,6 +147,7 @@ bakeOneFile2panrep bakedP debug flags inputFn layout resfn2 = do
         , "\n resfn2"
         , showT resfn2
         ]
+    let bakedP = bakedDir layout 
 
     dr1 <- read8 inputFn docRepFileType
 
@@ -175,6 +179,7 @@ bakeOneFile2html debug flags inputFn layout resfn2 = do
         , "\n resfn2"
         , showT resfn2
         ]
+    let templateP = templatesDir layout
 
     dr1 <- read8 inputFn panrepFileType
         -- docRep2html:: DocRep -> ErrIO HTMLout
@@ -182,11 +187,12 @@ bakeOneFile2html debug flags inputFn layout resfn2 = do
         -- needs teh processing of the references with citeproc
 
         -- do index 
-    -- dr4 <- addIndex2yam debug dr1  -- move to 
+    dr4 <-  convertIndexEntries dr1  -- move to 
 
-    h1  <- panrep2html dr1
+    -- h1  <- panrep2html dr4
 
-    write8 resfn2 htmloutFileType h1   -- content is html style
+    p :: HTMLout <- putValinMaster False dr4 ( templateP)
+    write8 resfn2 htmloutFileType p   -- content is html style
 
     when debug $ putIOwords
         ["\n-----------------", "bakeOneFile2html done fn", showT resfn2]

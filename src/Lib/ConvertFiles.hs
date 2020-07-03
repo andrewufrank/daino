@@ -68,9 +68,9 @@ convDocrep2panrep :: ConvertOp
 convDocrep2panrep debug doughP bakedP flags layout out = do
     convA2B debug doughP bakedP flags layout out extDocRep (bakeOneFile2panrep bakedP)
 
-convPanrep2html :: ConvertOp
+-- convPanrep2html :: ConvertOp
 convPanrep2html debug doughP bakedP flags layout out =
-    convA2B debug doughP bakedP flags layout out extPanrep bakeOneFile2html
+    convA2B debug doughP bakedP flags layout out extPanrep (bakeOneFile2html)
 
 convPanrep2texsnip :: ConvertOp
 convPanrep2texsnip debug doughP bakedP flags layout out =

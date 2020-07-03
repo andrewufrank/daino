@@ -16,62 +16,117 @@ module Lib.IndexMake (module Lib.IndexMake) where
 -- import           GHC.Exts (sortWith)
 import           Uniform.Json
 import Uniform.Filenames
--- import           Lib.CheckInput (MetaRec(..))
+import Uniform.Pandoc (Panrep(..))
+import           Lib.CheckInput --  (MetaRec(..))
 
--- -- | convert the metarecs and put some divider between
--- -- TODO  - avoid dividers if list empty
--- convert2index :: (MetaRec, [MetaRec], [MetaRec])
---                         -> MenuEntry
--- convert2index  (this, content, subix) = MenuEntry {menu2 = 
---     [a]   
---     ++ (if null c then zero else 
---           [zero{title2= "--- subdir ---"}] ++ c)
---     ++ (if null b then zero else 
---             [zero{title2= "--- content ---"}] ++ b) 
---     }
+convertIndexEntries :: Panrep -> ErrIO Panrep 
+-- ^ take the index entries and convert their 
+-- form and push them back into the json 
+convertIndexEntries (Panrep y p) = do 
+    yentry:: IndexEntry <- fromJSONerrio y 
+    putIOwords ["convertIndexEntries", "start yentry", showT yentry]
+    let dirs = dirEntries yentry 
+    let fils = fileEntries yentry 
 
---     where 
---         a = getOneIndexEntryPure this
---         b = map getOneIndexEntryPure content 
---         c = map getOneIndexEntryPure subix 
+    -- dirs <- fromJustNote "convertIndexEntries werdsdx" $ getAtKey y "DirEntries" 
+    -- files <- fromJustNote "convertIndexEntries 34634" $ getAtKey y "FileEntries"   
+    -- meta :: IndexEntry  <- fromJSONerrio y 
+    
+    -- metadirs <- mapM fromJSONerrio dirs 
+    -- metafiles <- mapM fromJSONerrio files 
+    
+    let menu1 = convert2index (yentry, dirs, fils )
+    putIOwords ["convertIndexEntries", "menu2", showT menu1]
+    -- let y2 = putAtKey2 "menu" menu1 y
+    let y2 = mergeLeftPref [toJSON menu1, y]
+    return $ Panrep y2 p 
 
 
 
--- getOneIndexEntryPure :: MetaRec  -> IndexEntry
--- -- | the pure code to compute an IndexEntry
--- -- Text should be "/Blog/postTufteStyled.html"
--- getOneIndexEntryPure metaRec  = IndexEntry
---   { text2 = s2t . takeBaseName' . fn $ metaRec 
---   , link2 = s2t $ setExtension "html". removeExtension . relURL $ metaRec 
---   , abstract2 = abstract metaRec
---   , title2 = if isZero (title metaRec :: Text ) 
---         then  s2t . takeBaseName' . fn $ metaRec  
---         else title metaRec
---   , author2 =  author metaRec
---   , date2 =   showT $ date metaRec
---   , publish2 = shownice $ publicationState metaRec
---   , isIndex = indexPage metaRec
---   }
+
+
+
+-- | convert the metarecs and put some divider between
+-- TODO  - avoid dividers if list empty
+convert2index :: (IndexEntry, [IndexEntry], [IndexEntry])
+                        -> MenuEntry
+convert2index  (this, content, subix) = MenuEntry {menu2 = 
+    [a]   
+    ++ (if null c then zero else 
+          [zero{title2= "--- subdir ---"}] ++ c)
+    ++ (if null b then zero else 
+            [zero{title2= "--- content ---"}] ++ b) 
+    }
+
+    where 
+        a = getOneIndexEntryPure this
+        b = map getOneIndexEntryPure content 
+        c = map getOneIndexEntryPure subix 
+
+data Index4html =   
+  Index4html
+    { -- fn :: Path Abs File   -- ^ naked filename -- not shown
+      text2 :: Text -- the filename - not shown? ? 
+    , link2 :: Text -- ^ the url relative to dough dir
+    , title2 :: Text -- ^ the title as shown
+    , abstract2 :: Text
+    , author2 :: Text
+    , date2 :: Text -- UTCTime -- read the time early one to find errors
+    , publish2 :: Text
+    , indexPage2 :: Bool -- mark for index entries 
+    }
+  deriving (Generic, Eq, Ord, Show, Read)
+
+instance Zeros Index4html where
+  zero = Index4html   zero zero zero zero zero zero zero  False 
+
+instance FromJSON Index4html where
+    -- parseJSON = genericParseJSON h4Options
+instance ToJSON Index4html where
+    -- toJSON = genericToJSON h4Options
+h4Options =
+    defaultOptions 
+        {fieldLabelModifier =   drop 2 }
+
+getOneIndexEntryPure :: IndexEntry  -> Index4html
+-- | the pure code to compute an IndexEntry
+-- Text should be "/Blog/postTufteStyled.html"
+getOneIndexEntryPure metaRec  = Index4html
+  { text2 = s2t . takeBaseName' . toFilePath .  fn $ metaRec 
+  , link2 = s2t $ setExtension "html". removeExtension 
+                . link $ metaRec 
+  , abstract2 = abstract metaRec
+  , title2 = if isZero (title metaRec :: Text ) 
+        then  s2t  . takeBaseName' . toFilePath . fn $ metaRec  
+        else title metaRec
+  , author2 =  author metaRec
+  , date2 =   showT $ date metaRec
+  , publish2 = shownice $ publish metaRec
+  , indexPage2 = indexPage metaRec
+  }
 
 --       ------  S U P P O R T 
      
--- newtype MenuEntry = MenuEntry { menu2 :: [IndexEntry] }
---   deriving (Generic, Eq, Ord, Show)
+newtype MenuEntry = MenuEntry { menu2 :: [Index4html] }
+-- menu2 is referenced in the template
+  deriving (Generic, Eq, Ord, Show)
 
 -- instance NiceStrings MenuEntry where 
 --     shownice = showNice
 
--- instance Zeros MenuEntry where
---   zero = MenuEntry zero
+instance Zeros MenuEntry where
+  zero = MenuEntry zero
 
--- instance FromJSON MenuEntry
+instance FromJSON MenuEntry where
+    -- parseJSON = genericParseJSON h4Options
 
--- instance ToJSON MenuEntry
+instance ToJSON MenuEntry where
+    --  toJSON = genericToJSON h4Options
 
 -- data IndexEntry =
 --   IndexEntry
---     { text2 :: Text  -- ^ naked filename -- not shown
---     , link2 :: Text -- ^ the url relative to dough dir
+--     { text :: Text  -- ^ naked filename -- not shown
+--     , link :: Text -- ^ the url relative to dough dir
 --     , title2 :: Text -- ^ the title as shown
 --     , abstract2 :: Text
 --     , author2 :: Text
@@ -81,8 +136,6 @@ import Uniform.Filenames
 --     }
 --   deriving (Generic, Eq, Ord, Show, Read)
 
--- instance Zeros IndexEntry where
---   zero = IndexEntry zero zero zero zero zero zero zero False
 
 -- --instance FromJSON IndexEntry
 -- instance ToJSON IndexEntry

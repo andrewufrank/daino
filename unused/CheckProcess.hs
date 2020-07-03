@@ -72,7 +72,7 @@ report_metaRec :: SiteLayout -> Path Abs File -> ErrIO String
 report_metaRec layout f = do 
     (_, metaRec, report1) <- getTripleDoc layout f
     let report2 = if isNothing report1 then ""  
-                        else concatT ["filex ", s2t $ relURL metaRec
+                        else concatT ["filex ", s2t $ link metaRec
                                     , fromJustNote "report metarec xxweer" report1]
         -- report3 = unlines' .filter (/= "\n") . lines' $ report2
     return . t2s  $ report2

@@ -1,9 +1,9 @@
 
------------------------------------------------------------------------------
+------------------------------------------------------------------------
 --
 -- Module      :   a test for HTF framework
 -- insert {-@ HTF_TESTS @-} for each import
------------------------------------------------------------------------------
+------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
@@ -12,13 +12,14 @@
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
+{-# LANGUAGE PackageImports     #-}
 {-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans #-}
 
 module Lib.Foundation_test  -- (openMain, htf_thisModuelsTests)
      where
 
 
-import           Test.Framework
+import     "HTF"      Test.Framework
 import Uniform.Test.TestHarness
 
 import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)

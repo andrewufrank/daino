@@ -37,32 +37,32 @@ import Lib.CheckInput
 import Lib.Foundation ( SiteLayout (..), layoutDefaults)
 
 
-test_allLabels = do 
-    res <- runErr $ do 
-            let fn1 = (makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep")
-            dr1 <- read8  fn1 docRepFileType
-            putIOwords ["test_allLabels", showT . yam $ dr1]
-            let bakedP = bakedDir layoutDefaults
-            dr2 <- checkDocRep1 doughP bakedP fn1 (yam dr1) 
-            putIOwords ["\t result yam", showT  dr2]
-            return dr2 
-    assertEqual (Right exp1)  res 
+-- test_allLabels = do 
+--     res <- runErr $ do 
+--             let fn1 = (makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep")
+--             dr1 <- read8  fn1 docRepFileType
+--             putIOwords ["test_allLabels", showT . yam $ dr1]
+--             let bakedP = bakedDir layoutDefaults
+--             dr2 <- checkDocRep1 doughP bakedP fn1 (yam dr1) 
+--             putIOwords ["\t result yam", showT  dr2]
+--             return dr2 
+--     assertEqual (Right exp1)  res 
 
 
 exp1 :: DocYaml 
 exp1 = zero 
 -- exp1 = DocYaml {dyFn = "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep", dyLink = "", dyLang = DLenglish, dyTitle = "Mein erster Blog", dyAbstract = "Ein Blog ohne Sinn auf Deutsch", dyAuthor = "", dyDate = Just "2020-06-18", dyKeywords = "Blog", dyBibliography = Nothing, dyStyle = Nothing, dyPublish = Nothing, dyIsIndexPage = False, dyDirEntries = [], dyFileEntries = []}
    
-test_resultLabels = do 
-    res <- runErr $ do 
-            let fn1 = (makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep")
-            dr1 <- read8  fn1 docRepFileType
-            putIOwords ["test_allLabels", showT . yam $ dr1]
-            let bakedP = bakedDir layoutDefaults
-            dr2 <- checkDocRep bakedP fn1 dr1 
-            putIOwords ["\t result dr2", showT  dr2]
-            return dr2 
-    assertEqual (Right exp2)  res 
+-- test_resultLabels = do 
+--     res <- runErr $ do 
+--             let fn1 = (makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep")
+--             dr1 <- read8  fn1 docRepFileType
+--             putIOwords ["test_allLabels", showT . yam $ dr1]
+--             let bakedP = bakedDir layoutDefaults
+--             dr2 <- checkDocRep bakedP fn1 dr1 
+--             putIOwords ["\t result dr2", showT  dr2]
+--             return dr2 
+--     assertEqual (Right exp2)  res 
 
 exp2 :: DocRep 
 exp2 = zero
