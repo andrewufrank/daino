@@ -147,11 +147,13 @@ bakeOneFile2panrep debug flags inputFn layout resfn2 = do
 
     dr1 <- read8 inputFn docRepFileType
 
-    p1 <- docRep2panrep dr1     -- adds refs!   
-        -- do index 
-    p2 <- addIndex2yam debug p1  
+    p1 <- docRep2panrep dr1     
+    -- adds refs but not yet used in tex2pdf!  
 
-    -- let p2=p1
+        
+    p2 <- addIndex2yam debug p1  
+    -- but needs processing to use (indexMake)
+
 
     write8 resfn2 panrepFileType p2  -- content is html style
 
