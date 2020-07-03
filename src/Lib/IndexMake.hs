@@ -60,7 +60,7 @@ convert2index  (this, content, subix) = MenuEntry {menu2 =
 
     where 
         a = getOneIndexEntryPure this
-        b = map getOneIndexEntryPure content 
+        b = map getOneIndexEntryPure content  -- braucht wohl filter
         c = map getOneIndexEntryPure subix 
 
 data Index4html =   
@@ -84,9 +84,9 @@ instance FromJSON Index4html where
     -- parseJSON = genericParseJSON h4Options
 instance ToJSON Index4html where
     -- toJSON = genericToJSON h4Options
-h4Options =
-    defaultOptions 
-        {fieldLabelModifier =   drop 2 }
+-- h4Options =
+--     defaultOptions 
+--         {fieldLabelModifier =   drop 2 }
 
 getOneIndexEntryPure :: IndexEntry  -> Index4html
 -- | the pure code to compute an IndexEntry
