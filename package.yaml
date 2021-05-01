@@ -1,12 +1,13 @@
 name: ssg
-version: 0.0.4.1
-synopsis: A modern format for Haskell packages
+version: 0.0.4.2
+synopsis: a static site generator using shake and pandoc
 description: a static site generator
     version 0.0.2.0  used for myhomepage  - fixes
     0.0.2.1 add check for all pages, study content pdf, tex
     0.0.3.0 copy all structure (exclude with DNB)
     0.0.3.1 change to 15.13 (pandoc not resolvable)
     0.0.4   start with hpack, lts-16.0 (8.8.)
+    0.0.4.2 recovering from 2000
 category: Development
 
 license-file: LICENSE
@@ -42,10 +43,11 @@ dependencies:  # are global
     - containers
     - aeson
     - data-default
-    -  uniform-fileio  
+    - uniform-fileio  
     - uniform-error  
     - uniform-time 
     - uniform-json 
+    # not in uniformBase:
     - uniform-pandoc  
     - uniform-convenience 
     - uniform-watch 

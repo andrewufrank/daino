@@ -1,15 +1,15 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.33.0.
+-- This file has been generated from package.yaml by hpack version 0.34.2.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: ebf1994e9336543cf34f3191c16b576e9c9bdfa855a3ebd92f765aa80380f505
+-- hash: 34369fb425cae274d7d6a048512f2625a8b8dacc0c7df503442b839b00156011
 
 name:           ssg
-version:        0.0.4.1
-synopsis:       A modern format for Haskell packages
-description:    a static site generator version 0.0.2.0  used for myhomepage  - fixes 0.0.2.1 add check for all pages, study content pdf, tex 0.0.3.0 copy all structure (exclude with DNB) 0.0.3.1 change to 15.13 (pandoc not resolvable) 0.0.4   start with hpack, lts-16.0 (8.8.)
+version:        0.0.4.2
+synopsis:       a static site generator using shake and pandoc
+description:    a static site generator version 0.0.2.0  used for myhomepage  - fixes 0.0.2.1 add check for all pages, study content pdf, tex 0.0.3.0 copy all structure (exclude with DNB) 0.0.3.1 change to 15.13 (pandoc not resolvable) 0.0.4   start with hpack, lts-16.0 (8.8.) 0.0.4.2 recovering from 2000
 category:       Development
 homepage:       https://github.com/frank/ssg#readme
 bug-reports:    https://github.com/frank/ssg/issues

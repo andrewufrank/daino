@@ -1,0 +1,22 @@
+ 
+packages: 
+    ./ssg.cabal
+--    ../uniformBase/uniformSources/*/*.cabal
+    ../uniformBase/uniformSources/uniform-algebras/*.cabal
+    ../uniformBase/uniformSources/uniform-error/*.cabal
+    ../uniformBase/uniformSources/uniform-fileio/*.cabal
+    ../uniformBase/uniformSources/uniform-json/*.cabal
+    ../uniformBase/uniformSources/uniform-strings/*.cabal
+    ../uniformBase/uniformSources/uniform-time/*.cabal
+    ../uniformBase/uniformBase.cabal
+
+    ../uniformWorking/uniformSources/uniform-webserver/*.cabal
+    ../uniformWorking/uniformSources/uniform-watch/*.cabal
+    ../uniformWorking/uniformSources/uniform-shake/*.cabal
+    ../uniformWorking/uniformSources/uniform-pandoc/*.cabal
+    ../uniformWorking/uniformSources/uniform-convenience/*.cabal
+
+
+-- Disregard all upper bounds when dependency solving
+-- allow-newer: all 
+-- fails because  zlib <4.16
