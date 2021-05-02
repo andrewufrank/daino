@@ -9,8 +9,8 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE TypeFamilies          #-}
-{-# LANGUAGE TypeSynonymInstances  #-}
-{-# LANGUAGE OverloadedStrings     #-}
+-- {-# LANGUAGE TypeSynonymInstances  #-}
+-- {-# LANGUAGE OverloadedStrings     #-}
 {-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-unused-imports#-}
 
 module Lib.CmdLineArgs_test  -- (openMain, htf_thisModuelsTests)
@@ -20,11 +20,11 @@ module Lib.CmdLineArgs_test  -- (openMain, htf_thisModuelsTests)
 import           Test.Framework
 import Uniform.Test.TestHarness
 
-import Lib.Foundation (progName, SiteLayout (..))
+import Lib.Foundation
+    ( progName, SiteLayout(..), templatesDirName )
 import Lib.Bake
 -- import Lib.FileMgt
 import Lib.Foundation_test (testLayout)
-import Lib.Foundation (templatesDirName)
 import Uniform.Json (AtKey(..), Value(..))
 import Uniform.Pandoc -- (DocValue(..), unDocValue, docValueFileType)
 --import Lib.Templating (Gtemplate(..), gtmplFileType, Dtemplate(..))
@@ -59,3 +59,10 @@ import Uniform.Pandoc -- (DocValue(..), unDocValue, docValueFileType)
 --test_pandoc_11_B_E, test_pandoc_12_B_E :: IO ()
 --test_pandoc_11_B_E = test1FileIO progName   "resultB1" "resultBE1"  markdownToHTML4xdebug
 --test_pandoc_12_B_E = test1FileIO progName   "resultB2" "resultBE2" markdownToHTML4xdebug
+
+
+htf_Lib_CmdLineArgs_test_thisModulesTests :: TestSuite
+htf_Lib_CmdLineArgs_test_thisModulesTests = makeTestSuite "Lib.CmdLineArgs_test" [
+
+  ]
+

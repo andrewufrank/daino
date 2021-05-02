@@ -16,20 +16,39 @@
 
 module Lib.Templating  -- (openMain, htf_thisModuelsTests)
                       where
-
-import           Lib.Foundation                 ( masterTemplateFileName )
--- import           Lib.Indexing                   ( getAtKey )
 import UniformBase
--- import           Uniform.Filenames
--- import Uniform.DocValue (dtmplFileType,  DocValue(..))
+    ( Path,
+      Abs,
+      Text,
+      Dir,
+      ErrIO,
+      showT,
+      makeRelFile,
+      when,
+      t2s,
+      putIOwords,
+      Filenames3((</>)),
+      AtKey(getAtKey) )
 import Uniform.HTMLout (HTMLout(..)
-            -- applyTemplate3
                                                 )
-import           Uniform.Pandoc  
--- import Uniform.HTMLout                
--- import           Uniform.TypedFile
+import Uniform.Pandoc
+    ( Path,
+      Abs,
+      Text,
+      Dir,
+      ErrIO,
+      showT,
+      makeRelFile,
+      when,
+      t2s,
+      putIOwords,
+      Filenames3((</>)),
+      AtKey(getAtKey),
+      Panrep(Panrep),
+      HTMLout,
+      applyTemplate3 )
 import Uniform.Pandoc (Panrep(..))
-import Lib.Foundation
+import Lib.Foundation ( masterTemplateFileName )
 
 
 putValinMaster :: Bool -> Panrep -> Path Abs Dir -> ErrIO HTMLout

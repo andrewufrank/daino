@@ -45,8 +45,8 @@ import Uniform.Pointless (snd3)
 
 doughP = doughDir testLayout
 
-markdownToPandoX ::  TripleDoc -> ErrIO ( Pandoc)
-markdownToPandoX td = markdownToPandocBiblio True allFlags doughP   td -- (makeAbsFile s)
+markdownToPandoX ::  TripleDoc -> ErrIO Pandoc
+markdownToPandoX = markdownToPandocBiblio True allFlags doughP -- (makeAbsFile s)
 
 test_pandoc_11_A_D :: IO ()
 test_pandoc_11_A_D = test1FileIO progName   "TripleDoc1" "resultAD1" markdownToPandoX
@@ -110,9 +110,9 @@ metaRecIndex1 = MetaRec
   , relURL = "/Blog/index.md"
   , title = "primary index for Blog"
   , abstract = "The directory for experiments.", author = "AUF",
-   date = "2019-01-04 00:00:00 UTC", 
+   date = "2019-01-04 00:00:00 UTC",
    publicationState = PSpublish,
-   bibliography = Nothing, 
+   bibliography = Nothing,
    bibliographyGroup = Nothing,
     keywords = Just "test",
     pageTemplate = -- Nothing,
@@ -122,8 +122,15 @@ metaRecIndex1 = MetaRec
 -- instance  ShowTestHarness MarkdownText where
 
 -- instance  ShowTestHarness DocValue where
-instance  ShowTestHarness ( Pandoc) where
+instance  ShowTestHarness Pandoc where
 instance  ShowTestHarness TripleDoc where
 instance  ShowTestHarness HTMLout where
 instance  ShowTestHarness (Path Abs File) where
+
+
+
+htf_Lib_Pandoc_test_thisModulesTests :: TestSuite
+htf_Lib_Pandoc_test_thisModulesTests = makeTestSuite "Lib.Pandoc_test" [ "pandoc_11_A_D" (makeLoc "/home/frank/Workspace11/ssg/tests/Lib/Pandoc_test.hs" 52) test_pandoc_11_A_D,
+    makeUnitTest "pandoc_12_A_D" (makeLoc "/home/frank/Workspace11/ssg/tests/Lib/Pandoc_test.hs" 53) test_pandoc_12_A_D
+  ]
 

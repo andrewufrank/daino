@@ -3,46 +3,38 @@
 -- Module      :   ssgCheck
 -- the main for checking the input files
 -- for the pages
--- separated to figure it out
------------------------------------------------------------------------------
+-- separated to identify problems of each page individually
+{- simple approach
+    1. to get all the md files
+    2. check each and produce error message
+-}
+---------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeFamilies #-}
--- {-# LANGUAGE TypeSynonymInstances  #-}
-{-# LANGUAGE OverloadedStrings #-}
 
-module Main where      -- must have Main (main) or Main where
+module Main where
 
-import UniformBase hiding (startProg)
-import           Uniform.Convenience.StartApp (startProg)
--- import           Uniform.Error  
-import           Lib.Foundation (SiteLayout(..))
-import Lib.CheckProcess
+import Lib.CheckProcess (checkProcess)
+import Lib.Foundation (SiteLayout (..))
+import Uniform.Convenience.StartApp (startProg)
+import UniformBase (Text)
 
 programName, progTitle :: Text
 programName = "ssgCheck" :: Text
-
-progTitle = "checking the input files for a static site generator x6 0.0.2.1" :: Text
-
-{- simple approach 
-    1. to get all the md files 
-    2. check each and produce error message
--}
-
+progTitle = "checking the input files for a static site generator x6 0.0.4.2" :: Text
 
 main :: IO ()
-main = startProg
-  programName
-  progTitle
-  (do 
-      let 
-        flags = True -- the debug flag
-        sitefn :: FilePath 
-        sitefn = "/home/frank/Workspace11/ssg/docs/site/dough/settings2" 
-      checkProcess flags sitefn  
+main =
+  startProg
+    programName
+    progTitle
+    ( do
+        let flags = True -- the debug flag
+            sitefn :: FilePath
+            sitefn = "/home/frank/Workspace11/ssg/docs/site/dough/settings2"
+        checkProcess flags sitefn
     )
-
-
-

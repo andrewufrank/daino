@@ -11,7 +11,6 @@
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
@@ -62,7 +61,7 @@ checkDocRep :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> DocRep -> ErrIO 
 -- fails if required labels are not present
 checkDocRep doughP bakedP fn (DocRep y1 p1) = do
     y2 <- checkDocRep1 doughP bakedP fn y1
-    let y3 = mergeLeftPref [(toJSON y2), y1]
+    let y3 = mergeLeftPref [toJSON y2, y1]
     putIOwords ["checkDocRep", "y3", showT y3]
     return (DocRep y3 p1)
 
@@ -128,7 +127,7 @@ instance Default DocYaml where
     def = zero { dyLang = DLenglish }
 
 docyamlOptions =
-    defaultOptions 
+    defaultOptions
         {fieldLabelModifier = t2s . toLowerStart . s2t . drop 2 }
 instance ToJSON DocYaml where
     toJSON = genericToJSON docyamlOptions
@@ -173,7 +172,7 @@ checkDocRep1 :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> Value -> ErrIO 
 -- sets filename 
 checkDocRep1 doughP bakedP fn y1 = do
     putIOwords ["checkDocRep1 start"]
-    let resdy = parseEither parseJSONyaml y1 
+    let resdy = parseEither parseJSONyaml y1
             :: Either String DocYaml
     case resdy of
         Left msg ->
@@ -186,13 +185,13 @@ checkDocRep1 doughP bakedP fn y1 = do
         Right resdy1 -> do
             -- heute <- getCurrentTimeUTC 
             let nakFn = getNakedFileName fn
-            let resdy2 = resdy1 
+            let resdy2 = resdy1
                     { dyFn = toFilePath fn
-                      , dyLink = toFilePath $ makeRelativeP doughP fn 
-                     , dyStyle =  addBakedRoot bakedP ( dyStyle resdy1) 
-                     , dyBibliography = addBakedRoot bakedP 
+                      , dyLink = toFilePath $ makeRelativeP doughP fn
+                     , dyStyle =  addBakedRoot bakedP ( dyStyle resdy1)
+                     , dyBibliography = addBakedRoot bakedP
                                           (dyBibliography resdy1)
-                    , dyIndexPage = if nakFn == "index" then True else dyIndexPage resdy1 
+                    , dyIndexPage = (nakFn == "index") || dyIndexPage resdy1
                     }
             when False $ putIOwords ["checkDocRep1 1 resdy2", showT resdy2]
             -- dy <- case resdy of 
@@ -202,8 +201,8 @@ checkDocRep1 doughP bakedP fn y1 = do
             putIOwords ["checkDocRep1 dy", showT dy]
             return dy
 
-addBakedRoot :: Path  Abs Dir -> Maybe Text -> Maybe Text 
-addBakedRoot bakedP (Nothing) = Nothing
+addBakedRoot :: Path  Abs Dir -> Maybe Text -> Maybe Text
+addBakedRoot bakedP Nothing = Nothing
 addBakedRoot bakedP (Just fp) = Just. s2t . toFilePath $ addFileName bakedP . t2s $ fp
 -- type TripleDoc = (Pandoc, MetaRec, Maybe Text)
 -- -- ^ the pandoc content, the metarec (from yaml) and the report from conversion)

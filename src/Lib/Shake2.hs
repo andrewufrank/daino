@@ -50,7 +50,7 @@ import UniformBase
 --                                                 , liftIO
 --                                                 )
 import           Uniform.Shake
-import           Development.Shake            
+import           Development.Shake
                     --   ( Rules
                     --                             , (|%>)
                     --                             , priority
@@ -165,8 +165,6 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         needP pdfs
         needP htmls
 
-    return ()
-
     let debug2 = True
 
     (toFilePath bakedP <> "**/*.html") %> \out   -- from Panrep
@@ -209,7 +207,7 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         bibs <- getNeeds debug doughP bakedP "bib" "bib"
         needP bibs
         csls <- getNeeds debug doughP bakedP "csl" "csl"
-        needP csls 
+        needP csls
         putIOwords ["rule **/*.docrep need", showT bibs]
         putIOwords ["rule **/*.docrep need", showT csls]
 
@@ -217,13 +215,13 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
 
     -- rest are copies 
 
-    (toFilePath (bakedP) <> "/*.md")        -- is this required??
+    (toFilePath bakedP <> "/*.md")        -- is this required??
         %> \out  -- insert css -- no subdir
                 -> copyFileToBaked debug2 doughP bakedP out
-    (toFilePath (bakedP) <> "/*.css")
+    (toFilePath bakedP <> "/*.css")
         %> \out  -- insert css -- no subdir
                 -> copyFileToBaked debug2 doughP bakedP out
-    (toFilePath (bakedP) <> "/*.csl")
+    (toFilePath bakedP <> "/*.csl")
         %> \out  -- insert css -- no subdir
                 -> copyFileToBaked debug2 doughP bakedP out
 
@@ -258,7 +256,7 @@ getNeeds debug sourceP targetP extSource extTarget = do
     filesWithSource :: [Path Rel File] <- getDirectoryToBake
         "DNB"
         sourceP
-        [("**/*." <> t2s extSource)]
+        ["**/*." <> t2s extSource]
                 -- subdirs
     let
         filesWithTarget = if sameExt

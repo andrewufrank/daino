@@ -10,9 +10,9 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE TypeFamilies          #-}
-{-# LANGUAGE TypeSynonymInstances  #-}
-{-# LANGUAGE OverloadedStrings     #-}
-{-# LANGUAGE StandaloneDeriving     #-}
+-- {-# LANGUAGE TypeSynonymInstances  #-}
+-- {-# LANGUAGE OverloadedStrings     #-}
+-- {-# LANGUAGE StandaloneDeriving     #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures -fno-warn-orphans #-}
 
 module Lib.CheckInputs_test  -- (openMain, htf_thisModuelsTests)

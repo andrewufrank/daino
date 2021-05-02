@@ -9,7 +9,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE TypeFamilies          #-}
-{-# LANGUAGE TypeSynonymInstances  #-}
+-- {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-unused-imports#-}
 
@@ -20,11 +20,11 @@ module Lib.Bake_test  -- (openMain, htf_thisModuelsTests)
 import           Test.Framework
 import Uniform.Test.TestHarness
 
-import Lib.Foundation (progName, SiteLayout (..))
+import Lib.Foundation
+    ( progName, SiteLayout(..), templatesDirName )
 import Lib.Bake
 -- import Lib.FileMgt
 import Lib.Foundation_test (testLayout)
-import Lib.Foundation (templatesDirName)
 import Lib.CmdLineArgs (allFlags)
 import Uniform.Json (AtKey(..), Value(..))
 import Uniform.Pandoc -- (DocValue(..), unDocValue, docValueFileType)
@@ -56,7 +56,7 @@ indexedRes = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/checks/index"
 
 -- instance ShowTestHarness DocRep 
 bakedP = bakedDir testLayout
-doughP = doughDir testLayout 
+doughP = doughDir testLayout
 
 ---------- md -> docrep 
 op2dr :: (Path Abs File, Path Abs File) -> ErrIO ()
@@ -79,7 +79,7 @@ test_docVal2panrepIx = testVar0FileIO "ssg" (indexedRes,indexedRes) "test_docVal
 
 
 ----- panrep -> html 
-op2html :: (Path Abs File, Path Abs File) -> ErrIO () 
+op2html :: (Path Abs File, Path Abs File) -> ErrIO ()
 op2html (fn,resfn) = bakeOneFile2html True allFlags fn testLayout resfn
 
 
@@ -101,7 +101,7 @@ op2html (fn,resfn) = bakeOneFile2html True allFlags fn testLayout resfn
 -- -- testVar0FileIO progName  a resfile op = do
 
 ------- panrep -> texsnip 
-op2texsnip :: (Path Abs File, Path Abs File) -> ErrIO () 
+op2texsnip :: (Path Abs File, Path Abs File) -> ErrIO ()
 op2texsnip (fn,resfn) = bakeOneFile2texsnip False allFlags fn testLayout resfn
 
 -- test_bake2texsnip = testVar0FileIO "ssg" (blog1res,blog1res) "test_bake2texsnip" op2texsnip
@@ -110,7 +110,7 @@ op2texsnip (fn,resfn) = bakeOneFile2texsnip False allFlags fn testLayout resfn
 
 
 ------ texsnip -> tex 
-op2tex :: (Path Abs File, Path Abs File) -> ErrIO () 
+op2tex :: (Path Abs File, Path Abs File) -> ErrIO ()
 op2tex (fn,resfn) = bakeOneFile2tex False allFlags fn testLayout resfn
 
 -- test_bake2tex = testVar0FileIO "ssg" (blog1res,blog1res) "test_bake2tex" op2tex
@@ -118,7 +118,7 @@ op2tex (fn,resfn) = bakeOneFile2tex False allFlags fn testLayout resfn
 -- test_bake2texIx = testVar0FileIO "ssg" (indexedRes,indexedRes) "bake2tex" op2tex
 
 ------ tex -> pdf 
-op2pdf :: (Path Abs File, Path Abs File) -> ErrIO () 
+op2pdf :: (Path Abs File, Path Abs File) -> ErrIO ()
 op2pdf (fn,resfn) = bakeOneFile2pdf False allFlags fn testLayout resfn
 
 -- test_bake2pdf = testVar0FileIO "ssg" (blog1res,blog1res) "test_bake2pdf" op2pdf
@@ -165,3 +165,20 @@ instance ShowTestHarness () where
 --test_pandoc_11_B_E, test_pandoc_12_B_E :: IO ()
 --test_pandoc_11_B_E = test1FileIO progName   "resultB1" "resultBE1"  markdownToHTML4xdebug
 --test_pandoc_12_B_E = test1FileIO progName   "resultB2" "resultBE2" markdownToHTML4xdebug
+
+
+htf_Lib_Bake_test_thisModulesTests :: TestSuite
+htf_Lib_Bake_test_thisModulesTests = makeTestSuite "Lib.Bake_test" [ "bake2docrepIx" (makeLoc "/home/frank/Workspace11/ssg/tests/Lib/Bake_test.hs" 66) test_bake2docrepIx,
+
+
+
+
+
+
+
+
+
+
+    makeUnitTest "docVal2panrepIx" (makeLoc "/home/frank/Workspace11/ssg/tests/Lib/Bake_test.hs" 77) test_docVal2panrepIx
+  ]
+

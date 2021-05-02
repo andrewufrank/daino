@@ -10,8 +10,8 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE TypeSynonymInstances #-}
+-- {-# LANGUAGE TypeFamilies #-}
+-- {-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 {-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-unused-imports #-}
@@ -19,13 +19,12 @@
 module Lib.Indexing_test where
 
 import           Uniform.Pointless
-import           Lib.Foundation                 ( layoutDefaults
-                                                , doughDir
-                                                )
-import           Lib.Foundation                 ( progName
-                                                , SiteLayout(..)
-                                                , templatesDirName
-                                                )
+import Lib.Foundation
+    ( layoutDefaults,
+      doughDir,
+      progName,
+      SiteLayout(..),
+      templatesDirName )
 import           Lib.Foundation_test            ( testLayout )
 import           Lib.Indexing -- (applyTemplate2, convGmaster)
 -- import           Lib.Templating
@@ -44,15 +43,15 @@ import           Lib.CheckInput
 -- import          Lib.CheckInputs_test -- (metaRecIndex1, metaRecIndexSubSub)
 import           Uniform.DocRep
 import Uniform.Json (shownice)
-import Uniform.Markdown 
+import Uniform.Markdown
 
     -- TEST DIRS 
-test_dough2 = assertEqual dough2path dough2
+test_dough2 = assertEqual_ (makeLoc "/home/frank/Workspace11/ssg/tests/Lib/Indexing_test.hs" 50) dough2path dough2
 dough2 = doughDir testLayout
 dough2path = makeAbsDir "/home/frank/Workspace8/ssg/docs/site/dough/"
 
 -- resmr = "/Blog/postwk.md"
-test_blogDir = assertEqual blogDirPath blogDir
+test_blogDir = assertEqual_ (makeLoc "/home/frank/Workspace11/ssg/tests/Lib/Indexing_test.hs" 55) blogDirPath blogDir
 blogDir = doughDir testLayout </> makeRelDir "Blog"
 blogDirPath = makeAbsDir "/home/frank/Workspace8/ssg/docs/site/dough/Blog"
 
@@ -66,13 +65,13 @@ test_addIndex = do
         -- corrections from readMarkdown activated
         md1 <- read8 mdindexfn markdownFileType
         dr1 <- readMarkdown2docrep md1 -- just reading, no ssg stuff
-        putIOwords ["test_addIndex dr1",  showT $ dr1, "\n"]
+        putIOwords ["test_addIndex dr1",  showT dr1, "\n"]
         dr2 <- checkDocRep mdindexfn dr1 -- the ssg stuff
-        putIOwords ["test_addIndex dr2",  showT $ dr2, "\n"]
+        putIOwords ["test_addIndex dr2",  showT dr2, "\n"]
         dr3 <- addIndex2yam True dr2
         putIOwords ["test_addIndex end dr3", take' 300 . showT $ dr3]
         return dr3
-    assertEqual (Right res2) res
+    assertEqual_ (makeLoc "/home/frank/Workspace11/ssg/tests/Lib/Indexing_test.hs" 75) (Right res2) res
 
 res2 = zero
 -- res2 = DocRep {yam = Object (fromList [("fileEntries",Array []),("style",Null),("indexPage",Bool True),("link",String ""),("bibliography",Null),("lang",String "DLenglish"),("date",String "Jan. 4, 2019"),("indexSort",String "reverseDate"),("isIndexPage",Bool True),("keywords",String "test"),("author",String "AUF"),("dirEntries",Array []),("abstract",String "The directory for experiments."),("title",String "primary index for Blog"),("fn",String "/home/frank/Workspace8/ssg/docs/site/dough/Blog/index.md"),("pageTemplate",String "page3.yaml"),("publish",Null)]), pan = Pandoc (Meta {unMeta = fromList []}) [Para [Str "an",Space,Str "index",Space,Str "page",Space,Str "for",Space,Str "Blog"]]}
@@ -248,3 +247,43 @@ res2 = zero
 --                 author2 = "AUF", date2 = "2022-01-04 00:00:00 UTC",
 --                 publish2 = "publish", isIndex = False}]}
 --         :: MenuEntry
+
+
+htf_Lib_Indexing_test_thisModulesTests :: TestSuite
+htf_Lib_Indexing_test_thisModulesTests = makeTestSuite "Lib.Indexing_test" [ "dough2" (makeLoc "/home/frank/Workspace11/ssg/tests/Lib/Indexing_test.hs" 50) test_dough2,
+
+
+
+
+    makeUnitTest "blogDir" (makeLoc "/home/frank/Workspace11/ssg/tests/Lib/Indexing_test.hs" 55) test_blogDir,
+
+
+
+
+
+
+
+
+    makeUnitTest "addIndex" (makeLoc "/home/frank/Workspace11/ssg/tests/Lib/Indexing_test.hs" 64) test_addIndex
+  ]
+
+
+
+htf_Lib_Indexing_test_thisModulesTests :: TestSuite
+htf_Lib_Indexing_test_thisModulesTests = makeTestSuite "Lib.Indexing_test" [ "dough2" (makeLoc "/home/frank/Workspace11/ssg/tests/Lib/Indexing_test.hs" 49) test_dough2,
+
+
+
+
+    makeUnitTest "blogDir" (makeLoc "/home/frank/Workspace11/ssg/tests/Lib/Indexing_test.hs" 54) test_blogDir,
+
+
+
+
+
+
+
+
+    makeUnitTest "addIndex" (makeLoc "/home/frank/Workspace11/ssg/tests/Lib/Indexing_test.hs" 63) test_addIndex
+  ]
+

@@ -8,7 +8,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE TypeFamilies          #-}
-{-# LANGUAGE TypeSynonymInstances  #-}
+-- {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-unused-imports#-}
 
@@ -20,10 +20,14 @@ import           Test.Framework
 import Uniform.Test.TestHarness
 
 
-import Lib.Foundation (progName, SiteLayout (..), templatesDirName)
+import Lib.Foundation
+    ( progName,
+      SiteLayout(..),
+      templatesDirName,
+      templatesImgDirName,
+      bannerImageFileName )
 import Lib.Shake2
 import Lib.Foundation_test (testLayout)
-import Lib.Foundation (templatesImgDirName, bannerImageFileName)
 import Lib.CmdLineArgs (allFlags)
 
     -- tests a conversion, is always ok
@@ -38,12 +42,12 @@ import Lib.CmdLineArgs (allFlags)
 --                 (templatesImgDirName `addFileName` bannerImageFileName)
 --         assertEqual () res  
 
-test_shakeAll = 
-    do  
+test_shakeAll =
+    do
         res <- runErr $ shakeAll False testLayout allFlags "TEST"
-        let t = case res of 
-                    Left msg -> msg 
-                    Right a -> showT a 
+        let t = case res of
+                    Left msg -> msg
+                    Right a -> showT a
         putIOwords ["\nthe return from test_shakeAll\n",  t]
 
 -- shakeOp :: Text -> ErrIO Text 
@@ -64,3 +68,8 @@ test_shakeAll =
 --     assertEqual [] res  
         --    propably impossible to construct
         -- no undo of action given 
+
+htf_Lib_Shake2_test_thisModulesTests :: TestSuite
+htf_Lib_Shake2_test_thisModulesTests = makeTestSuite "Lib.Shake2_test" [ "shakeAll" (makeLoc "/home/frank/Workspace11/ssg/tests/Lib/Shake2_test.hs" 41) test_shakeAll
+  ]
+

@@ -60,18 +60,18 @@ type ConvertA2BOp
 
 
 convMD2docrep :: ConvertOp
-convMD2docrep debug doughP bakedP flags layout out = do
-    convA2B debug doughP bakedP flags layout out extMD (bakeOneFile2docrep)
+convMD2docrep debug doughP bakedP flags layout out =
+    convA2B debug doughP bakedP flags layout out extMD bakeOneFile2docrep
     -- needs1 <- docRepNeeds2  -- questionable 
     -- need needs1
 
 convDocrep2panrep :: ConvertOp
-convDocrep2panrep debug doughP bakedP flags layout out = do
-    convA2B debug doughP bakedP flags layout out extDocRep (bakeOneFile2panrep )
+convDocrep2panrep debug doughP bakedP flags layout out =
+    convA2B debug doughP bakedP flags layout out extDocRep bakeOneFile2panrep
 
 -- convPanrep2html :: ConvertOp
 convPanrep2html debug doughP bakedP flags layout out =
-    convA2B debug doughP bakedP flags layout out extPanrep (bakeOneFile2html)
+    convA2B debug doughP bakedP flags layout out extPanrep bakeOneFile2html
 
 convPanrep2texsnip :: ConvertOp
 convPanrep2texsnip debug doughP bakedP flags layout out =
@@ -93,7 +93,7 @@ convA2B debug sourceP targetP flags layout out sourceExtA bakeop = do
     let outP = makeAbsFile out :: Path Abs File
 
     let infile1 =
-            replaceExtension' (s2t . unExtension $ sourceExtA) outP :: Path Abs File 
+            replaceExtension' (s2t . unExtension $ sourceExtA) outP :: Path Abs File
     putIOwords ["\n  convA2B   2   ", showT infile1]
     needP [infile1]
 
@@ -110,7 +110,7 @@ convA2B debug sourceP targetP flags layout out sourceExtA bakeop = do
 
 
 io2bool op = do         -- todo move 
-    x <- liftIO $ runErr $ op
+    x <- liftIO $ runErr  op
     let res = case x of
             Left  msg -> errorT [msg]
             Right b   -> b
@@ -130,10 +130,10 @@ convertAny debug sourceP targetP flags layout out anyop = do
     let outP = makeAbsFile out :: Path Abs File
     when debug $   putIOwords ["\nproduceAny", "\n file out", showT out]
 
-    if sourceP == targetP 
+    if sourceP == targetP
         then anyop True sourceP targetP flags layout out
-        else 
-          do  
+        else
+          do
             let fromfile = sourceP </> makeRelativeP targetP outP
             -- needP [fromfile]
             fileExists <- io2bool $ doesFileExist' fromfile

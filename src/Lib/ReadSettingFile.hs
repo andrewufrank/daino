@@ -36,7 +36,7 @@ readSettings settingsfilename = do
     let debug = False
     putIOwords ["readSettings", "file", showT settingsfilename]
     -- wd          <- currentDir
-    settingsTxt <- read8 (settingsfilename) yamlFileType
+    settingsTxt <- read8 settingsfilename yamlFileType
     when debug $ putIOwords ["readSettings text", showT settingsTxt]
       -- TODO where is settings
     layout3 <- readSettings2 debug settingsTxt
@@ -73,7 +73,7 @@ readSettings2 debug (YamlText t) = do
             , testDir = makeAbsDir . t2s $ fromJustNote "testdir xxdwe" testDir2
             , bannerImage = makeRelFile "cropped-DSC05127-1024x330.jpg"
             -- , landingPage = makeRelFile "index.html" 
-            , uploadServer = uploadServerTest                 
+            , uploadServer = uploadServerTest
             }
   --    let layout3 = F.layoutDefaults
     let port2 = fromInteger . fromJustNote "port wrwer" $ port

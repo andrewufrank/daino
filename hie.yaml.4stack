@@ -1,0 +1,10 @@
+cradle:
+  stack:
+    - path: "./src"
+      component: "ssg:lib"
+
+    - path: "./src/ssgBake.hs"
+      component: "ssg:exe:ssgbake"
+
+    - path: "./tests"
+      component: "ssg:test:test"

@@ -10,9 +10,9 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE TypeFamilies          #-}
-{-# LANGUAGE TypeSynonymInstances  #-}
+-- {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
-{-# LANGUAGE StandaloneDeriving     #-}
+-- {-# LANGUAGE StandaloneDeriving     #-}
 {-# OPTIONS -fno-warn-missing-signatures #-}
 module Lib.CheckProcess_test -- (module Lib.CheckProcess_test) -- , openMain, htf_thisModuelsTests)
      where
@@ -62,7 +62,7 @@ allFilenames2 dirname = do
 --     assertEqual (Right "x") res 
 
 test_allFilenames2 :: IO () 
-test_allFilenames2 = testVar0FileIO progName doughdir "allFilenames" (allFilenames2 )
+test_allFilenames2 = testVar0FileIO progName doughdir "allFilenames" allFilenames2 
 
 
 
@@ -76,7 +76,7 @@ test_allMetaRec :: IO ()
 test_allMetaRec = testVar0FileIO progName doughdir 
             "allMetaRec" allMetaRec 
 
-allMetaRec :: Path Abs Dir -> ErrIO (Text) 
+allMetaRec :: Path Abs Dir -> ErrIO Text 
 allMetaRec dirname = allMetaRecReport layoutDefaults dirname
 
     -- do 
