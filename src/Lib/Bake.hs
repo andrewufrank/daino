@@ -31,12 +31,13 @@ module Lib.Bake
     )
 where
 
-import           Uniform.FileStrings            ( ) -- for instances
-import           Uniform.Filenames
-import           Uniform.FileIO                 ( read8
-                                                , write8
-                                                , copyOneFileOver
-                                                )
+import UniformBase
+-- import           Uniform.FileStrings            ( ) -- for instances
+-- import           Uniform.Filenames
+-- import           Uniform.FileIO                 ( read8
+--                                                 , write8
+--                                                 , copyOneFileOver
+--                                                 )
 
 import           Uniform.Shake                --  ( replaceExtension' )
 import           Uniform.DocRep

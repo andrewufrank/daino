@@ -16,9 +16,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Main where      -- must have Main (main) or Main where
-
+import UniformBase hiding (startProg)
 import           Uniform.Convenience.StartApp (startProg)
-import           Uniform.Error  
+-- import           Uniform.Error  
 -- import           Uniform.WebServer (runScotty)
 
 import           Lib.CmdLineArgs (PubFlags(..), parseArgs2input)

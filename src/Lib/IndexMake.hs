@@ -14,8 +14,8 @@
 module Lib.IndexMake (module Lib.IndexMake) where
 
 -- import           GHC.Exts (sortWith)
-import           Uniform.Json
-import Uniform.Filenames
+import           UniformBase
+-- import Uniform.Filenames
 import Uniform.Pandoc (Panrep(..))
 import           Lib.CheckInput --  (MetaRec(..))
 

@@ -24,12 +24,12 @@ module Lib.Indexing
     --         -- , module Lib.IndexMake 
     -- )
     where
-
-import           Uniform.FileIO -- (getDirectoryDirs', getDirContentFiles )
+import UniformBase
+-- import           Uniform.FileIO -- (getDirectoryDirs', getDirContentFiles )
 import           Uniform.Pandoc                --  ( getAtKey )
-import           Uniform.Strings                ( putIOline
-                                                , putIOlineList
-                                                )
+-- import           Uniform.Strings                ( putIOline
+--                                                 , putIOlineList
+--                                                 )
 import           Lib.CmdLineArgs                ( PubFlags(..) )
 import           Lib.CheckInput
         -- (MetaRec(..), getTripleDoc

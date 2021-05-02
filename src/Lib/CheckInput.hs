@@ -25,14 +25,14 @@ module Lib.CheckInput where
 
 import           GHC.Generics
 import           Data.Default
-import           Uniform.Strings      --   hiding ( (</>) )
-import           Uniform.FileIO
-import           Uniform.Time                   ( readDateMaybe
-                                                , year2000
-                                                , UTCTime(..)
-                                                )
+-- import           Uniform.Strings      --   hiding ( (</>) )
+-- import           Uniform.FileIO
+-- import           Uniform.Time                   ( readDateMaybe
+--                                                 , year2000
+--                                                 , UTCTime(..)
+--                                                 )
 import Uniform.Shake (makeRelativeP)
-import           Uniform.Pandoc
+-- import           Uniform.Pandoc
         -- (ToJSON, FromJSON, Pandoc, Value, getAtKey
         -- -- , readMd2meta
         -- )
@@ -40,9 +40,9 @@ import           Uniform.Pandoc
 import           Lib.Foundation
         -- (SiteLayout(..), templatesDir, defaultPageTypeName)
 import           Uniform.DocRep
-import           Uniform.Time
-import Uniform.FileIO 
-
+-- import           Uniform.Time
+-- import Uniform.FileIO 
+import UniformBase
 import           Data.List                      ( (\\) )
 import           Data.Aeson
 import           Data.Aeson.Types

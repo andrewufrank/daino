@@ -14,7 +14,7 @@ packages:
     ../u4blog/uniformSources/uniform-watch/*.cabal
     ../u4blog/uniformSources/uniform-shake/*.cabal
     ../u4blog/uniformSources/uniform-pandoc/*.cabal
---    ../u4blog/uniformSources/uniform-convenience/*.cabal
+    ../u2to/uniformSources/uniform-convenience/*.cabal
 
 
 -- Disregard all upper bounds when dependency solving

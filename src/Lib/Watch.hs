@@ -17,7 +17,8 @@
 module Lib.Watch where
 
 -- import           Uniform.Strings -- hiding ((</>))
-import           Uniform.Filenames
+import UniformBase
+-- import           Uniform.Filenames
 import           Lib.Foundation (SiteLayout(..),landingPageName)
 --                      , templatesDirName
 --                     , )

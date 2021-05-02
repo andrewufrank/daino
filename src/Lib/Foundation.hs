@@ -19,9 +19,9 @@
 
 module Lib.Foundation  -- (openMain, htf_thisModuelsTests)
                       where
-
-import           Uniform.Strings        -- hiding ( (</>) )
-import           Uniform.Filenames
+import UniformBase
+-- import           Uniform.Strings        -- hiding ( (</>) )
+-- import           Uniform.Filenames
 --import Uniform.FileStrings
 
 progName :: Text

@@ -22,7 +22,7 @@
 
 module Lib.StartSSGprocess (ssgProcess) 
                 where
-
+import UniformBase
 import Lib.CmdLineArgs                ( PubFlags(..) )
 
 import Lib.Foundation (SiteLayout(..)
@@ -33,12 +33,12 @@ import Lib.ReadSettingFile (readSettings)
 import Lib.Shake2 (shakeAll) 
 import Lib.Watch (mainWatch) 
 
-import Uniform.Error -- for instances
-import Uniform.FileIO
+-- import Uniform.Error -- for instances
+-- import Uniform.FileIO
 
-import Uniform.FileStrings            ( )
+-- import Uniform.FileStrings            ( )
 -- import Uniform.Ftp
-import Uniform.Time
+-- import Uniform.Time
 import Uniform.WebServer (runScotty)
 
 ssgProcess :: Bool -> PubFlags -> ErrIO ()

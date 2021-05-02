@@ -51,7 +51,7 @@ dependencies:
     # - uniform-json 
     # not in uniformBase:
     - uniform-pandoc  
-    # - uniform-convenience 
+    - uniform-convenience 
     - uniform-watch 
     - uniform-webserver
     # -- - uniform-ftp
@@ -69,7 +69,10 @@ executables:
     main: ssgBake.hs
     source-dirs: app
     dependencies: 
-        ssg
+    - ssg
+    - uniform-webserver
+    - uniform-convenience
+  
   # ssgcheck:
   #   main: ssgCheck.hs
   #   source-dirs: src

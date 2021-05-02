@@ -22,11 +22,12 @@
 
 module Lib.ConvertFiles where
 
-import           Uniform.Error                  ( liftIO )
+import UniformBase
+-- import           Uniform.Error                  ( liftIO )
 import           Uniform.Shake
-import           Uniform.Strings                ( putIOwords
-                                                , showT
-                                                )
+-- import           Uniform.Strings                ( putIOwords
+--                                                 , showT
+--                                                 )
 import           Lib.Foundation                 ( SiteLayout(..)
                 -- , resourcesDirName, staticDirName
                 --                , templatesDir, templatesImgDirName

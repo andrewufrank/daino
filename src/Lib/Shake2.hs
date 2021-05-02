@@ -44,19 +44,21 @@
 
 module Lib.Shake2 where
 
-import           Uniform.Error                  ( ErrIO
-                                                , callIO
-                                                , liftIO
-                                                )
+import UniformBase
+-- import           Uniform.Error                  ( ErrIO
+--                                                 , callIO
+--                                                 , liftIO
+--                                                 )
 import           Uniform.Shake
-import           Development.Shake              ( Rules
-                                                , (|%>)
-                                                , priority
-                                                )
+import           Development.Shake            
+                    --   ( Rules
+                    --                             , (|%>)
+                    --                             , priority
+                    --                             )
 -- import          Development.Shake.FilePath (replaceExtensions)
-import           Uniform.Strings                ( putIOwords
-                                                , showT
-                                                )
+-- import           Uniform.Strings                ( putIOwords
+--                                                 , showT
+--                                                 )
 import           Lib.Foundation                 ( SiteLayout(..)
                                                 , staticDirName
                                                 )

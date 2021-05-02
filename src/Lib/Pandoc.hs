@@ -37,14 +37,15 @@ module Lib.Pandoc
     )
 where
 
+import UniformBase
 import           Lib.Foundation                 ( SiteLayout(..) )
 -- import           Lib.Indexing -- (MarkdownText(..), unMT, HTMLout(..), unHTMLout
 -- import           Paths_SSG (version)
 import           Uniform.Convenience.DataVarious
                                                 ( showVersionT )
-import           Uniform.FileIO          hiding ( Meta
-                                                , at
-                                                )
+-- import           Uniform.FileIO          hiding ( Meta
+--                                                 , at
+--                                                 )
 import           Uniform.HTMLout               
     --  ( HTMLout(..)
     --                                             , writeHtml5String2
@@ -54,7 +55,7 @@ import           Uniform.HTMLout
 import           Uniform.Markdown               ( readMarkdown2 )
 import           Uniform.Pandoc -- hiding (Meta(..))
 import           Uniform.BibTex
-import           Uniform.Time                   ( year2000 )
+-- import           Uniform.Time                   ( year2000 )
 -- import           Lib.CheckInput                 ( MetaRec(..)
 --                                                 , TripleDoc
 --                                                 )
