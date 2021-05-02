@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 5c0e82d59489b656b7b0f28b93758debd4cd0928147e0c10e5183b3bac5c4a6e
+-- hash: 4d6377c508496c1095054332828e27a50ed6c0bfadee16bd87a4babda786ca04
 
 name:           ssg
 version:        0.0.4.2
@@ -66,6 +66,32 @@ library
 
 executable ssgbake
   main-is: ssgBake.hs
+  other-modules:
+      Paths_ssg
+  hs-source-dirs:
+      app
+  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-unused-imports -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-dodgy-imports -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-duplicate-exports -fno-warn-missing-methods
+  build-depends:
+      aeson
+    , base
+    , containers
+    , data-default
+    , optparse-applicative
+    , optparse-generic
+    , path-io
+    , pipes
+    , shake
+    , ssg
+    , uniform-convenience
+    , uniform-pandoc
+    , uniform-shake
+    , uniform-watch
+    , uniform-webserver
+    , uniformBase
+  default-language: Haskell2010
+
+executable ssgcheck
+  main-is: ssgCheck.hs
   other-modules:
       Paths_ssg
   hs-source-dirs:

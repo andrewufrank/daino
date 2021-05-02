@@ -15,10 +15,11 @@
 
 module Main where      -- must have Main (main) or Main where
 
+import UniformBase
 import           Uniform.Convenience.StartApp (startProg)
-import           Uniform.Error  
+-- import           Uniform.Error  
 import           Lib.Foundation (SiteLayout(..))
-import Lib.CheckProcess
+-- import Lib.CheckProcess
 
 programName, progTitle :: Text
 programName = "ssgCheck" :: Text

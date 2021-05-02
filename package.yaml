@@ -73,11 +73,11 @@ executables:
     - uniform-webserver
     - uniform-convenience
   
-  # ssgcheck:
-  #   main: ssgCheck.hs
-  #   source-dirs: src
-  #   dependencies:
-  #       ssg
+  ssgcheck:
+    main: ssgCheck.hs
+    source-dirs: app
+    dependencies:
+        ssg
 tests:
   test:
     main: Testing.hs
