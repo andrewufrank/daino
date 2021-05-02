@@ -17,7 +17,6 @@ github:  frank/ssg
 spec-version: 0.30.0 # the hpack version minimally required 
 extra-source-files:
   - changelog.md
-  - README.md
 
 ghc-options: 
     -Wall
@@ -33,11 +32,10 @@ ghc-options:
     -fno-warn-warnings-deprecations 
     -fno-warn-duplicate-exports
     -fno-warn-missing-methods 
-dependencies: 
-    - base 
-    - uniformBase 
-    # -  uniform-algebras 
-    # -  uniform-strings  
+dependencies:  # are global
+    - base  
+    -  uniform-algebras 
+    -  uniform-strings  
     -  uniform-shake
     - shake
     - path-io
@@ -45,13 +43,13 @@ dependencies:
     - containers
     - aeson
     - data-default
-    # - uniform-fileio  
-    # - uniform-error  
-    # - uniform-time 
-    # - uniform-json 
+    - uniform-fileio  
+    - uniform-error  
+    - uniform-time 
+    - uniform-json 
     # not in uniformBase:
     - uniform-pandoc  
-    # - uniform-convenience 
+    - uniform-convenience 
     - uniform-watch 
     - uniform-webserver
     # -- - uniform-ftp
@@ -62,12 +60,26 @@ dependencies:
 
 library:
   source-dirs: src
-  # other: watch 
+  exposed-modules: 
+        Lib.CmdLineArgs
+        Lib.StartSSGprocess
+        Lib.Shake2
+        Lib.ReadSettingFile
+        Lib.Foundation
+        Lib.ConvertFiles
+        Lib.Bake 
+        Lib.CheckInput
+        Lib.Pandoc
+        Lib.Indexing
+        Lib.IndexMake
+        Lib.Templating
+  other-modules:  
+        Lib.Watch
  
 executables:  
   ssgbake:
     main: ssgBake.hs
-    source-dirs: app
+    source-dirs: src
     dependencies: 
         ssg
   # ssgcheck:

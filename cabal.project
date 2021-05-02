@@ -1,7 +1,7 @@
  
 packages: 
     ./ssg.cabal
---    ../uniformBase/uniformSources/*/*.cabal
+
     ../uniformBase/uniformSources/uniform-algebras/*.cabal
     ../uniformBase/uniformSources/uniform-error/*.cabal
     ../uniformBase/uniformSources/uniform-fileio/*.cabal
@@ -10,11 +10,11 @@ packages:
     ../uniformBase/uniformSources/uniform-time/*.cabal
     ../uniformBase/uniformBase.cabal
 
-    ../uniformWorking/uniformSources/uniform-webserver/*.cabal
-    ../uniformWorking/uniformSources/uniform-watch/*.cabal
-    ../uniformWorking/uniformSources/uniform-shake/*.cabal
-    ../uniformWorking/uniformSources/uniform-pandoc/*.cabal
-    ../uniformWorking/uniformSources/uniform-convenience/*.cabal
+    ../u4blog/uniformSources/uniform-webserver/*.cabal
+    ../u4blog/uniformSources/uniform-watch/*.cabal
+    ../u4blog/uniformSources/uniform-shake/*.cabal
+    ../u4blog/uniformSources/uniform-pandoc/*.cabal
+--    ../u4blog/uniformSources/uniform-convenience/*.cabal
 
 
 -- Disregard all upper bounds when dependency solving

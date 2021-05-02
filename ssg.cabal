@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 34369fb425cae274d7d6a048512f2625a8b8dacc0c7df503442b839b00156011
+-- hash: 13381b7e7a386d3e7e08007d176328d5215887e4cfec93cc7a0ad97c11e288e0
 
 name:           ssg
 version:        0.0.4.2
@@ -20,6 +20,7 @@ license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
     changelog.md
+    README.md
 
 source-repository head
   type: git
@@ -27,38 +28,6 @@ source-repository head
 
 library
   exposed-modules:
-      Lib.CmdLineArgs Lib.StartSSGprocess Lib.Shake2 Lib.ReadSettingFile Lib.Foundation Lib.ConvertFiles Lib.Bake Lib.CheckInput Lib.Pandoc Lib.Indexing Lib.IndexMake Lib.Templating
-  other-modules:
-      Lib.Watch
-  hs-source-dirs:
-      src
-  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-unused-imports -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-dodgy-imports -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-duplicate-exports -fno-warn-missing-methods
-  build-depends:
-      aeson
-    , base
-    , containers
-    , data-default
-    , optparse-applicative
-    , optparse-generic
-    , path-io
-    , pipes
-    , shake
-    , uniform-algebras
-    , uniform-convenience
-    , uniform-error
-    , uniform-fileio
-    , uniform-json
-    , uniform-pandoc
-    , uniform-shake
-    , uniform-strings
-    , uniform-time
-    , uniform-watch
-    , uniform-webserver
-  default-language: Haskell2010
-
-executable ssgbake
-  main-is: ssgBake.hs
-  other-modules:
       Lib.Bake
       Lib.CheckInput
       Lib.CmdLineArgs
@@ -72,6 +41,7 @@ executable ssgbake
       Lib.StartSSGprocess
       Lib.Templating
       Lib.Watch
+  other-modules:
       Paths_ssg
   hs-source-dirs:
       src
@@ -86,18 +56,36 @@ executable ssgbake
     , path-io
     , pipes
     , shake
-    , ssg
-    , uniform-algebras
-    , uniform-convenience
-    , uniform-error
-    , uniform-fileio
-    , uniform-json
     , uniform-pandoc
     , uniform-shake
-    , uniform-strings
-    , uniform-time
     , uniform-watch
     , uniform-webserver
+    , uniformBase
+  default-language: Haskell2010
+
+executable ssgbake
+  main-is: ssgBake.hs
+  other-modules:
+      Paths_ssg
+  hs-source-dirs:
+      app
+  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-unused-imports -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-dodgy-imports -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-duplicate-exports -fno-warn-missing-methods
+  build-depends:
+      aeson
+    , base
+    , containers
+    , data-default
+    , optparse-applicative
+    , optparse-generic
+    , path-io
+    , pipes
+    , shake
+    , ssg
+    , uniform-pandoc
+    , uniform-shake
+    , uniform-watch
+    , uniform-webserver
+    , uniformBase
   default-language: Haskell2010
 
 test-suite test
@@ -122,16 +110,10 @@ test-suite test
     , pipes
     , shake
     , ssg
-    , uniform-algebras
-    , uniform-convenience
-    , uniform-error
-    , uniform-fileio
-    , uniform-json
     , uniform-pandoc
     , uniform-shake
-    , uniform-strings
-    , uniform-time
     , uniform-watch
     , uniform-webserver
+    , uniformBase
     , unordered-containers
   default-language: Haskell2010
