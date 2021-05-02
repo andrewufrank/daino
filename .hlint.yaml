@@ -8,10 +8,10 @@
 
 # Warnings currently triggered by your code
 - ignore: {name: "Redundant return"}
-- ignore: {name: "Redundant bracket"}
-- ignore: {name: "Unused LANGUAGE pragma"}
+#- ignore: {name: "Redundant bracket"}
+#- ignore: {name: "Unused LANGUAGE pragma"}
 - ignore: {name: "Use camelCase"}
-- ignore: {name: "Use fewer imports"}
+#- ignore: {name: "Use fewer imports"}
 - ignore: {name: "Eta reduce"}
 
 

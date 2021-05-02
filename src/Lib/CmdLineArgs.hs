@@ -1,10 +1,10 @@
------------------------------------------------------------------------------
+----------------------------------------------------------------------
 --
 -- Module      :   an example for a command line argument setup
 --                  is a Main and starts with convenience
 -- for information see https://github.com/pcapriotti/optparse-applicative
 -- change the getAttr function to return Text
------------------------------------------------------------------------------
+----------------------------------------------------------------------
   {-# LANGUAGE
   MultiParamTypeClasses
   -- , TypeSynonymInstances
@@ -20,14 +20,36 @@
 
 module Lib.CmdLineArgs where
 import UniformBase
--- import           Uniform.Strings      --   hiding ( (</>) )
--- import           Uniform.FileIO
--- import           Uniform.Error
--- import           Data.Semigroup                 ( (<>) )
-import           Options.Applicative.Builder
-import           Options.Applicative
+    ( Path,
+      Abs,
+      Dir,
+      File,
+      Rel,
+      Text,
+      callIO,
+      currentDir,
+      t2s,
+      putIOwords,
+      showT,
+      Zeros(zero),
+      ErrIO,
+      Filenames3((</>)) )
+import Options.Applicative.Builder
+    ( fullDesc, header, help, info, long, progDesc, short, switch )
+import Options.Applicative
+    ( Parser,
+      fullDesc,
+      header,
+      help,
+      info,
+      long,
+      progDesc,
+      short,
+      switch,
+      execParser,
+      helper )
 
-import           Lib.Foundation
+import Lib.Foundation ( testSettingsFileName )
 
 
 -- | the command line arguments raw

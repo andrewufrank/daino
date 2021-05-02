@@ -1,4 +1,4 @@
------------------------------------------------------------------------------
+----------------------------------------------------------------------
 --
 -- Module      :   a test for HTF framework
 -- insert {-@ HTF_TESTS @-} for each import
@@ -7,11 +7,11 @@
 {-# LANGUAGE PackageImports     #-}
 
 
-module Main where      -- must have Main (main) or Main where
+module Testing where      -- must have Main (main) or Main where
 
 import    "HTF"       Test.Framework
 
-import           Uniform.FileIO
+import           UniformBase
 
 -- import {-@ HTF_TESTS @-} Lib.Shake2_test 
 -- tests shake for test dough

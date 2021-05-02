@@ -1,4 +1,4 @@
-------------------------------------------------------------------------------
+----------------------------------------------------------------------
 --
 -- Module      :   the defintion at the bottom
 --              there will be command line args to override these
@@ -8,7 +8,7 @@
 --            the bibliographies could go with the blog
 --            all themes in the theme dir (templates and css, possibly images
 --
------------------------------------------------------------------------------
+----------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -20,6 +20,23 @@
 module Lib.Foundation  -- (openMain, htf_thisModuelsTests)
                       where
 import UniformBase
+    ( NiceStrings(shownice),
+      Path,
+      Abs,
+      Dir,
+      File,
+      Rel,
+      Text,
+      makeAbsDir,
+      makeAbsFile,
+      makeRelDir,
+      makeRelDirT,
+      makeRelFile,
+      makeRelFileT,
+      t2s,
+      showT,
+      Filenames3((</>), addFileName),
+      CharChains(replace') )
 -- import           Uniform.Strings        -- hiding ( (</>) )
 -- import           Uniform.Filenames
 --import Uniform.FileStrings
