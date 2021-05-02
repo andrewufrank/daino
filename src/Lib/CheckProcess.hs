@@ -21,22 +21,27 @@
             
 module Lib.CheckProcess where
 
-import           Uniform.Error (ErrIO) -- , callIO, liftIO)
-import           Uniform.Strings (putIOwords, showT)
+-- import           Uniform.Error (ErrIO) -- , callIO, liftIO)
+-- import           Uniform.Strings (putIOwords, showT)
 import           Lib.Foundation (SiteLayout(..))
 import Lib.ReadSettingFile (readSettings)
-import Uniform.Filenames hiding (handle)
-import Uniform.Piped (pipedDoIO)
-import Uniform.FileStrings (readFile2)
--- import Lib.CheckInput (getTripleDoc, MetaRec(..))
+-- import Uniform.Filenames hiding (handle)
+-- import Uniform.Piped (pipedDoIO)
+-- import Uniform.FileStrings (readFile2)
+import Lib.CheckInput -- (getTripleDoc, MetaRec(..))
 -- import Lib.Indexing(getMetaRec)
--- import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)
-import Uniform.FileStrings (openFile2handle, closeFile2, IOMode(..))
+-- import Lib.Foundation -- (progName, SiteLayout (..), layoutDefaults)
+import UniformBase
+-- import Uniform.FileStrings (openFile2handle, closeFile2, IOMode(..))
 import qualified Pipes as Pipe
 import  Pipes ((>->))
-import Uniform.Piped (getRecursiveContents)
+-- import Uniform.Piped (getRecursiveContents)
 import qualified Pipes.Prelude as PipePrelude
 -- import qualified System.IO as IO
+-- import           Lib.CheckInput                 ( getTripleDoc )
+import Uniform.DocRep 
+import Uniform.Markdown 
+
 
 checkProcess :: Bool -> FilePath  -> ErrIO ()
 -- ^ checking all md files 
@@ -69,13 +74,24 @@ allFilenames3 dirname = do
 
 --  produce file for reports form getMetaRec
 report_metaRec :: SiteLayout -> Path Abs File -> ErrIO String
-report_metaRec layout f = do 
-    (_, metaRec, report1) <- getTripleDoc layout f
-    let report2 = if isNothing report1 then ""  
-                        else concatT ["filex ", s2t $ link metaRec
-                                    , fromJustNote "report metarec xxweer" report1]
+report_metaRec layout2 f = do 
+    -- old code:
+    -- (_, metaRec, report1) <- getTripleDoc layout f 
+    -- let report2 = if isNothing report1 then ""  
+    --                     else concatT ["filex ", s2t $ link metaRec
+    --                                 , fromJustNote "report metarec xxweer" report1]
         -- report3 = unlines' .filter (/= "\n") . lines' $ report2
-    return . t2s  $ report2
+    --replace with 
+    md1 <- read8 f markdownFileType
+    dr1 <- readMarkdown2docrep md1
+    let doughP = doughDir layout2 -- the regular dough
+        bakedP = bakedDir layout2 
+
+    dr2 <- checkDocRep doughP bakedP f dr1
+    dr3 <- addRefs dr2
+    let report2 = dr3
+    
+    return . show $ report2
 
 allMetaRecReport :: SiteLayout -> Path Abs Dir -> ErrIO Text
 allMetaRecReport layout dirname = do 
