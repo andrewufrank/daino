@@ -9,7 +9,7 @@ pageTemplate: page3.yaml
 
 Some text without meaning; really? with an image 
 
-![first picture ]( /home/frank/Workspace8/ssg/docs/site/dough/resources/img/120-2026_IMG.JPG  "Logo Title Text 1")
+![first picture ]( /home/frank/Workspace11/ssg/docs/site/dough/resources/img/120-2026_IMG.JPG  "Logo Title Text 1")
 
  <!-- ![first picture ]( ../resources/img/120-2026_IMG.JPG  "Logo Title Text 1")  -->
 

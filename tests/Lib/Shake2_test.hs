@@ -60,7 +60,7 @@ test_shakeAll =
 --     -- res <- 
 -- test_shakeAll = testVar0FileIO "shake" "shake" "shakeTest" shakeOp  
     -- testVar0FileIO progName  a resfile op
--- doughP = makeAbsDir "/home/frank/Workspace8/ssg/docs/site/dough"
+-- doughP = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/dough"
 
 -- test_directoryToBake_null = do 
 --     res <-  getDirectoryToBake "zzzzzzzzzzzxxxxxxxxx"

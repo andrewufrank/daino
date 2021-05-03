@@ -56,7 +56,7 @@ test_pandoc_12_A_D = test1FileIO progName  "TripleDoc2" "resultAD2" markdownToPa
 -- test_pandoc_15_A_D = test1FileIO progName  "TripleDoc5" "resultAD5" markdownToPandoX
 -- test_pandoc_16_A_D = test1FileIO progName  "TripleDoc6" "resultAD6" markdownToPandoX
             -- 13 fails
--- "/home/frank/Workspace8/ssg/site/dough/site/dough/resources/BibTexLatex.bib: openFile: does not exist (No such file or directory)"
+-- "/home/frank/Workspace11/ssg/site/dough/site/dough/resources/BibTexLatex.bib: openFile: does not exist (No such file or directory)"
 
 -- pandocToContentHtmlX ::  Pandoc -> ErrIO HTMLout
 -- pandocToContentHtmlX mp = pandocToContentHtml False mp -- (fromJustNote "fwerw" mp)
@@ -102,11 +102,11 @@ test_pandoc_12_A_D = test1FileIO progName  "TripleDoc2" "resultAD2" markdownToPa
 --         pt = fromMaybe (defaultPageType layoutDefaults)  mpageType
 
 
--- defPT = (makeAbsFile "/home/frank/Workspace8/ssg/theme/templates/page3.yaml") :: Path Abs File 
+-- defPT = (makeAbsFile "/home/frank/Workspace11/ssg/theme/templates/page3.yaml") :: Path Abs File 
 
     -- example copied from indexing_test
 metaRecIndex1 = MetaRec
-  {fn = "/home/frank/Workspace8/ssg/docs/site/dough/Blog/index.md"
+  {fn = "/home/frank/Workspace11/ssg/docs/site/dough/Blog/index.md"
   , relURL = "/Blog/index.md"
   , title = "primary index for Blog"
   , abstract = "The directory for experiments.", author = "AUF",
@@ -116,7 +116,7 @@ metaRecIndex1 = MetaRec
    bibliographyGroup = Nothing,
     keywords = Just "test",
     pageTemplate = -- Nothing,
-         "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+         "/home/frank/Workspace11/ssg/theme/templates/page3.yaml",
     indexPage = True, indexSort = SAreverseDate}
 
 -- instance  ShowTestHarness MarkdownText where

@@ -82,7 +82,7 @@ checkProcess debug filepath = do
       ]
 
 tmpResultFile :: Path Abs File
-tmpResultFile = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/resfile4checkProcess.txt" :: Path Abs File
+tmpResultFile = makeAbsFile "/home/frank/Workspace11/ssg/docs/site/resfile4checkProcess.txt" :: Path Abs File
 
 allFilenames3 :: Path Abs Dir -> ErrIO (Text)
 allFilenames3 dirname = do

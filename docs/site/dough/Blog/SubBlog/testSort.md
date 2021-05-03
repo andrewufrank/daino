@@ -16,8 +16,8 @@ another test with title z for testing sort order
 
 statt einer relativen `resources/DSC08138.JPG` referenz. Problem in latex.
 
-die absolute "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/resources/DSC08138.JPG" funktioniert. 
-der file ist "/home/frank/Workspace8/ssg/docs/site/baked/Blog/SubBlog" in warum die relative nicht?
+die absolute "/home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/resources/DSC08138.JPG" funktioniert. 
+der file ist "/home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog" in warum die relative nicht?
 
   An example post sorted at last
   and an image

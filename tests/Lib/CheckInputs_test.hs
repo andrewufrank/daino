@@ -39,7 +39,7 @@ import Lib.Foundation ( SiteLayout (..), layoutDefaults)
 
 -- test_allLabels = do 
 --     res <- runErr $ do 
---             let fn1 = (makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep")
+--             let fn1 = (makeAbsFile "/home/frank/Workspace11/ssg/docs/site/baked/Blog/blog1.docrep")
 --             dr1 <- read8  fn1 docRepFileType
 --             putIOwords ["test_allLabels", showT . yam $ dr1]
 --             let bakedP = bakedDir layoutDefaults
@@ -51,11 +51,11 @@ import Lib.Foundation ( SiteLayout (..), layoutDefaults)
 
 exp1 :: DocYaml 
 exp1 = zero 
--- exp1 = DocYaml {dyFn = "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep", dyLink = "", dyLang = DLenglish, dyTitle = "Mein erster Blog", dyAbstract = "Ein Blog ohne Sinn auf Deutsch", dyAuthor = "", dyDate = Just "2020-06-18", dyKeywords = "Blog", dyBibliography = Nothing, dyStyle = Nothing, dyPublish = Nothing, dyIsIndexPage = False, dyDirEntries = [], dyFileEntries = []}
+-- exp1 = DocYaml {dyFn = "/home/frank/Workspace11/ssg/docs/site/baked/Blog/blog1.docrep", dyLink = "", dyLang = DLenglish, dyTitle = "Mein erster Blog", dyAbstract = "Ein Blog ohne Sinn auf Deutsch", dyAuthor = "", dyDate = Just "2020-06-18", dyKeywords = "Blog", dyBibliography = Nothing, dyStyle = Nothing, dyPublish = Nothing, dyIsIndexPage = False, dyDirEntries = [], dyFileEntries = []}
    
 -- test_resultLabels = do 
 --     res <- runErr $ do 
---             let fn1 = (makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep")
+--             let fn1 = (makeAbsFile "/home/frank/Workspace11/ssg/docs/site/baked/Blog/blog1.docrep")
 --             dr1 <- read8  fn1 docRepFileType
 --             putIOwords ["test_allLabels", showT . yam $ dr1]
 --             let bakedP = bakedDir layoutDefaults
@@ -66,7 +66,7 @@ exp1 = zero
 
 exp2 :: DocRep 
 exp2 = zero
--- exp2 = DocRep {yam = Object (fromList [("fileEntries",Array []),("style",Null),("link",String ""),("bibliography",Null),("lang",String "DLenglish"),("date",String "2020-06-18"),("isIndexPage",Bool False),("keywords",String "Blog"),("author",String ""),("dirEntries",Array []),("abstract",String "Ein Blog ohne Sinn auf Deutsch"),("title",String "Mein erster Blog"),("fn",String "/home/frank/Workspace8/ssg/docs/site/baked/Blog/blog1.docrep"),("publish",Null)]), pan = Pandoc (Meta {unMeta = fromList []}) [Header 1 ("ein-erster-abschnitt",[],[]) [Str "Ein",Space,Str "erster",Space,Str "Abschnitt"],Para [Str "Ein",Space,Str "Blog",Space,Str "ohne",Space,Str "Sinn",Space,Str "und",Space,Str "dem",Space,Str "einzigen",Space,Str "Zweck,",Space,Str "zu",Space,Str "testen,",Space,Str "wie",Space,Str "ein",Space,Str "Blog",Space,Str "in",SoftBreak,Str "ein",Space,Str "PDF",Space,Str "umgewandelt",Space,Str "wird."],Header 1 ("dies-ist-der-zweite-abschnitt",[],[]) [Str "Dies",Space,Str "ist",Space,Str "der",Space,Str "zweite",Space,Str "Abschnitt"],Para [Str "und",Space,Str "auch",Space,Str "ein",Space,Str "bischen",Space,Str "text."],Header 2 ("mit-einer-unterabschnitt",[],[]) [Str "mit",Space,Str "einer",Space,Str "unterabschnitt"],Para [Str "hier."],Para [Str "das",Space,Str "waers.",Space,Str "es",Space,Str "fehlt",Space,Str "Referenzen,",Space,Str "listen",Space,Str "und",Space,Str "aehnliches"]]}
+-- exp2 = DocRep {yam = Object (fromList [("fileEntries",Array []),("style",Null),("link",String ""),("bibliography",Null),("lang",String "DLenglish"),("date",String "2020-06-18"),("isIndexPage",Bool False),("keywords",String "Blog"),("author",String ""),("dirEntries",Array []),("abstract",String "Ein Blog ohne Sinn auf Deutsch"),("title",String "Mein erster Blog"),("fn",String "/home/frank/Workspace11/ssg/docs/site/baked/Blog/blog1.docrep"),("publish",Null)]), pan = Pandoc (Meta {unMeta = fromList []}) [Header 1 ("ein-erster-abschnitt",[],[]) [Str "Ein",Space,Str "erster",Space,Str "Abschnitt"],Para [Str "Ein",Space,Str "Blog",Space,Str "ohne",Space,Str "Sinn",Space,Str "und",Space,Str "dem",Space,Str "einzigen",Space,Str "Zweck,",Space,Str "zu",Space,Str "testen,",Space,Str "wie",Space,Str "ein",Space,Str "Blog",Space,Str "in",SoftBreak,Str "ein",Space,Str "PDF",Space,Str "umgewandelt",Space,Str "wird."],Header 1 ("dies-ist-der-zweite-abschnitt",[],[]) [Str "Dies",Space,Str "ist",Space,Str "der",Space,Str "zweite",Space,Str "Abschnitt"],Para [Str "und",Space,Str "auch",Space,Str "ein",Space,Str "bischen",Space,Str "text."],Header 2 ("mit-einer-unterabschnitt",[],[]) [Str "mit",Space,Str "einer",Space,Str "unterabschnitt"],Para [Str "hier."],Para [Str "das",Space,Str "waers.",Space,Str "es",Space,Str "fehlt",Space,Str "Referenzen,",Space,Str "listen",Space,Str "und",Space,Str "aehnliches"]]}
 
 -- psIn = ["true", "publish", "draft", "old", "", "xx", "Publish", "Draft", "OLD"]
 -- psRes =  [ PSpublish,  PSpublish,  PSdraft,  PSold,
@@ -109,7 +109,7 @@ exp2 = zero
 
 
 -- metaRecIndex1 = MetaRec
---   {fn = "/home/frank/Workspace8/ssg/docs/site/dough/Blog/index.md"
+--   {fn = "/home/frank/Workspace11/ssg/docs/site/dough/Blog/index.md"
 --   , relURL = "/Blog/index.md"
 --   , title = "primary index for Blog"
 --   , abstract = "The directory for experiments.", author = "AUF",
@@ -119,10 +119,10 @@ exp2 = zero
 --    bibliography = Nothing, 
 --    bibliographyGroup = Nothing,
 --     keywords = Just "test",
---     pageTemplate =  "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+--     pageTemplate =  "/home/frank/Workspace11/ssg/theme/templates/page3.yaml",
 --     indexPage = True, indexSort = SAzero}
 
--- subsubDir = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/SubSub/index.md"
+-- subsubDir = makeAbsFile "/home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/SubSub/index.md"
 
 -- -- test_MetaRec_indexSubSub = do 
 -- --     res <- runErr $   getMetaRec testLayout subsubDir  
@@ -130,14 +130,14 @@ exp2 = zero
 
 
 -- metaRecIndexSubSub = (MetaRec{fn =
---              "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/SubSub/index.md",
+--              "/home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/SubSub/index.md",
 --            relURL = "/Blog/SubBlog/SubSub/index.md",
 --            title = "index for subsubdir",
 --            abstract = "The subdirectory experiment", author = "AUF",
 --            date = "2019-01-04 00:00:00 UTC", publicationState = PSpublish,
 --            bibliography = Nothing, bibliographyGroup = Nothing,
 --            keywords = Just "test",
---            pageTemplate =  "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+--            pageTemplate =  "/home/frank/Workspace11/ssg/theme/templates/page3.yaml",
 --            indexPage = True, indexSort = SAzero})
 
 -- keys2  = ["abstract", "title", "author", "date", "publish", "bibliography", "bibliographyGroup"

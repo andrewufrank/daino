@@ -33,16 +33,16 @@ import Uniform.Pandoc -- (DocValue(..), unDocValue, docValueFileType)
 -- the files to check - xxfn is in dough (the source)
 -- the res files are in checks 
 -- only the first (md -> docrep) uses the xxFn, the other use only the Res
-blog1fn = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/dough/Blog/blog1.md"  -- braucht extension
-blog1res = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/checks/Blog/blog1"  -- keine extension
+blog1fn = makeAbsFile "/home/frank/Workspace11/ssg/docs/site/dough/Blog/blog1.md"  -- braucht extension
+blog1res = makeAbsFile "/home/frank/Workspace11/ssg/docs/site/checks/Blog/blog1"  -- keine extension
 
-drfnRefFn = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/PublicationList/postWithReference"
-drfnRefRes = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/checks/PublicationList/postWithReference"
+drfnRefFn = makeAbsFile "/home/frank/Workspace11/ssg/docs/site/baked/PublicationList/postWithReference"
+drfnRefRes = makeAbsFile "/home/frank/Workspace11/ssg/docs/site/checks/PublicationList/postWithReference"
 
     -- index scheint hier nicht testbar! 
-indexedFn = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/dough/Blog/index"
-indexedBaked = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/Blog/index"
-indexedRes = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/checks/index"
+indexedFn = makeAbsFile "/home/frank/Workspace11/ssg/docs/site/dough/Blog/index"
+indexedBaked = makeAbsFile "/home/frank/Workspace11/ssg/docs/site/baked/Blog/index"
+indexedRes = makeAbsFile "/home/frank/Workspace11/ssg/docs/site/checks/index"
 
 -- test_addRefs   = testVar0FileIO "ssg" (drfnRefRes) "AddRefs"
 --          op2test

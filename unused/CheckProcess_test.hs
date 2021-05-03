@@ -36,9 +36,9 @@ import Uniform.Piped (pipedDoIO) --getRecursiveContents
 
 
 
-doughdir = makeAbsDir "/home/frank/Workspace8/ssg/docs/site/dough/" :: Path Abs Dir 
-resfil = makeAbsFile "/home/frank/Workspace8/ssg/dghcocs/site/resfile.txt" :: Path Abs File
-mdfil = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/postwk9sub.md"
+doughdir = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/dough/" :: Path Abs Dir 
+resfil = makeAbsFile "/home/frank/Workspace11/ssg/dghcocs/site/resfile.txt" :: Path Abs File
+mdfil = makeAbsFile "/home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/postwk9sub.md"
  
 res11 :: ErrIO Text 
 res11 = do  
@@ -140,7 +140,7 @@ test_hasExtension = assertBool $ hasExtension (Extension "md") (makeRelFile "tes
 
 
 -- metaRecIndex1 = MetaRec
---   {fn = "/home/frank/Workspace8/ssg/docs/site/dough/Blog/index.md"
+--   {fn = "/home/frank/Workspace11/ssg/docs/site/dough/Blog/index.md"
 --   , relURL = "/Blog/index.md"
 --   , title = "primary index for Blog"
 --   , abstract = "The directory for experiments.", author = "AUF",
@@ -151,10 +151,10 @@ test_hasExtension = assertBool $ hasExtension (Extension "md") (makeRelFile "tes
 --    bibliographyGroup = Nothing,
 --     keywords = Just "test",
 --     pageTemplate =
---         Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+--         Just "/home/frank/Workspace11/ssg/theme/templates/page3.yaml",
 --     indexPage = True, indexSort = SAreverseDate}
 
--- subsubDir = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/SubSub/index.md"
+-- subsubDir = makeAbsFile "/home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/SubSub/index.md"
 
 -- test_MetaRec_indexSubSub = do 
 --     res <- runErr $   getMetaRec testLayout subsubDir  
@@ -162,7 +162,7 @@ test_hasExtension = assertBool $ hasExtension (Extension "md") (makeRelFile "tes
 
 
 -- metaRecIndexSubSub = (MetaRec{fn =
---              "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/SubSub/index.md",
+--              "/home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/SubSub/index.md",
 --            relURL = "/Blog/SubBlog/SubSub/index.md",
 --            title = "index for subsubdir",
 --            abstract = "The subdirectory experiment", author = "AUF",
@@ -170,5 +170,5 @@ test_hasExtension = assertBool $ hasExtension (Extension "md") (makeRelFile "tes
 --            bibliography = Nothing, bibliographyGroup = Nothing,
 --            keywords = Just "test",
 --            pageTemplate =
---              Just "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+--              Just "/home/frank/Workspace11/ssg/theme/templates/page3.yaml",
 --            indexPage = True, indexSort = SAtitle})

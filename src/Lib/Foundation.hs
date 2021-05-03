@@ -60,7 +60,7 @@ instance NiceStrings SiteLayout where
     shownice d = replace' ", " ",\n " (showT d)
 
 sourceDirTest :: Path Abs Dir
-sourceDirTest = makeAbsDir "/home/frank/Workspace8/ssg"
+sourceDirTest = makeAbsDir "/home/frank/Workspace11/ssg"
 
 bannerImageFileName :: Path Rel File
 bannerImageFileName = makeRelFileT "cropped-DSC05127-1024x330.jpg"
@@ -134,9 +134,9 @@ masterTemplateFileName :: Path Rel File
 masterTemplateFileName = makeRelFile "master4.dtpl"
 -- content of settings2.yaml
 --storage:
---    themeDir:  /home/frank/Workspace8/ssg/theme
---    doughDir: /home/frank/Workspace8/ssg/site/dough
---    bakedDir: /home/frank/Workspace8/ssg/site/baked
+--    themeDir:  /home/frank/Workspace11/ssg/theme
+--    doughDir: /home/frank/Workspace11/ssg/site/dough
+--    bakedDir: /home/frank/Workspace11/ssg/site/baked
 --    reportFile: /home/frank/SSGreport.txt
 --    testDir: /home/frank/.SSG  -- fixed in testharness
 --localhostPort: 3000

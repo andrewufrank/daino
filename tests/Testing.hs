@@ -88,7 +88,7 @@ mainTest        -- with tests in other modules
 --     putStrLn "mainCheck"
 --     runErrorVoid  $ do
 --         -- sitefn :: FilePath 
---         let sitefn = "/home/frank/Workspace8/ssg/docs/site/dough/settings2" 
+--         let sitefn = "/home/frank/Workspace11/ssg/docs/site/dough/settings2" 
 --         res <-  checkProcess True sitefn 
 --         putIOwords [s2t "res11", showT $ res] 
 --         return ()

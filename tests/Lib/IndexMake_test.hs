@@ -50,9 +50,9 @@ test_getOneIndexEntryIndex1 = assertEqual indexEntryIndex1
                              (getOneIndexEntryPure metaRecIndex1)
 
 dirContentPost1 =  
-    ["/home/frank/Workspace8/ssg/docs/site/dough/Blog/postwk.md",
-   "/home/frank/Workspace8/ssg/docs/site/dough/Blog/index.md"] :: [FilePath]
-dirsPost1 = ["/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog"] 
+    ["/home/frank/Workspace11/ssg/docs/site/dough/Blog/postwk.md",
+   "/home/frank/Workspace11/ssg/docs/site/dough/Blog/index.md"] :: [FilePath]
+dirsPost1 = ["/home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog"] 
                 :: [FilePath]
 
 
@@ -84,7 +84,7 @@ metaRecsAfterFilter = [MetaRec
   , bibliography = Nothing
   , bibliographyGroup = Nothing
   , keywords = Just "test"
-  , pageTemplate =   "/home/frank/Workspace8/ssg/theme/templates/page3.yaml"
+  , pageTemplate =   "/home/frank/Workspace11/ssg/theme/templates/page3.yaml"
   , indexPage = False
   , indexSort = SAzero}] :: [MetaRec]
 

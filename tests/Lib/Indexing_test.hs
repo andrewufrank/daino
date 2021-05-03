@@ -48,17 +48,17 @@ import Uniform.Markdown
     -- TEST DIRS 
 test_dough2 = assertEqual_ (makeLoc "/home/frank/Workspace11/ssg/tests/Lib/Indexing_test.hs" 50) dough2path dough2
 dough2 = doughDir testLayout
-dough2path = makeAbsDir "/home/frank/Workspace8/ssg/docs/site/dough/"
+dough2path = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/dough/"
 
 -- resmr = "/Blog/postwk.md"
 test_blogDir = assertEqual_ (makeLoc "/home/frank/Workspace11/ssg/tests/Lib/Indexing_test.hs" 55) blogDirPath blogDir
 blogDir = doughDir testLayout </> makeRelDir "Blog"
-blogDirPath = makeAbsDir "/home/frank/Workspace8/ssg/docs/site/dough/Blog"
+blogDirPath = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/dough/Blog"
 
 docrepfn =
-    makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/Blog/index.docrep"   -- the index in the top directory of the blog 
+    makeAbsFile "/home/frank/Workspace11/ssg/docs/site/baked/Blog/index.docrep"   -- the index in the top directory of the blog 
 
-mdindexfn = makeAbsFile "/home/frank/Workspace8/ssg/docs/site/baked/Blog/index.md"
+mdindexfn = makeAbsFile "/home/frank/Workspace11/ssg/docs/site/baked/Blog/index.md"
 
 test_addIndex = do
     res <- runErr $ do
@@ -74,7 +74,7 @@ test_addIndex = do
     assertEqual_ (makeLoc "/home/frank/Workspace11/ssg/tests/Lib/Indexing_test.hs" 75) (Right res2) res
 
 res2 = zero
--- res2 = DocRep {yam = Object (fromList [("fileEntries",Array []),("style",Null),("indexPage",Bool True),("link",String ""),("bibliography",Null),("lang",String "DLenglish"),("date",String "Jan. 4, 2019"),("indexSort",String "reverseDate"),("isIndexPage",Bool True),("keywords",String "test"),("author",String "AUF"),("dirEntries",Array []),("abstract",String "The directory for experiments."),("title",String "primary index for Blog"),("fn",String "/home/frank/Workspace8/ssg/docs/site/dough/Blog/index.md"),("pageTemplate",String "page3.yaml"),("publish",Null)]), pan = Pandoc (Meta {unMeta = fromList []}) [Para [Str "an",Space,Str "index",Space,Str "page",Space,Str "for",Space,Str "Blog"]]}
+-- res2 = DocRep {yam = Object (fromList [("fileEntries",Array []),("style",Null),("indexPage",Bool True),("link",String ""),("bibliography",Null),("lang",String "DLenglish"),("date",String "Jan. 4, 2019"),("indexSort",String "reverseDate"),("isIndexPage",Bool True),("keywords",String "test"),("author",String "AUF"),("dirEntries",Array []),("abstract",String "The directory for experiments."),("title",String "primary index for Blog"),("fn",String "/home/frank/Workspace11/ssg/docs/site/dough/Blog/index.md"),("pageTemplate",String "page3.yaml"),("publish",Null)]), pan = Pandoc (Meta {unMeta = fromList []}) [Para [Str "an",Space,Str "index",Space,Str "page",Space,Str "for",Space,Str "Blog"]]}
 
 
 -- test_linkIn = assertEqual "/Blog/postwk.md" $ makeRelPath dough2 linkIn
@@ -95,7 +95,7 @@ res2 = zero
 --   , bibliography = Nothing
 --   , bibliographyGroup = Nothing
 --   , keywords = Just "test"
---   , pageTemplate =   "/home/frank/Workspace8/ssg/theme/templates/page3.yaml"
+--   , pageTemplate =   "/home/frank/Workspace11/ssg/theme/templates/page3.yaml"
 --   , indexPage = False
 --   , indexSort = SAzero
 --   }
@@ -107,8 +107,8 @@ res2 = zero
 --     assertEqual contentPost1 
 --             (cross (map toFilePath, map toFilePath) . fromRight zero  $ res) 
 
--- contentPost1 = (["/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/"],
---     ["/home/frank/Workspace8/ssg/docs/site/dough/Blog/postwk.md"]) 
+-- contentPost1 = (["/home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/"],
+--     ["/home/frank/Workspace11/ssg/docs/site/dough/Blog/postwk.md"]) 
 --         :: ([FilePath], [FilePath])
 
 
@@ -120,7 +120,7 @@ res2 = zero
 
 -- makeIndexBlog = 
 --   (MetaRec{fn =
---              "/home/frank/Workspace8/ssg/docs/site/dough/Blog/index.md",
+--              "/home/frank/Workspace11/ssg/docs/site/dough/Blog/index.md",
 --            relURL = "/Blog/index.md", title = "primary index for Blog",
 --            abstract = "The directory for experiments." 
 --                     -- "index of all blogs."
@@ -129,28 +129,28 @@ res2 = zero
 --            bibliography = Nothing, bibliographyGroup = Nothing,
 --            keywords = Just "test",
 --            pageTemplate =
---                "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+--                "/home/frank/Workspace11/ssg/theme/templates/page3.yaml",
 --            indexPage = True, indexSort = SAreverseDate
 --            },
 --    [MetaRec{fn =
---               "/home/frank/Workspace8/ssg/docs/site/dough/Blog/postwk.md",
+--               "/home/frank/Workspace11/ssg/docs/site/dough/Blog/postwk.md",
 --             relURL = "/Blog/postwk.md", title = "postwk with image",
 --             abstract = "A silly text not needing an abstract.", author = "AUF",
 --             date = "2019-01-04 00:00:00 UTC", publicationState = PSpublish,
 --             bibliography = Nothing, bibliographyGroup = Nothing,
 --             keywords = Just "test",
 --             pageTemplate =
---                "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+--                "/home/frank/Workspace11/ssg/theme/templates/page3.yaml",
 --             indexPage = False, indexSort = SAzero}],
 --    [MetaRec{fn =
---               "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/index.md",
+--               "/home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/index.md",
 --             relURL = "/Blog/SubBlog/index.md", title = "index for subdir",
 --             abstract = "The subdirectory experiment", author = "AUF",
 --             date = "2019-01-04 00:00:00 UTC", publicationState = PSpublish,
 --             bibliography = Nothing, bibliographyGroup = Nothing,
 --             keywords = Just "test",
 --             pageTemplate =
---                 "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+--                 "/home/frank/Workspace11/ssg/theme/templates/page3.yaml",
 --             indexPage = True, indexSort = SAtitle}]) 
 --         :: (MetaRec, [MetaRec], [MetaRec])
 
@@ -187,7 +187,7 @@ res2 = zero
 --     assertEqual (Right makeIndexSubSub) res 
 
 -- makeIndexSubSub = (MetaRec{fn =
---              "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/SubSub/index.md",
+--              "/home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/SubSub/index.md",
 --            relURL = "/Blog/SubBlog/SubSub/index.md",
 --            title = "index for subsubdir",
 --            abstract = "The subdirectory experiment", author = "AUF",
@@ -195,27 +195,27 @@ res2 = zero
 --            bibliography = Nothing, bibliographyGroup = Nothing,
 --            keywords = Just "test",
 --            pageTemplate =
---                "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+--                "/home/frank/Workspace11/ssg/theme/templates/page3.yaml",
 --            indexPage = True, indexSort = SAtitle},
 --    [MetaRec{fn =
---               "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/SubSub/subsub1.md",
+--               "/home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/SubSub/subsub1.md",
 --             relURL = "/Blog/SubBlog/SubSub/subsub1.md", title = "postwk.md",
 --             abstract = "A silly text not needing an abstract.", author = "AUF",
 --             date = "2019-01-04 00:00:00 UTC", publicationState = PSpublish,
 --             bibliography = Nothing, bibliographyGroup = Nothing,
 --             keywords = Just "test",
 --             pageTemplate =
---                 "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+--                 "/home/frank/Workspace11/ssg/theme/templates/page3.yaml",
 --             indexPage = False, indexSort = SAzero},
 --     MetaRec{fn =
---               "/home/frank/Workspace8/ssg/docs/site/dough/Blog/SubBlog/SubSub/subsubTest.md",
+--               "/home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/SubSub/subsubTest.md",
 --             relURL = "/Blog/SubBlog/SubSub/subsubTest.md", title = "subsub z",
 --             abstract = "A silly text not needing an abstract.", author = "AUF",
 --             date = "2022-01-04 00:00:00 UTC", publicationState = PSpublish,
 --             bibliography = Nothing, bibliographyGroup = Nothing,
 --             keywords = Just "notest",
 --             pageTemplate =
---                 "/home/frank/Workspace8/ssg/theme/templates/page3.yaml",
+--                 "/home/frank/Workspace11/ssg/theme/templates/page3.yaml",
 --             indexPage = False, indexSort = SAzero}],
 --    [])
 

@@ -40,13 +40,13 @@ test_currentDir = do
                 cd <- currentDir
                 putIOwords ["currentDir test", showT cd]
                 return . toFilePath $ cd
-        assertEqual (Right "/home/frank/Workspace8/ssg/") res
---        assertEqual (Right ("/home/frank/Workspace8/ssg/site/dough/")) res
+        assertEqual (Right "/home/frank/Workspace11/ssg/") res
+--        assertEqual (Right ("/home/frank/Workspace11/ssg/site/dough/")) res
         -- is ok if test is run locally (in site/dough)
 
 test_readSettings2 = do
         res <- runErr $ do
-                let wd = makeAbsDir "/home/frank/Workspace8/ssg/site/dough/"
+                let wd = makeAbsDir "/home/frank/Workspace11/ssg/site/dough/"
                 settingsTxt <- read8 (wd </> makeRelFile "settings2")
                                      yamlFileType
 
