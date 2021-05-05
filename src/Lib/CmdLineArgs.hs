@@ -102,7 +102,7 @@ data PubFlags = PubFlags
         , serverFlag:: Bool
         , uploadFlag :: Bool 
         , settingsFile :: Path Abs File
-        } deriving (Show, Read, Eq)
+        } deriving (Show,  Eq)  -- no read for path 
 
 instance Zeros PubFlags where 
     zero = PubFlags zero zero zero zero zero zero zero zero

@@ -54,7 +54,7 @@ data SiteLayout = SiteLayout
     , bannerImage :: Path Rel File -- ^ the name of the banner image, needs special copy of
     -- , landingPage :: Path Rel File -- ^ the name of the landing page (html), where web server sarts                   
     , uploadServer :: Text 
-    } deriving (Show, Ord, Eq, Read)
+    } deriving (Show, Ord, Eq)  --  Read known issue of reading path
 
 instance NiceStrings SiteLayout where
     shownice d = replace' ", " ",\n " (showT d)

@@ -41,39 +41,11 @@ import Uniform.Convenience.DataVarious
 import Uniform.HTMLout (HTMLout (..), htmloutFileType)
 import Uniform.Markdown (readMarkdown2)
 import Uniform.Pandoc
-  ( Abs,
-    AtKey (getAtKey),
-    DocRep (DocRep),
-    ErrIO,
-    File,
-    Generic,
-    HTMLout (..),
-    Pandoc (..),
-    Path,
-    Text,
-    ToJSON,
-    TypedFiles7a (read8),
-    catMaybes,
-    docRepFileType,
-    flattenMeta,
-    getMeta,
-    htmloutFileType,
-    readMarkdown2,
-    t2s,
-  )
+  
 import UniformBase
-  ( Abs,
-    AtKey (getAtKey),
-    ErrIO,
-    File,
-    Generic,
-    Path,
-    Text,
-    ToJSON,
-    TypedFiles7a (read8),
-    catMaybes,
-    t2s,
-  )
+import Uniform.Json 
+
+   
 
 -------------------
 docRepNeeds2 :: Path Abs File -> ErrIO [FilePath]

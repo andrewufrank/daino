@@ -1,14 +1,14 @@
  
 packages: 
     ./ssg.cabal
-
-    /home/frank/Workspace11/uBase/uniform-algebras/*.cabal
-    ../uniformBase/uniformSources/uniform-error/*.cabal
-    ../uniformBase/uniformSources/uniform-fileio/*.cabal
-    ../uniformBase/uniformSources/uniform-json/*.cabal
-    ../uniformBase/uniformSources/uniform-strings/*.cabal
-    ../uniformBase/uniformSources/uniform-time/*.cabal
-    ../uniformBase/uniformBase.cabal
+ 
+    ../uBase/uniformBase/*.cabal
+    ../uBase/uniform-algebras/*.cabal
+    ../uBase/uniform-strings/*.cabal
+    ../uBase/uniform-error/*.cabal
+    ../uBase/uniform-time/*.cabal
+    ../uBase/uniform-fileio/*.cabal
+    ../u4blog/uniformSources/uniform-json/*.cabal
 
     ../u4blog/uniformSources/uniform-webserver/*.cabal
     ../u4blog/uniformSources/uniform-watch/*.cabal

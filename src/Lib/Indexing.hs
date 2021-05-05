@@ -20,6 +20,8 @@
 module Lib.Indexing
     where
 import UniformBase
+import Uniform.Json 
+
 import           Uniform.Pandoc                --  ( getAtKey )
 import           Lib.CmdLineArgs                ( PubFlags(..) )
 import           Lib.CheckInput

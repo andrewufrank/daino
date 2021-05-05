@@ -28,34 +28,8 @@ import Uniform.Shake (makeRelativeP)
 import Lib.Foundation ()
 import Uniform.DocRep ( DocRep(DocRep) )
 import UniformBase
-    ( Generic,
-      NiceStrings(shownice),
-      Path,
-      Abs,
-      Dir,
-      File,
-      Text,
-      when,
-      toFilePath,
-      Value(Object),
-      ToJSON(toJSON),
-      FromJSON(parseJSON),
-      errorT,
-      s2t,
-      t2s,
-      putIOwords,
-      showT,
-      toLowerStart,
-      Zeros(zero),
-      ErrIO,
-      Filenames1(getNakedFileName),
-      Filenames3(addFileName),
-      CharChains(drop'),
-      genericParseJSON,
-      defaultOptions,
-      genericToJSON,
-      mergeLeftPref,
-      fieldLabelModifier )
+import Uniform.Json 
+    
 import           Data.List                      ( (\\) )
 import Data.Aeson
     ( Value(Object),
@@ -113,7 +87,7 @@ data IndexEntry = IndexEntry
                     , indexPage :: Bool
                     , dirEntries :: [IndexEntry]  -- def []
                     , fileEntries :: [IndexEntry] -- def []
-                    } deriving (Show, Read, Eq, Ord, Generic)
+                    } deriving (Show,  Eq, Ord, Generic)  -- Read,
 
 instance ToJSON IndexEntry
 instance FromJSON IndexEntry
@@ -141,7 +115,7 @@ data DocYaml = DocYaml {dyFn :: FilePath  -- the original dough fn
                         , dyFileEntries :: [IndexEntry]
 
 
-            } deriving (Show, Read, Ord, Eq, Generic)
+            } deriving (Show,  Ord, Eq, Generic)  --Read,
 
 instance Zeros DocYaml where
     zero = DocYaml zero

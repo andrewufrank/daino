@@ -17,21 +17,11 @@ import Lib.Foundation (masterTemplateFileName)
 import Uniform.HTMLout
   ( HTMLout (..),
   )
-import Uniform.Pandoc (Abs, AtKey (getAtKey), Dir, ErrIO, Filenames3 ((</>)), HTMLout, Panrep (..), Path, Text, applyTemplate3, makeRelFile, putIOwords, showT, t2s, when)
+import Uniform.Pandoc 
+--(Abs, AtKey (getAtKey), Dir, ErrIO, Filenames3 ((</>)), HTMLout, Panrep (..), Path, Text, applyTemplate3, makeRelFile, putIOwords, showT, t2s, when)
 import UniformBase
-  ( Abs,
-    AtKey (getAtKey),
-    Dir,
-    ErrIO,
-    Filenames3 ((</>)),
-    Path,
-    Text,
-    makeRelFile,
-    putIOwords,
-    showT,
-    t2s,
-    when,
-  )
+import Uniform.Json 
+
 
 putValinMaster :: Bool -> Panrep -> Path Abs Dir -> ErrIO HTMLout
 -- ^ get the master html template and put the val into it

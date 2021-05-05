@@ -14,26 +14,8 @@ module Lib.ReadSettingFile where -- (openMain, htf_thisModuelsTests)
 
 import Lib.Foundation (SiteLayout (..), uploadServerTest) -- (getMeta)
 import UniformBase
-  ( Abs,
-    AtKey (getAt2Key, getAtKey),
-    ErrIO,
-    File,
-    Path,
-    Text,
-    TypedFiles7a (read8),
-    Value,
-    YamlText (..),
-    decodeThrowT,
-    fromJustNote,
-    makeAbsDir,
-    makeAbsFile,
-    makeRelFile,
-    putIOwords,
-    showT,
-    t2s,
-    when,
-    yamlFileType,
-  )
+import Uniform.Json 
+import Uniform.Yaml 
 
 readSettings :: Path Abs File -> ErrIO (SiteLayout, Int)
 -- must be the settings2.yaml file, (absolute, fixed before to current dir)

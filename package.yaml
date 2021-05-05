@@ -36,7 +36,7 @@ ghc-options:
 dependencies: 
     - base 
     - uniformBase 
-    # -  uniform-algebras 
+    -  uniform-json
     # -  uniform-strings  
     -  uniform-shake
     - shake
