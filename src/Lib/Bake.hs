@@ -49,21 +49,7 @@ import Uniform.DocRep
     docRepFileType,
     htmloutFileType,
   )
-import Uniform.Pandoc
-  ( HTMLout,
-    addRefs,
-    docRep2panrep,
-    docRepFileType,
-    htmloutFileType,
-    markdownFileType,
-    panrep2texsnip,
-    panrepFileType,
-    readMarkdown2docrep,
-    tex2latex,
-    texFileType,
-    texSnipFileType,
-    writePDF2,
-  )
+
 import Uniform.ProcessPDF
   ( panrep2texsnip,
     tex2latex,

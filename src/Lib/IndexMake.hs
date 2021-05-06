@@ -14,7 +14,7 @@
 module Lib.IndexMake (module Lib.IndexMake) where
 
 import Lib.CheckInput --  (MetaRec(..))
-import Uniform.Pandoc (Panrep (..))
+-- import Uniform.Pandoc (Panrep (..))
 import UniformBase
 import Uniform.Json 
 

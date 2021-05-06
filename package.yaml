@@ -45,10 +45,7 @@ dependencies:
     - containers
     - aeson
     - data-default
-    # - uniform-fileio  
-    # - uniform-error  
-    # - uniform-time 
-    # - uniform-json 
+   
     # not in uniformBase:
     - uniform-pandoc  
     - uniform-convenience 
@@ -90,7 +87,7 @@ tests:
       - HTF 
       - QuickCheck 
       - ssg
-      - pandoc-types
+      # - pandoc-types
       - unordered-containers
 # #  -         base ,
 # #  -         uniform-algebras, 

@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 7378023dcb2b5f89f7ef0fcc64ec460e4dc9d236964cd5233f6a5abaf19d745d
+-- hash: 7bfbfea7fb0ae989876b6935dba16a0b46135e152366330f00ff512e4f931093
 
 name:           ssg
 version:        0.0.4.2
@@ -36,7 +36,6 @@ library
       Lib.Foundation
       Lib.Indexing
       Lib.IndexMake
-      Lib.Pandoc
       Lib.ReadSettingFile
       Lib.Shake2
       Lib.StartSSGprocess
@@ -137,7 +136,6 @@ test-suite test
     , data-default
     , optparse-applicative
     , optparse-generic
-    , pandoc-types
     , path-io
     , pipes
     , shake

@@ -23,7 +23,7 @@ module Lib.ConvertFiles where
 import Lib.Bake
 import Lib.CmdLineArgs (PubFlags (..))
 import Lib.Foundation (SiteLayout (..))
-import Uniform.Pandoc
+-- import Uniform.Pandoc
 import Uniform.Shake
 import UniformBase
 
