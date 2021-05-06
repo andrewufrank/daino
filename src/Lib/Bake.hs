@@ -49,6 +49,8 @@ import Uniform.DocRep
     docRepFileType,
     htmloutFileType,
   )
+import Uniform.Markdown
+import Uniform.PandocImports
 
 import Uniform.ProcessPDF
   ( panrep2texsnip,
