@@ -46,7 +46,7 @@ progName = "SSG"
 
 data SiteLayout = SiteLayout
     { themeDir :: Path Abs Dir -- ^ the place of the  theme files (includes templates)
-    , doughDir                  -- ^ where the content is originally (includes resources)
+    , doughDir :: Path Abs Dir -- ^ where the content is originally (includes resources)
     , bakedDir :: Path Abs Dir -- ^ where all the files serving are
 --    , templateDir :: Path Rel Dir -- ^ where the templates are
     , reportFile :: Path Abs File  -- ^ the report from processing baked with pipe
