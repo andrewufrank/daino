@@ -62,13 +62,13 @@ library:
   # other: watch 
  
 executables:  
-  ssgbake:
-    main: ssgBake.hs
-    source-dirs: app
-    dependencies: 
-    - ssg
-    - uniform-webserver
-    - uniform-convenience
+  # ssgbake:
+  #   main: ssgBake.hs
+  #   source-dirs: app
+  #   dependencies: 
+  #   - ssg
+  #   - uniform-webserver
+  #   - uniform-convenience
   
   ssgcheck:
     main: ssgCheck.hs
