@@ -34,7 +34,7 @@ ghc-options:
     -fno-warn-duplicate-exports
     -fno-warn-missing-methods 
 dependencies: 
-    - base 
+    - base  
     - uniformBase 
     -  uniform-json
     # -  uniform-strings  

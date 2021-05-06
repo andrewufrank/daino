@@ -13,10 +13,14 @@
 
 module Lib.IndexMake (module Lib.IndexMake) where
 
-import Lib.CheckInput --  (MetaRec(..))
--- import Uniform.Pandoc (Panrep (..))
+import Lib.CheckInput
+    ( IndexEntry(dirEntries, fileEntries, link, abstract, fn, title,
+                 author, date, publish, indexPage) ) --  (MetaRec(..))
+import Uniform.Pandoc (Panrep (..))
 import UniformBase
-import Uniform.Json 
+
+import Uniform.Json
+    ( ToJSON(toJSON), FromJSON, fromJSONerrio, mergeLeftPref ) 
 
 convertIndexEntries :: Panrep -> ErrIO Panrep
 -- ^ take the index entries and convert their

@@ -28,29 +28,6 @@ import qualified Pipes.Prelude as PipePrelude
 import Uniform.DocRep (addRefs)
 import Uniform.Markdown (markdownFileType, readMarkdown2docrep)
 import UniformBase
-  ( Abs,
-    CharChains (lines', null', unlines'),
-    Dir,
-    ErrIO,
-    Extension (..),
-    Extensions (hasExtension),
-    File,
-    FileOps (openFile2handle),
-    FileOps2 (readFile2),
-    IOMode (WriteMode),
-    Path,
-    Text,
-    TypedFiles7a (read8),
-    closeFile2,
-    getRecursiveContents,
-    makeAbsFile,
-    pipedDoIO,
-    putIOwords,
-    s2t,
-    showList',
-    showT,
-    when,
-  )
 
 checkProcess :: Bool -> FilePath -> ErrIO ()
 -- ^ checking all md files
@@ -117,16 +94,17 @@ allMetaRecReport layout dirname = do
   let res2 = filter (not . null') . lines' $ res1 :: [Text]
   return . unlines' $ res2
 
+-- moved for 1.1 to fileio piped
 -- a convenient function to go through a directory and
--- recursively apply a function to each file or directory
--- filters for extension md
-pipedDoIOwithFilter :: Path Abs File -> Path Abs Dir -> Extension -> (Path Abs File -> ErrIO String) -> ErrIO ()
-pipedDoIOwithFilter file path ext opex = do
-  hand <- openFile2handle file WriteMode
-  Pipe.runEffect $
-    getRecursiveContents path
-      >-> PipePrelude.filter (hasExtension ext)
-      >-> PipePrelude.mapM opex
-      >-> PipePrelude.toHandle hand
-  closeFile2 hand
-  return ()
+-- -- recursively apply a function to each file or directory
+-- -- filters for extension md
+-- pipedDoIOwithFilter :: Path Abs File -> Path Abs Dir -> Extension -> (Path Abs File -> ErrIO String) -> ErrIO ()
+-- pipedDoIOwithFilter file path ext opex = do
+--   hand <- openFile2handle file WriteMode
+--   Pipe.runEffect $
+--     getRecursiveContents path
+--       >-> PipePrelude.filter (hasExtension ext)
+--       >-> PipePrelude.mapM opex
+--       >-> PipePrelude.toHandle hand
+--   closeFile2 hand
+--   return ()
