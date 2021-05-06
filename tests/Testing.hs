@@ -50,7 +50,7 @@ import           UniformBase
 -- import Lib.CheckProcess        -- for direct calls 
 --
 -- import {-@ HTF_TESTS @-} Lib.Bake_test
-import   {-@ HTF_TESTS @-}  Lib.Shake2_test  -- AG -> EG 
+-- import   {-@ HTF_TESTS @-}  Lib.Shake2_test  -- AG -> EG 
 
 --
 ---- main =  do  -- the local tests only

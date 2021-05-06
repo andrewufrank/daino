@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 7bfbfea7fb0ae989876b6935dba16a0b46135e152366330f00ff512e4f931093
+-- hash: 10c714eb7313767fca43c2f5238464c9bf6e472502574a311e41f755d1a7292c
 
 name:           ssg
 version:        0.0.4.2
@@ -117,35 +117,4 @@ executable ssgcheck
     , uniform-watch
     , uniform-webserver
     , uniformBase
-  default-language: Haskell2010
-
-test-suite test
-  type: exitcode-stdio-1.0
-  main-is: Testing.hs
-  other-modules:
-      Lib.CheckInputs_test
-  hs-source-dirs:
-      tests
-  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-unused-imports -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-dodgy-imports -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-duplicate-exports -fno-warn-missing-methods
-  build-depends:
-      HTF
-    , QuickCheck
-    , aeson
-    , base
-    , containers
-    , data-default
-    , optparse-applicative
-    , optparse-generic
-    , path-io
-    , pipes
-    , shake
-    , ssg
-    , uniform-convenience
-    , uniform-json
-    , uniform-pandoc
-    , uniform-shake
-    , uniform-watch
-    , uniform-webserver
-    , uniformBase
-    , unordered-containers
   default-language: Haskell2010

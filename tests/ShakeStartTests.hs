@@ -30,13 +30,12 @@ import Test.Framework
          -- (markdownToPandoc, pandocToContentHtml,docValToAllVal)
         -- with a simplified Action ~ ErrIO
 -- import Text.Pandoc  (Pandoc)
-import Uniform.Error
-import Uniform.FileIO            hiding ((<.>), (</>)) -- (resourcesDirName)
+import UniformBase
 import Uniform.Pandoc -- (applyTemplate3, Pandoc, DocValue, doc HTMLout, htmloutFileType)
 import Uniform.Shake
 import Lib.CmdLineArgs (allFlags, PubFlags)
 import Lib.CheckInput (MetaRec(..), TripleDoc, getTripleDoc)
-import Uniform.Pointless (fst3)
+-- import Uniform.Pointless (fst3)
 
 -- test_shake :: IO ()
 -- test_shake =  do

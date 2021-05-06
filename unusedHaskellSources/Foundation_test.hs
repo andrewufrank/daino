@@ -21,6 +21,7 @@ module Lib.Foundation_test  -- (openMain, htf_thisModuelsTests)
 
 import     "HTF"      Test.Framework
 import Uniform.Test.TestHarness
+import UniformBase
 
 import Lib.Foundation (progName, SiteLayout (..), layoutDefaults)
 

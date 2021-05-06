@@ -18,7 +18,7 @@ module Lib.Shake2_test  -- (openMain, htf_thisModuelsTests)
 
 import           Test.Framework
 import Uniform.Test.TestHarness
-
+import UniformBase
 
 import Lib.Foundation
     ( progName,
@@ -69,7 +69,7 @@ test_shakeAll =
         --    propably impossible to construct
         -- no undo of action given 
 
-htf_Lib_Shake2_test_thisModulesTests :: TestSuite
-htf_Lib_Shake2_test_thisModulesTests = makeTestSuite "Lib.Shake2_test" [ "shakeAll" (makeLoc "/home/frank/Workspace11/ssg/tests/Lib/Shake2_test.hs" 41) test_shakeAll
-  ]
+-- htf_Lib_Shake2_test_thisModulesTests :: TestSuite
+-- htf_Lib_Shake2_test_thisModulesTests = makeTestSuite "Lib.Shake2_test" [ "shakeAll" (makeLoc "/home/frank/Workspace11/ssg/tests/Lib/Shake2_test.hs" 41) test_shakeAll
+--   ]
 

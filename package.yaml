@@ -75,20 +75,21 @@ executables:
     source-dirs: app
     dependencies:
         ssg
-tests:
-  test:
-    main: Testing.hs
-    source-dirs: tests
-#       # - src
-    other-modules: 
-      - Lib.CheckInputs_test
+# tests:
+#   test:
+#     main: Testing.hs
+#     source-dirs: tests
+# #       # - src
+#     # other-modules: 
+#     #   - Lib.CheckInputs_test
       
-    dependencies:
-      - HTF 
-      - QuickCheck 
-      - ssg
-      # - pandoc-types
-      - unordered-containers
+#     dependencies:
+#       - HTF 
+#       - QuickCheck 
+#       - ssg
+#       - pandoc-types
+#       - unordered-containers
+
 # #  -         base ,
 # #  -         uniform-algebras, 
 # #  -         uniform-strings -any,
