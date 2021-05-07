@@ -134,6 +134,7 @@ parseArgs2input settingsFN t1 t2 = do
                          , watchFlag    = watchSwitch args1
                          , serverFlag   = serverSwitch args1
                          , settingsFile = workingdir1 </> settingsFN
+                         -- perhaps wrong, could be site/dough?
                         ,  uploadFlag = uploadSwitch args1
                          }
 

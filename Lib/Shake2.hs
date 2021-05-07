@@ -7,7 +7,14 @@
 {-  die struktur geht von den files aus, die man braucht und
     diese rekonstruieren die directories wieder, wenn sie kreiert werden.
 
-    the start is in /getNeeds/
+    the start is with /getNeeds/ in phony:
+        - md produces pdf 
+            - with convTex2pdf, calling 
+            - write2pdf (runs lualatex)
+        - md produces html
+            - with convPanrep2html, calling 
+            - bakeOneFile2panrep 
+            - docRep2panrep
 
     wird moeglicherweise ein filetyp (durch extension fixiert) aus zwei quellen produziert so muss dass in der regel fuer die generation
         beruecksichtigt werden

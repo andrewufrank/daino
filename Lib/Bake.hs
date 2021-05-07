@@ -159,7 +159,7 @@ bakeOneFile2html debug flags inputFn layout resfn2 = do
 
   -- h1  <- panrep2html dr4
 
-  p :: HTMLout <- putValinMaster False dr4 (templateP)
+  p :: HTMLout <- putValinMaster False dr4 templateP
   write8 resfn2 htmloutFileType p -- content is html style
   when debug $
     putIOwords
