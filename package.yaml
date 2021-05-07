@@ -58,7 +58,7 @@ dependencies:
   # -- - pandoc-types
 
 library:
-  source-dirs: src
+  source-dirs: .
   # other: watch 
  
 executables:  

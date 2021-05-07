@@ -1,11 +1,13 @@
 ----------------------------------------------------------------------
 --
--- Module      :  with Path  the  process to convert
---              files in any input format to html
---              orginals are found in dire doughDir and go to bakeDir
+-- Module Shake2 :    the  process to convert
+--              files in any input format to html and pdf
+--              orginals are found in doughDir and go to bakeDir
 ----------------------------------------------------------------------
 {-  die struktur geht von den files aus, die man braucht und
     diese rekonstruieren die directories wieder, wenn sie kreiert werden.
+
+    the start is in /getNeeds/
 
     wird moeglicherweise ein filetyp (durch extension fixiert) aus zwei quellen produziert so muss dass in der regel fuer die generation
         beruecksichtigt werden
@@ -106,6 +108,8 @@ shakeMD ::
   Path Abs Dir -> -- baked (target dir for site)
   IO ()
 -- ^ bake all md files and copy the resources
+-- from each md produce:
+-- - 
 -- sets the current dir to doughDir
 -- copies banner image
 -- in IO

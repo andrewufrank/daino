@@ -8,13 +8,13 @@ packages:
 --    ../uBase/uniform-time/*.cabal
     ../uBase/uniform-fileio/*.cabal 
 
-    ../u4blog/uniformSources/uniform-json/*.cabal
+    ../u4blog/uniform-json/*.cabal
 
-    ../u4blog/uniformSources/uniform-webserver/*.cabal
-    ../u4blog/uniformSources/uniform-watch/*.cabal
-    ../u4blog/uniformSources/uniform-shake/*.cabal
-    ../u4blog/uniformSources/uniform-pandoc/*.cabal
-    ../u2to/uniformSources/uniform-convenience/*.cabal
+    ../u4blog/uniform-webserver/*.cabal
+    ../u4blog/uniform-watch/*.cabal
+    ../u4blog/uniform-shake/*.cabal
+    ../u4blog/uniform-pandoc/*.cabal
+    ../u2to/uniform-convenience/*.cabal
 
 
 -- Disregard all upper bounds when dependency solving
