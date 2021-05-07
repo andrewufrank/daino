@@ -23,10 +23,8 @@ import UniformBase
 import Uniform.Json 
 
 import Uniform.Pandoc
-    ( DocRep(DocRep),
-      Panrep(Panrep, panyam),
-      docRepFileType,
-      extDocRep )                --  ( getAtKey )
+import Uniform.Filetypes4sites
+
 import           Lib.CmdLineArgs                ( PubFlags(..) )
 import           Lib.CheckInput
 import           Lib.Foundation                 ( SiteLayout )

@@ -16,7 +16,9 @@ module Lib.IndexMake (module Lib.IndexMake) where
 import Lib.CheckInput
     ( IndexEntry(dirEntries, fileEntries, link, abstract, fn, title,
                  author, date, publish, indexPage) ) --  (MetaRec(..))
-import Uniform.Pandoc (Panrep (..))
+-- import Uniform.Pandoc (Panrep (..))
+import Uniform.Filetypes4sites
+
 import UniformBase
 
 import Uniform.Json

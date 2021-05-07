@@ -31,6 +31,7 @@ import Lib.Bake
 import Lib.CmdLineArgs (PubFlags (..))
 import Lib.Foundation (SiteLayout (..))
 import Uniform.Pandoc
+import Uniform.Filetypes4sites
 
 import Uniform.Shake
 

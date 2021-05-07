@@ -19,16 +19,8 @@
             -fno-warn-unused-matches #-}
 
 module Lib.Bake
-  ( module Lib.Bake,
-    -- bakeOneFile2docrep,
-    -- , bakeOneFile2html
-    -- , bakeOneFile2texsnip
-    -- , bakeOneTexSnip2pdf
-    -- , bakeDocValue2html
-  )
+ 
 where
-
---  ( replaceExtension' )
 
 import Lib.CheckInput (checkDocRep) --                 ( getTripleDoc )
 import Lib.CmdLineArgs (PubFlags (..))
@@ -43,21 +35,12 @@ import qualified Path.IO as Path
   ( getTempDir,
   )
 import Uniform.DocRep
-  ( HTMLout,
-    addRefs,
-    docRep2panrep,
-    docRepFileType,
-    htmloutFileType,
-  )
-import Uniform.Markdown
-import Uniform.PandocImports ( panrepFileType, texSnipFileType )
 
+import Uniform.Markdown
+import Uniform.PandocImports 
 import Uniform.ProcessPDF
-  ( panrep2texsnip,
-    tex2latex,
-    texFileType,
-    writePDF2,
-  )
+import Uniform.Filetypes4sites
+
 import Uniform.Shake ()
 import UniformBase
 
@@ -90,6 +73,8 @@ bakeOneMD2docrep debug flags inputFn layout resfn2 = do
 
   -- check
   -- the fields for the index are prepared
+  -- merge the yaml metadata with default to have the 
+  -- necessary values set 
 
   dr2 <- checkDocRep doughP bakedP inputFn dr1
   -- does this use the listed refs?

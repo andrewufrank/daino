@@ -21,6 +21,7 @@ import Uniform.Pandoc
 --(Abs, AtKey (getAtKey), Dir, ErrIO, Filenames3 ((</>)), HTMLout, Panrep (..), Path, Text, applyTemplate3, makeRelFile, putIOwords, showT, t2s, when)
 import UniformBase
 import Uniform.Json 
+import Uniform.Filetypes4sites
 
 
 putValinMaster :: Bool -> Panrep -> Path Abs Dir -> ErrIO HTMLout

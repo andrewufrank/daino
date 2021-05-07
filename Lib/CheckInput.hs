@@ -26,7 +26,9 @@ import GHC.Generics ( Generic )
 import Data.Default ( Default(..) )
 import Uniform.Shake (makeRelativeP)
 import Lib.Foundation ()
-import Uniform.DocRep ( DocRep(DocRep) )
+-- import Uniform.DocRep ( DocRep(DocRep) )
+import Uniform.Filetypes4sites
+
 import UniformBase
 import Uniform.Json 
     
