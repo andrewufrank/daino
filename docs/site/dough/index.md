@@ -1,5 +1,5 @@
 ---
-title: "AF's homepage"
+title: "XX's homepage"
 # values for the page individually
 pageTemplate : page3
 page-title : MyBlog
