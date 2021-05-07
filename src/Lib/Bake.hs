@@ -50,7 +50,7 @@ import Uniform.DocRep
     htmloutFileType,
   )
 import Uniform.Markdown
-import Uniform.PandocImports
+import Uniform.PandocImports ( panrepFileType, texSnipFileType )
 
 import Uniform.ProcessPDF
   ( panrep2texsnip,

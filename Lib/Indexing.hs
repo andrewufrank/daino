@@ -22,7 +22,11 @@ module Lib.Indexing
 import UniformBase
 import Uniform.Json 
 
-import           Uniform.Pandoc                --  ( getAtKey )
+import Uniform.Pandoc
+    ( DocRep(DocRep),
+      Panrep(Panrep, panyam),
+      docRepFileType,
+      extDocRep )                --  ( getAtKey )
 import           Lib.CmdLineArgs                ( PubFlags(..) )
 import           Lib.CheckInput
 import           Lib.Foundation                 ( SiteLayout )

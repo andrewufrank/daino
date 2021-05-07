@@ -21,11 +21,20 @@
 module Lib.ConvertFiles where
 
 import Lib.Bake
+    ( BakeOp,
+      bakeOneFile2docrep,
+      bakeOneFile2panrep,
+      bakeOneFile2html,
+      bakeOneFile2texsnip,
+      bakeOneFile2tex,
+      bakeOneFile2pdf )
 import Lib.CmdLineArgs (PubFlags (..))
 import Lib.Foundation (SiteLayout (..))
 import Uniform.Pandoc
+
 import Uniform.Shake
-import UniformBase
+
+-- import UniformBase ()
 
 type ConvertOp =
   Bool ->
