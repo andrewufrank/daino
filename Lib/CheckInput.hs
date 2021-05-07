@@ -158,14 +158,14 @@ parseJSONyaml (Object o) = -- withObject "person" $ \o ->
     dyTitle        <- o .: "title"
     dyAbstract     <- o .: "abstract"
     dyAuthor       <- o .:? "author" .!= ""
-    dyLang         <- o .:? "lang" .!= DLenglish  -- ^ default 
+    dyLang         <- o .:? "lang" .!= DLenglish  -- x^ default 
     dyKeywords     <- o .: "keywords"
     dyDate         <- o .:? "date"
-    dyFn           <- o .:? "fn" .!= ""  -- ^ as a default, is overwritten but avoids error msg
-    dyLink         <- o .:? "link" .!= ""  -- ^ the relative link for html, derive from fn
+    dyFn           <- o .:? "fn" .!= ""  -- x^ as a default, is overwritten but avoids error msg
+    dyLink         <- o .:? "link" .!= ""  -- x^ the relative link for html, derive from fn
     dyBibliography <- o .:? "bibliography"
         -- the bib file if needed  
-    dyStyle        <- o .:? "style" -- ^ the csl file 
+    dyStyle        <- o .:? "style" -- x^ the csl file 
 
     dyPublish      <- o .:? "publish"  --  .!= Nothing 
     dyIndexPage  <- o .:? "indexPage" .!= False

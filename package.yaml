@@ -75,13 +75,13 @@ executables:
     source-dirs: app
     dependencies:
         ssg
-# tests:
-#   test:
-#     main: Testing.hs
-#     source-dirs: tests
-# #       # - src
-#     # other-modules: 
-#     #   - Lib.CheckInputs_test
+tests:
+  test:
+    main: Testing.hs
+    source-dirs: tests
+#       # - src
+    # other-modules: 
+    #   - Lib.CheckInputs_test
       
 #     dependencies:
 #       - HTF 

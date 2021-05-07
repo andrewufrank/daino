@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: f7b7388286d0d4ea6bada6e1496c8df830eddfe2374dbf027fc8c0472d2524b0
+-- hash: b868cbfe62afcb7d9fc3068bb0c5687ec4b1a28b10f870db8b62e0a1566d028a
 
 name:           ssg
 version:        0.0.4.2
@@ -83,6 +83,34 @@ executable ssgcheck
     , pipes
     , shake
     , ssg
+    , uniform-convenience
+    , uniform-json
+    , uniform-pandoc
+    , uniform-shake
+    , uniform-watch
+    , uniform-webserver
+    , uniformBase
+  default-language: Haskell2010
+
+test-suite test
+  type: exitcode-stdio-1.0
+  main-is: Testing.hs
+  other-modules:
+      ShakeStartTests
+      Paths_ssg
+  hs-source-dirs:
+      tests
+  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-unused-imports -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-dodgy-imports -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-duplicate-exports -fno-warn-missing-methods
+  build-depends:
+      aeson
+    , base
+    , containers
+    , data-default
+    , optparse-applicative
+    , optparse-generic
+    , path-io
+    , pipes
+    , shake
     , uniform-convenience
     , uniform-json
     , uniform-pandoc
