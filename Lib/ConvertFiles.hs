@@ -61,7 +61,7 @@ convMD2docrep :: ConvertOp
 convMD2docrep debug doughP bakedP flags layout out =
   convA2B debug doughP bakedP flags layout out extMD bakeOneMD2docrep
 
--- needs1 <- docRepNeeds2  -- questionable
+-- needs1 <- docrepNeeds2  -- questionable
 -- need needs1
 
 convDocrep2panrep :: ConvertOp

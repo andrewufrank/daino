@@ -81,12 +81,12 @@ bakeOneMD2docrep debug flags inputFn layout resfn2 = do
   dr3 <- addRefs dr2
 
   -- TODO needs refs
-  -- let needs1  = docRepNeeds docrep1  :: [FilePath]
+  -- let needs1  = docrepNeeds docrep1  :: [FilePath]
   -- need  needs1  -- TDO this is in the wrong monad
   -- dr4 <- addIndex2yam debug dr3
   -- this will be done twice in html and tex
 
-  write8 resfn2 docRepFileType dr3
+  write8 resfn2 docrepFileType dr3
   when debug $
     putIOwords
       [ "\n-----------------",
@@ -109,9 +109,9 @@ bakeOneDocrep2panrep debug flags inputFn layout resfn2 = do
     ]
   let bakedP = bakedDir layout
 
-  dr1 <- read8 inputFn docRepFileType
+  dr1 <- read8 inputFn docrepFileType
 
-  p1 <- docRep2panrep dr1
+  p1 <- docrep2panrep dr1
   -- adds refs but not yet used in tex2pdf!
 
   p2 <- addIndex2yam bakedP debug p1

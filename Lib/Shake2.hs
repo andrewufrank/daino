@@ -14,7 +14,7 @@
         - md produces html
             - with convPanrep2html, calling 
             - bakeOneFile2panrep 
-            - docRep2panrep
+            - docrep2panrep
 
     wird moeglicherweise ein filetyp (durch extension fixiert) aus zwei quellen produziert so muss dass in der regel fuer die generation
         beruecksichtigt werden

@@ -48,17 +48,17 @@ import Uniform.Json
    
 
 -------------------
-docRepNeeds2 :: Path Abs File -> ErrIO [FilePath]
+docrepNeeds2 :: Path Abs File -> ErrIO [FilePath]
 -- get the needs that are visible in the file
 -- fix the path? TODO
-docRepNeeds2 fnx = do
-  dr1 <- read8 fnx docRepFileType
-  let n1 = docRepNeeds dr1
+docrepNeeds2 fnx = do
+  dr1 <- read8 fnx docrepFileType
+  let n1 = docrepNeeds dr1
   return n1
 
-docRepNeeds :: DocRep -> [FilePath]
+docrepNeeds :: DocRep -> [FilePath]
 -- ^ collect the needs (bib, images, css?)
-docRepNeeds (DocRep y1 p1) = map t2s . catMaybes $ [imgs, bibs]
+docrepNeeds (DocRep y1 p1) = map t2s . catMaybes $ [imgs, bibs]
   where
     imgs = getAtKey y1 "image" :: Maybe Text
     bibs = getAtKey y1 "bibliography" :: Maybe Text

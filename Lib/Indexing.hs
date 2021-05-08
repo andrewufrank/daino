@@ -78,7 +78,7 @@ getFile2index :: Path Abs File -> ErrIO (Maybe IndexEntry)
 -- the directories are represented by their index files 
 -- produce separately to preserve the two groups 
 getFile2index fnin = do
-        (DocRep y1 _) <- read8 fnin docRepFileType
+        (DocRep y1 _) <- read8 fnin docrepFileType
         ix1 :: IndexEntry <- fromJSONerrio y1
         return . Just $ ix1
     `catchError`  (\e  -> do

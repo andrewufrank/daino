@@ -36,7 +36,7 @@ import UniformBase
 -- test_allLabels = do
 --     res <- runErr $ do
 --             let fn1 = (makeAbsFile "/home/frank/Workspace11/ssg/docs/site/baked/Blog/blog1.docrep")
---             dr1 <- read8  fn1 docRepFileType
+--             dr1 <- read8  fn1 docrepFileType
 --             putIOwords ["test_allLabels", showT . yam $ dr1]
 --             let bakedP = bakedDir layoutDefaults
 --             dr2 <- checkDocRep1 doughP bakedP fn1 (yam dr1)
@@ -52,7 +52,7 @@ exp1 = zero
 -- test_resultLabels = do
 --     res <- runErr $ do
 --             let fn1 = (makeAbsFile "/home/frank/Workspace11/ssg/docs/site/baked/Blog/blog1.docrep")
---             dr1 <- read8  fn1 docRepFileType
+--             dr1 <- read8  fn1 docrepFileType
 --             putIOwords ["test_allLabels", showT . yam $ dr1]
 --             let bakedP = bakedDir layoutDefaults
 --             dr2 <- checkDocRep bakedP fn1 dr1
