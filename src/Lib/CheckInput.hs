@@ -69,10 +69,16 @@ checkDocrep :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> Docrep -> ErrIO 
 -- first for completeness of metadata in yaml 
 -- fails if required labels are not present
 checkDocrep doughP bakedP fn (Docrep y1 p1) = do
-    y2 <- checkDocrep1 doughP bakedP fn y1
-    let y3 = mergeLeftPref [toJSON y2, y1]
-    putIOwords ["checkDocrep", "y3", showT y3]
-    return (Docrep y3 p1)
+    let m0 = def ::MetaPage 
+        mFiles = addFileMetaPage doughP bakedP fn  
+        y2 = mergeLeftPref [toJSON mFiles, y1, toJSON m0]
+        -- preference of files as computed 
+        -- over what is set in md file
+        -- over default 
+    -- y2 <- completeMetaPage doughP bakedP fn y1
+    -- let y3 = mergeLeftPref [toJSON y2, y1]
+    putIOwords ["checkDocrep", "y2", showT y2]
+    return (Docrep y2 p1)
 
 data IndexEntry = IndexEntry
                     { fn :: Path Abs File
