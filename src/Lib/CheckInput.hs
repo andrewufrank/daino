@@ -33,6 +33,7 @@ import Uniform.Filetypes4sites ( Docrep(Docrep) )
 
 import UniformBase
 import Uniform.Json 
+import Lib.MetaPage 
     
 import           Data.List                      ( (\\) )
 import Data.Aeson
@@ -98,84 +99,6 @@ instance FromJSON IndexEntry
 
 
 
-data DocYaml = DocYaml {dyFn :: FilePath  -- the original dough fn 
-                        , dyLink :: FilePath -- the relative filename
-                        , dyLang :: DocLanguage
-                        -- the fields of miniblog
-                        , dyTitle :: Text
-                        , dyAbstract :: Text
-
-                        , dyAuthor :: Text
-                        , dyDate :: Maybe Text
-                        -- ^ this is maybe a string, 
-                        --  should be utctime 
-                        , dyKeywords :: Text  -- should be [Text]
-                        , dyBibliography :: Maybe Text
-                        , dyStyle :: Maybe Text
-
-                        , dyPublish :: Maybe Text
-                        , dyIndexPage :: Bool
-                        , dyDirEntries :: [IndexEntry]
-                        , dyFileEntries :: [IndexEntry]
-
-
-            } deriving (Show,  Ord, Eq, Generic)  --Read,
-
-instance Zeros DocYaml where
-    zero = DocYaml zero
-                   zero
-                   DLenglish
-                   zero
-                   zero
-                   zero
-                   zero
-                   zero
-                   zero
-                   zero
-                   zero
-                   zero
-                   []
-                   []
-instance Default DocYaml where
-    def = zero { dyLang = DLenglish }
-
-docyamlOptions =
-    defaultOptions
-        {fieldLabelModifier = t2s . toLowerStart . s2t . drop 2 }
-instance ToJSON DocYaml where
-    toJSON = genericToJSON docyamlOptions
-
-instance FromJSON DocYaml where
-    parseJSON = genericParseJSON docyamlOptions
-
-
-    -- generic works only when all fields are present
-    -- merge with metarec definition later in file 
-    -- default values are set here and missing values to Nothing
--- parseYam ::   Value -> Parser
-
-parseJSONyaml (Object o) = -- withObject "person" $ \o -> 
-  -- the yam part is an object  
-  -- these are the required fields  
-  -- at the moment default language is DLenglish 
-                           do
-    dyTitle        <- o .: "title"
-    dyAbstract     <- o .: "abstract"
-    dyAuthor       <- o .:? "author" .!= ""
-    dyLang         <- o .:? "lang" .!= DLenglish  -- x^ default 
-    dyKeywords     <- o .: "keywords"
-    dyDate         <- o .:? "date"
-    dyFn           <- o .:? "fn" .!= ""  -- x^ as a default, is overwritten but avoids error msg
-    dyLink         <- o .:? "link" .!= ""  -- x^ the relative link for html, derive from fn
-    dyBibliography <- o .:? "bibliography"
-        -- the bib file if needed  
-    dyStyle        <- o .:? "style" -- x^ the csl file 
-
-    dyPublish      <- o .:? "publish"  --  .!= Nothing 
-    dyIndexPage  <- o .:? "indexPage" .!= False
-    dyDirEntries   <- o .:? "dirEntries" .!= []
-    dyFileEntries  <- o .:? "fileEntries" .!= []
-    return DocYaml { .. }
 
 checkDocrep1 :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> Value -> ErrIO DocYaml
 -- check the Docrep 
