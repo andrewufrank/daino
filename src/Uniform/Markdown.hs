@@ -41,7 +41,7 @@ where
 
 import UniformBase 
 -- import           Uniform.FileIO
-import           Uniform.Json
+-- import           Uniform.Json
 -- import           Uniform.TypedFile -- (TypedFiles7(..))
 -- import           Uniform.Yaml
 -- import           Uniform.Docrep
@@ -64,20 +64,19 @@ readMarkdown2docrep :: MarkdownText -> ErrIO Docrep
 -- as the metadata are partially duplicated
 readMarkdown2docrep md = do
     pd <- readMarkdown2 md
-    let (Pandoc meta1 _) = pd
-    let meta2                 = flattenMeta meta1
+    let meta2                 = flattenMeta . getMeta $ pd
     return (Docrep meta2 pd)
 
-readMd2meta :: Path Abs File -> ErrIO (Pandoc, Value)
--- ^ read a markdown file to metadata
-
-readMd2meta md = do
-  -- putIOwords ["readMd2meta", "readPandocFile", showT md]
-    mdtext :: MarkdownText <- read8 md markdownFileType
-    pandoc                 <- readMarkdown2 mdtext
-    let meta2 = flattenMeta (getMeta pandoc)
-    -- putIOwords ["readMd2meta", "readPandocFile", showT md, "done"]
-    return (pandoc, meta2)
+-- readMd2meta :: Path Abs File -> ErrIO (Pandoc, Value)
+-- -- ^ read a markdown file to metadata
+-- -- should not be used ? 
+-- readMd2meta md = do
+--   -- putIOwords ["readMd2meta", "readPandocFile", showT md]
+--     mdtext :: MarkdownText <- read8 md markdownFileType
+--     pandoc                 <- readMarkdown2 mdtext
+--     let meta2 = flattenMeta (getMeta pandoc)
+--     -- putIOwords ["readMd2meta", "readPandocFile", showT md, "done"]
+--     return (pandoc, meta2)
 
 
 

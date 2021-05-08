@@ -14,9 +14,14 @@ TODO
 
 ## Transformations of pages for the site
 - `md`: The each page shown on the site starts as an markdown file with yaml meta information. 
-- `docrep`: An internal represenation
+- `docrep`: the pandoc format of the page plus the completed metadata (json)
+        DROP docrep and produce directly panrep
+    - bakeOneMD2docrep
+        - readMarkdown2docrep (the result from pandoc)
+        - checkDocrep (complete with defaults, hardcode TODO)
+        - addRefs
 
-- `panrep`: Input format for pandoc 
+- `panrep`: Input format for pandoc with metadata as record
 - `html`: a page for the browser to show
 - `pdf`: a printable page
 - `texsnip`: intermediate format of a part of a page

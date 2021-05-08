@@ -89,6 +89,8 @@ instance TypedFiles7 Text Docrep where
 
 -------------------- fileType Panrep ----------
 -- a file containing what pandoc internally works on
+-- plus the complete set of the metadata
+
 extPanrep :: Extension
 extPanrep = Extension "panrep"
 
