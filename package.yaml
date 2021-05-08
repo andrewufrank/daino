@@ -79,35 +79,3 @@ tests:
   test:
     main: Testing.hs
     source-dirs: tests
-#       # - src
-    # other-modules: 
-    #   - Lib.CheckInputs_test
-      
-#     dependencies:
-#       - HTF 
-#       - QuickCheck 
-#       - ssg
-#       - pandoc-types
-#       - unordered-containers
-
-# #  -         base ,
-# #  -         uniform-algebras, 
-# #  -         uniform-strings -any,
-# #  -         uniform-convenience -any,
-# #  -         uniform-fileio -any,
-# #  -         uniform-error -any,
-# #  -         uniform-time -any,
-# #  -         uniform-json,
-# #  -         uniform-pandoc,
-# #  -         uniform-webserver,
-# #  -         uniform-cmdLineArgs,
-# #  -         uniform-shake,
-# #  -         shake,
-# #  -         path-io,
-# #  -         pipes,
-# #  -         uniform-watch ,
-# #  -         uniform-time,
-# # #  -         -- uniform-ftp ,
-# #  -         SSG -any
-
-#     # build-tools:  

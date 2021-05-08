@@ -56,13 +56,13 @@ import Lib.Foundation ( testSettingsFileName )
 --  number of args must correspond in order and number with the
 --  command arguments described in the parser
 data LitArgs = LitArgs
-  { publishSwitch  -- ^ p
-  , oldSwitch -- ^ o
-  , draftSwitch -- ^ d
-  , testSwitch  -- ^ t
-  , serverSwitch -- ^ s 
-  , watchSwitch -- ^ w 
-  , uploadSwitch -- ^ u  -- not yet used  
+  { publishSwitch  -- x^ p
+  , oldSwitch -- x^ o
+  , draftSwitch -- x^ d
+  , testSwitch  -- x^ t
+  , serverSwitch -- x^ s 
+  , watchSwitch -- x^ w 
+  , uploadSwitch -- x^ u  -- not yet used  
          :: Bool
    } deriving (Show)
 
