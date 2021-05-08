@@ -81,7 +81,7 @@ report_metaRec layout2 f = do
   let doughP = doughDir layout2 -- the regular dough
       bakedP = bakedDir layout2
   dr2 <- checkDocrep doughP bakedP f dr1
-  dr3 <- addRefs dr2
+  dr3 <- addRefs False dr2
   let report2 = dr3
 
   return . show $ report2

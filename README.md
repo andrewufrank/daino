@@ -11,3 +11,29 @@ Test with the included example site (in the `docs/site` directory) with -t switc
 ## Defaults
 The markdonw file for each page to produce contains in the yaml header values for title, author, date etc. Missing values are replaced with defaults, which are stored in the same format in a file.  
 TODO
+
+## Transformations of pages for the site
+- `md`: The each page shown on the site starts as an markdown file with yaml meta information. 
+- `docrep`: An internal represenation
+
+- `panrep`: Input format for pandoc 
+- `html`: a page for the browser to show
+- `pdf`: a printable page
+- `texsnip`: intermediate format of a part of a page
+- `tex`: a tex file for a page
+
+### MD -> Docrep
+The md files are 
+- read with `readMarkdown2docrep`
+- `checkDocrep` completes the meta yaml information 
+- `addRefs` adds and transforms the bibliographic data 
+
+The page is translated by `bakeOneMD2docrep`
+
+
+
+`bakeOneDocrep2panrep` to docrep file by 
+    - 
+## conversions between file
+
+hint for problems !tests/*, !unusedHaskellSources/*

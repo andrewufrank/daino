@@ -70,6 +70,9 @@ bakeOneMD2docrep debug flags inputFn layout resfn2 = do
   let doughP = doughDir layout
 
   dr1 <- readMarkdown2docrep md1
+  -- with a flattened version of json from Pandoc
+  -- what does it contain?
+  putIOwords ["readMarkdown2docrep", "dr1", showT dr1]
 
   -- check
   -- the fields for the index are prepared
@@ -78,7 +81,7 @@ bakeOneMD2docrep debug flags inputFn layout resfn2 = do
 
   dr2 <- checkDocrep doughP bakedP inputFn dr1
   -- does this use the listed refs?
-  dr3 <- addRefs dr2
+  dr3 <- addRefs debug dr2
 
   -- TODO needs refs
   -- let needs1  = docrepNeeds docrep1  :: [FilePath]

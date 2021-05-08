@@ -27,3 +27,5 @@ docs/site/baked/.shake.database
 **/*.idx
 **/*.aux
 
+report.html
+docs/site/resfile4checkProcess.txt
