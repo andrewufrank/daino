@@ -75,7 +75,7 @@ executables:
     source-dirs: app
     dependencies:
         ssg
-tests:
-  test:
-    main: Testing.hs
-    source-dirs: tests
+# tests:
+#   test:
+#     main: Testing.hs
+#     source-dirs: tests

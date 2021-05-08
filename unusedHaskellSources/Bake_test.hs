@@ -47,14 +47,14 @@ indexedRes = makeAbsFile "/home/frank/Workspace11/ssg/docs/site/checks/index"
 -- test_addRefs   = testVar0FileIO "ssg" (drfnRefRes) "AddRefs"
 --          op2test
 --     where 
---         op2test :: (Path Abs File ) -> ErrIO DocRep
+--         op2test :: (Path Abs File ) -> ErrIO Docrep
 --         op2test (fn ) = do 
 --             dr1 <- read8 fn docrepFileType  
 --             dr2 <- docrepAddRefs dr1 
 --             -- drRes <- readMarkdown2docrep resfn
 --             return dr2
 
--- instance ShowTestHarness DocRep 
+-- instance ShowTestHarness Docrep 
 bakedP = bakedDir testLayout
 doughP = doughDir testLayout
 

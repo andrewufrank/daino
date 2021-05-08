@@ -2,9 +2,12 @@
 --
 -- Module      :  check all inputs and produce a record summary
 -- puts the content of doc yaml header in to DocYaml
--- could the text, the pandoc etc. all go there? 
--- fills the DocYaml with defaults and the filename 
 
+-- could the text, the pandoc etc. all go there? 
+-- at the moment it seems easier to keep the pandoc 
+-- format separately
+
+-- fills the DocYaml with defaults and the filename 
 -- if more data are needed to describe an entry then add it here!
 
 -----------------------------------------------------------------------------
@@ -25,9 +28,8 @@ module Lib.CheckInput where
 import GHC.Generics ( Generic )
 import Data.Default ( Default(..) )
 import Uniform.Shake (makeRelativeP)
-import Lib.Foundation ()
--- import Uniform.DocRep ( DocRep(DocRep) )
-import Uniform.Filetypes4sites
+-- import Lib.Foundation ()
+import Uniform.Filetypes4sites ( Docrep(Docrep) ) 
 
 import UniformBase
 import Uniform.Json 
@@ -64,17 +66,17 @@ instance FromJSON DocLanguage
 instance ToJSON DocLanguage
     -- is this clever to have a new language datatype? 
 
-checkDocRep :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> DocRep -> ErrIO DocRep
--- check the DocRep 
+checkDocrep :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> Docrep -> ErrIO Docrep
+-- check the Docrep 
 -- the bakedP root is necessary to complete the style and bib entries
 -- as well as image? 
 -- first for completeness of metadata in yaml 
 -- fails if required labels are not present
-checkDocRep doughP bakedP fn (DocRep y1 p1) = do
-    y2 <- checkDocRep1 doughP bakedP fn y1
+checkDocrep doughP bakedP fn (Docrep y1 p1) = do
+    y2 <- checkDocrep1 doughP bakedP fn y1
     let y3 = mergeLeftPref [toJSON y2, y1]
-    putIOwords ["checkDocRep", "y3", showT y3]
-    return (DocRep y3 p1)
+    putIOwords ["checkDocrep", "y3", showT y3]
+    return (Docrep y3 p1)
 
 data IndexEntry = IndexEntry
                     { fn :: Path Abs File
@@ -175,19 +177,19 @@ parseJSONyaml (Object o) = -- withObject "person" $ \o ->
     dyFileEntries  <- o .:? "fileEntries" .!= []
     return DocYaml { .. }
 
-checkDocRep1 :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> Value -> ErrIO DocYaml
--- check the DocRep 
+checkDocrep1 :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> Value -> ErrIO DocYaml
+-- check the Docrep 
 -- first for completeness of metadata in yaml 
 -- fails if required labels are not present
 -- sets filename 
-checkDocRep1 doughP bakedP fn y1 = do
-    putIOwords ["checkDocRep1 start"]
+checkDocrep1 doughP bakedP fn y1 = do
+    putIOwords ["checkDocrep1 start"]
     let resdy = parseEither parseJSONyaml y1
             :: Either String DocYaml
     case resdy of
         Left msg ->
             errorT
-                [ "checkDocRep1 not all required fields"
+                [ "checkDocrep1 not all required fields"
                 , s2t msg
                 , "in file"
                 , showT fn
@@ -203,12 +205,12 @@ checkDocRep1 doughP bakedP fn y1 = do
                                           (dyBibliography resdy1)
                     , dyIndexPage = (nakFn == "index") || dyIndexPage resdy1
                     }
-            when False $ putIOwords ["checkDocRep1 1 resdy2", showT resdy2]
+            when False $ putIOwords ["checkDocrep1 1 resdy2", showT resdy2]
             -- dy <- case resdy of 
             --         Error msg -> error msg 
             --         Success a -> return a 
             let dy = resdy2
-            putIOwords ["checkDocRep1 dy", showT dy]
+            putIOwords ["checkDocrep1 dy", showT dy]
             return dy
 
 addBakedRoot :: Path  Abs Dir -> Maybe Text -> Maybe Text

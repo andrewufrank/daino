@@ -19,13 +19,13 @@
 
 module Lib.CheckProcess where
 
-import Lib.CheckInput (checkDocRep) -- (getTripleDoc, MetaRec(..))
+import Lib.CheckInput (checkDocrep) -- (getTripleDoc, MetaRec(..))
 import Lib.Foundation (SiteLayout (..))
 import Lib.ReadSettingFile (readSettings)
 import Pipes ((>->))
 import qualified Pipes as Pipe
 import qualified Pipes.Prelude as PipePrelude
-import Uniform.DocRep (addRefs)
+import Uniform.Docrep (addRefs)
 import Uniform.Markdown (markdownFileType, readMarkdown2docrep)
 import UniformBase
 
@@ -80,7 +80,7 @@ report_metaRec layout2 f = do
   dr1 <- readMarkdown2docrep md1
   let doughP = doughDir layout2 -- the regular dough
       bakedP = bakedDir layout2
-  dr2 <- checkDocRep doughP bakedP f dr1
+  dr2 <- checkDocrep doughP bakedP f dr1
   dr3 <- addRefs dr2
   let report2 = dr3
 

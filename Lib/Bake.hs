@@ -22,7 +22,7 @@ module Lib.Bake
  
 where
 
-import Lib.CheckInput (checkDocRep) --                 ( getTripleDoc )
+import Lib.CheckInput (checkDocrep) --                 ( getTripleDoc )
 import Lib.CmdLineArgs (PubFlags (..))
 import Lib.Foundation
   ( SiteLayout (..),
@@ -34,7 +34,7 @@ import Lib.Templating (putValinMaster)
 import qualified Path.IO as Path
   ( getTempDir,
   )
-import Uniform.DocRep
+import Uniform.Docrep
 
 import Uniform.Markdown
 import Uniform.PandocImports 
@@ -76,7 +76,7 @@ bakeOneMD2docrep debug flags inputFn layout resfn2 = do
   -- merge the yaml metadata with default to have the 
   -- necessary values set 
 
-  dr2 <- checkDocRep doughP bakedP inputFn dr1
+  dr2 <- checkDocrep doughP bakedP inputFn dr1
   -- does this use the listed refs?
   dr3 <- addRefs dr2
 

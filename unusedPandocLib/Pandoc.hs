@@ -1,6 +1,6 @@
 {-# LANGUAGE DeriveGeneric #-}
 ------------------------------------------------------
--- Module DocRep  (which is pandoc and metarec
+-- Module Docrep  (which is pandoc and metarec
 -- originally copied from Slick  because it concentrates all funny pandoc stuff here (including the
 -- writing of the json
 ----------------------------------------------------------
@@ -56,9 +56,9 @@ docrepNeeds2 fnx = do
   let n1 = docrepNeeds dr1
   return n1
 
-docrepNeeds :: DocRep -> [FilePath]
+docrepNeeds :: Docrep -> [FilePath]
 -- ^ collect the needs (bib, images, css?)
-docrepNeeds (DocRep y1 p1) = map t2s . catMaybes $ [imgs, bibs]
+docrepNeeds (Docrep y1 p1) = map t2s . catMaybes $ [imgs, bibs]
   where
     imgs = getAtKey y1 "image" :: Maybe Text
     bibs = getAtKey y1 "bibliography" :: Maybe Text
