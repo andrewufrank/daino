@@ -18,7 +18,7 @@ TODO
         DROP docrep and produce directly panrep
     - bakeOneMD2docrep
         - readMarkdown2docrep (the result from pandoc)
-        - checkDocrep (complete with defaults, hardcode TODO)
+        - completeDocRep (complete with defaults, hardcode TODO)
         - addRefs
 
 - `panrep`: Input format for pandoc with metadata as record
@@ -30,7 +30,7 @@ TODO
 ### MD -> Docrep
 The md files are 
 - read with `readMarkdown2docrep`
-- `checkDocrep` completes the meta yaml information 
+- `completeDocRep` completes the meta yaml information 
 - `addRefs` adds and transforms the bibliographic data 
 
 The page is translated by `bakeOneMD2docrep`

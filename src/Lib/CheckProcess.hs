@@ -19,7 +19,7 @@
 
 module Lib.CheckProcess where
 
-import Lib.CheckInput (checkDocrep) -- (getTripleDoc, MetaRec(..))
+import Lib.CheckInput (completeDocRep) -- (getTripleDoc, MetaRec(..))
 import Lib.Foundation (SiteLayout (..))
 import Lib.ReadSettingFile (readSettings)
 import Pipes ((>->))
@@ -80,7 +80,7 @@ report_metaRec layout2 f = do
   dr1 <- readMarkdown2docrep md1
   let doughP = doughDir layout2 -- the regular dough
       bakedP = bakedDir layout2
-  dr2 <- checkDocrep doughP bakedP f dr1
+  dr2 <- completeDocRep doughP bakedP f dr1
   dr3 <- addRefs False dr2
   let report2 = dr3
 

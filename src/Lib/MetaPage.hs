@@ -79,7 +79,7 @@ instance Default MetaPage where
       { dyFn = zero,
         dyLink = zero,
         dyLang = DLenglish,
-        dyTitle = zero,
+        dyTitle = "FILL",
         dyAbstract = zero,
         dyAuthor = "Andrew U Frank",
         dyDate = Just . showT $ year2000,
