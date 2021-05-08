@@ -47,7 +47,20 @@ dependencies:
     - data-default
    
     # not in uniformBase:
-    - uniform-pandoc  
+    # - uniform-pandoc  
+    - pandoc 
+    - doclayout
+    - doctemplates
+    - pandoc-citeproc
+    - lens-aeson
+    - lens 
+    - pandoc-types
+    - bibtex
+    - aeson 
+    - parsec
+    - containers
+    - process
+
     - uniform-convenience 
     - uniform-watch 
     - uniform-webserver
@@ -58,7 +71,10 @@ dependencies:
   # -- - pandoc-types
 
 library:
-  source-dirs: .
+  source-dirs: 
+      - src 
+  
+
   # other: watch 
  
 executables:  

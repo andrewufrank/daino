@@ -61,7 +61,7 @@ checkProcess debug filepath = do
 tmpResultFile :: Path Abs File
 tmpResultFile = makeAbsFile "/home/frank/Workspace11/ssg/docs/site/resfile4checkProcess.txt" :: Path Abs File
 
-allFilenames3 :: Path Abs Dir -> ErrIO Text
+allFilenames3 :: Path Abs Dir -> ErrIO (Text)
 allFilenames3 dirname = do
   pipedDoIO tmpResultFile dirname showT
   readFile2 tmpResultFile
@@ -81,7 +81,7 @@ report_metaRec layout2 f = do
   let doughP = doughDir layout2 -- the regular dough
       bakedP = bakedDir layout2
   dr2 <- checkDocrep doughP bakedP f dr1
-  dr3 <- addRefs dr2
+  dr3 <- addRefs False dr2
   let report2 = dr3
 
   return . show $ report2

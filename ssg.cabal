@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 399610abdfd38258b2c411bf15c826c7243f7099750678d969f401bb85d94bec
+-- hash: f801fba5a23e591c63296d02a96c98b7904cd71c8a64824c96332f6f9baf4bdd
 
 name:           ssg
 version:        0.0.4.2
@@ -41,24 +41,41 @@ library
       Lib.StartSSGprocess
       Lib.Templating
       Lib.Watch
+      Uniform.BibTex
+      Uniform.Docrep
+      Uniform.Filetypes4sites
+      Uniform.HTMLout
+      Uniform.Markdown
+      Uniform.Pandoc
+      Uniform.PandocImports
+      Uniform.ProcessPDF
   other-modules:
       Paths_ssg
   hs-source-dirs:
-      ./.
+      src
   ghc-options: -Wall -fno-warn-unused-binds -fno-warn-unused-imports -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-dodgy-imports -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-duplicate-exports -fno-warn-missing-methods
   build-depends:
       aeson
     , base
+    , bibtex
     , containers
     , data-default
+    , doclayout
+    , doctemplates
+    , lens
+    , lens-aeson
     , optparse-applicative
     , optparse-generic
+    , pandoc
+    , pandoc-citeproc
+    , pandoc-types
+    , parsec
     , path-io
     , pipes
+    , process
     , shake
     , uniform-convenience
     , uniform-json
-    , uniform-pandoc
     , uniform-shake
     , uniform-watch
     , uniform-webserver
@@ -75,17 +92,26 @@ executable ssgbake
   build-depends:
       aeson
     , base
+    , bibtex
     , containers
     , data-default
+    , doclayout
+    , doctemplates
+    , lens
+    , lens-aeson
     , optparse-applicative
     , optparse-generic
+    , pandoc
+    , pandoc-citeproc
+    , pandoc-types
+    , parsec
     , path-io
     , pipes
+    , process
     , shake
     , ssg
     , uniform-convenience
     , uniform-json
-    , uniform-pandoc
     , uniform-shake
     , uniform-watch
     , uniform-webserver
@@ -102,17 +128,26 @@ executable ssgcheck
   build-depends:
       aeson
     , base
+    , bibtex
     , containers
     , data-default
+    , doclayout
+    , doctemplates
+    , lens
+    , lens-aeson
     , optparse-applicative
     , optparse-generic
+    , pandoc
+    , pandoc-citeproc
+    , pandoc-types
+    , parsec
     , path-io
     , pipes
+    , process
     , shake
     , ssg
     , uniform-convenience
     , uniform-json
-    , uniform-pandoc
     , uniform-shake
     , uniform-watch
     , uniform-webserver

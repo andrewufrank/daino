@@ -19,16 +19,8 @@
             -fno-warn-unused-matches #-}
 
 module Lib.Bake
-  ( module Lib.Bake,
-    bakeOneFile2docrep,
-    -- , bakeOneFile2html
-    -- , bakeOneFile2texsnip
-    -- , bakeOneTexSnip2pdf
-    -- , bakeDocValue2html
-  )
+ 
 where
-
---  ( replaceExtension' )
 
 import Lib.CheckInput (checkDocrep) --                 ( getTripleDoc )
 import Lib.CmdLineArgs (PubFlags (..))
@@ -43,21 +35,12 @@ import qualified Path.IO as Path
   ( getTempDir,
   )
 import Uniform.Docrep
-  ( HTMLout,
-    addRefs,
-    docrep2panrep,
-    docrepFileType,
-    htmloutFileType,
-  )
-import Uniform.Markdown
-import Uniform.PandocImports ( panrepFileType, texSnipFileType )
 
+import Uniform.Markdown
+import Uniform.PandocImports 
 import Uniform.ProcessPDF
-  ( panrep2texsnip,
-    tex2latex,
-    texFileType,
-    writePDF2,
-  )
+import Uniform.Filetypes4sites
+
 import Uniform.Shake ()
 import UniformBase
 
@@ -70,8 +53,8 @@ type BakeOp =
   Path Abs File ->
   ErrIO ()
 
-bakeOneFile2docrep :: BakeOp --    MD -> DOCREP
-bakeOneFile2docrep debug flags inputFn layout resfn2 = do
+bakeOneMD2docrep :: BakeOp --    MD -> DOCREP
+bakeOneMD2docrep debug flags inputFn layout resfn2 = do
   putIOwords
     [ "\n-----------------",
       "bakeOneFile2docrep 1 fn",
@@ -87,13 +70,18 @@ bakeOneFile2docrep debug flags inputFn layout resfn2 = do
   let doughP = doughDir layout
 
   dr1 <- readMarkdown2docrep md1
+  -- with a flattened version of json from Pandoc
+  -- what does it contain?
+  putIOwords ["readMarkdown2docrep", "dr1", showT dr1]
 
   -- check
   -- the fields for the index are prepared
+  -- merge the yaml metadata with default to have the 
+  -- necessary values set 
 
   dr2 <- checkDocrep doughP bakedP inputFn dr1
   -- does this use the listed refs?
-  dr3 <- addRefs dr2
+  dr3 <- addRefs debug dr2
 
   -- TODO needs refs
   -- let needs1  = docrepNeeds docrep1  :: [FilePath]
@@ -110,9 +98,9 @@ bakeOneFile2docrep debug flags inputFn layout resfn2 = do
       ]
   return () -- (needs1) --"ok bakeOneFile2docrep"
 
-bakeOneFile2panrep :: BakeOp --  DOCREP -> PANREP
+bakeOneDocrep2panrep :: BakeOp --  DOCREP -> PANREP
 -- TODO
-bakeOneFile2panrep debug flags inputFn layout resfn2 = do
+bakeOneDocrep2panrep debug flags inputFn layout resfn2 = do
   putIOwords
     [ "\n-----------------",
       "bakeOneFile2panrep 1 fn",
@@ -138,9 +126,8 @@ bakeOneFile2panrep debug flags inputFn layout resfn2 = do
       ["\n-----------------", "bakeOneFile2panrep done fn", showT p2]
   return () --"ok bakeOneFile2docrep"
 
-bakeOneFile2html :: BakeOp --  PANREP -> HTML
--- TODO
-bakeOneFile2html debug flags inputFn layout resfn2 = do
+bakeOnePanrep2html :: BakeOp -- TODO
+bakeOnePanrep2html debug flags inputFn layout resfn2 = do
   putIOwords
     [ "\n-----------------",
       "bakeOneFile2html 1 fn",
@@ -166,9 +153,9 @@ bakeOneFile2html debug flags inputFn layout resfn2 = do
       ["\n-----------------", "bakeOneFile2html done fn", showT resfn2]
   return () --"ok bakeOneFile2docrep"
 
-bakeOneFile2texsnip :: BakeOp --  PANREP -> TEXSNIP
+bakeOnePanrep2texsnip :: BakeOp --  PANREP -> TEXSNIP
 -- TODO
-bakeOneFile2texsnip debug flags inputFn layout resfn2 = do
+bakeOnePanrep2texsnip debug flags inputFn layout resfn2 = do
   putIOwords
     [ "\n-----------------",
       "bakeOneFile2texsnip 1 fn",
@@ -189,9 +176,9 @@ bakeOneFile2texsnip debug flags inputFn layout resfn2 = do
       ["\n-----------------", "bakeOneFile2html done fn", showT resfn2]
   return () --"ok bakeOneFile2docrep"
 
-bakeOneFile2tex :: BakeOp -- TEXSNIP -> TEX
+bakeOneTexsnip2tex :: BakeOp -- TEXSNIP -> TEX
 -- TODO
-bakeOneFile2tex debug flags inputFn layout resfn2 = do
+bakeOneTexsnip2tex debug flags inputFn layout resfn2 = do
   putIOwords
     [ "\n-----------------",
       "bakeOneFile2tex 1 fn",
@@ -214,9 +201,9 @@ bakeOneFile2tex debug flags inputFn layout resfn2 = do
       ["\n-----------------", "bakeOneFile2tex done fn", showT resfn2]
   return () --"ok bakeOneFile2docrep"
 
-bakeOneFile2pdf :: BakeOp
+bakeOneTex2pdf :: BakeOp
 -- TODO
-bakeOneFile2pdf debug flags inputFn layout resfn2 = do
+bakeOneTex2pdf debug flags inputFn layout resfn2 = do
   putIOwords
     [ "\n-----------------",
       "bakeOneFile2pdf 1 fn:",
