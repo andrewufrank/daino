@@ -30,7 +30,7 @@ import           Lib.CheckInput
 import           Lib.Foundation                 ( SiteLayout )
 
 addIndex2yam :: Path Abs Dir -> Bool -> Panrep -> ErrIO Panrep
--- ^ the top call to form the index data into the DocYaml
+-- ^ the top call to form the index data into the MetaPage
 --later only the format for output must be fixed 
 addIndex2yam bakedP _  dr@(Panrep yam1 _) = do
     putIOwords ["addIndex2yam", "start", showT yam1]

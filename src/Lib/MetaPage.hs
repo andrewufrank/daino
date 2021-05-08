@@ -8,6 +8,10 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE DeriveGeneric     #-}
+{-# LANGUAGE DeriveAnyClass     #-}
+
 {-# OPTIONS_GHC -Wall -fno-warn-orphans 
             -fno-warn-missing-signatures
             -fno-warn-missing-methods 
@@ -17,6 +21,7 @@
 -- | The data describing a page of the site (i.e. an md file)
 -- the default is merged with the values in the yaml head 
 -- all entries there should be from this list
+{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 module Lib.MetaPage where
 
 
@@ -24,11 +29,16 @@ import Lib.CmdLineArgs (PubFlags (..))
 import Lib.Foundation (SiteLayout (..))
 import Uniform.Pandoc
 import Uniform.Filetypes4sites
+import           Uniform.PandocImports
+import           Uniform.Json
+import Data.Aeson.Types
+import Data.Default ( Default(..) )
+import Uniform.Shake (makeRelativeP)
 
-import UniformBase ()
+import UniformBase  
 
 
-data DocYaml = DocYaml {dyFn :: FilePath  -- the original dough fn 
+data MetaPage = MetaPage {dyFn :: FilePath  -- the original dough fn 
                         , dyLink :: FilePath -- the relative filename
                         , dyLang :: DocLanguage
                         -- the fields of miniblog
@@ -45,14 +55,15 @@ data DocYaml = DocYaml {dyFn :: FilePath  -- the original dough fn
 
                         , dyPublish :: Maybe Text
                         , dyIndexPage :: Bool
-                        , dyDirEntries :: [IndexEntry]
-                        , dyFileEntries :: [IndexEntry]
+                        -- , dyDirEntries :: [IndexEntry]
+                        -- , dyFileEntries :: [IndexEntry]
+                        -- is defined later, necessary here?
 
 
             } deriving (Show,  Ord, Eq, Generic, Zeros)  --Read,
 
--- instance Zeros DocYaml where
---     zero = DocYaml zero
+-- instance Zeros MetaPage where
+--     zero = MetaPage zero
 --                    zero
 --                    DLenglish
 --                    zero
@@ -64,24 +75,24 @@ data DocYaml = DocYaml {dyFn :: FilePath  -- the original dough fn
 --                    zero
 --                    zero
 --                    zero
---                    []
---                    []
+                --    []
+                --    []
 
-instance Default DocYaml where
+instance Default MetaPage where
     def = zero {dyFn = zero 
                 , dyLink = zero
                 , dyLang = DLenglish 
                 , dyTitle = zero
                 , dyAbstract = zero
-                , dyAuthor = Andrew U Frank
-                , dyDate = Just year2000  
+                , dyAuthor = "Andrew U Frank"
+                , dyDate = Just . showT $ year2000  
                 , dyKeywords = zero
-                , dyBibliography = "BibTexLatex.bib"
-                , dyStyle = "chicago-fullnote-bibliography-bb.csl"
-                , dyPublish = ""
+                , dyBibliography = Just "BibTexLatex.bib"
+                , dyStyle = Just "chicago-fullnote-bibliography-bb.csl"
+                , dyPublish = Nothing
                 , dyIndexPage = False 
-                , dyDirEntries = zero
-                , dyFileEntries = zero
+                -- , dyDirEntries = zero
+                -- , dyFileEntries = zero
                 }
 
 docyamlOptions :: Options
@@ -89,10 +100,10 @@ docyamlOptions =
     defaultOptions
         {fieldLabelModifier = t2s . toLowerStart . s2t . drop 2 }
 
-instance ToJSON DocYaml where
+instance ToJSON MetaPage where
     toJSON = genericToJSON docyamlOptions
 
-instance FromJSON DocYaml where
+instance FromJSON MetaPage where
     parseJSON = genericParseJSON docyamlOptions
 
 
@@ -120,11 +131,11 @@ parseJSONyaml (Object o) = -- withObject "person" $ \o ->
 
     dyPublish      <- o .:? "publish"  --  .!= Nothing 
     dyIndexPage  <- o .:? "indexPage" .!= False
-    dyDirEntries   <- o .:? "dirEntries" .!= []
-    dyFileEntries  <- o .:? "fileEntries" .!= []
-    return DocYaml { .. }
+    -- dyDirEntries   <- o .:? "dirEntries" .!= []
+    -- dyFileEntries  <- o .:? "fileEntries" .!= []
+    return MetaPage { .. }
 
-checkDocrep1 :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> Value -> ErrIO DocYaml
+checkDocrep1 :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> Value -> ErrIO MetaPage
 -- complete the meta yaml data  
 -- test for completeness of metadata in yaml 
 -- fails if required labels are not present
@@ -133,7 +144,7 @@ checkDocrep1 :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> Value -> ErrIO 
 checkDocrep1 doughP bakedP fn y1 = do
     putIOwords ["checkDocrep1 start"]
     let resdy = parseEither parseJSONyaml y1
-            :: Either String DocYaml
+            :: Either String MetaPage
     case resdy of
         Left msg ->
             errorT
@@ -160,3 +171,29 @@ checkDocrep1 doughP bakedP fn y1 = do
             let dy = resdy2
             putIOwords ["checkDocrep1 dy", showT dy]
             return dy
+
+addBakedRoot :: Path  Abs Dir -> Maybe Text -> Maybe Text
+addBakedRoot bakedP Nothing = Nothing
+addBakedRoot bakedP (Just fp) = Just. s2t . toFilePath $ addFileName bakedP . t2s $ fp
+
+-- | another data type to rep languages
+data DocLanguage = DLgerman | DLenglish
+        deriving (Show, Read, Ord, Eq, Generic)
+instance Zeros DocLanguage where zero = DLenglish
+
+instance FromJSON DocLanguage
+instance ToJSON DocLanguage
+    -- is this clever to have a new language datatype? 
+
+
+data PublicationState = PSpublish | PSdraft | PSold | PSzero
+                  deriving (Generic,  Show, Read, Ord, Eq)
+-- ^ is this file ready to publish
+
+instance Zeros PublicationState where
+  zero = PSzero
+instance NiceStrings PublicationState where
+  shownice = drop' 2 . showT
+
+instance ToJSON PublicationState
+instance FromJSON PublicationState

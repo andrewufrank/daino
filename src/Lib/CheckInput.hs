@@ -1,13 +1,13 @@
 ------------------------------------------------------------------------------
 --
 -- Module      :  check all inputs and produce a record summary
--- puts the content of doc yaml header in to DocYaml
+-- puts the content of doc yaml header in to MetaPage
 
 -- could the text, the pandoc etc. all go there? 
 -- at the moment it seems easier to keep the pandoc 
 -- format separately
 
--- fills the DocYaml with defaults and the filename 
+-- fills the MetaPage with defaults and the filename 
 -- if more data are needed to describe an entry then add it here!
 
 -----------------------------------------------------------------------------
@@ -27,7 +27,6 @@ module Lib.CheckInput where
 
 import GHC.Generics ( Generic )
 import Data.Default ( Default(..) )
-import Uniform.Shake (makeRelativeP)
 -- import Lib.Foundation ()
 import Uniform.Filetypes4sites ( Docrep(Docrep) ) 
 
@@ -61,11 +60,7 @@ import Data.Aeson.Types
       (.:?) )
 import qualified Data.Map                      as M
 
-data DocLanguage = DLgerman | DLenglish
-        deriving (Show, Read, Ord, Eq, Generic)
-instance FromJSON DocLanguage
-instance ToJSON DocLanguage
-    -- is this clever to have a new language datatype? 
+
 
 checkDocrep :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> Docrep -> ErrIO Docrep
 -- check the Docrep 
@@ -100,57 +95,5 @@ instance FromJSON IndexEntry
 
 
 
-checkDocrep1 :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> Value -> ErrIO DocYaml
--- check the Docrep 
--- first for completeness of metadata in yaml 
--- fails if required labels are not present
--- sets filename 
-checkDocrep1 doughP bakedP fn y1 = do
-    putIOwords ["checkDocrep1 start"]
-    let resdy = parseEither parseJSONyaml y1
-            :: Either String DocYaml
-    case resdy of
-        Left msg ->
-            errorT
-                [ "checkDocrep1 not all required fields"
-                , s2t msg
-                , "in file"
-                , showT fn
-                ]
-        Right resdy1 -> do
-            -- heute <- getCurrentTimeUTC 
-            let nakFn = getNakedFileName fn
-            let resdy2 = resdy1
-                    { dyFn = toFilePath fn
-                      , dyLink = toFilePath $ makeRelativeP doughP fn
-                     , dyStyle =  addBakedRoot bakedP ( dyStyle resdy1)
-                     , dyBibliography = addBakedRoot bakedP
-                                          (dyBibliography resdy1)
-                    , dyIndexPage = (nakFn == "index") || dyIndexPage resdy1
-                    }
-            when False $ putIOwords ["checkDocrep1 1 resdy2", showT resdy2]
-            -- dy <- case resdy of 
-            --         Error msg -> error msg 
-            --         Success a -> return a 
-            let dy = resdy2
-            putIOwords ["checkDocrep1 dy", showT dy]
-            return dy
-
-addBakedRoot :: Path  Abs Dir -> Maybe Text -> Maybe Text
-addBakedRoot bakedP Nothing = Nothing
-addBakedRoot bakedP (Just fp) = Just. s2t . toFilePath $ addFileName bakedP . t2s $ fp
-
-
-data PublicationState = PSpublish | PSdraft | PSold | PSzero
-                  deriving (Generic,  Show, Read, Ord, Eq)
--- ^ is this file ready to publish
-
-instance Zeros PublicationState where
-  zero = PSzero
-instance NiceStrings PublicationState where
-  shownice = drop' 2 . showT
-
-instance ToJSON PublicationState
-instance FromJSON PublicationState
 
 
