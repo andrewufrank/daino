@@ -118,7 +118,7 @@ addRefs2 ::
   Text ->
   m Docrep
 addRefs2 debugx dr1@(Docrep y1 p1) biblio1 = do
-  let debugx = False 
+--   let debugx = False 
   when debugx $ putIOwords ["addRefs2-1", showT dr1, "\n"]
   let style1 = getAtKey y1 "style" :: Maybe Text
       refs1 = y1 ^? key "references" :: Maybe Value -- is an array

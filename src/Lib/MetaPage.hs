@@ -66,13 +66,29 @@ data DocYaml = DocYaml {dyFn :: FilePath  -- the original dough fn
 --                    zero
 --                    []
 --                    []
+
 instance Default DocYaml where
-    def = zero { dyLang = DLenglish }
+    def = zero {dyFn = zero 
+                , dyLink = zero
+                , dyLang = DLenglish 
+                , dyTitle = zero
+                , dyAbstract = zero
+                , dyAuthor = Andrew U Frank
+                , dyDate = Just year2000  
+                , dyKeywords = zero
+                , dyBibliography = "BibTexLatex.bib"
+                , dyStyle = "chicago-fullnote-bibliography-bb.csl"
+                , dyPublish = ""
+                , dyIndexPage = False 
+                , dyDirEntries = zero
+                , dyFileEntries = zero
+                }
 
 docyamlOptions :: Options
 docyamlOptions =
     defaultOptions
         {fieldLabelModifier = t2s . toLowerStart . s2t . drop 2 }
+
 instance ToJSON DocYaml where
     toJSON = genericToJSON docyamlOptions
 
@@ -89,7 +105,7 @@ parseJSONyaml (Object o) = -- withObject "person" $ \o ->
   -- the yam part is an object  
   -- these are the required fields  
   -- at the moment default language is DLenglish 
-                           do
+  do
     dyTitle        <- o .: "title"
     dyAbstract     <- o .: "abstract"
     dyAuthor       <- o .:? "author" .!= ""
@@ -107,3 +123,40 @@ parseJSONyaml (Object o) = -- withObject "person" $ \o ->
     dyDirEntries   <- o .:? "dirEntries" .!= []
     dyFileEntries  <- o .:? "fileEntries" .!= []
     return DocYaml { .. }
+
+checkDocrep1 :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> Value -> ErrIO DocYaml
+-- complete the meta yaml data  
+-- test for completeness of metadata in yaml 
+-- fails if required labels are not present
+-- adds defaults when
+-- sets filename 
+checkDocrep1 doughP bakedP fn y1 = do
+    putIOwords ["checkDocrep1 start"]
+    let resdy = parseEither parseJSONyaml y1
+            :: Either String DocYaml
+    case resdy of
+        Left msg ->
+            errorT
+                [ "checkDocrep1 not all required fields"
+                , s2t msg
+                , "in file"
+                , showT fn
+                ]
+        Right resdy1 -> do
+            -- heute <- getCurrentTimeUTC 
+            let nakFn = getNakedFileName fn
+            let resdy2 = resdy1
+                    { dyFn = toFilePath fn
+                      , dyLink = toFilePath $ makeRelativeP doughP fn
+                     , dyStyle =  addBakedRoot bakedP ( dyStyle resdy1)
+                     , dyBibliography = addBakedRoot bakedP
+                                          (dyBibliography resdy1)
+                    , dyIndexPage = (nakFn == "index") || dyIndexPage resdy1
+                    }
+            when False $ putIOwords ["checkDocrep1 1 resdy2", showT resdy2]
+            -- dy <- case resdy of 
+            --         Error msg -> error msg 
+            --         Success a -> return a 
+            let dy = resdy2
+            putIOwords ["checkDocrep1 dy", showT dy]
+            return dy
