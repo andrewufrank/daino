@@ -25,9 +25,10 @@ import Lib.ReadSettingFile (readSettings)
 import Pipes ((>->))
 import qualified Pipes as Pipe
 import qualified Pipes.Prelude as PipePrelude
-import Uniform.Docrep (addRefs)
-import Uniform.Markdown (markdownFileType, readMarkdown2docrepJSON)
+import Uniform.Docrep
+-- import Uniform.Markdown (markdownFileType, readMarkdown2docrepJSON)
 import UniformBase
+import Uniform.Pandoc
 
 checkProcess :: Bool -> FilePath -> ErrIO ()
 -- ^ checking all md files
@@ -61,7 +62,7 @@ checkProcess debug filepath = do
 tmpResultFile :: Path Abs File
 tmpResultFile = makeAbsFile "/home/frank/Workspace11/ssg/docs/site/resfile4checkProcess.txt" :: Path Abs File
 
-allFilenames3 :: Path Abs Dir -> ErrIO (Text)
+allFilenames3 :: Path Abs Dir -> ErrIO Text
 allFilenames3 dirname = do
   pipedDoIO tmpResultFile dirname showT
   readFile2 tmpResultFile

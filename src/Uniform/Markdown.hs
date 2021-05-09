@@ -47,7 +47,7 @@ import UniformBase
 -- import           Uniform.Docrep
 import           Uniform.PandocImports
 -- import Uniform.Pandoc as Pandoc
-import Uniform.Filetypes4sites
+-- import Uniform.Filetypes4sites
 
 
 -- import           Data.Aeson         -- for ^?, key
@@ -55,17 +55,6 @@ import Uniform.Filetypes4sites
 -- https://artyom.me/aeson
 import qualified Text.Pandoc                   as Pandoc
 
-readMarkdown2docrepJSON :: MarkdownText -> ErrIO DocrepJSON
--- | read a md file into a DocrepJSON
--- reads the markdown file with pandoc and extracts the yaml metadaat
--- the metadata are then copied over to the meta part
--- and converted in regular json
--- attention: there is potential duplication 
--- as the metadata are partially duplicated
-readMarkdown2docrepJSON md = do
-    pd <- readMarkdown2 md
-    let meta2                 = flattenMeta . getMeta $ pd
-    return (DocrepJSON meta2 pd)
 
 -- readMd2meta :: Path Abs File -> ErrIO (Pandoc, Value)
 -- -- ^ read a markdown file to metadata
@@ -77,7 +66,6 @@ readMarkdown2docrepJSON md = do
 --     let meta2 = flattenMeta (getMeta pandoc)
 --     -- putIOwords ["readMd2meta", "readPandocFile", showT md, "done"]
 --     return (pandoc, meta2)
-
 
 
 

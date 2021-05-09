@@ -66,11 +66,24 @@ import Uniform.Json
     Value,
     mergeRightPref,
   )
-import Uniform.PandocImports (Pandoc, unPandocM)
+import Uniform.PandocImports  
 import UniformBase
 
-fromJSONValue :: FromJSON a => Value -> Maybe a
-fromJSONValue = parseMaybe parseJSON
+
+
+readMarkdown2docrepJSON :: MarkdownText -> ErrIO DocrepJSON
+-- | read a md file into a DocrepJSON
+-- reads the markdown file with pandoc and extracts the yaml metadaat
+-- the metadata are then copied over to the meta part
+-- and converted in regular json
+-- attention: there is potential duplication 
+-- as the metadata are partially duplicated
+readMarkdown2docrepJSON md = do
+    pd <- readMarkdown2 md
+    let meta2                 = flattenMeta . getMeta $ pd
+    return (DocrepJSON meta2 pd)
+
+
 
 docrep2panrep :: DocrepJSON -> ErrIO Panrep
 -- ^ transform a docrep to a panrep (which is the pandoc rep)
