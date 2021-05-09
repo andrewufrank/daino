@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 02570722d2d59dfb66a19890adb511c767bcd0cad7751149df93c748c7291f65
+-- hash: d61270b0220a121e4b8592dd45d2e525fb278cb67de7514245cb39e437b7c194
 
 name:           ssg
 version:        0.0.4.2
@@ -47,8 +47,6 @@ library
       Uniform.Filetypes4sites
       Uniform.HTMLout
       Uniform.Markdown
-      Uniform.Pandoc
-      Uniform.PandocImports
       Uniform.ProcessPDF
   other-modules:
       Paths_ssg
@@ -77,6 +75,7 @@ library
     , shake
     , uniform-convenience
     , uniform-json
+    , uniform-pandoc
     , uniform-shake
     , uniform-watch
     , uniform-webserver
@@ -113,6 +112,7 @@ executable ssgbake
     , ssg
     , uniform-convenience
     , uniform-json
+    , uniform-pandoc
     , uniform-shake
     , uniform-watch
     , uniform-webserver
@@ -149,6 +149,7 @@ executable ssgcheck
     , ssg
     , uniform-convenience
     , uniform-json
+    , uniform-pandoc
     , uniform-shake
     , uniform-watch
     , uniform-webserver

@@ -14,10 +14,10 @@ TODO
 
 ## Transformations of pages for the site
 - `md`: The each page shown on the site starts as an markdown file with yaml meta information. 
-- `docrep`: the pandoc format of the page plus the completed metadata (json)
-        DROP docrep and produce directly panrep
+- `docrep`: the pandoc format of the page plus the completed metadata (DocrecJSON meta in json form, Docrep as record)
+        DROP ?? docrep and produce directly panrep
     - bakeOneMD2docrep
-        - readMarkdown2docrep (the result from pandoc)
+        - readMarkdown2docrepJSON (the result from pandoc)
         - completeDocRep (complete with defaults, hardcode TODO)
         - addRefs
 
@@ -29,7 +29,7 @@ TODO
 
 ### MD -> Docrep
 The md files are 
-- read with `readMarkdown2docrep`
+- read with `readMarkdown2docrepJSON`
 - `completeDocRep` completes the meta yaml information 
 - `addRefs` adds and transforms the bibliographic data 
 

@@ -22,6 +22,7 @@
 -- | The data describing a page of the site (i.e. an md file)
 -- the default is merged with the values in the yaml head
 -- all entries there should be from this list
+-- all JSON related functions here!
 module Lib.MetaPage where
 
 import Data.Aeson.Types

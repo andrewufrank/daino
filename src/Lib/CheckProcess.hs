@@ -26,7 +26,7 @@ import Pipes ((>->))
 import qualified Pipes as Pipe
 import qualified Pipes.Prelude as PipePrelude
 import Uniform.Docrep (addRefs)
-import Uniform.Markdown (markdownFileType, readMarkdown2docrep)
+import Uniform.Markdown (markdownFileType, readMarkdown2docrepJSON)
 import UniformBase
 
 checkProcess :: Bool -> FilePath -> ErrIO ()
@@ -77,7 +77,7 @@ report_metaRec layout2 f = do
   -- report3 = unlines' .filter (/= "\n") . lines' $ report2
   --replace with
   md1 <- read8 f markdownFileType
-  dr1 <- readMarkdown2docrep md1
+  dr1 <- readMarkdown2docrepJSON md1
   let doughP = doughDir layout2 -- the regular dough
       bakedP = bakedDir layout2
   dr2 <- completeDocRep doughP bakedP f dr1

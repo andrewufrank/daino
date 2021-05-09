@@ -1,76 +1,95 @@
-{-# LANGUAGE DeriveGeneric #-}
-------------------------------------------------------
--- Module DocrepJSON  (which is pandoc and metarec
--- originally copied from Slick  because it concentrates all funny pandoc stuff here (including the
--- writing of the json
-----------------------------------------------------------
+--------------------------------------------------------------------------
+--
+-- Module      :  Uniform.Pandoc
+        -- top import, darf nicht von andern importiert werden hier 
+-------------------------------
+-- {-# LANGUAGE BangPatterns                   #-}
+{-# LANGUAGE ConstraintKinds #-}
+-- {-# LANGUAGE DeriveDataTypeable    #-}
+{-# LANGUAGE DoAndIfThenElse #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeFamilies #-}
-{-# OPTIONS -fno-warn-dodgy-exports #-}
--- {-# LANGUAGE TypeSynonymInstances  #-}
-{-# OPTIONS_GHC -fno-warn-orphans
- -fno-warn-missing-signatures
- -fno-warn-missing-methods 
--fno-warn-duplicate-exports
--fno-warn-unused-imports 
--fno-warn-unused-matches #-}
+-- {-# LANGUAGE TypeSynonymInstances        #-}
+{-# LANGUAGE UndecidableInstances #-}
+{-# LANGUAGE DeriveGeneric #-}
 
-module Lib.Pandoc
-  ( module Lib.Pandoc,
-    getMeta,
-    getAtKey,
-    Pandoc (..),
-    flattenMeta,
-    readMarkdown2,
-    HTMLout (..),
-    htmloutFileType,
-    -- , MenuEntry
+{-# OPTIONS_GHC -Wall -fno-warn-orphans 
+            -fno-warn-missing-signatures
+            -fno-warn-missing-methods 
+            -fno-warn-duplicate-exports 
+            -fno-warn-unused-imports 
+            -fno-warn-dodgy-exports 
+            #-}
+
+module Uniform.Pandoc
+  ( module Uniform.Pandoc 
+      , unPandocM
+      , extPDF, extMD, extDocrep, extHTML, extTexSnip, extTex 
+  , Pandoc(..)
+  , DocrepJSON(..)
+  , module UniformBase 
+--   , module Uniform.Error   -- or at least ErrIO
+--   , module Uniform.Filenames 
+  , write8, read8,setExtension
+  , writeTexSnip2
+  , panrepFileType
+  , TypedFile5(..)
+  , TypedFiles5(..)
+  , TypedFiles7(..)
+  , read8
+--   , module Uniform.Json
+  , module Uniform.ProcessPDF
+  , module Uniform.Markdown
+  , module Uniform.Docrep
+--   , module Uniform.BibTex
+  , module Uniform.HTMLout
+  , module Uniform.PandocImports
+    , ReaderOptions
+    , writerExtensions
+    , writerHighlightStyle
+    , WriterOptions(..)
   )
 where
+import UniformBase -- hiding (readYaml2value)
 
--- hiding (Meta(..))
+-- import           Uniform.Error
+-- import           Uniform.Filenames
+-- import           Uniform.TypedFile              ( TypedFiles7(..)
+--                                                 , TypedFiles5(..)
+--                                                 , TypedFile5(..)
+--                                                 )
+-- import           Uniform.FileIO                 ( write8
+--                                                 , read8
+--                                                 -- , setExtension
+--                                                 )
+-- import           Uniform.Json
+-- import           Uniform.Yaml
+import Uniform.Docrep
+import Uniform.ProcessPDF 
+import Uniform.HTMLout
+import Uniform.Markdown
+import Uniform.PandocImports
+import Uniform.Filetypes4sites
 
-import Lib.CmdLineArgs (PubFlags (..))
-import Lib.Foundation (SiteLayout (..))
-import Uniform.BibTex ()
-import Uniform.Convenience.DataVarious
-import Uniform.HTMLout (HTMLout (..), htmloutFileType)
-import Uniform.Markdown (readMarkdown2)
-import Uniform.Pandoc
-  
-import UniformBase
-import Uniform.Json 
 
-   
+-- import qualified Text.Pandoc                   as Pandoc
+-- import           Text.Pandoc        
+--             -- ( Pandoc(..)
+--             --             , ReaderOptions
+--             --             , Meta
+--             --             , MetaValue
+--             --             , writerHighlightStyle
+--             --             , writerExtensions
+--             --             , WriterOptions 
+--             --             -- , writeMarkdown
+--             --             , writeHtml5String
+--             --             , writeLaTeX
+--             --             , def
+--             --             )
 
--------------------
-docrepNeeds2 :: Path Abs File -> ErrIO [FilePath]
--- get the needs that are visible in the file
--- fix the path? TODO
-docrepNeeds2 fnx = do
-  dr1 <- read8 fnx docrepFileType
-  let n1 = docrepNeeds dr1
-  return n1
-
-docrepNeeds :: DocrepJSON -> [FilePath]
--- ^ collect the needs (bib, images, css?)
-docrepNeeds (DocrepJSON y1 p1) = map t2s . catMaybes $ [imgs, bibs]
-  where
-    imgs = getAtKey y1 "image" :: Maybe Text
-    bibs = getAtKey y1 "bibliography" :: Maybe Text
-
--- TODO should list be images?
-
-data BottomLines = BottomLines
-  { ssgversion :: Text,
-    -- | the data when converted(baked)
-    today :: Text,
-    filename :: Text
-  }
-  deriving (Generic, Read, Show, Eq, Ord)
-
-instance ToJSON BottomLines
+justToKeepWarningAway :: Int 
+justToKeepWarningAway = 0 

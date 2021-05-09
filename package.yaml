@@ -47,7 +47,7 @@ dependencies:
     - data-default
    
     # not in uniformBase:
-    # - uniform-pandoc  
+    - uniform-pandoc  
     - pandoc 
     - doclayout
     - doctemplates
@@ -58,7 +58,7 @@ dependencies:
     - bibtex
     - aeson 
     - parsec
-    - containers
+    # - containers
     - process
 
     - uniform-convenience 

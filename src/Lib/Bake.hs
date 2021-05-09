@@ -69,10 +69,10 @@ bakeOneMD2docrep debug flags inputFn layout resfn2 = do
   let bakedP = bakedDir layout
   let doughP = doughDir layout
 
-  dr1 <- readMarkdown2docrep md1
+  dr1 <- readMarkdown2docrepJSON md1
   -- with a flattened version of json from Pandoc
   -- what does it contain?
-  putIOwords ["readMarkdown2docrep", "dr1", showT dr1]
+  putIOwords ["readMarkdown2docrepJSON", "dr1", showT dr1]
 
   -- check
   -- the fields for the index are prepared

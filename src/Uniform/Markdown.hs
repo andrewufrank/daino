@@ -55,14 +55,14 @@ import Uniform.Filetypes4sites
 -- https://artyom.me/aeson
 import qualified Text.Pandoc                   as Pandoc
 
-readMarkdown2docrep :: MarkdownText -> ErrIO DocrepJSON
+readMarkdown2docrepJSON :: MarkdownText -> ErrIO DocrepJSON
 -- | read a md file into a DocrepJSON
 -- reads the markdown file with pandoc and extracts the yaml metadaat
 -- the metadata are then copied over to the meta part
 -- and converted in regular json
 -- attention: there is potential duplication 
 -- as the metadata are partially duplicated
-readMarkdown2docrep md = do
+readMarkdown2docrepJSON md = do
     pd <- readMarkdown2 md
     let meta2                 = flattenMeta . getMeta $ pd
     return (DocrepJSON meta2 pd)
@@ -80,32 +80,6 @@ readMarkdown2docrep md = do
 
 
 
-readMarkdown2 :: MarkdownText -> ErrIO Pandoc
--- | reads the markdown text and produces a pandoc structure
-readMarkdown2 text1 =
-    unPandocM $ Pandoc.readMarkdown markdownOptions (unwrap7 text1)
-readMarkdown3 :: Pandoc.ReaderOptions -> MarkdownText -> ErrIO Pandoc
-readMarkdown3 options text1 =
-    unPandocM $ Pandoc.readMarkdown options (unwrap7 text1)
-
--- | Reasonable options for reading a markdown file
-markdownOptions :: Pandoc.ReaderOptions
-markdownOptions = Pandoc.def { Pandoc.readerExtensions = exts }
-  where
-    exts = mconcat
-        [ Pandoc.extensionsFromList
-            [ Pandoc.Ext_yaml_metadata_block
-            , Pandoc.Ext_fenced_code_attributes
-            , Pandoc.Ext_auto_identifiers
-            , Pandoc.Ext_raw_html   -- three extension give markdown_strict
-            , Pandoc.Ext_raw_tex   --Allow raw TeX (other than math)
-            , Pandoc.Ext_shortcut_reference_links
-            , Pandoc.Ext_spaced_reference_links
-            , Pandoc.Ext_footnotes  -- all footnotes
-            , Pandoc.Ext_citations           -- <-- this is the important extension for bibTex
-            ]
-        , Pandoc.githubMarkdownExtensions
-        ]
 
 writeAST2md :: Pandoc -> ErrIO MarkdownText
 -- | write the AST to markdown
