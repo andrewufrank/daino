@@ -14,8 +14,8 @@
 module Lib.IndexMake (module Lib.IndexMake) where
 
 import Lib.CheckInput
-    ( IndexEntry(dirEntries, fileEntries, link, abstract, fn, title,
-                 author, date, publish, indexPage) ) --  (MetaRec(..))
+import Lib.MetaPage 
+
 -- import Uniform.Pandoc (Panrep (..))
 import Uniform.Filetypes4sites
 
@@ -27,24 +27,26 @@ import Uniform.Json
 convertIndexEntries :: Panrep -> ErrIO Panrep
 -- ^ take the index entries and convert their
 -- form and push them back into the json
-convertIndexEntries (Panrep y p) = do
-  yentry :: IndexEntry <- fromJSONerrio y
-  putIOwords ["convertIndexEntries", "start yentry", showT yentry]
-  let dirs = dirEntries yentry
-  let fils = fileEntries yentry
+convertIndexEntries (Panrep y p) = return (Panrep y p) -- TODO add again
+-- do
+-- --   yentry :: IndexEntry <- fromJSONerrio y
+--   let yentry = y 
+--   putIOwords ["convertIndexEntries", "start yentry", showT yentry]
+--   let dirs = dirEntries yentry
+--   let fils = fileEntries yentry
 
-  -- dirs <- fromJustNote "convertIndexEntries werdsdx" $ getAtKey y "DirEntries"
-  -- files <- fromJustNote "convertIndexEntries 34634" $ getAtKey y "FileEntries"
-  -- meta :: IndexEntry  <- fromJSONerrio y
+--   -- dirs <- fromJustNote "convertIndexEntries werdsdx" $ getAtKey y "DirEntries"
+--   -- files <- fromJustNote "convertIndexEntries 34634" $ getAtKey y "FileEntries"
+--   -- meta :: IndexEntry  <- fromJSONerrio y
 
-  -- metadirs <- mapM fromJSONerrio dirs
-  -- metafiles <- mapM fromJSONerrio files
+--   -- metadirs <- mapM fromJSONerrio dirs
+--   -- metafiles <- mapM fromJSONerrio files
 
-  let menu1 = convert2index (yentry, dirs, fils)
-  putIOwords ["convertIndexEntries", "menu2", showT menu1]
-  -- let y2 = putAtKey2 "menu" menu1 y
-  let y2 = mergeLeftPref [toJSON menu1, y]
-  return $ Panrep y2 p
+--   let menu1 = convert2index (yentry, dirs, fils)
+--   putIOwords ["convertIndexEntries", "menu2", showT menu1]
+--   -- let y2 = putAtKey2 "menu" menu1 y
+--   let y2 = mergeLeftPref [toJSON menu1, y]
+--   return $ Panrep y2 p
 
 -- | convert the metarecs and put some divider between
 -- TODO  - avoid dividers if list empty
@@ -104,7 +106,7 @@ getOneIndexEntryPure :: IndexEntry -> Index4html
 -- Text should be "/Blog/postTufteStyled.html"
 getOneIndexEntryPure metaRec =
   Index4html
-    { text2 = s2t . takeBaseName' . toFilePath . fn $ metaRec,
+    { text2 = s2t . takeBaseName'  . fn $ metaRec,
       link2 =
         s2t $
           setExtension "html" . removeExtension
@@ -113,7 +115,7 @@ getOneIndexEntryPure metaRec =
       abstract2 = abstract metaRec,
       title2 =
         if isZero (title metaRec :: Text)
-          then s2t . takeBaseName' . toFilePath . fn $ metaRec
+          then s2t . takeBaseName' .  fn $ metaRec
           else title metaRec,
       author2 = author metaRec,
       date2 = showT $ date metaRec,

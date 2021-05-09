@@ -19,7 +19,7 @@
 
 module Lib.CheckProcess where
 
-import Lib.CheckInput (completeDocRep) -- (getTripleDoc, MetaRec(..))
+import Lib.CheckInput  
 import Lib.Foundation (SiteLayout (..))
 import Lib.ReadSettingFile (readSettings)
 import Pipes ((>->))
@@ -29,6 +29,8 @@ import Uniform.Docrep
 -- import Uniform.Markdown (markdownFileType, readMarkdown2docrepJSON)
 import UniformBase
 import Uniform.Pandoc
+import Uniform.Filetypes4sites
+import Lib.Bake
 
 checkProcess :: Bool -> FilePath -> ErrIO ()
 -- ^ checking all md files
@@ -69,7 +71,10 @@ allFilenames3 dirname = do
 
 --  produce file for reports form getMetaRec
 report_metaRec :: SiteLayout -> Path Abs File -> ErrIO String
-report_metaRec layout2 f = do
+report_metaRec layout2 inputFn = do
+  md1 <- read8 inputFn markdownFileType
+  dr3 :: Docrep <- md2docrep False layout2 inputFn md1
+  return . show $ dr3 
   -- old code:
   -- (_, metaRec, report1) <- getTripleDoc layout f
   -- let report2 = if isNothing report1 then ""
@@ -77,15 +82,16 @@ report_metaRec layout2 f = do
   --                                 , fromJustNote "report metarec xxweer" report1]
   -- report3 = unlines' .filter (/= "\n") . lines' $ report2
   --replace with
-  md1 <- read8 f markdownFileType
-  dr1 <- readMarkdown2docrepJSON md1
-  let doughP = doughDir layout2 -- the regular dough
-      bakedP = bakedDir layout2
-  dr2 <- completeDocRep doughP bakedP f dr1
-  dr3 <- addRefs False dr2
-  let report2 = dr3
+  -- md1 <- read8 f markdownFileType
+  -- dr3 <- md2docrep layout2 f md1
+--   dr1 <- readMarkdown2docrepJSON md1
+--   let doughP = doughDir layout2 -- the regular dough
+--       bakedP = bakedDir layout2
+--   dr2 <- completeDocRep doughP bakedP f dr1
+--   dr3 <- addRefs False dr2
+  -- let report2 = dr3
 
-  return . show $ report2
+  -- return . show $ report2
 
 allMetaRecReport :: SiteLayout -> Path Abs Dir -> ErrIO Text
 allMetaRecReport layout dirname = do

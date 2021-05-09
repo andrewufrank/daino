@@ -15,26 +15,30 @@ module Lib.Templating where -- (openMain, htf_thisModuelsTests)
 
 import Lib.Foundation (masterTemplateFileName)
 import Uniform.HTMLout
-  
-import Uniform.Pandoc 
---(Abs, AtKey (getAtKey), Dir, ErrIO, Filenames3 ((</>)), HTMLout, Panrep (..), Path, Text, applyTemplate3, makeRelFile, putIOwords, showT, t2s, when)
-import UniformBase
-import Uniform.Json 
-import Uniform.Filetypes4sites
 
+import Uniform.Pandoc
+
+--(Abs, AtKey (getAtKey), Dir, ErrIO, Filenames3 ((</>)), HTMLout, Panrep (..), Path, Text, applyTemplate3, makeRelFile, putIOwords, showT, t2s, when)
+
+import Uniform.Filetypes4sites
+import Uniform.Json
+import UniformBase
 
 putValinMaster :: Bool -> Panrep -> Path Abs Dir -> ErrIO HTMLout
--- ^ get the master html template and put the val into it
--- takes the master filename from val
+{- ^ get the master html template and put the val into it
+ takes the master filename from val
+ not clear what intended
+ for now: use the master TODO
+-}
 putValinMaster debug (Panrep val p) templatesP = do
-  when debug $ putIOwords ["putValinMaster", "templatesP", showT templatesP]
-  let mmt = getAtKey val "masterTemplate" :: Maybe Text
-  let mf = maybe masterTemplateFileName (makeRelFile . t2s) mmt
-
-  let masterfn = templatesP </> mf
-  --   template <- read8 masterfn dtmplFileType
-  --   when debug $ putIOwords ["putValinMaster", "template", take' 300 $ showT template]
-  --   when debug $ putIOwords ["putValinMaster", "val", take' 300 $ showT val]
-  html2 <- applyTemplate3 masterfn val -- inTemplate.html
-  when True $ putIOwords ["putValinMaster", showT html2]
-  return html2
+    when debug $ putIOwords ["putValinMaster", "templatesP", showT templatesP]
+    -- let mmt = getAtKey val "masterTemplate" :: Maybe Text
+    -- let mf = maybe masterTemplateFileName (makeRelFile . t2s) mmt
+    let mf = masterTemplateFileName
+    let masterfn = templatesP </> mf
+    --   template <- read8 masterfn dtmplFileType
+    --   when debug $ putIOwords ["putValinMaster", "template", take' 300 $ showT template]
+    --   when debug $ putIOwords ["putValinMaster", "val", take' 300 $ showT val]
+    html2 <- applyTemplate3 masterfn val -- inTemplate.html
+    when True $ putIOwords ["putValinMaster", showT html2]
+    return html2

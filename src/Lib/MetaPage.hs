@@ -29,7 +29,6 @@ import Data.Aeson.Types
 import Data.Default (Default (..))
 import Lib.CmdLineArgs (PubFlags (..))
 import Lib.Foundation (SiteLayout (..))
-import Uniform.Filetypes4sites
 import Uniform.Json
 import Uniform.Pandoc
 import Uniform.PandocImports
@@ -52,12 +51,12 @@ data MetaPage = MetaPage
     dyStyle :: Maybe Text,
     dyPublish :: Maybe Text,
     dyIndexPage :: Bool
-    -- , dyDirEntries :: [IndexEntry]
-    -- , dyFileEntries :: [IndexEntry]
+    , dyDirEntries :: [IndexEntry]
+    , dyFileEntries :: [IndexEntry]
     -- is defined later, necessary here?
   }
-  deriving (Show, Ord, Eq, Generic, Zeros) --Read,
-
+  deriving (Show, Ord, Eq, Generic, Zeros, Read) --Read,
+ 
 -- instance Zeros MetaPage where
 --     zero = MetaPage zero
 --                    zero
@@ -89,8 +88,8 @@ instance Default MetaPage where
         dyStyle = Just "chicago-fullnote-bibliography-bb.csl",
         dyPublish = Nothing,
         dyIndexPage = False
-        -- , dyDirEntries = zero
-        -- , dyFileEntries = zero
+        , dyDirEntries = zero
+        , dyFileEntries = zero
       }
 
 docyamlOptions :: Options
@@ -223,3 +222,23 @@ instance NiceStrings PublicationState where
 instance ToJSON PublicationState
 
 instance FromJSON PublicationState
+
+data IndexEntry = IndexEntry
+                    { fn :: FilePath -- to have read statt Path Abs File
+                        -- ^ the abs file path 
+                    , link :: FilePath
+                        -- ^ the link for this page (relative)}
+                    , title :: Text
+                    , abstract :: Text
+                    , author :: Text
+                    , date :: Text
+                    , publish :: Maybe Text
+                    , indexPage :: Bool
+                    , dirEntries :: [IndexEntry]  -- def []
+                    , fileEntries :: [IndexEntry] -- def []
+                    } deriving (Show,  Read, Eq, Ord, Generic)  -- Read,
+
+instance ToJSON IndexEntry
+instance FromJSON IndexEntry
+
+

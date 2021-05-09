@@ -5,6 +5,7 @@
 -- see Filetypes4sites DocrepJSON
 -----------------------------------------------------------------------------
 {-# LANGUAGE ConstraintKinds #-}
+{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DoAndIfThenElse #-}
 {-# LANGUAGE DuplicateRecordFields #-}
@@ -45,7 +46,10 @@ import Data.Aeson.Types
     Value,
     parseMaybe,
   )
+import Data.Default
 import GHC.Generics (Generic)
+import Lib.Foundation
+import Lib.MetaPage
 import Text.CSL as Pars (Reference, readBiblioFile, readCSLFile)
 import Text.CSL.Pandoc as Bib (processCites)
 import qualified Text.Pandoc as Pandoc
@@ -57,67 +61,88 @@ import Uniform.HTMLout
     writeHtml5String,
   )
 import Uniform.Json
-  ( AtKey (getAtKey, putAtKey),
-    ErrIO,
-    FromJSON (parseJSON),
-    ToJSON,
-    Value,
-    mergeRightPref,
-  )
+import Uniform.Pandoc
 import Uniform.PandocImports
-    ( flattenMeta, getMeta, readMarkdown2, unPandocM, MarkdownText )  
 import UniformBase
-    
+import Lib.Indexing (addIndex2yam)
 
-
+-- data DocrepJSON = DocrepJSON {yam :: Value, blocks :: [Block]} -- a json value
+data DocrepJSON = DocrepJSON {yam1 :: Value, pan1 :: Pandoc} -- a json value
+  deriving (Show, Read, Eq, Generic, Zeros)
 
 readMarkdown2docrepJSON :: MarkdownText -> ErrIO DocrepJSON
+
 -- | read a md file into a DocrepJSON
 -- reads the markdown file with pandoc and extracts the yaml metadaat
 -- the metadata are then copied over to the meta part
 -- and converted in regular json
--- attention: there is potential duplication 
+-- attention: there is potential duplication
 -- as the metadata are partially duplicated
 readMarkdown2docrepJSON md = do
-    pd <- readMarkdown2 md
-    let meta2                 = flattenMeta . getMeta $ pd
-    return (DocrepJSON meta2 pd)
+  pd <- readMarkdown2 md
+  let meta2 = flattenMeta . getMeta $ pd
+  return (DocrepJSON meta2 pd)
 
+md2docrep :: Bool -> SiteLayout -> Path Abs File -> MarkdownText -> ErrIO Docrep
+
+-- | process one md to a docrep
+-- for bakeOneMD2docrep and report_metaRec
+md2docrep debugflag layout2 inputFn md1 = do
+  let doughP = doughDir layout2 -- the regular dough
+      bakedP = bakedDir layout2
+
+  dr1 <- readMarkdown2docrepJSON md1
+  -- with a flattened version of json from Pandoc
+  -- what does it contain?
+  putIOwords ["md2docrep", "dr1", showT dr1]
+
+  -- check
+  -- the fields for the index are prepared
+  -- merge the yaml metadata with default to have the
+  -- necessary values set
+
+  dr2 <- completeDocRep doughP bakedP inputFn dr1
+  -- let dr2a = docRepJSON2docrep  dr2
+
+  -- uses the refs listed in the file and discovred by pandoc,
+  -- as well as nocite
+  -- therefore must use json
+  dr3 <- addRefs debugflag dr2
+  -- TODO needs refs
+  -- let needs1  = docrepNeeds docrep1  :: [FilePath]
+  -- need  needs1  -- TDO this is in the wrong monad
+  -- dr4 <- addIndex2yam debug dr3
+  -- this will be done twice in html and tex
+  return . docrepJSON2docrep $ dr3
+
+docrepJSON2docrep :: DocrepJSON -> Docrep
+docrepJSON2docrep  (DocrepJSON j p) = Docrep j p
+
+-- Docrep
+--   { yam = fromJustNote "docRepJSON2docrep not a value" . fromJSONValue $ j,
+--     pan = p
+--   }
+
+
+
+-------------------------------------
 completeDocRep :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> DocrepJSON -> ErrIO DocrepJSON
--- complete the DocrepJSON (permitting defaults for all values) 
+-- complete the DocrepJSON (permitting defaults for all values)
 -- the bakedP root is necessary to complete the style and bib entries
--- as well as image? 
--- first for completeness of metadata in yaml 
+-- as well as image?
+-- first for completeness of metadata in yaml
 -- fails if required labels are not present
-completeDocRep doughP bakedP fn (DocrepJSON y1 p1) = do
-    let m0 = def ::MetaPage 
-        mFiles = addFileMetaPage doughP bakedP fn  
-        y2 = mergeLeftPref [toJSON mFiles, y1, toJSON m0]
-        -- preference of files as computed 
-        -- over what is set in md file
-        -- over default 
-    -- y2 <- completeMetaPage doughP bakedP fn y1
-    -- let y3 = mergeLeftPref [toJSON y2, y1]
-    putIOwords ["completeDocRep", "y2", showT y2]
-    return (DocrepJSON y2 p1)
-
-docrep2panrep :: DocrepJSON -> ErrIO Panrep
--- ^ transform a docrep to a panrep (which is the pandoc rep)
--- does process the references
--- and will do index, but this goes to ssg
-docrep2panrep dr1@(DocrepJSON y1 p1) = do
-  (DocrepJSON y2 p2) <- addRefs False dr1  -- was already done in bakeOneMD2docrep
-  return $ Panrep y2 p2
-
-------------------------------------
-
-panrep2html :: Panrep -> ErrIO HTMLout
--- ^ transform a docrep to a html file
--- needs teh processing of the references with citeproc
-panrep2html pr1@(Panrep y1 p1) = do
-  -- dr2 <- addRefs pr1
-  h1 <- unPandocM $ writeHtml5String html5Options p1
-  return . HTMLout $ h1
+completeDocRep doughP bakedP filename (DocrepJSON y1 p1) = do
+  let m0 = def :: MetaPage
+      mFiles = addFileMetaPage doughP bakedP filename
+      y2 = mergeLeftPref [toJSON mFiles, y1, toJSON m0]
+  -- preference of files as computed
+  -- over what is set in md file
+  -- over default
+  -- y2 <- completeMetaPage doughP bakedP filename y1
+  -- let y3 = mergeLeftPref [toJSON y2, y1]
+  putIOwords ["completeDocRep", "y2", showT y2]
+  return (DocrepJSON y2 p1)
 
 --------------------------------
 addRefs :: Bool -> DocrepJSON -> ErrIO DocrepJSON
@@ -142,17 +167,19 @@ addRefs debugflag dr1@(DocrepJSON y1 p1) = do
   maybe (return dr1) (addRefs2 debugflag dr1) biblio1
 
 addRefs2 ::
-  (MonadIO m, MonadError m, ErrorType m ~ Text) => Bool -> 
+  (MonadIO m, MonadError m, ErrorType m ~ Text) =>
+  Bool ->
   DocrepJSON ->
   Text ->
   m DocrepJSON
 addRefs2 debugx dr1@(DocrepJSON y1 p1) biblio1 = do
---   let debugx = False 
+  --   let debugx = False
   when debugx $ putIOwords ["addRefs2-1", showT dr1, "\n"]
   let style1 = getAtKey y1 "style" :: Maybe Text
       refs1 = y1 ^? key "references" :: Maybe Value -- is an array
       nocite1 = getAtKey y1 "nocite" :: Maybe Text
-
+  --   let style1 = syStyle y1
+  --       rers1 = dy
   when debugx $
     putIOwords
       [ "addRefs2-2",
@@ -169,7 +196,7 @@ addRefs2 debugx dr1@(DocrepJSON y1 p1) biblio1 = do
   let loc1 = Just "en" -- TODO depends on language to be used for
   -- for the conventions in the lit list
   -- must be 2 char (all other seems to be difficult with pandoc-citeproc)
-  -- change to new citeproc TODO
+  -- change to new citeproc TODO later
   let refs2 = fromJustNote "refs in addRefs2 vcbnf refs2" refs1 :: Value
   let refs3 = fromJSONValue refs2 -- :: Result [Reference]
   let refs4 = fromJustNote "addRefs2 08werwe refs4" refs3 :: [Reference]
@@ -196,15 +223,15 @@ addRefs2 debugx dr1@(DocrepJSON y1 p1) biblio1 = do
 
   return (DocrepJSON y1 p2)
 
-mergeAll :: DocrepJSON -> [Value] -> DocrepJSON
--- ^ merge the values with the values in DocRec -- last winns
--- issue how to collect all css?
-mergeAll (DocrepJSON y p) vs = DocrepJSON (mergeRightPref $ y : vs) p
+-- mergeAll :: DocrepJSON -> [Value] -> DocrepJSON
+-- -- ^ merge the values with the values in DocRec -- last winns
+-- -- issue how to collect all css?
+-- mergeAll (DocrepJSON y p) vs = DocrepJSON (mergeRightPref $ y : vs) p
 
-instance AtKey DocrepJSON Text where
-  getAtKey dr k2 = getAtKey (yam dr) k2
+-- instance AtKey DocrepJSON Text where
+--   getAtKey dr k2 = getAtKey (yam dr) k2
 
-  putAtKey k2 txt (DocrepJSON y p) = DocrepJSON (putAtKey k2 txt y) p
+--   putAtKey k2 txt (DocrepJSON y p) = DocrepJSON (putAtKey k2 txt y) p
 
 -- instance AtKey DocrepJSON Bool where
 --   getAtKey dr k2 = getAtKey (yam dr) k2

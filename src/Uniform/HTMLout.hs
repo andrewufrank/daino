@@ -48,7 +48,8 @@ import           Uniform.Json
 -- import Uniform.DocValue
 -- import Uniform.FileIO 
 import Uniform.PandocImports 
- 
+import Lib.MetaPage 
+
 import           Text.Pandoc                    ( Pandoc(..)
                         , writeHtml5String
                         , writerExtensions
@@ -75,7 +76,7 @@ html5Options = def { writerHighlightStyle = Just tango
 
 -- type Dtemplate = Template Text
 
-applyTemplate3 :: Path Abs File -> Value -> ErrIO HTMLout
+applyTemplate3 :: Path Abs File -> MetaPage -> ErrIO HTMLout
 -- needed for old ssg lts-13.12 - also changed for 15.13
 
 -- | apply the template in the file to the text
@@ -93,7 +94,7 @@ applyTemplate3 templName val = do
                 Right tmp2 -> tmp2
     when False $ putIOwords ["applyTemplate3 temp2", take' 300 $ showT tmp3 ]
 -- renderTemplate :: (TemplateTarget a, ToContext a b) => Template a -> b -> Doc a     
-    let res = renderTemplate tmp3 val
+    let res = renderTemplate tmp3 (toJSON val)
     when False $ putIOwords ["applyTemplate3 res", take' 300 $ showT res ]
     let res2 =  render Nothing res
     when True $ putIOwords ["applyTemplate3 done res2", take' 300 $ showT res2 ]

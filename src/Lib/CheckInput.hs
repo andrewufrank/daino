@@ -28,7 +28,7 @@ module Lib.CheckInput where
 import GHC.Generics ( Generic )
 import Data.Default ( Default(..) )
 -- import Lib.Foundation ()
-import Uniform.Filetypes4sites ( DocrepJSON(DocrepJSON) ) 
+import Uniform.Filetypes4sites  
 
 import UniformBase
 import Uniform.Json 
@@ -62,25 +62,6 @@ import qualified Data.Map                      as M
 
 
 
-
-
-data IndexEntry = IndexEntry
-                    { fn :: Path Abs File
-                        -- ^ the abs file path 
-                    , link :: FilePath
-                        -- ^ the link for this page (relative)}
-                    , title :: Text
-                    , abstract :: Text
-                    , author :: Text
-                    , date :: Text
-                    , publish :: Maybe Text
-                    , indexPage :: Bool
-                    , dirEntries :: [IndexEntry]  -- def []
-                    , fileEntries :: [IndexEntry] -- def []
-                    } deriving (Show,  Eq, Ord, Generic)  -- Read,
-
-instance ToJSON IndexEntry
-instance FromJSON IndexEntry
 
 
 

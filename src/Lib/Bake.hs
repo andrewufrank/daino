@@ -22,14 +22,13 @@ module Lib.Bake
  
 where
 
-import Lib.CheckInput (completeDocRep) --                 ( getTripleDoc )
+import Lib.CheckInput  
 import Lib.CmdLineArgs (PubFlags (..))
 import Lib.Foundation
   ( SiteLayout (..),
     templatesDir,
   )
 import Lib.IndexMake (convertIndexEntries)
-import Lib.Indexing (addIndex2yam)
 import Lib.Templating (putValinMaster)
 import qualified Path.IO as Path
   ( getTempDir,
@@ -43,6 +42,7 @@ import Uniform.Filetypes4sites
 
 import Uniform.Shake ()
 import UniformBase
+import Uniform.Panrep 
 
 type BakeOp =
   Bool ->
@@ -66,28 +66,7 @@ bakeOneMD2docrep debug flags inputFn layout resfn2 = do
     ]
 
   md1 <- read8 inputFn markdownFileType
-  let bakedP = bakedDir layout
-  let doughP = doughDir layout
-
-  dr1 <- readMarkdown2docrepJSON md1
-  -- with a flattened version of json from Pandoc
-  -- what does it contain?
-  putIOwords ["readMarkdown2docrepJSON", "dr1", showT dr1]
-
-  -- check
-  -- the fields for the index are prepared
-  -- merge the yaml metadata with default to have the 
-  -- necessary values set 
-
-  dr2 <- completeDocRep doughP bakedP inputFn dr1
-  -- does this use the listed refs?
-  dr3 <- addRefs debug dr2
-
-  -- TODO needs refs
-  -- let needs1  = docrepNeeds docrep1  :: [FilePath]
-  -- need  needs1  -- TDO this is in the wrong monad
-  -- dr4 <- addIndex2yam debug dr3
-  -- this will be done twice in html and tex
+  dr3 <- md2docrep debug layout inputFn md1 
 
   write8 resfn2 docrepFileType dr3
   when debug $
@@ -110,20 +89,20 @@ bakeOneDocrep2panrep debug flags inputFn layout resfn2 = do
       "\n resfn2",
       showT resfn2
     ]
-  let bakedP = bakedDir layout
+  -- let bakedP = bakedDir layout
 
   dr1 <- read8 inputFn docrepFileType
 
-  p1 <- docrep2panrep dr1
+  p3 <- docrep2panrep debug layout dr1
   -- adds refs but not yet used in tex2pdf!
 
-  p2 <- addIndex2yam bakedP debug p1
+  -- p2 <- addIndex2yam bakedP debug p1
   -- but needs processing to use (indexMake)
 
-  write8 resfn2 panrepFileType p2 -- content is html style
+  write8 resfn2 panrepFileType p3 -- content is html style
   when debug $
     putIOwords
-      ["\n-----------------", "bakeOneFile2panrep done fn", showT p2]
+      ["\n-----------------", "bakeOneFile2panrep done fn", showT p3]
   return () --"ok bakeOneFile2docrep"
 
 bakeOnePanrep2html :: BakeOp -- TODO
@@ -137,16 +116,16 @@ bakeOnePanrep2html debug flags inputFn layout resfn2 = do
       "\n resfn2",
       showT resfn2
     ]
-  let templateP = templatesDir layout
+  -- let templateP = templatesDir layout
 
   dr1 <- read8 inputFn panrepFileType
-
+  p <- panrep2html debug layout  dr1
   -- do index
-  dr4 <- convertIndexEntries dr1 -- move to
+  -- dr4 <- convertIndexEntries dr1 -- move to
 
   -- h1  <- panrep2html dr4
 
-  p :: HTMLout <- putValinMaster False dr4 templateP
+  -- p :: HTMLout <- putValinMaster False dr4 templateP
   write8 resfn2 htmloutFileType p -- content is html style
   when debug $
     putIOwords
