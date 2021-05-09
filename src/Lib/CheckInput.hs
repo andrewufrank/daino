@@ -28,7 +28,7 @@ module Lib.CheckInput where
 import GHC.Generics ( Generic )
 import Data.Default ( Default(..) )
 -- import Lib.Foundation ()
-import Uniform.Filetypes4sites ( Docrep(Docrep) ) 
+import Uniform.Filetypes4sites ( DocrepJSON(DocrepJSON) ) 
 
 import UniformBase
 import Uniform.Json 
@@ -62,13 +62,13 @@ import qualified Data.Map                      as M
 
 
 
-completeDocRep :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> Docrep -> ErrIO Docrep
--- complete the Docrep (permitting defaults for all values) 
+completeDocRep :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> DocrepJSON -> ErrIO DocrepJSON
+-- complete the DocrepJSON (permitting defaults for all values) 
 -- the bakedP root is necessary to complete the style and bib entries
 -- as well as image? 
 -- first for completeness of metadata in yaml 
 -- fails if required labels are not present
-completeDocRep doughP bakedP fn (Docrep y1 p1) = do
+completeDocRep doughP bakedP fn (DocrepJSON y1 p1) = do
     let m0 = def ::MetaPage 
         mFiles = addFileMetaPage doughP bakedP fn  
         y2 = mergeLeftPref [toJSON mFiles, y1, toJSON m0]
@@ -78,7 +78,7 @@ completeDocRep doughP bakedP fn (Docrep y1 p1) = do
     -- y2 <- completeMetaPage doughP bakedP fn y1
     -- let y3 = mergeLeftPref [toJSON y2, y1]
     putIOwords ["completeDocRep", "y2", showT y2]
-    return (Docrep y2 p1)
+    return (DocrepJSON y2 p1)
 
 data IndexEntry = IndexEntry
                     { fn :: Path Abs File

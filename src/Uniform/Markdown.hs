@@ -55,8 +55,8 @@ import Uniform.Filetypes4sites
 -- https://artyom.me/aeson
 import qualified Text.Pandoc                   as Pandoc
 
-readMarkdown2docrep :: MarkdownText -> ErrIO Docrep
--- | read a md file into a Docrep
+readMarkdown2docrep :: MarkdownText -> ErrIO DocrepJSON
+-- | read a md file into a DocrepJSON
 -- reads the markdown file with pandoc and extracts the yaml metadaat
 -- the metadata are then copied over to the meta part
 -- and converted in regular json
@@ -65,7 +65,7 @@ readMarkdown2docrep :: MarkdownText -> ErrIO Docrep
 readMarkdown2docrep md = do
     pd <- readMarkdown2 md
     let meta2                 = flattenMeta . getMeta $ pd
-    return (Docrep meta2 pd)
+    return (DocrepJSON meta2 pd)
 
 -- readMd2meta :: Path Abs File -> ErrIO (Pandoc, Value)
 -- -- ^ read a markdown file to metadata

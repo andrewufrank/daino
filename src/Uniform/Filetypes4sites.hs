@@ -14,7 +14,7 @@
 ----------------------------------------------------------------------
 
 -- | SSG uses sequences of transformations between data structures (types)
--- MD -> Docrep -> Panrep -> TexSnip -> Tex -> PDF
+-- MD -> DocrepJSON -> Panrep -> TexSnip -> Tex -> PDF
 --                 Pandrep -> HTML
 -- Each result is written as a typed file with a specific extension
 module Uniform.Filetypes4sites
@@ -52,7 +52,7 @@ instance TypedFiles7 Text MarkdownText where
 
 -- readMarkdown, readMd2meta in Uniform.Markdown
 
---------------------------------------------typed file Docrep
+--------------------------------------------typed file DocrepJSON
 
 -- | representation of a document
 -- the yam part contains the json formated yaml metadata
@@ -64,27 +64,27 @@ instance TypedFiles7 Text MarkdownText where
 -- with flattenMeta (in PandocImports)
 -- but I do not see an easy way to convert back
 
--- data Docrep = Docrep {yam :: Value, blocks :: [Block]} -- a json value
-data Docrep = Docrep {yam :: Value, pan :: Pandoc} -- a json value
+-- data DocrepJSON = DocrepJSON {yam :: Value, blocks :: [Block]} -- a json value
+data DocrepJSON = DocrepJSON {yam :: Value, pan :: Pandoc} -- a json value
   deriving (Show, Read, Eq, Generic, Zeros)
 
--- instance Zeros Docrep where zero = Docrep zero zero
+-- instance Zeros DocrepJSON where zero = DocrepJSON zero zero
 
-instance FromJSON Docrep
-instance ToJSON Docrep
+instance FromJSON DocrepJSON
+instance ToJSON DocrepJSON
 
 extDocrep :: Extension
 extDocrep = Extension "docrep"
 
--- instance NiceStrings Docrep where
+-- instance NiceStrings DocrepJSON where
 --   shownice = showNice . unDocrep
 
-docrepFileType :: TypedFile5 Text Docrep
+docrepFileType :: TypedFile5 Text DocrepJSON
 docrepFileType =
-  TypedFile5 {tpext5 = extDocrep} :: TypedFile5 Text Docrep
+  TypedFile5 {tpext5 = extDocrep} :: TypedFile5 Text DocrepJSON
 
-instance TypedFiles7 Text Docrep where
-  wrap7 = readNote "Docrep wrap7 sfasdwe" . t2s
+instance TypedFiles7 Text DocrepJSON where
+  wrap7 = readNote "DocrepJSON wrap7 sfasdwe" . t2s
   unwrap7 = showT
 
 -------------------- fileType Panrep ----------

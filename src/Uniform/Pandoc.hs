@@ -30,7 +30,7 @@ module Uniform.Pandoc
       , unPandocM
       , extPDF, extMD, extDocrep, extHTML, extTexSnip, extTex 
   , Pandoc(..)
-  , Docrep(..)
+  , DocrepJSON(..)
   , module UniformBase 
 --   , module Uniform.Error   -- or at least ErrIO
 --   , module Uniform.Filenames 
