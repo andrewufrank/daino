@@ -19,10 +19,11 @@
             -fno-warn-unused-matches #-}
 {-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 
--- | The data describing a page of the site (i.e. an md file)
--- the default is merged with the values in the yaml head
--- all entries there should be from this list
--- all JSON related functions here!
+{- | The data describing a page of the site (i.e. an md file)
+ the default is merged with the values in the yaml head
+ all entries there should be from this list
+ all JSON related functions here!
+-}
 module Lib.MetaPage where
 
 import Data.Aeson.Types
@@ -36,27 +37,27 @@ import Uniform.Shake (makeRelativeP)
 import UniformBase
 
 data MetaPage = MetaPage
-  { dyFn :: FilePath, -- the original dough fn
-    dyLink :: FilePath, -- the relative filename
-    dyLang :: DocLanguage,
-    -- the fields of miniblog
-    dyTitle :: Text,
-    dyAbstract :: Text,
-    dyAuthor :: Text,
-    -- | this is maybe a string,
-    --  should be utctime
-    dyDate :: Maybe Text,
-    dyKeywords :: Text, -- should be [Text]
-    dyBibliography :: Maybe Text,
-    dyStyle :: Maybe Text,
-    dyPublish :: Maybe Text,
-    dyIndexPage :: Bool
+    { dyFn :: FilePath -- the original dough fn
+    , dyLink :: FilePath -- the relative filename
+    , dyLang :: DocLanguage
+    , -- the fields of miniblog
+      dyTitle :: Text
+    , dyAbstract :: Text
+    , dyAuthor :: Text
+    , -- | this is maybe a string,
+      --  should be utctime
+      dyDate :: Maybe Text
+    , dyKeywords :: Text -- should be [Text]
+    , dyBibliography :: Maybe Text
+    , dyStyle :: Maybe Text
+    , dyPublish :: Maybe Text
+    , dyIndexPage :: Bool
     , dyDirEntries :: [IndexEntry]
     , dyFileEntries :: [IndexEntry]
     -- is defined later, necessary here?
-  }
-  deriving (Show, Ord, Eq, Generic, Zeros, Read) --Read,
- 
+    }
+    deriving (Show, Ord, Eq, Generic, Zeros, Read) --Read,
+
 -- instance Zeros MetaPage where
 --     zero = MetaPage zero
 --                    zero
@@ -74,35 +75,35 @@ data MetaPage = MetaPage
 --    []
 
 instance Default MetaPage where
-  def =
-    zero
-      { dyFn = zero,
-        dyLink = zero,
-        dyLang = DLenglish,
-        dyTitle = "FILL",
-        dyAbstract = zero,
-        dyAuthor = "Andrew U Frank",
-        dyDate = Just . showT $ year2000,
-        dyKeywords = zero,
-        dyBibliography = Just "BibTexLatex.bib",
-        dyStyle = Just "chicago-fullnote-bibliography-bb.csl",
-        dyPublish = Nothing,
-        dyIndexPage = False
-        , dyDirEntries = zero
-        , dyFileEntries = zero
-      }
+    def =
+        zero
+            { dyFn = zero
+            , dyLink = zero
+            , dyLang = DLenglish
+            , dyTitle = "FILL"
+            , dyAbstract = zero
+            , dyAuthor = "Andrew U Frank"
+            , dyDate = Just . showT $ year2000
+            , dyKeywords = zero
+            , dyBibliography = Just "BibTexLatex.bib"
+            , dyStyle = Just "chicago-fullnote-bibliography-bb.csl"
+            , dyPublish = Nothing
+            , dyIndexPage = False
+            , dyDirEntries = zero
+            , dyFileEntries = zero
+            }
 
 docyamlOptions :: Options
 docyamlOptions =
-  defaultOptions
-    { fieldLabelModifier = t2s . toLowerStart . s2t . drop 2
-    }
+    defaultOptions
+        { fieldLabelModifier = t2s . toLowerStart . s2t . drop 2
+        }
 
 instance ToJSON MetaPage where
-  toJSON = genericToJSON docyamlOptions
+    toJSON = genericToJSON docyamlOptions
 
 instance FromJSON MetaPage where
-  parseJSON = genericParseJSON docyamlOptions
+    parseJSON = genericParseJSON docyamlOptions
 
 -- generic works only when all fields are present
 -- merge with metarec definition later in file
@@ -177,21 +178,21 @@ instance FromJSON MetaPage where
 
 addFileMetaPage :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> MetaPage
 addFileMetaPage doughP bakedP fn =
-  if getNakedFileName fn == "index"
-    then mp1 {dyIndexPage = True}
-    else mp1
+    if getNakedFileName fn == "index"
+        then mp1{dyIndexPage = True}
+        else mp1
   where
     mp1 =
-      zero
-        { dyFn = toFilePath fn,
-          dyLink =
-            toFilePath
-              (makeRelativeP doughP fn :: Path Rel File)
-              --  , dyStyle =  addBakedRoot bakedP ( dyStyle resdy1)
-              --  , dyBibliography = addBakedRoot bakedP                                           (dyBibliography resdy1)
-              -- , dyIndexPage = ((getNakedFileName fn) == "index") || dyIndexPage resdy1
-        } ::
-        MetaPage
+        zero
+            { dyFn = toFilePath fn
+            , dyLink =
+                toFilePath
+                    (makeRelativeP doughP fn :: Path Rel File)
+                    --  , dyStyle =  addBakedRoot bakedP ( dyStyle resdy1)
+                    --  , dyBibliography = addBakedRoot bakedP                                           (dyBibliography resdy1)
+                    -- , dyIndexPage = ((getNakedFileName fn) == "index") || dyIndexPage resdy1
+            } ::
+            MetaPage
 
 addBakedRoot :: Path Abs Dir -> Maybe Text -> Maybe Text
 addBakedRoot bakedP Nothing = Nothing
@@ -199,7 +200,7 @@ addBakedRoot bakedP (Just fp) = Just . s2t . toFilePath $ addFileName bakedP . t
 
 -- | another data type to rep languages
 data DocLanguage = DLgerman | DLenglish
-  deriving (Show, Read, Ord, Eq, Generic)
+    deriving (Show, Read, Ord, Eq, Generic)
 
 instance Zeros DocLanguage where zero = DLenglish
 
@@ -210,35 +211,34 @@ instance ToJSON DocLanguage
 -- is this clever to have a new language datatype?
 
 data PublicationState = PSpublish | PSdraft | PSold | PSzero
-  deriving (Generic, Show, Read, Ord, Eq)
+    deriving (Generic, Show, Read, Ord, Eq)
 -- ^ is this file ready to publish
 
 instance Zeros PublicationState where
-  zero = PSzero
+    zero = PSzero
 
 instance NiceStrings PublicationState where
-  shownice = drop' 2 . showT
+    shownice = drop' 2 . showT
 
 instance ToJSON PublicationState
 
 instance FromJSON PublicationState
 
 data IndexEntry = IndexEntry
-                    { fn :: FilePath -- to have read statt Path Abs File
-                        -- ^ the abs file path 
-                    , link :: FilePath
-                        -- ^ the link for this page (relative)}
-                    , title :: Text
-                    , abstract :: Text
-                    , author :: Text
-                    , date :: Text
-                    , publish :: Maybe Text
-                    , indexPage :: Bool
-                    , dirEntries :: [IndexEntry]  -- def []
-                    , fileEntries :: [IndexEntry] -- def []
-                    } deriving (Show,  Read, Eq, Ord, Generic)  -- Read,
+    { -- | the abs file path
+      fn :: FilePath -- to have read statt Path Abs File
+    , -- | the link for this page (relative)}
+      link :: FilePath
+    , title :: Text
+    , abstract :: Text
+    , author :: Text
+    , date :: Text
+    , publish :: Maybe Text
+    , indexPage :: Bool
+    , dirEntries :: [IndexEntry] -- def []
+    , fileEntries :: [IndexEntry] -- def []
+    }
+    deriving (Show, Read, Eq, Ord, Generic) -- Read,
 
 instance ToJSON IndexEntry
 instance FromJSON IndexEntry
-
-

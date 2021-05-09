@@ -27,7 +27,7 @@ TODO
 - `texsnip`: intermediate format of a part of a page
 - `tex`: a tex file for a page
 
-### MD -> Docrep
+### MD -> Docrep: md2docrep
 The md files are 
 - read with `readMarkdown2docrepJSON`
 - `completeDocRep` completes the meta yaml information 
@@ -35,10 +35,27 @@ The md files are
 
 The page is translated by `bakeOneMD2docrep`
 
-
+### Docrep -> Panrep: docrep2panrep
 
 `bakeOneDocrep2panrep` to docrep file by 
-    - 
+### Panref -> html: panrep2html
+
+### Panref -> Texsnip: panrep2texsnip
+-- problem the details of the call to pandoc 
+-- gives latex code, but not a full file
+
+### Panref -> Tex: tex2latex
+-- wraps the head and tail around the a list of latex snips
+peamble code is in ProcessPDF 
+
+### Tex -> PDF: writePDF2
+
+
 ## conversions between file
 
 hint for problems !tests/*, !unusedHaskellSources/*
+
+changed to fourmolu for formatting
+
+problems are 
+- building the refs 
