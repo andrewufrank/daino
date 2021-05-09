@@ -6,7 +6,6 @@
 -----------------------------------------------------------------------------
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE DeriveGeneric #-}
--- {-# LANGUAGE DeriveDataTypeable    #-}
 {-# LANGUAGE DoAndIfThenElse #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleContexts #-}
@@ -15,7 +14,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeFamilies #-}
--- {-# LANGUAGE TypeSynonymInstances        #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# OPTIONS_GHC -Wall -fno-warn-orphans 
             -fno-warn-missing-signatures
@@ -66,8 +64,10 @@ import Uniform.Json
     Value,
     mergeRightPref,
   )
-import Uniform.PandocImports  
+import Uniform.PandocImports
+    ( flattenMeta, getMeta, readMarkdown2, unPandocM, MarkdownText )  
 import UniformBase
+    
 
 
 
@@ -83,7 +83,23 @@ readMarkdown2docrepJSON md = do
     let meta2                 = flattenMeta . getMeta $ pd
     return (DocrepJSON meta2 pd)
 
-
+completeDocRep :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> DocrepJSON -> ErrIO DocrepJSON
+-- complete the DocrepJSON (permitting defaults for all values) 
+-- the bakedP root is necessary to complete the style and bib entries
+-- as well as image? 
+-- first for completeness of metadata in yaml 
+-- fails if required labels are not present
+completeDocRep doughP bakedP fn (DocrepJSON y1 p1) = do
+    let m0 = def ::MetaPage 
+        mFiles = addFileMetaPage doughP bakedP fn  
+        y2 = mergeLeftPref [toJSON mFiles, y1, toJSON m0]
+        -- preference of files as computed 
+        -- over what is set in md file
+        -- over default 
+    -- y2 <- completeMetaPage doughP bakedP fn y1
+    -- let y3 = mergeLeftPref [toJSON y2, y1]
+    putIOwords ["completeDocRep", "y2", showT y2]
+    return (DocrepJSON y2 p1)
 
 docrep2panrep :: DocrepJSON -> ErrIO Panrep
 -- ^ transform a docrep to a panrep (which is the pandoc rep)
