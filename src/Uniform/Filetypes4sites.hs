@@ -96,7 +96,8 @@ extTexSnip :: UniformBase.Extension
 extTexSnip = Extension "texsnip"
 
 -- | a wrapper around TexSnip
-data TexSnip = TexSnip {snipyam :: Value, unTexSnip :: Text}
+-- snipyam is not used 
+data TexSnip = TexSnip {snipyam :: MetaPage, unTexSnip :: Text}
   deriving (Show, Read, Eq)
 
 -- unTexSnip (TexSnip a) = a   --needed for other ops
