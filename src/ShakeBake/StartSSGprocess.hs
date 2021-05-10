@@ -27,7 +27,7 @@ import Lib.Foundation (
     landingPageName,
     testLastUploadFileName,
  )
-import Lib.ReadSettingFile (readSettings)
+import ShakeBake.ReadSettingFile (readSettings)
 import ShakeBake.Shake2 (shakeAll)
 import ShakeBake.Watch (mainWatch)
 import Uniform.WebServer (runScotty)

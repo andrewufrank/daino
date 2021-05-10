@@ -21,8 +21,8 @@
             -fno-warn-duplicate-exports 
             -fno-warn-unused-imports #-}
 
-module Uniform.HTMLout (
-    module Uniform.HTMLout,
+module Uniform2.HTMLout (
+    module Uniform2.HTMLout,
     extHTML,
     writeHtml5String,
     writerExtensions,

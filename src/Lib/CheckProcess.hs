@@ -21,15 +21,15 @@ module Lib.CheckProcess where
 
 import Lib.CheckInput  
 import Lib.Foundation (SiteLayout (..))
-import Lib.ReadSettingFile (readSettings)
+import ShakeBake.ReadSettingFile (readSettings)
 import Pipes ((>->))
 import qualified Pipes as Pipe
 import qualified Pipes.Prelude as PipePrelude
-import Uniform.Docrep
+import Uniform2.Docrep
 -- import Uniform.Markdown (markdownFileType, readMarkdown2docrepJSON)
 import UniformBase
 import Uniform.Pandoc
-import Uniform.Filetypes4sites
+import Uniform2.Filetypes4sites
 import ShakeBake.Bake
 
 checkProcess :: Bool -> FilePath -> ErrIO ()

@@ -18,8 +18,8 @@
                  Pandrep -> HTML
  Each result is written as a typed file with a specific extension
 -}
-module Uniform.Filetypes4sites (
-    module Uniform.Filetypes4sites,
+module Uniform2.Filetypes4sites (
+    module Uniform2.Filetypes4sites,
 ) where
 
 import Uniform.Json (FromJSON, ToJSON, Value)

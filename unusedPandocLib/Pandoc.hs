@@ -42,11 +42,11 @@ module Uniform.Pandoc
   , TypedFiles7(..)
   , read8
 --   , module Uniform.Json
-  , module Uniform.ProcessPDF
-  , module Uniform.Markdown
-  , module Uniform.Docrep
+  , module Uniform2.ProcessPDF
+  , module Uniform2.Markdown
+  , module Uniform2.Docrep
 --   , module Uniform.BibTex
-  , module Uniform.HTMLout
+  , module Uniform2.HTMLout
   , module Uniform.PandocImports
     , ReaderOptions
     , writerExtensions

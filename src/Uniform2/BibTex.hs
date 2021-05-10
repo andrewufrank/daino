@@ -9,7 +9,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeFamilies #-}
 
-module Uniform.BibTex where -- (openMain, htf_thisModuelsTests)
+module Uniform2.BibTex where -- (openMain, htf_thisModuelsTests)
 
 import Data.List (intersperse)
 import qualified Data.Map as M

@@ -14,13 +14,13 @@
 module Lib.Templating where -- (openMain, htf_thisModuelsTests)
 
 import Lib.Foundation (masterTemplateFileName)
-import Uniform.HTMLout
+import Uniform2.HTMLout
 
 import Uniform.Pandoc
 
 --(Abs, AtKey (getAtKey), Dir, ErrIO, Filenames3 ((</>)), HTMLout, Panrep (..), Path, Text, applyTemplate3, makeRelFile, putIOwords, showT, t2s, when)
 
-import Uniform.Filetypes4sites
+import Uniform2.Filetypes4sites
 import Uniform.Json
 import UniformBase
 

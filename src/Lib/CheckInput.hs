@@ -28,7 +28,7 @@ module Lib.CheckInput where
 import GHC.Generics ( Generic )
 import Data.Default ( Default(..) )
 -- import Lib.Foundation ()
-import Uniform.Filetypes4sites  
+import Uniform2.Filetypes4sites  
 
 import UniformBase
 import Uniform.Json 

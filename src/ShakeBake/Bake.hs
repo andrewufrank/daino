@@ -23,18 +23,18 @@ import Lib.CmdLineArgs (PubFlags (..))
 import Lib.Foundation (
     SiteLayout (..),
  )
-import Uniform.Docrep (htmloutFileType, md2docrep)
+import Uniform2.Docrep (htmloutFileType, md2docrep)
 
-import Uniform.Filetypes4sites (
+import Uniform2.Filetypes4sites (
     docrepFileType,
     panrepFileType,
     texFileType,
     texSnipFileType,
  )
-import Uniform.Markdown (markdownFileType)
-import Uniform.ProcessPDF (panrep2texsnip, tex2latex, writePDF2)
+import Uniform2.Markdown (markdownFileType)
+import Uniform2.ProcessPDF (panrep2texsnip, tex2latex, writePDF2)
 
-import Uniform.Panrep (docrep2panrep, panrep2html)
+import Uniform2.Panrep (docrep2panrep, panrep2html)
 import UniformBase
 
 type BakeOp =

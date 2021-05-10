@@ -22,8 +22,8 @@
             -fno-warn-unused-imports 
             -fno-warn-unused-matches #-}
 
-module Uniform.ProcessPDF (
-    module Uniform.ProcessPDF,
+module Uniform2.ProcessPDF (
+    module Uniform2.ProcessPDF,
     --   , Pandoc(..)
     --   , module Uniform.Error   -- or at least ErrIO
     --   , write8
@@ -34,7 +34,7 @@ module Uniform.ProcessPDF (
     --   , module Uniform.Json
 ) where
 
-import Uniform.Filetypes4sites
+import Uniform2.Filetypes4sites
 
 -- import Uniform.Pandoc  -- cycle?
 
@@ -44,7 +44,7 @@ import Uniform.Filetypes4sites
 
 import qualified System.Exit as Sys
 import qualified System.Process as Sys
-import Uniform.Docrep
+import Uniform2.Docrep
 import Uniform.Json
 import Uniform.PandocImports
 import UniformBase

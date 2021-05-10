@@ -36,11 +36,11 @@ where
 
 import Lib.CmdLineArgs (PubFlags (..))
 import Lib.Foundation (SiteLayout (..))
-import Uniform.BibTex ()
+import Uniform2.BibTex ()
 import Uniform.Convenience.DataVarious
-import Uniform.HTMLout (HTMLout (..), htmloutFileType)
-import Uniform.Markdown (readMarkdown2)
-import Uniform.Pandoc
+import Uniform2.HTMLout (HTMLout (..), htmloutFileType)
+import Uniform2.Markdown (readMarkdown2)
+import Uniform.2Pandoc
   
 import UniformBase
 import Uniform.Json 

@@ -29,7 +29,7 @@ import ShakeBake.Bake
 --   bakeOneFile2pdf )
 import Lib.CmdLineArgs (PubFlags (..))
 import Lib.Foundation (SiteLayout (..))
-import Uniform.Filetypes4sites
+import Uniform2.Filetypes4sites
     ( extDocrep, extPanrep, extTexSnip, extTex )
 import Uniform.Pandoc ( extMD )
 

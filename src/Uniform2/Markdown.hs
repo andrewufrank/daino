@@ -21,8 +21,8 @@
             -fno-warn-duplicate-exports
             -fno-warn-deprecations #-}
 
-module Uniform.Markdown
-  ( module Uniform.Markdown,
+module Uniform2.Markdown
+  ( module Uniform2.Markdown,
     Pandoc.ReaderOptions,
     markdownFileType,
     extMD,

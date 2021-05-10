@@ -17,7 +17,7 @@ import Lib.CheckInput
 import Lib.MetaPage 
 
 -- import Uniform.Pandoc (Panrep (..))
-import Uniform.Filetypes4sites
+import Uniform2.Filetypes4sites
 
 import UniformBase
 

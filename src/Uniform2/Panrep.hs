@@ -24,8 +24,8 @@
 {- | the representation with indices
  ready for processing to HTML or to TexSnip -> Tex -> Pdf
 -}
-module Uniform.Panrep (
-    module Uniform.Panrep,
+module Uniform2.Panrep (
+    module Uniform2.Panrep,
 ) where
 
 import Data.Default
@@ -38,8 +38,8 @@ import Lib.Templating
 import Text.CSL as Pars (Reference, readBiblioFile, readCSLFile)
 import Text.CSL.Pandoc as Bib (processCites)
 import qualified Text.Pandoc as Pandoc
-import Uniform.Filetypes4sites
-import Uniform.HTMLout (
+import Uniform2.Filetypes4sites
+import Uniform2.HTMLout (
     HTMLout (HTMLout),
     html5Options,
     htmloutFileType,

@@ -22,7 +22,7 @@ import Uniform.Json
 import UniformBase
 
 import Lib.MetaPage
-import Uniform.Filetypes4sites
+import Uniform2.Filetypes4sites
 import Uniform.Pandoc
 
 import Lib.CheckInput

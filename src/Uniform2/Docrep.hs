@@ -23,8 +23,8 @@
             -fno-warn-unused-imports 
             -fno-warn-unused-matches #-}
 
-module Uniform.Docrep (
-    module Uniform.Docrep,
+module Uniform2.Docrep (
+    module Uniform2.Docrep,
     HTMLout,
     htmloutFileType,
     -- , Dtemplate
@@ -53,8 +53,8 @@ import Lib.MetaPage
 import Text.CSL as Pars (Reference, readBiblioFile, readCSLFile)
 import Text.CSL.Pandoc as Bib (processCites)
 import qualified Text.Pandoc as Pandoc
-import Uniform.Filetypes4sites
-import Uniform.HTMLout (
+import Uniform2.Filetypes4sites
+import Uniform2.HTMLout (
     HTMLout (HTMLout),
     html5Options,
     htmloutFileType,
