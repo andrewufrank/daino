@@ -57,12 +57,8 @@ import Uniform.Json
 import Uniform.Pandoc
  
 
-import Uniform2.Filetypes4sites ( Docrep(Docrep) )
-import Uniform2.HTMLout (
-    HTMLout (HTMLout),
-    htmloutFileType,
-    writeHtml5String,
- )
+import Uniform2.Filetypes4sites 
+import Uniform2.HTMLout 
  
 
 -- data DocrepJSON = DocrepJSON {yam :: Value, blocks :: [Block]} -- a json value

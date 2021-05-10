@@ -23,30 +23,22 @@
 
 module Uniform2.HTMLout (
     module Uniform2.HTMLout,
-    extHTML,
-    writeHtml5String,
-    writerExtensions,
-    writerHighlightStyle,
-    WriterOptions,
-    def,
+    -- extHTML,
+    -- writeHtml5String,
+    -- writerExtensions,
+    -- writerHighlightStyle,
+    -- WriterOptions,
+    -- def,
 ) where
 
-import Uniform.Json
+import Uniform.Json (ErrIO, ToJSON (toJSON))
 import UniformBase
 
-import Lib.MetaPage
+import Lib.MetaPage (MetaPage)
 
-import Text.Pandoc (
-    Pandoc (..),
-    WriterOptions,
-    def,
-    writeHtml5String,
-    writerExtensions,
-    writerHighlightStyle,
- )
+-- import Text.Pandoc
 
-import Uniform.Pandoc 
-
+import Uniform.Pandoc
 
 -- writeHtml5String2 :: Pandoc -> ErrIO HTMLout
 -- writeHtml5String2 pandocRes = do
@@ -69,7 +61,7 @@ applyTemplate3 templName val = do
     putIOwords ["test_readTempl", take' 300 . showT $ t1]
     -- let t2 = read (t2s t1) :: Template Text
     -- putIOwords ["test_readTempl Dtemplate", take' 300 . showT $ t2]
-    res2 <- applyTemplate4 debug t1 (toJSON val) 
+    res2 <- applyTemplate4 debug t1 (toJSON val)
     -- temp1 <- liftIO $ DocTemplates.compileTemplate mempty t1
     -- -- err1 :: Either String (Doc Text) <- liftIO $ DocTemplates.applyTemplate mempty (unwrap7 templText) (unDocValue val)
     -- let tmp3 = case temp1 of
@@ -84,10 +76,6 @@ applyTemplate3 templName val = do
 
     let res3 = HTMLout res2
     return (res3 :: HTMLout)
-
- 
-
-
 
 --------------------------------------------------------HTML files
 

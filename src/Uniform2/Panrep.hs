@@ -39,12 +39,7 @@ import Text.CSL as Pars (Reference, readBiblioFile, readCSLFile)
 import Text.CSL.Pandoc as Bib (processCites)
 import qualified Text.Pandoc as Pandoc
 import Uniform2.Filetypes4sites
-import Uniform2.HTMLout (
-    HTMLout (HTMLout),
-    -- html5Options,
-    htmloutFileType,
-    writeHtml5String,
- )
+import Uniform2.HTMLout 
 import Uniform.Json
 import Uniform.Pandoc
 import Uniform.PandocImports
