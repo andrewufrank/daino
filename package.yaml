@@ -31,36 +31,27 @@ dependencies:
     - uniformBase 
     -  uniform-json
     -  uniform-shake
-    # - shake
-    # - path-io
-    # - pipes
-    - containers
-    # - aeson
+    - uniform-convenience # from u2to
+    - uniform-cmdLineArgs # from u2to
+    - uniform-watch 
+    - uniform-webserver  # - shake
+
     - data-default
    
-    # not in uniformBase:
+    # for pandoc stuff:
     - uniform-pandoc  
     - pandoc 
     - doclayout
     - doctemplates
     - pandoc-citeproc
-    # - lens-aeson
-    # - lens 
     - pandoc-types
     - bibtex
-    # - aeson 
     - parsec
-    - containers
     - process
+    - containers
 
-    - uniform-convenience # from u2to
-    - uniform-cmdLineArgs # from u2to
-    - uniform-watch 
-    - uniform-webserver
+    
     # -- - uniform-ftp
-
-    # - optparse-applicative
-    # - optparse-generic
 
 library:
   source-dirs: 
