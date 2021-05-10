@@ -103,9 +103,8 @@ addFileMetaPage doughP bakedP fn =
             , dyLink =
                 toFilePath
                     (makeRelativeP doughP fn :: Path Rel File)
-                    --  , dyStyle =  addBakedRoot bakedP ( dyStyle resdy1)
-                    --  , dyBibliography = addBakedRoot bakedP                                           (dyBibliography resdy1)
-                    -- , dyIndexPage = ((getNakedFileName fn) == "index") || dyIndexPage resdy1
+                     , dyStyle =  addBakedRoot bakedP ( dyStyle zero)
+                     , dyBibliography = addBakedRoot bakedP                                           (dyBibliography zero)
             } ::
             MetaPage
 
