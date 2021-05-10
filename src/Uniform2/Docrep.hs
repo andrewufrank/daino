@@ -165,8 +165,6 @@ addRefs debugflag dr1@(DocrepJSON y1 p1) = do
     when debugflag $ putIOwords ["addRefs", showT dr1, "\n"]
     let biblio1 = getAtKey y1 "bibliography" :: Maybe Text
     maybe (return dr1) (addRefs2 debugflag dr1) biblio1
-gak :: Data.Aeson.Lens.AsValue s => s -> Text -> Maybe Value
-gak b k = (^?) b (key k)
 
 addRefs2 ::
     (MonadIO m, MonadError m, ErrorType m ~ Text) =>
@@ -223,6 +221,9 @@ addRefs2 debugx dr1@(DocrepJSON y1 p1) biblio1 = do
     when debugx $ putIOwords ["addRefs2-4", "p2\n", showT p2]
 
     return (DocrepJSON y1 p2)
+
+gak :: Data.Aeson.Lens.AsValue s => s -> Text -> Maybe Value
+gak b k = (^?) b (key k)
 
 -- mergeAll :: DocrepJSON -> [Value] -> DocrepJSON
 -- -- ^ merge the values with the values in DocRec -- last winns
