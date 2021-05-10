@@ -7,12 +7,10 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
--- {-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeFamilies #-}
 
--- {-# LANGUAGE PartialTypeSignatures     #-}
 module ShakeBake.Watch where
 
 import Lib.CmdLineArgs (PubFlags (..))
@@ -28,12 +26,11 @@ import Uniform.WebServer (Port, runScotty)
 import UniformBase
 
 mainWatch :: Bool -> SiteLayout -> PubFlags -> Port -> ErrIO ()
--- the landing page must be given here because it is special for scotty
+-- | the landing page must be given here because it is special for scotty
 -- and the name of the banner imgage which must be copied by shake
 mainWatch debug layout flags bakedPort = do
   let bakedPath = bakedDir layout
       doughPath = doughDir layout
-  -- bannerImageFileName = bannerImage layout
   let watchDough2, watchThemes2 :: WatchOpType
       watchDough2 =
         makeWatch

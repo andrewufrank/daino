@@ -32,10 +32,10 @@ dependencies:
     -  uniform-json
     -  uniform-shake
     # - shake
-    - path-io
+    # - path-io
     # - pipes
     - containers
-    - aeson
+    # - aeson
     - data-default
    
     # not in uniformBase:
@@ -53,13 +53,14 @@ dependencies:
     - containers
     - process
 
-    - uniform-convenience 
+    - uniform-convenience # from u2to
+    - uniform-cmdLineArgs # from u2to
     - uniform-watch 
     - uniform-webserver
     # -- - uniform-ftp
 
-    - optparse-applicative
-    - optparse-generic
+    # - optparse-applicative
+    # - optparse-generic
 
 library:
   source-dirs: 

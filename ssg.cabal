@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: df6df3501c31c7f25665fd35f69c8a4a648aa816f5f7326d92330b1bbda0cd45
+-- hash: 0e61179e9bcc0342a805a6ec37e457ac191e2c9bd442b6e57e1453ebdb1e2a06
 
 name:           ssg
 version:        0.0.4.3
@@ -55,21 +55,18 @@ library
       src
   ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods
   build-depends:
-      aeson
-    , base
+      base
     , bibtex
     , containers
     , data-default
     , doclayout
     , doctemplates
-    , optparse-applicative
-    , optparse-generic
     , pandoc
     , pandoc-citeproc
     , pandoc-types
     , parsec
-    , path-io
     , process
+    , uniform-cmdLineArgs
     , uniform-convenience
     , uniform-json
     , uniform-pandoc
@@ -87,22 +84,19 @@ executable ssgbake
       app
   ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods
   build-depends:
-      aeson
-    , base
+      base
     , bibtex
     , containers
     , data-default
     , doclayout
     , doctemplates
-    , optparse-applicative
-    , optparse-generic
     , pandoc
     , pandoc-citeproc
     , pandoc-types
     , parsec
-    , path-io
     , process
     , ssg
+    , uniform-cmdLineArgs
     , uniform-convenience
     , uniform-json
     , uniform-pandoc
@@ -120,22 +114,19 @@ executable ssgcheck
       app
   ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods
   build-depends:
-      aeson
-    , base
+      base
     , bibtex
     , containers
     , data-default
     , doclayout
     , doctemplates
-    , optparse-applicative
-    , optparse-generic
     , pandoc
     , pandoc-citeproc
     , pandoc-types
     , parsec
-    , path-io
     , process
     , ssg
+    , uniform-cmdLineArgs
     , uniform-convenience
     , uniform-json
     , uniform-pandoc

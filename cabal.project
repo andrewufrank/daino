@@ -15,6 +15,7 @@ packages:
     ../u4blog/uniform-shake/*.cabal
     ../u4blog/uniform-pandoc/*.cabal
     ../u2to/uniform-convenience/*.cabal
+    ../u2to/uniform-cmdLineArgs/*.cabal
 
 
 -- Disregard all upper bounds when dependency solving
