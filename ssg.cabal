@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 170ded39285b2fde615f5323b4f953e5b438d314b285f6bdd36e70ca9f100789
+-- hash: 7fa92adbd042142214cc583dd83e14130bc938b5e7da1a59709b81661be13d41
 
 name:           ssg
 version:        0.0.4.3
@@ -71,9 +71,7 @@ library
     , pandoc-types
     , parsec
     , path-io
-    , pipes
     , process
-    , shake
     , uniform-convenience
     , uniform-json
     , uniform-pandoc
@@ -107,9 +105,7 @@ executable ssgbake
     , pandoc-types
     , parsec
     , path-io
-    , pipes
     , process
-    , shake
     , ssg
     , uniform-convenience
     , uniform-json
@@ -144,9 +140,7 @@ executable ssgcheck
     , pandoc-types
     , parsec
     , path-io
-    , pipes
     , process
-    , shake
     , ssg
     , uniform-convenience
     , uniform-json

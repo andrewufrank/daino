@@ -31,9 +31,9 @@ dependencies:
     - uniformBase 
     -  uniform-json
     -  uniform-shake
-    - shake
+    # - shake
     - path-io
-    - pipes
+    # - pipes
     - containers
     - aeson
     - data-default

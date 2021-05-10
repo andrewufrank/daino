@@ -51,14 +51,14 @@
 -}
 module ShakeBake.Shake2 where
 
-import Development.Shake
+import Uniform.Shake
+    
 import Lib.CmdLineArgs (PubFlags (..))
 import ShakeBake.ConvertFiles
 import Lib.Foundation (
     SiteLayout (..),
     staticDirName,
  )
-import Uniform.Shake
 
 -- shakeDelete :: SiteLayout -> FilePath -> ErrIO ()
 -- {- ^ experimental - twich found delete of md
@@ -82,7 +82,7 @@ shakeArgs2 bakedP = do
         shake  
             shakeOptions
                 { shakeFiles = toFilePath bakedP
-                , shakeVerbosity = Chatty -- Loud
+                , shakeVerbosity = Verbose-- Loud
                 , shakeLint = Just LintBasic
                 }
     -- putIOwords ["shakeArgs2", "done"]
