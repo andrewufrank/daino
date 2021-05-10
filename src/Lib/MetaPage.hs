@@ -26,11 +26,12 @@
 -}
 module Lib.MetaPage where
 
-import Data.Aeson.Types
+-- import Data.Aeson.Types
 import Data.Default (Default (..))
 import Lib.CmdLineArgs (PubFlags (..))
 import Lib.Foundation (SiteLayout (..))
 import Uniform.Json
+import Uniform.Yaml
 import Uniform.Pandoc
 import Uniform.PandocImports
 import Uniform.Shake (makeRelativeP)

@@ -44,11 +44,11 @@ dependencies:
     - doclayout
     - doctemplates
     - pandoc-citeproc
-    - lens-aeson
-    - lens 
+    # - lens-aeson
+    # - lens 
     - pandoc-types
     - bibtex
-    - aeson 
+    # - aeson 
     - parsec
     - containers
     - process

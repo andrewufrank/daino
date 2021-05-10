@@ -29,20 +29,20 @@ module Uniform2.Docrep (
     htmloutFileType,
 ) where
 
-import Control.Lens (
-    -- needed for the query expressions
-    (^?),
-    -- , (?~)
-    -- , (&)
-    -- , at
- )
-import Data.Aeson.Lens (AsValue, key)
-import Data.Aeson.Types (
-    FromJSON (parseJSON),
-    ToJSON,
-    Value,
-    parseMaybe,
- )
+-- import Control.Lens (
+--     -- needed for the query expressions
+--     (^?),
+--     -- , (?~)
+--     -- , (&)
+--     -- , at
+--  )
+-- import Data.Aeson.Lens (AsValue, key)
+-- import Data.Aeson.Types (
+--     FromJSON (parseJSON),
+--     ToJSON,
+--     Value,
+--     parseMaybe,
+--  )
 import Data.Default ( Default(def) )
 import UniformBase
 

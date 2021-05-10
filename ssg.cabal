@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 7fa92adbd042142214cc583dd83e14130bc938b5e7da1a59709b81661be13d41
+-- hash: df6df3501c31c7f25665fd35f69c8a4a648aa816f5f7326d92330b1bbda0cd45
 
 name:           ssg
 version:        0.0.4.3
@@ -62,8 +62,6 @@ library
     , data-default
     , doclayout
     , doctemplates
-    , lens
-    , lens-aeson
     , optparse-applicative
     , optparse-generic
     , pandoc
@@ -96,8 +94,6 @@ executable ssgbake
     , data-default
     , doclayout
     , doctemplates
-    , lens
-    , lens-aeson
     , optparse-applicative
     , optparse-generic
     , pandoc
@@ -131,8 +127,6 @@ executable ssgcheck
     , data-default
     , doclayout
     , doctemplates
-    , lens
-    , lens-aeson
     , optparse-applicative
     , optparse-generic
     , pandoc
