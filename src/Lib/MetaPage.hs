@@ -37,11 +37,10 @@ import Uniform.Shake (makeRelativeP)
 import UniformBase
 
 data MetaPage = MetaPage
-    { dyFn :: FilePath -- the original dough fn
-    , dyLink :: FilePath -- the relative filename
-    , dyLang :: DocLanguage
-    , -- the fields of miniblog
-      dyTitle :: Text
+    { dyFn :: FilePath -- ^ the original dough fn
+    , dyLink :: FilePath -- ^ the relative filename
+    , dyLang :: DocLanguage -- ^ the fields of miniblog
+    , dyTitle :: Text
     , dyAbstract :: Text
     , dyAuthor :: Text
     , -- | this is maybe a string,
@@ -58,21 +57,6 @@ data MetaPage = MetaPage
     }
     deriving (Show, Ord, Eq, Generic, Zeros, Read) --Read,
 
--- instance Zeros MetaPage where
---     zero = MetaPage zero
---                    zero
---                    DLenglish
---                    zero
---                    zero
---                    zero
---                    zero
---                    zero
---                    zero
---                    zero
---                    zero
---                    zero
---    []
---    []
 
 instance Default MetaPage where
     def =
@@ -105,76 +89,7 @@ instance ToJSON MetaPage where
 instance FromJSON MetaPage where
     parseJSON = genericParseJSON docyamlOptions
 
--- generic works only when all fields are present
--- merge with metarec definition later in file
--- default values are set here and missing values to Nothing
--- parseYam ::   Value -> Parser
 
--- parseJSONyaml (Object o) =
---   -- withObject "person" $ \o ->
---   -- the yam part is an object
---   -- these are the required fields
---   -- at the moment default language is DLenglish
---   do
---     dyTitle <- o .: "title"
---     dyAbstract <- o .: "abstract"
---     dyAuthor <- o .:? "author" .!= ""
---     dyLang <- o .:? "lang" .!= DLenglish -- x^ default
---     dyKeywords <- o .: "keywords"
---     dyDate <- o .:? "date"
---     dyFn <- o .:? "fn" .!= "" -- x^ as a default, is overwritten but avoids error msg
---     dyLink <- o .:? "link" .!= "" -- x^ the relative link for html, derive from fn
---     dyBibliography <- o .:? "bibliography"
---     -- the bib file if needed
---     dyStyle <- o .:? "style" -- x^ the csl file
---     dyPublish <- o .:? "publish" --  .!= Nothing
---     dyIndexPage <- o .:? "indexPage" .!= False
---     -- dyDirEntries   <- o .:? "dirEntries" .!= []
---     -- dyFileEntries  <- o .:? "fileEntries" .!= []
---     return MetaPage {..}
-
--- completeMetaPage :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> Value -> ErrIO MetaPage
--- -- there is no requirement of completeness of the values set
--- -- all can be defaulted (what about title? )
--- -- complete the meta yaml data
--- -- test for completeness of metadata in yaml
--- -- fails if required labels are not present
--- -- adds defaults when
--- -- sets filename
--- completeMetaPage doughP bakedP fn y1 = do
---   putIOwords ["completeMetaPage start"]
---   let resdy =
---         parseEither parseJSONyaml y1 ::
---           Either String MetaPage
---   case resdy of
---     Left msg ->
---       errorT
---         [ "completeMetaPage not all required fields",
---           s2t msg,
---           "in file",
---           showT fn
---         ]
---     Right resdy1 -> do
---       -- heute <- getCurrentTimeUTC
---       let nakFn = getNakedFileName fn
---       let resdy2 =
---             resdy1
---               { dyFn = toFilePath fn,
---                 dyLink = toFilePath $ makeRelativeP doughP fn,
---                 dyStyle = addBakedRoot bakedP (dyStyle resdy1),
---                 dyBibliography =
---                   addBakedRoot
---                     bakedP
---                     (dyBibliography resdy1),
---                 dyIndexPage = (nakFn == "index") || dyIndexPage resdy1
---               }
---       when False $ putIOwords ["completeMetaPage 1 resdy2", showT resdy2]
---       -- dy <- case resdy of
---       --         Error msg -> error msg
---       --         Success a -> return a
---       let dy = resdy2
---       putIOwords ["completeMetaPage dy", showT dy]
---       return dy
 
 addFileMetaPage :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> MetaPage
 addFileMetaPage doughP bakedP fn =

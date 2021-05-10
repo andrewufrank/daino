@@ -1,9 +1,9 @@
----------------------------------------------------------------------------
+---------------------------------------------------------------------
 --
 -- Module      :  Uniform.Docrep
 -- the abstract representation of the documents
 -- see Filetypes4sites DocrepJSON
------------------------------------------------------------------------------
+------------------------------------------------------------------
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
@@ -27,43 +27,54 @@ module Uniform2.Docrep (
     module Uniform2.Docrep,
     HTMLout,
     htmloutFileType,
-    -- , Dtemplate
-    -- , Template
-    -- , renderTemplate
 ) where
 
-import Control.Lens ( -- needed for the query expressions
+import Control.Lens (
+    -- needed for the query expressions
     (^?),
     -- , (?~)
     -- , (&)
     -- , at
  )
-import Data.Aeson.Lens (key, AsValue)
+import Data.Aeson.Lens (AsValue, key)
 import Data.Aeson.Types (
     FromJSON (parseJSON),
     ToJSON,
     Value,
     parseMaybe,
  )
-import Data.Default
+import Data.Default ( Default(def) )
 import UniformBase
--- import GHC.Generics (Generic)
-import Lib.Foundation
+
+import Lib.Foundation ( SiteLayout(doughDir, bakedDir) )
 import Lib.Indexing (addIndex2yam)
-import Lib.MetaPage
+import Lib.MetaPage ( MetaPage, addFileMetaPage )
 import Text.CSL as Pars (Reference, readBiblioFile, readCSLFile)
 import Text.CSL.Pandoc as Bib (processCites)
 import qualified Text.Pandoc as Pandoc
-import Uniform2.Filetypes4sites
+import Uniform.Json
+    
+import Uniform.Pandoc
+    ( Pandoc,
+      MarkdownText,
+      flattenMeta,
+      fromJSONValue,
+      getMeta,
+      readMarkdown2 )
+import Uniform.PandocImports
+    ( Pandoc,
+      MarkdownText,
+      flattenMeta,
+      fromJSONValue,
+      getMeta,
+      readMarkdown2 )
+import Uniform2.Filetypes4sites ( Docrep(Docrep) )
 import Uniform2.HTMLout (
     HTMLout (HTMLout),
     html5Options,
     htmloutFileType,
     writeHtml5String,
  )
-import Uniform.Json
-import Uniform.Pandoc
-import Uniform.PandocImports
 
 -- data DocrepJSON = DocrepJSON {yam :: Value, blocks :: [Block]} -- a json value
 data DocrepJSON = DocrepJSON {yam1 :: Value, pan1 :: Pandoc} -- a json value
@@ -176,7 +187,7 @@ addRefs2 debugx dr1@(DocrepJSON y1 p1) biblio1 = do
     --   let debugx = False
     when debugx $ putIOwords ["addRefs2-1", showT dr1, "\n"]
     let style1 = getAtKey y1 "style" :: Maybe Text
-        refs1 = gak y1"references" :: Maybe Value -- is an array
+        refs1 = gak y1 "references" :: Maybe Value -- is an array
         -- refs1 = y1 ^? key "references" :: Maybe Value -- is an array
         nocite1 = getAtKey y1 "nocite" :: Maybe Text
     --   let style1 = syStyle y1
@@ -222,9 +233,6 @@ addRefs2 debugx dr1@(DocrepJSON y1 p1) biblio1 = do
 
     return (DocrepJSON y1 p2)
 
-gak :: Data.Aeson.Lens.AsValue s => s -> Text -> Maybe Value
-gak b k = (^?) b (key k)
-
 -- mergeAll :: DocrepJSON -> [Value] -> DocrepJSON
 -- -- ^ merge the values with the values in DocRec -- last winns
 -- -- issue how to collect all css?
@@ -235,7 +243,7 @@ gak b k = (^?) b (key k)
 
 --   putAtKey k2 txt (DocrepJSON y p) = DocrepJSON (putAtKey k2 txt y) p
 
--- instance AtKey DocrepJSON Bool where
---   getAtKey dr k2 = getAtKey (yam dr) k2
+-- instance AtKey Docrep [Reference] where
+--   getAtKey dr k2 =  (yam dr) ^? k2
 
---   putAtKey k2 b dr = DocrepJSON $ putAtKey k2 b (unDocrep meta2)
+--   putAtKey k2 b dr = Docrep $ putAtKey k2 b (unDocrep meta2)

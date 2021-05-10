@@ -29,22 +29,10 @@ module Uniform2.HTMLout (
     writerHighlightStyle,
     WriterOptions,
     def,
-    --   , Pandoc(..)
-    --   , module Uniform.Error   -- or at least ErrIO
-    --   , write8
-    --   , TypedFile5
-    --   , TypedFiles5
-    --   , TypedFiles7
-    --   , read8
-    --   , module Uniform.Json
 ) where
 
 import Uniform.Json
 import UniformBase
-
--- import Uniform.Pandoc
--- import Uniform.DocValue
--- import Uniform.FileIO
 
 import Lib.MetaPage
 import Uniform.PandocImports
@@ -58,8 +46,6 @@ import Text.Pandoc (
     writerHighlightStyle,
  )
 import Text.Pandoc.Highlighting (tango)
-
--- applyTemplate,
 
 import Text.DocLayout (render)
 import Text.DocTemplates as DocTemplates (
@@ -111,6 +97,8 @@ applyTemplate3 templName val = do
 
     let res3 = HTMLout res2
     return (res3 :: HTMLout)
+
+--------------------------------------------------------HTML files
 
 newtype HTMLout = HTMLout {contentHtml :: Text}
     deriving (Show, Read, Eq, Ord, Generic)

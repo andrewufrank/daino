@@ -23,12 +23,9 @@ module Uniform2.Filetypes4sites (
 ) where
 
 import Uniform.Json (FromJSON, ToJSON, Value)
-import Uniform.PandocImports
+import Uniform.PandocImports ( Pandoc )
 import UniformBase
-
-import Lib.MetaPage
-
--- readMarkdown, readMd2meta in Uniform.Markdown
+import Lib.MetaPage ( MetaPage )
 
 --------------------------------------------typed file Docrep
 
@@ -43,10 +40,7 @@ import Lib.MetaPage
  but I do not see an easy way to convert back
 -}
 data Docrep = Docrep {yam :: Value, pan :: Pandoc} -- a json value
--- data Docrep = Docrep {yam :: MetaPage, pan :: Pandoc} -- a record value
     deriving (Show, Read, Eq, Generic, Zeros)
-
--- instance Zeros Docrep where zero = Docrep zero zero
 
 instance FromJSON Docrep
 instance ToJSON Docrep
@@ -66,12 +60,12 @@ instance TypedFiles7 Text Docrep where
     unwrap7 = showT
 
 -------------------- fileType Panrep ----------
--- a file containing what pandoc internally works on
--- plus the complete set of the metadata
 
 extPanrep :: Extension
 extPanrep = Extension "panrep"
 
+-- | a file containing what pandoc internally works on
+-- plus the complete set of the metadata
 panrepFileType :: TypedFile5 Text Panrep
 panrepFileType =
     TypedFile5{tpext5 = extPanrep} :: TypedFile5 Text Panrep
@@ -87,14 +81,14 @@ instance TypedFiles7 Text Panrep where
     unwrap7 = showT
 
 --------------------  TexSnip
--- a tex snip is a piece of latex code, but not a full compilable
--- latex which results in a pdf
 
 extTexSnip :: UniformBase.Extension
 extTexSnip = Extension "texsnip"
 
 {- | a wrapper around TexSnip
  snipyam is not used
+a tex snip is a piece of latex code, but not a full compilable
+latex which results in a pdf
 -}
 data TexSnip = TexSnip {snipyam :: MetaPage, unTexSnip :: Text}
     deriving (Show, Read, Eq)
@@ -116,7 +110,6 @@ instance TypedFiles7 Text TexSnip where
     unwrap7 = showT
 
 ----------------  Tex
--- this is a full file, not just a snippet
 
 extTex :: Extension
 extTex = Extension "tex"
@@ -128,6 +121,7 @@ instance TypedFiles7 Text Latex where
     wrap7 = Latex
     unwrap7 = unLatex
 
+-- | this is a full file, not just a snippet
 newtype Latex = Latex {unLatex :: Text}
     deriving (Eq, Ord, Read, Show)
 
@@ -142,6 +136,7 @@ extPDF = Extension "pdf"
 pdfFileType :: TypedFile5 Text PDFfile
 pdfFileType = TypedFile5{tpext5 = extPDF} :: TypedFile5 Text PDFfile
 
+-- | a file in PDF format
 newtype PDFfile = PDFfile {unpdffile :: Text}
     deriving (Eq, Ord, Read, Show)
 

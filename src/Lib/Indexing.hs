@@ -18,11 +18,16 @@
 
 module Lib.Indexing where
 
-import Uniform.Json
+import Uniform.Json ( ErrIO, fromJSONerrio ) 
 import UniformBase
 
-import Lib.MetaPage
+
+import Lib.MetaPage (
+    IndexEntry,
+    MetaPage (dyDirEntries, dyFileEntries, dyIndexPage, dyLink),
+ )
 import Uniform2.Filetypes4sites
+    ( docrepFileType, extDocrep, Docrep(Docrep), Panrep(panyam) ) 
 
 import Lib.CmdLineArgs (PubFlags (..))
 import Lib.Foundation (SiteLayout)
@@ -45,10 +50,6 @@ addIndex2yam bakedP debug pr = do
             putIOwords ["addIndex2yam", "\n dirs", showT dirs, "\n files", showT files]
             let x2 = x1{dyDirEntries = dirs, dyFileEntries = files}
             putIOwords ["addIndex2yam", "x2", showT x2]
-            -- let x2j = toJSON x2
-            -- putIOwords ["addIndex2yam", "x2j", showT x2j]
-            -- let yam2 = mergeLeftPref [x2j, yam1]
-            -- putIOwords ["addIndex2yam", "yam2", showT yam2]
             return pr{panyam = x2}
 
 {- | get the contents of a directory, separated into dirs and files
@@ -60,7 +61,6 @@ addIndex2yam bakedP debug pr = do
 getDirContent2dirs_files :: Path Abs File -> ErrIO ([IndexEntry], [IndexEntry])
 getDirContent2dirs_files indexpageFn = do
     putIOwords ["getDirContent2dir_files", showT indexpageFn]
-    -- sucht in dough
     let pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir
     -- get the dir in which the index file is embedded
     dirs1 :: [Path Abs Dir] <- getDirectoryDirs' pageFn
@@ -81,11 +81,11 @@ getFile2index :: Path Abs File -> ErrIO (Maybe IndexEntry)
 -- the directories are represented by their index files
 -- produce separately to preserve the two groups
 getFile2index fnin =
-    do
-        -- (Docrep y1 _) <- read8 fnin docrepFileType
-        -- ix1 :: IndexEntry <- fromJSONerrio y1
-        return Nothing -- . Just $ ix1
-        `catchError` ( \e -> do
+    (do
+        (Docrep y1 _) <- read8 fnin docrepFileType
+        ix1 :: IndexEntry <- fromJSONerrio y1
+        return . Just $ ix1)
+    `catchError` ( \e -> do
                         putIOwords
                             [ "getFile2index error caught\n"
                             , "fn:"
