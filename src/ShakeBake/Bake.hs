@@ -31,7 +31,8 @@ import Uniform2.Filetypes4sites (
     texFileType,
     texSnipFileType,
  )
-import Uniform2.Markdown (markdownFileType)
+-- import Uniform2.Markdown (markdownFileType)
+import Uniform.Pandoc
 import Uniform2.ProcessPDF (panrep2texsnip, tex2latex, writePDF2)
 
 import Uniform2.Panrep (docrep2panrep, panrep2html)

@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 0e61179e9bcc0342a805a6ec37e457ac191e2c9bd442b6e57e1453ebdb1e2a06
+-- hash: 30e817a4bb7131d91190ef960480abede576d3af96d02430ba198674913615c6
 
 name:           ssg
 version:        0.0.4.3
@@ -46,7 +46,6 @@ library
       Uniform2.Docrep
       Uniform2.Filetypes4sites
       Uniform2.HTMLout
-      Uniform2.Markdown
       Uniform2.Panrep
       Uniform2.ProcessPDF
   other-modules:
