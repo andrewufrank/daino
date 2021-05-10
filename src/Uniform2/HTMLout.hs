@@ -35,7 +35,6 @@ import Uniform.Json
 import UniformBase
 
 import Lib.MetaPage
-import Uniform.PandocImports
 
 import Text.Pandoc (
     Pandoc (..),
@@ -45,23 +44,9 @@ import Text.Pandoc (
     writerExtensions,
     writerHighlightStyle,
  )
-import Text.Pandoc.Highlighting (tango)
 
-import Text.DocLayout (render)
-import Text.DocTemplates as DocTemplates (
-    Doc (..),
-    Template,
-    compileTemplate,
-    renderTemplate,
- )
+import Uniform.Pandoc 
 
--- | Reasonable options for rendering to HTML
-html5Options :: WriterOptions
-html5Options =
-    def
-        { writerHighlightStyle = Just tango
-        , writerExtensions = writerExtensions def
-        }
 
 -- writeHtml5String2 :: Pandoc -> ErrIO HTMLout
 -- writeHtml5String2 pandocRes = do
@@ -79,24 +64,30 @@ applyTemplate3 :: Path Abs File -> MetaPage -> ErrIO HTMLout
  the description are in doctemplates (on hackage)
 -}
 applyTemplate3 templName val = do
+    let debug = False
     t1 :: Text <- readFile2 templName
     putIOwords ["test_readTempl", take' 300 . showT $ t1]
     -- let t2 = read (t2s t1) :: Template Text
     -- putIOwords ["test_readTempl Dtemplate", take' 300 . showT $ t2]
-    temp1 <- liftIO $ DocTemplates.compileTemplate mempty t1
-    -- err1 :: Either String (Doc Text) <- liftIO $ DocTemplates.applyTemplate mempty (unwrap7 templText) (unDocValue val)
-    let tmp3 = case temp1 of
-            Left msg -> error msg
-            Right tmp2 -> tmp2
-    when False $ putIOwords ["applyTemplate3 temp2", take' 300 $ showT tmp3]
-    -- renderTemplate :: (TemplateTarget a, ToContext a b) => Template a -> b -> Doc a
-    let res = renderTemplate tmp3 (toJSON val)
-    when False $ putIOwords ["applyTemplate3 res", take' 300 $ showT res]
-    let res2 = render Nothing res
+    res2 <- applyTemplate4 debug t1 (toJSON val) 
+    -- temp1 <- liftIO $ DocTemplates.compileTemplate mempty t1
+    -- -- err1 :: Either String (Doc Text) <- liftIO $ DocTemplates.applyTemplate mempty (unwrap7 templText) (unDocValue val)
+    -- let tmp3 = case temp1 of
+    --         Left msg -> error msg
+    --         Right tmp2 -> tmp2
+    -- when False $ putIOwords ["applyTemplate3 temp2", take' 300 $ showT tmp3]
+    -- -- renderTemplate :: (TemplateTarget a, ToContext a b) => Template a -> b -> Doc a
+    -- let res = renderTemplate tmp3 (toJSON val)
+    -- when False $ putIOwords ["applyTemplate3 res", take' 300 $ showT res]
+    -- let res2 = render Nothing res
     when True $ putIOwords ["applyTemplate3 done res2", take' 300 $ showT res2]
 
     let res3 = HTMLout res2
     return (res3 :: HTMLout)
+
+ 
+
+
 
 --------------------------------------------------------HTML files
 

@@ -55,26 +55,15 @@ import qualified Text.Pandoc as Pandoc
 import Uniform.Json
     
 import Uniform.Pandoc
-    ( Pandoc,
-      MarkdownText,
-      flattenMeta,
-      fromJSONValue,
-      getMeta,
-      readMarkdown2 )
-import Uniform.PandocImports
-    ( Pandoc,
-      MarkdownText,
-      flattenMeta,
-      fromJSONValue,
-      getMeta,
-      readMarkdown2 )
+ 
+
 import Uniform2.Filetypes4sites ( Docrep(Docrep) )
 import Uniform2.HTMLout (
     HTMLout (HTMLout),
-    html5Options,
     htmloutFileType,
     writeHtml5String,
  )
+ 
 
 -- data DocrepJSON = DocrepJSON {yam :: Value, blocks :: [Block]} -- a json value
 data DocrepJSON = DocrepJSON {yam1 :: Value, pan1 :: Pandoc} -- a json value

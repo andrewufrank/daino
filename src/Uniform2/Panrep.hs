@@ -41,7 +41,7 @@ import qualified Text.Pandoc as Pandoc
 import Uniform2.Filetypes4sites
 import Uniform2.HTMLout (
     HTMLout (HTMLout),
-    html5Options,
+    -- html5Options,
     htmloutFileType,
     writeHtml5String,
  )
