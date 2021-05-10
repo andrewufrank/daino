@@ -1,16 +1,10 @@
 name: ssg
 version: 0.0.4.3
 synopsis: a static site generator using shake and pandoc
-description: a static site generator
-    version 0.0.2.0  used for myhomepage  - fixes
-    0.0.2.1 add check for all pages, study content pdf, tex
-    0.0.3.0 copy all structure (exclude with DNB)
-    0.0.3.1 change to 15.13 (pandoc not resolvable)
-    0.0.4   start with hpack, lts-16.0 (8.8.)
-    0.0.4.2 recovering from 2000, rebuild Docrep, restricted use of JSON to docrep processing, moved the uniform-modules for blog inside SSG
-    0.0.4.3 clean up, then 
+description: | 
+  A static site generator from pandoc and other available packages on Hackage (e.g. shake, twitch, scotty), influenced by Chris Penner's [slick](https://github.com/ChrisPenner/slick#readme). It uses files to manage data to permit version management with git. Page appearances are directed with YAML and internally data is structured with JSON, for each page a PDF file is produced to allow regular looking prints. Index pages are automatically created.
     
-category: Development
+category: Development Web
 
 license-file: LICENSE
 author: Andrew U. Frank (frank@geoinfo.tuwien.ac.at)
@@ -24,22 +18,18 @@ extra-source-files:
 ghc-options: 
     -Wall
     -fno-warn-unused-binds 
-    -fno-warn-unused-imports 
     -fno-warn-deprecations 
     -fno-warn-unused-do-bind 
     -fno-warn-missing-signatures
     -fno-warn-orphans
     -fno-warn-type-defaults 
-    -fno-warn-dodgy-imports 
     -fno-warn-unused-matches 
     -fno-warn-warnings-deprecations 
-    -fno-warn-duplicate-exports
     -fno-warn-missing-methods 
 dependencies: 
     - base  
     - uniformBase 
     -  uniform-json
-    # -  uniform-strings  
     -  uniform-shake
     - shake
     - path-io
@@ -60,7 +50,7 @@ dependencies:
     - bibtex
     - aeson 
     - parsec
-    # - containers
+    - containers
     - process
 
     - uniform-convenience 
@@ -70,15 +60,11 @@ dependencies:
 
     - optparse-applicative
     - optparse-generic
-  # -- - pandoc-types
 
 library:
   source-dirs: 
       - src 
-  
 
-  # other: watch 
- 
 executables:  
   ssgbake:
     main: ssgBake.hs

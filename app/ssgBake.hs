@@ -1,11 +1,6 @@
 -------------------------------------------------------------------
 --
 -- Module      :   ssgBake
--- the main for the sgg
--- uses shake only to convert the md files
--- copies all resources
--- must start in dir with settings2.yaml
---
 ----------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
@@ -14,13 +9,16 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeFamilies #-}
 
+{- | the main for the sgg
+ uses shake only to convert the md files
+ copies all resources
+ must start in dir with settings2.yaml
+-}
 module Main where -- must have Main (main) or Main where
 
 import Lib.CmdLineArgs (PubFlags (..), parseArgs2input)
 import Lib.Foundation (
-    SiteLayout (..),
     settingsFileName,
-    testLastUploadFileName,
  )
 import Lib.StartSSGprocess (ssgProcess)
 import Uniform.Convenience.StartApp (startProg)
@@ -30,8 +28,7 @@ programName, progTitle :: Text
 programName = "ssgBake" :: Text
 progTitle = "constructing a static site generator x6 0.0.2.1" :: Text
 
--- the process is still centered on the current working dir
---
+-- the process is centered on the current working dir
 
 main :: IO ()
 main =

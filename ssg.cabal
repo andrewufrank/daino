@@ -4,13 +4,14 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 74591754bb944e811077e8c6f64fdb5a5d577373a664ab01a099b13af4a0b9fa
+-- hash: b8fb724ebfc2a8ce31191355f33b474458678cf9a4fc91a1300a126a5b21dcb2
 
 name:           ssg
 version:        0.0.4.3
 synopsis:       a static site generator using shake and pandoc
-description:    a static site generator version 0.0.2.0  used for myhomepage  - fixes 0.0.2.1 add check for all pages, study content pdf, tex 0.0.3.0 copy all structure (exclude with DNB) 0.0.3.1 change to 15.13 (pandoc not resolvable) 0.0.4   start with hpack, lts-16.0 (8.8.) 0.0.4.2 recovering from 2000, rebuild Docrep, restricted use of JSON to docrep processing, moved the uniform-modules for blog inside SSG 0.0.4.3 clean up, then
-category:       Development
+description:    A static site generator from pandoc and other available packages on Hackage (e.g. shake, twitch, scotty), influenced by Chris Penner's [slick](https://github.com/ChrisPenner/slick#readme). It uses files to manage data to permit version management with git. Page appearances are directed with YAML and internally data is structured with JSON, for each page a PDF file is produced to allow regular looking prints. Index pages are automatically created.
+                .
+category:       Development Web
 homepage:       https://github.com/frank/ssg#readme
 bug-reports:    https://github.com/frank/ssg/issues
 author:         Andrew U. Frank (frank@geoinfo.tuwien.ac.at)
@@ -53,7 +54,7 @@ library
       Paths_ssg
   hs-source-dirs:
       src
-  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-unused-imports -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-dodgy-imports -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-duplicate-exports -fno-warn-missing-methods
+  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods
   build-depends:
       aeson
     , base
@@ -89,7 +90,7 @@ executable ssgbake
       Paths_ssg
   hs-source-dirs:
       app
-  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-unused-imports -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-dodgy-imports -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-duplicate-exports -fno-warn-missing-methods
+  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods
   build-depends:
       aeson
     , base
@@ -126,7 +127,7 @@ executable ssgcheck
       Paths_ssg
   hs-source-dirs:
       app
-  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-unused-imports -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-dodgy-imports -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-duplicate-exports -fno-warn-missing-methods
+  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods
   build-depends:
       aeson
     , base
