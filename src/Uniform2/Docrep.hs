@@ -38,7 +38,7 @@ import Control.Lens ( -- needed for the query expressions
     -- , (&)
     -- , at
  )
-import Data.Aeson.Lens (key)
+import Data.Aeson.Lens (key, AsValue)
 import Data.Aeson.Types (
     FromJSON (parseJSON),
     ToJSON,
@@ -46,7 +46,8 @@ import Data.Aeson.Types (
     parseMaybe,
  )
 import Data.Default
-import GHC.Generics (Generic)
+import UniformBase
+-- import GHC.Generics (Generic)
 import Lib.Foundation
 import Lib.Indexing (addIndex2yam)
 import Lib.MetaPage
@@ -63,7 +64,6 @@ import Uniform2.HTMLout (
 import Uniform.Json
 import Uniform.Pandoc
 import Uniform.PandocImports
-import UniformBase
 
 -- data DocrepJSON = DocrepJSON {yam :: Value, blocks :: [Block]} -- a json value
 data DocrepJSON = DocrepJSON {yam1 :: Value, pan1 :: Pandoc} -- a json value
@@ -165,6 +165,8 @@ addRefs debugflag dr1@(DocrepJSON y1 p1) = do
     when debugflag $ putIOwords ["addRefs", showT dr1, "\n"]
     let biblio1 = getAtKey y1 "bibliography" :: Maybe Text
     maybe (return dr1) (addRefs2 debugflag dr1) biblio1
+gak :: Data.Aeson.Lens.AsValue s => s -> Text -> Maybe Value
+gak b k = (^?) b (key k)
 
 addRefs2 ::
     (MonadIO m, MonadError m, ErrorType m ~ Text) =>
@@ -176,7 +178,8 @@ addRefs2 debugx dr1@(DocrepJSON y1 p1) biblio1 = do
     --   let debugx = False
     when debugx $ putIOwords ["addRefs2-1", showT dr1, "\n"]
     let style1 = getAtKey y1 "style" :: Maybe Text
-        refs1 = y1 ^? key "references" :: Maybe Value -- is an array
+        refs1 = gak y1"references" :: Maybe Value -- is an array
+        -- refs1 = y1 ^? key "references" :: Maybe Value -- is an array
         nocite1 = getAtKey y1 "nocite" :: Maybe Text
     --   let style1 = syStyle y1
     --       rers1 = dy
@@ -205,9 +208,7 @@ addRefs2 debugx dr1@(DocrepJSON y1 p1) biblio1 = do
             t2s biblio1 :: FilePath
     let stylefp =
             t2s . fromJustNote "style1 in addRefs2 wer23" $ style1 :: FilePath
-    --  Raised the exception:
-    -- ["runErr2action","Safe.fromJustNote Nothing, style1 in docrepAddRefs wer23\nCallStack (from HasCallStack):\n  fromJustNote, called at ./Uniform/DocrepJSON.hs:165:19 in uniform-pandoc-0.0.2-CQ6TrBvcdAe7Crud3c6Rca:Uniform.Docrep"]
-    -- because the style was empty
+    --  Raised the exception when style empty
     when debugx $ putIOwords ["addRefs2-3-1", "done"]
 
     biblio2 <- callIO $ Pars.readBiblioFile (const True) bibliofp
