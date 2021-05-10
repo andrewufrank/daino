@@ -19,18 +19,13 @@
 
 module Lib.CheckProcess where
 
-import Lib.CheckInput  
 import Lib.Foundation (SiteLayout (..))
 import ShakeBake.ReadSettingFile (readSettings)
-import Pipes ((>->))
-import qualified Pipes as Pipe
-import qualified Pipes.Prelude as PipePrelude
-import Uniform2.Docrep
--- import Uniform.Markdown (markdownFileType, readMarkdown2docrepJSON)
+
+import Uniform2.Docrep ( md2docrep )
 import UniformBase
-import Uniform.Pandoc
-import Uniform2.Filetypes4sites
-import ShakeBake.Bake
+import Uniform.Pandoc ( markdownFileType )
+import Uniform2.Filetypes4sites ( Docrep )
 
 checkProcess :: Bool -> FilePath -> ErrIO ()
 -- ^ checking all md files

@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 5f8956387645ce863f63443c4a6fe9ad559f82c9e232a1c997ffae7d38c34d85
+-- hash: 170ded39285b2fde615f5323b4f953e5b438d314b285f6bdd36e70ca9f100789
 
 name:           ssg
 version:        0.0.4.3
@@ -29,7 +29,6 @@ source-repository head
 
 library
   exposed-modules:
-      Lib.CheckInput
       Lib.CheckProcess
       Lib.CmdLineArgs
       Lib.Foundation

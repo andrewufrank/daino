@@ -19,7 +19,6 @@
 module Main where
 
 import Lib.CheckProcess (checkProcess)
-import Lib.Foundation (SiteLayout (..))
 import Uniform.Convenience.StartApp (startProg)
 import UniformBase (Text)
 

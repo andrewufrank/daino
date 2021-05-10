@@ -23,9 +23,7 @@ import UniformBase
 
 import Lib.MetaPage
 import Uniform2.Filetypes4sites
-import Uniform.Pandoc
 
-import Lib.CheckInput
 import Lib.CmdLineArgs (PubFlags (..))
 import Lib.Foundation (SiteLayout)
 
