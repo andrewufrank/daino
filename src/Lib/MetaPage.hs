@@ -122,7 +122,7 @@ instance FromJSON DocLanguage
 
 instance ToJSON DocLanguage
 
--- is this clever to have a new language datatype?
+-- TODO is this clever to have a new language datatype?
 
 data PublicationState = PSpublish | PSdraft | PSold | PSzero
     deriving (Generic, Show, Read, Ord, Eq)
@@ -152,7 +152,7 @@ data IndexEntry = IndexEntry
     , dirEntries :: [IndexEntry] -- def []
     , fileEntries :: [IndexEntry] -- def []
     }
-    deriving (Show, Read, Eq, Ord, Generic) -- Read,
+    deriving (Show, Read, Eq, Ord, Generic)
 
 instance ToJSON IndexEntry
 instance FromJSON IndexEntry

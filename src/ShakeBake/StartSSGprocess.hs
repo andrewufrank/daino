@@ -35,7 +35,7 @@ import UniformBase
 
 ssgProcess :: Bool -> PubFlags -> ErrIO ()
 ssgProcess debug flags = do
-    (layout2, port2) <- readSettings (settingsFile flags)
+    (layout2, port2) <- readSettings debug (settingsFile flags)
 
     -- read the time of the last upload
     uploadFileExist <- doesFileExist' testLastUploadFileName
