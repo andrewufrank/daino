@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b8fb724ebfc2a8ce31191355f33b474458678cf9a4fc91a1300a126a5b21dcb2
+-- hash: 58a3b85c5ee6b3d1e51554f9ba72b5a26eae9e6c76b3655398eaf305bb06fa27
 
 name:           ssg
 version:        0.0.4.3
@@ -29,20 +29,20 @@ source-repository head
 
 library
   exposed-modules:
-      Lib.Bake
       Lib.CheckInput
       Lib.CheckProcess
       Lib.CmdLineArgs
-      Lib.ConvertFiles
       Lib.Foundation
       Lib.Indexing
       Lib.IndexMake
       Lib.MetaPage
       Lib.ReadSettingFile
-      Lib.Shake2
-      Lib.StartSSGprocess
       Lib.Templating
-      Lib.Watch
+      ShakeBake.Bake
+      ShakeBake.ConvertFiles
+      ShakeBake.Shake2
+      ShakeBake.StartSSGprocess
+      ShakeBake.Watch
       Uniform.BibTex
       Uniform.Docrep
       Uniform.Filetypes4sites

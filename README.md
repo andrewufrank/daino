@@ -26,6 +26,8 @@ To produce html page, a panrep file must be produced, which then ask for a docre
 - shakeAll from Shake2.hs
 - convertFiles
 
+The code is in the subdir `ShakeBake`.
+
 ## Transformations of pages for the site
 - `md`: The each page shown on the site starts as an markdown file with yaml meta information. 
 - `docrep`: the pandoc format of the page plus the completed metadata (DocrecJSON meta in json form, Docrep as record)

@@ -20,7 +20,7 @@ import Lib.CmdLineArgs (PubFlags (..), parseArgs2input)
 import Lib.Foundation (
     settingsFileName,
  )
-import Lib.StartSSGprocess (ssgProcess)
+import ShakeBake.StartSSGprocess (ssgProcess)
 import Uniform.Convenience.StartApp (startProg)
 import UniformBase (Text, unlinesT)
 

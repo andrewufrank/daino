@@ -17,7 +17,7 @@
               files from md to all the formats required
               orginals are found in dire doughDir and go to bakeDir
 -}
-module Lib.Bake where
+module ShakeBake.Bake where
 
 import Lib.CmdLineArgs (PubFlags (..))
 import Lib.Foundation (

@@ -13,11 +13,11 @@
 {-# LANGUAGE TypeFamilies #-}
 
 -- {-# LANGUAGE PartialTypeSignatures     #-}
-module Lib.Watch where
+module ShakeBake.Watch where
 
 import Lib.CmdLineArgs (PubFlags (..))
 import Lib.Foundation (SiteLayout (..), landingPageName)
-import Lib.Shake2 (shakeAll)
+import ShakeBake.Shake2 (shakeAll)
 import Uniform.Watch
   ( Glob (..),
     WatchOpType,

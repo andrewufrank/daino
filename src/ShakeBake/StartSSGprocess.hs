@@ -19,7 +19,7 @@
               files in any input format to html
               orginals are found in dire doughDir and go to bakeDir
 -}
-module Lib.StartSSGprocess (ssgProcess) where
+module ShakeBake.StartSSGprocess (ssgProcess) where
 
 import Lib.CmdLineArgs (PubFlags (..))
 import Lib.Foundation (
@@ -28,8 +28,8 @@ import Lib.Foundation (
     testLastUploadFileName,
  )
 import Lib.ReadSettingFile (readSettings)
-import Lib.Shake2 (shakeAll)
-import Lib.Watch (mainWatch)
+import ShakeBake.Shake2 (shakeAll)
+import ShakeBake.Watch (mainWatch)
 import Uniform.WebServer (runScotty)
 import UniformBase
 

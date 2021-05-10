@@ -17,10 +17,9 @@
               input is target filename
           this is the interface (only one) from shake to bake
 -}
-module Lib.ConvertFiles where
+module ShakeBake.ConvertFiles where
 
-import Lib.Bake
-
+import ShakeBake.Bake
 -- ( BakeOp,
 --   bakeOneFile2docrep,
 --   bakeOneFile2panrep,

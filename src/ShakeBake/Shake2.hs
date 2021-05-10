@@ -49,11 +49,11 @@
               files in any input format to html and pdf
               orginals are found in doughDir and go to bakeDir
 -}
-module Lib.Shake2 where
+module ShakeBake.Shake2 where
 
 import Development.Shake
 import Lib.CmdLineArgs (PubFlags (..))
-import Lib.ConvertFiles
+import ShakeBake.ConvertFiles
 import Lib.Foundation (
     SiteLayout (..),
     staticDirName,

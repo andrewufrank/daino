@@ -30,7 +30,7 @@ import Uniform.Docrep
 import UniformBase
 import Uniform.Pandoc
 import Uniform.Filetypes4sites
-import Lib.Bake
+import ShakeBake.Bake
 
 checkProcess :: Bool -> FilePath -> ErrIO ()
 -- ^ checking all md files

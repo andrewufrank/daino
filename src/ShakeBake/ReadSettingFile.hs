@@ -10,7 +10,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeFamilies #-}
 
-module Lib.ReadSettingFile where -- (openMain, htf_thisModuelsTests)
+module ShakeBake.ReadSettingFile where -- (openMain, htf_thisModuelsTests)
 
 import Lib.Foundation (SiteLayout (..), uploadServerTest) -- (getMeta)
 import UniformBase
