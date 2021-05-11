@@ -24,7 +24,10 @@
  all entries there should be from this list
  all JSON related functions here!
 -}
-module Lib.MetaPage where
+module Lib.MetaPage 
+    (module Lib.MetaPage
+    , Default(..)
+    ) where
 
 -- import Data.Aeson.Types
 import Data.Default (Default (..))

@@ -35,14 +35,13 @@ import Lib.IndexMake
 import Lib.Indexing (addIndex2yam)
 import Lib.MetaPage
 import Lib.Templating
-import Text.CSL as Pars (Reference, readBiblioFile, readCSLFile)
-import Text.CSL.Pandoc as Bib (processCites)
-import qualified Text.Pandoc as Pandoc
+-- import Text.CSL as Pars (Reference, readBiblioFile, readCSLFile)
+-- import Text.CSL.Pandoc as Bib (processCites)
+-- import qualified Text.Pandoc as Pandoc
 import Uniform2.Filetypes4sites
 import Uniform2.HTMLout 
 import Uniform.Json
 import Uniform.Pandoc
-import Uniform.PandocImports
 import UniformBase
 
 ------------------------------------------------docrep -> panrep
@@ -70,11 +69,20 @@ docrep2panrep debug layout (Docrep y1 p1) = do
 -- ------------------------------------ panrep2html
 -- panrep2html :: Panrep -> ErrIO HTMLout
 -- implements the bake
+panrep2html :: p -> SiteLayout -> Panrep -> ErrIO HTMLout
 panrep2html debug layout dr1 = do
     let templateP = templatesDir layout
     dr4 <- convertIndexEntries dr1 -- move to
+    -- p <- panrep2htmlP debug templateP dr4 
     p :: HTMLout <- putValinMaster False dr4 templateP
     return p
+
+-- panrep2htmP :: Bool  -> Path Abs Dir -> Panrep ->ErrIO Text
+-- panrep2htmP debug templateP dr4 = do 
+--     -- dr4 <- convertIndexEntries dr1 -- move to
+--     p :: Text <- putValinMaster False dr4 templateP
+--     return p
+
 
 -- -- where does this belong?
 

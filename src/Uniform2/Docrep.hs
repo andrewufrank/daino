@@ -20,7 +20,6 @@
             -fno-warn-missing-signatures
             -fno-warn-missing-methods 
             -fno-warn-duplicate-exports 
-            -fno-warn-unused-imports 
             -fno-warn-unused-matches #-}
 
 module Uniform2.Docrep (
@@ -43,23 +42,20 @@ module Uniform2.Docrep (
 --     Value,
 --     parseMaybe,
 --  )
-import Data.Default ( Default(def) )
 import UniformBase
 
-import Lib.Foundation ( SiteLayout(doughDir, bakedDir) )
-import Lib.Indexing (addIndex2yam)
-import Lib.MetaPage ( MetaPage, addFileMetaPage )
-import Text.CSL as Pars (Reference, readBiblioFile, readCSLFile)
-import Text.CSL.Pandoc as Bib (processCites)
-import qualified Text.Pandoc as Pandoc
+import Lib.Foundation (SiteLayout (bakedDir, doughDir))
+-- import Text.CSL as Pars (Reference, readBiblioFile, readCSLFile)
+-- import Text.CSL.Pandoc as Bib (processCites)
+-- import qualified Text.Pandoc as Pandoc
+-- import Data.Default 
 import Uniform.Json
-    
+import Lib.MetaPage 
+
 import Uniform.Pandoc
  
-
-import Uniform2.Filetypes4sites 
-import Uniform2.HTMLout 
- 
+import Uniform2.Filetypes4sites  
+import Uniform2.HTMLout  
 
 -- data DocrepJSON = DocrepJSON {yam :: Value, blocks :: [Block]} -- a json value
 data DocrepJSON = DocrepJSON {yam1 :: Value, pan1 :: Pandoc} -- a json value
@@ -162,12 +158,11 @@ addRefs debugflag dr1@(DocrepJSON y1 p1) = do
     let biblio1 = getAtKey y1 "bibliography" :: Maybe Text
     maybe (return dr1) (addRefs2 debugflag dr1) biblio1
 
-addRefs2 ::
-    (MonadIO m, MonadError m, ErrorType m ~ Text) =>
+addRefs2 :: 
     Bool ->
     DocrepJSON ->
     Text ->
-    m DocrepJSON
+    ErrIO DocrepJSON
 addRefs2 debugx dr1@(DocrepJSON y1 p1) biblio1 = do
     --   let debugx = False
     when debugx $ putIOwords ["addRefs2-1", showT dr1, "\n"]
@@ -194,9 +189,9 @@ addRefs2 debugx dr1@(DocrepJSON y1 p1) biblio1 = do
     -- for the conventions in the lit list
     -- must be 2 char (all other seems to be difficult with pandoc-citeproc)
     -- change to new citeproc TODO later
-    let refs2 = fromJustNote "refs in addRefs2 vcbnf refs2" refs1 :: Value
-    let refs3 = fromJSONValue refs2 -- :: Result [Reference]
-    let refs4 = fromJustNote "addRefs2 08werwe refs4" refs3 :: [Reference]
+    -- let refs2 = fromJustNote "refs in addRefs2 vcbnf refs2" refs1 :: Value
+    -- let refs3 = fromJSONValue refs2 -- :: Result [Reference]
+    -- let refs4 = fromJustNote "addRefs2 08werwe refs4" refs3 :: [Reference]
 
     let bibliofp =
             t2s biblio1 :: FilePath
@@ -205,18 +200,14 @@ addRefs2 debugx dr1@(DocrepJSON y1 p1) biblio1 = do
     --  Raised the exception when style empty
     when debugx $ putIOwords ["addRefs2-3-1", "done"]
 
-    biblio2 <- callIO $ Pars.readBiblioFile (const True) bibliofp
-    when debugx $ putIOwords ["addRefs2-3-2", "done"]
-    style2 <- callIO $ Pars.readCSLFile loc1 stylefp
-    -- error with language (de_at, but de or en works)
-    when debugx $ putIOwords ["addRefs2-3-3", "done"]
+    p2 <- readBiblioRefs debugx bibliofp loc1 stylefp  refs1 p1  
 
-    let refsSum = refs4 ++ biblio2
-    let p2 = processCites style2 refsSum p1
+
 
     when debugx $ putIOwords ["addRefs2-4", "p2\n", showT p2]
 
     return (DocrepJSON y1 p2)
+    
 
 -- mergeAll :: DocrepJSON -> [Value] -> DocrepJSON
 -- -- ^ merge the values with the values in DocRec -- last winns
