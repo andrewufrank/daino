@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 3fb9022333c40eaf8f1ae1769b1ca5960743e24898892d5df534ecaf97393302
+-- hash: 45834c4f101571459f0421a67b7c4590efb43008bf06ed8483bb57f31e8fd671
 
 name:           ssg
 version:        0.0.4.3
@@ -66,6 +66,28 @@ library
     , uniformBase
   default-language: Haskell2010
 
+executable ssgPrepareTest
+  main-is: prepareTest.hs
+  other-modules:
+      Paths_ssg
+  hs-source-dirs:
+      app
+  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods
+  build-depends:
+      base
+    , data-default
+    , ssg
+    , uniform-cmdLineArgs
+    , uniform-convenience
+    , uniform-json
+    , uniform-latex2pdf
+    , uniform-pandoc
+    , uniform-shake
+    , uniform-watch
+    , uniform-webserver
+    , uniformBase
+  default-language: Haskell2010
+
 executable ssgbake
   main-is: ssgBake.hs
   other-modules:
@@ -98,6 +120,36 @@ executable ssgcheck
   build-depends:
       base
     , data-default
+    , ssg
+    , uniform-cmdLineArgs
+    , uniform-convenience
+    , uniform-json
+    , uniform-latex2pdf
+    , uniform-pandoc
+    , uniform-shake
+    , uniform-watch
+    , uniform-webserver
+    , uniformBase
+  default-language: Haskell2010
+
+test-suite test
+  type: exitcode-stdio-1.0
+  main-is: testing.hs
+  other-modules:
+      Lib.CmdLineArgs
+      Lib.Foundation
+      Lib.MetaPage
+      ShakeBake.ReadSettingFile
+      Uniform2.Filetypes4sites
+  hs-source-dirs:
+      tests
+  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      HTF
+    , base
+    , data-default
+    , quickcheck-text
+    , shake
     , ssg
     , uniform-cmdLineArgs
     , uniform-convenience

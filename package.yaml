@@ -44,21 +44,48 @@ library:
   source-dirs: 
       - src 
 
-executables:  
+executables:   # file names wiwth lowercase to avoid forcing Main
   ssgbake:
     main: ssgBake.hs
     source-dirs: app
     dependencies: 
     - ssg
-    - uniform-webserver
-    - uniform-convenience
+    # - uniform-webserver
+    # - uniform-convenience
   
   ssgcheck:
     main: ssgCheck.hs
     source-dirs: app
     dependencies:
         ssg
-# tests:
-#   test:
-#     main: Testing.hs
-#     source-dirs: tests
+
+  ssgPrepareTest:
+    main: prepareTest.hs
+    source-dirs: app
+    other-modules:
+      - Lib.CmdLineArgs
+      -  Lib.Foundation
+      -  Lib.MetaPage
+      -  ShakeBake.ReadSettingFile
+      -  Uniform2.Filetypes4sites
+    dependencies:
+        ssg
+
+tests:
+  test:
+    main: testing.hs
+    source-dirs: tests
+
+    ghc-options: 
+      -threaded 
+      -rtsopts 
+      -with-rtsopts=-N    
+    dependencies:
+      - HTF
+      - quickcheck-text
+      # - uniform-strings
+      # - uniform-http
+      - uniformBase
+      - ssg
+      - shake  # from error
+    
