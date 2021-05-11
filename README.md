@@ -64,7 +64,7 @@ The page is translated by `bakeOneMD2docrep`
 -- wraps the head and tail around the a list of latex snips
 peamble code is in ProcessPDF 
 
-### Tex -> PDF: writePDF2
+### Tex -> PDF: writePDF1
 
 
 ## conversions between file

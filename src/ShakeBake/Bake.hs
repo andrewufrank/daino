@@ -33,7 +33,7 @@ import Uniform2.Filetypes4sites (
  )
 -- import Uniform2.Markdown (markdownFileType)
 import Uniform.Pandoc
-import Uniform2.ProcessPDF (panrep2texsnip, tex2latex, writePDF2)
+import Uniform2.ProcessPDF  
 
 import Uniform2.Panrep (docrep2panrep, panrep2html)
 import UniformBase
@@ -144,7 +144,7 @@ bakeOneTexsnip2tex debug flags inputFn layout resfn2 = do
         ]
 
     snip1 <- read8 inputFn texSnipFileType
-    let tex1 = tex2latex zero [snip1]
+    let tex1 = tex2latex2 zero [snip1]
     write8 resfn2 texFileType tex1 -- content is html style
     when debug $
         putIOwords
@@ -165,7 +165,7 @@ bakeOneTex2pdf debug flags inputFn layout resfn2 = do
 
     let refDir =
             makeAbsDir . getParentDir . toFilePath $ inputFn :: Path Abs Dir
-    writePDF2 debug inputFn resfn2 refDir -- content is html style
+    writePDF1 debug inputFn resfn2 refDir -- content is html style
     when debug $
         putIOwords
             ["\n-----------------", "bakeOneFile2pdf done fn", showT resfn2]

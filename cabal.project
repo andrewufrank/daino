@@ -12,6 +12,7 @@ packages:
 --/home/frank/Workspace11/u4blog/uniform-json/uniform-json.cabal
     ../u4blog/uniform-webserver/*.cabal
     ../u4blog/uniform-watch/*.cabal
+    ../u4blog/uniform-latex2pdf/*.cabal
     ../u4blog/uniform-shake/*.cabal
     ../u4blog/uniform-pandoc/*.cabal
     ../u2to/uniform-convenience/*.cabal

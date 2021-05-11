@@ -39,16 +39,17 @@ dependencies:
     - data-default
    
     # for pandoc stuff:
-    - uniform-pandoc  
-    - pandoc 
-    - doclayout
-    - doctemplates
-    - pandoc-citeproc
-    - pandoc-types
-    - bibtex
-    - parsec
-    - process
-    - containers
+    - uniform-pandoc 
+    - uniform-latex2pdf 
+    # - pandoc 
+    # - doclayout
+    # - doctemplates
+    # - pandoc-citeproc
+    # - pandoc-types
+    # - bibtex
+    # - parsec
+    # - process
+    # - containers
 
     
     # -- - uniform-ftp
