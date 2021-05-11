@@ -35,23 +35,9 @@ dependencies:
     - uniform-cmdLineArgs # from u2to
     - uniform-watch 
     - uniform-webserver  # - shake
-
     - data-default
-   
-    # for pandoc stuff:
     - uniform-pandoc 
     - uniform-latex2pdf 
-    # - pandoc 
-    # - doclayout
-    # - doctemplates
-    # - pandoc-citeproc
-    # - pandoc-types
-    # - bibtex
-    # - parsec
-    # - process
-    # - containers
-
-    
     # -- - uniform-ftp
 
 library:

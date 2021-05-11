@@ -115,5 +115,5 @@ extHTML = Extension "html"
 
 -- instance TypedFiles7 Text Dtemplate  where
 --   -- handling Pandoc and read them into PandocText
---   wrap7 =  read . t2s  -- readNote "wrap7 for dtemplate 223d" .t2s
+--   wrap7 =  read . t2s  -- readNote "wrap7 for dtemplate 22443d" .t2s
 --   unwrap7   = showT -- id -- showT
