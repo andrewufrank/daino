@@ -5,10 +5,5 @@
         "markdown",
         "latex"
     ],
-    "editor.wrappingIndent": "deepIndent"
-    "window.zoomLevel": 0.3
-    ,
-    # per unit +20%, explorer not separately fixable
-    "terminal.integrated.fontSize": 13,
-    "editor.fontSize": 13   
+    
 }

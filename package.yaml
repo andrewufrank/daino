@@ -28,7 +28,7 @@ ghc-options:
     -fno-warn-missing-methods 
 dependencies: 
     - base  
-    - uniformBase 
+    - uniformBase  
     -  uniform-json
     -  uniform-shake
     - uniform-convenience # from u2to
@@ -59,20 +59,21 @@ executables:   # file names wiwth lowercase to avoid forcing Main
     dependencies:
         ssg
 
-  ssgPrepareTest:
-    main: prepareTest.hs
-    source-dirs: app
-    other-modules:
-      - Lib.CmdLineArgs
-      -  Lib.Foundation
-      -  Lib.MetaPage
-      -  ShakeBake.ReadSettingFile
-      -  Uniform2.Filetypes4sites
-    dependencies:
-        ssg
+  # ssgPrepareTest:  #wohl nicht notwendig, verwende die von ssgbake gebauten werte
+  #   main: prepareTest.hs
+  #   source-dirs: app
+  #   other-modules:
+  #     - Lib.CmdLineArgs
+  #     -  Lib.Foundation
+  #     -  Lib.MetaPage
+  #     -  ShakeBake.ReadSettingFile
+  #     -  Uniform2.Filetypes4sites
+  #   dependencies:
+  #       ssg
 
+ 
 tests:
-  test:
+  ssgTest:
     main: testing.hs
     source-dirs: tests
 
@@ -87,5 +88,5 @@ tests:
       # - uniform-http
       - uniformBase
       - ssg
-      - shake  # from error
+      # - shake  # from error
     

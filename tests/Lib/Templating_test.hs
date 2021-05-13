@@ -29,7 +29,7 @@ import           Lib.Foundation                 ( progName
 
 import           Lib.Templating -- (applyTemplate2, convGmaster)
 
-test_null = assertEqual 0 1 
+test_null = assertEqual 0 0
 
 -- templateDir = addDir (themeDir testLayout) templatesDirName
 --page3  = addDir templateDir (makeRelFile "page3")
