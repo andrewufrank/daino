@@ -64,10 +64,10 @@ executables:   # file names wiwth lowercase to avoid forcing Main
   #   source-dirs: app
   #   other-modules:
   #     - Lib.CmdLineArgs
-  #     -  Lib.Foundation
-  #     -  Lib.MetaPage
+  #     -  Foundational.Foundation
+  #     -  Foundational.MetaPage
   #     -  ShakeBake.ReadSettingFile
-  #     -  Uniform2.Filetypes4sites
+  #     -  Foundational.Filetypes4sites
   #   dependencies:
   #       ssg
 

@@ -19,12 +19,12 @@ module Main where
 -- import Uniform.Convenience.StartApp (startProg)
 
 import Lib.CmdLineArgs
-import Lib.Foundation
+import Foundational.Foundation
 import ShakeBake.ConvertFiles
 import ShakeBake.ReadSettingFile
 import ShakeBake.Shake2
 import Uniform.Shake
-import Uniform2.Filetypes4sites
+import Foundational.Filetypes4sites
 import UniformBase
 
 programName, progTitle :: Text

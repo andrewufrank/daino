@@ -27,12 +27,13 @@ source-repository head
 
 library
   exposed-modules:
+      Foundational.Filetypes4sites
+      Foundational.Foundation
+      Foundational.MetaPage
       Lib.CheckProcess
       Lib.CmdLineArgs
-      Lib.Foundation
       Lib.Indexing
       Lib.IndexMake
-      Lib.MetaPage
       Lib.Templating
       ShakeBake.Bake
       ShakeBake.ConvertFiles
@@ -40,7 +41,6 @@ library
       ShakeBake.Shake2
       ShakeBake.StartSSGprocess
       ShakeBake.Watch
-      Uniform2.Filetypes4sites
       Uniform2.HTMLout
       Uniform2.Panrep
       Uniform2.ProcessPDF

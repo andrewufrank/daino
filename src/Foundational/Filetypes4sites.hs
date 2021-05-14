@@ -18,14 +18,14 @@
                  Pandrep -> HTML
  Each result is written as a typed file with a specific extension
 -}
-module Uniform2.Filetypes4sites (
-    module Uniform2.Filetypes4sites,
+module Foundational.Filetypes4sites (
+    module Foundational.Filetypes4sites,
 ) where
 
 import Uniform.Json (FromJSON, ToJSON, Value)
 import Uniform.PandocImports ( Pandoc )
 import UniformBase
-import Lib.MetaPage ( MetaPage )
+import Foundational.MetaPage ( MetaPage )
 
 --------------------------------------------typed file Docrep
 

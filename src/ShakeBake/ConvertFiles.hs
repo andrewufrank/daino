@@ -28,8 +28,8 @@ import ShakeBake.Bake
 --   bakeOneFile2tex,
 --   bakeOneFile2pdf )
 import Lib.CmdLineArgs (PubFlags (..))
-import Lib.Foundation (SiteLayout (..))
-import Uniform2.Filetypes4sites
+import Foundational.Foundation (SiteLayout (..))
+import Foundational.Filetypes4sites
     ( extDocrep, extPanrep, extTexSnip, extTex )
 import Uniform.Pandoc ( extMD )
 

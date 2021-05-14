@@ -20,7 +20,7 @@ module Lib.CmdLineArgs where
 import UniformBase
 import Uniform.CmdLineArgs   -- from u2to 
   
-import Lib.Foundation ( testSettingsFileName )
+import Foundational.Foundation ( testSettingsFileName )
 
 
 -- | the command line arguments raw

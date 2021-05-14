@@ -19,7 +19,7 @@
 {-# LANGUAGE DeriveAnyClass     #-}
 {-# LANGUAGE DeriveGeneric     #-}
 
-module Lib.Foundation  -- (openMain, htf_thisModuelsTests)
+module Foundational.Foundation  -- (openMain, htf_thisModuelsTests)
                       where
 import UniformBase
 import GHC.Generics 

@@ -12,7 +12,7 @@
 
 module ShakeBake.ReadSettingFile where -- (openMain, htf_thisModuelsTests)
 
-import Lib.Foundation (SiteLayout (..), uploadServerTest) -- (getMeta)
+import Foundational.Foundation (SiteLayout (..), uploadServerTest) -- (getMeta)
 import Uniform.Json
 import Uniform.Yaml
 import UniformBase

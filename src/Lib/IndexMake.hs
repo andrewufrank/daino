@@ -13,11 +13,11 @@
 
 module Lib.IndexMake (module Lib.IndexMake) where
 
-import Lib.MetaPage
+import Foundational.MetaPage
     ( IndexEntry(link, abstract, fn, title, author, date, publish,
                  indexPage) ) 
 
-import Uniform2.Filetypes4sites ( Panrep(Panrep) )
+import Foundational.Filetypes4sites ( Panrep(Panrep) )
 
 import UniformBase
 import Uniform.Json ( FromJSON, ToJSON )

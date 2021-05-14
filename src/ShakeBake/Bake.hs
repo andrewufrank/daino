@@ -20,12 +20,12 @@
 module ShakeBake.Bake where
 
 import Lib.CmdLineArgs (PubFlags (..))
-import Lib.Foundation (
+import Foundational.Foundation (
     SiteLayout (..),
  )
 import Wave.Docrep (htmloutFileType, md2docrep)
 
-import Uniform2.Filetypes4sites (
+import Foundational.Filetypes4sites (
     docrepFileType,
     panrepFileType,
     texFileType,

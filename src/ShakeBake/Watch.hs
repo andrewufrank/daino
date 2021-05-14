@@ -14,7 +14,7 @@
 module ShakeBake.Watch where
 
 import Lib.CmdLineArgs (PubFlags (..))
-import Lib.Foundation (SiteLayout (..), landingPageName)
+import Foundational.Foundation (SiteLayout (..), landingPageName)
 import ShakeBake.Shake2 (shakeAll)
 import Uniform.Watch
   ( Glob (..),

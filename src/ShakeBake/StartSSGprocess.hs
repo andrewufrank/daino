@@ -22,7 +22,7 @@
 module ShakeBake.StartSSGprocess (ssgProcess) where
 
 import Lib.CmdLineArgs (PubFlags (..))
-import Lib.Foundation (
+import Foundational.Foundation (
     SiteLayout (..),
     landingPageName,
     testLastUploadFileName,

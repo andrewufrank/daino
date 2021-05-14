@@ -22,15 +22,15 @@ import Uniform.Json ( ErrIO, fromJSONerrio )
 import UniformBase
 
 
-import Lib.MetaPage (
+import Foundational.MetaPage (
     IndexEntry,
     MetaPage (dyDirEntries, dyFileEntries, dyIndexPage, dyLink),
  )
-import Uniform2.Filetypes4sites
+import Foundational.Filetypes4sites
     ( docrepFileType, extDocrep, Docrep(Docrep), Panrep(panyam) ) 
 
 import Lib.CmdLineArgs (PubFlags (..))
-import Lib.Foundation (SiteLayout)
+import Foundational.Foundation (SiteLayout)
 
 addIndex2yam :: Path Abs Dir -> Bool -> Panrep -> ErrIO Panrep
 {- ^ the top call to form the index data into the MetaPage

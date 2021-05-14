@@ -24,15 +24,15 @@
  all entries there should be from this list
  all JSON related functions here!
 -}
-module Lib.MetaPage 
-    (module Lib.MetaPage
+module Foundational.MetaPage 
+    (module Foundational.MetaPage
     , Default(..)
     ) where
 
 -- import Data.Aeson.Types
 import Data.Default (Default (..))
 import Lib.CmdLineArgs (PubFlags (..))
-import Lib.Foundation (SiteLayout (..))
+import Foundational.Foundation (SiteLayout (..))
 import Uniform.Json
 import Uniform.Yaml
 import Uniform.Pandoc

@@ -17,7 +17,7 @@
 module Main where -- must have Main (main) or Main where
 
 import Lib.CmdLineArgs (PubFlags (..), parseArgs2input)
-import Lib.Foundation (
+import Foundational.Foundation (
     settingsFileName,
  )
 import ShakeBake.StartSSGprocess (ssgProcess)

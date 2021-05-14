@@ -34,7 +34,7 @@ module Uniform2.HTMLout (
 import Uniform.Json (ErrIO, ToJSON (toJSON))
 import UniformBase
 
-import Lib.MetaPage (MetaPage)
+import Foundational.MetaPage (MetaPage)
 
 -- import Text.Pandoc
 

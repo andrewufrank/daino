@@ -44,17 +44,17 @@ module Wave.Docrep (
 --  )
 import UniformBase
 
-import Lib.Foundation (SiteLayout (bakedDir, doughDir))
+import Foundational.Foundation (SiteLayout (bakedDir, doughDir))
 -- import Text.CSL as Pars (Reference, readBiblioFile, readCSLFile)
 -- import Text.CSL.Pandoc as Bib (processCites)
 -- import qualified Text.Pandoc as Pandoc
 -- import Data.Default 
 import Uniform.Json
-import Lib.MetaPage 
+import Foundational.MetaPage 
 
 import Uniform.Pandoc
  
-import Uniform2.Filetypes4sites  
+import Foundational.Filetypes4sites  
 import Uniform2.HTMLout  
 
 -- data DocrepJSON = DocrepJSON {yam :: Value, blocks :: [Block]} -- a json value

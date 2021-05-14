@@ -2,6 +2,7 @@
 --
 -- Module      :  the process to check the input files
 -- TODO - check for filenames with blanks (specially at end)
+-- questionable: needed - used ? TODO
 ----------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
@@ -19,12 +20,12 @@
 
 module Lib.CheckProcess where
 
-import Lib.Foundation (SiteLayout (..))
+import Foundational.Foundation (SiteLayout (..))
 import ShakeBake.ReadSettingFile (readSettings)
 
 import Uniform.Pandoc (markdownFileType)
 import Wave.Docrep (md2docrep)
-import Uniform2.Filetypes4sites (Docrep)
+import Foundational.Filetypes4sites (Docrep)
 import UniformBase
 
 checkProcess :: Bool -> FilePath -> ErrIO ()

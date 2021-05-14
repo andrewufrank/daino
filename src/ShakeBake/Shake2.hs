@@ -55,7 +55,7 @@ import Uniform.Shake
     
 import Lib.CmdLineArgs (PubFlags (..))
 import ShakeBake.ConvertFiles
-import Lib.Foundation (
+import Foundational.Foundation (
     SiteLayout (..),
     staticDirName,
  )

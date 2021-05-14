@@ -14,7 +14,7 @@ module Lib.ReadSettingFile_test where
 import           Test.Framework
 import           Uniform.Test.TestHarness
 import UniformBase 
-import Lib.Foundation
+import Foundational.Foundation
 
 import           Lib.Templating  
 import ShakeBake.ReadSettingFile

@@ -30,15 +30,15 @@ module Uniform2.Panrep (
 
 import Data.Default
 import GHC.Generics (Generic)
-import Lib.Foundation
+import Foundational.Foundation
 import Lib.IndexMake
 import Lib.Indexing (addIndex2yam)
-import Lib.MetaPage
+import Foundational.MetaPage
 import Lib.Templating
 -- import Text.CSL as Pars (Reference, readBiblioFile, readCSLFile)
 -- import Text.CSL.Pandoc as Bib (processCites)
 -- import qualified Text.Pandoc as Pandoc
-import Uniform2.Filetypes4sites
+import Foundational.Filetypes4sites
 import Uniform2.HTMLout 
 import Uniform.Json
 import Uniform.Pandoc

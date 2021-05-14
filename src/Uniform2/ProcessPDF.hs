@@ -26,7 +26,7 @@ module Uniform2.ProcessPDF (
     module Uniform2.ProcessPDF,
 ) where
 
-import Uniform2.Filetypes4sites
+import Foundational.Filetypes4sites
 import Uniform.Json
 import Uniform.Latex
 import Uniform.PandocImports
