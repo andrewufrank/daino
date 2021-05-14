@@ -23,7 +23,7 @@ import Lib.Foundation (SiteLayout (..))
 import ShakeBake.ReadSettingFile (readSettings)
 
 import Uniform.Pandoc (markdownFileType)
-import Uniform2.Docrep (md2docrep)
+import Wave.Docrep (md2docrep)
 import Uniform2.Filetypes4sites (Docrep)
 import UniformBase
 

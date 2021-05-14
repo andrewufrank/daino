@@ -40,11 +40,11 @@ library
       ShakeBake.Shake2
       ShakeBake.StartSSGprocess
       ShakeBake.Watch
-      Uniform2.Docrep
       Uniform2.Filetypes4sites
       Uniform2.HTMLout
       Uniform2.Panrep
       Uniform2.ProcessPDF
+      Wave.Docrep
   other-modules:
       Paths_ssg
   hs-source-dirs:

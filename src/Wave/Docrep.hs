@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------
 --
--- Module      :  Uniform.Docrep
+-- Module      :  Wave.Docrep
 -- the abstract representation of the documents
 -- see Filetypes4sites DocrepJSON
 ------------------------------------------------------------------
@@ -22,8 +22,8 @@
             -fno-warn-duplicate-exports 
             -fno-warn-unused-matches #-}
 
-module Uniform2.Docrep (
-    module Uniform2.Docrep,
+module Wave.Docrep (
+    module Wave.Docrep,
     HTMLout,
     htmloutFileType,
 ) where

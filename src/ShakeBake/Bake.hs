@@ -23,7 +23,7 @@ import Lib.CmdLineArgs (PubFlags (..))
 import Lib.Foundation (
     SiteLayout (..),
  )
-import Uniform2.Docrep (htmloutFileType, md2docrep)
+import Wave.Docrep (htmloutFileType, md2docrep)
 
 import Uniform2.Filetypes4sites (
     docrepFileType,
