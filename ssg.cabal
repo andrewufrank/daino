@@ -45,6 +45,7 @@ library
       Uniform2.Panrep
       Uniform2.ProcessPDF
       Wave.Docrep
+      Wave.Markdown
   other-modules:
       Paths_ssg
   hs-source-dirs:

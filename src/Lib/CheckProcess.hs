@@ -24,7 +24,9 @@ import Foundational.Foundation (SiteLayout (..))
 import ShakeBake.ReadSettingFile (readSettings)
 
 import Uniform.Pandoc (markdownFileType)
-import Wave.Docrep (md2docrep)
+import Wave.Docrep
+import Wave.Markdown
+
 import Foundational.Filetypes4sites (Docrep)
 import UniformBase
 

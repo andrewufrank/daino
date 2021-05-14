@@ -23,7 +23,8 @@ import Lib.CmdLineArgs (PubFlags (..))
 import Foundational.Foundation (
     SiteLayout (..),
  )
-import Wave.Docrep (htmloutFileType, md2docrep)
+import Wave.Docrep 
+import Wave.Markdown
 
 import Foundational.Filetypes4sites (
     docrepFileType,
@@ -31,7 +32,7 @@ import Foundational.Filetypes4sites (
     texFileType,
     texSnipFileType,
  )
--- import Uniform2.Markdown (markdownFileType)
+-- import Uniform2.Markdown  
 import Uniform.Pandoc
 import Uniform2.ProcessPDF  
 
