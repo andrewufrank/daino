@@ -16,27 +16,14 @@
 {-# LANGUAGE TypeFamilies          #-}
 -- {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
+{-# LANGUAGE DeriveAnyClass     #-}
+{-# LANGUAGE DeriveGeneric     #-}
 
 module Lib.Foundation  -- (openMain, htf_thisModuelsTests)
                       where
 import UniformBase
-    ( NiceStrings(shownice),
-      Path,
-      Abs,
-      Dir,
-      File,
-      Rel,
-      Text,
-      makeAbsDir,
-      makeAbsFile,
-      makeRelDir,
-      makeRelDirT,
-      makeRelFile,
-      makeRelFileT,
-      t2s,
-      showT,
-      Filenames3((</>), addFileName),
-      CharChains(replace') )
+import GHC.Generics 
+
 -- import           Uniform.Strings        -- hiding ( (</>) )
 -- import           Uniform.Filenames
 --import Uniform.FileStrings
@@ -54,7 +41,7 @@ data SiteLayout = SiteLayout
     , bannerImage :: Path Rel File -- ^ the name of the banner image, needs special copy of
     -- , landingPage :: Path Rel File -- ^ the name of the landing page (html), where web server sarts                   
     , uploadServer :: Text 
-    } deriving (Show, Ord, Eq)  --  Read known issue of reading path
+    } deriving (Show, Read, Ord, Eq, Generic, Zeros)  --  Read known issue of reading path
 
 instance NiceStrings SiteLayout where
     shownice d = replace' ", " ",\n " (showT d)

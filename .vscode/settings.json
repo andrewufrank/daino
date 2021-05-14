@@ -1,9 +1,0 @@
-{
-    "languageServerHaskell.formatOnImportOn": false,
-    "spellright.language": [],
-    "spellright.documentTypes": [
-        "markdown",
-        "latex"
-    ],
-    
-}

@@ -6,13 +6,16 @@
 {-# OPTIONS_GHC -F -pgmF htfpp #-} 
 -- {-# LANGUAGE PackageImports     #-}
 
-
+-- the main for the systematic tests A to B 
 module Main where      -- must have Main (main) or Main where
   -- but file name be lower case 
 
 import     Test.Framework
 
-import    {-@ HTF_TESTS @-}        Lib.Templating_test
+import    {-@ HTF_TESTS @-}        Lib.Example_test
+import    {-@ HTF_TESTS @-}        Lib.Panrep2html_test
+import    {-@ HTF_TESTS @-}        Lib.ReadSettingFile_test
+-- OLD --
 -- import {-@ HTF_TESTS @-} Lib.Shake2_test 
 -- tests shake for test dough
 -- issue with rule not producing file
@@ -58,6 +61,8 @@ import    {-@ HTF_TESTS @-}        Lib.Templating_test
 ----     r <- htfMain htf_thisModulesTests
 ----     putStrLn ("HTF end ExampleTesting.hs test:\n" ++ show r)
 ----     return ()
+--------------END OLD 
+
 main :: IO ()
 main = mainTest  -- for a different function name (main is in ssgbake)
 
@@ -71,6 +76,7 @@ mainTest        -- with tests in other modules
       ("HTF end ExampleTest.hs test:\n" ++ show p ++ "\nEND HTF ExampleTest")
     return ()
 
+-------------------OLD ----------------------------
 -- main2 :: IO ()
 -- main2      -- just a simple bake for test
 --    = do

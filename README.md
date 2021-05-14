@@ -75,3 +75,9 @@ changed to fourmolu for formatting
 
 problems are 
 - building the refs 
+
+# Testing strategy for conversions
+Each transformation step identified in Shake2 is used to organize the tests for the conversions. 
+
+The tests are indexed by the transformation AtoB 
+<!-- was named by A -->

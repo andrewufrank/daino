@@ -32,8 +32,8 @@ readSettings debug settingsfilename =
         -- TODO where is settings
         layout3 <- readSettings2 debug settingsTxt
         when debug $ putIOwords ["readSettings end", showT layout3]
-        when  debug
-          $ putIOwords ["readSettings layout3", showT layout3]
+        when debug $
+            putIOwords ["readSettings layout3", showT layout3]
         return layout3
 
 readSettings2 :: Bool -> YamlText -> ErrIO (SiteLayout, Int)
