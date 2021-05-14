@@ -28,35 +28,16 @@ import Lib.Foundation
 import ShakeBake.ReadSettingFile
 import Uniform2.Panrep  
 import Uniform2.HTMLout
--- import           Lib.Foundation_test            ( testLayout )
--- import           Lib.Pandoc
--- import Uniform.Pandoc
 
 import Lib.Templating -- (applyTemplate2, convGmaster)
+import Lib.IndexMake
 
--- transformation :: Bool
---     -- -> SiteLayout
---     -> Path Abs File
---     -- -> Path Abs File
---     -> ErrIO Text
--- transformation debug inputFn  = do
---     (siteLayout,_) <- readSettings debug settingsFile
---     dr1 <- read8 inputFn panrepFileType
---     p <- panrep2html debug siteLayout dr1
---     return . unHTMLout  $ p
---     -- write8 resfn2 htmloutFileType p
 programName = "ssg" :: Text
-settingsFile =  makeAbsFile "/home/frank/Workspace11/ssg/settings2.yaml"
+-- settingsFile =   "settings2File"
 
-goldenInput =   "/home/frank/Workspace11/ssg/docs/site/golden/index.panrep"
-goldenRes = makeAbsFile "/home/frank/Workspace11/ssg/docs/site/golden/Blog/SubBlog/index.html"
 test_null = assertEqual 0 0
 
-settingsFileName = "settings2File"
--- test_panrep2html = 
---     test1FileIO programName 
---         ( "index.panrep") -- file copied from baked into .ssg 
---         "index.html" (transformation True ) 
+settingsFileStored = "settings2File"
 
 -- panrep2html :: p -> SiteLayout -> Panrep -> ErrIO HTMLout
 -- panrep2html debug layout dr1 = do
@@ -66,7 +47,16 @@ settingsFileName = "settings2File"
 --     p :: HTMLout <- putValinMaster False dr4 templateP
 --     return p
 
-test_panrep_layout2 = test2FileIO programName "settings2File" "index.panrep" "HTMLout" (panrep2html True )
+test_panrep_layout2 = test2FileIO programName settingsFileStored "index.panrep" "HTMLout" (panrep2html True )
+
+test_panrep2convertIndexEntries = test1FileIO programName "index.panrep" "index.converted.panrep" (convertIndexEntries)
+
+test_putValinMaster = test2FileIO programName "index.converted.panrep" settingsFileStored "index.valput" 
+    (\d t -> putValinMaster True d (templatesDir t))
+-- nothing inserted
+
+test_getPanrepVal = test1File programName "index.panrep" "index.val"
+    (show . panyam)
 
 --     test2FileIO :: (Zeros b, Eq b, Show b, Read b, ShowTestHarness b
 --                 , Zeros c, Eq c, Show c, Read c, ShowTestHarness c
