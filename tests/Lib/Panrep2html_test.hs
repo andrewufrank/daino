@@ -26,7 +26,7 @@ import Uniform2.Filetypes4sites
 import Uniform2.Docrep
 import Foundational.Foundation
 import ShakeBake.ReadSettingFile
-import Uniform2.Panrep  
+import Wave.Panrepp  
 import Uniform2.HTMLout
 
 import Lib.Templating -- (applyTemplate2, convGmaster)
