@@ -18,9 +18,9 @@ module Main where -- must have Main (main) or Main where
 
 import Lib.CmdLineArgs (PubFlags (..), parseArgs2input)
 import Foundational.Foundation  
-import ShakeBake.StartSSGprocess (ssgProcess)
-import Uniform.Convenience.StartApp (startProg)
-import UniformBase (Text, unlinesT)
+import ShakeBake.StartSSGprocess  
+import Uniform.Convenience.StartApp  
+import UniformBase  
 
 programName, progTitle :: Text
 programName = "ssgBake" :: Text
@@ -30,7 +30,7 @@ progTitle = "constructing a static site generator x6 0.0.2.1" :: Text
 
 main :: IO ()
 main =
-    startProg
+    startProgWithTitle
         programName
         progTitle
         ( do

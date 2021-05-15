@@ -147,22 +147,22 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
     -- calls the copy html and the conversion from md
         do
             csss <- getNeeds debug doughP bakedP "css" "css"
-            putIOwords ["rule **/*.html need", showT csss]
+            when (inform debug) $ putIOwords ["rule **/*.html need", showT csss]
             imgs <- getNeeds debug doughP bakedP "jpg" "jpg"
             imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
             needP imgs
             needP imgs2
-            putIOwords ["rule **/*.html need", showPretty imgs, showPretty imgs2]
+            when (inform debug) $ putIOwords ["rule **/*.html need", showPretty imgs, showPretty imgs2]
             convertAny debug bakedP bakedP flags layout out convPanrep2html "convPanrep2html"
 
     (toFilePath bakedP <> "**/*.pdf") %> \out -> -- insert pdfFIles1
         do
-            putIOwords ["rule **/*.pdf", showT out]
+            when (inform debug) $ putIOwords ["rule **/*.pdf", showT out]
             imgs <- getNeeds debug doughP bakedP "jpg" "jpg"
             imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
             needP imgs
             needP imgs2
-            putIOwords ["rule **/*.pdf need", showT imgs, showT imgs2]
+            when (inform debug) $ putIOwords ["rule **/*.pdf need", showT imgs, showT imgs2]
             convertAny debug bakedP bakedP flags layout out convTex2pdf "convTex2pdf"
 
     (toFilePath bakedP <> "**/*.tex") %> \out -> -- insert pdfFIles1
@@ -180,8 +180,8 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
             needP bibs
             csls <- getNeeds debug doughP bakedP "csl" "csl"
             needP csls
-            putIOwords ["rule **/*.docrep need", showT bibs]
-            putIOwords ["rule **/*.docrep need", showT csls]
+            when (inform debug) $ putIOwords ["rule **/*.docrep need", showT bibs]
+            when (inform debug) $ putIOwords ["rule **/*.docrep need", showT csls]
 
             convertAny debug doughP bakedP flags layout out convMD2docrep "convMD2docrep"
 

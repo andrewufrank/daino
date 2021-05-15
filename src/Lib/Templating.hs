@@ -38,6 +38,6 @@ putValinMaster debug (Panrep val p) templatesP = do
     --   template <- read8 masterfn dtmplFileType
     --   when (inform debug) $ putIOwords ["putValinMaster", "template", take' 300 $ showT template]
     --   when (inform debug) $ putIOwords ["putValinMaster", "val", take' 300 $ showT val]
-    html2 <- applyTemplate3 masterfn val -- inTemplate.html
-    when True $ putIOwords ["putValinMaster", showT html2]
+    html2 <- applyTemplate3 debug masterfn val -- inTemplate.html
+    when (inform debug) $ putIOwords ["putValinMaster", showT html2]
     return html2

@@ -34,7 +34,8 @@ module Uniform2.HTMLout (
 import Uniform.Json (ErrIO, ToJSON (toJSON))
 import UniformBase
 
-import Foundational.MetaPage (MetaPage)
+import Foundational.Foundation
+import Foundational.MetaPage 
 
 -- import Text.Pandoc
 
@@ -47,7 +48,7 @@ import Uniform.Pandoc
 
 -- type Dtemplate = Template Text
 
-applyTemplate3 :: Path Abs File -> MetaPage -> ErrIO HTMLout
+applyTemplate3 :: NoticeLevel -> Path Abs File -> MetaPage -> ErrIO HTMLout
 
 -- needed for old ssg lts-13.12 - also changed for 15.13
 
@@ -55,13 +56,12 @@ applyTemplate3 :: Path Abs File -> MetaPage -> ErrIO HTMLout
  for help look in ssg master.ptpl as an example
  the description are in doctemplates (on hackage)
 -}
-applyTemplate3 templName val = do
-    let debug = False
+applyTemplate3 debug templName val = do
     t1 :: Text <- readFile2 templName
-    putIOwords ["test_readTempl", take' 300 . showT $ t1]
+    when (inform debug) $ putIOwords ["test_readTempl", take' 300 . showT $ t1]
     -- let t2 = read (t2s t1) :: Template Text
     -- putIOwords ["test_readTempl Dtemplate", take' 300 . showT $ t2]
-    res2 <- applyTemplate4 debug t1 (toJSON val)
+    res2 <- applyTemplate4 (inform debug) t1 (toJSON val)
     -- temp1 <- liftIO $ DocTemplates.compileTemplate mempty t1
     -- -- err1 :: Either String (Doc Text) <- liftIO $ DocTemplates.applyTemplate mempty (unwrap7 templText) (unDocValue val)
     -- let tmp3 = case temp1 of
@@ -72,7 +72,7 @@ applyTemplate3 templName val = do
     -- let res = renderTemplate tmp3 (toJSON val)
     -- when False $ putIOwords ["applyTemplate3 res", take' 300 $ showT res]
     -- let res2 = render Nothing res
-    when True $ putIOwords ["applyTemplate3 done res2", take' 300 $ showT res2]
+    when (inform debug) $ putIOwords ["applyTemplate3 done res2", take' 300 $ showT res2]
 
     let res3 = HTMLout res2
     return (res3 :: HTMLout)

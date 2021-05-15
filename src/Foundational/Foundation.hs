@@ -31,10 +31,7 @@ import UniformBase
 progName :: Text
 progName = "SSG"
 
-data NoticeLevel = NoticeLevel0 | NoticeLevel1 | NoticeLevel2 deriving (Eq, Ord, Show, Read, Generic)
-instance Zeros NoticeLevel where zero = NoticeLevel0 
-inform :: NoticeLevel -> Bool
-inform =  not . isZero
+
 data SiteLayout = SiteLayout
     { themeDir :: Path Abs Dir -- ^ the place of the  theme files (includes templates)
     , doughDir :: Path Abs Dir -- ^ where the content is originally (includes resources)

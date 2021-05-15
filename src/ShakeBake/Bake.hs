@@ -164,7 +164,7 @@ bakeOneTex2pdf debug flags inputFn layout resfn2 = do
 
     let refDir =
             makeAbsDir . getParentDir . toFilePath $ inputFn :: Path Abs Dir
-    writePDF1 (inform debug) inputFn resfn2 refDir -- content is html style
+    writePDF1 debug inputFn resfn2 refDir -- content is html style
     when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOneFile2pdf done fn", showT resfn2]
