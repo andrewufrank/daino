@@ -31,6 +31,11 @@ import UniformBase
 progName :: Text
 progName = "SSG"
 
+data Verbosity = Verbosity0 | Verbosity1 | Verbosity2 deriving (Eq, Ord, Show, Read, Generic)
+instance Zeros Verbosity where zero = Verbosity0 
+verbosity2bool :: Verbosity -> Bool 
+verbosity2bool = not . isZero
+
 data SiteLayout = SiteLayout
     { themeDir :: Path Abs Dir -- ^ the place of the  theme files (includes templates)
     , doughDir :: Path Abs Dir -- ^ where the content is originally (includes resources)
