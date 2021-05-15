@@ -77,6 +77,16 @@ panrep2html debug layout dr1 = do
     p :: HTMLout <- putValinMaster debug dr4 (templatesDir layout)
     return p
 
+-- step1
+panrep2panrep1 :: NoticeLevel -> SiteLayout -> Panrep -> ErrIO Panrep1
+panrep2panrep1 debug layout dr1 = do
+    -- let templateP = templatesDir layout
+    dr4 <- convertIndexEntries dr1 -- move to
+    -- p <- panrep2htmlP debug templateP dr4 
+    -- p :: HTMLout <- putValinMaster debug dr4 (templatesDir layout)
+    return . Panrep1 $ dr4
+
+
 -- panrep2htmP :: NoticeLevel  -> Path Abs Dir -> Panrep ->ErrIO Text
 -- panrep2htmP debug templateP dr4 = do 
 --     -- dr4 <- convertIndexEntries dr1 -- move to

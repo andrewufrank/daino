@@ -45,13 +45,13 @@ module Wave.Docrep (
 import UniformBase
 
 -- import Foundational.Foundation 
-import Uniform.Json
-import Foundational.MetaPage 
+-- import Uniform.Json
+-- import Foundational.MetaPage 
 
-import Uniform.Pandoc
+-- import Uniform.Pandoc
 -- import Wave.Markdown 
  
-import Foundational.Filetypes4sites  
+-- import Foundational.Filetypes4sites  
 import Uniform2.HTMLout  
 
 

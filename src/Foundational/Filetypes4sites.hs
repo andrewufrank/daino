@@ -80,6 +80,23 @@ instance TypedFiles7 Text Panrep where
     wrap7 = readNote "wrap7 for pandoc 223d" . t2s
     unwrap7 = showT
 
+--- variant 1 panrep 
+extPanrep1 :: Extension
+extPanrep1 = Extension "panrep1"
+
+panrep1FileType :: TypedFile5 Text Panrep1
+panrep1FileType =
+    TypedFile5{tpext5 = extPanrep} :: TypedFile5 Text Panrep1
+
+newtype Panrep1 = Panrep1 {unPanrep1 :: Panrep}
+-- data Panrep = Panrep {panyam :: MetaPage, panpan :: Pandoc}
+    deriving (Eq, Show, Read)
+
+-- instance Zeros Panrep where zero = Panrep zero zero
+
+instance TypedFiles7 Text Panrep1 where
+    wrap7 = readNote "wrap7 for pandocrep1" . t2s
+    unwrap7 = showT
 --------------------  TexSnip
 
 extTexSnip :: UniformBase.Extension

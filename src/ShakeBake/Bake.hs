@@ -24,12 +24,7 @@ import Foundational.Foundation
 import Wave.Docrep 
 import Wave.Markdown
 
-import Foundational.Filetypes4sites (
-    docrepFileType,
-    panrepFileType,
-    texFileType,
-    texSnipFileType,
- )
+import Foundational.Filetypes4sites  
 -- import Uniform2.Markdown  
 import Uniform.Pandoc
 import Uniform2.ProcessPDF  
@@ -107,6 +102,14 @@ bakeOnePanrep2html debug flags inputFn layout resfn2 = do
     when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOnePanrep2html done fn", showT resfn2]
+    return ()
+
+bakeOnePanrep2panrep1 :: BakeOp -- PANREP -> Panrep1  -- TODO
+-- split in panrep -> panrep1
+bakeOnePanrep2panrep1 debug flags inputFn layout resfn2 = do
+    dr1 <- read8 inputFn panrepFileType
+    p :: Panrep1 <- panrep2panrep1 debug layout dr1
+    write8 resfn2 panrep1FileType p  
     return ()
 
 bakeOnePanrep2texsnip :: BakeOp --  PANREP -> TEXSNIP
