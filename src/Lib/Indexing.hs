@@ -40,16 +40,16 @@ addIndex2yam bakedP debug pr = do
     when (inform debug) $ putIOwords ["addIndex2yam", "start", showT pr]
     -- x1 :: IndexEntry <- fromJSONerrio yam1
     let x1 = panyam pr
-    putIOwords ["addIndex2yam", "x1", showT x1]
+    when (inform debug) $ putIOwords ["addIndex2yam", "x1", showT x1]
     if not . dyIndexPage $ x1
         then return pr
         else -- return dr -- TODO include again
         do
-            putIOwords ["addIndex2yam", "is indexpage"]
+            when (inform debug) $ putIOwords ["addIndex2yam", "is indexpage"]
             (dirs, files) <- getDirContent2dirs_files (bakedP </> dyLink x1)
-            putIOwords ["addIndex2yam", "\n dirs", showT dirs, "\n files", showT files]
+            when (inform debug) $ putIOwords ["addIndex2yam", "\n dirs", showT dirs, "\n files", showT files]
             let x2 = x1{dyDirEntries = dirs, dyFileEntries = files}
-            putIOwords ["addIndex2yam", "x2", showT x2]
+            when (inform debug) $ putIOwords ["addIndex2yam", "x2", showT x2]
             return pr{panyam = x2}
 
 {- | get the contents of a directory, separated into dirs and files
