@@ -12,12 +12,12 @@
 
 module ShakeBake.ReadSettingFile where -- (openMain, htf_thisModuelsTests)
 
-import Foundational.Foundation (SiteLayout (..), uploadServerTest) -- (getMeta)
+import Foundational.Foundation  
 import Uniform.Json
 import Uniform.Yaml
 import UniformBase
 
-readSettings :: Bool -> Path Abs File -> ErrIO (SiteLayout, Int)
+readSettings :: NoticeLevel -> Path Abs File -> ErrIO (SiteLayout, Int)
 
 {- | must be the settings2.yaml file, (absolute, fixed before to current dir)
  which contain the rest of the settings
@@ -25,26 +25,26 @@ readSettings :: Bool -> Path Abs File -> ErrIO (SiteLayout, Int)
 -}
 readSettings debug settingsfilename =
     do
-        when debug $ putIOwords ["readSettings", "file"
+        when (inform debug) $ putIOwords ["readSettings", "file"
                 , showPretty  settingsfilename]
         -- wd          <- currentDir
         settingsTxt <- read8 settingsfilename yamlFileType
-        when debug $ putIOwords ["readSettings text", showPretty settingsTxt]
+        when (inform debug) $ putIOwords ["readSettings text", showPretty settingsTxt]
         -- TODO where is settings
         layout3 <- readSettings2 debug settingsTxt
-        when debug $ putIOwords ["readSettings end", showPretty layout3]
-        when debug $
+        when (inform debug) $ putIOwords ["readSettings end", showPretty layout3]
+        when (inform debug) $
             putIOwords ["readSettings layout3", showPretty layout3]
         return layout3
 
-readSettings2 :: Bool -> YamlText -> ErrIO (SiteLayout, Int)
+readSettings2 :: NoticeLevel -> YamlText -> ErrIO (SiteLayout, Int)
 -- ^ read the settings file to produce the layout and set the port
 readSettings2 debug (YamlText t) = do
     meta2 :: Value <- decodeThrowT t -- decodeThrow . t2b $ t
-    when debug $ putIOwords ["readSettings2 settings", showPretty meta2]
+    when (inform debug) $ putIOwords ["readSettings2 settings", showPretty meta2]
     --    let meta2 = flattenMeta (getMeta pandoc)
     --    let themeDir2 = meta2 ^?   key "themeDir" . _String :: Maybe Text
-    --    when debug $ putIOwords ["readSettings2 themedir", showPretty themeDir2]
+    --    when (inform debug) $ putIOwords ["readSettings2 themedir", showPretty themeDir2]
     let themeDir2 = getAt2Key meta2 "storage" "themeDir" :: Maybe Text
     --     meta2 ^? key "storage" . key "themeDir" . _String :: Maybe Text
     let doughDir2 = getAt2Key meta2 "storage" "doughDir" :: Maybe Text
@@ -81,7 +81,7 @@ readSettings2 debug (YamlText t) = do
                 }
     --    let layout3 = F.layoutDefaults
     let port2 = fromInteger . fromJustNote "port wrwer" $ port
-    when debug $ putIOwords ["readSettings2", showPretty layout3]
-    --    when debug $
-    when debug $ putIOwords ["readSettings2 port", showPretty port2]
+    when (inform debug) $ putIOwords ["readSettings2", showPretty layout3]
+    --    when (inform debug) $
+    when (inform debug) $ putIOwords ["readSettings2 port", showPretty port2]
     return (layout3, port2) --instance FromJSON Settings

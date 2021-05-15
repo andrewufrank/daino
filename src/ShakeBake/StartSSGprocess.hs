@@ -22,18 +22,14 @@
 module ShakeBake.StartSSGprocess (ssgProcess) where
 
 import Lib.CmdLineArgs (PubFlags (..))
-import Foundational.Foundation (
-    SiteLayout (..),
-    landingPageName,
-    testLastUploadFileName,
- )
 import ShakeBake.ReadSettingFile (readSettings)
 import ShakeBake.Shake2 (shakeAll)
 import ShakeBake.Watch (mainWatch)
 import Uniform.WebServer (runScotty)
+import Foundational.Foundation
 import UniformBase
 
-ssgProcess :: Bool -> PubFlags -> ErrIO ()
+ssgProcess :: NoticeLevel -> PubFlags -> ErrIO ()
 ssgProcess debug flags = do
     (layout2, port2) <- readSettings debug (settingsFile flags)
 

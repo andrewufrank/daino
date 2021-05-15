@@ -28,7 +28,7 @@ import ShakeBake.Bake
 --   bakeOneFile2tex,
 --   bakeOneFile2pdf )
 import Lib.CmdLineArgs (PubFlags (..))
-import Foundational.Foundation (SiteLayout (..))
+import Foundational.Foundation 
 import Foundational.Filetypes4sites
     ( extDocrep, extPanrep, extTexSnip, extTex )
 import Uniform.Pandoc ( extMD )
@@ -36,7 +36,7 @@ import Uniform.Pandoc ( extMD )
 import Uniform.Shake
 
 type ConvertOp =
-    Bool ->
+    NoticeLevel ->
     Path Abs Dir ->
     Path Abs Dir ->
     PubFlags ->
@@ -45,7 +45,7 @@ type ConvertOp =
     Action ()
 
 type ConvertA2BOp =
-    Bool ->
+    NoticeLevel ->
     Path Abs Dir ->
     Path Abs Dir ->
     PubFlags ->
@@ -65,7 +65,7 @@ convDocrep2panrep debug doughP bakedP flags layout out =
     convA2B debug doughP bakedP flags layout out extDocrep bakeOneDocrep2panrep
 
 convPanrep2html :: ConvertOp
--- convPanrep2html :: Bool
+-- convPanrep2html :: NoticeLevel
 --     -> Path Abs Dir
 --     -> Path Abs Dir
 --     -> PubFlags
@@ -90,24 +90,24 @@ convTex2pdf debug doughP bakedP flags layout out =
 convA2B :: ConvertA2BOp
 -- ^ produce the B files from A
 convA2B debug sourceP targetP flags layout out sourceExtA bakeop = do
-    when debug $ putIOwords ["\n  convA2B   ", showT sourceExtA, showT out]
+    when (inform debug) $ putIOwords ["\n  convA2B   ", showT sourceExtA, showT out]
     let outP = makeAbsFile out :: Path Abs File
 
     let infile1 =
             replaceExtension' (s2t . unExtension $ sourceExtA) outP :: Path Abs File
-    when debug $ putIOwords ["\n  convA2B   2   ", showT infile1]
+    when (inform debug) $ putIOwords ["\n  convA2B   2   ", showT infile1]
     needP [infile1]
 
     let infile2 = sourceP </> stripProperPrefixP targetP infile1 :: Path Abs File
     need [toFilePath infile2]
-    when debug $
+    when (inform debug) $
         putIOwords
             ["\n  convA2B - 3 needed", showPretty infile2]
 
     resfile <-
         runErr2action $
-            bakeop False flags infile2 layout outP
-    when debug $ putIOwords ["\n  convA2B - return 3", showT resfile]
+            bakeop NoticeLevel0 flags infile2 layout outP
+    when (inform debug) $ putIOwords ["\n  convA2B - return 3", showT resfile]
     return ()
 
 io2bool :: MonadIO m => ErrIO b -> m b
@@ -120,7 +120,7 @@ io2bool op = do
     return res
 
 convertAny ::
-    Bool ->
+    NoticeLevel ->
     Path Abs Dir ->
     Path Abs Dir ->
     PubFlags ->
@@ -133,14 +133,14 @@ convertAny ::
 convertAny debug sourceP targetP flags layout out anyop anyopName = do
     putIOwords [ "\n-----------------", "convertAny for", anyopName]
     let outP = makeAbsFile out :: Path Abs File
-    when debug $ putIOwords ["\nproduceAny", "\n file out", showT out]
+    when (inform debug) $ putIOwords ["\nproduceAny", "\n file out", showT out]
     if sourceP == targetP
-        then anyop True sourceP targetP flags layout out
+        then anyop debug sourceP targetP flags layout out
         else do
             let fromfile = sourceP </> makeRelativeP targetP outP
             -- needP [fromfile]
             fileExists <- io2bool $ doesFileExist' fromfile
-            when debug $
+            when (inform debug) $
                 putIOwords
                     [ "\nconvertAny - fromfile exist:"
                     , showT fileExists
@@ -150,25 +150,25 @@ convertAny debug sourceP targetP flags layout out anyop anyopName = do
             if fileExists -- gives recursion, if the file is produced in earlier run
                 then do
                     copyFileChangedP fromfile outP
-                    when debug $
+                    when (inform debug) $
                         liftIO $
                             putIOwords
                                 ["\n convertAny DONE   - staticP - fromfile ", showT fromfile]
-                else anyop True sourceP targetP flags layout out
+                else anyop debug sourceP targetP flags layout out
             return ()
-    when debug $ putIOwords ["convertAny end for", anyopName]
+    when (inform debug) $ putIOwords ["convertAny end for", anyopName]
 
 -- | the generic copy for all the files
 -- which can just be copied
 -- (exceptions md, which are a special case of needed)
 copyFileToBaked :: (Filenames3 fp (Path Rel File),
       FileResultT fp (Path Rel File) ~ Path Abs File) =>
-        Bool -> fp -> Path Abs Dir -> FilePath -> Action ()
+        NoticeLevel -> fp -> Path Abs Dir -> FilePath -> Action ()
 copyFileToBaked debug doughP bakedP out = do
     let outP = makeAbsFile out :: Path Abs File
     when True $ liftIO $ putIOwords ["\ncopyFileToBaked outP", showT outP]
     let fromfile = doughP </> makeRelativeP bakedP outP
-    when debug $
+    when (inform debug) $
         liftIO $
             putIOwords
                 ["\ncopyFileToBaked fromfile ", showT fromfile]

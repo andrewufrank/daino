@@ -17,9 +17,7 @@
 module Main where -- must have Main (main) or Main where
 
 import Lib.CmdLineArgs (PubFlags (..), parseArgs2input)
-import Foundational.Foundation (
-    settingsFileName,
- )
+import Foundational.Foundation  
 import ShakeBake.StartSSGprocess (ssgProcess)
 import Uniform.Convenience.StartApp (startProg)
 import UniformBase (Text, unlinesT)
@@ -53,5 +51,5 @@ main =
                         ]
                     )
                     "list flags to include"
-            ssgProcess False flags
+            ssgProcess NoticeLevel0 flags
         )

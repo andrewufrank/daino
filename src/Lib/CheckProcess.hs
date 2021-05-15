@@ -20,23 +20,23 @@
 
 module Lib.CheckProcess where
 
-import Foundational.Foundation (SiteLayout (..))
+import Foundational.Foundation  
 import ShakeBake.ReadSettingFile (readSettings)
 
 import Uniform.Pandoc (markdownFileType)
 import Wave.Docrep
 import Wave.Markdown
 
-import Foundational.Filetypes4sites (Docrep)
+import Foundational.Filetypes4sites 
 import UniformBase
 
-checkProcess :: Bool -> FilePath -> ErrIO ()
+checkProcess :: NoticeLevel -> FilePath -> ErrIO ()
 -- ^ checking all md files
 checkProcess debug filepath = do
-    let settingsFileName = makeAbsFile filepath
-    (layout2, _) <- readSettings debug settingsFileName
+    let settingsFileName1 = makeAbsFile filepath
+    (layout2, _) <- readSettings debug settingsFileName1
     let doughP = doughDir layout2 -- the regular dough
-    when debug $
+    when (inform debug) $
         putIOwords
             [ "\nstart with \n"
             , "settingsFileName"
@@ -51,9 +51,9 @@ checkProcess debug filepath = do
     putIOwords ["the filenames\n", showList' . lines' $ fns]
 
     report <- allMetaRecReport layout2 doughP
-    when debug $ putIOwords ["the report on reading md files\n", report]
+    when (inform debug) $ putIOwords ["the report on reading md files\n", report]
 
-    when debug $
+    when (inform debug) $
         putIOwords
             [ "\n\n*******************************************"
             , "all md files checked\n"
@@ -72,7 +72,7 @@ allFilenames3 dirname = do
 report_metaRec :: SiteLayout -> Path Abs File -> ErrIO String
 report_metaRec layout2 inputFn = do
     md1 <- read8 inputFn markdownFileType
-    dr3 :: Docrep <- md2docrep False layout2 inputFn md1
+    dr3 :: Docrep <- md2docrep NoticeLevel0  layout2 inputFn md1
     return . show $ dr3
 
 allMetaRecReport :: SiteLayout -> Path Abs Dir -> ErrIO Text

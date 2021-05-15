@@ -30,14 +30,14 @@ import Foundational.Filetypes4sites
     ( docrepFileType, extDocrep, Docrep(Docrep), Panrep(panyam) ) 
 
 import Lib.CmdLineArgs (PubFlags (..))
-import Foundational.Foundation (SiteLayout)
+import Foundational.Foundation 
 
-addIndex2yam :: Path Abs Dir -> Bool -> Panrep -> ErrIO Panrep
+addIndex2yam :: Path Abs Dir -> NoticeLevel -> Panrep -> ErrIO Panrep
 {- ^ the top call to form the index data into the MetaPage
 later only the format for output must be fixed
 -}
 addIndex2yam bakedP debug pr = do
-    when debug $ putIOwords ["addIndex2yam", "start", showT pr]
+    when (inform debug) $ putIOwords ["addIndex2yam", "start", showT pr]
     -- x1 :: IndexEntry <- fromJSONerrio yam1
     let x1 = panyam pr
     putIOwords ["addIndex2yam", "x1", showT x1]

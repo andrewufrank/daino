@@ -58,7 +58,7 @@ readMarkdown2docrepJSON md = do
     let meta2 = flattenMeta . getMeta $ pd
     return (DocrepJSON meta2 pd)
 
-md2docrep :: Bool -> SiteLayout -> Path Abs File -> MarkdownText -> ErrIO Docrep
+md2docrep :: NoticeLevel -> SiteLayout -> Path Abs File -> MarkdownText -> ErrIO Docrep
 
 {- | process one md to a docrep
  for bakeOneMD2docrep and report_metaRec
@@ -111,7 +111,7 @@ completeDocRep doughP bakedP filename (DocrepJSON y1 p1) = do
     return (DocrepJSON y2 p1)
 
 --------------------------------
-addRefs :: Bool -> DocrepJSON -> ErrIO DocrepJSON
+addRefs :: NoticeLevel -> DocrepJSON -> ErrIO DocrepJSON
 {- ^ add the references to the pandoc block
  the biblio is in the yam (otherwise nothing is done)
  ths cls file must be in the yam
@@ -126,28 +126,28 @@ addRefs :: Bool -> DocrepJSON -> ErrIO DocrepJSON
 --   let result = citeproc procOpts s m $ [cites]
 --   putStrLn . unlines . map (renderPlainStrict) . citations $ result
 
-addRefs debugflag dr1@(DocrepJSON y1 p1) = do
+addRefs debug dr1@(DocrepJSON y1 p1) = do
     -- the biblio entry is the signal that refs need to be processed
     -- only refs do not work
-    when debugflag $ putIOwords ["addRefs", showT dr1, "\n"]
+    when (inform debug) $ putIOwords ["addRefs", showT dr1, "\n"]
     let biblio1 = getAtKey y1 "bibliography" :: Maybe Text
-    maybe (return dr1) (addRefs2 debugflag dr1) biblio1
+    maybe (return dr1) (addRefs2 debug dr1) biblio1
 
 addRefs2 :: 
-    Bool ->
+    NoticeLevel ->
     DocrepJSON ->
     Text ->
     ErrIO DocrepJSON
-addRefs2 debugx dr1@(DocrepJSON y1 p1) biblio1 = do
+addRefs2 debug dr1@(DocrepJSON y1 p1) biblio1 = do
     --   let debugx = False
-    when debugx $ putIOwords ["addRefs2-1", showT dr1, "\n"]
+    when (inform debug) $ putIOwords ["addRefs2-1", showT dr1, "\n"]
     let style1 = getAtKey y1 "style" :: Maybe Text
         refs1 = gak y1 "references" :: Maybe Value -- is an array
         -- refs1 = y1 ^? key "references" :: Maybe Value -- is an array
         nocite1 = getAtKey y1 "nocite" :: Maybe Text
     --   let style1 = syStyle y1
     --       rers1 = dy
-    when debugx $
+    when (inform debug) $
         putIOwords
             [ "addRefs2-2"
             , "\n biblio"
@@ -173,13 +173,13 @@ addRefs2 debugx dr1@(DocrepJSON y1 p1) biblio1 = do
     let stylefp =
             t2s . fromJustNote "style1 in addRefs2 wer23" $ style1 :: FilePath
     --  Raised the exception when style empty
-    when debugx $ putIOwords ["addRefs2-3-1", "done"]
+    when (inform debug) $ putIOwords ["addRefs2-3-1", "done"]
 
-    p2 <- readBiblioRefs debugx bibliofp loc1 stylefp  refs1 p1  
+    p2 <- readBiblioRefs (inform debug) bibliofp loc1 stylefp  refs1 p1  
 
 
 
-    when debugx $ putIOwords ["addRefs2-4", "p2\n", showT p2]
+    when (inform debug) $ putIOwords ["addRefs2-4", "p2\n", showT p2]
 
     return (DocrepJSON y1 p2)
     

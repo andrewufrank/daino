@@ -14,7 +14,7 @@
 module ShakeBake.Watch where
 
 import Lib.CmdLineArgs (PubFlags (..))
-import Foundational.Foundation (SiteLayout (..), landingPageName)
+import Foundational.Foundation  
 import ShakeBake.Shake2 (shakeAll)
 import Uniform.Watch
   ( Glob (..),
@@ -25,7 +25,7 @@ import Uniform.Watch
 import Uniform.WebServer (Port, runScotty)
 import UniformBase
 
-mainWatch :: Bool -> SiteLayout -> PubFlags -> Port -> ErrIO ()
+mainWatch :: NoticeLevel -> SiteLayout -> PubFlags -> Port -> ErrIO ()
 -- | the landing page must be given here because it is special for scotty
 -- and the name of the banner imgage which must be copied by shake
 mainWatch debug layout flags bakedPort = do

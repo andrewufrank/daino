@@ -20,9 +20,7 @@
 module ShakeBake.Bake where
 
 import Lib.CmdLineArgs (PubFlags (..))
-import Foundational.Foundation (
-    SiteLayout (..),
- )
+import Foundational.Foundation  
 import Wave.Docrep 
 import Wave.Markdown
 
@@ -40,7 +38,7 @@ import Wave.Panrep
 import UniformBase
 
 type BakeOp =
-    Bool ->
+    NoticeLevel ->
     PubFlags ->
     -- | md file
     Path Abs File ->
@@ -50,7 +48,7 @@ type BakeOp =
 
 bakeOneMD2docrep :: BakeOp --    MD -> DOCREP
 bakeOneMD2docrep debug flags inputFn layout resfn2 = do
-    when debug $    putIOwords
+    when (inform debug) $    putIOwords
         [ "\n-----------------"
         , "bakeOneMD2docrep 1 fn"
         , showT inputFn
@@ -64,7 +62,7 @@ bakeOneMD2docrep debug flags inputFn layout resfn2 = do
     dr3 <- md2docrep debug layout inputFn md1
 
     write8 resfn2 docrepFileType dr3
-    when debug $
+    when (inform debug) $
         putIOwords
             [ "\n-----------------"
             , "bakeOneMD2docrep done fn"
@@ -75,7 +73,7 @@ bakeOneMD2docrep debug flags inputFn layout resfn2 = do
 bakeOneDocrep2panrep :: BakeOp --  DOCREP -> PANREP
 -- TODO
 bakeOneDocrep2panrep debug flags inputFn layout resfn2 = do
-    when debug $    putIOwords
+    when (inform debug) $    putIOwords
         [ "\n-----------------"
         , "bakeOneDocrep2panrep 1 fn"
         , showT inputFn
@@ -87,14 +85,14 @@ bakeOneDocrep2panrep debug flags inputFn layout resfn2 = do
     dr1 <- read8 inputFn docrepFileType
     p3 <- docrep2panrep debug layout dr1
     write8 resfn2 panrepFileType p3 -- content is html style
-    when debug $
+    when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOneDocrep2panrep done fn", showT p3]
     return ()
 
 bakeOnePanrep2html :: BakeOp -- PANREP -> HTML  -- TODO
 bakeOnePanrep2html debug flags inputFn layout resfn2 = do
-    when debug $    putIOwords
+    when (inform debug) $    putIOwords
         [ "\n-----------------"
         , "bakeOnePanrep2html 1 fn"
         , showT inputFn
@@ -106,7 +104,7 @@ bakeOnePanrep2html debug flags inputFn layout resfn2 = do
     dr1 <- read8 inputFn panrepFileType
     p <- panrep2html debug layout dr1
     write8 resfn2 htmloutFileType p -- content is html style
-    when debug $
+    when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOnePanrep2html done fn", showT resfn2]
     return ()
@@ -114,7 +112,7 @@ bakeOnePanrep2html debug flags inputFn layout resfn2 = do
 bakeOnePanrep2texsnip :: BakeOp --  PANREP -> TEXSNIP
 -- TODO
 bakeOnePanrep2texsnip debug flags inputFn layout resfn2 = do
-    when debug $    putIOwords
+    when (inform debug) $    putIOwords
         [ "\n-----------------"
         , "bakeOnePanrep2texsnip 1 fn"
         , showT inputFn
@@ -127,14 +125,14 @@ bakeOnePanrep2texsnip debug flags inputFn layout resfn2 = do
     dr1 <- read8 inputFn panrepFileType
     snip1 <- panrep2texsnip dr1
     write8 resfn2 texSnipFileType snip1 -- content is html style
-    when debug $
+    when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOneFile2html done fn", showT resfn2]
     return ()
 
 bakeOneTexsnip2tex :: BakeOp -- TEXSNIP -> TEX
 bakeOneTexsnip2tex debug flags inputFn layout resfn2 = do
-    when debug $   putIOwords
+    when (inform debug) $   putIOwords
         [ "\n-----------------"
         , "bakeOneFile2tex 1 fn"
         , showT inputFn
@@ -147,14 +145,14 @@ bakeOneTexsnip2tex debug flags inputFn layout resfn2 = do
     snip1 <- read8 inputFn texSnipFileType
     let tex1 = tex2latex2 zero [snip1]
     write8 resfn2 texFileType tex1 -- content is html style
-    when debug $
+    when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOneFile2tex done fn", showT resfn2]
     return ()
 
 bakeOneTex2pdf :: BakeOp
 bakeOneTex2pdf debug flags inputFn layout resfn2 = do
-    when debug $    putIOwords
+    when (inform debug) $    putIOwords
         [ "\n-----------------"
         , "bakeOneFile2pdf 1 fn:"
         , showT inputFn
@@ -166,8 +164,8 @@ bakeOneTex2pdf debug flags inputFn layout resfn2 = do
 
     let refDir =
             makeAbsDir . getParentDir . toFilePath $ inputFn :: Path Abs Dir
-    writePDF1 debug inputFn resfn2 refDir -- content is html style
-    when debug $
+    writePDF1 (inform debug) inputFn resfn2 refDir -- content is html style
+    when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOneFile2pdf done fn", showT resfn2]
     return ()

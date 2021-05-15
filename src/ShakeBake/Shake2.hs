@@ -55,10 +55,7 @@ import Uniform.Shake
     
 import Lib.CmdLineArgs (PubFlags (..))
 import ShakeBake.ConvertFiles
-import Foundational.Foundation (
-    SiteLayout (..),
-    staticDirName,
- )
+import Foundational.Foundation 
 
 -- shakeDelete :: SiteLayout -> FilePath -> ErrIO ()
 -- {- ^ experimental - twich found delete of md
@@ -88,7 +85,7 @@ shakeArgs2 bakedP = do
     -- putIOwords ["shakeArgs2", "done"]
     return res
 
-shakeAll :: Bool -> SiteLayout -> PubFlags -> FilePath -> ErrIO ()
+shakeAll :: NoticeLevel -> SiteLayout -> PubFlags -> FilePath -> ErrIO ()
 -- ^ calls shake in the IO monade. this is in the ErrIO
 shakeAll debug layout flags filepath = do
     putIOwords
@@ -106,7 +103,7 @@ shakeAll debug layout flags filepath = do
 
 
 shakeMD ::
-    Bool ->
+    NoticeLevel ->
     SiteLayout ->
     PubFlags ->
     Path Abs Dir -> -- dough (source for files)
@@ -209,7 +206,7 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         %> \out -> copyFileToBaked debug doughP bakedP out
 
 getNeeds ::
-    Bool ->
+    NoticeLevel ->
     Path Abs Dir ->
     Path Abs Dir ->
     Text ->
@@ -220,7 +217,7 @@ getNeeds ::
 -}
 getNeeds debug sourceP targetP extSource extTarget = do
     let sameExt = extSource == extTarget
-    when debug $
+    when (inform debug) $
         putIOwords
             [ "===================\ngetNeeds extSource"
             , extSource
@@ -244,7 +241,7 @@ getNeeds debug sourceP targetP extSource extTarget = do
                         (replaceExtension' extTarget . (targetP </>))
                         filesWithSource ::
                         [Path Abs File]
-    when debug $ do
+    when (inform debug) $ do
         putIOwords
             [ "===================\ngetNeeds -  source files 1"
             , "for ext"
