@@ -157,7 +157,7 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
             needP imgs
             needP imgs2
             putIOwords ["rule **/*.html need", showT imgs, showT imgs2]
-            convertAny debug bakedP bakedP flags layout out convPanrep2html
+            convertAny debug bakedP bakedP flags layout out convPanrep2html "convPanrep2html"
 
     (toFilePath bakedP <> "**/*.pdf") %> \out -> -- insert pdfFIles1
         do
@@ -167,16 +167,16 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
             needP imgs
             needP imgs2
             putIOwords ["rule **/*.pdf need", showT imgs, showT imgs2]
-            convertAny debug2 bakedP bakedP flags layout out convTex2pdf
+            convertAny debug2 bakedP bakedP flags layout out convTex2pdf "convTex2pdf"
 
     (toFilePath bakedP <> "**/*.tex") %> \out -> -- insert pdfFIles1
-        convertAny debug2 bakedP bakedP flags layout out convTexsnip2tex
+        convertAny debug2 bakedP bakedP flags layout out convTexsnip2tex "convTexsnip2tex"
 
     (toFilePath bakedP <> "**/*.texsnip") %> \out -> -- insert pdfFIles1
-        convertAny debug2 bakedP bakedP flags layout out convPanrep2texsnip
+        convertAny debug2 bakedP bakedP flags layout out convPanrep2texsnip "convPanrep2texsnip"
 
     (toFilePath bakedP <> "**/*.panrep") %> \out -> -- insert pdfFIles1
-        convertAny debug2 bakedP bakedP flags layout out convDocrep2panrep
+        convertAny debug2 bakedP bakedP flags layout out convDocrep2panrep "convDocrep2panrep"
 
     (toFilePath bakedP <> "**/*.docrep") %> \out -> -- insert pdfFIles1  -- here start with doughP
         do
@@ -187,7 +187,7 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
             putIOwords ["rule **/*.docrep need", showT bibs]
             putIOwords ["rule **/*.docrep need", showT csls]
 
-            convertAny debug2 doughP bakedP flags layout out convMD2docrep
+            convertAny debug2 doughP bakedP flags layout out convMD2docrep "convMD2docrep"
 
     -- rest are copies
 

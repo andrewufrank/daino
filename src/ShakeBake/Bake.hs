@@ -50,7 +50,7 @@ type BakeOp =
 
 bakeOneMD2docrep :: BakeOp --    MD -> DOCREP
 bakeOneMD2docrep debug flags inputFn layout resfn2 = do
-    putIOwords
+when debug $    putIOwords
         [ "\n-----------------"
         , "bakeOneMD2docrep 1 fn"
         , showT inputFn
@@ -75,7 +75,7 @@ bakeOneMD2docrep debug flags inputFn layout resfn2 = do
 bakeOneDocrep2panrep :: BakeOp --  DOCREP -> PANREP
 -- TODO
 bakeOneDocrep2panrep debug flags inputFn layout resfn2 = do
-    putIOwords
+when debug $    putIOwords
         [ "\n-----------------"
         , "bakeOneDocrep2panrep 1 fn"
         , showT inputFn
@@ -94,7 +94,7 @@ bakeOneDocrep2panrep debug flags inputFn layout resfn2 = do
 
 bakeOnePanrep2html :: BakeOp -- PANREP -> HTML  -- TODO
 bakeOnePanrep2html debug flags inputFn layout resfn2 = do
-    putIOwords
+when debug $    putIOwords
         [ "\n-----------------"
         , "bakeOnePanrep2html 1 fn"
         , showT inputFn
@@ -114,7 +114,7 @@ bakeOnePanrep2html debug flags inputFn layout resfn2 = do
 bakeOnePanrep2texsnip :: BakeOp --  PANREP -> TEXSNIP
 -- TODO
 bakeOnePanrep2texsnip debug flags inputFn layout resfn2 = do
-    putIOwords
+when debug $    putIOwords
         [ "\n-----------------"
         , "bakeOnePanrep2texsnip 1 fn"
         , showT inputFn
@@ -134,7 +134,7 @@ bakeOnePanrep2texsnip debug flags inputFn layout resfn2 = do
 
 bakeOneTexsnip2tex :: BakeOp -- TEXSNIP -> TEX
 bakeOneTexsnip2tex debug flags inputFn layout resfn2 = do
-    putIOwords
+ when debug $   putIOwords
         [ "\n-----------------"
         , "bakeOneFile2tex 1 fn"
         , showT inputFn
@@ -154,7 +154,7 @@ bakeOneTexsnip2tex debug flags inputFn layout resfn2 = do
 
 bakeOneTex2pdf :: BakeOp
 bakeOneTex2pdf debug flags inputFn layout resfn2 = do
-    putIOwords
+when debug $    putIOwords
         [ "\n-----------------"
         , "bakeOneFile2pdf 1 fn:"
         , showT inputFn

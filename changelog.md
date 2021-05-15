@@ -15,4 +15,5 @@ a static site generator
 # 0.0.4.3 
     clean up, then build test 
 # 0.0.4.4
-    construct the test environment,   
+    construct the test environment, 
+    generalized the bake any (aka convert any)  

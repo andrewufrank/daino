@@ -120,12 +120,13 @@ convertAny ::
     SiteLayout ->
     FilePath ->
     ConvertOp   -- ^ the operation to carry out
+    -> Text  -- ^ the name of the operation
     -> Action ()
 -- produce any (either copy available in baked or produce with anyop)
-convertAny debug sourceP targetP flags layout out anyop = do
+convertAny debug sourceP targetP flags layout out anyop anyopName = do
+    putIOwords [ "\n-----------------", "convertAny for", anyopName]
     let outP = makeAbsFile out :: Path Abs File
     when debug $ putIOwords ["\nproduceAny", "\n file out", showT out]
-
     if sourceP == targetP
         then anyop True sourceP targetP flags layout out
         else do
@@ -148,6 +149,7 @@ convertAny debug sourceP targetP flags layout out anyop = do
                                 ["\n convertAny DONE   - staticP - fromfile ", showT fromfile]
                 else anyop True sourceP targetP flags layout out
             return ()
+    when debug $ putIOwords ["convertAny end for", anyopName]
 
 -- | the generic copy for all the files
 -- which can just be copied
