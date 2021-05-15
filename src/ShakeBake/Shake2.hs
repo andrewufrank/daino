@@ -143,6 +143,18 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         needP pdfs
         needP htmls
 
+    -- (toFilePath bakedP <> "**/*.html") %> \out -> -- from Panrep
+    -- -- calls the copy html and the conversion from md
+    --     do
+    --         csss <- getNeeds debug doughP bakedP "css" "css"
+    --         when (inform debug) $ putIOwords ["rule **/*.html need", showT csss]
+    --         imgs <- getNeeds debug doughP bakedP "jpg" "jpg"
+    --         imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
+    --         needP imgs
+    --         needP imgs2
+    --         when (inform debug) $ putIOwords ["rule **/*.html need", showPretty imgs, showPretty imgs2]
+    --         convertAny debug bakedP bakedP flags layout out convPanrep2html "convPanrep2html"
+
     (toFilePath bakedP <> "**/*.html") %> \out -> -- from Panrep
     -- calls the copy html and the conversion from md
         do
@@ -153,7 +165,19 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
             needP imgs
             needP imgs2
             when (inform debug) $ putIOwords ["rule **/*.html need", showPretty imgs, showPretty imgs2]
-            convertAny debug bakedP bakedP flags layout out convPanrep2html "convPanrep2html"
+            convertAny debug bakedP bakedP flags layout out convPanrep12html "convPanrep12html"
+
+    (toFilePath bakedP <> "**/*.panrep1") %> \out -> -- from Panrep
+    -- calls the copy html and the conversion from md
+        do
+            csss <- getNeeds debug doughP bakedP "css" "css"
+            when (inform debug) $ putIOwords ["rule **/*.html need", showT csss]
+            imgs <- getNeeds debug doughP bakedP "jpg" "jpg"
+            imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
+            needP imgs
+            needP imgs2
+            when (inform debug) $ putIOwords ["rule **/*.html need", showPretty imgs, showPretty imgs2]
+            convertAny debug bakedP bakedP flags layout out convPanrep2panrep1 "convPanrep2panrep1"
 
     (toFilePath bakedP <> "**/*.pdf") %> \out -> -- insert pdfFIles1
         do

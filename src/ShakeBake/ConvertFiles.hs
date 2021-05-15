@@ -29,9 +29,8 @@ import ShakeBake.Bake
 --   bakeOneFile2pdf )
 import Lib.CmdLineArgs (PubFlags (..))
 import Foundational.Foundation 
-import Foundational.Filetypes4sites
-    ( extDocrep, extPanrep, extTexSnip, extTex )
-import Uniform.Pandoc ( extMD )
+import Foundational.Filetypes4sites 
+import Uniform.Pandoc  
 
 import Uniform.Shake
 
@@ -64,16 +63,28 @@ convDocrep2panrep :: ConvertOp
 convDocrep2panrep debug doughP bakedP flags layout out =
     convA2B debug doughP bakedP flags layout out extDocrep bakeOneDocrep2panrep
 
-convPanrep2html :: ConvertOp
--- convPanrep2html :: NoticeLevel
---     -> Path Abs Dir
---     -> Path Abs Dir
---     -> PubFlags
---     -> SiteLayout
---     -> FilePath
---     -> Action ()
-convPanrep2html debug doughP bakedP flags layout out =
-    convA2B debug doughP bakedP flags layout out extPanrep bakeOnePanrep2html
+-- convPanrep2html :: ConvertOp
+-- -- convPanrep2html :: NoticeLevel
+-- --     -> Path Abs Dir
+-- --     -> Path Abs Dir
+-- --     -> PubFlags
+-- --     -> SiteLayout
+-- --     -> FilePath
+-- --     -> Action ()
+-- convPanrep2html debug doughP bakedP flags layout out =
+--     convA2B debug doughP bakedP flags layout out extPanrep bakeOnePanrep2html
+
+-- convPanrep2html :: ConvertOp
+-- convPanrep2html debug doughP bakedP flags layout out =
+--     convA2B debug doughP bakedP flags layout out extPanrep bakeOnePanrep2html
+
+convPanrep2panrep1 :: ConvertOp
+convPanrep2panrep1 debug doughP bakedP flags layout out =
+    convA2B debug doughP bakedP flags layout out extPanrep1 bakeOnePanrep2panrep1
+
+convPanrep12html :: ConvertOp
+convPanrep12html debug doughP bakedP flags layout out =
+    convA2B debug doughP bakedP flags layout out extPanrep bakeOnePanrep12html
 
 convPanrep2texsnip :: ConvertOp
 convPanrep2texsnip debug doughP bakedP flags layout out =
