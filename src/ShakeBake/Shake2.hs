@@ -92,12 +92,13 @@ shakeAll :: Bool -> SiteLayout -> PubFlags -> FilePath -> ErrIO ()
 -- ^ calls shake in the IO monade. this is in the ErrIO
 shakeAll debug layout flags filepath = do
     putIOwords
-        [ "\n\n=====================================shakeAll start"
+        [ "\n\n===================================== shakeAll start"
         , "\n flags"
-        , showT flags
-        , "caused by"
+        , showPretty flags
+        , "\ncaused by"
         , s2t filepath
         , "."
+        , "\n======================================="
         ]
     let doughP = doughDir layout -- the regular dough
         bakedP = bakedDir layout
@@ -156,7 +157,7 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
             imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
             needP imgs
             needP imgs2
-            putIOwords ["rule **/*.html need", showT imgs, showT imgs2]
+            putIOwords ["rule **/*.html need", showPretty imgs, showPretty imgs2]
             convertAny debug bakedP bakedP flags layout out convPanrep2html "convPanrep2html"
 
     (toFilePath bakedP <> "**/*.pdf") %> \out -> -- insert pdfFIles1
@@ -245,7 +246,7 @@ getNeeds debug sourceP targetP extSource extTarget = do
                         (replaceExtension' extTarget . (targetP </>))
                         filesWithSource ::
                         [Path Abs File]
-    when True $ do
+    when debug $ do
         putIOwords
             [ "===================\ngetNeeds -  source files 1"
             , "for ext"

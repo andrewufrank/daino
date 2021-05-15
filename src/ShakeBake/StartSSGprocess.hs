@@ -70,5 +70,5 @@ ssgProcess debug flags = do
 
     --     putIOwords ["uploadTest completed", showT currentTime]
 
-    putIOwords ["ssgBake done"]
+    putIOwords ["ssgProcess done"]
     return ()

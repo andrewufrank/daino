@@ -94,7 +94,7 @@ parseArgs2input :: Path Rel File -> Text -> Text -> ErrIO PubFlags
 
 parseArgs2input settingsFN t1 t2 = do
   args1 <- getArgsParsed t1 t2
-  putIOwords ["parseArgs2input: args found", showT args1]
+  when False $ putIOwords ["parseArgs2input: args found", showPretty args1]
   workingdir1 :: Path Abs Dir <- currentDir
 
 
@@ -114,7 +114,7 @@ parseArgs2input settingsFN t1 t2 = do
                     --  ,  PortNumber = sourceDirTest
         else flags1
 
-  putIOwords ["parseArgs2input:  inputs ", showT flags2]
+  when False $ putIOwords ["parseArgs2input:  inputs ", showPretty flags2]
   return flags2
 
 

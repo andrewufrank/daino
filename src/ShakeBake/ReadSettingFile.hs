@@ -25,25 +25,26 @@ readSettings :: Bool -> Path Abs File -> ErrIO (SiteLayout, Int)
 -}
 readSettings debug settingsfilename =
     do
-        putIOwords ["readSettings", "file", showT settingsfilename]
+        when debug $ putIOwords ["readSettings", "file"
+                , showPretty  settingsfilename]
         -- wd          <- currentDir
         settingsTxt <- read8 settingsfilename yamlFileType
-        when debug $ putIOwords ["readSettings text", showT settingsTxt]
+        when debug $ putIOwords ["readSettings text", showPretty settingsTxt]
         -- TODO where is settings
         layout3 <- readSettings2 debug settingsTxt
-        when debug $ putIOwords ["readSettings end", showT layout3]
+        when debug $ putIOwords ["readSettings end", showPretty layout3]
         when debug $
-            putIOwords ["readSettings layout3", showT layout3]
+            putIOwords ["readSettings layout3", showPretty layout3]
         return layout3
 
 readSettings2 :: Bool -> YamlText -> ErrIO (SiteLayout, Int)
 -- ^ read the settings file to produce the layout and set the port
 readSettings2 debug (YamlText t) = do
     meta2 :: Value <- decodeThrowT t -- decodeThrow . t2b $ t
-    when debug $ putIOwords ["readSettings2 settings", showT meta2]
+    when debug $ putIOwords ["readSettings2 settings", showPretty meta2]
     --    let meta2 = flattenMeta (getMeta pandoc)
     --    let themeDir2 = meta2 ^?   key "themeDir" . _String :: Maybe Text
-    --    when debug $ putIOwords ["readSettings2 themedir", showT themeDir2]
+    --    when debug $ putIOwords ["readSettings2 themedir", showPretty themeDir2]
     let themeDir2 = getAt2Key meta2 "storage" "themeDir" :: Maybe Text
     --     meta2 ^? key "storage" . key "themeDir" . _String :: Maybe Text
     let doughDir2 = getAt2Key meta2 "storage" "doughDir" :: Maybe Text
@@ -80,7 +81,7 @@ readSettings2 debug (YamlText t) = do
                 }
     --    let layout3 = F.layoutDefaults
     let port2 = fromInteger . fromJustNote "port wrwer" $ port
-    when debug $ putIOwords ["readSettings2", showT layout3]
+    when debug $ putIOwords ["readSettings2", showPretty layout3]
     --    when debug $
-    when debug $ putIOwords ["readSettings2 port", showT port2]
+    when debug $ putIOwords ["readSettings2 port", showPretty port2]
     return (layout3, port2) --instance FromJSON Settings
