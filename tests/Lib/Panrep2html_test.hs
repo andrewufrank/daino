@@ -13,20 +13,15 @@
 -- | test the transformation from panrep to html
 module Lib.Panrep2html_test where
 
-import Foundational.Foundation (
-    SiteLayout (..),
-    masterTemplateFileName,
-    progName,
-    templatesDirName,
- )
+ 
 import Test.Framework
 import Uniform.Test.TestHarness
 import UniformBase
-import Uniform2.Filetypes4sites
-import Uniform2.Docrep
+import Foundational.Filetypes4sites
+-- import Uniform2.Docrep
 import Foundational.Foundation
 import ShakeBake.ReadSettingFile
-import Wave.Panrepp  
+import Wave.Panrep  
 import Uniform2.HTMLout
 
 import Lib.Templating -- (applyTemplate2, convGmaster)

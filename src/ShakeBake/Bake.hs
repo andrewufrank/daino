@@ -36,7 +36,7 @@ import Foundational.Filetypes4sites (
 import Uniform.Pandoc
 import Uniform2.ProcessPDF  
 
-import Wave.Panrepp (docrep2panrep, panrep2html)
+import Wave.Panrep (docrep2panrep, panrep2html)
 import UniformBase
 
 type BakeOp =
@@ -52,7 +52,7 @@ bakeOneMD2docrep :: BakeOp --    MD -> DOCREP
 bakeOneMD2docrep debug flags inputFn layout resfn2 = do
     putIOwords
         [ "\n-----------------"
-        , "bakeOneFile2docrep 1 fn"
+        , "bakeOneMD2docrep 1 fn"
         , showT inputFn
         , "debug"
         , showT debug
@@ -67,7 +67,7 @@ bakeOneMD2docrep debug flags inputFn layout resfn2 = do
     when debug $
         putIOwords
             [ "\n-----------------"
-            , "bakeOneFile2docrep done fn"
+            , "bakeOneMD2docrep done fn"
             , showT resfn2
             ]
     return ()
@@ -77,7 +77,7 @@ bakeOneDocrep2panrep :: BakeOp --  DOCREP -> PANREP
 bakeOneDocrep2panrep debug flags inputFn layout resfn2 = do
     putIOwords
         [ "\n-----------------"
-        , "bakeOneFile2panrep 1 fn"
+        , "bakeOneDocrep2panrep 1 fn"
         , showT inputFn
         , "debug"
         , showT debug
@@ -89,14 +89,14 @@ bakeOneDocrep2panrep debug flags inputFn layout resfn2 = do
     write8 resfn2 panrepFileType p3 -- content is html style
     when debug $
         putIOwords
-            ["\n-----------------", "bakeOneFile2panrep done fn", showT p3]
+            ["\n-----------------", "bakeOneDocrep2panrep done fn", showT p3]
     return ()
 
-bakeOnePanrep2html :: BakeOp -- TODO
+bakeOnePanrep2html :: BakeOp -- PANREP -> HTML  -- TODO
 bakeOnePanrep2html debug flags inputFn layout resfn2 = do
     putIOwords
         [ "\n-----------------"
-        , "bakeOneFile2html 1 fn"
+        , "bakeOnePanrep2html 1 fn"
         , showT inputFn
         , "debug"
         , showT debug
@@ -108,7 +108,7 @@ bakeOnePanrep2html debug flags inputFn layout resfn2 = do
     write8 resfn2 htmloutFileType p -- content is html style
     when debug $
         putIOwords
-            ["\n-----------------", "bakeOneFile2html done fn", showT resfn2]
+            ["\n-----------------", "bakeOnePanrep2html done fn", showT resfn2]
     return ()
 
 bakeOnePanrep2texsnip :: BakeOp --  PANREP -> TEXSNIP
@@ -116,7 +116,7 @@ bakeOnePanrep2texsnip :: BakeOp --  PANREP -> TEXSNIP
 bakeOnePanrep2texsnip debug flags inputFn layout resfn2 = do
     putIOwords
         [ "\n-----------------"
-        , "bakeOneFile2texsnip 1 fn"
+        , "bakeOnePanrep2texsnip 1 fn"
         , showT inputFn
         , "debug"
         , showT debug

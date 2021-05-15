@@ -24,8 +24,8 @@
 {- | the representation with indices
  ready for processing to HTML or to TexSnip -> Tex -> Pdf
 -}
-module Wave.Panrepp (
-    module Wave.Panrepp,
+module Wave.Panrep (
+    module Wave.Panrep,
 ) where
 
 import Data.Default

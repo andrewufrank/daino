@@ -22,7 +22,7 @@
 module Foundational.Foundation  -- (openMain, htf_thisModuelsTests)
                       where
 import UniformBase
-import GHC.Generics 
+-- import GHC.Generics 
 
 -- import           Uniform.Strings        -- hiding ( (</>) )
 -- import           Uniform.Filenames
