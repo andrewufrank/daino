@@ -146,7 +146,7 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         needP pdfs
         needP htmls
 
-    let debug2 = True
+    -- let debug2 = True
 
     (toFilePath bakedP <> "**/*.html") %> \out -> -- from Panrep
     -- calls the copy html and the conversion from md

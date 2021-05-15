@@ -64,7 +64,14 @@ convDocrep2panrep :: ConvertOp
 convDocrep2panrep debug doughP bakedP flags layout out =
     convA2B debug doughP bakedP flags layout out extDocrep bakeOneDocrep2panrep
 
--- convPanrep2html :: ConvertOp
+convPanrep2html :: ConvertOp
+-- convPanrep2html :: Bool
+--     -> Path Abs Dir
+--     -> Path Abs Dir
+--     -> PubFlags
+--     -> SiteLayout
+--     -> FilePath
+--     -> Action ()
 convPanrep2html debug doughP bakedP flags layout out =
     convA2B debug doughP bakedP flags layout out extPanrep bakeOnePanrep2html
 
@@ -83,24 +90,24 @@ convTex2pdf debug doughP bakedP flags layout out =
 convA2B :: ConvertA2BOp
 -- ^ produce the B files from A
 convA2B debug sourceP targetP flags layout out sourceExtA bakeop = do
-    putIOwords ["\n  convA2B   ", showT sourceExtA, showT out]
+    when debug $ putIOwords ["\n  convA2B   ", showT sourceExtA, showT out]
     let outP = makeAbsFile out :: Path Abs File
 
     let infile1 =
             replaceExtension' (s2t . unExtension $ sourceExtA) outP :: Path Abs File
-    putIOwords ["\n  convA2B   2   ", showT infile1]
+    when debug $ putIOwords ["\n  convA2B   2   ", showT infile1]
     needP [infile1]
 
     let infile2 = sourceP </> stripProperPrefixP targetP infile1 :: Path Abs File
     need [toFilePath infile2]
     when debug $
         putIOwords
-            ["\n  convA2B - 3 needed", showT infile2]
+            ["\n  convA2B - 3 needed", showPretty infile2]
 
     resfile <-
         runErr2action $
             bakeop False flags infile2 layout outP
-    liftIO $ putIOwords ["\n  convA2B - return 3", showT resfile]
+    when debug $ putIOwords ["\n  convA2B - return 3", showT resfile]
     return ()
 
 io2bool :: MonadIO m => ErrIO b -> m b
