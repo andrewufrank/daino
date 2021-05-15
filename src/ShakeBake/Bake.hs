@@ -36,7 +36,7 @@ import Foundational.Filetypes4sites (
 import Uniform.Pandoc
 import Uniform2.ProcessPDF  
 
-import Wave.Panrep (docrep2panrep, panrep2html)
+import Wave.Panrep  
 import UniformBase
 
 type BakeOp =

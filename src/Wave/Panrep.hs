@@ -69,12 +69,12 @@ docrep2panrep debug layout (Docrep y1 p1) = do
 -- ------------------------------------ panrep2html
 -- panrep2html :: Panrep -> ErrIO HTMLout
 -- implements the bake
-panrep2html :: p -> SiteLayout -> Panrep -> ErrIO HTMLout
+panrep2html :: Bool -> SiteLayout -> Panrep -> ErrIO HTMLout
 panrep2html debug layout dr1 = do
-    let templateP = templatesDir layout
+    -- let templateP = templatesDir layout
     dr4 <- convertIndexEntries dr1 -- move to
     -- p <- panrep2htmlP debug templateP dr4 
-    p :: HTMLout <- putValinMaster False dr4 templateP
+    p :: HTMLout <- putValinMaster debug dr4 (templatesDir layout)
     return p
 
 -- panrep2htmP :: Bool  -> Path Abs Dir -> Panrep ->ErrIO Text
