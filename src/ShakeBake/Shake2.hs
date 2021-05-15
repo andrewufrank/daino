@@ -146,8 +146,6 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         needP pdfs
         needP htmls
 
-    -- let debug2 = True
-
     (toFilePath bakedP <> "**/*.html") %> \out -> -- from Panrep
     -- calls the copy html and the conversion from md
         do
@@ -168,16 +166,16 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
             needP imgs
             needP imgs2
             putIOwords ["rule **/*.pdf need", showT imgs, showT imgs2]
-            convertAny debug2 bakedP bakedP flags layout out convTex2pdf "convTex2pdf"
+            convertAny debug bakedP bakedP flags layout out convTex2pdf "convTex2pdf"
 
     (toFilePath bakedP <> "**/*.tex") %> \out -> -- insert pdfFIles1
-        convertAny debug2 bakedP bakedP flags layout out convTexsnip2tex "convTexsnip2tex"
+        convertAny debug bakedP bakedP flags layout out convTexsnip2tex "convTexsnip2tex"
 
     (toFilePath bakedP <> "**/*.texsnip") %> \out -> -- insert pdfFIles1
-        convertAny debug2 bakedP bakedP flags layout out convPanrep2texsnip "convPanrep2texsnip"
+        convertAny debug bakedP bakedP flags layout out convPanrep2texsnip "convPanrep2texsnip"
 
     (toFilePath bakedP <> "**/*.panrep") %> \out -> -- insert pdfFIles1
-        convertAny debug2 bakedP bakedP flags layout out convDocrep2panrep "convDocrep2panrep"
+        convertAny debug bakedP bakedP flags layout out convDocrep2panrep "convDocrep2panrep"
 
     (toFilePath bakedP <> "**/*.docrep") %> \out -> -- insert pdfFIles1  -- here start with doughP
         do
@@ -188,27 +186,27 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
             putIOwords ["rule **/*.docrep need", showT bibs]
             putIOwords ["rule **/*.docrep need", showT csls]
 
-            convertAny debug2 doughP bakedP flags layout out convMD2docrep "convMD2docrep"
+            convertAny debug doughP bakedP flags layout out convMD2docrep "convMD2docrep"
 
     -- rest are copies
 
     (toFilePath bakedP <> "/*.md") -- is this required??
         %> \out -> -- insert css -- no subdir
-            copyFileToBaked debug2 doughP bakedP out
+            copyFileToBaked debug doughP bakedP out
     (toFilePath bakedP <> "/*.css")
         %> \out -> -- insert css -- no subdir
-            copyFileToBaked debug2 doughP bakedP out
+            copyFileToBaked debug doughP bakedP out
     (toFilePath bakedP <> "/*.csl")
         %> \out -> -- insert css -- no subdir
-            copyFileToBaked debug2 doughP bakedP out
+            copyFileToBaked debug doughP bakedP out
 
     [toFilePath bakedP <> "/*.JPG", toFilePath bakedP <> "/*.jpg"]
         |%> \out -> -- insert img files
         -- no subdir (for now)
-            copyFileToBaked debug2 doughP bakedP out
+            copyFileToBaked debug doughP bakedP out
 
     (toFilePath bakedP <> "**/*.bib")
-        %> \out -> copyFileToBaked debug2 doughP bakedP out
+        %> \out -> copyFileToBaked debug doughP bakedP out
 
 getNeeds ::
     Bool ->
