@@ -114,11 +114,16 @@ convA2B debug sourceP targetP flags layout out sourceExtA bakeop = do
     when (informall debug) $
         putIOwords
             ["\n  convA2B - 3 needed infile2", showPretty infile2]
+    when ((informall debug) && (infile1 /= infile2)) $
+            putIOwords
+                ["\n  convA2B - 3 file differ"
+                , "\n infile1", showPretty infile1
+                , "\n infile2", showPretty infile2]
 
-    resfile <-
+    res <-
         runErr2action $
             bakeop debug flags infile2 layout outP
-    when (informall debug) $ putIOwords ["\n  convA2B - return 4 file produced", showT resfile, "\n"]
+    when (informall debug) $ putIOwords ["\n  convA2B - return 4 file produced", showT res, "file produce out", showPretty outP, "\n"]
     return ()
 
 io2bool :: MonadIO m => ErrIO b -> m b
