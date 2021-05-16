@@ -75,7 +75,7 @@ panrep2html debug layout dr1 = do
     dr4 <- convertIndexEntries dr1 -- move to
     -- p <- panrep2htmlP debug templateP dr4 
     p :: HTMLout <- putValinMaster debug dr4 (templatesDir layout)
-    when (informall debug) $ putIOwords ["\n panrep2html done"]
+    when (informNone debug) $ putIOwords ["\n panrep2html done"]
     return p
 
 -- step1
@@ -84,7 +84,7 @@ panrep2panrep1 debug layout dr1 = do
     -- let templateP = templatesDir layout
     dr4 <- convertIndexEntries dr1 -- move to
     -- p :: HTMLout <- putValinMaster debug dr4 (templatesDir layout)
-    when (informall debug) $ putIOwords ["\n panrep2panrep1 done"]
+    when (informNone debug) $ putIOwords ["\n panrep2panrep1 done"]
     return . Panrep1 $ dr4
 
 panrep12html :: NoticeLevel -> SiteLayout -> Panrep1 -> ErrIO HTMLout
@@ -92,7 +92,7 @@ panrep12html debug layout dr4 = do
     -- let templateP = templatesDir layout
     -- dr4 <- convertIndexEntries dr1 -- move to
     p :: HTMLout <- putValinMaster debug (unPanrep1 dr4) (templatesDir layout)
-    when (informall debug) $ putIOwords ["\n panrep12html done"]
+    when (informNone debug) $ putIOwords ["\n panrep12html done"]
     return p 
 
 
