@@ -1,0 +1,56 @@
+Build profile: -w ghc-8.10.4 -O1
+In order, the following will be built (use -v for more details):
+ - ssg-0.0.4.4 (lib) (file src/ShakeBake/Bake.hs changed)
+ - ssg-0.0.4.4 (exe:ssgbake) (dependency rebuilt)
+Preprocessing library for ssg-0.0.4.4..
+Building library for ssg-0.0.4.4..
+[ 5 of 20] Compiling Foundational.MetaPage ( src/Foundational/MetaPage.hs, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.4/ssg-0.0.4.4/build/Foundational/MetaPage.o, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.4/ssg-0.0.4.4/build/Foundational/MetaPage.dyn_o )
+[ 8 of 20] Compiling Lib.Indexing     ( src/Lib/Indexing.hs, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.4/ssg-0.0.4.4/build/Lib/Indexing.o, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.4/ssg-0.0.4.4/build/Lib/Indexing.dyn_o )
+[16 of 20] Compiling ShakeBake.Bake   ( src/ShakeBake/Bake.hs, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.4/ssg-0.0.4.4/build/ShakeBake/Bake.o, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.4/ssg-0.0.4.4/build/ShakeBake/Bake.dyn_o )
+Preprocessing executable 'ssgbake' for ssg-0.0.4.4..
+Building executable 'ssgbake' for ssg-0.0.4.4..
+Linking /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.4/ssg-0.0.4.4/x/ssgbake/build/ssgbake/ssgbake ...
+------------------  ssgBake constructing a static site generator x6 0.0.2.1  ----------------------------
+
+
+===================================== shakeAll start 
+ flags PubFlags
+  { publishFlag = False
+  , oldFlag = False
+  , draftFlag = False
+  , testFlag = False
+  , watchFlag = False
+  , serverFlag = False
+  , uploadFlag = False
+  , settingsFile =
+      Path Abs File / home / frank / Workspace11 / ssg / settings2
+  } 
+caused by  . 
+=======================================
+shakeMD dirs
+ 	staticDirName Path Rel Dir static/ 	bakedP
+ Path Abs Dir /home/frank/Workspace11/ssg/docs/site/baked/
+# allMarkdownConversion
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/testSort.pdf
+----------------- convertAny for convTex2pdf
+
+produceAny 
+ file out "/home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/testSort.pdf"
+
+  convA2B   1 new extension, new file
+ Extension "tex" "/home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/testSort.pdf"
+
+  convA2B   2  needP infile1  Path Abs File /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/testSort.tex
+
+  convA2B - 3 needed infile2 /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/testSort.tex
+
+------------------ main constructing a static site generator x6 0.0.2.1 
+returning Error when running Shake build system:
+  at want, called at src/ShakeBake/Shake2.hs:132:5 in ssg-0.0.4.4-inplace:ShakeBake.Shake2
+* Depends on: allMarkdownConversion
+  at need, called at ././Uniform/Shake/Path.hs:26:9 in uniform-shake-0.0.1.1-inplace:Uniform.Shake.Path
+* Depends on: /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/testSort.pdf
+* Raised the exception:
+["runErr2action","user error (1)"]
+ 
+ -------------------------

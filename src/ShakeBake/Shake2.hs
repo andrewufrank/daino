@@ -254,7 +254,7 @@ getNeeds debug sourceP targetP extSource extTarget = do
                         (replaceExtension' extTarget . (targetP </>))
                         filesWithSource ::
                         [Path Abs File]
-    when (inform debug) $ do
+    when (informall debug) $ do
         putIOwords
             [ "===================\ngetNeeds -  source files 1"
             , "for ext"

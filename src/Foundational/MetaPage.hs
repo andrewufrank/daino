@@ -1,21 +1,21 @@
-{-# LANGUAGE DeriveAnyClass #-}
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DeriveAnyClass        #-}
+{-# LANGUAGE DeriveGeneric         #-}
 ---------------------------------------------------------------
 --
 -- MetaPage   :
 ---------------------------------------------------------------------
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE FlexibleContexts      #-}
+{-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE RecordWildCards #-}
-{-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE TypeFamilies #-}
-{-# OPTIONS_GHC -Wall -fno-warn-orphans 
+{-# LANGUAGE OverloadedStrings     #-}
+{-# LANGUAGE RecordWildCards       #-}
+{-# LANGUAGE ScopedTypeVariables   #-}
+{-# LANGUAGE TypeFamilies          #-}
+{-# OPTIONS_GHC -Wall -fno-warn-orphans
             -fno-warn-missing-signatures
-            -fno-warn-missing-methods 
-            -fno-warn-duplicate-exports 
-            -fno-warn-unused-imports 
+            -fno-warn-missing-methods
+            -fno-warn-duplicate-exports
+            -fno-warn-unused-imports
             -fno-warn-unused-matches #-}
 {-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 
@@ -24,39 +24,39 @@
  all entries there should be from this list
  all JSON related functions here!
 -}
-module Foundational.MetaPage 
+module Foundational.MetaPage
     (module Foundational.MetaPage
     , Default(..)
     ) where
 
 -- import Data.Aeson.Types
-import Data.Default (Default (..))
-import Lib.CmdLineArgs (PubFlags (..))
-import Foundational.Foundation (SiteLayout (..))
-import Uniform.Json
-import Uniform.Yaml
-import Uniform.Pandoc
-import Uniform.PandocImports
-import Uniform.Shake (makeRelativeP)
-import UniformBase
+import           Data.Default            (Default (..))
+import           Foundational.Foundation (SiteLayout (..))
+import           Lib.CmdLineArgs         (PubFlags (..))
+import           Uniform.Json
+import           Uniform.Pandoc
+import           Uniform.PandocImports
+import           Uniform.Shake           (makeRelativeP)
+import           Uniform.Yaml
+import           UniformBase
 
 data MetaPage = MetaPage
-    { dyFn :: FilePath -- ^ the original dough fn
-    , dyLink :: FilePath -- ^ the relative filename
-    , dyLang :: DocLanguage -- ^ the fields of miniblog
-    , dyTitle :: Text
-    , dyAbstract :: Text
-    , dyAuthor :: Text
+    { dyFn           :: FilePath -- ^ the original dough fn
+    , dyLink         :: FilePath -- ^ the relative filename
+    , dyLang         :: DocLanguage -- ^ the fields of miniblog
+    , dyTitle        :: Text
+    , dyAbstract     :: Text
+    , dyAuthor       :: Text
     , -- | this is maybe a string,
       --  should be utctime
-      dyDate :: Maybe Text
-    , dyKeywords :: Text -- should be [Text]
+      dyDate         :: Maybe Text
+    , dyKeywords     :: Text -- should be [Text]
     , dyBibliography :: Maybe Text
-    , dyStyle :: Maybe Text
-    , dyPublish :: Maybe Text
-    , dyIndexPage :: Bool
-    , dyDirEntries :: [IndexEntry]
-    , dyFileEntries :: [IndexEntry]
+    , dyStyle        :: Maybe Text
+    , dyPublish      :: Maybe Text
+    , dyIndexPage    :: Bool
+    , dyDirEntries   :: [IndexEntry]
+    , dyFileEntries  :: [IndexEntry]
     -- is defined later, necessary here?
     }
     deriving (Show, Ord, Eq, Generic, Zeros, Read) --Read,
@@ -107,8 +107,8 @@ addFileMetaPage doughP bakedP fn =
             , dyLink =
                 toFilePath
                     (makeRelativeP doughP fn :: Path Rel File)
-                     , dyStyle =  addBakedRoot bakedP ( dyStyle zero)
-                     , dyBibliography = addBakedRoot bakedP                                           (dyBibliography zero)
+            , dyStyle =  addBakedRoot bakedP ( dyStyle zero)
+            , dyBibliography = addBakedRoot bakedP                                           (dyBibliography zero)
             } ::
             MetaPage
 
@@ -144,16 +144,16 @@ instance FromJSON PublicationState
 
 data IndexEntry = IndexEntry
     { -- | the abs file path
-      fn :: FilePath -- to have read statt Path Abs File
+      fn          :: FilePath -- to have read statt Path Abs File
     , -- | the link for this page (relative)}
-      link :: FilePath
-    , title :: Text
-    , abstract :: Text
-    , author :: Text
-    , date :: Text
-    , publish :: Maybe Text
-    , indexPage :: Bool
-    , dirEntries :: [IndexEntry] -- def []
+      link        :: FilePath
+    , title       :: Text
+    , abstract    :: Text
+    , author      :: Text
+    , date        :: Text
+    , publish     :: Maybe Text
+    , indexPage   :: Bool
+    , dirEntries  :: [IndexEntry] -- def []
     , fileEntries :: [IndexEntry] -- def []
     }
     deriving (Show, Read, Eq, Ord, Generic)

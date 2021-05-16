@@ -46,7 +46,7 @@ addIndex2yam bakedP debug pr = do
         else -- return dr -- TODO include again
         do
             when (inform debug) $ putIOwords ["addIndex2yam", "is indexpage"]
-            (dirs, files) <- getDirContent2dirs_files (bakedP </> dyLink x1)
+            (dirs, files) <- getDirContent2dirs_files debug (bakedP </> dyLink x1)
             when (inform debug) $ putIOwords ["addIndex2yam", "\n dirs", showT dirs, "\n files", showT files]
             let x2 = x1{dyDirEntries = dirs, dyFileEntries = files}
             when (inform debug) $ putIOwords ["addIndex2yam", "x2", showT x2]
@@ -58,9 +58,9 @@ addIndex2yam bakedP debug pr = do
  currently checks index.docrep in dough (which are not existing)
  indexfile itself is removed and files which are not markdown
 -}
-getDirContent2dirs_files :: Path Abs File -> ErrIO ([IndexEntry], [IndexEntry])
-getDirContent2dirs_files indexpageFn = do
-    putIOwords ["getDirContent2dir_files", showT indexpageFn]
+getDirContent2dirs_files :: NoticeLevel -> Path Abs File -> ErrIO ([IndexEntry], [IndexEntry])
+getDirContent2dirs_files debug indexpageFn = do
+    putIOwords ["getDirContent2dirs_files", showT indexpageFn]
     let pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir
     -- get the dir in which the index file is embedded
     dirs1 :: [Path Abs Dir] <- getDirectoryDirs' pageFn
@@ -69,29 +69,30 @@ getDirContent2dirs_files indexpageFn = do
             filter (indexpageFn /=) -- should not exclude all index pages but has only this one in this dir?
                 . filter (hasExtension extDocrep)
                 $ files1
-    ixfiles <- mapM getFile2index files2
+    ixfiles <- mapM (getFile2index debug) files2
     let subindexDirs = map (\d -> d </> makeRelFile "index.docrep") dirs1
-    ixdirs <- mapM getFile2index subindexDirs
+    ixdirs <- mapM (getFile2index debug) subindexDirs
 
     return (catMaybes ixdirs, catMaybes ixfiles)
 
-getFile2index :: Path Abs File -> ErrIO (Maybe IndexEntry)
+getFile2index :: NoticeLevel -> Path Abs File -> ErrIO (Maybe IndexEntry)
 -- get a file and its index
 -- collect data for indexentry (but not recursively, only this file)
 -- the directories are represented by their index files
 -- produce separately to preserve the two groups
-getFile2index fnin =
+getFile2index debug fnin =
     (do
         (Docrep y1 _) <- read8 fnin docrepFileType
         ix1 :: IndexEntry <- fromJSONerrio y1
         return . Just $ ix1)
-    `catchError` ( \e -> do
-                        putIOwords
-                            [ "getFile2index error caught\n"
-                            , "fn:"
-                            , showT fnin
-                            , "\n"
-                            , showT e -- " showT msg])
-                            ]
-                        return Nothing
-                     )
+    `catchError` 
+        ( \e -> do
+                    when (inform debug) $ putIOwords
+                        [ "getFile2index error caught\n"
+                        , "fn:"
+                        , showT fnin
+                        , "\n"
+                        , showT e -- " showT msg])
+                        ]
+                    return Nothing
+                    )
