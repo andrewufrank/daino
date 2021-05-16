@@ -1,51 +1,56 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DeriveGeneric         #-}
 ---------------------------------------------------------------------
 --
--- Module      :   create an index for a directory
---
+-- Module      :   
+-- | create an index for a directory
+--  in two steps: 
+--  indexing: collect all the date 
+--  with call to addIndex2yam
+--  and
+--  convert collected data for printing (convertIndexEntries)
+--  . 
+--  the data is stored in a file separately and managed by Shake
+--  operates on metapage (or less? )
 ----------------------------------------------------------------------
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE FlexibleContexts      #-}
+{-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE OverloadedStrings     #-}
+{-# LANGUAGE ScopedTypeVariables   #-}
+{-# LANGUAGE TypeFamilies          #-}
 
 module Lib.IndexMake (module Lib.IndexMake) where
 
-import Foundational.MetaPage
-    ( IndexEntry(link, abstract, fn, title, author, date, publish,
-                 indexPage) ) 
-
-import Foundational.Filetypes4sites ( Panrep(Panrep) )
-
-import UniformBase
-import Uniform.Json ( FromJSON, ToJSON )
+import           Foundational.Filetypes4sites
+import           Foundational.MetaPage
+import           Uniform.Json
+import           UniformBase
 
 
-convertIndexEntries :: Panrep -> ErrIO Panrep
+convertIndexEntries :: MetaPage -> ErrIO MetaPage
 -- ^ take the index entries and convert their
 -- form and push them back into the json
-convertIndexEntries (Panrep y p) = return (Panrep y p) -- TODO add again
--- do
--- --   yentry :: IndexEntry <- fromJSONerrio y
---   let yentry = y 
---   putIOwords ["convertIndexEntries", "start yentry", showT yentry]
---   let dirs = dirEntries yentry
---   let fils = fileEntries yentry
+convertIndexEntries y =
+  do
+  --   yentry :: IndexEntry <- fromJSONerrio y
+    let yentry = zero -- was y ??
+    putIOwords ["convertIndexEntries", "start yentry", showT yentry]
+    let dirs = undef "adsfwer" -- dyDirEntries y
+    let fils = undef "asdfasd" -- fileEntries dyFileEntries MetaPage
 
---   -- dirs <- fromJustNote "convertIndexEntries werdsdx" $ getAtKey y "DirEntries"
---   -- files <- fromJustNote "convertIndexEntries 34634" $ getAtKey y "FileEntries"
---   -- meta :: IndexEntry  <- fromJSONerrio y
+    -- dirs <- fromJustNote "convertIndexEntries werdsdx" $ getAtKey y "DirEntries"
+    -- files <- fromJustNote "convertIndexEntries 34634" $ getAtKey y "FileEntries"
+    -- meta :: IndexEntry  <- fromJSONerrio y
 
---   -- metadirs <- mapM fromJSONerrio dirs
---   -- metafiles <- mapM fromJSONerrio files
+    -- metadirs <- mapM fromJSONerrio dirs
+    -- metafiles <- mapM fromJSONerrio files
 
---   let menu1 = convert2index (yentry, dirs, fils)
---   putIOwords ["convertIndexEntries", "menu2", showT menu1]
---   -- let y2 = putAtKey2 "menu" menu1 y
---   let y2 = mergeLeftPref [toJSON menu1, y]
---   return $ Panrep y2 p
+    let menu1 = convert2index (yentry, dirs, fils)
+    putIOwords ["convertIndexEntries", "menu2", showT menu1]
+    -- let y2 = putAtKey2 "menu" menu1 y
+    let y2 = mergeLeftPref [toJSON menu1, y]
+    let y3 = fromJust "fromJSON MetaPage Indexing asdew" $ fromJSON y2 :: MetaPage 
+    return y3
 
 -- | convert the metarecs and put some divider between
 -- TODO  - avoid dividers if list empty
@@ -72,16 +77,16 @@ convert2index (this, content, subix) =
 
 data Index4html = Index4html
   { -- fn :: Path Abs File   -- ^ naked filename -- not shown
-    text2 :: Text, -- the filename - not shown? ?
+    text2      :: Text, -- the filename - not shown? ?
 
     -- | the url relative to dough dir
-    link2 :: Text,
+    link2      :: Text,
     -- | the title as shown
-    title2 :: Text,
-    abstract2 :: Text,
-    author2 :: Text,
-    date2 :: Text, -- UTCTime -- read the time early one to find errors
-    publish2 :: Text,
+    title2     :: Text,
+    abstract2  :: Text,
+    author2    :: Text,
+    date2      :: Text, -- UTCTime -- read the time early one to find errors
+    publish2   :: Text,
     indexPage2 :: Bool -- mark for index entries
   }
   deriving (Generic, Eq, Ord, Show, Read)

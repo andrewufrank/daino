@@ -53,13 +53,12 @@ import UniformBase
 
 docrep2panrep debug layout (Docrep y1 p1) = do
     let bakedP = bakedDir layout
-    let pr =
-            Panrep
+    let pr = Panrep  
                 { panyam = fromJustNote "docRepJSON2docrep not a value" . fromJSONValue $ y1
                 , panpan = p1
                 }
-    p2 <- addIndex2yam bakedP debug pr
-    return p2
+    m1 <- addIndex2yam bakedP debug (yam pr)
+    return p2{panyam = m1}
 
 -- do
 -- --   (DocrepJSON y2 p2) <- addRefs False dr1 -- was already done in  bakeOneMD2docrep

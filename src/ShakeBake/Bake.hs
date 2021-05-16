@@ -66,7 +66,7 @@ bakeOneMD2docrep debug flags inputFn layout resfn2 = do
     return ()
 
 bakeOneDocrep2panrep :: BakeOp --  DOCREP -> PANREP
--- TODO
+-- change to metaPage and add index data 
 bakeOneDocrep2panrep debug flags inputFn layout resfn2 = do
     when (inform debug) $    putIOwords
         [ "\n-----------------"
@@ -79,6 +79,7 @@ bakeOneDocrep2panrep debug flags inputFn layout resfn2 = do
         ]
     dr1 <- read8 inputFn docrepFileType
     p3 <- docrep2panrep debug layout dr1
+
     write8 resfn2 panrepFileType p3 -- content is html style
     when (informall debug) $
         putIOwords
