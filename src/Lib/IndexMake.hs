@@ -48,9 +48,9 @@ convertIndexEntries y =
     let menu1 = convert2index (yentry, dirs, fils)
     putIOwords ["convertIndexEntries", "menu2", showT menu1]
     -- let y2 = putAtKey2 "menu" menu1 y
-    let y2 = mergeLeftPref [toJSON menu1, y]
-    let y3 = fromJust "fromJSON MetaPage Indexing asdew" $ fromJSON y2 :: MetaPage 
-    return y3
+    let y2 = mergeLeftPref [toJSON menu1, toJSON y]
+    y4 :: MetaPage <- fromJSONerrio y2   
+    return y4
 
 -- | convert the metarecs and put some divider between
 -- TODO  - avoid dividers if list empty

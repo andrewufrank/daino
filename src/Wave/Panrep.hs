@@ -57,8 +57,8 @@ docrep2panrep debug layout (Docrep y1 p1) = do
                 { panyam = fromJustNote "docRepJSON2docrep not a value" . fromJSONValue $ y1
                 , panpan = p1
                 }
-    m1 <- addIndex2yam bakedP debug (yam pr)
-    return p2{panyam = m1}
+    m1 <- addIndex2yam bakedP debug (panyam pr)
+    return pr{panyam = m1}
 
 -- do
 -- --   (DocrepJSON y2 p2) <- addRefs False dr1 -- was already done in  bakeOneMD2docrep
@@ -71,8 +71,9 @@ docrep2panrep debug layout (Docrep y1 p1) = do
 panrep2html :: NoticeLevel -> SiteLayout -> Panrep -> ErrIO HTMLout
 panrep2html debug layout dr1 = do
     -- let templateP = templatesDir layout
-    dr4 <- convertIndexEntries dr1 -- move to
+    m4 <- convertIndexEntries (panyam dr1) -- move to
     -- p <- panrep2htmlP debug templateP dr4 
+    let dr4 = dr1{panyam = m4}
     p :: HTMLout <- putValinMaster debug dr4 (templatesDir layout)
     when (informNone debug) $ putIOwords ["\n panrep2html done"]
     return p
@@ -81,8 +82,9 @@ panrep2html debug layout dr1 = do
 panrep2panrep1 :: NoticeLevel -> SiteLayout -> Panrep -> ErrIO Panrep1
 panrep2panrep1 debug layout dr1 = do
     -- let templateP = templatesDir layout
-    dr4 <- convertIndexEntries dr1 -- move to
-    -- p :: HTMLout <- putValinMaster debug dr4 (templatesDir layout)
+    m4 <- convertIndexEntries (panyam dr1) -- move to
+    -- p <- panrep2htmlP debug templateP dr4 
+    let dr4 = dr1{panyam = m4}   
     when (informNone debug) $ putIOwords ["\n panrep2panrep1 done"]
     return . Panrep1 $ dr4
 

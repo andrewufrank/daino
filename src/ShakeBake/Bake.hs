@@ -21,7 +21,7 @@ module ShakeBake.Bake where
 
 import Lib.CmdLineArgs (PubFlags (..))
 import Foundational.Foundation  
-import Wave.Docrep 
+-- import Wave.Docrep 
 import Wave.Markdown
 
 import Foundational.Filetypes4sites  

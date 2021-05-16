@@ -43,7 +43,6 @@ library
       ShakeBake.Watch
       Uniform2.HTMLout
       Uniform2.ProcessPDF
-      Wave.Docrep
       Wave.Markdown
       Wave.Panrep
   other-modules:
@@ -92,6 +91,7 @@ test-suite ssgTest
   main-is: testing.hs
   other-modules:
       Lib.Example_test
+      Lib.Indexing_test
       Lib.Panrep2html_test
       Lib.ReadSettingFile_test
       Paths_ssg

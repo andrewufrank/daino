@@ -156,7 +156,7 @@ data IndexEntry = IndexEntry
     , dirEntries  :: [IndexEntry] -- def []
     , fileEntries :: [IndexEntry] -- def []
     }
-    deriving (Show, Read, Eq, Ord, Generic)
+    deriving (Show, Read, Eq, Ord, Zeros, Generic)
 
 instance ToJSON IndexEntry
 instance FromJSON IndexEntry
