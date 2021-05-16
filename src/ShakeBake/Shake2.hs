@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------
 --
--- Module Shake2 :     
+-- Module Shake2 :
 ----------------------------------------------------------------------
 {-  die struktur geht von den files aus, die man braucht und
     diese rekonstruieren die directories wieder, wenn sie kreiert werden.
@@ -34,15 +34,15 @@
     das heisst: jedes md gibt ein pdf (auch eingestellte)
     -}
 ----------------------------------------------------------------------
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE FlexibleContexts      #-}
+{-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE TypeFamilies #-}
-{-# OPTIONS_GHC -Wall -fno-warn-orphans 
+{-# LANGUAGE OverloadedStrings     #-}
+{-# LANGUAGE ScopedTypeVariables   #-}
+{-# LANGUAGE TypeFamilies          #-}
+{-# OPTIONS_GHC -Wall -fno-warn-orphans
             -fno-warn-missing-signatures
-            -fno-warn-missing-methods 
+            -fno-warn-missing-methods
             -fno-warn-duplicate-exports  #-}
 
 {- | to convert
@@ -51,11 +51,11 @@
 -}
 module ShakeBake.Shake2 where
 
-import Uniform.Shake
-    
-import Lib.CmdLineArgs (PubFlags (..))
-import ShakeBake.ConvertFiles
-import Foundational.Foundation 
+import           Uniform.Shake
+
+import           Foundational.Foundation
+import           Lib.CmdLineArgs         (PubFlags (..))
+import           ShakeBake.ConvertFiles
 
 -- shakeDelete :: SiteLayout -> FilePath -> ErrIO ()
 -- {- ^ experimental - twich found delete of md
@@ -76,7 +76,7 @@ shakeArgs2 :: Path b t -> Rules () -> IO ()
 shakeArgs2 bakedP = do
     -- putIOwords ["shakeArgs2", "bakedP", s2t . toFilePath $ bakedP]
     res <-
-        shake  
+        shake
             shakeOptions
                 { shakeFiles = toFilePath bakedP
                 , shakeVerbosity = Verbose-- Loud
@@ -137,56 +137,44 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         -- the original start needs in baked (from the files in dough)
         pdfs <- getNeeds debug doughP bakedP "md" "pdf"
         htmls <- getNeeds debug doughP bakedP "md" "html"
-
-
-
         needP pdfs
         needP htmls
+
+        csss <- getNeeds debug doughP bakedP "css" "css"
+        needP csss
+        imgs <- getNeeds debug doughP bakedP "jpg" "jpg"
+        imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
+        needP imgs
+        needP imgs2
 
     -- (toFilePath bakedP <> "**/*.html") %> \out -> -- from Panrep
     -- -- calls the copy html and the conversion from md
     --     do
-    --         csss <- getNeeds debug doughP bakedP "css" "css"
-    --         when (inform debug) $ putIOwords ["rule **/*.html need", showT csss]
-    --         imgs <- getNeeds debug doughP bakedP "jpg" "jpg"
-    --         imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
-    --         needP imgs
-    --         needP imgs2
-    --         when (inform debug) $ putIOwords ["rule **/*.html need", showPretty imgs, showPretty imgs2]
+            -- when (inform debug) $ putIOwords ["rule **/*.html", showT out]
+
     --         convertAny debug bakedP bakedP flags layout out convPanrep2html "convPanrep2html"
 
     (toFilePath bakedP <> "**/*.html") %> \out -> -- from Panrep
     -- calls the copy html and the conversion from md
         do
-            csss <- getNeeds debug doughP bakedP "css" "css"
-            when (inform debug) $ putIOwords ["rule **/*.html need", showT csss]
-            imgs <- getNeeds debug doughP bakedP "jpg" "jpg"
-            imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
-            needP imgs
-            needP imgs2
-            when (inform debug) $ putIOwords ["rule **/*.html need", showPretty imgs, showPretty imgs2]
+            when (inform debug) $ putIOwords ["rule **/*.html", showT out]
             convertAny debug bakedP bakedP flags layout out convPanrep12html "convPanrep12html"
 
     (toFilePath bakedP <> "**/*.panrep1") %> \out -> -- from Panrep
     -- calls the copy html and the conversion from md
         do
-            csss <- getNeeds debug doughP bakedP "css" "css"
-            when (inform debug) $ putIOwords ["rule **/*.html need", showT csss]
-            imgs <- getNeeds debug doughP bakedP "jpg" "jpg"
-            imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
-            needP imgs
-            needP imgs2
-            when (inform debug) $ putIOwords ["rule **/*.html need", showPretty imgs, showPretty imgs2]
+            when (inform debug) $ putIOwords ["rule **/*.panrep1", showT out]
+
             convertAny debug bakedP bakedP flags layout out convPanrep2panrep1 "convPanrep2panrep1"
 
     (toFilePath bakedP <> "**/*.pdf") %> \out -> -- insert pdfFIles1
         do
             when (inform debug) $ putIOwords ["rule **/*.pdf", showT out]
-            imgs <- getNeeds debug doughP bakedP "jpg" "jpg"
-            imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
-            needP imgs
-            needP imgs2
-            when (inform debug) $ putIOwords ["rule **/*.pdf need", showT imgs, showT imgs2]
+            -- imgs <- getNeeds debug doughP bakedP "jpg" "jpg"
+            -- imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
+            -- needP imgs
+            -- needP imgs2
+            -- when (inform debug) $ putIOwords ["rule **/*.pdf need", showT imgs, showT imgs2]
             convertAny debug bakedP bakedP flags layout out convTex2pdf "convTex2pdf"
 
     (toFilePath bakedP <> "**/*.tex") %> \out -> -- insert pdfFIles1
@@ -230,14 +218,15 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         %> \out -> copyFileToBaked debug doughP bakedP out
 
 getNeeds ::
-    NoticeLevel ->
-    Path Abs Dir ->
-    Path Abs Dir ->
-    Text ->
-    Text ->
-    Action [Path Abs File]
+    NoticeLevel 
+    -> Path Abs Dir  -- ^ source dir
+    -> Path Abs Dir  -- ^ target dir
+    -> Text  -- ^ extension source
+    -> Text  -- ^ extension target
+    -> Action [Path Abs File]
 {- ^ find the files which are needed (generic)
   from source with extension ext
+  does not include directory DNB (do not bake)
 -}
 getNeeds debug sourceP targetP extSource extTarget = do
     let sameExt = extSource == extTarget
@@ -253,7 +242,7 @@ getNeeds debug sourceP targetP extSource extTarget = do
 
     filesWithSource :: [Path Rel File] <-
         getDirectoryToBake
-            "DNB"
+            "DNB"  -- exclude files containing
             sourceP
             ["**/*." <> t2s extSource]
     -- subdirs
