@@ -85,24 +85,24 @@ bakeOneDocrep2panrep debug flags inputFn layout resfn2 = do
             ["\n-----------------", "bakeOneDocrep2panrep done fn", showT p3]
     return ()
 
--- bakeOnePanrep2html :: BakeOp -- PANREP -> HTML  -- TODO
--- bakeOnePanrep2html debug flags inputFn layout resfn2 = do
---     when (inform debug) $    putIOwords
---         [ "\n-----------------"
---         , "bakeOnePanrep2html 1 fn"
---         , showT inputFn
---         , "debug"
---         , showT debug
---         , "\n resfn2"
---         , showT resfn2
---         ]
---     dr1 <- read8 inputFn panrepFileType
---     p <- panrep2html debug layout dr1
---     write8 resfn2 htmloutFileType p -- content is html style
---     when (inform debug) $
---         putIOwords
---             ["\n-----------------", "bakeOnePanrep2html done fn", showT resfn2]
---     return ()
+bakeOnePanrep2html :: BakeOp -- PANREP -> HTML  -- TODO
+bakeOnePanrep2html debug flags inputFn layout resfn2 = do
+    when (inform debug) $    putIOwords
+        [ "\n-----------------"
+        , "bakeOnePanrep2html 1 fn"
+        , showT inputFn
+        , "debug"
+        , showT debug
+        , "\n resfn2"
+        , showT resfn2
+        ]
+    dr1 <- read8 inputFn panrepFileType
+    p <- panrep2html debug layout dr1
+    write8 resfn2 htmloutFileType p -- content is html style
+    when (informall debug) $
+        putIOwords
+            ["\n-----------------", "bakeOnePanrep2html done fn", showT resfn2]
+    return ()
 
 bakeOnePanrep2panrep1 :: BakeOp -- PANREP -> Panrep1  -- TODO
 -- split in panrep -> panrep1
@@ -110,6 +110,9 @@ bakeOnePanrep2panrep1 debug flags inputFn layout resfn2 = do
     dr1 <- read8 inputFn panrepFileType
     p :: Panrep1 <- panrep2panrep1 debug layout dr1
     write8 resfn2 panrep1FileType p  
+    when (informall debug) $
+        putIOwords
+            ["\n-----------------", "bakeOnePanrep2panrep1 done fn", showT resfn2]
     return ()
 
 bakeOnePanrep12html :: BakeOp -- PANREP -> Panrep1  -- TODO
@@ -118,6 +121,9 @@ bakeOnePanrep12html debug flags inputFn layout resfn2 = do
     dr1 <- read8 inputFn panrep1FileType
     p :: HTMLout <- panrep12html debug layout dr1
     write8 resfn2 htmloutFileType p  
+    when (informall debug) $
+        putIOwords
+            ["\n-----------------", "bakeOnePanrep12html done fn", showT resfn2]
     return ()
 
 bakeOnePanrep2texsnip :: BakeOp --  PANREP -> TEXSNIP

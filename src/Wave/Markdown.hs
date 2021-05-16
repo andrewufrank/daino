@@ -63,27 +63,27 @@ md2docrep :: NoticeLevel -> SiteLayout -> Path Abs File -> MarkdownText -> ErrIO
 {- | process one md to a docrep
  for bakeOneMD2docrep and report_metaRec
 -}
-md2docrep debugflag layout2 inputFn md1 = do
+md2docrep debug layout2 inputFn md1 = do
     let doughP = doughDir layout2 -- the regular dough
         bakedP = bakedDir layout2
 
     dr1 <- readMarkdown2docrepJSON md1
     -- with a flattened version of json from Pandoc
     -- what does it contain?
-    putIOwords ["md2docrep", "dr1", showT dr1]
+    when (inform debug) $ putIOwords ["md2docrep", "dr1", showT dr1]
 
     -- check
     -- the fields for the index are prepared
     -- merge the yaml metadata with default to have the
     -- necessary values set
 
-    dr2 <- completeDocRep doughP bakedP inputFn dr1
+    dr2 <- completeDocRep debug doughP bakedP inputFn dr1
     -- let dr2a = docRepJSON2docrep  dr2
 
     -- uses the refs listed in the file and discovred by pandoc,
     -- as well as nocite
     -- therefore must use json
-    dr3 <- addRefs debugflag dr2
+    dr3 <- addRefs debug dr2
     -- TODO needs refs
     -- let needs1  = docrepNeeds docrep1  :: [FilePath]
     -- need  needs1  -- TDO this is in the wrong monad
@@ -92,13 +92,13 @@ md2docrep debugflag layout2 inputFn md1 = do
     return . docrepJSON2docrep $ dr3
 
 -------------------------------------
-completeDocRep :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> DocrepJSON -> ErrIO DocrepJSON
+completeDocRep :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> Path Abs File -> DocrepJSON -> ErrIO DocrepJSON
 -- complete the DocrepJSON (permitting defaults for all values)
 -- the bakedP root is necessary to complete the style and bib entries
 -- as well as image?
 -- first for completeness of metadata in yaml
 -- fails if required labels are not present
-completeDocRep doughP bakedP filename (DocrepJSON y1 p1) = do
+completeDocRep debug doughP bakedP filename (DocrepJSON y1 p1) = do
     let m0 = def :: MetaPage
         mFiles = addFileMetaPage doughP bakedP filename
         y2 = mergeLeftPref [toJSON mFiles, y1, toJSON m0]
@@ -107,7 +107,7 @@ completeDocRep doughP bakedP filename (DocrepJSON y1 p1) = do
     -- over default
     -- y2 <- completeMetaPage doughP bakedP filename y1
     -- let y3 = mergeLeftPref [toJSON y2, y1]
-    putIOwords ["completeDocRep", "y2", showT y2]
+    when (inform debug) $ putIOwords ["completeDocRep", "y2", showT y2]
     return (DocrepJSON y2 p1)
 
 --------------------------------

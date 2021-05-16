@@ -31,6 +31,8 @@ import UniformBase
 progName :: Text
 progName = "SSG"
 
+informall :: NoticeLevel -> Bool 
+informall = const True 
 
 data SiteLayout = SiteLayout
     { themeDir :: Path Abs Dir -- ^ the place of the  theme files (includes templates)

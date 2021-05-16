@@ -27,6 +27,7 @@ import Uniform.PandocImports ( Pandoc )
 import UniformBase
 import Foundational.MetaPage ( MetaPage )
 
+
 --------------------------------------------typed file Docrep
 
 {- | representation of a document
@@ -86,7 +87,7 @@ extPanrep1 = Extension "panrep1"
 
 panrep1FileType :: TypedFile5 Text Panrep1
 panrep1FileType =
-    TypedFile5{tpext5 = extPanrep} :: TypedFile5 Text Panrep1
+    TypedFile5{tpext5 = extPanrep1} :: TypedFile5 Text Panrep1
 
 newtype Panrep1 = Panrep1 {unPanrep1 :: Panrep}
 -- data Panrep = Panrep {panyam :: MetaPage, panpan :: Pandoc}

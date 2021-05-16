@@ -74,17 +74,17 @@ convDocrep2panrep debug doughP bakedP flags layout out =
 -- convPanrep2html debug doughP bakedP flags layout out =
 --     convA2B debug doughP bakedP flags layout out extPanrep bakeOnePanrep2html
 
--- convPanrep2html :: ConvertOp
--- convPanrep2html debug doughP bakedP flags layout out =
---     convA2B debug doughP bakedP flags layout out extPanrep bakeOnePanrep2html
+convPanrep2html :: ConvertOp
+convPanrep2html debug doughP bakedP flags layout out =
+    convA2B debug doughP bakedP flags layout out extPanrep bakeOnePanrep2html
 
 convPanrep2panrep1 :: ConvertOp
 convPanrep2panrep1 debug doughP bakedP flags layout out =
-    convA2B debug doughP bakedP flags layout out extPanrep1 bakeOnePanrep2panrep1
+    convA2B debug doughP bakedP flags layout out extPanrep bakeOnePanrep2panrep1
 
 convPanrep12html :: ConvertOp
 convPanrep12html debug doughP bakedP flags layout out =
-    convA2B debug doughP bakedP flags layout out extPanrep bakeOnePanrep12html
+    convA2B debug doughP bakedP flags layout out extPanrep1 bakeOnePanrep12html
 
 convPanrep2texsnip :: ConvertOp
 convPanrep2texsnip debug doughP bakedP flags layout out =
@@ -101,24 +101,24 @@ convTex2pdf debug doughP bakedP flags layout out =
 convA2B :: ConvertA2BOp
 -- ^ produce the B files from A
 convA2B debug sourceP targetP flags layout out sourceExtA bakeop = do
-    when (inform debug) $ putIOwords ["\n  convA2B   ", showT sourceExtA, showT out]
+    when (informall debug) $ putIOwords ["\n  convA2B   1 new extension, new file\n", showT sourceExtA, showT out]
     let outP = makeAbsFile out :: Path Abs File
 
     let infile1 =
             replaceExtension' (s2t . unExtension $ sourceExtA) outP :: Path Abs File
-    when (inform debug) $ putIOwords ["\n  convA2B   2   ", showT infile1]
+    when (informall debug) $ putIOwords ["\n  convA2B   2  needP infile1 ", showT infile1]
     needP [infile1]
 
     let infile2 = sourceP </> stripProperPrefixP targetP infile1 :: Path Abs File
     need [toFilePath infile2]
-    when (inform debug) $
+    when (informall debug) $
         putIOwords
-            ["\n  convA2B - 3 needed", showPretty infile2]
+            ["\n  convA2B - 3 needed infile2", showPretty infile2]
 
     resfile <-
         runErr2action $
-            bakeop NoticeLevel0 flags infile2 layout outP
-    when (inform debug) $ putIOwords ["\n  convA2B - return 3", showT resfile]
+            bakeop debug flags infile2 layout outP
+    when (informall debug) $ putIOwords ["\n  convA2B - return 4 file produced", showT resfile, "\n"]
     return ()
 
 io2bool :: MonadIO m => ErrIO b -> m b
@@ -142,16 +142,16 @@ convertAny ::
     -> Action ()
 -- produce any (either copy available in baked or produce with anyop)
 convertAny debug sourceP targetP flags layout out anyop anyopName = do
-    putIOwords [ "\n-----------------", "convertAny for", anyopName]
+    putIOwords [ "-----------------", "convertAny for", anyopName]
     let outP = makeAbsFile out :: Path Abs File
-    when (inform debug) $ putIOwords ["\nproduceAny", "\n file out", showT out]
+    when (informall debug) $ putIOwords ["\nproduceAny", "\n file out", showT out]
     if sourceP == targetP
         then anyop debug sourceP targetP flags layout out
         else do
             let fromfile = sourceP </> makeRelativeP targetP outP
             -- needP [fromfile]
             fileExists <- io2bool $ doesFileExist' fromfile
-            when (inform debug) $
+            when (informall debug) $
                 putIOwords
                     [ "\nconvertAny - fromfile exist:"
                     , showT fileExists
@@ -161,7 +161,7 @@ convertAny debug sourceP targetP flags layout out anyop anyopName = do
             if fileExists -- gives recursion, if the file is produced in earlier run
                 then do
                     copyFileChangedP fromfile outP
-                    when (inform debug) $
+                    when (informall debug) $
                         liftIO $
                             putIOwords
                                 ["\n convertAny DONE   - staticP - fromfile ", showT fromfile]
