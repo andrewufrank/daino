@@ -25,12 +25,13 @@ test_exampleTrue = assertEqual 0 0
 --"/home/frank/Workspace11/ssg/docs/site/baked/Blog/blog1.docrep" 
 -- copy file manulally into .ssg
 
-test_readDocrep = test1File "ssg"  "blog1.docrep" "metaBlog1" f
+test_readDocrep2metapage = test1File "ssg"  "blog1.docrep" "metaBlog1" f
         -- dr1 <- read8 inputFn docrepFileType
 f :: Docrep -> MetaPage 
 f = fromJustNote "docRepJSON2docrep not a value" . fromJSONValue .yam 
 
-test_initializeIx = test1File "ssg" "metaBlog1" "ixBlog1" (initializeIndex NoticeLevel0)
+test_initializeIx = test1File "ssg" "metaBlog1" "ixBlog1" (initializeIndex )
+
 instance ShowTestHarness Docrep
 instance ShowTestHarness MetaPage
 instance ShowTestHarness IndexEntry

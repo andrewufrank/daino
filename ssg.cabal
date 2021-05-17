@@ -49,8 +49,7 @@ library
       Paths_ssg
   hs-source-dirs:
       src
-  other-extensions: DeriveGeneric FlexibleContexts FlexibleInstances MultiParamTypeClasses OverloadedStrings ScopedTypeVariables GeneralizedNewtypeDeriving RecordWildCards
-  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports
+  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-unused-imports -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports
   build-depends:
       base
     , data-default
@@ -71,8 +70,7 @@ executable ssgbake
       Paths_ssg
   hs-source-dirs:
       app
-  other-extensions: DeriveGeneric FlexibleContexts FlexibleInstances MultiParamTypeClasses OverloadedStrings ScopedTypeVariables GeneralizedNewtypeDeriving RecordWildCards
-  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports
+  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-unused-imports -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports
   build-depends:
       base
     , data-default
@@ -94,13 +92,13 @@ test-suite ssgTest
   other-modules:
       Lib.Example_test
       Lib.Indexing_test
+      Lib.Markdown_test
       Lib.Panrep2html_test
       Lib.ReadSettingFile_test
       Paths_ssg
   hs-source-dirs:
       tests
-  other-extensions: DeriveGeneric FlexibleContexts FlexibleInstances MultiParamTypeClasses OverloadedStrings ScopedTypeVariables GeneralizedNewtypeDeriving RecordWildCards
-  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-unused-imports -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       HTF
     , base

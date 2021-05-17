@@ -21,6 +21,7 @@ ghc-options:
     -fno-warn-unused-binds 
     -fno-warn-deprecations 
     -fno-warn-unused-do-bind 
+    -fno-warn-unused-imports
     -fno-warn-missing-signatures
     -fno-warn-orphans
     -fno-warn-type-defaults 
@@ -30,14 +31,14 @@ ghc-options:
     -fno-warn-missing-home-modules
     -fno-warn-duplicate-exports 
 other-extensions:  # besides the automatically Haskell2010
-    - DeriveGeneric
-    - FlexibleContexts 
-    - FlexibleInstances 
-    - MultiParamTypeClasses 
+    # - DeriveGeneric
+    # - FlexibleContexts 
+    # - FlexibleInstances 
+    # - MultiParamTypeClasses 
     - OverloadedStrings
-    - ScopedTypeVariables 
-    - GeneralizedNewtypeDeriving 
-    - RecordWildCards 
+    # - ScopedTypeVariables 
+    # - GeneralizedNewtypeDeriving 
+    # - RecordWildCards 
     
     #  -XDeriveGeneric
     # -XFlexibleContexts

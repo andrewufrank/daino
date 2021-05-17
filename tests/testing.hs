@@ -15,7 +15,8 @@ import     Test.Framework
 -- import    {-@ HTF_TESTS @-}        Lib.Example_test
 -- import    {-@ HTF_TESTS @-}        Lib.Panrep2html_test
 -- import    {-@ HTF_TESTS @-}        Lib.ReadSettingFile_test
-import    {-@ HTF_TESTS @-}        Lib.Indexing_test
+-- import    {-@ HTF_TESTS @-}        Lib.Indexing_test
+import    {-@ HTF_TESTS @-}        Lib.Markdown_test
 
 
 main :: IO ()

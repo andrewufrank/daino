@@ -19,6 +19,7 @@
 
 module Wave.Markdown (
     module Wave.Markdown,
+    MarkdownText (..)
 ) where
 
 import UniformBase
