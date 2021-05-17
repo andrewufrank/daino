@@ -33,8 +33,14 @@ test_completeDocRep = test1FileIO "ssg" "docrepjson_blog1" "docrepjsonCompleted_
     (completeDocRep NoticeLevel0 
         (doughDir settings403)
         (bakedDir settings403)
-        (makeAbsFile "/home/frank/Workspace11/ssg/docs/site/baked/Blog/blog1.md")
+        (makeAbsFile "/home/frank/Workspace11/ssg/docs/site/dough/Blog/blog1.md")  -- muss dough sein, nicht baked
     )
+
+test_addRefs2docrepJSON = test1FileIO "ssg" "docrepjsonCompleted_blog1"
+    "docrepjsonWithRefs_blog1"
+   (addRefs NoticeLevel0 
+            )
+
 
 -- unwrapMD :: MarkdownText -> Text
 -- unwrapMD (MarkdownText a) = a
@@ -44,4 +50,4 @@ instance ShowTestHarness Pandoc
 instance ShowTestHarness DocrepJSON  
 
 settings403 = 
-    SiteLayout {themeDir = makeAbsDir "Path Abs Dir /home/frank/Workspace11/ssg/theme/", doughDir = makeAbsDir "Path Abs Dir /home/frank/Workspace11/ssg/docs/site/dough/", bakedDir = makeAbsDir "Path Abs Dir /home/frank/Workspace11/ssg/docs/site/baked/", reportFile = makeAbsFile "Path Abs File /home/frank/SSGreport.txt", testDir = makeAbsDir "Path Abs Dir /home/frank/.SSG/", bannerImage = makeRelFile "Path Rel File cropped-DSC05127-1024x330.jpg", uploadServer = "test.gerastree.at"} :: SiteLayout 
+    SiteLayout {themeDir = makeAbsDir "/home/frank/Workspace11/ssg/theme/", doughDir = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/dough/", bakedDir = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/baked/", reportFile = makeAbsFile "Path Abs File /home/frank/SSGreport.txt", testDir = makeAbsDir "/home/frank/.SSG/", bannerImage = makeRelFile "Path Rel File cropped-DSC05127-1024x330.jpg", uploadServer = "test.gerastree.at"} :: SiteLayout 
