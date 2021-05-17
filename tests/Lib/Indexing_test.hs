@@ -29,7 +29,7 @@ test_exampleTrue = assertEqual 0 0
 test_readDocrep2metapage = test1File "ssg"  "blog1.docrep" "metaBlog1" f
         -- dr1 <- read8 inputFn docrepFileType
 f :: Docrep -> MetaPage 
-f = fromJustNote "docRepJSON2docrep not a value" . fromJSONmaybe .yam 
+f = meta1 
 
 test_initializeIx = test1File "ssg" "metaBlog1" "ixBlog1" (initializeIndex )
 

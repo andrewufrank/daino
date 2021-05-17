@@ -40,7 +40,7 @@ import Foundational.MetaPage ( MetaPage )
  with flattenMeta (in PandocImports)
  but I do not see an easy way to convert back
 -}
-data Docrep = Docrep {yam :: Value, pan :: Pandoc} -- a json value
+data Docrep = Docrep {meta1 :: MetaPage, pan1 :: Pandoc} -- a json value
     deriving (Show, Read, Eq, Generic, Zeros)
 
 instance FromJSON Docrep

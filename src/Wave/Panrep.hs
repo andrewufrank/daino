@@ -54,7 +54,7 @@ import           UniformBase
 docrep2panrep debug layout (Docrep y1 p1) = do
     let bakedP = bakedDir layout
     let pr = Panrep
-                { panyam = fromJustNote "docRepJSON2docrep not a value" . fromJSONValue $ y1
+                { panyam = y1
                 , panpan = p1
                 }
     --

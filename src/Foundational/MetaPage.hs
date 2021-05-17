@@ -55,6 +55,7 @@ data MetaPage = MetaPage
     , dyKeywords     :: Text -- should be [Text]
     , dyBibliography :: Maybe Text
     , dyStyle        :: Maybe Text
+    , dyReferences       :: [Reference] 
     , dyPublish      :: Maybe Text
     , dyIndexPage    :: Bool
     , dyIndexEntry   :: IndexEntry
@@ -62,7 +63,7 @@ data MetaPage = MetaPage
     -- , dyFileEntries  :: [IndexEntry]
     -- is defined later, necessary here?
     }
-    deriving (Show, Ord, Eq, Generic, Zeros, Read) --Read,
+    deriving (Show,   Eq, Generic, Zeros, Read) -- ord missing for references 
 
 
 instance Default MetaPage where

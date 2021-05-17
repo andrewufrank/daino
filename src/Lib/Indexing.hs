@@ -95,18 +95,8 @@ getFile2index :: NoticeLevel -> Path Abs File -> ErrIO (Maybe IndexEntry)
 -- the directories are represented by their index files
 -- produce separately to preserve the two groups
 getFile2index debug fnin =
-    (do
+    do
         (Docrep y1 _) <- read8 fnin docrepFileType
-        ix1 :: IndexEntry <- fromJSONerrio y1
-        return . Just $ ix1)
-    `catchError` 
-        ( \e -> do
-                    when (inform debug) $ putIOwords
-                        [ "getFile2index error caught\n"
-                        , "fn:"
-                        , showT fnin
-                        , "\n"
-                        , showT e -- " showT msg])
-                        ]
-                    return Nothing
-                    )
+        let ix1 :: IndexEntry = dyIndexEntry y1
+        return . Just $ ix1
+     

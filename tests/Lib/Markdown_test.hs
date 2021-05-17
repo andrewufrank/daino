@@ -20,17 +20,17 @@ import Uniform.Pandoc
 import Uniform.Json
 import UniformBase
 import Lib.Indexing
-test_docrepjsong2docrep = test1File "ssg" "docrepjson_blog1"
-    "docrep_blog1"
-    (docrepJSON2docrep)
+-- test_docrepjsong2docrep = test1File "ssg" "docrepjson_blog1"
+--     "docrep_blog1"
+--     (docrepJSON2docrep)
 
 
 test_readMarkdown2pandoc = test1FileIO "ssg"  "blog1.md" "pandoc_blog1" (readMarkdown2 . MarkdownText)
 
-test_pandoc2docrepJSON = test1File "ssg" "pandoc_blog1" "docrepjson_blog1" f
-        -- dr1 <- read8 inputFn docrepFileType
-f ::  Pandoc -> DocrepJSON 
-f md = DocrepJSON (flattenMeta . getMeta $ md) md 
+-- test_pandoc2docrepJSON = test1File "ssg" "pandoc_blog1" "docrepjson_blog1" f
+--         -- dr1 <- read8 inputFn docrepFileType
+-- f ::  Pandoc -> Docrep
+-- f md = DocrepJSON (flattenMeta . getMeta $ md) md 
 
 test_completeDocRep = test1FileIO "ssg" "docrepjson_blog1" "docrepjsonCompleted_blog1"
     (completeDocRep NoticeLevel0 
@@ -51,7 +51,6 @@ test_addRefs2docrepJSON = test1FileIO "ssg" "docrepjsonCompleted_blog1"
 
 instance ShowTestHarness MarkdownText 
 instance ShowTestHarness Pandoc 
-instance ShowTestHarness DocrepJSON  
 instance ShowTestHarness Docrep  
 instance ShowTestHarness MetaPage  
 instance ShowTestHarness IndexEntry   
