@@ -2,23 +2,23 @@
 --
 -- Module      :  Uniform.Panrep
 -----------------------------------------------------------------------------
-{-# LANGUAGE ConstraintKinds #-}
-{-# LANGUAGE DeriveAnyClass #-}
-{-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE DoAndIfThenElse #-}
+{-# LANGUAGE ConstraintKinds       #-}
+{-# LANGUAGE DeriveAnyClass        #-}
+{-# LANGUAGE DeriveGeneric         #-}
+{-# LANGUAGE DoAndIfThenElse       #-}
 {-# LANGUAGE DuplicateRecordFields #-}
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE FlexibleContexts      #-}
+{-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE UndecidableInstances #-}
-{-# OPTIONS_GHC -Wall -fno-warn-orphans 
+{-# LANGUAGE OverloadedStrings     #-}
+{-# LANGUAGE ScopedTypeVariables   #-}
+{-# LANGUAGE TypeFamilies          #-}
+{-# LANGUAGE UndecidableInstances  #-}
+{-# OPTIONS_GHC -Wall -fno-warn-orphans
             -fno-warn-missing-signatures
-            -fno-warn-missing-methods 
-            -fno-warn-duplicate-exports 
-            -fno-warn-unused-imports 
+            -fno-warn-missing-methods
+            -fno-warn-duplicate-exports
+            -fno-warn-unused-imports
             -fno-warn-unused-matches #-}
 
 {- | the representation with indices
@@ -28,21 +28,21 @@ module Wave.Panrep (
     module Wave.Panrep,
 ) where
 
-import Data.Default
-import GHC.Generics (Generic)
-import Foundational.Foundation
-import Lib.IndexMake
-import Lib.Indexing (addIndex2yam)
-import Foundational.MetaPage
-import Lib.Templating
+import           Data.Default
+import           Foundational.Foundation
+import           Foundational.MetaPage
+import           GHC.Generics                 (Generic)
+import           Lib.IndexMake
+import           Lib.Indexing
+import           Lib.Templating
 -- import Text.CSL as Pars (Reference, readBiblioFile, readCSLFile)
 -- import Text.CSL.Pandoc as Bib (processCites)
 -- import qualified Text.Pandoc as Pandoc
-import Foundational.Filetypes4sites
-import Uniform2.HTMLout 
-import Uniform.Json
-import Uniform.Pandoc
-import UniformBase
+import           Foundational.Filetypes4sites
+import           Uniform.Json
+import           Uniform.Pandoc
+import           Uniform2.HTMLout
+import           UniformBase
 
 ------------------------------------------------docrep -> panrep
 
@@ -53,15 +53,17 @@ import UniformBase
 
 docrep2panrep debug layout (Docrep y1 p1) = do
     let bakedP = bakedDir layout
-    let pr = Panrep  
+    let pr = Panrep
                 { panyam = fromJustNote "docRepJSON2docrep not a value" . fromJSONValue $ y1
                 , panpan = p1
                 }
-    
-    indexPage2 Index4html <- initializeIndex debug (panyam pr)
+    --
+    let m1 = panyam pr
+    let ix1 = initializeIndex   m1
     ix2 <- addIndex2yam debug bakedP ix1
     -- todo put ix2 into pr
-    return pr{panyam = m1}
+    let m2 = m1{dyIndexEntry = ix2}
+    return pr{panyam = m2}
 
 -- do
 -- --   (DocrepJSON y2 p2) <- addRefs False dr1 -- was already done in  bakeOneMD2docrep
@@ -75,7 +77,7 @@ panrep2html :: NoticeLevel -> SiteLayout -> Panrep -> ErrIO HTMLout
 panrep2html debug layout dr1 = do
     -- let templateP = templatesDir layout
     m4 <- convertIndexEntries (panyam dr1) -- move to
-    -- p <- panrep2htmlP debug templateP dr4 
+    -- p <- panrep2htmlP debug templateP dr4
     let dr4 = dr1{panyam = m4}
     p :: HTMLout <- putValinMaster debug dr4 (templatesDir layout)
     when (informNone debug) $ putIOwords ["\n panrep2html done"]
@@ -86,8 +88,8 @@ panrep2panrep1 :: NoticeLevel -> SiteLayout -> Panrep -> ErrIO Panrep1
 panrep2panrep1 debug layout dr1 = do
     -- let templateP = templatesDir layout
     m4 <- convertIndexEntries (panyam dr1) -- move to
-    -- p <- panrep2htmlP debug templateP dr4 
-    let dr4 = dr1{panyam = m4}   
+    -- p <- panrep2htmlP debug templateP dr4
+    let dr4 = dr1{panyam = m4}
     when (informNone debug) $ putIOwords ["\n panrep2panrep1 done"]
     return . Panrep1 $ dr4
 
@@ -97,11 +99,11 @@ panrep12html debug layout dr4 = do
     -- dr4 <- convertIndexEntries dr1 -- move to
     p :: HTMLout <- putValinMaster debug (unPanrep1 dr4) (templatesDir layout)
     when (informNone debug) $ putIOwords ["\n panrep12html done"]
-    return p 
+    return p
 
 
 -- panrep2htmP :: NoticeLevel  -> Path Abs Dir -> Panrep ->ErrIO Text
--- panrep2htmP debug templateP dr4 = do 
+-- panrep2htmP debug templateP dr4 = do
 --     -- dr4 <- convertIndexEntries dr1 -- move to
 --     p :: Text <- putValinMaster False dr4 templateP
 --     return p

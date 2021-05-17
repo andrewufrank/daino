@@ -25,6 +25,7 @@ module Lib.IndexMake (module Lib.IndexMake) where
 import           Foundational.MetaPage
 import           Uniform.Json
 import           UniformBase
+import Uniform2.HTMLout
 
 
 convertIndexEntries :: MetaPage -> ErrIO MetaPage
@@ -110,16 +111,15 @@ getOneIndexEntryPure :: IndexEntry -> Index4html
 -- Text should be "/Blog/postTufteStyled.html"
 getOneIndexEntryPure metaRec =
   Index4html
-    { text2 = s2t . takeBaseName'  . fn $ metaRec,
-      link2 =
-        s2t $
-          setExtension "html" . removeExtension
+    { text2 = s2t . takeBaseName' . toFilePath  . fn $ metaRec,
+      link2 =  s2t . toFilePath $ 
+          setExtension extHTML . removeExtension
             . link
             $ metaRec,
       abstract2 = abstract metaRec,
       title2 =
         if isZero (title metaRec :: Text)
-          then s2t . takeBaseName' .  fn $ metaRec
+          then s2t . takeBaseName' . toFilePath  .  fn $ metaRec
           else title metaRec,
       author2 = author metaRec,
       date2 = showT $ date metaRec,

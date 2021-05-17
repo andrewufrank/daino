@@ -29,14 +29,14 @@ import Foundational.Filetypes4sites
 import Lib.CmdLineArgs (PubFlags (..))
 import Foundational.Foundation 
 
-initializeIndex :: NoticeLevel ->   MetaPage -> IndexEntry 
+initializeIndex ::    MetaPage -> IndexEntry 
 -- initialize the index with the values from the metapage yaml 
-initializeIndex debug  MetaPage{..} = ix1 
+initializeIndex    MetaPage{..} = ix1 
     where 
         ix1 = zero
-                { fn =  dyFn   
+                { fn =  makeAbsFile dyFn   
                 , title  = dyTitle
-                , link = dyLink
+                , link = makeRelFile dyLink
                 , abstract  = dyAbstract
                 , author    = dyAuthor
                 , date       = fromMaybe (showT year2000)  dyDate
@@ -46,24 +46,25 @@ initializeIndex debug  MetaPage{..} = ix1
                 , fileEntries = zero 
                     }
 
-addIndex2yam ::  NoticeLevel -> Path Abs File -> IndexEntry  -> ErrIO IndexEntry
+addIndex2yam ::  NoticeLevel -> Path Abs Dir -> IndexEntry  -> ErrIO IndexEntry
 {- ^ the top call to form the index data into the MetaPage
 later only the format for output must be fixed
 -}
-addIndex2yam debug x1 bakedP = do
-    when (inform debug) $ putIOwords ["addIndex2yam", "start", showPretty x1]
+addIndex2yam debug  bakedP ix1 = do
+    when (inform debug) $ putIOwords ["addIndex2yam", "start", showPretty ix1]
     -- x1 :: IndexEntry <- fromJSONerrio yam1
     -- let x1 = panyam pr
-    if not . indexPage $ x1
-        then return x1
+    if not (indexPage ix1)
+        then return ix1
         else -- return dr 
         do
             when (inform debug) $ putIOwords ["addIndex2yam", "is indexpage"]
-            (dirs, files) <- getDirContent2dirs_files debug (bakedP </> dyLink x1)
+            let fn = bakedP </> (link ix1) :: Path Abs File
+            (dirs, files) <- getDirContent2dirs_files debug fn
             when (inform debug) $ putIOwords ["addIndex2yam", "\n dirs", showT dirs, "\n files", showT files]
-            let x2 = x1{dyDirEntries = dirs, dyFileEntries = files}
-            when (inform debug) $ putIOwords ["addIndex2yam", "x2", showT x2]
-            return x2
+            let ix2 = ix1{dirEntries = dirs, fileEntries = files}
+            when (inform debug) $ putIOwords ["addIndex2yam", "x2", showT ix2]
+            return ix2
 
 {- | get the contents of a directory, separated into dirs and files
  the directory is given by the index file

@@ -57,8 +57,9 @@ data MetaPage = MetaPage
     , dyStyle        :: Maybe Text
     , dyPublish      :: Maybe Text
     , dyIndexPage    :: Bool
-    , dyDirEntries   :: [IndexEntry]  -- reduce to one for indexEntry
-    , dyFileEntries  :: [IndexEntry]
+    , dyIndexEntry   :: IndexEntry
+    -- , dyDirEntries   :: [IndexEntry]  -- reduce to one for indexEntry
+    -- , dyFileEntries  :: [IndexEntry]
     -- is defined later, necessary here?
     }
     deriving (Show, Ord, Eq, Generic, Zeros, Read) --Read,
@@ -79,8 +80,9 @@ instance Default MetaPage where
             , dyStyle = Just "chicago-fullnote-bibliography-bb.csl"
             , dyPublish = Nothing
             , dyIndexPage = False
-            , dyDirEntries = zero
-            , dyFileEntries = zero
+            , dyIndexEntry = zero 
+            -- , dyDirEntries = zero
+            -- , dyFileEntries = zero
             }
 
 docyamlOptions :: Options
@@ -146,9 +148,9 @@ instance FromJSON PublicationState
 
 data IndexEntry = IndexEntry
     { -- | the abs file path
-      fn          :: FilePath -- to have read statt Path Abs File
-    , -- | the link for this page (relative)}
-      link        :: FilePath
+      fn          :: Path Abs File
+    , -- | the link for this page (relative to web root)}
+      link        :: Path Rel File
     , title       :: Text
     , abstract    :: Text
     , author      :: Text
