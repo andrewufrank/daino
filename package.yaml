@@ -14,6 +14,7 @@ spec-version: 0.30.0 # the hpack version minimally required
 extra-source-files:
   - changelog.md
   - README.md
+# language: Haskell2010 is default
 
 ghc-options: 
     -Wall
@@ -26,6 +27,34 @@ ghc-options:
     -fno-warn-unused-matches 
     -fno-warn-warnings-deprecations 
     -fno-warn-missing-methods 
+    -fno-warn-missing-home-modules
+    -fno-warn-duplicate-exports 
+default-extensions:  # besides the automatically Haskell2010
+    # - DeriveGeneric
+    # - FlexibleContexts 
+    # - FlexibleInstances 
+    # - MultiParamTypeClasses 
+    # - OverloadedStrings
+    - ScopedTypeVariables 
+    # - GeneralizedNewtypeDeriving 
+    - RecordWildCards 
+    
+    #  -XDeriveGeneric
+    # -XFlexibleContexts
+    # -XFlexibleInstances
+    # -XMultiParamTypeClasses
+    # -XOverloadedStrings
+    # -XScopedTypeVariables
+    # -XGeneralizedNewtypeDeriving
+    # -XRecordWildCards
+  # do not always include: 
+  # -XConstraintKinds
+    # -XDeriveAnyClass
+      # -XDoAndIfThenElse
+    # -XDuplicateRecordFields
+    # -XTypeFamilies
+    # -XUndecidableInstances  
+
 dependencies: 
     - base  
     - uniformBase  
