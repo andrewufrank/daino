@@ -56,6 +56,7 @@ data MetaPage = MetaPage
     , dyBibliography :: Maybe Text
     , dyStyle        :: Maybe Text
     , dyReferences       :: Maybe Value --  [Reference] 
+    , dyNoCite :: Maybe Text
     , dyPublish      :: Maybe Text
     , dyIndexPage    :: Bool
     , dyIndexEntry   :: IndexEntry
@@ -100,26 +101,26 @@ instance FromJSON MetaPage where
 
 
 
-addFileMetaPage :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> MetaPage
-addFileMetaPage doughP bakedP fn =
-    if getNakedFileName fn == "index"
-        then mp1{dyIndexPage = True}
-        else mp1
-  where
-    mp1 =
-        zero
-            { dyFn = toFilePath fn
-            , dyLink =
-                toFilePath
-                    (makeRelativeP doughP fn :: Path Rel File)
-            , dyStyle =  addBakedRoot bakedP ( dyStyle zero)
-            , dyBibliography = addBakedRoot bakedP                                           (dyBibliography zero)
-            } ::
-            MetaPage
+-- addFileMetaPage :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> MetaPage
+-- addFileMetaPage doughP bakedP fn =
+--     if getNakedFileName fn == "index"
+--         then mp1{dyIndexPage = True}
+--         else mp1
+--   where
+--     mp1 =
+--         zero
+--             { dyFn = toFilePath fn
+--             , dyLink =
+--                 toFilePath
+--                     (makeRelativeP doughP fn :: Path Rel File)
+--             , dyStyle =  addBakedRoot bakedP ( dyStyle zero)
+--             , dyBibliography = addBakedRoot bakedP                                           (dyBibliography zero)
+--             } ::
+--             MetaPage
 
-addBakedRoot :: Path Abs Dir -> Maybe Text -> Maybe Text
-addBakedRoot bakedP Nothing = Nothing
-addBakedRoot bakedP (Just fp) = Just . s2t . toFilePath $ addFileName bakedP . t2s $ fp
+-- addBakedRoot :: Path Abs Dir -> Maybe Text -> Maybe Text
+-- addBakedRoot bakedP Nothing = Nothing
+-- addBakedRoot bakedP (Just fp) = Just . s2t . toFilePath $ addFileName bakedP . t2s $ fp
 
 -- | another data type to rep languages
 data DocLanguage = DLgerman | DLenglish

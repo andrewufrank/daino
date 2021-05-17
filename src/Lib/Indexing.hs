@@ -22,12 +22,12 @@
 
 module Lib.Indexing where
 
-import Uniform.Json ( ErrIO, fromJSONerrio ) 
+-- import Uniform.Json ( ErrIO, fromJSONerrio ) 
 import UniformBase
 import Foundational.MetaPage 
 import Foundational.Filetypes4sites
-import Lib.CmdLineArgs (PubFlags (..))
-import Foundational.Foundation 
+-- import Lib.CmdLineArgs (PubFlags (..))
+-- import Foundational.Foundation 
 
 initializeIndex ::    MetaPage -> IndexEntry 
 -- initialize the index with the values from the metapage yaml 

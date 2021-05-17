@@ -29,7 +29,9 @@ import Uniform.Json
 import Foundational.MetaPage 
 
 import Uniform.Pandoc
-import Uniform.Json
+import           Uniform.Shake           (makeRelativeP)
+
+-- import Uniform.Json
 import Foundational.Filetypes4sites  
 -- import Uniform2.HTMLout  
 
@@ -56,9 +58,12 @@ readMarkdown2docrep debug doughP bakedP filename md = do
     -- let meta3 = fromJustNote "readMarkdown2docrep not read" .
     -- meta3 :: Maybe MetaPage <- fromJSONerrio meta2
     -- let y1 = meta2
+    let relfn = makeRelativeP doughP filename
+    -- perhasp the parseJSON (genericParseJSON)
+    -- is better (avoiding capitalization?)
     let meta4 = MetaPage
-            { dyFn = toFilePath $ filename
-            , dyLink = toFilePath $  filename  -- TODO relative!
+            { dyFn = toFilePath filename
+            , dyLink =toFilePath relfn
             , dyLang = DLenglish -- getAtKey meta2 "language"
             , dyTitle = fromMaybe "FILL TITLE" $ getAtKey meta2 "title"
             , dyAbstract = fromMaybe "FILL ABSTRCT" $ getAtKey meta2 "abstract"
@@ -66,14 +71,15 @@ readMarkdown2docrep debug doughP bakedP filename md = do
             , dyDate = getAtKey meta2 "date"
             , dyKeywords = fromMaybe "" $ getAtKey meta2 "keywords"
             , dyStyle =  getAtKey meta2 "style" 
+            , dyNoCite =  getAtKey meta2 "nocite"  
             , dyReferences =  gak meta2 "references"  
             , dyBibliography = zero 
             , dyPublish =  getAtKey meta2 "publish" 
+            -- TODO use pbulicationState 
             , dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
             , dyIndexEntry = zero
             }
         -- refs1 = y1 ^? key "references" :: Maybe Value -- is an array
-    let nocite1 = getAtKey meta2 "nocite" :: Maybe Text
  
 
     return (Docrep meta4 pd)
@@ -97,13 +103,13 @@ md2docrep debug layout2 inputFn md1 = do
     -- merge the yaml metadata with default to have the
     -- necessary values set
 
-    dr2 <- completeDocRep debug doughP bakedP inputFn dr1
+    -- dr2 <- completeDocRep debug doughP bakedP inputFn dr1
     -- let dr2a = docRepJSON2docrep  dr2
 
     -- uses the refs listed in the file and discovred by pandoc,
     -- as well as nocite
     -- therefore must use json
-    dr3 <- addRefs debug dr2
+    dr3 <- addRefs debug dr1
     -- TODO needs refs
     -- let needs1  = docrepNeeds docrep1  :: [FilePath]
     -- need  needs1  -- TDO this is in the wrong monad
@@ -112,25 +118,25 @@ md2docrep debug layout2 inputFn md1 = do
     return  dr3
 
 -------------------------------------
-completeDocRep :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> Path Abs File -> Docrep -> ErrIO Docrep
--- complete the DocrepJSON (permitting defaults for all values)
--- the bakedP root is necessary to complete the style and bib entries
--- as well as image?
--- first for completeness of metadata in yaml
--- fails if required labels are not present
-completeDocRep debug doughP bakedP filename (Docrep y1 p1) = do
-    let m0 = def :: MetaPage
-        mFiles = addFileMetaPage doughP bakedP filename
-        y2 = mergeLeftPref [toJSON mFiles, toJSON y1, toJSON m0]
-    -- preference of files as computed
-    -- over what is set in md file
-    -- over default
-    -- y2 <- completeMetaPage doughP bakedP filename y1
-    -- let y3 = mergeLeftPref [toJSON y2, y1]
-    let y3 = putAtKey "dyFn" (s2t . toFilePath $ filename) . putAtKey "dyLink" (s2t . toFilePath $  filename) $ y2
-    when (inform debug) $ putIOwords ["completeDocRep", "y3", showT y3]
-    m3 :: MetaPage <- fromJSONerrio y3
-    return (Docrep m3 p1)
+-- completeDocRep :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> Path Abs File -> Docrep -> ErrIO Docrep
+-- -- complete the DocrepJSON (permitting defaults for all values)
+-- -- the bakedP root is necessary to complete the style and bib entries
+-- -- as well as image?
+-- -- first for completeness of metadata in yaml
+-- -- fails if required labels are not present
+-- completeDocRep debug doughP bakedP filename (Docrep y1 p1) = do
+--     let m0 = def :: MetaPage
+--         -- mFiles = addFileMetaPage doughP bakedP filename
+--         -- y2 = mergeLeftPref [toJSON mFiles, toJSON y1, toJSON m0]
+--     -- preference of files as computed
+--     -- over what is set in md file
+--     -- over default
+--     -- y2 <- completeMetaPage doughP bakedP filename y1
+--     -- let y3 = mergeLeftPref [toJSON y2, y1]
+--     -- let y3 = putAtKey "dyFn" (s2t . toFilePath $ filename) . putAtKey "dyLink" (s2t . toFilePath $  filename) $ y2
+--     when (inform debug) $ putIOwords ["completeDocRep", "y3", showT y3]
+--     m3 :: MetaPage <- fromJSONerrio y3
+--     return (Docrep m3 p1)
 
 --------------------------------
 addRefs :: NoticeLevel -> Docrep -> ErrIO Docrep
@@ -148,12 +154,12 @@ addRefs :: NoticeLevel -> Docrep -> ErrIO Docrep
 --   let result = citeproc procOpts s m $ [cites]
 --   putStrLn . unlines . map (renderPlainStrict) . citations $ result
 
-addRefs debug dr1@(Docrep y1 p1) = do
+addRefs debug dr1  = do
     -- the biblio entry is the signal that refs need to be processed
     -- only refs do not work
     when (inform debug) $ putIOwords ["addRefs", showT dr1, "\n"]
     -- let biblio1 = getAtKey y1 "bibliography" :: Maybe Text
-    let biblio1 = dyBibliography y1
+    let biblio1 = dyBibliography . meta1 $ dr1
     maybe (return dr1) (addRefs2 debug dr1) biblio1
 
 addRefs2 :: 
@@ -165,7 +171,7 @@ addRefs2 debug dr1@(Docrep y1 p1) biblio1 = do
     --   let debugx = False
     when (inform debug) $ putIOwords ["addRefs2-1", showT dr1, "\n"]
     let style1 = dyStyle y1 
-    let refs1 = dyReferences y1 
+    -- let refs1 = dyReferences y1 
     -- let style1 = getAtKey y1 "style" :: Maybe Text
         -- refs1 = gak y1 "references" :: Maybe Value -- is an array
     --     -- refs1 = y1 ^? key "references" :: Maybe Value -- is an array

@@ -30,9 +30,9 @@ test_dm2dr1 = test1FileIO "ssg" "blog1.md" "dr1_blog1" (readMarkdown2docrep Noti
 
 test_readMarkdown2pandoc = test1FileIO "ssg" "blog1.md" "pandoc_blog1" (readMarkdown2 . MarkdownText) 
 
-test_dr1_d2 = test1FileIO "ssg" "dr1_blog1" "dr2_blog1" (completeDocRep NoticeLevel0 doughP bakedP (makeAbsFile "/home/frank/Workspace11/ssg/docs/site/dough/Blog/blog1.md")  ) 
+-- test_dr1_d2 = test1FileIO "ssg" "dr1_blog1" "dr2_blog1" (completeDocRep NoticeLevel0 doughP bakedP (makeAbsFile "/home/frank/Workspace11/ssg/docs/site/dough/Blog/blog1.md")  ) 
 
-test_dr2_dr2 = test1FileIO "ssg" "dr2_blog1" "dr3_blog1" 
+test_dr1_dr3 = test1FileIO "ssg" "dr1_blog1" "dr3_blog1" 
     (addRefs NoticeLevel0   ) 
 
 test_dm2docrep = test1FileIO "ssg" "blog1.md" "blog1T.docrep" (md2docrep NoticeLevel0 settings403 (makeAbsFile "/home/frank/Workspace11/ssg/docs/site/dough/Blog/blog1.md") .  MarkdownText) 
