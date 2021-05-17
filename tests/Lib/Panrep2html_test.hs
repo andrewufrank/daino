@@ -27,6 +27,7 @@ import Uniform2.HTMLout
 
 import Lib.Templating -- (applyTemplate2, convGmaster)
 import Lib.IndexMake
+import Lib.Markdown_test
 
 programName = "ssg" :: Text
 -- settingsFile =   "settings2File"
@@ -35,6 +36,7 @@ test_null = assertEqual 0 0
 
 settingsFileStored = "settings2File" :: FilePath
 
+test_checkDocrec2panrep = test1FileIO "ssg" "blog1.docrep"  "blog1Test.panrep" (docrep2panrep NoticeLevel0 settings403)
 -- panrep2html :: p -> SiteLayout -> Panrep -> ErrIO HTMLout
 -- panrep2html debug layout dr1 = do
 --     let templateP = templatesDir layout
@@ -68,7 +70,8 @@ instance ShowTestHarness (Path Abs File)
 instance ShowTestHarness SiteLayout
 instance ShowTestHarness Panrep
 instance ShowTestHarness HTMLout
-instance ShowTestHarness MetaPage
+-- instance ShowTestHarness MetaPage
+-- instance ShowTestHarness Docrep
 
 
 -- test1FileIO :: (Zeros b, Eq b, Show b, Read b, ShowTestHarness b

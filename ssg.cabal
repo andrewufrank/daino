@@ -49,9 +49,11 @@ library
       Paths_ssg
   hs-source-dirs:
       src
+  other-extensions: OverloadedStrings
   ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-unused-imports -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports
   build-depends:
-      base
+      aeson
+    , base
     , data-default
     , uniform-cmdLineArgs
     , uniform-convenience
@@ -70,9 +72,11 @@ executable ssgbake
       Paths_ssg
   hs-source-dirs:
       app
+  other-extensions: OverloadedStrings
   ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-unused-imports -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports
   build-depends:
-      base
+      aeson
+    , base
     , data-default
     , ssg
     , uniform-cmdLineArgs
@@ -98,9 +102,11 @@ test-suite ssgTest
       Paths_ssg
   hs-source-dirs:
       tests
+  other-extensions: OverloadedStrings
   ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-unused-imports -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       HTF
+    , aeson
     , base
     , data-default
     , quickcheck-text

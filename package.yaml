@@ -69,6 +69,7 @@ dependencies:
     - uniform-pandoc 
     - uniform-latex2pdf 
     # -- - uniform-ftp
+    - aeson 
 
 library:
   source-dirs: 
