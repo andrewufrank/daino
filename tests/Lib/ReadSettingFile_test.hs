@@ -26,7 +26,7 @@ settingsFile =  makeAbsFile "/home/frank/Workspace11/ssg/settings2.yaml"
 -- (layout7, port7) <- readSettings True settingsFile 
 
 test_settings = 
-    testVar0FileIO programName  settingsFile "settings2File" (fmap fst . readSettings True)  
+    testVar0FileIO programName  settingsFile "settings2File" (fmap fst . readSettings NoticeLevel0 )  
 
 instance ShowTestHarness (Path Abs File)
 instance ShowTestHarness SiteLayout

@@ -15,11 +15,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE UndecidableInstances #-}
-{-# OPTIONS_GHC -Wall -fno-warn-orphans 
-            -fno-warn-missing-signatures
-            -fno-warn-missing-methods 
-            -fno-warn-duplicate-exports 
-            -fno-warn-unused-matches #-}
+{-# OPTIONS_GHC -Wall  #-}
 
 module Wave.Markdown (
     module Wave.Markdown,
@@ -107,8 +103,9 @@ completeDocRep debug doughP bakedP filename (DocrepJSON y1 p1) = do
     -- over default
     -- y2 <- completeMetaPage doughP bakedP filename y1
     -- let y3 = mergeLeftPref [toJSON y2, y1]
-    when (inform debug) $ putIOwords ["completeDocRep", "y2", showT y2]
-    return (DocrepJSON y2 p1)
+    let y3 = putAtKey "dyFn" (s2t . toFilePath $ filename) . putAtKey "dyLink" (s2t . toFilePath $  filename) $ y2
+    when (inform debug) $ putIOwords ["completeDocRep", "y3", showT y3]
+    return (DocrepJSON y3 p1)
 
 --------------------------------
 addRefs :: NoticeLevel -> DocrepJSON -> ErrIO DocrepJSON

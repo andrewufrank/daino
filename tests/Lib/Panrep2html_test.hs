@@ -20,6 +20,7 @@ import UniformBase
 import Foundational.Filetypes4sites
 -- import Uniform2.Docrep
 import Foundational.Foundation
+import Foundational.MetaPage
 import ShakeBake.ReadSettingFile
 import Wave.Panrep  
 import Uniform2.HTMLout
@@ -42,12 +43,12 @@ settingsFileStored = "settings2File"
 --     p :: HTMLout <- putValinMaster False dr4 templateP
 --     return p
 
-test_panrep_layout2 = test2FileIO programName settingsFileStored "index.panrep" "HTMLout" (panrep2html True )
+test_panrep_layout2 = test2FileIO programName settingsFileStored "index.panrep" "HTMLout" (panrep2html NoticeLevel0 )
 
 test_panrep2convertIndexEntries = test1FileIO programName "index.panrep" "index.converted.panrep" (convertIndexEntries)
 
 test_putValinMaster = test2FileIO programName "index.converted.panrep" settingsFileStored "index.valput" 
-    (\d t -> putValinMaster True d (templatesDir t))
+    (\d t -> putValinMaster NoticeLevel0 d (templatesDir t))
 -- nothing inserted
 
 test_getPanrepVal = test1File programName "index.panrep" "index.val"
@@ -64,6 +65,7 @@ instance ShowTestHarness (Path Abs File)
 instance ShowTestHarness SiteLayout
 instance ShowTestHarness Panrep
 instance ShowTestHarness HTMLout
+instance ShowTestHarness MetaPage
 
 
 -- test1FileIO :: (Zeros b, Eq b, Show b, Read b, ShowTestHarness b

@@ -10,18 +10,15 @@
 --  the data is stored in a file separately and managed by Shake
 --  operates on metapage (or less? )
 ----------------------------------------------------------------------
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE MultiParamTypeClasses #-}
+-- {-# LANGUAGE FlexibleContexts #-}
+-- {-# LANGUAGE FlexibleInstances #-}
+-- {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE TypeFamilies #-}
+-- {-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE RecordWildCards #-}
 -- {-# LANGUAGE DeriveGeneric #-}
-{-# OPTIONS_GHC -Wall -fno-warn-orphans 
-            -fno-warn-missing-signatures
-            -fno-warn-missing-methods 
-            -fno-warn-duplicate-exports 
-            -fno-warn-unused-imports #-}
+{-# OPTIONS_GHC -Wall #-}
 
 module Lib.Indexing where
 
@@ -32,16 +29,32 @@ import Foundational.Filetypes4sites
 import Lib.CmdLineArgs (PubFlags (..))
 import Foundational.Foundation 
 
-addIndex2yam :: Path Abs Dir -> NoticeLevel -> MetaPage  -> ErrIO MetaPage
+initializeIndex :: NoticeLevel ->   MetaPage -> IndexEntry 
+-- initialize the index with the values from the metapage yaml 
+initializeIndex debug  MetaPage{..} = ix1 
+    where 
+        ix1 = zero
+                { fn =  dyFn   
+                , title  = dyTitle
+                , link = dyLink
+                , abstract  = dyAbstract
+                , author    = dyAuthor
+                , date       = fromMaybe (showT year2000)  dyDate
+                , publish     = dyPublish
+                , indexPage  = dyIndexPage 
+                , dirEntries  = zero 
+                , fileEntries = zero 
+                    }
+
+addIndex2yam ::  NoticeLevel -> Path Abs File -> IndexEntry  -> ErrIO IndexEntry
 {- ^ the top call to form the index data into the MetaPage
 later only the format for output must be fixed
 -}
-addIndex2yam bakedP debug x1 = do
-    when (inform debug) $ putIOwords ["addIndex2yam", "start", showT x1]
+addIndex2yam debug x1 bakedP = do
+    when (inform debug) $ putIOwords ["addIndex2yam", "start", showPretty x1]
     -- x1 :: IndexEntry <- fromJSONerrio yam1
     -- let x1 = panyam pr
-    when (inform debug) $ putIOwords ["addIndex2yam", "x1", showT x1]
-    if not . dyIndexPage $ x1
+    if not . indexPage $ x1
         then return x1
         else -- return dr 
         do

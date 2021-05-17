@@ -57,7 +57,10 @@ docrep2panrep debug layout (Docrep y1 p1) = do
                 { panyam = fromJustNote "docRepJSON2docrep not a value" . fromJSONValue $ y1
                 , panpan = p1
                 }
-    m1 <- addIndex2yam bakedP debug (panyam pr)
+    
+    indexPage2 Index4html <- initializeIndex debug (panyam pr)
+    ix2 <- addIndex2yam debug bakedP ix1
+    -- todo put ix2 into pr
     return pr{panyam = m1}
 
 -- do

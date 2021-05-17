@@ -12,10 +12,26 @@ module Main where      -- must have Main (main) or Main where
 
 import     Test.Framework
 
-import    {-@ HTF_TESTS @-}        Lib.Example_test
-import    {-@ HTF_TESTS @-}        Lib.Panrep2html_test
-import    {-@ HTF_TESTS @-}        Lib.ReadSettingFile_test
+-- import    {-@ HTF_TESTS @-}        Lib.Example_test
+-- import    {-@ HTF_TESTS @-}        Lib.Panrep2html_test
+-- import    {-@ HTF_TESTS @-}        Lib.ReadSettingFile_test
 import    {-@ HTF_TESTS @-}        Lib.Indexing_test
+
+
+main :: IO ()
+main = mainTest  -- for a different function name (main is in ssgbake)
+
+mainTest        -- with tests in other modules
+  = do
+    putStrLn "HTF ExampleTest.hs:\n"
+    -- runErrorVoid $ createDirIfMissing' "/home/frank/.SSG"
+    -- is in settings.yaml testDir  - must correspond
+    p <- htfMain htf_importedTests
+    putStrLn
+      ("HTF end ExampleTest.hs test:\n" ++ show p ++ "\nEND HTF ExampleTest")
+    return ()
+
+-------------------OLD ----------------------------
 -- OLD --
 -- import {-@ HTF_TESTS @-} Lib.Shake2_test 
 -- tests shake for test dough
@@ -63,21 +79,6 @@ import    {-@ HTF_TESTS @-}        Lib.Indexing_test
 ----     putStrLn ("HTF end ExampleTesting.hs test:\n" ++ show r)
 ----     return ()
 --------------END OLD 
-
-main :: IO ()
-main = mainTest  -- for a different function name (main is in ssgbake)
-
-mainTest        -- with tests in other modules
-  = do
-    putStrLn "HTF ExampleTest.hs:\n"
-    -- runErrorVoid $ createDirIfMissing' "/home/frank/.SSG"
-    -- is in settings.yaml testDir  - must correspond
-    p <- htfMain htf_importedTests
-    putStrLn
-      ("HTF end ExampleTest.hs test:\n" ++ show p ++ "\nEND HTF ExampleTest")
-    return ()
-
--------------------OLD ----------------------------
 -- main2 :: IO ()
 -- main2      -- just a simple bake for test
 --    = do

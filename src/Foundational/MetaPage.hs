@@ -42,7 +42,9 @@ import           UniformBase
 
 data MetaPage = MetaPage
     { dyFn           :: FilePath -- ^ the original dough fn
-    , dyLink         :: FilePath -- ^ the relative filename
+    , dyLink         :: FilePath -- ^ the relative filename 
+                -- relative to the browser origin 
+                -- set in ? initializeIndex 
     , dyLang         :: DocLanguage -- ^ the fields of miniblog
     , dyTitle        :: Text
     , dyAbstract     :: Text
@@ -55,7 +57,7 @@ data MetaPage = MetaPage
     , dyStyle        :: Maybe Text
     , dyPublish      :: Maybe Text
     , dyIndexPage    :: Bool
-    , dyDirEntries   :: [IndexEntry]
+    , dyDirEntries   :: [IndexEntry]  -- reduce to one for indexEntry
     , dyFileEntries  :: [IndexEntry]
     -- is defined later, necessary here?
     }

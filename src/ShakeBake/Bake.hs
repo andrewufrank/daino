@@ -24,10 +24,17 @@ import Foundational.Foundation
 -- import Wave.Docrep 
 import Wave.Markdown
 
-import Foundational.Filetypes4sites  
+import Foundational.Filetypes4sites
+    ( docrepFileType,
+      panrep1FileType,
+      panrepFileType,
+      texFileType,
+      texSnipFileType,
+      Panrep1 )  
 -- import Uniform2.Markdown  
 import Uniform.Pandoc
 import Uniform2.ProcessPDF  
+import Uniform2.HTMLout
 
 import Wave.Panrep  
 import UniformBase

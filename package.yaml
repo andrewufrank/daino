@@ -29,14 +29,14 @@ ghc-options:
     -fno-warn-missing-methods 
     -fno-warn-missing-home-modules
     -fno-warn-duplicate-exports 
-default-extensions:  # besides the automatically Haskell2010
-    # - DeriveGeneric
-    # - FlexibleContexts 
-    # - FlexibleInstances 
-    # - MultiParamTypeClasses 
-    # - OverloadedStrings
+other-extensions:  # besides the automatically Haskell2010
+    - DeriveGeneric
+    - FlexibleContexts 
+    - FlexibleInstances 
+    - MultiParamTypeClasses 
+    - OverloadedStrings
     - ScopedTypeVariables 
-    # - GeneralizedNewtypeDeriving 
+    - GeneralizedNewtypeDeriving 
     - RecordWildCards 
     
     #  -XDeriveGeneric
