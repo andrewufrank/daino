@@ -41,7 +41,7 @@ import Foundational.Filetypes4sites
 -- docrepJSON2docrep :: DocrepJSON -> Docrep
 -- docrepJSON2docrep (DocrepJSON j p) = Docrep j p
 
-readMarkdown2docrep :: MarkdownText -> ErrIO Docrep
+readMarkdown2docrep :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> Path Abs File ->  MarkdownText -> ErrIO Docrep
 
 {- | read a md file into a DocrepJSON
  reads the markdown file with pandoc and extracts the yaml metadaat
@@ -50,23 +50,31 @@ readMarkdown2docrep :: MarkdownText -> ErrIO Docrep
  attention: there is potential duplication
  as the metadata are partially duplicated
 -}
-readMarkdown2docrep md = do
+readMarkdown2docrep debug doughP bakedP filename md = do
     pd <- readMarkdown2 md
     let meta2 = flattenMeta . getMeta $ pd
     -- let meta3 = fromJustNote "readMarkdown2docrep not read" .
-    meta3 :: Maybe MetaPage <- fromJSONerrio meta2
-    meta4 <- case meta3 of  
-        Nothing -> errorT ["error"]
-        Just m -> return m
-        -- add the remaining 
-    let y1 = meta2
-    let style1 = getAtKey y1 "style" :: Maybe Text
-    let refs1 = gak y1 "references" :: Maybe Value -- is an array
+    -- meta3 :: Maybe MetaPage <- fromJSONerrio meta2
+    -- let y1 = meta2
+    let meta4 = MetaPage
+            { dyFn = toFilePath $ filename
+            , dyLink = toFilePath $  filename  -- TODO relative!
+            , dyLang = DLenglish -- getAtKey meta2 "language"
+            , dyTitle = fromMaybe "FILL TITLE" $ getAtKey meta2 "title"
+            , dyAbstract = fromMaybe "FILL ABSTRCT" $ getAtKey meta2 "abstract"
+            , dyAuthor = fromMaybe "FILL AUTHOR" $ getAtKey meta2 "author"
+            , dyDate = getAtKey meta2 "date"
+            , dyKeywords = fromMaybe "" $ getAtKey meta2 "keywords"
+            , dyStyle =  getAtKey meta2 "style" 
+            , dyReferences =  gak meta2 "references"  
+            , dyBibliography = zero 
+            , dyPublish =  getAtKey meta2 "publish" 
+            , dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
+            , dyIndexEntry = zero
+            }
         -- refs1 = y1 ^? key "references" :: Maybe Value -- is an array
-    let nocite1 = getAtKey y1 "nocite" :: Maybe Text
-    -- translate
-    -- let y3 = putAtKey "dyFn" (s2t . toFilePath $ filename) . putAtKey "dyLink" (s2t . toFilePath $  filename) $ y2
-
+    let nocite1 = getAtKey meta2 "nocite" :: Maybe Text
+ 
 
     return (Docrep meta4 pd)
 
@@ -79,7 +87,7 @@ md2docrep debug layout2 inputFn md1 = do
     let doughP = doughDir layout2 -- the regular dough
         bakedP = bakedDir layout2
 
-    dr1 <- readMarkdown2docrep md1
+    dr1 <- readMarkdown2docrep debug doughP bakedP inputFn md1
     -- with a flattened version of json from Pandoc
     -- what does it contain?
     when (inform debug) $ putIOwords ["md2docrep", "dr1", showT dr1]
@@ -191,10 +199,10 @@ addRefs2 debug dr1@(Docrep y1 p1) biblio1 = do
             t2s . fromJustNote "style1 in addRefs2 wer23" $ style1 :: FilePath
     --  Raised the exception when style empty
     when (inform debug) $ putIOwords ["addRefs2-3-1", "done"]
-    let refs1json = if null (dyReferences  y1)
-                        then Nothing 
-                        else Just $ toJSON (dyReferences  y1)
-    p2 <- readBiblioRefs (inform debug) bibliofp loc1 stylefp  refs1json p1  
+    -- let refs1json = if null (dyReferences  y1)
+    --                     then Nothing 
+    --                     else Just $ toJSON (dyReferences  y1)
+    p2 <- readBiblioRefs (inform debug) bibliofp loc1 stylefp  (dyReferences y1) p1  
 
 
 

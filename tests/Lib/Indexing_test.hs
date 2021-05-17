@@ -18,7 +18,7 @@ import Lib.Templating
 import Lib.Indexing
 import UniformBase
 import Uniform.Pandoc
-import Data.Aeson
+-- import Data.Aeson
 import Uniform.Json
 test_exampleTrue = assertEqual 0 0
 

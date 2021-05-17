@@ -55,7 +55,7 @@ data MetaPage = MetaPage
     , dyKeywords     :: Text -- should be [Text]
     , dyBibliography :: Maybe Text
     , dyStyle        :: Maybe Text
-    , dyReferences       :: [Reference] 
+    , dyReferences       :: Maybe Value --  [Reference] 
     , dyPublish      :: Maybe Text
     , dyIndexPage    :: Bool
     , dyIndexEntry   :: IndexEntry
