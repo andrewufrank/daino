@@ -31,6 +31,7 @@ ghc-options:
     -fno-warn-missing-home-modules
     -fno-warn-duplicate-exports 
 other-extensions:  # besides the automatically Haskell2010
+# has no effect...
     # - DeriveGeneric
     # - FlexibleContexts 
     # - FlexibleInstances 
@@ -69,7 +70,7 @@ dependencies:
     - uniform-pandoc 
     - uniform-latex2pdf 
     # -- - uniform-ftp
-    - aeson 
+    # - aeson 
 
 library:
   source-dirs: 
