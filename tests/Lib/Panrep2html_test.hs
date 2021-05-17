@@ -33,7 +33,7 @@ programName = "ssg" :: Text
 
 test_null = assertEqual 0 0
 
-settingsFileStored = "settings2File"
+settingsFileStored = "settings2File" :: FilePath
 
 -- panrep2html :: p -> SiteLayout -> Panrep -> ErrIO HTMLout
 -- panrep2html debug layout dr1 = do
@@ -43,16 +43,19 @@ settingsFileStored = "settings2File"
 --     p :: HTMLout <- putValinMaster False dr4 templateP
 --     return p
 
-test_panrep_layout2 = test2FileIO programName settingsFileStored "index.panrep" "HTMLout" (panrep2html NoticeLevel0 )
+-- test_panrep_layout2 = test2FileIO programName settingsFileStored "index.panrep" "HTMLout" (panrep2html NoticeLevel0 )
 
-test_panrep2convertIndexEntries = test1FileIO programName "index.panrep" "index.converted.panrep" (convertIndexEntries)
+-- test_panrep2convertIndexEntries = test1FileIO programName "index.panrep" "index.converted.panrep" (convertIndexEntries)
 
-test_putValinMaster = test2FileIO programName "index.converted.panrep" settingsFileStored "index.valput" 
-    (\d t -> putValinMaster NoticeLevel0 d (templatesDir t))
+-- test_putValinMaster = test2FileIO programName "index.converted.panrep" settingsFileStored "index.valput" 
+--     (\d t -> putValinMaster NoticeLevel0 d (templatesDir t))
 -- nothing inserted
 
-test_getPanrepVal = test1File programName "index.panrep" "index.val"
-    (show . panyam)
+-- test_getPanrepVal = test1File programName "index.panrep" "index.val"
+    -- (show . panyam)
+
+-- test_panrep2indexentry = test1File "ssg" "docrep_blog1" "indexentry_blog1" (initializeIndex . yam) 
+
 
 --     test2FileIO :: (Zeros b, Eq b, Show b, Read b, ShowTestHarness b
 --                 , Zeros c, Eq c, Show c, Read c, ShowTestHarness c
