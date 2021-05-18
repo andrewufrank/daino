@@ -34,9 +34,9 @@ initializeIndex ::    MetaPage -> IndexEntry
 initializeIndex    MetaPage{..} = ix1 
     where 
         ix1 = zero
-                { fn =  makeAbsFile dyFn   
+                { fn =  dyFn -- makeAbsFile dyFn   
                 , title  = dyTitle
-                , link = makeRelFile dyLink
+                , link = dyLink --- makeRelFile dyLink
                 , abstract  = dyAbstract
                 , author    = dyAuthor
                 , date       = fromMaybe (showT year2000)  dyDate
