@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------
 --
--- Module      :  Uniform.Panrep
+-- Module      :  Uniform.Pan2html
 -----------------------------------------------------------------------------
 {-# LANGUAGE ConstraintKinds       #-}
 {-# LANGUAGE DeriveAnyClass        #-}
@@ -24,8 +24,8 @@
 {- | the representation with indices
  ready for processing to HTML or to TexSnip -> Tex -> Pdf
 -}
-module Wave.Panrep (
-    module Wave.Panrep,
+module Wave.Pan2html (
+    module Wave.Pan2html,
 ) where
 
 import           Data.Default
@@ -58,12 +58,16 @@ docrep2panrep debug layout (Docrep y1 p1) = do
                 , panpan = p1
                 }
     --
-    let m1 = panyam pr
-    let ix1 = initializeIndex   m1
-    ix2 <- addIndex2yam debug bakedP ix1
-    -- todo put ix2 into pr
-    let m2 = m1{dyIndexEntry = ix2}
-    return pr{panyam = m2}
+    if dyIndexPage . panyam $ pr 
+        then do 
+            let m1 = panyam pr
+            let ix1 = initializeIndex   m1
+            ix2 <- addIndex2yam debug bakedP ix1
+        -- todo put ix2 into pr
+            let m2 = m1{dyIndexEntry = ix2}
+            return pr{panyam = m2}
+        else 
+            return pr
 
 -- do
 -- --   (DocrepJSON y2 p2) <- addRefs False dr1 -- was already done in  bakeOneMD2docrep

@@ -54,17 +54,16 @@ addIndex2yam debug  bakedP ix1 = do
     when (inform debug) $ putIOwords ["addIndex2yam", "start", showPretty ix1]
     -- x1 :: IndexEntry <- fromJSONerrio yam1
     -- let x1 = panyam pr
-    if not (indexPage ix1)
-        then return ix1
-        else -- return dr 
-        do
-            when (inform debug) $ putIOwords ["addIndex2yam", "is indexpage"]
-            let fn = bakedP </> (link ix1) :: Path Abs File
-            (dirs, files) <- getDirContent2dirs_files debug fn
-            when (inform debug) $ putIOwords ["addIndex2yam", "\n dirs", showT dirs, "\n files", showT files]
-            let ix2 = ix1{dirEntries = dirs, fileEntries = files}
-            when (inform debug) $ putIOwords ["addIndex2yam", "x2", showT ix2]
-            return ix2
+    unless (indexPage ix1) $ errorT ["addIndex2yam should only be called for indexPage True"]
+
+    when (inform debug) $ putIOwords ["addIndex2yam", "is indexpage"]
+    let fn = bakedP </> (link ix1) :: Path Abs File
+
+    (dirs, files) <- getDirContent2dirs_files debug fn
+    when (inform debug) $ putIOwords ["addIndex2yam", "\n dirs", showT dirs, "\n files", showT files]
+    let ix2 = ix1{dirEntries = dirs, fileEntries = files}
+    when (inform debug) $ putIOwords ["addIndex2yam", "x2", showT ix2]
+    return ix2
 
 {- | get the contents of a directory, separated into dirs and files
  the directory is given by the index file
