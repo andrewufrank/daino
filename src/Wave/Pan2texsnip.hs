@@ -62,7 +62,7 @@ import           UniformBase
 -- --         then do 
 -- --             let m1 = panyam pr
 -- --             let ix1 = initializeIndex   m1
--- --             ix2 <- addIndex2yam debug bakedP ix1
+-- --             ix2 <- completeIndex debug bakedP ix1
 -- --         -- todo put ix2 into pr
 -- --             let m2 = m1{dyIndexEntry = ix2}
 -- --             return pr{panyam = m2}

@@ -3,7 +3,7 @@
 -- Module      :   create an index for a directory
 ---- | create an index for a directory
 --  in two steps: collect all the date 
---  with call to addIndex2yam
+--  with call to completeIndex
 --  and
 --  indexmake: convert collected data for printing (convertIndexEntries)
 --  . 
@@ -46,23 +46,23 @@ initializeIndex    MetaPage{..} = ix1
                 , fileEntries = zero 
                     }
 
-addIndex2yam ::  NoticeLevel -> Path Abs Dir -> IndexEntry  -> ErrIO IndexEntry
+completeIndex ::  NoticeLevel -> Path Abs Dir -> IndexEntry  -> ErrIO IndexEntry
 {- ^ the top call to form the index data into the MetaPage
 later only the format for output must be fixed
 -}
-addIndex2yam debug  bakedP ix1 = do
-    when (inform debug) $ putIOwords ["addIndex2yam", "start", showPretty ix1]
+completeIndex debug  bakedP ix1 = do
+    when (inform debug) $ putIOwords ["completeIndex", "start", showPretty ix1]
     -- x1 :: IndexEntry <- fromJSONerrio yam1
     -- let x1 = panyam pr
-    unless (indexPage ix1) $ errorT ["addIndex2yam should only be called for indexPage True"]
+    unless (indexPage ix1) $ errorT ["completeIndex should only be called for indexPage True"]
 
-    when (inform debug) $ putIOwords ["addIndex2yam", "is indexpage"]
+    when (inform debug) $ putIOwords ["completeIndex", "is indexpage"]
     let fn = bakedP </> (link ix1) :: Path Abs File
 
     (dirs, files) <- getDirContent2dirs_files debug fn
-    when (inform debug) $ putIOwords ["addIndex2yam", "\n dirs", showT dirs, "\n files", showT files]
+    when (inform debug) $ putIOwords ["completeIndex", "\n dirs", showT dirs, "\n files", showT files]
     let ix2 = ix1{dirEntries = dirs, fileEntries = files}
-    when (inform debug) $ putIOwords ["addIndex2yam", "x2", showT ix2]
+    when (inform debug) $ putIOwords ["completeIndex", "x2", showT ix2]
     return ix2
 
 {- | get the contents of a directory, separated into dirs and files
