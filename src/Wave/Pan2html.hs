@@ -53,6 +53,7 @@ import           UniformBase
 
 docrep2panrep debug layout (Docrep y1 p1) = do
     let bakedP = bakedDir layout
+    let doughP = doughDir layout
     let pr = Panrep
                 { panyam = y1
                 , panpan = p1
@@ -62,7 +63,7 @@ docrep2panrep debug layout (Docrep y1 p1) = do
         then do 
             let m1 = panyam pr
             let ix1 = initializeIndex   m1
-            ix2 <- completeIndex debug bakedP ix1
+            ix2 <- completeIndex debug doughP bakedP ix1
         -- todo put ix2 into pr
             let m2 = m1{dyIndexEntry = ix2}
             return pr{panyam = m2}

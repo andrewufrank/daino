@@ -168,3 +168,21 @@ data IndexEntry = IndexEntry
 
 instance ToJSON IndexEntry
 instance FromJSON IndexEntry
+
+initializeIndex :: MetaPage -> IndexEntry
+-- initialize the index with the values from the metapage yaml
+initializeIndex MetaPage{..} = ix1
+  where
+    ix1 =
+        zero
+            { fn = dyFn -- makeAbsFile dyFn
+            , title = dyTitle
+            , link = dyLink --- makeRelFile dyLink
+            , abstract = dyAbstract
+            , author = dyAuthor
+            , date = fromMaybe (showT year2000) dyDate
+            , publish = dyPublish
+            , indexPage = dyIndexPage
+            , dirEntries = zero
+            , fileEntries = zero
+            }

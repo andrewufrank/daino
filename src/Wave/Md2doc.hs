@@ -27,7 +27,7 @@ import UniformBase
 import Foundational.Foundation
 import Foundational.MetaPage
 import Uniform.Json
-
+-- import Lib.Indexing
 import Uniform.Pandoc
 import Uniform.Shake (makeRelativeP)
 
@@ -65,8 +65,9 @@ readMarkdown2docrep debug doughP bakedP filename md = do
                 , dyIndexSort = getAtKey meta2 "indexSort"
                 , dyIndexEntry = zero
                 }
-
-    return (Docrep meta4 pd)
+    let ix1 = initializeIndex meta4 
+    let meta5 = meta4{dyIndexEntry = ix1}
+    return (Docrep meta5 pd)
 
 md2docrep :: NoticeLevel -> SiteLayout -> Path Abs File -> MarkdownText -> ErrIO Docrep
 
