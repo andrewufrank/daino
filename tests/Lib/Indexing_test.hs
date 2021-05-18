@@ -36,10 +36,13 @@ test_getMeta_blog1 = testing_getMeta "blog1"
 test_getMeta_index = testing_getMeta "index"
 
 
--- test_initializeIx = test1File "ssg" "meta_blog1" "ix1_blo" (initializeIndex )
+testing_initializeIx f1 = test1File "ssg"  ("meta_" <> f1) ("ix_" <> f1) (initializeIndex )
+test_initializeIx_index = testing_initializeIx "index"
 
--- test_completeIndex =  test1FileIO "ssg" "ix1_blog1" "ix2_blog1"
---         (completeIndex NoticeLevel0 bakedP)
+testing_complete f1 =  test1FileIO "ssg"   ("ix_" <> f1)("ixComp_" <> f1)
+        (completeIndex NoticeLevel0 bakedP)
+
+test_completeIndex = testing_complete "index"
 
 -- instance ShowTestHarness Docrep
 -- instance ShowTestHarness MetaPage

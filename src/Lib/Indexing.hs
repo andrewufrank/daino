@@ -57,7 +57,7 @@ completeIndex debug  bakedP ix1 = do
     unless (indexPage ix1) $ errorT ["completeIndex should only be called for indexPage True"]
 
     when (inform debug) $ putIOwords ["completeIndex", "is indexpage"]
-    let fn = bakedP </> (link ix1) :: Path Abs File
+    let fn = doughdP </> (link ix1) :: Path Abs File
 
     (dirs, files) <- getDirContent2dirs_files debug fn
     when (inform debug) $ putIOwords ["completeIndex", "\n dirs", showT dirs, "\n files", showT files]

@@ -83,7 +83,7 @@ instance Default MetaPage where
             , dyStyle = Just "chicago-fullnote-bibliography-bb.csl"
             , dyPublish = Nothing
             , dyIndexPage = False
-            , dyIndexSort = Text 
+            , dyIndexSort = zero
             , dyIndexEntry = zero 
             -- , dyDirEntries = zero
             -- , dyFileEntries = zero
