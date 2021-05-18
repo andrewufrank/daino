@@ -60,8 +60,9 @@ readMarkdown2docrep debug doughP bakedP filename md = do
                 , dyReferences = gak meta2 "references"
                 , dyBibliography = zero
                 , dyPublish = getAtKey meta2 "publish"
-                , -- TODO use pbulicationState
-                  dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
+                   -- TODO use pbulicationState
+                , dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
+                , dyIndexSort = getAtKey meta2 "indexSort"
                 , dyIndexEntry = zero
                 }
 

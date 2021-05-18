@@ -59,6 +59,7 @@ data MetaPage = MetaPage
     , dyNoCite :: Maybe Text
     , dyPublish      :: Maybe Text
     , dyIndexPage    :: Bool
+    , dyIndexSort    :: Maybe Text 
     , dyIndexEntry   :: IndexEntry
     -- , dyDirEntries   :: [IndexEntry]  -- reduce to one for indexEntry
     -- , dyFileEntries  :: [IndexEntry]
@@ -82,6 +83,7 @@ instance Default MetaPage where
             , dyStyle = Just "chicago-fullnote-bibliography-bb.csl"
             , dyPublish = Nothing
             , dyIndexPage = False
+            , dyIndexSort = Text 
             , dyIndexEntry = zero 
             -- , dyDirEntries = zero
             -- , dyFileEntries = zero
