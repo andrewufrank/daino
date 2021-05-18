@@ -94,7 +94,7 @@ test-suite ssgTest
   other-modules:
       Lib.Example_test
       Lib.Indexing_test
-      Lib.Markdown_test
+      Lib.Md2doc_test
       Lib.Panrep2html_test
       Lib.ReadSettingFile_test
       Paths_ssg

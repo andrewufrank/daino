@@ -25,8 +25,17 @@ import Lib.Indexing
 --     (docrepJSON2docrep)
 
 
-test_blog1_dm2dr1 = test1FileIO "ssg" "blog1.md" "dr1_blog1" (readMarkdown2docrep NoticeLevel0 doughP bakedP (makeAbsFile "/home/frank/Workspace11/ssg/docs/site/dough/Blog/blog1.md") .  MarkdownText) 
-test_index_dm2dr1 = test1FileIO "ssg" "index.md" "dr1_index" (readMarkdown2docrep NoticeLevel0 doughP bakedP (makeAbsFile "/home/frank/Workspace11/ssg/docs/site/dough/Blog/index.md") .  MarkdownText) -- why is here MarkdownText needed?
+testing_dm2dr1 f1 f2 = test1FileIO "ssg" f1 f2 (readMarkdown2docrep NoticeLevel0 doughP bakedP fn2process .  MarkdownText) 
+  where 
+      fn2process:: Path Abs File 
+      fn2process = blogRoot </> (makeRelFile f1)
+      blogRoot = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/dough/Blog"
+      -- TODO needs somewhere fix to build to website root
+test_blog1_dm2dr1 = testing_dm2dr1 "blog1.md" "dr1_blog1" 
+
+-- test1FileIO "ssg" "blog1.md" "dr1_blog1" (readMarkdown2docrep NoticeLevel0 doughP bakedP (makeAbsFile "/home/frank/Workspace11/ssg/docs/site/dough/Blog/blog1.md") .  MarkdownText) 
+test_index_dm2dr1 = testing_dm2dr1 "index.md" "dr1_index" 
+-- test1FileIO "ssg" "index.md" "dr1_index" (readMarkdown2docrep NoticeLevel0 doughP bakedP (makeAbsFile "/home/frank/Workspace11/ssg/docs/site/dough/Blog/index.md") .  MarkdownText) -- why is here MarkdownText needed?
 
 test_blog1_readMarkdown2pandoc = test1FileIO "ssg" "blog1.md" "pandoc_blog1" (readMarkdown2 . MarkdownText) 
 
