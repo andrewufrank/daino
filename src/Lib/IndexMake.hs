@@ -28,16 +28,16 @@ import           UniformBase
 import Uniform2.HTMLout
 
 
-convertIndexEntries :: MetaPage -> ErrIO MetaPage
+convertIndexEntries :: MetaPage -> ErrIO MenuEntry
 -- ^ take the index entries and convert their
 -- form and push them back into the json
-convertIndexEntries y =
+convertIndexEntries metap =
   do
   --   yentry :: IndexEntry <- fromJSONerrio y
-    let yentry = zero -- was y ??
+    let yentry = dyIndexEntry metap
     putIOwords ["convertIndexEntries", "start yentry", showT yentry]
-    let dirs = undef "adsfwer" -- dyDirEntries y
-    let fils = undef "asdfasd" -- fileEntries dyFileEntries MetaPage
+    let dirs = dirEntries yentry -- dyDirEntries y
+    let fils = fileEntries yentry -- fileEntries dyFileEntries MetaPage
 
     -- dirs <- fromJustNote "convertIndexEntries werdsdx" $ getAtKey y "DirEntries"
     -- files <- fromJustNote "convertIndexEntries 34634" $ getAtKey y "FileEntries"
@@ -49,9 +49,9 @@ convertIndexEntries y =
     let menu1 = convert2index (yentry, dirs, fils)
     putIOwords ["convertIndexEntries", "menu2", showT menu1]
     -- let y2 = putAtKey2 "menu" menu1 y
-    let y2 = mergeLeftPref [toJSON menu1, toJSON y]
-    y4 :: MetaPage <- fromJSONerrio y2   
-    return y4
+    -- let y2 = mergeLeftPref [toJSON menu1, toJSON y]
+    -- y4 :: MetaPage <- fromJSONerrio y2   
+    return menu1
 
 -- | convert the metarecs and put some divider between
 -- TODO  - avoid dividers if list empty

@@ -72,18 +72,21 @@ getDirContent2dirs_files debug doughP bakedP indexpageFn = do
     let pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir
     -- get the dir in which the index file is embedded
     dirs1 :: [Path Abs Dir] <- getDirectoryDirs' pageFn
-    let dirs2 = filter ((("DNB" :: FilePath) /=) .   getNakedDir) dirs1
+    let dirs2 = filter ( not . (isPrefixOf' ("DNB" :: FilePath) ) .   getNakedDir) dirs1
+    let dirs3 = filter ( not . (isPrefixOf' ("resources" :: FilePath) ) .   getNakedDir) dirs2
     files1 :: [Path Abs File] <- getDirContentFiles pageFn
     let files2 =
             filter (indexpageFn /=) -- should not exclude all index pages but has only this one in this dir?
                 . filter (hasExtension extMD) -- extDocrep)
                 $ files1
     ixfiles <- mapM (getFile2index debug doughP bakedP) files2
-    let subindexDirs = map (\d -> d </> makeRelFile "index.md") dirs2
+    let subindexDirs = map (\d -> d </> makeRelFile "index.md") dirs3
     -- "index.docrep" 
     ixdirs <- mapM (getFile2index debug doughP bakedP) subindexDirs
 
     return (catMaybes ixdirs, catMaybes ixfiles)
+
+
 
 getFile2index :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> Path Abs File -> ErrIO (Maybe IndexEntry)
 -- get a file and its index

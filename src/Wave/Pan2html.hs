@@ -79,32 +79,40 @@ docrep2panrep debug layout (Docrep y1 p1) = do
 -- panrep2html :: Panrep -> ErrIO HTMLout
 -- implements the bake
 panrep2html :: NoticeLevel -> SiteLayout -> Panrep -> ErrIO HTMLout
-panrep2html debug layout dr1 = do
+panrep2html debug layout (Panrep m1 p1)= do
     -- let templateP = templatesDir layout
-    m4 <- convertIndexEntries (panyam dr1) -- move to
+    menu4 <- convertIndexEntries m1 -- move to
     -- p <- panrep2htmlP debug templateP dr4
-    let dr4 = dr1{panyam = m4}
+
+  -- let y2 = putAtKey2 "menu" menu1 y
+    let j2 = mergeLeftPref [toJSON menu4, toJSON p1]
+    p4 ::Pandoc <- fromJSONerrio j2     
+    -- let p2 = putAtKey "menu" menu4 p1
+    -- possibly key at "key"
+    let dr4 = Panrep m1 p4
     p :: HTMLout <- putValinMaster debug dr4 (templatesDir layout)
     when (informNone debug) $ putIOwords ["\n panrep2html done"]
     return p
 
--- step1
-panrep2panrep1 :: NoticeLevel -> SiteLayout -> Panrep -> ErrIO Panrep1
-panrep2panrep1 debug layout dr1 = do
-    -- let templateP = templatesDir layout
-    m4 <- convertIndexEntries (panyam dr1) -- move to
-    -- p <- panrep2htmlP debug templateP dr4
-    let dr4 = dr1{panyam = m4}
-    when (informNone debug) $ putIOwords ["\n panrep2panrep1 done"]
-    return . Panrep1 $ dr4
+-- -- step1
+-- panrep2panrep1 :: NoticeLevel -> SiteLayout -> Panrep -> ErrIO Panrep1
+-- panrep2panrep1 debug layout(Panrep m1 p1)= do
+--     -- let templateP = templatesDir layout
+--     menu4 <- convertIndexEntries m1 -- move to
+--     -- p <- panrep2htmlP debug templateP dr4
+--     let p2 = putAtKey "menu" (toJSON menu4) p1
+--     -- possibly key at "key"
+--     let dr4 = Panrep m1 p2
+--     when (informNone debug) $ putIOwords ["\n panrep2panrep1 done"]
+--     return . Panrep1 $ dr4
 
-panrep12html :: NoticeLevel -> SiteLayout -> Panrep1 -> ErrIO HTMLout
-panrep12html debug layout dr4 = do
-    -- let templateP = templatesDir layout
-    -- dr4 <- convertIndexEntries dr1 -- move to
-    p :: HTMLout <- putValinMaster debug (unPanrep1 dr4) (templatesDir layout)
-    when (informNone debug) $ putIOwords ["\n panrep12html done"]
-    return p
+-- panrep12html :: NoticeLevel -> SiteLayout -> Panrep1 -> ErrIO HTMLout
+-- panrep12html debug layout dr4 = do
+--     -- let templateP = templatesDir layout
+--     -- dr4 <- convertIndexEntries dr1 -- move to
+--     p :: HTMLout <- putValinMaster debug (unPanrep1 dr4) (templatesDir layout)
+--     when (informNone debug) $ putIOwords ["\n panrep12html done"]
+--     return p
 
 
 -- panrep2htmP :: NoticeLevel  -> Path Abs Dir -> Panrep ->ErrIO Text

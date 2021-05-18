@@ -29,7 +29,7 @@ putValinMaster :: NoticeLevel -> Panrep -> Path Abs Dir -> ErrIO HTMLout
  not clear what intended
  for now: use the master TODO
 -}
-putValinMaster debug (Panrep val p) templatesP = do
+putValinMaster debug (Panrep val _) templatesP = do
     when (inform debug) $ putIOwords ["putValinMaster", "templatesP", showT templatesP]
     -- let mmt = getAtKey val "masterTemplate" :: Maybe Text
     -- let mf = maybe masterTemplateFileName (makeRelFile . t2s) mmt

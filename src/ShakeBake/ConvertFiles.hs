@@ -78,13 +78,13 @@ convPanrep2html :: ConvertOp
 convPanrep2html debug doughP bakedP flags layout out =
     convA2B debug doughP bakedP flags layout out extPanrep bakeOnePanrep2html
 
-convPanrep2panrep1 :: ConvertOp
-convPanrep2panrep1 debug doughP bakedP flags layout out =
-    convA2B debug doughP bakedP flags layout out extPanrep bakeOnePanrep2panrep1
+-- convPanrep2panrep1 :: ConvertOp
+-- convPanrep2panrep1 debug doughP bakedP flags layout out =
+--     convA2B debug doughP bakedP flags layout out extPanrep bakeOnePanrep2panrep1
 
-convPanrep12html :: ConvertOp
-convPanrep12html debug doughP bakedP flags layout out =
-    convA2B debug doughP bakedP flags layout out extPanrep1 bakeOnePanrep12html
+-- convPanrep12html :: ConvertOp
+-- convPanrep12html debug doughP bakedP flags layout out =
+--     convA2B debug doughP bakedP flags layout out extPanrep1 bakeOnePanrep12html
 
 convPanrep2texsnip :: ConvertOp
 convPanrep2texsnip debug doughP bakedP flags layout out =

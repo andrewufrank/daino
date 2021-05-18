@@ -25,12 +25,7 @@ import Foundational.Foundation
 import Wave.Md2doc
 
 import Foundational.Filetypes4sites
-    ( docrepFileType,
-      panrep1FileType,
-      panrepFileType,
-      texFileType,
-      texSnipFileType,
-      Panrep1 )  
+   
 -- import Uniform2.Markdown  
 import Uniform.Pandoc
 import Uniform2.ProcessPDF  
@@ -112,27 +107,27 @@ bakeOnePanrep2html debug flags inputFn layout resfn2 = do
             ["\n-----------------", "bakeOnePanrep2html done fn", showT resfn2]
     return ()
 
-bakeOnePanrep2panrep1 :: BakeOp -- PANREP -> Panrep1  -- TODO
--- split in panrep -> panrep1
-bakeOnePanrep2panrep1 debug flags inputFn layout resfn2 = do
-    dr1 <- read8 inputFn panrepFileType
-    p :: Panrep1 <- panrep2panrep1 debug layout dr1
-    write8 resfn2 panrep1FileType p  
-    when (informall debug) $
-        putIOwords
-            ["\n-----------------", "bakeOnePanrep2panrep1 done fn", showT resfn2]
-    return ()
+-- bakeOnePanrep2panrep1 :: BakeOp -- PANREP -> Panrep1  -- TODO
+-- -- split in panrep -> panrep1
+-- bakeOnePanrep2panrep1 debug flags inputFn layout resfn2 = do
+--     dr1 <- read8 inputFn panrepFileType
+--     p :: Panrep1 <- panrep2panrep1 debug layout dr1
+--     write8 resfn2 panrep1FileType p  
+--     when (informall debug) $
+--         putIOwords
+--             ["\n-----------------", "bakeOnePanrep2panrep1 done fn", showT resfn2]
+--     return ()
 
-bakeOnePanrep12html :: BakeOp -- PANREP -> Panrep1  -- TODO
--- split in panrep -> panrep1
-bakeOnePanrep12html debug flags inputFn layout resfn2 = do
-    dr1 <- read8 inputFn panrep1FileType
-    p :: HTMLout <- panrep12html debug layout dr1
-    write8 resfn2 htmloutFileType p  
-    when (informall debug) $
-        putIOwords
-            ["\n-----------------", "bakeOnePanrep12html done fn", showT resfn2]
-    return ()
+-- bakeOnePanrep12html :: BakeOp -- PANREP -> Panrep1  -- TODO
+-- -- split in panrep -> panrep1
+-- bakeOnePanrep12html debug flags inputFn layout resfn2 = do
+--     dr1 <- read8 inputFn panrep1FileType
+--     p :: HTMLout <- panrep12html debug layout dr1
+--     write8 resfn2 htmloutFileType p  
+--     when (informall debug) $
+--         putIOwords
+--             ["\n-----------------", "bakeOnePanrep12html done fn", showT resfn2]
+--     return ()
 
 bakeOnePanrep2texsnip :: BakeOp --  PANREP -> TEXSNIP
 -- TODO
