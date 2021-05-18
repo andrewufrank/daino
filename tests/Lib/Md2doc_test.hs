@@ -25,33 +25,52 @@ import Lib.Indexing
 --     (docrepJSON2docrep)
 
 
-testing_dm2dr1 f1 f2 = test1FileIO "ssg" f1 f2 (readMarkdown2docrep NoticeLevel0 doughP bakedP fn2process .  MarkdownText) 
+
+
+-- | test to produce pandoc 
+testing_readMarkdown2pandoc f1 f2 = test1FileIO "ssg" f1 f2 (readMarkdown2 . MarkdownText) 
+
+test_blog1_readMarkdown2pandoc = testing_readMarkdown2pandoc   "blog1.md" "pandoc_blog1"  
+test_index_readMarkdown2pandoc = testing_readMarkdown2pandoc "index.md" "pandoc_index"   
+test_postwk_readMarkdown2pandoc = testing_readMarkdown2pandoc "postwk.md" "pandoc_postwk"   
+test_withRef_readMarkdown2pandoc = testing_readMarkdown2pandoc "withRef.md" "pandoc_withRef"   
+
+-- | conversion of markdown file f1 (with extension) to intermediate d11  
+testing_md2dr1 f1 = test1FileIO "ssg"  (f1<> ".md") (f1 <> "_dr1" )  (readMarkdown2docrep NoticeLevel0 doughP bakedP fn2process .  MarkdownText) 
   where 
       fn2process:: Path Abs File 
       fn2process = blogRoot </> (makeRelFile f1)
       blogRoot = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/dough/Blog"
       -- TODO needs somewhere fix to build to website root
-test_blog1_dm2dr1 = testing_dm2dr1 "blog1.md" "dr1_blog1" 
+test_blog1_md2dr1 = testing_md2dr1 "blog1" 
+test_index_md2dr1 = testing_md2dr1 "index" 
+test_postwk_md2dr1 = testing_md2dr1 "postwk" 
+test_withRef_md2dr1 = testing_md2dr1 "withRef" 
 
--- test1FileIO "ssg" "blog1.md" "dr1_blog1" (readMarkdown2docrep NoticeLevel0 doughP bakedP (makeAbsFile "/home/frank/Workspace11/ssg/docs/site/dough/Blog/blog1.md") .  MarkdownText) 
-test_index_dm2dr1 = testing_dm2dr1 "index.md" "dr1_index" 
--- test1FileIO "ssg" "index.md" "dr1_index" (readMarkdown2docrep NoticeLevel0 doughP bakedP (makeAbsFile "/home/frank/Workspace11/ssg/docs/site/dough/Blog/index.md") .  MarkdownText) -- why is here MarkdownText needed?
+-- | testing conversion from dr1 to dr3 
+testing_dr12dr3 f1  = test1FileIO "ssg" (f1<> "_dr1") (f1 <> "_dr3" ) (addRefs NoticeLevel0   )
 
-test_blog1_readMarkdown2pandoc = test1FileIO "ssg" "blog1.md" "pandoc_blog1" (readMarkdown2 . MarkdownText) 
+-- (completeDocRep NoticeLevel0 doughP bakedP (makeAbsFile "/home/frank/Workspace11/ssg/docs/site/dough/Blog/blog1.md")  ) 
 
-test_index_readMarkdown2pandoc = test1FileIO "ssg" "index.md" "pandoc_index" (readMarkdown2 . MarkdownText) 
+test_blog1_dr1_dr3 = testing_dr12dr3 "blog1"   --  "dr1_blog1" "dr3_blog1" 
+test_index_dr1_dr3 = testing_dr12dr3  "index"  -- "dr1_index" "dr3_index" 
+test_postwk_dr1_dr3 = testing_dr12dr3  "postwk"  -- "dr1_index" "dr3_index" 
+test_withRef_dr1_dr3 = testing_dr12dr3  "withRef"  -- "dr1_index" "dr3_index" 
+    
 
--- test_dr1_d2 = test1FileIO "ssg" "dr1_blog1" "dr2_blog1" (completeDocRep NoticeLevel0 doughP bakedP (makeAbsFile "/home/frank/Workspace11/ssg/docs/site/dough/Blog/blog1.md")  ) 
-
-test_blog1_dr1_dr3 = test1FileIO "ssg" "dr1_blog1" "dr3_blog1" 
-    (addRefs NoticeLevel0   ) 
-
-test_index_dr1_dr3 = test1FileIO "ssg" "dr1_index" "dr3_index" 
-    (addRefs NoticeLevel0   ) 
-
-
-test_blog1_dm2docrep = test1FileIO "ssg" "blog1.md" "blog1T.docrep" (md2docrep NoticeLevel0 settings403 (makeAbsFile "/home/frank/Workspace11/ssg/docs/site/dough/Blog/blog1.md") .  MarkdownText) 
-test_index_dm2docrep = test1FileIO "ssg" "index.md" "indexT.docrep" (md2docrep NoticeLevel0 settings403 (makeAbsFile "/home/frank/Workspace11/ssg/docs/site/dough/Blog/index.md") .  MarkdownText) 
+-- | testing dr3 to docrep (check stepwise same result)
+testing_md2docrep f1= test1FileIO "ssg" (f1<> ".md") (f1 <> "T.docrep" ) (md2docrep NoticeLevel0 settings403 fn2process .  MarkdownText) 
+  where 
+      fn2process:: Path Abs File 
+      fn2process = blogRoot </> (makeRelFile f1)
+      blogRoot = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/dough/Blog"
+      -- TODO needs somewhere fix to build to website root
+test_blog1_dm2docrep = testing_md2docrep "blog1"
+    -- test1FileIO "ssg" "blog1.md" "blog1T.docrep" (md2docrep NoticeLevel0 settings403 (makeAbsFile "/home/frank/Workspace11/ssg/docs/site/dough/Blog/blog1.md") .  MarkdownText) 
+test_index_dm2docrep = testing_md2docrep "index"
+test_postwk_dm2docrep = testing_md2docrep "postwk"
+test_withRef_dm2docrep = testing_md2docrep "withRef"
+    -- test1FileIO "ssg" "index.md" "indexT.docrep" (md2docrep NoticeLevel0 settings403 (makeAbsFile "/home/frank/Workspace11/ssg/docs/site/dough/Blog/index.md") .  MarkdownText) 
 
 
 -- test_readMarkdown2pandoc = test1FileIO "ssg"  "blog1.md" "pandoc_blog1" (readMarkdown2 . MarkdownText)
