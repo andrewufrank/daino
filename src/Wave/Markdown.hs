@@ -31,36 +31,19 @@ import Foundational.MetaPage
 import Uniform.Pandoc
 import           Uniform.Shake           (makeRelativeP)
 
--- import Uniform.Json
 import Foundational.Filetypes4sites  
--- import Uniform2.HTMLout  
-
--- -- data DocrepJSON = DocrepJSON {yam :: Value, blocks :: [Block]} -- a json value
--- data DocrepJSON = DocrepJSON {yam1 :: Value, pan1 :: Pandoc} -- a json value
---     deriving (Show, Read, Eq, Generic, Zeros)
-
-
--- docrepJSON2docrep :: DocrepJSON -> Docrep
--- docrepJSON2docrep (DocrepJSON j p) = Docrep j p
 
 readMarkdown2docrep :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> Path Abs File ->  MarkdownText -> ErrIO Docrep
 
 {- | read a md file into a DocrepJSON
  reads the markdown file with pandoc and extracts the yaml metadaat
- the metadata are then copied over to the meta part
- and converted in regular json
- attention: there is potential duplication
- as the metadata are partially duplicated
+ the metadata are then converted to metaPage 
+ -- duplication possible for data in the pandoc metada (no used)
 -}
 readMarkdown2docrep debug doughP bakedP filename md = do
     pd <- readMarkdown2 md
     let meta2 = flattenMeta . getMeta $ pd
-    -- let meta3 = fromJustNote "readMarkdown2docrep not read" .
-    -- meta3 :: Maybe MetaPage <- fromJSONerrio meta2
-    -- let y1 = meta2
     let relfn = makeRelativeP doughP filename
-    -- perhasp the parseJSON (genericParseJSON)
-    -- is better (avoiding capitalization?)
     let meta4 = MetaPage
             { dyFn = toFilePath filename
             , dyLink =toFilePath relfn
@@ -79,7 +62,6 @@ readMarkdown2docrep debug doughP bakedP filename md = do
             , dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
             , dyIndexEntry = zero
             }
-        -- refs1 = y1 ^? key "references" :: Maybe Value -- is an array
  
 
     return (Docrep meta4 pd)
