@@ -27,7 +27,7 @@ import Uniform2.HTMLout
 
 import Lib.Templating -- (applyTemplate2, convGmaster)
 import Lib.IndexMake
-import Lib.Markdown_test
+import Lib.Md2doc_test
 
 programName = "ssg" :: Text
 -- settingsFile =   "settings2File"

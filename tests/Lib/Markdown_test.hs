@@ -7,7 +7,7 @@
 
 -- {-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-unused-imports #-}
 
-module Lib.Markdown_test 
+module Lib.Md2doc_test 
      where
 
 import Test.Framework
@@ -15,7 +15,7 @@ import Uniform.Test.TestHarness
 import Foundational.MetaPage 
 import Foundational.Foundation
 import Foundational.Filetypes4sites
-import Wave.Markdown
+import Wave.Md2doc
 import Uniform.Pandoc
 import Uniform.Json
 import UniformBase

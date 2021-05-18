@@ -1,7 +1,7 @@
 ---------------------------------------------------------------------
 --
--- Module      :  Wave.Markdown 
--- the conversion of markdown to docrep 
+-- Module      :  Wave.Md2doc
+-- the conversion of markdown to docrep
 ------------------------------------------------------------------
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE DeriveAnyClass #-}
@@ -15,54 +15,54 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE UndecidableInstances #-}
-{-# OPTIONS_GHC -Wall  #-}
+{-# OPTIONS_GHC -Wall #-}
 
-module Wave.Markdown (
-    module Wave.Markdown,
-    MarkdownText (..)
+module Wave.Md2doc (
+    module Wave.Md2doc,
+    MarkdownText (..),
 ) where
 
 import UniformBase
 
-import Foundational.Foundation  
+import Foundational.Foundation
+import Foundational.MetaPage
 import Uniform.Json
-import Foundational.MetaPage 
 
 import Uniform.Pandoc
-import           Uniform.Shake           (makeRelativeP)
+import Uniform.Shake (makeRelativeP)
 
-import Foundational.Filetypes4sites  
+import Foundational.Filetypes4sites
 
-readMarkdown2docrep :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> Path Abs File ->  MarkdownText -> ErrIO Docrep
+readMarkdown2docrep :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> Path Abs File -> MarkdownText -> ErrIO Docrep
 
 {- | read a md file into a DocrepJSON
  reads the markdown file with pandoc and extracts the yaml metadaat
- the metadata are then converted to metaPage 
+ the metadata are then converted to metaPage
  -- duplication possible for data in the pandoc metada (no used)
 -}
 readMarkdown2docrep debug doughP bakedP filename md = do
     pd <- readMarkdown2 md
     let meta2 = flattenMeta . getMeta $ pd
     let relfn = makeRelativeP doughP filename
-    let meta4 = MetaPage
-            { dyFn = toFilePath filename
-            , dyLink =toFilePath relfn
-            , dyLang = DLenglish -- getAtKey meta2 "language"
-            , dyTitle = fromMaybe "FILL TITLE" $ getAtKey meta2 "title"
-            , dyAbstract = fromMaybe "FILL ABSTRCT" $ getAtKey meta2 "abstract"
-            , dyAuthor = fromMaybe "FILL AUTHOR" $ getAtKey meta2 "author"
-            , dyDate = getAtKey meta2 "date"
-            , dyKeywords = fromMaybe "" $ getAtKey meta2 "keywords"
-            , dyStyle =  getAtKey meta2 "style" 
-            , dyNoCite =  getAtKey meta2 "nocite"  
-            , dyReferences =  gak meta2 "references"  
-            , dyBibliography = zero 
-            , dyPublish =  getAtKey meta2 "publish" 
-            -- TODO use pbulicationState 
-            , dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
-            , dyIndexEntry = zero
-            }
- 
+    let meta4 =
+            MetaPage
+                { dyFn = toFilePath filename
+                , dyLink = toFilePath relfn
+                , dyLang = DLenglish -- getAtKey meta2 "language"
+                , dyTitle = fromMaybe "FILL TITLE" $ getAtKey meta2 "title"
+                , dyAbstract = fromMaybe "FILL ABSTRCT" $ getAtKey meta2 "abstract"
+                , dyAuthor = fromMaybe "FILL AUTHOR" $ getAtKey meta2 "author"
+                , dyDate = getAtKey meta2 "date"
+                , dyKeywords = fromMaybe "" $ getAtKey meta2 "keywords"
+                , dyStyle = getAtKey meta2 "style"
+                , dyNoCite = getAtKey meta2 "nocite"
+                , dyReferences = gak meta2 "references"
+                , dyBibliography = zero
+                , dyPublish = getAtKey meta2 "publish"
+                , -- TODO use pbulicationState
+                  dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
+                , dyIndexEntry = zero
+                }
 
     return (Docrep meta4 pd)
 
@@ -97,7 +97,7 @@ md2docrep debug layout2 inputFn md1 = do
     -- need  needs1  -- TDO this is in the wrong monad
     -- dr4 <- addIndex2yam debug dr3
     -- this will be done twice in html and tex
-    return  dr3
+    return dr3
 
 -------------------------------------
 -- completeDocRep :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> Path Abs File -> Docrep -> ErrIO Docrep
@@ -136,7 +136,7 @@ addRefs :: NoticeLevel -> Docrep -> ErrIO Docrep
 --   let result = citeproc procOpts s m $ [cites]
 --   putStrLn . unlines . map (renderPlainStrict) . citations $ result
 
-addRefs debug dr1  = do
+addRefs debug dr1 = do
     -- the biblio entry is the signal that refs need to be processed
     -- only refs do not work
     when (inform debug) $ putIOwords ["addRefs", showT dr1, "\n"]
@@ -144,7 +144,7 @@ addRefs debug dr1  = do
     let biblio1 = dyBibliography . meta1 $ dr1
     maybe (return dr1) (addRefs2 debug dr1) biblio1
 
-addRefs2 :: 
+addRefs2 ::
     NoticeLevel ->
     Docrep ->
     Text ->
@@ -152,10 +152,10 @@ addRefs2 ::
 addRefs2 debug dr1@(Docrep y1 p1) biblio1 = do
     --   let debugx = False
     when (inform debug) $ putIOwords ["addRefs2-1", showT dr1, "\n"]
-    let style1 = dyStyle y1 
-    -- let refs1 = dyReferences y1 
+    let style1 = dyStyle y1
+    -- let refs1 = dyReferences y1
     -- let style1 = getAtKey y1 "style" :: Maybe Text
-        -- refs1 = gak y1 "references" :: Maybe Value -- is an array
+    -- refs1 = gak y1 "references" :: Maybe Value -- is an array
     --     -- refs1 = y1 ^? key "references" :: Maybe Value -- is an array
     --     nocite1 = getAtKey y1 "nocite" :: Maybe Text
     --   let style1 = syStyle y1
@@ -180,7 +180,6 @@ addRefs2 debug dr1@(Docrep y1 p1) biblio1 = do
     -- let refs2 = fromJustNote "refs in addRefs2 vcbnf refs2" refs1 :: Value
     -- let refs3 = fromJSONValue refs2 -- :: Result [Reference]
     -- let refs4 = fromJustNote "addRefs2 08werwe refs4" refs3 :: [Reference]
-
     let bibliofp =
             t2s biblio1 :: FilePath
     let stylefp =
@@ -188,13 +187,10 @@ addRefs2 debug dr1@(Docrep y1 p1) biblio1 = do
     --  Raised the exception when style empty
     when (inform debug) $ putIOwords ["addRefs2-3-1", "done"]
     -- let refs1json = if null (dyReferences  y1)
-    --                     then Nothing 
+    --                     then Nothing
     --                     else Just $ toJSON (dyReferences  y1)
-    p2 <- readBiblioRefs (inform debug) bibliofp loc1 stylefp  (dyReferences y1) p1  
-
-
+    p2 <- readBiblioRefs (inform debug) bibliofp loc1 stylefp (dyReferences y1) p1
 
     when (inform debug) $ putIOwords ["addRefs2-4", "p2\n", showT p2]
 
     return (Docrep y1 p2)
-    

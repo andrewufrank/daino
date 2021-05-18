@@ -43,7 +43,7 @@ library
       ShakeBake.Watch
       Uniform2.HTMLout
       Uniform2.ProcessPDF
-      Wave.Markdown
+      Wave.Md2doc
       Wave.Panrep
   other-modules:
       Paths_ssg
