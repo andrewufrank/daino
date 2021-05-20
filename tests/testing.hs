@@ -18,6 +18,7 @@ import     Test.Framework
 
 import    {-@ HTF_TESTS @-}        Lib.Indexing_test
 import    {-@ HTF_TESTS @-}        Lib.Pan2html_test
+import    {-@ HTF_TESTS @-}        Lib.IndexMake_test
 
 
 main :: IO ()

@@ -75,7 +75,8 @@ convert2index (this, content, subix) =
     a = getOneIndexEntryPure this
     b = map getOneIndexEntryPure content -- braucht wohl filter
     c = map getOneIndexEntryPure subix
-
+-- | the lnes for the index 
+-- TODO make a variant for the breaing marks
 data Index4html = Index4html
   { -- fn :: Path Abs File   -- ^ naked filename -- not shown
     text2      :: Text, -- the filename - not shown? ?
@@ -131,7 +132,7 @@ getOneIndexEntryPure metaRec =
 
 newtype MenuEntry = MenuEntry {menu2 :: [Index4html]}
   -- menu2 is referenced in the template
-  deriving (Generic, Eq, Ord, Show)
+  deriving (Generic, Eq, Ord, Show, Read)
 
 -- instance NiceStrings MenuEntry where
 --     shownice = showNice
