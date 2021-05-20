@@ -47,7 +47,7 @@ convertIndexEntries metap =
     -- metafiles <- mapM fromJSONerrio files
 
     let menu1 = convert2index (yentry, dirs, fils)
-    putIOwords ["convertIndexEntries", "menu2", showT menu1]
+    putIOwords ["convertIndexEntries", "menu1", showT menu1]
     -- let y2 = putAtKey2 "menu" menu1 y
     -- let y2 = mergeLeftPref [toJSON menu1, toJSON y]
     -- y4 :: MetaPage <- fromJSONerrio y2   
