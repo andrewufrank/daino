@@ -80,8 +80,8 @@ docrep2panrep debug layout (Docrep y1 p1) = do
 -- implements the bake
 panrep2html :: NoticeLevel -> SiteLayout -> Panrep -> ErrIO HTMLout
 panrep2html debug layout (Panrep m1 p1)= do
-    -- let templateP = templatesDir layout
-    menu4 <- convertIndexEntries m1 -- move to
+    let ixe1  = dyIndexEntry m1
+    menu4 <- convertIndexEntries ixe1 -- move to
     -- p <- panrep2htmlP debug templateP dr4
 
   -- let y2 = putAtKey2 "menu" menu1 y

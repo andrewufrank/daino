@@ -12,9 +12,9 @@ module Main where      -- must have Main (main) or Main where
 
 import     Test.Framework
 
-import    {-@ HTF_TESTS @-}        Lib.Example_test
-import    {-@ HTF_TESTS @-}        Lib.ReadSettingFile_test
-import    {-@ HTF_TESTS @-}        Lib.Md2doc_test
+-- import    {-@ HTF_TESTS @-}        Lib.Example_test
+-- import    {-@ HTF_TESTS @-}        Lib.ReadSettingFile_test
+-- import    {-@ HTF_TESTS @-}        Lib.Md2doc_test
 
 import    {-@ HTF_TESTS @-}        Lib.Indexing_test
 import    {-@ HTF_TESTS @-}        Lib.Pan2html_test
