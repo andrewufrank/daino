@@ -81,18 +81,29 @@ docrep2panrep debug layout (Docrep y1 p1) = do
 panrep2html :: NoticeLevel -> SiteLayout -> Panrep -> ErrIO HTMLout
 panrep2html debug layout (Panrep m1 p1)= do
     let ixe1  = dyIndexEntry m1
-    menu4 <- convertIndexEntries ixe1 -- move to
+    menu4 :: MenuEntry <- convertIndexEntries ixe1 -- move to
     -- p <- panrep2htmlP debug templateP dr4
 
+    p4 <- mergeConeent menu4 p1 
   -- let y2 = putAtKey2 "menu" menu1 y
-    let j2 = mergeLeftPref [toJSON menu4, toJSON p1]
-    p4 ::Pandoc <- fromJSONerrio j2     
+    -- let j2 = mergeLeftPref [toJSON menu4, toJSON p1]
+    -- p4 ::Pandoc <- fromJSONerrio j2     
     -- let p2 = putAtKey "menu" menu4 p1
     -- possibly key at "key"
     let dr4 = Panrep m1 p4
     p :: HTMLout <- putValinMaster debug dr4 (templatesDir layout)
     when (informNone debug) $ putIOwords ["\n panrep2html done"]
     return p
+
+mergeContent :: MenuEntry -> Pandoc -> ErrIO Pandoc 
+-- merge Menuitem into pandoc 
+mergeContent menu4 p1 = do 
+    let j2 = mergeLeftPref [toJSON menu4, toJSON p1]
+    p4 ::Pandoc <- fromJSONerrio j2  
+    -- TODO ERROR p4 == p1 
+    -- menu4 is lost
+    return p4    
+
 
 -- -- step1
 -- panrep2panrep1 :: NoticeLevel -> SiteLayout -> Panrep -> ErrIO Panrep1
