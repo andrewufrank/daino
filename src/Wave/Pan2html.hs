@@ -1,19 +1,19 @@
----------------------------------------------------------------------------
+---------------------------------------------------------------------
 --
 -- Module      :  Uniform.Pan2html
------------------------------------------------------------------------------
-{-# LANGUAGE ConstraintKinds       #-}
-{-# LANGUAGE DeriveAnyClass        #-}
-{-# LANGUAGE DeriveGeneric         #-}
-{-# LANGUAGE DoAndIfThenElse       #-}
+---------------------------------------------------------------------
+{-# LANGUAGE ConstraintKinds #-}
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DoAndIfThenElse #-}
 {-# LANGUAGE DuplicateRecordFields #-}
-{-# LANGUAGE FlexibleContexts      #-}
-{-# LANGUAGE FlexibleInstances     #-}
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE OverloadedStrings     #-}
-{-# LANGUAGE ScopedTypeVariables   #-}
-{-# LANGUAGE TypeFamilies          #-}
-{-# LANGUAGE UndecidableInstances  #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE UndecidableInstances #-}
 {-# OPTIONS_GHC -Wall -fno-warn-orphans
             -fno-warn-missing-signatures
             -fno-warn-missing-methods
@@ -28,22 +28,20 @@ module Wave.Pan2html (
     module Wave.Pan2html,
 ) where
 
-import           Data.Default
-import           Foundational.Foundation
-import           Foundational.MetaPage
-import           GHC.Generics                 (Generic)
-import           Lib.IndexMake
-import           Lib.Indexing
-import           Lib.Templating
--- import Text.CSL as Pars (Reference, readBiblioFile, readCSLFile)
--- import Text.CSL.Pandoc as Bib (processCites)
--- import qualified Text.Pandoc as Pandoc
-import           Foundational.Filetypes4sites
-import           Uniform.Json
-import           Uniform.Pandoc
-import           Uniform2.HTMLout
-import           UniformBase
-import Text.Pandoc.Definition
+import Data.Default
+import Foundational.Filetypes4sites
+import Foundational.Foundation
+import Foundational.MetaPage
+import GHC.Generics (Generic)
+import Lib.IndexMake
+import Lib.Indexing
+import Lib.Templating
+import Uniform.Json
+import Uniform.Pandoc
+import Uniform2.HTMLout
+import UniformBase
+
+-- import Text.Pandoc.Definition
 
 ------------------------------------------------docrep -> panrep
 
@@ -55,106 +53,36 @@ import Text.Pandoc.Definition
 docrep2panrep debug layout (Docrep y1 p1) = do
     let bakedP = bakedDir layout
     let doughP = doughDir layout
-    let pr = Panrep
+    let pr =
+            Panrep
                 { panyam = y1
                 , panpan = p1
                 }
     --
-    if dyIndexPage . panyam $ pr 
-        then do 
+    if dyIndexPage . panyam $ pr
+        then do
             let m1 = panyam pr
-            let ix1 = initializeIndex   m1
+            let ix1 = initializeIndex m1
             ix2 <- completeIndex debug doughP bakedP ix1
-        -- todo put ix2 into pr
+            -- todo put ix2 into pr
             let m2 = m1{dyIndexEntry = ix2}
             return pr{panyam = m2}
-        else 
-            return pr
-
--- do
--- --   (DocrepJSON y2 p2) <- addRefs False dr1 -- was already done in  bakeOneMD2docrep
--- return
---  $ Panrep y1 p1
+        else return pr
 
 -- ------------------------------------ panrep2html
 -- panrep2html :: Panrep -> ErrIO HTMLout
 -- implements the bake
 panrep2html :: NoticeLevel -> SiteLayout -> Panrep -> ErrIO HTMLout
-panrep2html debug layout (Panrep m1 p1)= do
-    let ixe1  = dyIndexEntry m1
+panrep2html debug layout (Panrep m1 p1) = do
+    let ixe1 = dyIndexEntry m1
     menu4 :: MenuEntry <- convertIndexEntries ixe1 -- move to
-    -- p <- panrep2htmlP debug templateP dr4
-
-    -- p4 <- mergeContent menu4 p1 
-  -- let y2 = putAtKey2 "menu" menu1 y
-    -- let j2 = mergeLeftPref [toJSON menu4, toJSON p1]
-    -- p4 ::Pandoc <- fromJSONerrio j2     
-    -- let p2 = putAtKey "menu" menu4 p1
-    -- possibly key at "key"
-    -- let dr4 = Panrep m1 p4
-    -- let getBlock (Pandoc m bs) = bs :: [Block]
-    -- let p2 = Content (getBlock p1)-- produce 
-    -- produces truetrue ...
-    thtml <- writeHtml5String2 p1 
+    thtml <- writeHtml5String2 p1
     let p2 = Content thtml
     let cts = [toJSON m1, toJSON menu4, toJSON p2]
+
     p :: HTMLout <- putValinMaster debug cts (templatesDir layout)
     when (informNone debug) $ putIOwords ["\n panrep2html done"]
     return p
 
-newtype Content = Content {content::Text} deriving (Show, Generic)
-instance ToJSON Content 
-
--- mergeContent :: MenuEntry -> Pandoc -> ErrIO Pandoc 
--- -- merge Menuitem into pandoc 
--- mergeContent menu4 p1 = do 
---     let jmenu4 = toJSON  menu4 
---     let jp1 = toJSON  p1 
---     putIOwords ["mergeConten 1 jmenu4", take' 300 $ showT jmenu4]
---     putIOwords ["mergeConten 1 jpi1", take' 300 $ showT jp1]
-
---     let j2 = mergeLeftPref [jmenu4, jp1]
---     putIOwords ["mergeConten 2 j2", take' 300 $ showT jp1]
---     p4 ::Pandoc <- fromJSONerrio j2  
---     -- TODO ERROR p4 == p1 
---     -- menu4 is lost
---     return p4    
-
-
--- -- step1
--- panrep2panrep1 :: NoticeLevel -> SiteLayout -> Panrep -> ErrIO Panrep1
--- panrep2panrep1 debug layout(Panrep m1 p1)= do
---     -- let templateP = templatesDir layout
---     menu4 <- convertIndexEntries m1 -- move to
---     -- p <- panrep2htmlP debug templateP dr4
---     let p2 = putAtKey "menu" (toJSON menu4) p1
---     -- possibly key at "key"
---     let dr4 = Panrep m1 p2
---     when (informNone debug) $ putIOwords ["\n panrep2panrep1 done"]
---     return . Panrep1 $ dr4
-
--- panrep12html :: NoticeLevel -> SiteLayout -> Panrep1 -> ErrIO HTMLout
--- panrep12html debug layout dr4 = do
---     -- let templateP = templatesDir layout
---     -- dr4 <- convertIndexEntries dr1 -- move to
---     p :: HTMLout <- putValinMaster debug (unPanrep1 dr4) (templatesDir layout)
---     when (informNone debug) $ putIOwords ["\n panrep12html done"]
---     return p
-
-
--- panrep2htmP :: NoticeLevel  -> Path Abs Dir -> Panrep ->ErrIO Text
--- panrep2htmP debug templateP dr4 = do
---     -- dr4 <- convertIndexEntries dr1 -- move to
---     p :: Text <- putValinMaster False dr4 templateP
---     return p
-
-
--- -- where does this belong?
-
--- panrep22html :: Panrep -> ErrIO HTMLout
--- -- ^ transform a docrep to a html file
--- -- needs teh processing of the references with citeproc
--- panrep2html pr1@(Panrep y1 p1) = do
---   -- dr2 <- addRefs pr1
---   h1 <- unPandocM $ writeHtml5String html5Options p1
---   return . HTMLout $ h1
+newtype Content = Content {content :: Text} deriving (Show, Generic)
+instance ToJSON Content

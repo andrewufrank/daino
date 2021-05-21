@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------
 --
--- Module      :  Uniform.Pan2html
+-- Module      :  Uniform.Pan2texsnip
 -----------------------------------------------------------------------------
 {-# LANGUAGE ConstraintKinds       #-}
 {-# LANGUAGE DeriveAnyClass        #-}
