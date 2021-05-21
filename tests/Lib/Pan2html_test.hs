@@ -36,9 +36,9 @@ op :: Panrep  -> IndexEntry
 op = dyIndexEntry . panyam
  
 test_pan2indexEntry_blog1 = testing_pan2indexEntry "blog1"
-test_pan2indexEntry_index = testing_pan2indexEntry "index"
-test_pan2indexEntry_postwk = testing_pan2indexEntry "postwk"
-test_pan2indexEntry_withRef = testing_pan2indexEntry "withRef"
+-- test_pan2indexEntry_index = testing_pan2indexEntry "index"
+-- test_pan2indexEntry_postwk = testing_pan2indexEntry "postwk"
+-- test_pan2indexEntry_withRef = testing_pan2indexEntry "withRef"
 
 testing_pan2HTMLout f = test1FileIO "ssg"  (  "panrep_" <> f) ("htmlout_" <> f) op1        -- dr1 <- read8 inputFn docrepFileType
 op1 :: Panrep  -> ErrIO HTMLout 

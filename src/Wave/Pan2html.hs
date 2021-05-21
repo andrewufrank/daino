@@ -92,14 +92,17 @@ panrep2html debug layout (Panrep m1 p1)= do
     -- let p2 = putAtKey "menu" menu4 p1
     -- possibly key at "key"
     -- let dr4 = Panrep m1 p4
-    let getBlock (Pandoc m bs) = bs :: [Block]
-    let p2 = Content (getBlock p1)-- produce 
+    -- let getBlock (Pandoc m bs) = bs :: [Block]
+    -- let p2 = Content (getBlock p1)-- produce 
+    -- produces truetrue ...
+    thtml <- writeHtml5String2 p1 
+    let p2 = Content thtml
     let cts = [toJSON m1, toJSON menu4, toJSON p2]
     p :: HTMLout <- putValinMaster debug cts (templatesDir layout)
     when (informNone debug) $ putIOwords ["\n panrep2html done"]
     return p
 
-newtype Content = Content {content:: [Block]} deriving (Show, Generic)
+newtype Content = Content {content::Text} deriving (Show, Generic)
 instance ToJSON Content 
 
 -- mergeContent :: MenuEntry -> Pandoc -> ErrIO Pandoc 
