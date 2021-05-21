@@ -131,3 +131,24 @@ masterTemplateFileName = makeRelFile "master4.dtpl"
 --    testDir: /home/frank/.SSG  -- fixed in testharness
 --localhostPort: 3000
 
+-- | the switches for material to include
+data PubFlags = PubFlags
+        {publishFlag
+        , oldFlag
+        , draftFlag
+        , testFlag
+        , watchFlag
+        , serverFlag:: Bool
+        , uploadFlag :: Bool 
+        , settingsFile :: Path Abs File
+        } deriving (Show,  Eq)  -- no read for path 
+
+instance Zeros PubFlags where 
+    zero = PubFlags zero zero zero zero zero zero zero zero
+
+allFlags :: PubFlags
+allFlags = zero {publishFlag = True  -- not including draft
+  , oldFlag = True 
+  , draftFlag = False
+  , settingsFile = testSettingsFileName}
+  

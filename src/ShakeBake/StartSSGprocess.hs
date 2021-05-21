@@ -21,7 +21,7 @@
 -}
 module ShakeBake.StartSSGprocess (ssgProcess) where
 
-import Lib.CmdLineArgs (PubFlags (..))
+-- import Wave.CmdLineArgs (PubFlags (..))
 import ShakeBake.ReadSettingFile (readSettings)
 import ShakeBake.Shake2 (shakeAll)
 import ShakeBake.Watch (mainWatch)

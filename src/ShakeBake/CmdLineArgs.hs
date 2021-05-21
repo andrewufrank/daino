@@ -16,12 +16,12 @@
 
   #-}
 
-module Lib.CmdLineArgs where
+module ShakeBake.CmdLineArgs where
 import UniformBase
 import Uniform.CmdLineArgs   -- from u2to 
   
-import Foundational.Foundation ( testSettingsFileName )
-
+import Foundational.Foundation 
+import Foundational.MetaPage
 
 -- | the command line arguments raw
 --  number of args must correspond in order and number with the
@@ -63,26 +63,7 @@ cmdArgs  =
           "upload to external server"
         )
 
--- | the switches for material to include
-data PubFlags = PubFlags
-        {publishFlag
-        , oldFlag
-        , draftFlag
-        , testFlag
-        , watchFlag
-        , serverFlag:: Bool
-        , uploadFlag :: Bool 
-        , settingsFile :: Path Abs File
-        } deriving (Show,  Eq)  -- no read for path 
 
-instance Zeros PubFlags where 
-    zero = PubFlags zero zero zero zero zero zero zero zero
-
-allFlags :: PubFlags
-allFlags = zero {publishFlag = True  -- not including draft
-  , oldFlag = True 
-  , draftFlag = False
-  , settingsFile = testSettingsFileName}
 
 
 

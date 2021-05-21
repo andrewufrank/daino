@@ -1,16 +1,16 @@
-{-# LANGUAGE DeriveAnyClass        #-}
-{-# LANGUAGE DeriveGeneric         #-}
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric #-}
 ---------------------------------------------------------------
 --
 -- MetaPage   :
 ---------------------------------------------------------------------
-{-# LANGUAGE FlexibleContexts      #-}
-{-# LANGUAGE FlexibleInstances     #-}
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE OverloadedStrings     #-}
-{-# LANGUAGE RecordWildCards       #-}
-{-# LANGUAGE ScopedTypeVariables   #-}
-{-# LANGUAGE TypeFamilies          #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeFamilies #-}
 {-# OPTIONS_GHC -Wall -fno-warn-orphans
             -fno-warn-missing-signatures
             -fno-warn-missing-methods
@@ -24,49 +24,51 @@
  all entries there should be from this list
  all JSON related functions here!
 -}
-module Foundational.MetaPage
-    (module Foundational.MetaPage
-    , Default(..)
-    ) where
+module Foundational.MetaPage (
+    module Foundational.MetaPage,
+    Default (..),
+) where
 
 -- import Data.Aeson.Types
-import           Data.Default            (Default (..))
-import           Foundational.Foundation (SiteLayout (..))
-import           Lib.CmdLineArgs         (PubFlags (..))
-import           Uniform.Json
-import           Uniform.Pandoc
-import           Uniform.PandocImports
-import           Uniform.Shake           (makeRelativeP)
-import           Uniform.Yaml
-import           UniformBase
+import Data.Default (Default (..))
+import Foundational.Foundation  
+-- import Lib.CmdLineArgs (PubFlags (..))
+import Uniform.Json
+import Uniform.Pandoc
+import Uniform.PandocImports
+import Uniform.Shake (makeRelativeP)
+import Uniform.Yaml
+import UniformBase
 
 data MetaPage = MetaPage
-    { dyFn           :: FilePath -- ^ the original dough fn
-    , dyLink         :: FilePath -- ^ the relative filename 
-                -- relative to the browser origin 
-                -- set in ? initializeIndex 
-    , dyLang         :: DocLanguage -- ^ the fields of miniblog
-    , dyTitle        :: Text
-    , dyAbstract     :: Text
-    , dyAuthor       :: Text
+    { -- | the original dough fn
+      dyFn :: FilePath
+    , -- | the relative filename
+      -- relative to the browser origin
+      -- set in ? initializeIndex
+      dyLink :: FilePath
+    , -- | the fields of miniblog
+      dyLang :: DocLanguage
+    , dyTitle :: Text
+    , dyAbstract :: Text
+    , dyAuthor :: Text
     , -- | this is maybe a string,
       --  should be utctime
-      dyDate         :: Maybe Text
-    , dyKeywords     :: Text -- should be [Text]
+      dyDate :: Maybe Text
+    , dyKeywords :: Text -- should be [Text]
     , dyBibliography :: Maybe Text
-    , dyStyle        :: Maybe Text
-    , dyReferences       :: Maybe Value --  [Reference] 
+    , dyStyle :: Maybe Text
+    , dyReferences :: Maybe Value --  [Reference]
     , dyNoCite :: Maybe Text
-    , dyPublish      :: Maybe Text
-    , dyIndexPage    :: Bool
-    , dyIndexSort    :: Maybe Text 
-    , dyIndexEntry   :: IndexEntry
+    , dyPublish :: Maybe Text
+    , dyIndexPage :: Bool
+    , dyIndexSort :: Maybe Text
+    , dyIndexEntry :: IndexEntry
     -- , dyDirEntries   :: [IndexEntry]  -- reduce to one for indexEntry
     -- , dyFileEntries  :: [IndexEntry]
     -- is defined later, necessary here?
     }
-    deriving (Show,   Eq, Generic, Zeros, Read) -- ord missing for references 
-
+    deriving (Show, Eq, Generic, Zeros, Read) -- ord missing for references
 
 instance Default MetaPage where
     def =
@@ -84,7 +86,7 @@ instance Default MetaPage where
             , dyPublish = Nothing
             , dyIndexPage = False
             , dyIndexSort = zero
-            , dyIndexEntry = zero 
+            , dyIndexEntry = zero
             -- , dyDirEntries = zero
             -- , dyFileEntries = zero
             }
@@ -100,8 +102,6 @@ instance ToJSON MetaPage where
 
 instance FromJSON MetaPage where
     parseJSON = genericParseJSON docyamlOptions
-
-
 
 -- addFileMetaPage :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> MetaPage
 -- addFileMetaPage doughP bakedP fn =
@@ -152,16 +152,16 @@ instance FromJSON PublicationState
 
 data IndexEntry = IndexEntry
     { -- | the abs file path
-      fn          :: FilePath -- Path Abs File
+      fn :: FilePath -- Path Abs File
     , -- | the link for this page (relative to web root)}
-      link        :: FilePath -- Path Rel File
-    , title       :: Text
-    , abstract    :: Text
-    , author      :: Text
-    , date        :: Text
-    , publish     :: Maybe Text
-    , indexPage   :: Bool
-    , dirEntries  :: [IndexEntry] -- def []
+      link :: FilePath -- Path Rel File
+    , title :: Text
+    , abstract :: Text
+    , author :: Text
+    , date :: Text
+    , publish :: Maybe Text
+    , indexPage :: Bool
+    , dirEntries :: [IndexEntry] -- def []
     , fileEntries :: [IndexEntry] -- def []
     }
     deriving (Show, Read, Eq, Ord, Zeros, Generic)
@@ -186,3 +186,4 @@ initializeIndex MetaPage{..} = ix1
             , dirEntries = zero
             , fileEntries = zero
             }
+

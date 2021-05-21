@@ -31,11 +31,11 @@ library
       Foundational.Foundation
       Foundational.MetaPage
       Lib.CheckProcess
-      Lib.CmdLineArgs
       Lib.Indexing
       Lib.IndexMake
       Lib.Templating
       ShakeBake.Bake
+      ShakeBake.CmdLineArgs
       ShakeBake.ConvertFiles
       ShakeBake.ReadSettingFile
       ShakeBake.Shake2

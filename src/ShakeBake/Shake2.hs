@@ -53,8 +53,9 @@ module ShakeBake.Shake2 where
 
 import           Uniform.Shake
 
-import           Foundational.Foundation
-import           Lib.CmdLineArgs         (PubFlags (..))
+import Foundational.Foundation
+    -- ( SiteLayout(doughDir, bakedDir), informall, staticDirName )
+-- import           Lib.CmdLineArgs         (PubFlags (..))
 import           ShakeBake.ConvertFiles
 
 -- shakeDelete :: SiteLayout -> FilePath -> ErrIO ()
