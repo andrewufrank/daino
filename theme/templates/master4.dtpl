@@ -129,10 +129,10 @@
         </nav>
         $endif$
 
-<!-- new content section -->
+<!-- blog text content section -->
     $beforeContent$
-    $if(abstract)$$abstract$ 
-    $endif$$contentHtml$
+    $if(abstract)$abstract$abstract$ 
+    $endif$content-from-panrep-blocks$content$
     $afterContent$
 
 

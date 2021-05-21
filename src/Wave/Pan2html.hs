@@ -43,6 +43,7 @@ import           Uniform.Json
 import           Uniform.Pandoc
 import           Uniform2.HTMLout
 import           UniformBase
+import Text.Pandoc.Definition
 
 ------------------------------------------------docrep -> panrep
 
@@ -84,31 +85,37 @@ panrep2html debug layout (Panrep m1 p1)= do
     menu4 :: MenuEntry <- convertIndexEntries ixe1 -- move to
     -- p <- panrep2htmlP debug templateP dr4
 
-    p4 <- mergeContent menu4 p1 
+    -- p4 <- mergeContent menu4 p1 
   -- let y2 = putAtKey2 "menu" menu1 y
     -- let j2 = mergeLeftPref [toJSON menu4, toJSON p1]
     -- p4 ::Pandoc <- fromJSONerrio j2     
     -- let p2 = putAtKey "menu" menu4 p1
     -- possibly key at "key"
-    let dr4 = Panrep m1 p4
-    p :: HTMLout <- putValinMaster debug dr4 (templatesDir layout)
+    -- let dr4 = Panrep m1 p4
+    let getBlock (Pandoc m bs) = bs :: [Block]
+    let p2 = Content (getBlock p1)-- produce 
+    let cts = [toJSON m1, toJSON menu4, toJSON p2]
+    p :: HTMLout <- putValinMaster debug cts (templatesDir layout)
     when (informNone debug) $ putIOwords ["\n panrep2html done"]
     return p
 
-mergeContent :: MenuEntry -> Pandoc -> ErrIO Pandoc 
--- merge Menuitem into pandoc 
-mergeContent menu4 p1 = do 
-    let jmenu4 = toJSON  menu4 
-    let jp1 = toJSON  p1 
-    putIOwords ["mergeConten 1 jmenu4", take' 300 $ showT jmenu4]
-    putIOwords ["mergeConten 1 jpi1", take' 300 $ showT jp1]
+newtype Content = Content {content:: [Block]} deriving (Show, Generic)
+instance ToJSON Content 
 
-    let j2 = mergeLeftPref [jmenu4, jp1]
-    putIOwords ["mergeConten 2 j2", take' 300 $ showT jp1]
-    p4 ::Pandoc <- fromJSONerrio j2  
-    -- TODO ERROR p4 == p1 
-    -- menu4 is lost
-    return p4    
+-- mergeContent :: MenuEntry -> Pandoc -> ErrIO Pandoc 
+-- -- merge Menuitem into pandoc 
+-- mergeContent menu4 p1 = do 
+--     let jmenu4 = toJSON  menu4 
+--     let jp1 = toJSON  p1 
+--     putIOwords ["mergeConten 1 jmenu4", take' 300 $ showT jmenu4]
+--     putIOwords ["mergeConten 1 jpi1", take' 300 $ showT jp1]
+
+--     let j2 = mergeLeftPref [jmenu4, jp1]
+--     putIOwords ["mergeConten 2 j2", take' 300 $ showT jp1]
+--     p4 ::Pandoc <- fromJSONerrio j2  
+--     -- TODO ERROR p4 == p1 
+--     -- menu4 is lost
+--     return p4    
 
 
 -- -- step1

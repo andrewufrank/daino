@@ -21,6 +21,7 @@ import Uniform.Pandoc
 import Uniform.Json
 import UniformBase
 import Lib.Indexing
+import           Uniform2.HTMLout
 
 -- -- | test to produce pan  
 testing_md2pan f1 f2 = test1FileIO "ssg" f1 f2 (docrep2panrep NoticeLevel0 settings403) 
@@ -39,7 +40,14 @@ test_pan2indexEntry_index = testing_pan2indexEntry "index"
 test_pan2indexEntry_postwk = testing_pan2indexEntry "postwk"
 test_pan2indexEntry_withRef = testing_pan2indexEntry "withRef"
 
-
+testing_pan2HTMLout f = test1FileIO "ssg"  (  "panrep_" <> f) ("htmlout_" <> f) op1        -- dr1 <- read8 inputFn docrepFileType
+op1 :: Panrep  -> ErrIO HTMLout 
+op1 = panrep2html NoticeLevel0 settings403
+ 
+test_pan2HTMLout_blog1 = testing_pan2HTMLout "blog1"
+-- test_pan2HTMLout_index = testing_pan2HTMLout "index"
+-- test_pan2HTMLout_postwk = testing_pan2HTMLout "postwk"
+-- test_pan2HTMLout_withRef = testing_pan2HTMLout "withRef"
 
 -- -- | conversion of markdown file f1 (with extension) to intermediate d11  
 -- testing_md2dr1 f1 = test1FileIO "ssg"  (f1<> ".md") (f1 <> "_dr1" )  (readMarkdown2docrep NoticeLevel0 doughP bakedP fn2process .  MarkdownText) 
@@ -82,6 +90,7 @@ test_pan2indexEntry_withRef = testing_pan2indexEntry "withRef"
 -- instance ShowTestHarness MetaPage  
 -- instance ShowTestHarness IndexEntry   
 instance ShowTestHarness Panrep
+instance ShowTestHarness HTMLout
 
 -- doughP = doughDir settings403 
 -- bakedP = bakedDir settings403

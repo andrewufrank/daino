@@ -69,6 +69,7 @@ dependencies:
     - data-default
     - uniform-pandoc 
     - uniform-latex2pdf 
+    - pandoc-types
     # -- - uniform-ftp
     # - aeson 
 
