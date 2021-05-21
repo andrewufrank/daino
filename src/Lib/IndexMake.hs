@@ -28,17 +28,17 @@ import           UniformBase
 import Uniform2.HTMLout
 
 
-convertIndexEntries :: IndexEntry -> ErrIO MenuEntry
+convertIndexEntries :: NoticeLevel -> IndexEntry -> ErrIO MenuEntry
 -- ^ take the index entries and convert their
 -- form and push them back into the json
-convertIndexEntries ixe1 =
+convertIndexEntries debug ixe1 =
   do
-    putIOwords ["convertIndexEntries", "start ixe1", showT ixe1]
+    when (inform debug) $ putIOwords ["convertIndexEntries", "start ixe1", showT ixe1]
     let dirs = dirEntries ixe1 -- dyDirEntries y
     let fils = fileEntries ixe1 -- fileEntries dyFileEntries MetaPage
 
     let menu1 = convert2index (ixe1, dirs, fils)
-    putIOwords ["convertIndexEntries", "menu1", showT menu1]
+    when (inform debug) $ putIOwords ["convertIndexEntries", "menu1", showT menu1]
     return menu1
 
 -- | convert the metarecs and put some divider between
@@ -63,13 +63,14 @@ convert2index (this, content, subix) =
     a = getOneIndexEntryPure this
     b = map getOneIndexEntryPure content -- braucht wohl filter
     c = map getOneIndexEntryPure subix
+
 -- | the lnes for the index 
 -- TODO make a variant for the breaing marks
 data Index4html = Index4html
   { -- fn :: Path Abs File   -- ^ naked filename -- not shown
-    text2      :: Text, -- the filename - not shown? ?
+    text2      :: Text, -- the filename with no extension as title 
 
-    -- | the url relative to dough dir
+    -- | the url relative to current dir 
     link2      :: Text,
     -- | the title as shown
     title2     :: Text,
@@ -98,7 +99,8 @@ getOneIndexEntryPure metaRec =
   Index4html
     { text2 = s2t . takeBaseName'   . fn $ metaRec,
       link2 =  s2t . -- s2t . toFilePath $ 
-          setExtension "HTML" . removeExtension
+          setExtension "html" . removeExtension
+          -- TODO use extHTML
             . link
             $ metaRec,
       abstract2 = abstract metaRec,

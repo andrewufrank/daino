@@ -75,7 +75,7 @@ docrep2panrep debug layout (Docrep y1 p1) = do
 panrep2html :: NoticeLevel -> SiteLayout -> Panrep -> ErrIO HTMLout
 panrep2html debug layout (Panrep m1 p1) = do
     let ixe1 = dyIndexEntry m1
-    menu4 :: MenuEntry <- convertIndexEntries ixe1 -- move to
+    menu4 :: MenuEntry <- convertIndexEntries debug ixe1 -- move to
     thtml <- writeHtml5String2 p1
     let p2 = Content thtml
     let cts = [toJSON m1, toJSON menu4, toJSON p2]

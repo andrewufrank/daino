@@ -24,7 +24,7 @@ import Wave.Doc2html
 -- import Data.Aeson
 import Uniform.Json
 
-testing_indexEntry2MenuEntry f = test1FileIO "ssg"   ("ixEntry1_" <> f) (  "ixEntry4_" <> f) convertIndexEntries      
+testing_indexEntry2MenuEntry f = test1FileIO "ssg"   ("ixEntry1_" <> f) (  "ixEntry4_" <> f) (convertIndexEntries NoticeLevel0)      
  
 test_indexEntry2MenuEntry_blog1 = testing_indexEntry2MenuEntry "blog1"
 test_indexEntry2MenuEntry_index = testing_indexEntry2MenuEntry "index"

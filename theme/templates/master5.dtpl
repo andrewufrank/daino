@@ -4,6 +4,8 @@
 		author date and keywords for indexing
     contentHtml, beforeContent, afterContent to wrap htmlcontent  
 	uses style.css as default, other can be loaded with key css 
+	refs in the menus are relative to the web root
+	(absolute web, inserted a / in the template)
 	-->
 <html lang="$lang$">
   <head>

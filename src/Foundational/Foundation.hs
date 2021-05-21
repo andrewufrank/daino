@@ -34,6 +34,7 @@ progName = "SSG"
 informall :: NoticeLevel -> Bool 
 informall = const True 
 
+
 data SiteLayout = SiteLayout
     { themeDir :: Path Abs Dir -- ^ the place of the  theme files (includes templates)
     , doughDir :: Path Abs Dir -- ^ where the content is originally (includes resources)
@@ -121,7 +122,7 @@ testLastUploadFileName = sourceDirTest </>
 masterTemplateFileName :: Path Rel File
 -- ^ the name of the master template
 -- should probably be in the settings?
-masterTemplateFileName = makeRelFile "master4.dtpl"
+masterTemplateFileName = makeRelFile "master5.dtpl"
 -- content of settings2.yaml
 --storage:
 --    themeDir:  /home/frank/Workspace11/ssg/theme

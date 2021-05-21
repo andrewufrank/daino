@@ -35,6 +35,6 @@ putValinMaster debug vals templatesP = do
     let masterfn = templatesP </> mf
     template2 :: Text <- readFile2 (toFilePath masterfn)
     -- templatapplyTemplate3 debug masterfn vals -- inTemplate.html
-    html2 <- applyTemplate4 True template2 vals -- inTemplate.html
+    html2 <- applyTemplate4 (inform debug) template2 vals -- inTemplate.html
     -- when (inform debug) $ putIOwords ["putValinMaster", showT html2]
     return . HTMLout $ html2
