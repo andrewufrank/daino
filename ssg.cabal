@@ -94,11 +94,11 @@ test-suite ssgTest
   type: exitcode-stdio-1.0
   main-is: testing.hs
   other-modules:
+      Lib.Doc2html_test
       Lib.Example_test
       Lib.Indexing_test
       Lib.IndexMake_test
       Lib.Md2doc_test
-      Lib.Pan2html_test
       Lib.ReadSettingFile_test
       Paths_ssg
   hs-source-dirs:

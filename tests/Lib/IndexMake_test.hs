@@ -20,7 +20,7 @@ import Lib.Templating
 import Lib.IndexMake
 import UniformBase
 import Uniform.Pandoc
-import Wave.Pan2html
+import Wave.Doc2html
 -- import Data.Aeson
 import Uniform.Json
 
