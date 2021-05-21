@@ -43,9 +43,8 @@ library
       ShakeBake.Watch
       Uniform2.HTMLout
       Uniform2.ProcessPDF
+      Wave.Doc2html
       Wave.Md2doc
-      Wave.Pan2html
-      Wave.Pan2texsnip
   other-modules:
       Paths_ssg
   hs-source-dirs:

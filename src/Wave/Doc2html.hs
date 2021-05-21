@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------
 --
--- Module      :  Uniform.Pan2html
+-- Module      :  Uniform.Doc2html
 ---------------------------------------------------------------------
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE DeriveAnyClass #-}
@@ -24,8 +24,8 @@
 {- | the representation with indices
  ready for processing to HTML or to TexSnip -> Tex -> Pdf
 -}
-module Wave.Pan2html (
-    module Wave.Pan2html,
+module Wave.Doc2html (
+    module Wave.Doc2html,
 ) where
 
 import Data.Default
@@ -62,7 +62,7 @@ docrep2panrep debug layout (Docrep y1 p1) = do
     if dyIndexPage . panyam $ pr
         then do
             let m1 = panyam pr
-            let ix1 = initializeIndex m1
+            let ix1 =dyIndexEntry  m1
             ix2 <- completeIndex debug doughP bakedP ix1
             -- todo put ix2 into pr
             let m2 = m1{dyIndexEntry = ix2}

@@ -31,7 +31,7 @@ import Uniform.Pandoc
 import Uniform2.ProcessPDF  
 import Uniform2.HTMLout
 
-import Wave.Pan2html  
+import Wave.Doc2html  
 import UniformBase
 
 type BakeOp =
