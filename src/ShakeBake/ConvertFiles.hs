@@ -20,17 +20,10 @@
 module ShakeBake.ConvertFiles where
 
 import ShakeBake.Bake
--- ( BakeOp,
---   bakeOneFile2docrep,
---   bakeOneFile2panrep,
---   bakeOneFile2html,
---   bakeOneFile2texsnip,
---   bakeOneFile2tex,
---   bakeOneFile2pdf )
--- import Lib.CmdLineArgs (PubFlags (..))
-import Foundational.Foundation 
-import Foundational.Filetypes4sites 
-import Uniform.Pandoc  
+
+import Foundational.Filetypes4sites
+import Foundational.Foundation
+import Uniform.Pandoc
 
 import Uniform.Shake
 
@@ -57,7 +50,6 @@ type ConvertA2BOp =
 convMD2docrep :: ConvertOp
 convMD2docrep debug doughP bakedP flags layout out =
     convA2B debug doughP bakedP flags layout out extMD bakeOneMD2docrep
-
 
 convDocrep2panrep :: ConvertOp
 convDocrep2panrep debug doughP bakedP flags layout out =
@@ -115,10 +107,13 @@ convA2B debug sourceP targetP flags layout out sourceExtA bakeop = do
         putIOwords
             ["\n  convA2B - 3 needed infile2", showPretty infile2]
     when ((informall debug) && (infile1 /= infile2)) $
-            putIOwords
-                ["\n  convA2B - 3 file differ"
-                , "\n infile1", showPretty infile1
-                , "\n infile2", showPretty infile2]
+        putIOwords
+            [ "\n  convA2B - 3 file differ"
+            , "\n infile1"
+            , showPretty infile1
+            , "\n infile2"
+            , showPretty infile2
+            ]
 
     res <-
         runErr2action $
@@ -142,12 +137,14 @@ convertAny ::
     PubFlags ->
     SiteLayout ->
     FilePath ->
-    ConvertOp   -- ^ the operation to carry out
-    -> Text  -- ^ the name of the operation
-    -> Action ()
+    -- | the operation to carry out
+    ConvertOp ->
+    -- | the name of the operation
+    Text ->
+    Action ()
 -- produce any (either copy available in baked or produce with anyop)
 convertAny debug sourceP targetP flags layout out anyop anyopName = do
-    putIOwords [ "-----------------", "convertAny for", anyopName]
+    putIOwords ["-----------------", "convertAny for", anyopName]
     let outP = makeAbsFile out :: Path Abs File
     when (informall debug) $ putIOwords ["\nproduceAny", "\n file out", showT out]
     if sourceP == targetP
@@ -174,12 +171,19 @@ convertAny debug sourceP targetP flags layout out anyop anyopName = do
             return ()
     when (inform debug) $ putIOwords ["convertAny end for", anyopName]
 
--- | the generic copy for all the files
--- which can just be copied
--- (exceptions md, which are a special case of needed)
-copyFileToBaked :: (Filenames3 fp (Path Rel File),
-      FileResultT fp (Path Rel File) ~ Path Abs File) =>
-        NoticeLevel -> fp -> Path Abs Dir -> FilePath -> Action ()
+{- | the generic copy for all the files
+ which can just be copied
+ (exceptions md, which are a special case of needed)
+-}
+copyFileToBaked ::
+    ( Filenames3 fp (Path Rel File)
+    , FileResultT fp (Path Rel File) ~ Path Abs File
+    ) =>
+    NoticeLevel ->
+    fp ->
+    Path Abs Dir ->
+    FilePath ->
+    Action ()
 copyFileToBaked debug doughP bakedP out = do
     let outP = makeAbsFile out :: Path Abs File
     when True $ liftIO $ putIOwords ["\ncopyFileToBaked outP", showT outP]

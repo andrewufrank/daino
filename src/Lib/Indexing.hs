@@ -10,14 +10,9 @@
 --  the data is stored in a file separately and managed by Shake
 --  operates on metapage (or less? )
 ----------------------------------------------------------------------
--- {-# LANGUAGE FlexibleContexts #-}
--- {-# LANGUAGE FlexibleInstances #-}
--- {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings #-}
--- {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE ScopedTypeVariables #-}
--- {-# LANGUAGE DeriveGeneric #-}
 {-# OPTIONS_GHC -Wall #-}
 
 module Lib.Indexing where
@@ -29,8 +24,6 @@ import Foundational.Filetypes4sites
 import Foundational.MetaPage
 import UniformBase
 import Wave.Md2doc
--- import Lib.CmdLineArgs (PubFlags (..))
--- import Foundational.Foundation
 
 
 

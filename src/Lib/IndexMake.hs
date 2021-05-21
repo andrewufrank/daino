@@ -33,24 +33,12 @@ convertIndexEntries :: IndexEntry -> ErrIO MenuEntry
 -- form and push them back into the json
 convertIndexEntries ixe1 =
   do
-  --   yentry :: IndexEntry <- fromJSONerrio y
-    -- let yentry = dyIndexEntry metap
     putIOwords ["convertIndexEntries", "start ixe1", showT ixe1]
     let dirs = dirEntries ixe1 -- dyDirEntries y
     let fils = fileEntries ixe1 -- fileEntries dyFileEntries MetaPage
 
-    -- dirs <- fromJustNote "convertIndexEntries werdsdx" $ getAtKey y "DirEntries"
-    -- files <- fromJustNote "convertIndexEntries 34634" $ getAtKey y "FileEntries"
-    -- meta :: IndexEntry  <- fromJSONerrio y
-
-    -- metadirs <- mapM fromJSONerrio dirs
-    -- metafiles <- mapM fromJSONerrio files
-
     let menu1 = convert2index (ixe1, dirs, fils)
     putIOwords ["convertIndexEntries", "menu1", showT menu1]
-    -- let y2 = putAtKey2 "menu" menu1 y
-    -- let y2 = mergeLeftPref [toJSON menu1, toJSON y]
-    -- y4 :: MetaPage <- fromJSONerrio y2   
     return menu1
 
 -- | convert the metarecs and put some divider between
@@ -101,10 +89,6 @@ instance FromJSON Index4html
 -- parseJSON = genericParseJSON h4Options
 instance ToJSON Index4html
 
--- toJSON = genericToJSON h4Options
--- h4Options =
---     defaultOptions
---         {fieldLabelModifier =   drop 2 }
 
 getOneIndexEntryPure :: IndexEntry -> Index4html
 

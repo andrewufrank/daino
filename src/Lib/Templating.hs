@@ -13,16 +13,15 @@
 
 module Lib.Templating where -- (openMain, htf_thisModuelsTests)
 
-import Foundational.Foundation  
+import Foundational.Foundation
 import Uniform2.HTMLout
-
 
 --(Abs, AtKey (getAtKey), Dir, ErrIO, Filenames3 ((</>)), HTMLout, Panrep (..), Path, Text, applyTemplate3, makeRelFile, putIOwords, showT, t2s, when)
 
 import Foundational.Filetypes4sites
 import Uniform.Json
-import UniformBase
 import Uniform.PandocHTMLwriter
+import UniformBase
 
 putValinMaster :: NoticeLevel -> [Value] -> Path Abs Dir -> ErrIO HTMLout
 {- ^ get the master html template and put the val into it
@@ -32,15 +31,10 @@ putValinMaster :: NoticeLevel -> [Value] -> Path Abs Dir -> ErrIO HTMLout
 -}
 putValinMaster debug vals templatesP = do
     when (inform debug) $ putIOwords ["putValinMaster", "templatesP", showT templatesP]
-    -- let mmt = getAtKey val "masterTemplate" :: Maybe Text
-    -- let mf = maybe masterTemplateFileName (makeRelFile . t2s) mmt
     let mf = masterTemplateFileName
     let masterfn = templatesP </> mf
     template2 :: Text <- readFile2 (toFilePath masterfn)
-    -- template2 <- read8 masterfn dtmplFileType
-    --   when (inform debug) $ putIOwords ["putValinMaster", "template", take' 300 $ showT template]
-    --   when (inform debug) $ putIOwords ["putValinMaster", "val", take' 300 $ showT val]
-    -- html2 <- applyTemplate3 debug masterfn vals -- inTemplate.html
-    html2 <- applyTemplate4 True  template2 vals -- inTemplate.html
+    -- templatapplyTemplate3 debug masterfn vals -- inTemplate.html
+    html2 <- applyTemplate4 True template2 vals -- inTemplate.html
     -- when (inform debug) $ putIOwords ["putValinMaster", showT html2]
     return . HTMLout $ html2
