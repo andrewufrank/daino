@@ -84,7 +84,7 @@ panrep2html debug layout (Panrep m1 p1)= do
     menu4 :: MenuEntry <- convertIndexEntries ixe1 -- move to
     -- p <- panrep2htmlP debug templateP dr4
 
-    p4 <- mergeConeent menu4 p1 
+    p4 <- mergeContent menu4 p1 
   -- let y2 = putAtKey2 "menu" menu1 y
     -- let j2 = mergeLeftPref [toJSON menu4, toJSON p1]
     -- p4 ::Pandoc <- fromJSONerrio j2     
@@ -98,7 +98,13 @@ panrep2html debug layout (Panrep m1 p1)= do
 mergeContent :: MenuEntry -> Pandoc -> ErrIO Pandoc 
 -- merge Menuitem into pandoc 
 mergeContent menu4 p1 = do 
-    let j2 = mergeLeftPref [toJSON menu4, toJSON p1]
+    let jmenu4 = toJSON  menu4 
+    let jp1 = toJSON  p1 
+    putIOwords ["mergeConten 1 jmenu4", take' 300 $ showT jmenu4]
+    putIOwords ["mergeConten 1 jpi1", take' 300 $ showT jp1]
+
+    let j2 = mergeLeftPref [jmenu4, jp1]
+    putIOwords ["mergeConten 2 j2", take' 300 $ showT jp1]
     p4 ::Pandoc <- fromJSONerrio j2  
     -- TODO ERROR p4 == p1 
     -- menu4 is lost

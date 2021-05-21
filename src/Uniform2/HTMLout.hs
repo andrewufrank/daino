@@ -61,7 +61,7 @@ applyTemplate3 debug templName val = do
     when (inform debug) $ putIOwords ["test_readTempl", take' 300 . showT $ t1]
     -- let t2 = read (t2s t1) :: Template Text
     -- putIOwords ["test_readTempl Dtemplate", take' 300 . showT $ t2]
-    res2 <- applyTemplate4 (inform debug) t1 (toJSON val)
+    res2 <- applyTemplate4 (inform debug) t1 [toJSON val]
     -- temp1 <- liftIO $ DocTemplates.compileTemplate mempty t1
     -- -- err1 :: Either String (Doc Text) <- liftIO $ DocTemplates.applyTemplate mempty (unwrap7 templText) (unDocValue val)
     -- let tmp3 = case temp1 of
