@@ -70,7 +70,7 @@ data Index4html = Index4html
   { -- fn :: Path Abs File   -- ^ naked filename -- not shown
     text2      :: Text, -- the filename with no extension as title 
 
-    -- | the url relative to current dir 
+    -- | the url relative web root
     link2      :: Text,
     -- | the title as shown
     title2     :: Text,

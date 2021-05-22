@@ -22,12 +22,12 @@ import UniformBase
 import Lib.Indexing
 
 -- | test to produce pandoc 
-testing_readMarkdown2pandoc f1 f2 = test1FileIO "ssg" f1 f2 (readMarkdown2 . MarkdownText) 
+testing_readMarkdown2pandoc f1  = test1FileIO "ssg" (f1<> ".md") (f1 <> "_dr1" )(readMarkdown2 . MarkdownText) 
 
-test_blog1_readMarkdown2pandoc = testing_readMarkdown2pandoc   "blog1.md" "pandoc_blog1"  
-test_index_readMarkdown2pandoc = testing_readMarkdown2pandoc "index.md" "pandoc_index"   
-test_postwk_readMarkdown2pandoc = testing_readMarkdown2pandoc "postwk.md" "pandoc_postwk"   
-test_withRef_readMarkdown2pandoc = testing_readMarkdown2pandoc "withRef.md" "pandoc_withRef"   
+test_blog1_readMarkdown2pandoc = testing_readMarkdown2pandoc   "blog1"
+test_index_readMarkdown2pandoc = testing_readMarkdown2pandoc "index"   
+test_postwk_readMarkdown2pandoc = testing_readMarkdown2pandoc "postwk"   
+test_withRef_readMarkdown2pandoc = testing_readMarkdown2pandoc "withRef"   
 
 -- | conversion of markdown file f1 (with extension) to intermediate d11  
 testing_md2dr1 f1 = test1FileIO "ssg"  (f1<> ".md") (f1 <> "_dr1" )  (readMarkdown2docrep NoticeLevel0 doughP bakedP fn2process .  MarkdownText) 
