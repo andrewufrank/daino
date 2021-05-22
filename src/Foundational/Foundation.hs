@@ -1,51 +1,58 @@
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric #-}
 ----------------------------------------------------------------------
 --
 -- Module      :   the defintion at the bottom
 --              there will be command line args to override these
-
 --            all the  content must be in the site and the resources
 --            not clear what role the resources play
 --            the bibliographies could go with the blog
 --            all themes in the theme dir (templates and css, possibly images
 --
 ----------------------------------------------------------------------
-{-# LANGUAGE FlexibleContexts      #-}
-{-# LANGUAGE FlexibleInstances     #-}
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE ScopedTypeVariables   #-}
-{-# LANGUAGE TypeFamilies          #-}
 -- {-# LANGUAGE TypeSynonymInstances  #-}
-{-# LANGUAGE OverloadedStrings     #-}
-{-# LANGUAGE DeriveAnyClass     #-}
-{-# LANGUAGE DeriveGeneric     #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeFamilies #-}
 
-module Foundational.Foundation  -- (openMain, htf_thisModuelsTests)
-                      where
+-- | the layoutDefault and the settings3.yml file read from 
+-- the test site must be the stame 
+-- all values must be read from layoutDefults
+
+module Foundational.Foundation where 
 import UniformBase
--- import GHC.Generics 
 
--- import           Uniform.Strings        -- hiding ( (</>) )
--- import           Uniform.Filenames
---import Uniform.FileStrings
 
 progName :: Text
 progName = "SSG"
 
-informall :: NoticeLevel -> Bool 
-informall = const True 
-
+informall :: NoticeLevel -> Bool
+informall = const True
+-- inform :: NoticeLevel  -> Bool -- false if NoticeLevel0
 
 data SiteLayout = SiteLayout
-    { themeDir :: Path Abs Dir -- ^ the place of the  theme files (includes templates)
-    , doughDir :: Path Abs Dir -- ^ where the content is originally (includes resources)
-    , bakedDir :: Path Abs Dir -- ^ where all the files serving are
---    , templateDir :: Path Rel Dir -- ^ where the templates are
-    , reportFile :: Path Abs File  -- ^ the report from processing baked with pipe
-    , testDir :: Path Abs Dir -- ^ the directory the test results go
-    , bannerImage :: Path Rel File -- ^ the name of the banner image, needs special copy of
-    -- , landingPage :: Path Rel File -- ^ the name of the landing page (html), where web server sarts                   
-    , uploadServer :: Text 
-    } deriving (Show, Read, Ord, Eq, Generic, Zeros)  --  Read known issue of reading path
+    { -- | the place of the  theme files (includes templates)
+      themeDir :: Path Abs Dir
+    , -- | where the content is originally (includes resources)
+      doughDir :: Path Abs Dir
+    , -- | the webroot, the dir with all the produced files 
+      bakedDir :: Path Abs Dir
+      --    , templateDir :: Path Rel Dir -- ^ where the templates are
+    , -- | the report from processing baked with pipe
+      reportFile :: Path Abs File
+    , -- | the directory the test results go
+      testDir :: Path Abs Dir
+    -- , -- | the name of the banner image, needs special copy of
+      -- , landingPage :: Path Rel File -- ^ the name of the landing page (html), where web server sarts
+    --   bannerImage :: Path Rel File
+    -- , uploadServer :: Text
+    , masterTemplateFile :: Path Rel File 
+    }
+    deriving (Show, Read, Ord, Eq, Generic, Zeros) 
+        --  Read known issue of reading path
 
 instance NiceStrings SiteLayout where
     shownice d = replace' ", " ",\n " (showT d)
@@ -56,34 +63,36 @@ sourceDirTest = makeAbsDir "/home/frank/Workspace11/ssg"
 bannerImageFileName :: Path Rel File
 bannerImageFileName = makeRelFileT "cropped-DSC05127-1024x330.jpg"
 
-defaultPageTypeName :: Path Rel File
-defaultPageTypeName = makeRelFileT "page3.yaml"  -- the current best
-                -- use this and complete locally!
-defaultPageType :: SiteLayout -> Path Abs File
-defaultPageType layout = templatesDir layout </> defaultPageTypeName
+-- defaultPageTypeName :: Path Rel File
+-- defaultPageTypeName = makeRelFileT "page3.yaml" -- the current best
+-- use this and complete locally!
 
---testDir = makeAbsDir $ ("/home/frank" :: FilePath)   </> (t2s progName)
-landingPageName :: Path Rel File
-landingPageName = makeRelFile "index.html"  -- "landingPage.html"
--- this is default value for browser for page to start with 
+-- defaultPageType :: SiteLayout -> Path Abs File
+-- defaultPageType layout = templatesDir layout </> defaultPageTypeName
+
+-- landingPageName :: Path Rel File
+-- landingPageName = makeRelFile "index.html" -- "landingPage.html"
+-- this is default value for browser for page to start with
 -- settingsFileName = makeRelFile "settings2"
 
 layoutDefaults :: SiteLayout
 -- used for finding the test cases
 -- must correspond to the settings2.yaml in source code repository
-layoutDefaults = SiteLayout
-    { doughDir    = sourceDirTest </> makeRelDir "docs/site/dough"
-    , bakedDir    = sourceDirTest </> makeRelDir "docs/site/baked"
-    , reportFile  = makeAbsFile "/home/frank/SSGreport.txt"
---            , templateDir = makeAbsDir "templates"
-    , themeDir    = sourceDirTest </> makeRelDir "theme"
-    , testDir     = makeAbsDir
-                    $   ("/home/frank" :: FilePath)
+layoutDefaults =
+    SiteLayout
+        { doughDir = sourceDirTest </> makeRelDir "docs/site/dough"
+        , bakedDir = sourceDirTest </> makeRelDir "docs/site/baked"
+        , --            , templateDir = makeAbsDir "templates"
+          themeDir = sourceDirTest </> makeRelDir "theme"
+        , reportFile = makeAbsFile "/home/frank/SSGreport.txt"
+        , testDir =  makeAbsDir $
+                ("/home/frank" :: FilePath)
                     </> ("." <> t2s progName)
-    , bannerImage = bannerImageFileName
-    -- , landingPage = landingPageName
-    , uploadServer = uploadServerTest
-    }
+        -- , bannerImage = bannerImageFileName
+         -- , landingPage = landingPageName
+        ,  uploadServer = uploadServerTest
+        ,  masterTemplateFile = makeRelFile "master5.dtpl"
+        }
 
 uploadServerTest :: Text
 uploadServerTest = "test.gerastree.at"
@@ -95,34 +104,38 @@ templatesDir layout = themeDir layout `addFileName` templatesDirName
 
 staticDirName = makeRelDir "static"
 resourcesDirName :: Path Rel Dir
-resourcesDirName = makeRelDir "resources"  
+resourcesDirName = makeRelDir "resources"
 imagesDirName :: Path Rel Dir
 imagesDirName = makeRelDir "img"
--- imagesResourcesDirName = resourcesDirName </> imagesDirName 
+
+-- imagesResourcesDirName = resourcesDirName </> imagesDirName
 lastUploadFileName :: Path Rel File
-lastUploadFileName = makeRelFile "lastload.txt" :: Path Rel File 
-        
+lastUploadFileName = makeRelFile "lastload.txt" :: Path Rel File
+
 templatesImgDirName :: Path Rel Dir
 templatesImgDirName = makeRelDir "img"
 
 settingsFileName :: Path Rel File
 -- ^ the yaml file in which the settings are fixec
-settingsFileName = makeRelFile "settings2" -- the yaml file
+settingsFileName = makeRelFile "settings3" -- the yaml file
 -- the value for cannot go into layout as this is its name!
 
 testSettingsFileName :: Path Abs File
--- the settings file for tests 
+-- the settings file for tests
 testSettingsFileName =
     sourceDirTest </> makeRelDirT "docs/site/dough/" </> settingsFileName
 testLastUploadFileName :: Path Abs File
-testLastUploadFileName = sourceDirTest </> 
-        makeRelDirT "docs/site/dough/" </> lastUploadFileName 
-        :: Path Abs File 
+testLastUploadFileName =
+    sourceDirTest
+        </> makeRelDirT "docs/site/dough/"
+        </> lastUploadFileName ::
+        Path Abs File
 
 masterTemplateFileName :: Path Rel File
--- ^ the name of the master template
--- should probably be in the settings?
-masterTemplateFileName = makeRelFile "master5.dtpl"
+{- ^ the name of the master template
+ should probably be in the settings?
+-}
+masterTemplateFileName = masterTemplateFile layoutDefaults
 -- content of settings2.yaml
 --storage:
 --    themeDir:  /home/frank/Workspace11/ssg/theme
@@ -134,22 +147,26 @@ masterTemplateFileName = makeRelFile "master5.dtpl"
 
 -- | the switches for material to include
 data PubFlags = PubFlags
-        {publishFlag
-        , oldFlag
-        , draftFlag
-        , testFlag
-        , watchFlag
-        , serverFlag:: Bool
-        , uploadFlag :: Bool 
-        , settingsFile :: Path Abs File
-        } deriving (Show,  Eq)  -- no read for path 
+    { publishFlag
+      , oldFlag
+      , draftFlag
+      , testFlag
+      , watchFlag
+      , serverFlag ::
+        Bool
+    , uploadFlag :: Bool
+    , settingsFile :: Path Abs File
+    }
+    deriving (Show, Eq) -- no read for path
 
-instance Zeros PubFlags where 
+instance Zeros PubFlags where
     zero = PubFlags zero zero zero zero zero zero zero zero
 
 allFlags :: PubFlags
-allFlags = zero {publishFlag = True  -- not including draft
-  , oldFlag = True 
-  , draftFlag = False
-  , settingsFile = testSettingsFileName}
-  
+allFlags =
+    zero
+        { publishFlag = True -- not including draft
+        , oldFlag = True
+        , draftFlag = False
+        , settingsFile = testSettingsFileName
+        }

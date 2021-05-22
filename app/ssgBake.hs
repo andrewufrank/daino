@@ -12,7 +12,7 @@
 {- | the main for the sgg
  uses shake only to convert the md files
  copies all resources
- must start in dir with settings2.yaml
+ must start in dir with settings3.yaml
 -}
 module Main where -- must have Main (main) or Main where
 

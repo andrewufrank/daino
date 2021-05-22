@@ -1,0 +1,41 @@
+# settings3.yaml -- the basic setup of the test site
+
+# goes into SiteLayout
+storage:
+    themeDir:  /home/frank/Workspace11/ssg/theme
+    doughDir: /home/frank/Workspace11/ssg/docs/site/dough
+    bakedDir: /home/frank/Workspace11/ssg/docs/site/baked
+    reportFile: /home/frank/ssgReport.txt
+    testDir: /home/frank/ssgTest 
+    # create dir in ExampleTesting
+    # filename must be homedir + program name (in Foundation) - hidden
+    # fixed in testharness
+    uploadServer: "sgg.gerastree.at"
+    masterTemplateFile: master5.dtpl  #in themeDir
+    
+# localhostPort: 3000
+
+q# uotes: True 
+# css :
+#     - /templates/static/style.css  # relative to root of site - so called absolute
+#     - /templates/static/menu.css 
+#   values taken from page3/yaml
+
+# content for landing page
+author : Author of Settings 
+date: 2019-01-01
+settings : 
+    sitename : siteNameExample
+    byline : siteByLineExample
+    banner: /templates/img/symmetricGeras2.jpg
+
+menu:
+     - link: /Blog/index.html
+       text: Blog
+     - link : /PublicationList/index.html
+       text : Publications
+     - link : /SSGdesign/index.html
+       text : SSG Documentation  
+
+
+

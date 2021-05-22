@@ -1,7 +1,7 @@
 ---------------------------------------------------------------------
 --
 -- Module      :   read the setting file
---
+
 ----------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
@@ -10,24 +10,27 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeFamilies #-}
 
+module ShakeBake.ReadSettingFile where  
 
-module ShakeBake.ReadSettingFile where -- (openMain, htf_thisModuelsTests)
-
-import Foundational.Foundation  
+import Foundational.Foundation
 import Uniform.Json
 import Uniform.Yaml
 import UniformBase
 
 readSettings :: NoticeLevel -> Path Abs File -> ErrIO (SiteLayout, Int)
 
-{- | must be the settings2.yaml file, (absolute, fixed before to current dir)
+{- | must be the settingsNN.yaml file, (absolute, fixed before to current dir)
  which contain the rest of the settings
  returns layout and port
 -}
 readSettings debug settingsfilename =
     do
-        when (inform debug) $ putIOwords ["readSettings", "file"
-                , showPretty  settingsfilename]
+        when (inform debug) $
+            putIOwords
+                [ "readSettings"
+                , "file"
+                , showPretty settingsfilename
+                ]
         -- wd          <- currentDir
         settingsTxt <- read8 settingsfilename yamlFileType
         when (inform debug) $ putIOwords ["readSettings text", showPretty settingsTxt]
@@ -43,9 +46,7 @@ readSettings2 :: NoticeLevel -> YamlText -> ErrIO (SiteLayout, Int)
 readSettings2 debug (YamlText t) = do
     meta2 :: Value <- decodeThrowT t -- decodeThrow . t2b $ t
     when (inform debug) $ putIOwords ["readSettings2 settings", showPretty meta2]
-    --    let meta2 = flattenMeta (getMeta pandoc)
-    --    let themeDir2 = meta2 ^?   key "themeDir" . _String :: Maybe Text
-    --    when (inform debug) $ putIOwords ["readSettings2 themedir", showPretty themeDir2]
+ 
     let themeDir2 = getAt2Key meta2 "storage" "themeDir" :: Maybe Text
     --     meta2 ^? key "storage" . key "themeDir" . _String :: Maybe Text
     let doughDir2 = getAt2Key meta2 "storage" "doughDir" :: Maybe Text
@@ -76,8 +77,8 @@ readSettings2 debug (YamlText t) = do
                             "testfile xxdwe"
                             reportFile2
                 , testDir = makeAbsDir . t2s $ fromJustNote "testdir xxdwe" testDir2
-                , bannerImage = makeRelFile "cropped-DSC05127-1024x330.jpg"
-                , -- , landingPage = makeRelFile "index.html"
+                , -- , bannerImage = makeRelFile "cropped-DSC05127-1024x330.jpg"
+                  -- , landingPage = makeRelFile "index.html"
                   uploadServer = uploadServerTest
                 }
     --    let layout3 = F.layoutDefaults
