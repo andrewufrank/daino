@@ -8,8 +8,8 @@
 {-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-unused-imports #-}
 {-# LANGUAGE OverloadedStrings #-}
 
+-- | tests foundation.hs and readSettingFile
 module Lib.ReadSettingFile_test where
-
 
 import           Test.Framework
 import           Uniform.Test.TestHarness
@@ -21,12 +21,18 @@ import ShakeBake.ReadSettingFile
 
 programName = "ssg"
 
-settingsFile3 =  makeAbsFile "/home/frank/Workspace11/ssg/settings2.yaml"
+settingsFile3 =  makeAbsFile "/home/frank/Workspace11/ssg/docs/site/dough/settings3.yaml"
 
 -- (layout7, port7) <- readSettings True settingsFile 
 
 test_settings = 
-    testVar0FileIO programName  settingsFile3 "settings2File" (fmap fst . readSettings NoticeLevel0 )  
+    testVar0FileIO programName  settingsFile3 "settingsFile" (fmap fst . readSettings NoticeLevel0 )  
+
+test_checkSettings_layoutDeefaults = do 
+    res <- runErr $ do 
+            (lay, por) <- readSettings NoticeLevel0 testSettingsFileName 
+            return lay 
+    assertEqual (Right layoutDefaults) res 
 
 instance ShowTestHarness (Path Abs File)
 instance ShowTestHarness SiteLayout

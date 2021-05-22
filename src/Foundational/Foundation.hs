@@ -57,11 +57,12 @@ data SiteLayout = SiteLayout
 instance NiceStrings SiteLayout where
     shownice d = replace' ", " ",\n " (showT d)
 
-sourceDirTest :: Path Abs Dir
-sourceDirTest = makeAbsDir "/home/frank/Workspace11/ssg"
+sourceDirTestSite :: Path Abs Dir
+sourceDirTestSite = makeAbsDir "/home/frank/Workspace11/ssg/docs"
+-- ^ the dir with the source for the test site 
 
-bannerImageFileName :: Path Rel File
-bannerImageFileName = makeRelFileT "cropped-DSC05127-1024x330.jpg"
+-- bannerImageFileName :: Path Rel File
+-- bannerImageFileName = makeRelFileT "cropped-DSC05127-1024x330.jpg"
 
 -- defaultPageTypeName :: Path Rel File
 -- defaultPageTypeName = makeRelFileT "page3.yaml" -- the current best
@@ -70,8 +71,9 @@ bannerImageFileName = makeRelFileT "cropped-DSC05127-1024x330.jpg"
 -- defaultPageType :: SiteLayout -> Path Abs File
 -- defaultPageType layout = templatesDir layout </> defaultPageTypeName
 
--- landingPageName :: Path Rel File
--- landingPageName = makeRelFile "index.html" -- "landingPage.html"
+landingPageName :: Path Rel File
+landingPageName = makeRelFile "index.html" -- "landingPage.html"
+-- used in runScotty 
 -- this is default value for browser for page to start with
 -- settingsFileName = makeRelFile "settings2"
 
@@ -80,22 +82,22 @@ layoutDefaults :: SiteLayout
 -- must correspond to the settings2.yaml in source code repository
 layoutDefaults =
     SiteLayout
-        { doughDir = sourceDirTest </> makeRelDir "docs/site/dough"
-        , bakedDir = sourceDirTest </> makeRelDir "docs/site/baked"
+        { doughDir = sourceDirTestSite </> makeRelDir "site/dough"
+        , bakedDir = sourceDirTestSite </> makeRelDir "site/baked"
         , --            , templateDir = makeAbsDir "templates"
-          themeDir = sourceDirTest </> makeRelDir "theme"
-        , reportFile = makeAbsFile "/home/frank/SSGreport.txt"
+          themeDir = sourceDirTestSite </> makeRelDir "theme"
+        , reportFile = makeAbsFile "/home/frank/ssgReport.txt"
         , testDir =  makeAbsDir $
                 ("/home/frank" :: FilePath)
-                    </> ("." <> t2s progName)
+                    </> ("ssgTest" :: FilePath)
         -- , bannerImage = bannerImageFileName
          -- , landingPage = landingPageName
-        ,  uploadServer = uploadServerTest
+        -- ,  uploadServer = uploadServerTest
         ,  masterTemplateFile = makeRelFile "master5.dtpl"
         }
 
-uploadServerTest :: Text
-uploadServerTest = "test.gerastree.at"
+-- uploadServerTest :: Text
+-- uploadServerTest = "test.gerastree.at"
 
 templatesDirName, staticDirName :: Path Rel Dir
 templatesDirName = makeRelDir "templates"
@@ -109,8 +111,7 @@ imagesDirName :: Path Rel Dir
 imagesDirName = makeRelDir "img"
 
 -- imagesResourcesDirName = resourcesDirName </> imagesDirName
-lastUploadFileName :: Path Rel File
-lastUploadFileName = makeRelFile "lastload.txt" :: Path Rel File
+
 
 templatesImgDirName :: Path Rel Dir
 templatesImgDirName = makeRelDir "img"
@@ -123,11 +124,14 @@ settingsFileName = makeRelFile "settings3" -- the yaml file
 testSettingsFileName :: Path Abs File
 -- the settings file for tests
 testSettingsFileName =
-    sourceDirTest </> makeRelDirT "docs/site/dough/" </> settingsFileName
+    sourceDirTestSite </> makeRelDirT "site/dough/" </> settingsFileName
+
+lastUploadFileName :: Path Rel File
+lastUploadFileName = makeRelFile "lastload.txt" :: Path Rel File
 testLastUploadFileName :: Path Abs File
 testLastUploadFileName =
-    sourceDirTest
-        </> makeRelDirT "docs/site/dough/"
+    sourceDirTestSite
+        </> makeRelDirT "site/dough/"
         </> lastUploadFileName ::
         Path Abs File
 
@@ -136,6 +140,7 @@ masterTemplateFileName :: Path Rel File
  should probably be in the settings?
 -}
 masterTemplateFileName = masterTemplateFile layoutDefaults
+
 -- content of settings2.yaml
 --storage:
 --    themeDir:  /home/frank/Workspace11/ssg/theme

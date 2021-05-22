@@ -52,6 +52,7 @@ readSettings2 debug (YamlText t) = do
     let doughDir2 = getAt2Key meta2 "storage" "doughDir" :: Maybe Text
     let bakedDir2 = getAt2Key meta2 "storage" "bakedDir" :: Maybe Text
     let reportFile2 = getAt2Key meta2 "storage" "reportFile" :: Maybe Text
+    let masterFile2 = getAt2Key meta2 "storage" "masterTemplateFile" :: Maybe Text
     let testDir2 = getAt2Key meta2 "storage" "testDir" :: Maybe Text
     let port = getAtKey meta2 "localhostPort" :: Maybe Integer
     let layout3 =
@@ -76,10 +77,13 @@ readSettings2 debug (YamlText t) = do
                         fromJustNote
                             "testfile xxdwe"
                             reportFile2
+                , masterTemplateFile = 
+                    makeRelFile . t2s $ 
+                        fromJustNote "masterTemplateFile xxdwe" masterFile2
                 , testDir = makeAbsDir . t2s $ fromJustNote "testdir xxdwe" testDir2
-                , -- , bannerImage = makeRelFile "cropped-DSC05127-1024x330.jpg"
+                 -- , bannerImage = makeRelFile "cropped-DSC05127-1024x330.jpg"
                   -- , landingPage = makeRelFile "index.html"
-                  uploadServer = uploadServerTest
+                --   uploadServer = uploadServerTest
                 }
     --    let layout3 = F.layoutDefaults
     let port2 = fromInteger . fromJustNote "port wrwer" $ port

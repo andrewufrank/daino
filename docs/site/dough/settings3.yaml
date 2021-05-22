@@ -2,20 +2,20 @@
 
 # goes into SiteLayout
 storage:
-    themeDir:  /home/frank/Workspace11/ssg/theme
+    themeDir:  /home/frank/Workspace11/ssg/docs/theme
     doughDir: /home/frank/Workspace11/ssg/docs/site/dough
     bakedDir: /home/frank/Workspace11/ssg/docs/site/baked
     reportFile: /home/frank/ssgReport.txt
     testDir: /home/frank/ssgTest 
+    masterTemplateFile: master5.dtpl  #in themeDir
     # create dir in ExampleTesting
     # filename must be homedir + program name (in Foundation) - hidden
     # fixed in testharness
-    uploadServer: "sgg.gerastree.at"
-    masterTemplateFile: master5.dtpl  #in themeDir
+#    uploadServer: "sgg.gerastree.at"
     
-# localhostPort: 3000
+localhostPort: 3000
 
-q# uotes: True 
+#quotes: True 
 # css :
 #     - /templates/static/style.css  # relative to root of site - so called absolute
 #     - /templates/static/menu.css 
