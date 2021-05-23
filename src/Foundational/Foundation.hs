@@ -9,6 +9,7 @@
 --            the bibliographies could go with the blog
 --            all themes in the theme dir (templates and css, possibly images
 --
+-- the tests must always use layoutDefaults and testFlags! 
 ----------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
@@ -85,10 +86,10 @@ layoutDefaults :: SiteLayout
 -- must correspond to the settings2.yaml in source code repository
 layoutDefaults =
     SiteLayout
-        { doughDir = sourceDirTestSite </> makeRelDir "site/dough"
-        , bakedDir = sourceDirTestSite </> makeRelDir "site/baked"
+        { doughDir = sourceDirTestSite </> makeRelDir "dough"
+        , bakedDir = sourceDirTestSite </> makeRelDir "baked"
         , --            , templateDir = makeAbsDir "templates"
-          themeDir = sourceDirTestSite </> makeRelDir "theme"
+          themeDir = sourceDirTestDocs </> makeRelDir "theme"
         , reportFile = makeAbsFile "/home/frank/ssgReport.txt"
         , testDir =  makeAbsDir $
                 ("/home/frank" :: FilePath)
@@ -124,10 +125,10 @@ settingsFileName :: Path Rel File
 settingsFileName = makeRelFile "settings3" -- the yaml file
 -- the value for cannot go into layout as this is its name!
 
--- testSettingsFileName :: Path Abs File
--- -- the settings file for tests
--- testSettingsFileName =
---     sourceDirTestSite </>  settingsFileName
+testSettingsFileName :: Path Abs File
+-- the settings file for tests
+testSettingsFileName =
+    sourceDirTestSite </>  settingsFileName
 
 lastUploadFileName :: Path Rel File
 lastUploadFileName = makeRelFile "lastload.txt" :: Path Rel File
@@ -170,11 +171,11 @@ data PubFlags = PubFlags
 instance Zeros PubFlags where
     zero = PubFlags zero zero zero zero zero zero zero zero
 
-allFlags :: PubFlags
-allFlags =
+testFlags :: PubFlags
+testFlags =
     zero
         { publishFlag = True -- not including draft
         , oldFlag = True
         , draftFlag = False
-        , settingsFile = sourceDirTestDocs </> settingsFileName 
+        , settingsFile = testSettingsFileName
         }
