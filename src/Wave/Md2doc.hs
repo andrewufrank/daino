@@ -27,6 +27,7 @@ import UniformBase
 import Foundational.Foundation
 import Foundational.MetaPage
 import Uniform.Json
+
 -- import Lib.Indexing
 import Uniform.Pandoc
 import Uniform.Shake (makeRelativeP)
@@ -39,7 +40,7 @@ readMarkdown2docrep :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> Path Abs F
  reads the markdown file with pandoc and extracts the yaml metadaat
  the metadata are then converted to metaPage
  -- duplication possible for data in the pandoc metada (no used)
- TODO may use json record parse, which I have already done 
+ TODO may use json record parse, which I have already done
 -}
 readMarkdown2docrep debug doughP bakedP filename md = do
     pd <- readMarkdown2 md
@@ -60,14 +61,22 @@ readMarkdown2docrep debug doughP bakedP filename md = do
                 , dyReferences = gak meta2 "references"
                 , dyBibliography = zero
                 , dyPublish = getAtKey meta2 "publish"
-                   -- TODO use pbulicationState
-                , dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
+                , -- TODO use pbulicationState
+                  dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
                 , dyIndexSort = getAtKey meta2 "indexSort"
                 , dyIndexEntry = zero
                 }
-    let ix1 = initializeIndex meta4 
-    let meta5 = meta4{dyIndexEntry = ix1}
-    return (Docrep meta5 pd)
+                
+    -- the index pages start as md pages!
+    -- must be makked
+    -- let meta5 =
+    --         if getNakedFileName filename == "index"
+    --             then meta4{dyIndexPage = True}
+    --             else meta4
+
+    let ix1 = initializeIndex meta4
+    let meta6 = meta4{dyIndexEntry = ix1}
+    return (Docrep meta6 pd)
 
 md2docrep :: NoticeLevel -> SiteLayout -> Path Abs File -> MarkdownText -> ErrIO Docrep
 
@@ -93,9 +102,8 @@ md2docrep debug layout2 inputFn md1 = do
     -- as well as nocite
     -- therefore must use json
     dr3 <- addRefs debug dr1
-    
-    return dr3
 
+    return dr3
 
 --------------------------------
 addRefs :: NoticeLevel -> Docrep -> ErrIO Docrep
@@ -104,7 +112,7 @@ addRefs :: NoticeLevel -> Docrep -> ErrIO Docrep
  ths cls file must be in the yam
 -}
 
--- example: 
+-- example:
 -- processCites :: Style -> [Reference] -> Pandoc -> Pandoc
 
 -- Process a Pandoc document by adding citations formatted according to a CSL style. Add a bibliography (if one is called for) at the end of the document.
@@ -135,7 +143,7 @@ addRefs2 debug dr1@(Docrep y1 p1) biblio1 = do
         putIOwords
             [ "addRefs2-2"
             , "\n biblio"
-            , showT biblio1 
+            , showT biblio1
             ]
 
     let loc1 = Just "en" -- TODO depends on language to be used for

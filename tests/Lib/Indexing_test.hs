@@ -42,5 +42,5 @@ test_initializeIx_index = testing_initializeIx "index"
 testing_complete f1 =  test1FileIO "ssg"   ("ix_" <> f1)("ixComp_" <> f1)
         (completeIndex NoticeLevel0 doughPL bakedPL)
 
-test_completeIndex = testing_complete "index"
+-- test_completeIndex = testing_complete "index"
  
