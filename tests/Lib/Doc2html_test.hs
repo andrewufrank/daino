@@ -19,7 +19,7 @@ import UniformBase
 import Wave.Doc2html
 
 -- -- | test to produce pan
-testing_md2pan f1 f2 = test1FileIO "ssg" f1 f2 (docrep2panrep NoticeLevel0 settings403)
+testing_md2pan f1 f2 = test1FileIO "ssg" f1 f2 (docrep2panrep NoticeLevel0 layoutDefaults )
 
 test_blog1_md2pan = testing_md2pan "blog1T.docrep" "panrep_blog1"
 test_index_md2pan = testing_md2pan "indexT.docrep" "panrep_index"
@@ -37,7 +37,7 @@ test_pan2indexEntry_withRef = testing_pan2indexEntry "withRef"
 
 testing_pan2HTMLout f = test1FileIO "ssg" ("panrep_" <> f) ("htmlout_" <> f) op1 -- dr1 <- read8 inputFn docrepFileType
 op1 :: Panrep -> ErrIO HTMLout
-op1 = panrep2html NoticeLevel0 settings403
+op1 = panrep2html NoticeLevel0 layoutDefaults 
 
 test_pan2HTMLout_blog1 = testing_pan2HTMLout "blog1"
 test_pan2HTMLout_index = testing_pan2HTMLout "index"

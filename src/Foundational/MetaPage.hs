@@ -152,7 +152,7 @@ instance FromJSON PublicationState
 
 data IndexEntry = IndexEntry
     { -- | the abs file path
-      fn :: FilePath -- Path Abs File
+      ixfn :: FilePath -- Path Abs File
     , -- | the link for this page (relative to web root)}
       link :: FilePath -- Path Rel File
     , title :: Text
@@ -175,7 +175,7 @@ initializeIndex MetaPage{..} = ix1
   where
     ix1 =
         zero
-            { fn = dyFn -- makeAbsFile dyFn
+            { ixfn = dyFn -- makeAbsFile dyFn
             , title = dyTitle
             , link = dyLink --- makeRelFile dyLink
             , abstract = dyAbstract

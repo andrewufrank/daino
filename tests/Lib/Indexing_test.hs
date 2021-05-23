@@ -40,7 +40,7 @@ testing_initializeIx f1 = test1File "ssg"  ("meta_" <> f1) ("ix_" <> f1) (initia
 test_initializeIx_index = testing_initializeIx "index"
 
 testing_complete f1 =  test1FileIO "ssg"   ("ix_" <> f1)("ixComp_" <> f1)
-        (completeIndex NoticeLevel0 doughP bakedP)
+        (completeIndex NoticeLevel0 doughPL bakedPL)
 
 test_completeIndex = testing_complete "index"
  

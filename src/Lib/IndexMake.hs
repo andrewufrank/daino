@@ -97,7 +97,7 @@ getOneIndexEntryPure :: IndexEntry -> Index4html
 -- Text should be "/Blog/postTufteStyled.html"
 getOneIndexEntryPure metaRec =
   Index4html
-    { text2 = s2t . takeBaseName'   . fn $ metaRec,
+    { text2 = s2t . takeBaseName'   . ixfn $ metaRec,
       link2 =  s2t . -- s2t . toFilePath $ 
           setExtension "html" . removeExtension
           -- TODO use extHTML
@@ -106,7 +106,7 @@ getOneIndexEntryPure metaRec =
       abstract2 = abstract metaRec,
       title2 =
         if isZero (title metaRec :: Text)
-          then s2t . takeBaseName'   .  fn $ metaRec
+          then s2t . takeBaseName'   .  ixfn $ metaRec
           else title metaRec,
       author2 = author metaRec,
       date2 = showT $ date metaRec,
