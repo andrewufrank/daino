@@ -25,7 +25,7 @@ readSettings :: NoticeLevel -> Path Abs File -> ErrIO (SiteLayout, Int)
 -}
 readSettings debug settingsfilename =
     do
-        when (inform debug) $
+        when (informall debug) $
             putIOwords
                 [ "readSettings"
                 , "file"
@@ -33,7 +33,7 @@ readSettings debug settingsfilename =
                 ]
         -- wd          <- currentDir
         settingsTxt <- read8 settingsfilename yamlFileType
-        when (inform debug) $ putIOwords ["readSettings text", showPretty settingsTxt]
+        when (informall debug) $ putIOwords ["readSettings text", showPretty settingsTxt]
         -- TODO where is settings
         layout3 <- readSettings2 debug settingsTxt
         when (inform debug) $ putIOwords ["readSettings end", showPretty layout3]

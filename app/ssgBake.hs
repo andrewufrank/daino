@@ -24,7 +24,7 @@ import UniformBase
 
 programName, progTitle :: Text
 programName = "ssgBake" :: Text
-progTitle = "constructing a static site generator x6 0.0.2.1" :: Text
+progTitle = "constructing a static site generator 0.0.4.4" :: Text
 
 -- the process is centered on the current working dir
 
@@ -36,7 +36,7 @@ main =
         ( do
             flags :: PubFlags <-
                 parseArgs2input
-                    settingsFileName
+                    sourceDirTestSite 
                     --  add a delete flag
                     ( unlinesT
                         [ "the flags to select what is included:"

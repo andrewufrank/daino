@@ -57,8 +57,11 @@ data SiteLayout = SiteLayout
 instance NiceStrings SiteLayout where
     shownice d = replace' ", " ",\n " (showT d)
 
+sourceDirTestDocs :: Path Abs Dir 
+sourceDirTestDocs = makeAbsDir "/home/frank/Workspace11/ssg/docs/"
+
 sourceDirTestSite :: Path Abs Dir
-sourceDirTestSite = makeAbsDir "/home/frank/Workspace11/ssg/docs"
+sourceDirTestSite = sourceDirTestDocs </> (makeRelDir "site")
 -- ^ the dir with the source for the test site 
 
 -- bannerImageFileName :: Path Rel File
@@ -121,10 +124,10 @@ settingsFileName :: Path Rel File
 settingsFileName = makeRelFile "settings3" -- the yaml file
 -- the value for cannot go into layout as this is its name!
 
-testSettingsFileName :: Path Abs File
--- the settings file for tests
-testSettingsFileName =
-    sourceDirTestSite </> makeRelDirT "site/dough/" </> settingsFileName
+-- testSettingsFileName :: Path Abs File
+-- -- the settings file for tests
+-- testSettingsFileName =
+--     sourceDirTestSite </>  settingsFileName
 
 lastUploadFileName :: Path Rel File
 lastUploadFileName = makeRelFile "lastload.txt" :: Path Rel File
@@ -173,5 +176,5 @@ allFlags =
         { publishFlag = True -- not including draft
         , oldFlag = True
         , draftFlag = False
-        , settingsFile = testSettingsFileName
+        , settingsFile = sourceDirTestDocs </> settingsFileName 
         }

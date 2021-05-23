@@ -1,6 +1,7 @@
 # Static Site Generator
 A static site generator from pandoc and other available packages on Hackage (e.g. shake, twitch, scotty), influenced by Chris Penner's [slick](https://github.com/ChrisPenner/slick#readme)(todo: look at [Ema](https://github.com/srid/ema) by  Sridhar Ratnakumar). It uses files to manage data to permit version management with git. Page appearances are directed with YAML and internally data is structured with JSON, for each page a PDF file is produced to allow regular looking prints. Index pages are automatically created.
-
+# Layout
+The code includes an example site in `docs` directory. It contains a file `settingsNN.yaml` which describes the layout of the site. A correponding file must be created for a new site. 
 
 # Test the result in a browser
 Test with the included example site (in the `docs/site` directory) with -t switch (e.g. `cabal run ssgbake -- -t`). The result can be tested with 
