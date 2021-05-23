@@ -72,7 +72,8 @@ dependencies:
     - pandoc-types
     # -- - uniform-ftp
     # - aeson 
-
+    # - optparse-applicative -- does not allow value in cmdlineargs
+    
 library:
   source-dirs: 
       - src 

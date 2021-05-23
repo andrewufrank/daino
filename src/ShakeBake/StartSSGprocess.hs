@@ -51,8 +51,10 @@ ssgProcess debug flags = do
         else do
             shakeAll debug layout2 flags ""
             -- the last is the filename that caused the shake call
-            when (serverFlag flags) $
+            when (serverFlag flags) $ do 
                 runScotty port2 (bakedDir layout2) landingPageName
+                putIOwords ["server started on ", showT port2]
+
     -- sollte default index.html sein (landingPage layout2)
     -- when (uploadFlag flags) $ do
     --     (_,_) <- runStateT
@@ -64,7 +66,6 @@ ssgProcess debug flags = do
     --     currentTime <- getCurrentTimeUTC
     --     writeFile2 testLastUploadFileName (show currentTime)
 
-    --     putIOwords ["uploadTest completed", showT currentTime]
 
     putIOwords ["ssgProcess done"]
     return ()

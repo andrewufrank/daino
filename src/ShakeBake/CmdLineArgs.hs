@@ -22,6 +22,7 @@ import Uniform.CmdLineArgs   -- from u2to
   
 import Foundational.Foundation 
 import Foundational.MetaPage
+-- import Options.Applicative.Builder()
 
 -- | the command line arguments raw
 --  number of args must correspond in order and number with the
@@ -50,10 +51,12 @@ cmdArgs  =
     <*> switch (long "draft" <> short 'd' <> help "include draft material")
     <*> switch
           (long "test" <> short 't' <> help
-            "use test data in layout (site/dough), start server on 3000"
+            "use test data in layout (site/dough), start server on port set"
           )
     <*> switch
-          (long "server" <> short 's' <> help "start a server on port 3001")
+          (long "server" <> short 's' 
+                -- <> value True   -- not working
+                <> help "start a server on port set in settings file")
     <*> switch
         (long "watch" <> short 'w' <> help
           "start the watch of files for restarting bake"
@@ -84,7 +87,7 @@ parseArgs2input testdataDir t1 t2 = do
                          , draftFlag    = draftSwitch args1
                          , testFlag     = testSwitch args1
                          , watchFlag    = watchSwitch args1
-                         , serverFlag   = serverSwitch args1
+                         , serverFlag   = True -- serverSwitch args1
                          , settingsFile = workingdir1 </> settingsFileName 
                          -- perhaps wrong, could be site/dough?
                         ,  uploadFlag = uploadSwitch args1
