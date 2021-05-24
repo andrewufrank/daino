@@ -45,7 +45,7 @@ test_pan2HTMLout_postwk = testing_pan2HTMLout "postwk"
 test_pan2HTMLout_withRef = testing_pan2HTMLout "withRef"
 
 -- -- | conversion of markdown file f1 (with extension) to intermediate d11
--- testing_md2dr1 f1 = test1FileIO "ssg"  (f1<> ".md") (f1 <> "_dr1" )  (readMarkdown2docrep NoticeLevel0 doughP bakedP fn2process .  MarkdownText)
+-- testing_md2dr1 f1 = test1FileIO "ssg"  (f1<> ".md") (f1 <> "_dr1" )  (pandoc2docrep NoticeLevel0 doughP bakedP fn2process .  MarkdownText)
 --   where
 --       fn2process:: Path Abs File
 --       fn2process = blogRoot </> (makeRelFile f1)

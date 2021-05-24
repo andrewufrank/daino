@@ -34,16 +34,48 @@ import Uniform.Shake (makeRelativeP)
 
 import Foundational.Filetypes4sites
 
-readMarkdown2docrep :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> Path Abs File -> MarkdownText -> ErrIO Docrep
 
-{- | read a md file into a DocrepJSON
+{- | process one md to a docrep
+ for bakeOneMD2docrep and report_metaRec
+-}
+md2docrep :: NoticeLevel
+    -> SiteLayout
+    -> Path Abs File
+    -> MarkdownText
+    -> ErrorT Text IO Docrep
+md2docrep debug layout2 inputFn md1 = do
+    let doughP = doughDir layout2 -- the regular dough
+        bakedP = bakedDir layout2
+
+    pd <- readMarkdown2 md1 -- to pandoc 
+    -- take metadata and fill metaPage (including IndexEntry)
+    dr1 <- pandoc2docrep debug doughP bakedP inputFn pd -- to dr1
+    -- with a flattened version of json from Pandoc
+    -- convert to metaPage with Index 
+
+    -- check
+    -- the fields for the index are prepared
+    -- merge the yaml metadata with default to have the
+    -- necessary values set
+
+    when (inform debug) $ putIOwords ["md2docrep", "dr1", showT dr1]
+
+    -- uses the refs listed in the file and discovred by pandoc,
+    -- as well as nocite
+    -- therefore must use json
+    dr3 <- addRefs debug dr1  -- to dr3 
+
+    return dr3 -- same as T.docrep 
+
+pandoc2docrep :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> Path Abs File -> Pandoc -> ErrIO Docrep
+{- | convert the pandoc text to DocrepJSON
  reads the markdown file with pandoc and extracts the yaml metadaat
  the metadata are then converted to metaPage
  -- duplication possible for data in the pandoc metada (no used)
  TODO may use json record parse, which I have already done
 -}
-readMarkdown2docrep debug doughP bakedP filename md = do
-    pd <- readMarkdown2 md
+pandoc2docrep debug doughP bakedP filename pd = do
+ 
     let meta2 = flattenMeta . getMeta $ pd
     let relfn = makeRelativeP doughP filename
     let meta4 =
@@ -61,49 +93,19 @@ readMarkdown2docrep debug doughP bakedP filename md = do
                 , dyReferences = gak meta2 "references"
                 , dyBibliography = zero
                 , dyPublish = getAtKey meta2 "publish"
-                , -- TODO use pbulicationState
-                  dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
+                -- , -- TODO use pbulicationState
+                --   dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
                 , dyIndexSort = getAtKey meta2 "indexSort"
-                , dyIndexEntry = zero
+                , dyIndexEntry =   zero
+                                            -- else zero
                 }
                 
-    -- the index pages start as md pages!
-    -- must be makked
-    -- let meta5 =
-    --         if getNakedFileName filename == "index"
-    --             then meta4{dyIndexPage = True}
-    --             else meta4
-
-    let ix1 = initializeIndex meta4
+    let ix1 =  initializeIndex meta4
     let meta6 = meta4{dyIndexEntry = ix1}
     return (Docrep meta6 pd)
 
-md2docrep :: NoticeLevel -> SiteLayout -> Path Abs File -> MarkdownText -> ErrIO Docrep
 
-{- | process one md to a docrep
- for bakeOneMD2docrep and report_metaRec
--}
-md2docrep debug layout2 inputFn md1 = do
-    let doughP = doughDir layout2 -- the regular dough
-        bakedP = bakedDir layout2
 
-    dr1 <- readMarkdown2docrep debug doughP bakedP inputFn md1
-    -- with a flattened version of json from Pandoc
-    -- what does it contain?
-
-    -- check
-    -- the fields for the index are prepared
-    -- merge the yaml metadata with default to have the
-    -- necessary values set
-
-    when (inform debug) $ putIOwords ["md2docrep", "dr1", showT dr1]
-
-    -- uses the refs listed in the file and discovred by pandoc,
-    -- as well as nocite
-    -- therefore must use json
-    dr3 <- addRefs debug dr1
-
-    return dr3
 
 --------------------------------
 addRefs :: NoticeLevel -> Docrep -> ErrIO Docrep

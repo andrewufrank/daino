@@ -35,7 +35,6 @@ completeIndex debug doughP bakedP ix1 = do
     when (inform debug) $ putIOwords ["completeIndex", "start", showPretty ix1]
     -- x1 :: IndexEntry <- fromJSONerrio yam1
     -- let x1 = panyam pr
-    unless (indexPage ix1) $ errorT ["completeIndex should only be called for indexPage True"]
 
     let fn = doughP </> (link ix1) :: Path Abs File
     -- changed to search in dough (but no extension yet)
@@ -46,6 +45,7 @@ completeIndex debug doughP bakedP ix1 = do
             , "fn for search"
             , showT fn
             ]
+    unless (isIndexPage fn) $ errorT ["completeIndex should only be called for indexPage True"]
 
     (dirs, files) <- getDirContent2dirs_files debug doughP bakedP fn
     when (inform debug) $ putIOwords ["completeIndex", "\n dirs", showT dirs, "\n files", showT files]
@@ -61,17 +61,19 @@ completeIndex debug doughP bakedP ix1 = do
 -}
 getDirContent2dirs_files :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> Path Abs File -> ErrIO ([IndexEntry], [IndexEntry])
 getDirContent2dirs_files debug doughP bakedP indexpageFn = do
-    putIOwords ["getDirContent2dirs_files", showT indexpageFn]
+    putIOwords ["getDirContent2dirs_files for", showPretty indexpageFn]
     let pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir
     -- get the dir in which the index file is embedded
     dirs1 :: [Path Abs Dir] <- getDirectoryDirs' pageFn
     let dirs2 = filter ( not . (isPrefixOf' ("DNB" :: FilePath) ) .   getNakedDir) dirs1
     let dirs3 = filter ( not . (isPrefixOf' ("resources" :: FilePath) ) .   getNakedDir) dirs2
+
     files1 :: [Path Abs File] <- getDirContentFiles pageFn
     let files2 =
             filter (indexpageFn /=) -- should not exclude all index pages but has only this one in this dir?
                 . filter (hasExtension extMD) -- extDocrep)
                 $ files1
+    putIOwords ["getDirContent2dirs_files2", showPretty indexpageFn]
     ixfiles <- mapM (getFile2index debug doughP bakedP) files2
     let subindexDirs = map (\d -> d </> makeRelFile "index.md") dirs3
     -- "index.docrep" 
@@ -90,7 +92,10 @@ getFile2index debug doughP bakedP fnin =
     do
         -- (Docrep y1 _) <- read8 fnin docrepFileType
         mdfile <- read8 fnin markdownFileType 
-        (Docrep y1 _) <- readMarkdown2docrep debug doughP bakedP fnin mdfile
+        pd <- readMarkdown2 mdfile
+        -- could perhaps "need" all ix as files?
+
+        (Docrep y1 _) <- pandoc2docrep debug doughP bakedP fnin pd
         -- needs the indexentry initialized
         let ix1 :: IndexEntry = dyIndexEntry y1
         return . Just $ ix1

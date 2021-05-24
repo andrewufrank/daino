@@ -77,13 +77,13 @@ data Index4html = Index4html
     abstract2  :: Text,
     author2    :: Text,
     date2      :: Text, -- UTCTime -- read the time early one to find errors
-    publish2   :: Text,
-    indexPage2 :: Bool -- mark for index entries
-  }
+    publish2   :: Text
+    -- indexPage2 :: Bool -- mark for index entries
+    }
   deriving (Generic, Eq, Ord, Show, Read)
 
 instance Zeros Index4html where
-  zero = Index4html zero zero zero zero zero zero zero False
+  zero = Index4html zero zero zero zero zero zero zero
 
 instance FromJSON Index4html
 
@@ -110,8 +110,8 @@ getOneIndexEntryPure metaRec =
           else title metaRec,
       author2 = author metaRec,
       date2 = showT $ date metaRec,
-      publish2 = shownice $ publish metaRec,
-      indexPage2 = indexPage metaRec
+      publish2 = shownice $ publish metaRec
+    --   indexPage2 = indexPage metaRec
     }
 
 --       ------  S U P P O R T

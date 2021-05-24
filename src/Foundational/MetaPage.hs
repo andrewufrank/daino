@@ -61,7 +61,7 @@ data MetaPage = MetaPage
     , dyReferences :: Maybe Value --  [Reference]
     , dyNoCite :: Maybe Text
     , dyPublish :: Maybe Text
-    , dyIndexPage :: Bool
+    -- , dyIndexPage :: Bool
     , dyIndexSort :: Maybe Text
     , dyIndexEntry :: IndexEntry
     -- , dyDirEntries   :: [IndexEntry]  -- reduce to one for indexEntry
@@ -84,7 +84,7 @@ instance Default MetaPage where
             , dyBibliography = Just "BibTexLatex.bib"
             , dyStyle = Just "chicago-fullnote-bibliography-bb.csl"
             , dyPublish = Nothing
-            , dyIndexPage = False
+            -- , dyIndexPage = False
             , dyIndexSort = zero
             , dyIndexEntry = zero
             -- , dyDirEntries = zero
@@ -150,7 +150,7 @@ instance ToJSON PublicationState
 
 instance FromJSON PublicationState
 
-data IndexEntry = IndexEntry
+data IndexEntry = IndexEntry 
     { -- | the abs file path
       ixfn :: FilePath -- Path Abs File
     , -- | the link for this page (relative to web root)}
@@ -160,7 +160,7 @@ data IndexEntry = IndexEntry
     , author :: Text
     , date :: Text
     , publish :: Maybe Text
-    , indexPage :: Bool
+    -- , indexPage :: Bool
     , dirEntries :: [IndexEntry] -- def []
     , fileEntries :: [IndexEntry] -- def []
     }
@@ -182,8 +182,10 @@ initializeIndex MetaPage{..} = ix1
             , author = dyAuthor
             , date = fromMaybe (showT year2000) dyDate
             , publish = dyPublish
-            , indexPage = dyIndexPage
+            -- , indexPage = dyIndexPage
             , dirEntries = zero
             , fileEntries = zero
             }
 
+isIndexPage :: Path Abs File -> Bool 
+isIndexPage filename =  getNakedFileName filename == "index"

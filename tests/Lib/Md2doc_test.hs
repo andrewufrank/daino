@@ -22,8 +22,8 @@ import UniformBase
 -- import Lib.Indexing
 
 testing_readMarkdown2pandoc :: FilePath -> IO ()
--- | test to produce pandoc - step0 in op2 of  Md2.doc 
-testing_readMarkdown2pandoc f1  = test1FileIO "ssg" (f1<> ".md") (f1 <> "_dr0" )(readMarkdown2 . MarkdownText) 
+-- | test to produce pandoc - step0 in   Md2.doc 
+testing_readMarkdown2pandoc f1  = test1FileIO "ssg" (f1<> ".md") (f1 <> "_pandoc" )(readMarkdown2 . MarkdownText) 
 
 test_blog1_readMarkdown2pandoc = testing_readMarkdown2pandoc   "blog1"
 test_index_readMarkdown2pandoc = testing_readMarkdown2pandoc "index"   
@@ -37,9 +37,20 @@ doughPL = doughDir layoutDefaults
 bakedPL :: Path Abs Dir
 bakedPL = bakedDir layoutDefaults
 
+-- testing_md2pandoc :: FilePath -> IO ()
+-- -- | op 1 in Md2doc.hs
+-- testing_md2pandoc f1 = test1FileIO "ssg"  (f1<> ".md") (f1 <> "_pandoc" )  (readMarkdown2) 
+--   where 
+--       fn1 :: Path Abs File 
+--       fn1 = doughPL </> (makeRelFile f1)
+-- test_blog1_md2pandoc = testing_md2pandoc "blog1" 
+-- test_index_md2pandoc = testing_md2pandoc "index" 
+-- test_postwk_md2pandoc = testing_md2pandoc "postwk" 
+-- test_withRef_md2pandoc = testing_md2pandoc "withRef" 
+
 testing_md2dr1 :: FilePath -> IO ()
 -- | op 1 in Md2doc.hs
-testing_md2dr1 f1 = test1FileIO "ssg"  (f1<> ".md") (f1 <> "_dr1" )  (readMarkdown2docrep NoticeLevel0 doughPL bakedPL fn1 .  MarkdownText) 
+testing_md2dr1 f1 = test1FileIO "ssg"  (f1<> "_pandoc") (f1 <> "_dr1" )  (pandoc2docrep NoticeLevel0 doughPL bakedPL fn1 )
   where 
       fn1 :: Path Abs File 
       fn1 = doughPL </> (makeRelFile f1)
