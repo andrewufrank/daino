@@ -30,9 +30,6 @@ import UniformBase
 progName :: Text
 progName = "SSG"
 
-informall :: NoticeLevel -> Bool
-informall = const True
--- inform :: NoticeLevel  -> Bool -- false if NoticeLevel0
 
 data SiteLayout = SiteLayout
     { -- | the place of the  theme files (includes templates)

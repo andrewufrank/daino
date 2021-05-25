@@ -32,13 +32,13 @@ completeIndex :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> IndexEntry -> Er
 later only the format for output must be fixed
 -}
 completeIndex debug doughP bakedP ix1 = do
-    when (informall debug) $ putIOwords ["completeIndex", "start", showPretty ix1]
+    when (inform debug) $ putIOwords ["completeIndex", "start", showPretty ix1]
     -- x1 :: IndexEntry <- fromJSONerrio yam1
     -- let x1 = panyam pr
 
     let fn = doughP </> (link ix1) :: Path Abs File
     -- changed to search in dough (but no extension yet)
-    when (informall debug) $
+    when (inform debug) $
         putIOwords
             [ "completeIndex"
             , "fn"
@@ -47,9 +47,9 @@ completeIndex debug doughP bakedP ix1 = do
     -- unless (isIndexPage fn) $ errorT ["completeIndex should only be called for indexPage True"]
 
     (dirs, files) <- getDirContent2dirs_files debug doughP bakedP fn
-    when (informall debug) $ putIOwords ["completeIndex", "\n dirs", showT dirs, "\n files", showT files]
+    when (inform debug) $ putIOwords ["completeIndex", "\n dirs", showT dirs, "\n files", showT files]
     let ix2 = ix1{dirEntries = dirs, fileEntries = files}
-    when (informall debug) $ putIOwords ["completeIndex", "x2", showT ix2]
+    when (inform debug) $ putIOwords ["completeIndex", "x2", showT ix2]
     return ix2
 
 {- | get the contents of a directory, separated into dirs and files

@@ -93,20 +93,20 @@ convTex2pdf debug doughP bakedP flags layout out =
 convA2B :: ConvertA2BOp
 -- ^ produce the B files from A
 convA2B debug sourceP targetP flags layout out sourceExtA bakeop = do
-    when (informall debug) $ putIOwords ["\n  convA2B   1 new extension, new file\n", showT sourceExtA, showT out]
+    when (inform debug) $ putIOwords ["\n  convA2B   1 new extension, new file\n", showT sourceExtA, showT out]
     let outP = makeAbsFile out :: Path Abs File
 
     let infile1 =
             replaceExtension' (s2t . unExtension $ sourceExtA) outP :: Path Abs File
-    when (informall debug) $ putIOwords ["\n  convA2B   2  needP infile1 ", showT infile1]
+    when (inform debug) $ putIOwords ["\n  convA2B   2  needP infile1 ", showT infile1]
     needP [infile1]
 
     let infile2 = sourceP </> stripProperPrefixP targetP infile1 :: Path Abs File
     need [toFilePath infile2]
-    when (informall debug) $
+    when (inform debug) $
         putIOwords
             ["\n  convA2B - 3 needed infile2", showPretty infile2]
-    when ((informall debug) && (infile1 /= infile2)) $
+    when ((inform debug) && (infile1 /= infile2)) $
         putIOwords
             [ "\n  convA2B - 3 file differ"
             , "\n infile1"
@@ -118,7 +118,7 @@ convA2B debug sourceP targetP flags layout out sourceExtA bakeop = do
     res <-
         runErr2action $
             bakeop debug flags infile2 layout outP
-    when (informall debug) $ putIOwords ["\n  convA2B - return 4 file produced", showT res, "file produce out", showPretty outP, "\n"]
+    when (inform debug) $ putIOwords ["\n  convA2B - return 4 file produced", showT res, "file produce out", showPretty outP, "\n"]
     return ()
 
 io2bool :: MonadIO m => ErrIO b -> m b
@@ -146,14 +146,14 @@ convertAny ::
 convertAny debug sourceP targetP flags layout out anyop anyopName = do
     putIOwords ["-----------------", "convertAny for", anyopName]
     let outP = makeAbsFile out :: Path Abs File
-    when (informall debug) $ putIOwords ["\nproduceAny", "\n file out", showT out]
+    when (inform debug) $ putIOwords ["\nproduceAny", "\n file out", showT out]
     if sourceP == targetP
         then anyop debug sourceP targetP flags layout out
         else do
             let fromfile = sourceP </> makeRelativeP targetP outP
             -- needP [fromfile]
             fileExists <- io2bool $ doesFileExist' fromfile
-            when (informall debug) $
+            when (inform debug) $
                 putIOwords
                     [ "\nconvertAny - fromfile exist:"
                     , showT fileExists
@@ -163,7 +163,7 @@ convertAny debug sourceP targetP flags layout out anyop anyopName = do
             if fileExists -- gives recursion, if the file is produced in earlier run
                 then do
                     copyFileChangedP fromfile outP
-                    when (informall debug) $
+                    when (inform debug) $
                         liftIO $
                             putIOwords
                                 ["\n convertAny DONE   - staticP - fromfile ", showT fromfile]

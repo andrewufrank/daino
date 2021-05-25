@@ -37,7 +37,7 @@ readSettings debug settingsfilename =
         -- TODO where is settings
         layout3 <- readSettings2 debug settingsTxt
         when (inform debug) $ putIOwords ["readSettings end", showPretty layout3]
-        when (informall debug) $
+        when (inform debug) $
             putIOwords ["readSettings layout3", showPretty layout3]
         return layout3
 

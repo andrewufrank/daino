@@ -54,7 +54,7 @@ module ShakeBake.Shake2 where
 import           Uniform.Shake
 
 import Foundational.Foundation
-    -- ( SiteLayout(doughDir, bakedDir), informall, staticDirName )
+    -- ( SiteLayout(doughDir, bakedDir), inform, staticDirName )
 -- import           Lib.CmdLineArgs         (PubFlags (..))
 import           ShakeBake.ConvertFiles
 
@@ -262,7 +262,7 @@ getNeeds debug sourceP targetP extSource extTarget = do
                         (replaceExtension' extTarget . (targetP </>))
                         filesWithSource ::
                         [Path Abs File]
-    when (informall debug) $ do
+    when (inform debug) $ do
         putIOwords
             [ "===================\ngetNeeds -  source files 1"
             , "for ext"

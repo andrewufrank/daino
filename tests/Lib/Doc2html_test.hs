@@ -19,14 +19,17 @@ import UniformBase
 import Wave.Doc2html
 
 -- -- | test to produce pan
-testing_md2pan f1 f2 = test1FileIO "ssg" f1 f2 (docrep2panrep NoticeLevel0 layoutDefaults )
+testing_md2pan f = test1FileIO "ssg" 
+    (f <> "T.docrep" ) (f <>"_panrep") 
+    (docrep2panrep NoticeLevel0 layoutDefaults )
 
-test_blog1_md2pan = testing_md2pan "blog1T.docrep" "panrep_blog1"
-test_index_md2pan = testing_md2pan "indexT.docrep" "panrep_index"
-test_postwk_md2pan = testing_md2pan "postwkT.docrep" "panrep_postwk"
-test_withRef_md2pan = testing_md2pan "withRefT.docrep" "panrep_withRef"
+test_blog1_md2pan = testing_md2pan "blog1"
+test_index_md2pan = testing_md2pan "index"
+test_postwk_md2pan = testing_md2pan "postwk"
+test_withRef_md2pan = testing_md2pan "withRef"
 
-testing_pan2indexEntry f = test1File "ssg" ("panrep_" <> f) ("ixEntry1_" <> f) op -- dr1 <- read8 inputFn docrepFileType
+testing_pan2indexEntry f = test1File "ssg" 
+    (f <> "_panrep" ) (f <>"_ixEntry1") op -- dr1 <- read8 inputFn docrepFileType
 op :: Panrep -> IndexEntry
 op = dyIndexEntry . panyam
 
@@ -35,7 +38,8 @@ test_pan2indexEntry_index = testing_pan2indexEntry "index"
 test_pan2indexEntry_postwk = testing_pan2indexEntry "postwk"
 test_pan2indexEntry_withRef = testing_pan2indexEntry "withRef"
 
-testing_pan2HTMLout f = test1FileIO "ssg" ("panrep_" <> f) ("htmlout_" <> f) op1 -- dr1 <- read8 inputFn docrepFileType
+testing_pan2HTMLout f = test1FileIO "ssg" 
+    (f <> "_panrep" ) (f <> "_htmlout") op1 -- dr1 <- read8 inputFn docrepFileType
 op1 :: Panrep -> ErrIO HTMLout
 op1 = panrep2html NoticeLevel0 layoutDefaults 
 

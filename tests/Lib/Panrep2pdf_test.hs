@@ -26,7 +26,7 @@ import Lib.Md2doc_test
 
 testing_panrep2texsnip :: FilePath -> IO ()
 -- | test to produce texsnip
-testing_panrep2texsnip f1  = test1FileIO "ssg" ("panrep_" <> f1) (f1 <> "_texsnip" )(panrep2texsnip NoticeLevel0 ) 
+testing_panrep2texsnip f1  = test1FileIO "ssg" (f1 <> "_panrep") (f1 <> "_texsnip" )(panrep2texsnip NoticeLevel0 ) 
 
 test_blog1_panrep2texsnip = testing_panrep2texsnip   "blog1"
 test_index_panrep2texsnip = testing_panrep2texsnip "index"   
@@ -35,7 +35,8 @@ test_withRef_panrep2texsnip = testing_panrep2texsnip "withRef"
 
 testing_texsnip2tex :: FilePath -> IO ()
 -- | test to produce texSnipFileType 
-testing_texsnip2tex f1  = test1FileIO "ssg"  (f1 <> "_texsnip" )("tex_" <> f1) 
+testing_texsnip2tex f1  = test1FileIO "ssg"  
+    (f1 <> "_texsnip" )(f1 <> "_tex" ) 
     (\filein -> do
                 lat1 <- texsnip2tex NoticeLevel0 filein
                 write8 (testDir layoutDefaults </> makeRelFile (f1 <> ".tex")) texFileType lat1
@@ -53,7 +54,8 @@ testing_tex2pdf :: FilePath -> IO ()
 -- difficult: 
 -- pdf process is on files (not text)
 -- requires current dir 
-testing_tex2pdf f1  = test1FileIO "ssg"  ("tex_" <> f1) ("pdfResult_" <> f1) (do 
+testing_tex2pdf f1  = test1FileIO "ssg"  
+    (f1 <> "_tex") (f1 <> "_pdfResult" <> f1) (do 
               \(d::Text) ->
                   do 
                     (tex2pdf NoticeLevel0  
