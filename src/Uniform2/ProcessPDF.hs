@@ -32,16 +32,17 @@ import Uniform.Latex
 import Uniform.PandocImports
 import UniformBase
 
-panrep2texsnip :: Panrep -> ErrIO TexSnip
-panrep2texsnip (Panrep y p) = do
-    res1 <- writeTexSnip2 p
-    return (TexSnip y res1)
+-- panrep2texsnip :: Panrep -> ErrIO TexSnip
+-- panrep2texsnip (Panrep y p) = do
+--     res1 <- writeTexSnip2 p
+--     return (TexSnip y res1)
 
-tex2latex2 :: LatexParam -> [TexSnip] -> Latex
-tex2latex2 latpar snips =
-    Latex $ tex2latex latpar (map unTexSnip snips)
+-- tex2latex2 :: LatexParam -> [TexSnip] -> Latex
+-- tex2latex2 latpar snips =
+--     Latex $ tex2latex latpar (map unTexSnip snips)
 
-writePDF1 debug fn fnres refDir = writePDF2 debug fn fnres refDir
+-- writePDF1 :: NoticeLevel -> Path Abs File -> Path Abs File -> Path Abs Dir -> ErrIO ()
+-- writePDF1 debug fn fnres refDir = writePDF2 debug fn fnres refDir
 
 -- fn must have extension tex
 -- result extension?

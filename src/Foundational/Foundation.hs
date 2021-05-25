@@ -93,7 +93,7 @@ layoutDefaults =
         , reportFile = makeAbsFile "/home/frank/ssgReport.txt"
         , testDir =  makeAbsDir $
                 ("/home/frank" :: FilePath)
-                    </> ("ssgTest" :: FilePath)
+                    </> (".ssg" :: FilePath)
         -- , bannerImage = bannerImageFileName
          -- , landingPage = landingPageName
         -- ,  uploadServer = uploadServerTest

@@ -42,12 +42,15 @@ import Uniform2.HTMLout
 import UniformBase
 
 import Uniform.PandocImports
+import Uniform.Latex
 
 
 -- ------------------------------------ panrep2texsnip
--- panrep2html :: Panrep -> ErrIO HTMLout
 -- implements the bake
 -- TODO simplify, just an op on second part
+-- is this just a single language snip
+-- and a panrep can produce multiple? 
+-- how to deal with shake? 
 panrep2texsnip :: NoticeLevel -> Panrep -> ErrIO TexSnip
 panrep2texsnip debug (Panrep y p) = do
     when (informall debug) $ putIOwords ["\n panrep2texsnip start"]
@@ -56,3 +59,29 @@ panrep2texsnip debug (Panrep y p) = do
     when (informall debug) $ putIOwords ["\n panrep2texsnip done"]
     return res
 
+-- ------------------------------------ texsnip2tex
+-- implements the bake
+-- TODO simplify, just an op on second part
+-- is this just a single language snip
+-- and a panrep can produce multiple? 
+-- how to deal with shake? 
+texsnip2tex :: NoticeLevel -> TexSnip -> ErrIO Latex
+texsnip2tex debug p = do
+    when (informall debug) $ putIOwords ["\n texsnip2tex start"]
+    let snips2 =  [p]
+    let res2 = Latex $ tex2latex zero (map unTexSnip snips2)
+    when (informall debug) $ putIOwords ["\n texsnip2tex done"]
+    return res2
+
+-- ------------------------------------ tex2pdf
+-- implements the bake
+-- TODO simplify, operations are with files (not texts)
+-- refdir must be set to current 
+tex2pdf :: NoticeLevel -> Path Abs File ->  Path Abs File ->   ErrIO ()
+tex2pdf debug fn fnres  =  do
+    when (informall debug) $ putIOwords ["\n tex2pdf start"]
+    let refDir =
+            makeAbsDir . getParentDir . toFilePath $ fn :: Path Abs Dir
+    writePDF2 debug fn fnres refDir
+    when (informall debug) $ putIOwords ["\n tex2pdf done"]
+    return ()

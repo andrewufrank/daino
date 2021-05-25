@@ -23,6 +23,7 @@ module ShakeBake.Bake where
 import Foundational.Foundation  
 -- import Wave.Docrep 
 import Wave.Md2doc
+import Wave.Panrep2pdf
 
 import Foundational.Filetypes4sites
 
@@ -143,7 +144,7 @@ bakeOnePanrep2texsnip debug flags inputFn layout resfn2 = do
         ]
 
     dr1 <- read8 inputFn panrepFileType
-    snip1 <- panrep2texsnip dr1
+    snip1 <- panrep2texsnip debug dr1
     write8 resfn2 texSnipFileType snip1 -- content is html style
     when (informall debug) $
         putIOwords
@@ -163,7 +164,8 @@ bakeOneTexsnip2tex debug flags inputFn layout resfn2 = do
         ]
 
     snip1 <- read8 inputFn texSnipFileType
-    let tex1 = tex2latex2 zero [snip1]
+    tex1 <- texsnip2tex debug snip1 
+    -- let tex1 = tex2latex2 zero [snip1]
     write8 resfn2 texFileType tex1 -- content is html style
     when (informall debug) $
         putIOwords
@@ -182,9 +184,9 @@ bakeOneTex2pdf debug flags inputFn layout resfn2 = do
         , showT resfn2
         ]
 
-    let refDir =
-            makeAbsDir . getParentDir . toFilePath $ inputFn :: Path Abs Dir
-    writePDF1 debug inputFn resfn2 refDir -- content is html style
+    -- let refDir =
+            -- makeAbsDir . getParentDir . toFilePath $ inputFn :: Path Abs Dir
+    tex2pdf debug inputFn resfn2  -- content is html style
     when (informall debug) $
         putIOwords
             ["\n-----------------", "bakeOneFile2pdf done fn", showT resfn2]
