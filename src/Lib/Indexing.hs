@@ -60,10 +60,10 @@ completeIndex debug doughP bakedP ix1 = do
 -}
 getDirContent2dirs_files :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> Path Abs File -> ErrIO ([IndexEntry], [IndexEntry])
 getDirContent2dirs_files debug doughP bakedP indexpageFn = do
-    putIOwords ["getDirContent2dirs_files for", showPretty indexpageFn]
+    -- putIOwords ["getDirContent2dirs_files for", showPretty indexpageFn]
     let pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir
     -- get the dir in which the index file is embedded
-    putIOwords ["getDirContent2dirs_files pageFn", showPretty pageFn]
+    -- putIOwords ["getDirContent2dirs_files pageFn", showPretty pageFn]
 
     dirs1 :: [Path Abs Dir] <- getDirectoryDirs' pageFn
     let dirs2 = filter ( not . (isPrefixOf' ("DNB" :: FilePath) ) .   getNakedDir) dirs1
@@ -76,27 +76,27 @@ getDirContent2dirs_files debug doughP bakedP indexpageFn = do
     -- TODO may need extension (change to list of excluded)
     -- build from constants in foundation
 
-    putIOwords ["\ngetDirContent2dirs_files excluded", s2t$ toFilePath templatesDirName , s2t$ toFilePath resourcesDirName]
-    putIOwords ["\ngetDirContent2dirs_files dirs4", showPretty dirs4]
+    -- putIOwords ["\ngetDirContent2dirs_files excluded", s2t$ toFilePath templatesDirName , s2t$ toFilePath resourcesDirName]
+    -- putIOwords ["\ngetDirContent2dirs_files dirs4", showPretty dirs4]
 
     files1 :: [Path Abs File] <- getDirContentFiles pageFn
 
-    putIOwords ["getDirContent2dirs_files files1", showPretty files1]
+    -- putIOwords ["getDirContent2dirs_files files1", showPretty files1]
 
     let files2 =
             filter (indexpageFn /=) -- should not exclude all index pages but has only this one in this dir?
                 . filter (hasExtension extMD) -- extDocrep)
                 $ files1
-    putIOwords ["getDirContent2dirs files2", showPretty files2]
+    -- putIOwords ["getDirContent2dirs files2", showPretty files2]
     ixfiles <- mapM (getFile2index debug doughP bakedP) files2
-    putIOwords ["getDirContent2dirs ixfiles", showPretty ixfiles]
+    -- putIOwords ["getDirContent2dirs ixfiles", showPretty ixfiles]
 
     let subindexDirs = map (\d -> d </> makeRelFile "index.md") dirs4
     -- "index.docrep" 
-    putIOwords ["getDirContent2dirs subindexDirs", showPretty subindexDirs]
+    -- putIOwords ["getDirContent2dirs subindexDirs", showPretty subindexDirs]
     ixdirs <- mapM (getFile2index debug doughP bakedP) subindexDirs
 
-    putIOwords ["getDirContent2dirs xfiles", showPretty ixfiles, "\n ixdirs", showPretty ixdirs]
+    -- putIOwords ["getDirContent2dirs xfiles", showPretty ixfiles, "\n ixdirs", showPretty ixdirs]
 
     return (catMaybes ixdirs, catMaybes ixfiles)
 
