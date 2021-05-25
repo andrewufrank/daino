@@ -45,6 +45,7 @@ library
       Uniform2.ProcessPDF
       Wave.Doc2html
       Wave.Md2doc
+      Wave.Panrep2pdf
   other-modules:
       Paths_ssg
   hs-source-dirs:
@@ -99,6 +100,7 @@ test-suite ssgTest
       Lib.Indexing_test
       Lib.IndexMake_test
       Lib.Md2doc_test
+      Lib.Panrep2pdf_test
       Lib.ReadSettingFile_test
       Paths_ssg
   hs-source-dirs:

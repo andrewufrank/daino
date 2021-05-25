@@ -47,13 +47,13 @@ The code is in the subdir `ShakeBake`.
         - completeDocRep (complete with defaults, hardcode TODO)
         - addRefs
 
-- `panrep`: Input format for pandoc with metadata as record
+- `panrep`: Input format for pandoc with metadata as record; same format as docrep, but index completed
 - `html`: a page for the browser to show
 - `texsnip`: intermediate format of a part of a page
 - `tex`: a tex file for a page
 - `pdf`: a printable page
 
-### MD -> Docrep: md2docrep
+### Wave MD -> Docrep: md2docrep
 The md page is translated by `bakeOneMD2docrep`.
 
 The md files are 
@@ -62,16 +62,19 @@ The md files are
 - `addRefs` adds and transforms the bibliographic data 
 
 
-### Docrep -> Panrep: docrep2panrep
+### Wave Docrep2html
+#### Docrep -> Panrep: docrep2panrep
+conversion of record (but same content), then complete index.
 
 `bakeOneDocrep2panrep` to docrep file by 
-### Panref -> html: panrep2html
+#### Panrep -> html: panrep2html
 
-### Panref -> Texsnip: panrep2texsnip
+### Wave Panrep2pdf
+### Panrep -> Texsnip: panrep2texsnip
 -- problem the details of the call to pandoc 
 -- gives latex code, but not a full file
 
-### Panref -> Tex: tex2latex
+### Texsnip -> Tex: tex2latex
 -- wraps the head and tail around the a list of latex snips
 peamble code is in ProcessPDF 
 
