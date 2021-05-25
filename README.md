@@ -1,26 +1,32 @@
 # Static Site Generator
-A static site generator from pandoc and other available packages on Hackage (e.g. shake, twitch, scotty), influenced by Chris Penner's [slick](https://github.com/ChrisPenner/slick#readme)(todo: look at [Ema](https://github.com/srid/ema) by  Sridhar Ratnakumar). It uses files to manage data to permit version management with git. Page appearances are directed with YAML and internally data is structured with JSON, for each page a PDF file is produced to allow regular looking prints. Index pages are automatically created.
+A static site generator from pandoc and other available packages on Hackage (e.g. shake, twitch, scotty), influenced by Chris Penner's [slick](https://github.com/ChrisPenner/slick#readme)(todo: look at [Ema](https://github.com/srid/ema) by  Sridhar Ratnakumar). 
+SSG uses files to manage data to permit version management with git. Page appearances are directed with YAML and internally data is structured with JSON. Unlike other Site Generators, for each page a PDF file is produced to gurantee well formated prints. 
+Index pages are automatically formated, but minimal content must be provided initially.
 # Layout
-The code includes an example site in `docs/site` directory. It contains a file `settingsNN.yaml` which describes the layout of the site. A correponding file must be created for a new site. 
-in the `docs` directgory is the `theme` directory, which determines the apparence of the site. 
+The code includes an example site in the `docs/site` directory. It contains a file `settingsNN.yaml` which describes the layout of the site. A correponding file must be created for a new site. 
+in the `docs` directgory is the separated `theme` directory, which determines the apparence of the site. 
 Starting with `-t` for `test` selects the settingsfile in the example test site. 
 
-# Test the result in a browser
-Test with the included example site (in the `docs/site` directory) with -t switch (e.g. `cabal run ssgbake -- -t`). The result can be tested with 
+# Test site
+Test with the included example site (in the `docs/site` directory) and the provided `theme` can be extended to include all troublesome cases. The tests are executed with `-t` switch (e.g. `cabal run ssgbake -- -t`). A html server (scotty) is started; the result can be viewed in the broswer at `localhost:3000` (the port can be selected in the `settings` file. 
+Alternatively, the resulting site can be tested in the browser with 
 - SimpleServer (must be installed from Hackage with `cabal install`) with `simpleserver -p <portnumber>` or 
 - `python3 -m http.server <portnumber>`
  running in `ssg/docs/site/baked`.
 
 ## Defaults
-The markdonw file for each page to produce contains in the yaml header values for title, author, date etc. Missing values are replaced with defaults, which are stored in the same format in a file.  
-    Missing title is replaced by FILL - which can be searched for and corrected!
+The markdonw file for each page included in the site must  contain in the yaml header values for title, author, date etc. Missing values are replaced with defaults, which are stored in the same format in a file.  
+    Missing title and author is replaced by `FILL` - which can be searched for and corrected!
 TODO
 
 ## Processing 
 The design is based on Shake which is sort of lazy:
 
-Each markdown file produces a page (correlat: for each page expected include a markdown file, even the index pages!). A markdown page starts Shake with a `need` for the html page. 
-To produce html page, a panrep file must be produced, which then ask for a docrep file which is produced from the markdown file. Shake caches the intermediate files and recreates files only if the source changed, which guarantees very fast udates and allow dynamic uupdates of pages. 
+Each markdown file produces a page (correlate: for each page expected include a markdown file, even for the index pages!). A markdown page starts Shake with a `need` for the html page. 
+To produce html page, a panrep file must be produced, which then ask for a docrep file which is produced from the markdown file. Shake caches the intermediate files and recreates files only if the source changed, which achieves very fast udates and allow dynamic uupdates of pages. 
+
+From each markdown page a pdf is produced. The progression is from the TODO 
+
 In this sense, the conversion/transformation progresses in **Waves** and code is kept in modules which each cater for a wave.
 
 ### Organising Shake:
@@ -43,17 +49,18 @@ The code is in the subdir `ShakeBake`.
 
 - `panrep`: Input format for pandoc with metadata as record
 - `html`: a page for the browser to show
-- `pdf`: a printable page
 - `texsnip`: intermediate format of a part of a page
 - `tex`: a tex file for a page
+- `pdf`: a printable page
 
 ### MD -> Docrep: md2docrep
+The md page is translated by `bakeOneMD2docrep`.
+
 The md files are 
-- read with `readMarkdown2docrepJSON`
-- `completeDocRep` completes the meta yaml information 
+- read md file with `readMarkdown2` to pandoc (processing of Metadata in Yaml, conversion of text to pandoc)
+- `pandoc2docrep` produces `MetaPage` with all meta data, collects the data for the index
 - `addRefs` adds and transforms the bibliographic data 
 
-The page is translated by `bakeOneMD2docrep`
 
 ### Docrep -> Panrep: docrep2panrep
 

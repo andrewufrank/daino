@@ -16,8 +16,8 @@ import     Test.Framework
 -- import    {-@ HTF_TESTS @-}        Lib.ReadSettingFile_test
 -- import    {-@ HTF_TESTS @-}        Lib.Md2doc_test
 
-import    {-@ HTF_TESTS @-}        Lib.Indexing_test
--- import    {-@ HTF_TESTS @-}        Lib.Doc2html_test
+-- import    {-@ HTF_TESTS @-}        Lib.Indexing_test
+import    {-@ HTF_TESTS @-}        Lib.Doc2html_test
 -- import    {-@ HTF_TESTS @-}        Lib.IndexMake_test
 
 
