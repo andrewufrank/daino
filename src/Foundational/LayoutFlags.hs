@@ -23,6 +23,7 @@
 module Foundational.LayoutFlags where
 
 import UniformBase
+import Data.Default.Class
 
 progName :: Text
 progName = "SSG"  
@@ -42,6 +43,9 @@ data SiteLayout = SiteLayout
 
 instance NiceStrings SiteLayout where
     shownice d = replace' ", " ",\n " (showT d)
+
+instance Default SiteLayout where 
+        def = layoutDefaults
 
 sourceDirTestDocs :: Path Abs Dir
 sourceDirTestDocs = makeAbsDir "/home/frank/Workspace11/ssg/docs/"
@@ -90,6 +94,8 @@ data PubFlags = PubFlags
 
 instance Zeros PubFlags where
     zero = PubFlags zero zero zero zero zero zero zero zero
+instance Default PubFlags where 
+        def = testFlags 
 
 testFlags :: PubFlags
 testFlags =

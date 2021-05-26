@@ -55,6 +55,7 @@ library
   build-depends:
       base
     , data-default
+    , data-default-class
     , pandoc-types
     , uniform-cmdLineArgs
     , uniform-convenience
@@ -78,6 +79,7 @@ executable ssgbake
   build-depends:
       base
     , data-default
+    , data-default-class
     , pandoc-types
     , ssg
     , uniform-cmdLineArgs
@@ -111,6 +113,7 @@ test-suite ssgTest
       HTF
     , base
     , data-default
+    , data-default-class
     , pandoc-types
     , quickcheck-text
     , ssg

@@ -73,7 +73,7 @@ dependencies:
     # -- - uniform-ftp
     # - aeson 
     # - optparse-applicative -- does not allow value in cmdlineargs
-    
+    - data-default-class 
 library:
   source-dirs: 
       - src 
