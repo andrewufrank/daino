@@ -48,7 +48,7 @@ mainTest        -- with tests in other modules
 
 -- ordinary tests (run without shakeStartTest)
 
--- import   {-@ HTF_TESTS @-}        Foundational.Foundation_test  
+-- import   {-@ HTF_TESTS @-}        Foundational.LayoutFlags_test  
                         -- sets pageFn 
 -- import    {-@ HTF_TESTS @-}       Lib.CheckInputs_test
 -- -- -- ----    -- writes A : testLayout

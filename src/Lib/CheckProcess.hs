@@ -20,7 +20,7 @@
 
 module Lib.CheckProcess where
 
-import Foundational.Foundation  
+import Foundational.LayoutFlags  
 import ShakeBake.ReadSettingFile (readSettings)
 
 import Uniform.Pandoc (markdownFileType)

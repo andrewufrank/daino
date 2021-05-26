@@ -24,7 +24,7 @@ module Wave.Md2doc (
 
 import UniformBase
 
-import Foundational.Foundation
+import Foundational.LayoutFlags
 import Foundational.MetaPage
 import Uniform.Json
 

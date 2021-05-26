@@ -30,7 +30,7 @@ module Wave.Panrep2pdf (
 
 import Data.Default
 import Foundational.Filetypes4sites
-import Foundational.Foundation
+import Foundational.LayoutFlags
 import Foundational.MetaPage
 import GHC.Generics (Generic)
 import Lib.IndexMake

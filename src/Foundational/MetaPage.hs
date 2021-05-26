@@ -31,7 +31,7 @@ module Foundational.MetaPage (
 
 -- import Data.Aeson.Types
 import Data.Default (Default (..))
-import Foundational.Foundation  
+import Foundational.LayoutFlags  
 -- import Lib.CmdLineArgs (PubFlags (..))
 import Uniform.Json
 import Uniform.Pandoc

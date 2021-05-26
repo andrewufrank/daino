@@ -28,7 +28,7 @@ source-repository head
 library
   exposed-modules:
       Foundational.Filetypes4sites
-      Foundational.Foundation
+      Foundational.LayoutFlags
       Foundational.MetaPage
       Lib.CheckProcess
       Lib.Indexing

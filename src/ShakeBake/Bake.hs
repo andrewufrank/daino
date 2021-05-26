@@ -20,7 +20,7 @@
 module ShakeBake.Bake where
 
 -- import Lib.CmdLineArgs (PubFlags (..))
-import Foundational.Foundation  
+import Foundational.LayoutFlags  
 -- import Wave.Docrep 
 import Wave.Md2doc
 import Wave.Panrep2pdf

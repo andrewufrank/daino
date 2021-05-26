@@ -17,7 +17,7 @@
 module Main where -- must have Main (main) or Main where
 
 import ShakeBake.CmdLineArgs  
-import Foundational.Foundation  
+import Foundational.LayoutFlags  
 import ShakeBake.StartSSGprocess  
 import Uniform.Convenience.StartApp  
 import UniformBase  

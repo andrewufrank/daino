@@ -12,7 +12,7 @@
 
 module ShakeBake.ReadSettingFile where  
 
-import Foundational.Foundation
+import Foundational.LayoutFlags
 import Uniform.Json
 import Uniform.Yaml
 import UniformBase

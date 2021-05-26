@@ -13,7 +13,7 @@
 
 module Lib.Templating where -- (openMain, htf_thisModuelsTests)
 
-import Foundational.Foundation
+import Foundational.LayoutFlags
 import Uniform2.HTMLout
 
 --(Abs, AtKey (getAtKey), Dir, ErrIO, Filenames3 ((</>)), HTMLout, Panrep (..), Path, Text, applyTemplate3, makeRelFile, putIOwords, showT, t2s, when)

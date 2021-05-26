@@ -53,7 +53,7 @@ module ShakeBake.Shake2 where
 
 import           Uniform.Shake
 
-import Foundational.Foundation
+import Foundational.LayoutFlags
     -- ( SiteLayout(doughDir, bakedDir), inform, staticDirName )
 -- import           Lib.CmdLineArgs         (PubFlags (..))
 import           ShakeBake.ConvertFiles

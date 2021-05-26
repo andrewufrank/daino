@@ -23,7 +23,7 @@
 -- the test site must be the stame 
 -- all values must be read from layoutDefults
 
-module Foundational.Foundation where 
+module Foundational.LayoutFlags where 
 import UniformBase
 
 

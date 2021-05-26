@@ -29,7 +29,7 @@ module Wave.Pan2texsnip (
 ) where
 
 import           Data.Default
-import           Foundational.Foundation
+import           Foundational.LayoutFlags
 import           Foundational.MetaPage
 import           GHC.Generics                 (Generic)
 import           Lib.IndexMake
