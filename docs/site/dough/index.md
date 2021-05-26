@@ -1,9 +1,9 @@
 ---
-title: "XX's homepage"
+title: "Example homepage"
 # values for the page individually
 pageTemplate : page3
-page-title : MyBlog
-indexPage: True 
+page-title : ExampleHomepage
+#indexPage: True 
 #page-title-postfix : index.md
 #pagetitle : landingPage  # the same as title
 #subtitle : subtitle text
@@ -12,9 +12,16 @@ indexPage: True
 date: 2010-01-29
 keywords: homepage
 abstract: |
-    The index page for all.
+    The index page for site.
 
----
+author : Author of Settings 
+date: 2019-01-01
+settings : 
+    sitename : siteNameExample
+    byline : siteByLineExample
+    banner: /templates/img/symmetricGeras2.jpg
 
-My landing page (TODO instead of a menu) 1 :
+
+
+The landing page of the **Example Site** giving access to: 
 
