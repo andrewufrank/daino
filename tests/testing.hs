@@ -12,13 +12,13 @@ module Main where      -- must have Main (main) or Main where
 
 import     Test.Framework
 
--- import    {-@ HTF_TESTS @-}        Lib.Example_test
--- import    {-@ HTF_TESTS @-}        Lib.ReadSettingFile_test
--- import    {-@ HTF_TESTS @-}        Lib.Md2doc_test
+import    {-@ HTF_TESTS @-}        Lib.Example_test
+import    {-@ HTF_TESTS @-}        Lib.ReadSettingFile_test
+import    {-@ HTF_TESTS @-}        Lib.Md2doc_test
 
--- import    {-@ HTF_TESTS @-}        Lib.Indexing_test
--- import    {-@ HTF_TESTS @-}        Lib.Doc2html_test
--- import    {-@ HTF_TESTS @-}        Lib.Panrep2pdf_test
+import    {-@ HTF_TESTS @-}        Lib.Indexing_test
+import    {-@ HTF_TESTS @-}        Lib.Doc2html_test
+import    {-@ HTF_TESTS @-}        Lib.Panrep2pdf_test
 import    {-@ HTF_TESTS @-}        Lib.IndexMake_test
 
 
@@ -43,7 +43,7 @@ mainTest        -- with tests in other modules
 
 -- import {-@ HTF_TESTS @-} ShakeStartTests
 -- -- must run first because it produces the test values used later
--- -- uses layoutDefaults, not settings2.yaml
+-- -- uses def, not settings2.yaml
 -- -- test dir must be ~/.SSG  -- the program name in foundation
 
 -- ordinary tests (run without shakeStartTest)
@@ -107,7 +107,7 @@ mainTest        -- with tests in other modules
 --     return ()
 
     
--- testFlags = zero { testFlag = True
+-- defs = zero { testFlag = True
 --                  , publishFlag = True
 --                  , serverFlag = True
 --                  , watchFlag = True
