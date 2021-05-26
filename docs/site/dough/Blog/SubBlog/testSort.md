@@ -4,7 +4,7 @@ author: AUF
 date: Jan. 4, 2022
 keywords: notest
 abstract: A silly text not needing an abstract.
-pageTemplate: page3.yaml
+# pageTemplate: page3.yaml
 # image: resources/DSC08138.JPG
 ---
 

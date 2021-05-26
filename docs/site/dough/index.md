@@ -1,7 +1,7 @@
 ---
 title: "Example homepage"
 # values for the page individually
-pageTemplate : page3
+# # pageTemplate : page3
 page-title : ExampleHomepage
 #indexPage: True 
 #page-title-postfix : index.md

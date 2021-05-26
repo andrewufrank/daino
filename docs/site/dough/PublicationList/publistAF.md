@@ -3,7 +3,7 @@ title: publistAF.md
 author: auf
 date: 2010-07-29
 keywords: homepage
-pageTemplate: page3.yaml
+# pageTemplate: page3.yaml
 abstract: |
     produce a publist for af
 
