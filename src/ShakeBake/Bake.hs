@@ -29,7 +29,7 @@ import Foundational.Filetypes4sites
 
 -- import Uniform2.Markdown  
 import Uniform.Pandoc
-import Uniform2.ProcessPDF  
+-- import Uniform2.ProcessPDF  
 import Uniform2.HTMLout
 
 import Wave.Doc2html  

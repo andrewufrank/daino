@@ -39,10 +39,16 @@ testing_texsnip2tex f1  = test1FileIO "ssg"
     (f1 <> "_texsnip" )(f1 <> "_tex" ) 
     (\filein -> do
                 lat1 <- texsnip2tex NoticeLevel0 filein
-                write8 (testDir layoutDefaults </> makeRelFile (f1 <> ".tex")) texFileType lat1
+                write8 (testDir </> makeRelFile (f1 <> ".tex")) texFileType lat1
                 return lat1                
                 ) 
 
+testDir = makeAbsDir $
+                ("/home/frank" :: FilePath)
+                    </> (".ssg" :: FilePath)
+                    -- must correspond to what testharness is using
+
+                    
 test_blog1_texsnip2tex = testing_texsnip2tex   "blog1"
 test_index_texsnip2tex = testing_texsnip2tex "index"   
 test_postwk_texsnip2tex = testing_texsnip2tex "postwk"   
@@ -59,8 +65,8 @@ testing_tex2pdf f1  = test1FileIO "ssg"
               \(d::Text) ->
                   do 
                     (tex2pdf NoticeLevel0  
-                        ( (testDir layoutDefaults  </> makeRelFile ( f1 <> ".tex")))
-                        ( (testDir layoutDefaults  </> makeRelFile ( f1 <> ".pdf"))))
+                        ( (testDir   </> makeRelFile ( f1 <> ".tex")))
+                        ( (testDir   </> makeRelFile ( f1 <> ".pdf"))))
                     let res = "pdfwritten" :: Text 
                     return res      
                     -- return ("pdfwritten" :: Text)

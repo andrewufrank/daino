@@ -23,16 +23,16 @@ import Uniform.Json
 import Uniform.PandocHTMLwriter
 import UniformBase
 
-putValinMaster :: NoticeLevel -> [Value] -> Path Abs Dir -> ErrIO HTMLout
+putValinMaster :: NoticeLevel -> [Value] -> Path Abs File -> ErrIO HTMLout
 {- ^ get the master html template and put the val into it
  takes the master filename from val
  not clear what intended
  for now: use the master TODO
 -}
-putValinMaster debug vals templatesP = do
-    when (inform debug) $ putIOwords ["putValinMaster", "templatesP", showT templatesP]
-    let mf = masterTemplateFileName
-    let masterfn = templatesP </> mf
+putValinMaster debug vals masterfn = do
+    when (inform debug) $ putIOwords ["putValinMaster", "masterfn", showT masterfn]
+    -- let mf = masterTemplateFileName
+    -- let masterfn = templatesP </> mf
     template2 :: Text <- readFile2 (toFilePath masterfn)
     -- templatapplyTemplate3 debug masterfn vals -- inTemplate.html
     html2 <- applyTemplate4 (inform debug) template2 vals -- inTemplate.html

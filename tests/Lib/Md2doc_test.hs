@@ -94,6 +94,3 @@ instance ShowTestHarness IndexEntry
 
 -- doughP = doughDir settings403 
 -- bakedP = bakedDir settings403
-
--- settings403 = 
---     SiteLayout {themeDir = makeAbsDir "/home/frank/Workspace11/ssg/theme/", doughDir = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/dough/", bakedDir = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/baked/", reportFile = makeAbsFile "Path Abs File /home/frank/SSGreport.txt", testDir = makeAbsDir "/home/frank/.SSG/"} :: SiteLayout 

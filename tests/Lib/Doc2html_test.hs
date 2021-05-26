@@ -82,16 +82,7 @@ test_pan2HTMLout_withRef = testing_pan2HTMLout "withRef"
 -- test_postwk_dm2docrep = testing_md2docrep "postwk"
 -- test_withRef_dm2docrep = testing_md2docrep "withRef"
 
--- instance ShowTestHarness MarkdownText
--- instance ShowTestHarness Pandoc
--- instance ShowTestHarness Docrep
--- instance ShowTestHarness MetaPage
--- instance ShowTestHarness IndexEntry
+
 instance ShowTestHarness Panrep
 instance ShowTestHarness HTMLout
 
--- doughP = doughDir settings403
--- bakedP = bakedDir settings403
-
--- settings403 =
---     SiteLayout {themeDir = makeAbsDir "/home/frank/Workspace11/ssg/theme/", doughDir = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/dough/", bakedDir = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/baked/", reportFile = makeAbsFile "Path Abs File /home/frank/SSGreport.txt", testDir = makeAbsDir "/home/frank/.SSG/", bannerImage = makeRelFile "Path Rel File cropped-DSC05127-1024x330.jpg", uploadServer = "test.gerastree.at"} :: SiteLayout

@@ -72,15 +72,15 @@ readSettings2 debug (YamlText t) = do
                         fromJustNote
                             "bakedir xxdwe"
                             bakedDir2
-                , reportFile =
-                    makeAbsFile . t2s $
-                        fromJustNote
-                            "testfile xxdwe"
-                            reportFile2
+                -- , reportFile =
+                --     makeAbsFile . t2s $
+                --         fromJustNote
+                --             "testfile xxdwe"
+                --             reportFile2
                 , masterTemplateFile = 
                     makeRelFile . t2s $ 
                         fromJustNote "masterTemplateFile xxdwe" masterFile2
-                , testDir = makeAbsDir . t2s $ fromJustNote "testdir xxdwe" testDir2
+                -- , testDir = makeAbsDir . t2s $ fromJustNote "testdir xxdwe" testDir2
                  -- , bannerImage = makeRelFile "cropped-DSC05127-1024x330.jpg"
                   -- , landingPage = makeRelFile "index.html"
                 --   uploadServer = uploadServerTest

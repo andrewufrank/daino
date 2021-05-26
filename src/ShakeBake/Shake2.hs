@@ -125,8 +125,8 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
 
     putIOwords
         [ "shakeMD dirs\n"
-        , "\tstaticDirName"
-        , showT staticDirName
+        -- , "\tstaticDirName"
+        -- , showT staticDirName
         , "\tbakedP\n"
         , showT bakedP
         ]

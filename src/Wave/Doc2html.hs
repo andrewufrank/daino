@@ -82,7 +82,10 @@ panrep2html debug layout (Panrep m1 p1) = do
     let p2 = Content thtml
     let cts = [toJSON m1, toJSON menu4, toJSON p2]
 
-    p :: HTMLout <- putValinMaster debug cts (templatesDir layout)
+    let mf = masterTemplateFile layout
+    let masterfn = templatesDir layout </> mf
+
+    p :: HTMLout <- putValinMaster debug cts masterfn
     when (informNone debug) $ putIOwords ["\n panrep2html done"]
     return p
 

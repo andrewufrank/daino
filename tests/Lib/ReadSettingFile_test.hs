@@ -26,11 +26,15 @@ programName = "ssg"
 -- (layout7, port7) <- readSettings True settingsFile 
 
 test_settings = 
-    testVar0FileIO programName  testSettingsFileName "settingsFile" (fmap fst . readSettings NoticeLevel0 )  
+    testVar0FileIO programName  
+        (sourceDirTestSite </> settingsFileName) 
+        "settingsFile" 
+        (fmap fst . readSettings NoticeLevel0 )  
 
 test_checkSettings_layoutDefaults = do 
     res <- runErr $ do 
-            (lay, por) <- readSettings NoticeLevel0 testSettingsFileName
+            (lay, por) <- readSettings NoticeLevel0 
+                (sourceDirTestSite </> settingsFileName)
             return lay 
     assertEqual (Right layoutDefaults) res 
 

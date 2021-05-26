@@ -54,6 +54,7 @@ mainWatch debug layout flags bakedPort = do
     ( runScotty
         bakedPort
         bakedPath
-        landingPageName -- default  (landingPage layout)
+        (makeRelFile "index.html" )
+        -- landingPageName -- default  (landingPage layout)
     )
 

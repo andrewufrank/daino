@@ -34,14 +34,14 @@ ssgProcess debug flags = do
     (layout2, port2) <- readSettings debug (settingsFile flags)
 
     -- read the time of the last upload
-    uploadFileExist <- doesFileExist' testLastUploadFileName
-    lastUpload <-
-        if uploadFileExist
-            then do
-                lastUpload1 <- readFile2 testLastUploadFileName
-                let lastUpload = read lastUpload1 :: UTCTime
-                return lastUpload
-            else return year2000
+    -- uploadFileExist <- doesFileExist' testLastUploadFileName
+    -- lastUpload <-
+    --     if uploadFileExist
+    --         then do
+    --             lastUpload1 <- readFile2 testLastUploadFileName
+    --             let lastUpload = read lastUpload1 :: UTCTime
+    --             return lastUpload
+    --         else return year2000
 
     -- let testWithLastTime  = testNewerModTime  lastUpload
     -- compare with year2000 if all should be uploaded
@@ -52,7 +52,8 @@ ssgProcess debug flags = do
             shakeAll debug layout2 flags ""
             -- the last is the filename that caused the shake call
             when (serverFlag flags) $ do 
-                runScotty port2 (bakedDir layout2) landingPageName
+                runScotty port2 (bakedDir layout2) (makeRelFile "index.html") 
+                    -- was landingPageName
                 putIOwords ["server started on ", showT port2]
 
     -- sollte default index.html sein (landingPage layout2)

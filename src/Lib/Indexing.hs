@@ -19,7 +19,7 @@ module Lib.Indexing where
 
 import Uniform.Json  
 import Uniform.PandocImports
-import Foundational.LayoutFlags
+-- import Foundational.LayoutFlags
 import Foundational.Filetypes4sites
 import Foundational.MetaPage
 import UniformBase
