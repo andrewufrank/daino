@@ -1,9 +1,9 @@
-{-# LANGUAGE DeriveAnyClass #-}
-{-# LANGUAGE DeriveGeneric #-}
 ----------------------------------------------------------------------
 --
 -- Module      : layout and flags 
 ----------------------------------------------------------------------
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -34,26 +34,14 @@ data SiteLayout = SiteLayout
       doughDir :: Path Abs Dir
     , -- | the webroot, the dir with all the produced files
       bakedDir :: Path Abs Dir
-    , --    , templateDir :: Path Rel Dir -- ^ where the templates are
-      -- , -- | the report from processing baked with pipe
-      --   reportFile :: Path Abs File
-      -- , -- | the directory the test results go
-      -- used in the test cases where a file is produced not via testharness (which )
-      --   testDir :: Path Abs Dir
-      -- , -- | the name of the banner image, needs special copy of
-      -- , landingPage :: Path Rel File -- ^ the name of the landing page (html), where web server sarts
-      --   bannerImage :: Path Rel File
-      -- , uploadServer :: Text
-
-      -- | included here to pass info from settingsfile to use
-      masterTemplateFile :: Path Rel File
+    , masterTemplateFile :: Path Rel File
     }
     deriving (Show, Read, Ord, Eq, Generic, Zeros)
 
 --  Read known issue of reading path
 
--- instance NiceStrings SiteLayout where
---     shownice d = replace' ", " ",\n " (showT d)
+instance NiceStrings SiteLayout where
+    shownice d = replace' ", " ",\n " (showT d)
 
 sourceDirTestDocs :: Path Abs Dir
 sourceDirTestDocs = makeAbsDir "/home/frank/Workspace11/ssg/docs/"
@@ -62,22 +50,6 @@ sourceDirTestSite :: Path Abs Dir
 sourceDirTestSite = sourceDirTestDocs </> (makeRelDir "site")
 -- ^ the dir with the source for the test site
 
--- -- bannerImageFileName :: Path Rel File
--- -- bannerImageFileName = makeRelFileT "cropped-DSC05127-1024x330.jpg"
-
--- -- defaultPageTypeName :: Path Rel File
--- -- defaultPageTypeName = makeRelFileT "page3.yaml" -- the current best
--- -- use this and complete locally!
-
--- -- defaultPageType :: SiteLayout -> Path Abs File
--- -- defaultPageType layout = templatesDir layout </> defaultPageTypeName
-
--- landingPageName :: Path Rel File
--- landingPageName = makeRelFile "index.html" -- "landingPage.html"
--- -- used in runScotty
--- -- this is default value for browser for page to start with
--- -- settingsFileName = makeRelFile "settings2"
-
 layoutDefaults :: SiteLayout
 -- used for finding the test cases
 -- must correspond to the settings2.yaml in source code repository
@@ -85,36 +57,15 @@ layoutDefaults =
     SiteLayout
         { doughDir = sourceDirTestSite </> makeRelDir "dough"
         , bakedDir = sourceDirTestSite </> makeRelDir "baked"
-         --            , templateDir = makeAbsDir "templates"
         ,  themeDir = sourceDirTestDocs </> makeRelDir "theme"
-        -- , reportFile = makeAbsFile "/home/frank/ssgReport.txt"
-         -- , testDir =  makeAbsDir $
-          --         ("/home/frank" :: FilePath)
-          --             </> (".ssg" :: FilePath)
-          -- , bannerImage = bannerImageFileName
-          -- , landingPage = landingPageName
-          -- ,  uploadServer = uploadServerTest
+ 
         ,  masterTemplateFile = makeRelFile "master5.dtpl"
         }
 
--- -- uploadServerTest :: Text
--- -- uploadServerTest = "test.gerastree.at"
-
--- templatesDirName, staticDirName :: Path Rel Dir
 templatesDirName = makeRelDir "templates"
--- templatesDir :: SiteLayout -> Path Abs Dir
+templatesDir :: SiteLayout -> Path Abs Dir
 templatesDir layout = themeDir layout `addFileName` templatesDirName
 
--- staticDirName = makeRelDir "static"
--- resourcesDirName :: Path Rel Dir
--- resourcesDirName = makeRelDir "resources"
--- imagesDirName :: Path Rel Dir
--- imagesDirName = makeRelDir "img"
-
--- -- imagesResourcesDirName = resourcesDirName </> imagesDirName
-
--- templatesImgDirName :: Path Rel Dir
--- templatesImgDirName = makeRelDir "img"
 
 settingsFileName :: Path Rel File
 -- ^ the yaml file in which the settings are fixec
@@ -122,34 +73,6 @@ settingsFileName = makeRelFile "settings3" -- the yaml file
 -- -- the value for cannot go into layout as this is its name!
 -- is then set in flags
 
--- testSettingsFileName :: Path Abs File
--- -- the settings file for tests
--- testSettingsFileName =
---     sourceDirTestSite </> settingsFileName
-
--- lastUploadFileName :: Path Rel File
--- lastUploadFileName = makeRelFile "lastload.txt" :: Path Rel File
--- testLastUploadFileName :: Path Abs File
--- testLastUploadFileName =
---     sourceDirTestSite
---         </> makeRelDirT "site/dough/"
---         </> lastUploadFileName ::
---         Path Abs File
-
--- masterTemplateFileName :: Path Rel File
--- {- ^ the name of the master template
---  should probably be in the settings?
--- -}
--- masterTemplateFileName = masterTemplateFile layoutDefaults
-
--- -- content of settings2.yaml
--- --storage:
--- --    themeDir:  /home/frank/Workspace11/ssg/theme
--- --    doughDir: /home/frank/Workspace11/ssg/site/dough
--- --    bakedDir: /home/frank/Workspace11/ssg/site/baked
--- --    reportFile: /home/frank/SSGreport.txt
--- --    testDir: /home/frank/.SSG  -- fixed in testharness
--- --localhostPort: 3000
 
 -- | the switches for material to include
 data PubFlags = PubFlags
