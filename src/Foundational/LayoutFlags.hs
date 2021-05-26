@@ -45,7 +45,7 @@ instance NiceStrings SiteLayout where
     shownice d = replace' ", " ",\n " (showT d)
 
 instance Default SiteLayout where 
-        def = layoutDefaults
+    def = layoutDefaults
 
 sourceDirTestDocs :: Path Abs Dir
 sourceDirTestDocs = makeAbsDir "/home/frank/Workspace11/ssg/docs/"

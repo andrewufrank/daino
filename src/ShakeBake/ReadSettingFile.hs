@@ -85,7 +85,7 @@ readSettings2 debug (YamlText t) = do
                   -- , landingPage = makeRelFile "index.html"
                 --   uploadServer = uploadServerTest
                 }
-    --    let layout3 = F.layoutDefaults
+    --    let layout3 = F.def
     let port2 = fromInteger . fromJustNote "port wrwer" $ port
     when (inform debug) $ putIOwords ["readSettings2", showPretty layout3]
     --    when (inform debug) $

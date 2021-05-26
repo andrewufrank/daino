@@ -30,7 +30,7 @@ module Foundational.MetaPage (
 ) where
 
 -- import Data.Aeson.Types
-import Data.Default (Default (..))
+import Data.Default.Class  
 import Foundational.LayoutFlags  
 -- import Lib.CmdLineArgs (PubFlags (..))
 import Uniform.Json

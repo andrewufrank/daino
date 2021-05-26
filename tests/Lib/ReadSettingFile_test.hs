@@ -31,7 +31,7 @@ test_settings =
         "settingsFile" 
         (fmap fst . readSettings NoticeLevel0 )  
 
-test_checkSettings_layoutDefaults = do 
+test_checkSettings_def = do 
     res <- runErr $ do 
             (lay, por) <- readSettings NoticeLevel0 
                 (sourceDirTestSite </> settingsFileName)

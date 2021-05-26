@@ -21,7 +21,7 @@ import Wave.Doc2html
 -- -- | test to produce pan
 testing_md2pan f = test1FileIO "ssg" 
     (f <> "T.docrep" ) (f <>"_panrep") 
-    (docrep2panrep NoticeLevel0 layoutDefaults )
+    (docrep2panrep NoticeLevel0 (def::SiteLayout) )
 
 test_blog1_md2pan = testing_md2pan "blog1"
 test_index_md2pan = testing_md2pan "index"
