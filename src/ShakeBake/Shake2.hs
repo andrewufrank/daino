@@ -88,13 +88,13 @@ shakeArgs2 bakedP = do
 
 shakeAll :: NoticeLevel -> SiteLayout -> PubFlags -> FilePath -> ErrIO ()
 -- ^ calls shake in the IO monade. this is in the ErrIO
-shakeAll debug layout flags filepath = do
+shakeAll debug layout flags causedby = do
     putIOwords
         [ "\n\n===================================== shakeAll start"
         , "\n flags"
         , showPretty flags
         , "\ncaused by"
-        , s2t filepath
+        , s2t causedby
         , "."
         , "\n======================================="
         ]
@@ -141,8 +141,8 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         needP pdfs
         needP htmls
 
-        -- csss <- getNeeds debug doughP bakedP "css" "css"
-        -- needP csss
+        csss <- getNeeds debug doughP bakedP "css" "css"
+        needP csss
         -- imgs <- getNeeds debug doughP bakedP "jpg" "jpg"
         -- imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
         -- needP imgs

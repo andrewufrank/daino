@@ -85,8 +85,7 @@ data PubFlags = PubFlags
       , draftFlag
       , testFlag
       , watchFlag
-      , serverFlag ::
-        Bool
+      , serverFlag :: Bool
     , uploadFlag :: Bool
     , settingsFile :: Path Abs File
     }
