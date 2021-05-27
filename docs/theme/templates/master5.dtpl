@@ -109,7 +109,7 @@
 
 
         <p class=tiny>
-        Produced with SGG $ssgversion$ on $today$ from $filename$ with master4.dtpl.
+        Produced with SGG $ssgversion$ on $today$ from $filename$ with master5.dtpl.
         </p>
 
         $for(include-after)$

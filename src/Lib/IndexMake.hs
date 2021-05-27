@@ -31,15 +31,21 @@ import Uniform2.HTMLout
 convertIndexEntries :: NoticeLevel -> IndexEntry -> ErrIO MenuEntry
 -- ^ take the index entries and convert their
 -- form and push them back into the json
+-- converts to values for printing if indexpage else null
 convertIndexEntries debug ixe1 =
   do
     when (inform debug) $ putIOwords ["convertIndexEntries", "start ixe1", showT ixe1]
-    let dirs = dirEntries ixe1 -- dyDirEntries y
-    let fils = fileEntries ixe1 -- fileEntries dyFileEntries MetaPage
+    let fn = makeAbsFile $ ixfn ixe1 
+    when (inform debug) $ putIOwords ["convertIndexEntries", "fn", showT fn]
+    if isIndexPage fn 
+        then do 
+            let dirs = dirEntries ixe1 -- dyDirEntries y
+            let fils = fileEntries ixe1 -- fileEntries dyFileEntries MetaPage
 
-    let menu1 = convert2index (ixe1, dirs, fils)
-    when (inform debug) $ putIOwords ["convertIndexEntries", "menu1", showT menu1]
-    return menu1
+            let menu1 = convert2index (ixe1, dirs, fils)
+            when (inform debug) $ putIOwords ["convertIndexEntries", "menu1", showT menu1]
+            return menu1
+        else return zero 
 
 -- | convert the metarecs and put some divider between
 -- TODO  - avoid dividers if list empty
