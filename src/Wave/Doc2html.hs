@@ -76,16 +76,28 @@ docrep2panrep debug layout (Docrep y1 p1) = do
 -- implements the bake
 panrep2html :: NoticeLevel -> SiteLayout -> Panrep -> ErrIO HTMLout
 panrep2html debug layout (Panrep m1 p1) = do
+        vals <- panrep2vals  debug layout (Panrep m1 p1)
+        p :: HTMLout <- panrep2html2 debug layout vals
+        return p 
+panrep2vals ::  NoticeLevel -> SiteLayout -> Panrep -> ErrIO [Value]
+panrep2vals debug layout (Panrep m1 p1) = do 
     let ixe1 = dyIndexEntry m1
     menu4 :: MenuEntry <- convertIndexEntries debug ixe1 -- move to
-    thtml <- writeHtml5String2 p1
-    let p2 = Content thtml
-    let cts = [toJSON m1, toJSON menu4, toJSON p2]
+    html <- writeHtml5String2 p1
+    let p2 = Content html
+    putIOwords ["panrep2vals", "m1", showPretty m1]
+    putIOwords ["panrep2vals", "menu4", showPretty menu4]
+    putIOwords ["panrep2vals", "p2", showPretty p2]
+    let vals = [toJSON m1, toJSON menu4, toJSON p2]
+    putIOwords ["panrep2vals", "vals", showPretty vals]
+    return vals 
 
+panrep2html2 ::  NoticeLevel -> SiteLayout -> [Value] -> ErrIO HTMLout 
+panrep2html2 debug layout vals = do 
     let mf = masterTemplateFile layout
     let masterfn = templatesDir layout </> mf
 
-    p :: HTMLout <- putValinMaster debug cts masterfn
+    p :: HTMLout <- putValinMaster debug vals masterfn
     when (informNone debug) $ putIOwords ["\n panrep2html done"]
     return p
 

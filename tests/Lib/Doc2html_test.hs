@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE FlexibleInstances #-}
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 -- {-# OPTIO-unused-imports #-}
@@ -48,6 +49,15 @@ test_pan2HTMLout_index = testing_pan2HTMLout "index"
 test_pan2HTMLout_postwk = testing_pan2HTMLout "postwk"
 test_pan2HTMLout_withRef = testing_pan2HTMLout "withRef"
 
+testing_pan2vals f = test1FileIO "ssg" 
+    (f <> "_panrep" ) (f <> "_vals1") op2 -- dr1 <- read8 inputFn docrepFileType
+op2 :: Panrep -> ErrIO [Value]
+op2 =  panrep2vals NoticeLevel0 layoutDefaults 
+
+test_pan2vals_blog1 = testing_pan2vals "blog1"
+test_pan2vals_index = testing_pan2vals "index"
+test_pan2vals_postwk = testing_pan2vals "postwk"
+test_pan2vals_withRef = testing_pan2vals "withRef"
 ------------ old -----
 
 -- -- | conversion of markdown file f1 (with extension) to intermediate d11
@@ -85,4 +95,4 @@ test_pan2HTMLout_withRef = testing_pan2HTMLout "withRef"
 
 instance ShowTestHarness Panrep
 instance ShowTestHarness HTMLout
-
+instance ShowTestHarness [Value]

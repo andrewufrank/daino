@@ -38,3 +38,37 @@ putValinMaster debug vals masterfn = do
     html2 <- applyTemplate4 (inform debug) template2 vals -- inTemplate.html
     -- when (inform debug) $ putIOwords ["putValinMaster", showT html2]
     return . HTMLout $ html2
+
+{- list of variables potentially used by Master5.dtpl:
+css - name of stylesheet
+date 
+keywords  (list)
+page-title 
+page-title-isPostfix 
+include-before 
+settings
+    sitename 
+    byline 
+menu 
+    link 
+    text 
+title 
+subtitle 
+author 
+menu2 
+    link2 
+    title2 
+    abstract2
+    author2 
+    date2 
+    publish2 
+table-of-contents 
+beforeContent
+abstract 
+contentHtml 
+afterContent 
+ssgversion
+today
+Filenames 
+include_after  
+-}

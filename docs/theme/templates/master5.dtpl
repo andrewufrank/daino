@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<!-- the master page `master5.dtpl`  for the pandoc templating mechanism
+<!-- the master page `master5.dtpl` 
+    (name is printed at bottom of page and must be edited if changed!)
+    
+    master for the pandoc templating mechanism (putValInMaster in Templating.hs)
 	needs page-title, page-title-postfix
 		author date and keywords for indexing
     contentHtml, beforeContent, afterContent to wrap htmlcontent  
@@ -36,34 +39,10 @@
 
 	<title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$</title>
 	
-        <style>
-            body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            }
-
-            .hero-image {
-            background-image: url('$settings.banner$');
-            background-color: white;
-            height: 200px;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            position: relative;
-            }
-
-            .hero-text {
-            transform: translate(-50%, -50%);
-            color: white;
-            text-shadow: 2px 2px 8px black;
-            font-weight: bold;
-            vertical-align: top;
-            }
-        </style>
     </head>
 
     <body>
-    <!-- AF - my template for pandoc page (from the default) page3.dtpl -->
+    <!-- AF - my template for pandoc page  -->
         $for(include-before)$
         $include-before$
         $endfor$
