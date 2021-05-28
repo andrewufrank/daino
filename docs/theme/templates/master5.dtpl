@@ -9,23 +9,16 @@
 	uses style.css as default, other can be loaded with key css 
 	refs in the menus are relative to the web root
 	(absolute web, inserted a / in the template)
+    removed highlighting-css and css to load 
+    files available are tufte.css and w3c.css not used
 	-->
 <html lang="$lang$">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <link rel="stylesheet" href="/templates/static/style.css" type="text/css">
+  <link rel="stylesheet" href="/templates/static/menu.css" type="text/css">
 
-
-	$if(highlighting-css)$
-	  <style type="text/css">
-	$highlighting-css$
-	  </style>
-	$endif$
-
-	$for(css)$
-	  <link rel="stylesheet" href="$css$" />
-	$endfor$
 
     $for(author)$
       <meta name="author" content="$author$" />
