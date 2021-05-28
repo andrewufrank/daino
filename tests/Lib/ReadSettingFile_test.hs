@@ -15,6 +15,9 @@ import           Test.Framework
 import           Uniform.Test.TestHarness
 import UniformBase 
 import Foundational.LayoutFlags
+import Foundational.Filetypes4sites
+
+import Uniform.Yaml
 
 -- import           Lib.Templating  
 import ShakeBake.ReadSettingFile
@@ -37,6 +40,18 @@ test_checkSettings_def = do
                 (sourceDirTestSite </> settingsFileName)
             return lay 
     assertEqual (Right layoutDefaults) res 
+
+test_readSettings1 = do 
+    res <- runErr $ do 
+        let settingsfilename = (sourceDirTestSite) </> settingsFileName
+        putIOwords [" settings file name", showT settingsfilename ]
+        settingsTxt <- read8 settingsfilename yamlFileType
+        putIOwords ["raw settings file", showT settingsTxt ]
+        s1 :: Settings <- genericParseJSON . showT $ settingsTxt
+        return "zz"
+    assertEqual (Right "x") res
+
+
 
 instance ShowTestHarness (Path Abs File)
 instance ShowTestHarness SiteLayout

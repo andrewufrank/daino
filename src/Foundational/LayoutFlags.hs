@@ -20,13 +20,44 @@
 
  content dirs are those, which have *.md files
 -}
-module Foundational.LayoutFlags where
+module Foundational.LayoutFlags
+    (module Foundational.LayoutFlags
+    , def ) where
 
 import UniformBase
 import Data.Default.Class
+import Uniform.Json
 
 progName :: Text
 progName = "SSG"  
+
+-- | the settings file with all fields 
+data Settings = Settings
+    { storage :: SiteLayout 
+    , localhostPort :: Int 
+    , settingsAuthor :: Text 
+    , settingsDate :: Text -- should be UTC 
+    , settings :: Settings2 
+    , menu :: [MenuItem]
+    } deriving (Show, Read, Ord, Eq, Generic, Zeros)
+
+instance ToJSON Settings
+instance FromJSON Settings
+
+data Settings2 = Settings2 
+    { sitename :: FilePath 
+    , byline :: Text 
+    , banner :: FilePath 
+    } deriving (Show, Read, Ord, Eq, Generic, Zeros)
+instance ToJSON Settings2
+instance FromJSON Settings2
+
+data MenuItem = MenuItem 
+    { navlink :: FilePath 
+    , navtext :: Text
+    } deriving (Show, Read, Ord, Eq, Generic, Zeros)
+instance ToJSON MenuItem
+instance FromJSON MenuItem
 
 data SiteLayout = SiteLayout
     { -- | the place of the  theme files (includes templates)
@@ -38,7 +69,8 @@ data SiteLayout = SiteLayout
     , masterTemplateFile :: Path Rel File
     }
     deriving (Show, Read, Ord, Eq, Generic, Zeros)
-
+instance ToJSON SiteLayout
+instance FromJSON SiteLayout
 --  Read known issue of reading path
 
 instance NiceStrings SiteLayout where
