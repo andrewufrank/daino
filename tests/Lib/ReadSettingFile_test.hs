@@ -34,42 +34,44 @@ test_settings =
     testVar0FileIO programName  
         (sourceDirTestSite </> settingsFileName) 
         "settingsFile" 
-        (fmap fst . readSettings NoticeLevel0 )  
+        (fmap storage . readSettings NoticeLevel0 )  
 
 test_checkSettings_def = do 
     res <- runErr $ do 
-            (lay, por) <- readSettings NoticeLevel0 
+            sett3 <- readSettings NoticeLevel0 
                 (sourceDirTestSite </> settingsFileName)
-            return lay 
+            return (storage sett3)
     assertEqual (Right layoutDefaults) res 
 
-readYaml2rec :: (FromJSON a, Show a) => Path Abs File -> ErrIO a 
--- | read a yaml file into a record Value 
--- error when syntax fault
-readYaml2rec fn = do 
-    putIOwords [" yaml file name", showT fn ]
-    -- settingsTxt <- read8 settingsfilename yamlFileType
-    s0 :: Value <- readYaml2value fn 
-    putIOwords ["yaml read", showPretty s0 ]
+-- readYaml2rec :: (FromJSON a, Show a) => Path Abs File -> ErrIO a 
+-- -- | read a yaml file into a record Value 
+-- -- error when syntax fault
+-- readYaml2rec fn = do 
+--     putIOwords [" yaml file name", showT fn ]
+--     -- settingsTxt <- read8 settingsfilename yamlFileType
+--     s0 :: Value <- readYaml2value fn 
+--     putIOwords ["yaml read", showPretty s0 ]
 
-    s1  <-  fromJSONerrio  s0  -- :: Result Settings 
+--     s1  <-  fromJSONerrio  s0  -- :: Result Settings 
 
-    putIOwords ["json parsed", showT s1 ]
+--     putIOwords ["json parsed", showT s1 ]
 
-    return s1
-test_readSettings2 = do 
-    res <- runErr $ do 
-        let settingsfilename = (sourceDirTestSite) </> settingsFileName
-        putIOwords [" settings file name", showT settingsfilename ]
-        -- settingsTxt <- read8 settingsfilename yamlFileType
-        s1 <- readYaml2rec settingsfilename 
+--     return s1
+-- moved ot uniform.yaml2value 
+
+-- test_readSettings2 = do 
+--     res <- runErr $ do 
+--         let settingsfilename = (sourceDirTestSite) </> settingsFileName
+--         putIOwords [" settings file name", showT settingsfilename ]
+--         -- settingsTxt <- read8 settingsfilename yamlFileType
+--         s1 <- readYaml2rec settingsfilename 
 
          
 
-        putIOwords ["json parsed", showT s1 ]
+--         putIOwords ["json parsed", showT s1 ]
 
-        return s1
-    assertEqual (Right settings1) res
+--         return s1
+--     assertEqual (Right settings1) res
  
 
 -- test_readSettings1 = do 

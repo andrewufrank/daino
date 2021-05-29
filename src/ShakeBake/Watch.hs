@@ -16,45 +16,47 @@ module ShakeBake.Watch where
 -- import Lib.CmdLineArgs (PubFlags (..))
 import Foundational.LayoutFlags
 import ShakeBake.Shake2 (shakeAll)
-import Uniform.Watch
-  ( Glob (..),
+import Uniform.Watch (
+    Glob (..),
     WatchOpType,
     makeWatch, --  mainWatch2, forkIO, killThread)
     watchMain,
-  )
+ )
 import Uniform.WebServer (Port, runScotty)
 import UniformBase
 
-mainWatch :: NoticeLevel -> SiteLayout -> PubFlags -> Port -> ErrIO ()
--- | the landing page must be given here because it is special for scotty
--- and the name of the banner imgage which must be copied by shake
-mainWatch debug layout flags bakedPort = do
-  let bakedPath = bakedDir layout
-      doughPath = doughDir layout
-  let watchDough2, watchThemes2 :: WatchOpType
-      watchDough2 =
-        makeWatch
-          doughPath
-          (shakeAll debug layout flags)
-          [Glob "**/*.md", Glob "**/*.bib", Glob "**/*.yaml"]
+mainWatch :: NoticeLevel -> SiteLayout -> Port -> PubFlags -> ErrIO ()
 
-      watchThemes2 =
-        makeWatch
-          doughPath
-          (shakeAll debug layout flags)
-          [ Glob "**/*.yaml",
-            Glob "**/*.dtpl",
-            Glob "**/*.css",
-            Glob "**/*.jpg",
-            Glob "**/*.JPG"
-          ]
+{- | the landing page must be given here because it is special for scotty
+ and the name of the banner imgage which must be copied by shake
+-}
+mainWatch debug layout port flags = do
+    -- let layout = (storage sett3)
+    let bakedPath = bakedDir layout
+        doughPath = doughDir layout
+    let watchDough2, watchThemes2 :: WatchOpType
+        watchDough2 =
+            makeWatch
+                doughPath
+                (shakeAll debug layout flags)
+                [Glob "**/*.md", Glob "**/*.bib", Glob "**/*.yaml"]
 
-  watchMain
-    [watchDough2, watchThemes2]
-    ( runScotty
-        bakedPort
-        bakedPath
-        (makeRelFile "index.html" )
-        -- landingPageName -- default  (landingPage layout)
-    )
+        watchThemes2 =
+            makeWatch
+                doughPath
+                (shakeAll debug layout flags)
+                [ Glob "**/*.yaml"
+                , Glob "**/*.dtpl"
+                , Glob "**/*.css"
+                , Glob "**/*.jpg"
+                , Glob "**/*.JPG"
+                ]
 
+    watchMain
+        [watchDough2, watchThemes2]
+        ( runScotty
+            port
+            bakedPath
+            (makeRelFile "index.html")
+            -- landingPageName -- default  (landingPage layout)
+        )

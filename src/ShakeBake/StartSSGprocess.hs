@@ -45,17 +45,17 @@ ssgProcess debug flags = do
 
     -- let testWithLastTime  = testNewerModTime  lastUpload
     -- compare with year2000 if all should be uploaded
-    let layout2 = storage sett3 
-    let port2 = localhostPort sett3 
+    -- let layout2 = storage sett3 
+    -- let port2 = localhostPort sett3 
     if watchFlag flags -- implies server
-        then mainWatch debug layout2 flags port2
+        then mainWatch debug (storage sett3) (localhostPort sett3) flags 
         else do
-            shakeAll debug layout2 flags ""
+            shakeAll debug (storage sett3) flags ""
             -- the last is the filename that caused the shake call
             when (serverFlag flags) $ do 
-                runScotty port2 (bakedDir layout2) (makeRelFile "index.html") 
+                runScotty (localhostPort sett3) (bakedDir (storage sett3)) (makeRelFile "index.html") 
                     -- was landingPageName
-                putIOwords ["server started on ", showT port2]
+                putIOwords ["server started on ", showT (localhostPort sett3)]
 
     -- sollte default index.html sein (landingPage layout2)
     -- when (uploadFlag flags) $ do
