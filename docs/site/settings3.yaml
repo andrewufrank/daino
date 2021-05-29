@@ -29,7 +29,8 @@ settings :
     byline : siteByLineExample
     banner: /templates/img/symmetricGeras2.jpg
 
-menu:
+menuitems:
+    menuA:
      - navlink: /Blog/index.html
        navtext: Blog
      - navlink : /PublicationList/index.html

@@ -42,7 +42,12 @@ test_pan2indexEntry_withRef = testing_pan2indexEntry "withRef"
 testing_pan2HTMLout f = test1FileIO "ssg" 
     (f <> "_panrep" ) (f <> "_htmlout") op1 -- dr1 <- read8 inputFn docrepFileType
 op1 :: Panrep -> ErrIO HTMLout
-op1 = panrep2html NoticeLevel0 layoutDefaults 
+op1 = panrep2html NoticeLevel0 masterfn def 
+    where 
+        mf :: Path Rel File 
+        mf = masterTemplateFile layoutDefaults
+        masterfn :: Path Abs File 
+        masterfn = templatesDir layoutDefaults </> mf
 
 test_pan2HTMLout_blog1 = testing_pan2HTMLout "blog1"
 test_pan2HTMLout_index = testing_pan2HTMLout "index"
@@ -52,7 +57,7 @@ test_pan2HTMLout_withRef = testing_pan2HTMLout "withRef"
 testing_pan2vals f = test1FileIO "ssg" 
     (f <> "_panrep" ) (f <> "_vals1") op2 -- dr1 <- read8 inputFn docrepFileType
 op2 :: Panrep -> ErrIO [Value]
-op2 =  panrep2vals NoticeLevel0 layoutDefaults 
+op2 =  panrep2vals NoticeLevel0 (menu def) -- static menu
 
 test_pan2vals_blog1 = testing_pan2vals "blog1"
 test_pan2vals_index = testing_pan2vals "index"

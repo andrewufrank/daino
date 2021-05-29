@@ -86,9 +86,9 @@ shakeArgs2 bakedP = do
     -- putIOwords ["shakeArgs2", "done"]
     return res
 
-shakeAll :: NoticeLevel -> SiteLayout -> PubFlags -> FilePath -> ErrIO ()
+shakeAll :: NoticeLevel -> Settings -> PubFlags -> FilePath -> ErrIO ()
 -- ^ calls shake in the IO monade. this is in the ErrIO
-shakeAll debug layout flags causedby = do
+shakeAll debug sett3 flags causedby = do
     putIOwords
         [ "\n\n===================================== shakeAll start"
         , "\n flags"
@@ -98,14 +98,15 @@ shakeAll debug layout flags causedby = do
         , "."
         , "\n======================================="
         ]
-    let doughP = doughDir layout -- the regular dough
+    let layout = storage sett3 
+        doughP = doughDir layout -- the regular dough
         bakedP = bakedDir layout
-    callIO $ shakeMD debug layout flags doughP bakedP
+    callIO $ shakeMD debug sett3 flags doughP bakedP
 
 
 shakeMD ::
     NoticeLevel ->
-    SiteLayout ->
+    Settings ->
     PubFlags ->
     Path Abs Dir -> -- dough (source for files)
     Path Abs Dir -> -- baked (target dir for site)

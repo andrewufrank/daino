@@ -38,7 +38,7 @@ data Settings = Settings
     , settingsAuthor :: Text 
     , settingsDate :: Text -- should be UTC 
     , settings :: Settings2 
-    , menu :: [MenuItem]
+    , menuitems :: MenuItems
     } deriving (Show, Read, Ord, Eq, Generic, Zeros)
 
 instance ToJSON Settings
@@ -52,7 +52,13 @@ data Settings2 = Settings2
 instance ToJSON Settings2
 instance FromJSON Settings2
 
-data MenuItem = MenuItem 
+data MenuItems = MenuItems {menuA:: [MenuItem]
+                            -- , menuB:: Text
+                            } deriving (Show, Read, Ord, Eq, Generic, Zeros)
+instance ToJSON MenuItems 
+instance FromJSON MenuItems 
+
+data MenuItem = MenuItem  
     { navlink :: FilePath 
     , navtext :: Text
     } deriving (Show, Read, Ord, Eq, Generic, Zeros)
@@ -78,6 +84,39 @@ instance FromJSON SiteLayout
 
 instance Default SiteLayout where 
     def = layoutDefaults
+instance Default Settings where 
+    def = settingsDefault
+
+settingsDefault = Settings 
+    {storage = SiteLayout 
+        {themeDir = makeAbsDir "/home/frank/Workspace11/ssg/docs/theme/", 
+        doughDir = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/dough/", 
+        bakedDir = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/baked/", 
+        masterTemplateFile = makeRelFile "master5.dtpl"
+        }, 
+    localhostPort = 3000, 
+    settingsAuthor = "Author of Settings", 
+    settingsDate = "2019-01-01", 
+    settings = Settings2 
+        {sitename = "siteNameExample", 
+        byline = "siteByLineExample", 
+        banner = "/templates/img/symmetricGeras2.jpg"
+        }, 
+    menuitems = MenuItems 
+        {menuA=[
+            MenuItem {navlink = "/Blog/index.html", navtext = "Blog"},
+            MenuItem {navlink = "/PublicationList/index.html", navtext = "Publications"},
+            MenuItem {navlink = "/SSGdesign/index.html", navtext = "SSG Documentation"}
+            ]
+        }
+    }
+
+-- MenuItem where 
+--     def = MenuItem{navlink = "/Blog/index.html", navtext = "SingleMenu"}
+-- newtype Menu1 = Menu1 {mENU::[MenuItem]}deriving (Show, Read, Ord, Eq, Generic, Zeros)
+
+-- instance Default Menu1 where 
+--         def = Menu :: [def]
 
 sourceDirTestDocs :: Path Abs Dir
 sourceDirTestDocs = makeAbsDir "/home/frank/Workspace11/ssg/docs/"

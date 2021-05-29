@@ -48,9 +48,9 @@ ssgProcess debug flags = do
     -- let layout2 = storage sett3 
     -- let port2 = localhostPort sett3 
     if watchFlag flags -- implies server
-        then mainWatch debug (storage sett3) (localhostPort sett3) flags 
+        then mainWatch debug sett3 flags 
         else do
-            shakeAll debug (storage sett3) flags ""
+            shakeAll debug sett3 flags ""
             -- the last is the filename that caused the shake call
             when (serverFlag flags) $ do 
                 runScotty (localhostPort sett3) (bakedDir (storage sett3)) (makeRelFile "index.html") 

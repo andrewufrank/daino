@@ -32,7 +32,7 @@ type ConvertOp =
     Path Abs Dir ->
     Path Abs Dir ->
     PubFlags ->
-    SiteLayout ->
+    Settings ->
     FilePath ->
     Action ()
 
@@ -41,7 +41,7 @@ type ConvertA2BOp =
     Path Abs Dir ->
     Path Abs Dir ->
     PubFlags ->
-    SiteLayout ->
+    Settings->
     FilePath ->
     Extension ->
     BakeOp ->
@@ -92,7 +92,7 @@ convTex2pdf debug doughP bakedP flags layout out =
 
 convA2B :: ConvertA2BOp
 -- ^ produce the B files from A
-convA2B debug sourceP targetP flags layout out sourceExtA bakeop = do
+convA2B debug sourceP targetP flags sett3 out sourceExtA bakeop = do
     when (inform debug) $ putIOwords ["\n  convA2B   1 new extension, new file\n", showT sourceExtA, showT out]
     let outP = makeAbsFile out :: Path Abs File
 
@@ -117,7 +117,7 @@ convA2B debug sourceP targetP flags layout out sourceExtA bakeop = do
 
     res <-
         runErr2action $
-            bakeop debug flags infile2 layout outP
+            bakeop debug flags infile2 sett3 outP
     when (inform debug) $ putIOwords ["\n  convA2B - return 4 file produced", showT res, "file produce out", showPretty outP, "\n"]
     return ()
 
@@ -135,7 +135,7 @@ convertAny ::
     Path Abs Dir ->
     Path Abs Dir ->
     PubFlags ->
-    SiteLayout ->
+    Settings ->
     FilePath ->
     -- | the operation to carry out
     ConvertOp ->

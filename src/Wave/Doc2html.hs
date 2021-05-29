@@ -74,29 +74,30 @@ docrep2panrep debug layout (Docrep y1 p1) = do
 -- ------------------------------------ panrep2html
 -- panrep2html :: Panrep -> ErrIO HTMLout
 -- implements the bake
-panrep2html :: NoticeLevel -> SiteLayout -> Panrep -> ErrIO HTMLout
-panrep2html debug layout (Panrep m1 p1) = do
-        vals <- panrep2vals  debug layout (Panrep m1 p1)
-        p :: HTMLout <- panrep2html2 debug layout vals
+panrep2html :: NoticeLevel -> Path Abs File -> MenuItems -> Panrep -> ErrIO HTMLout
+panrep2html debug masterfn staticMenu (Panrep m1 p1) = do
+        vals <- panrep2vals  debug staticMenu (Panrep m1 p1)
+        p :: HTMLout <- panrep2html2 debug masterfn vals
         return p 
-panrep2vals ::  NoticeLevel -> SiteLayout -> Panrep -> ErrIO [Value]
-panrep2vals debug layout (Panrep m1 p1) = do 
+panrep2vals ::  NoticeLevel -> MenuItems -> Panrep -> ErrIO [Value]
+panrep2vals debug staticMenu (Panrep m1 p1) = do 
     let ixe1 = dyIndexEntry m1
     menu4 :: MenuEntry <- convertIndexEntries debug ixe1 
     html <- writeHtml5String2 p1
     -- in uniform.Pandoc (dort noch mehr moeglicherweise duplicated)
     let p2 = ContentHtml html
-    when (informAll debug) $ putIOwords ["panrep2vals", "m1", showPretty m1]
-    when (informAll debug) $putIOwords ["panrep2vals", "menu4", showPretty menu4]
-    when (informAll debug) $putIOwords ["panrep2vals", "p2", showPretty p2]
-    let vals = [toJSON m1, toJSON menu4, toJSON p2]
+    when (inform debug) $ putIOwords ["panrep2vals", "m1", showPretty m1]
+    when (informAll debug) $ putIOwords ["panrep2vals", "staticmenu", showPretty staticMenu]
+    when (inform debug) $putIOwords ["panrep2vals", "menu4", showPretty menu4]
+    when (inform debug) $putIOwords ["panrep2vals", "p2", showPretty p2]
+    let vals = [toJSON staticMenu, toJSON m1, toJSON menu4, toJSON p2]
+    -- order matters left preference?
     when (informAll debug) $putIOwords ["panrep2vals", "vals", showPretty vals]
     return vals 
 
-panrep2html2 ::  NoticeLevel -> SiteLayout -> [Value] -> ErrIO HTMLout 
-panrep2html2 debug layout vals = do 
-    let mf = masterTemplateFile layout
-    let masterfn = templatesDir layout </> mf
+panrep2html2 ::  NoticeLevel -> Path Abs File  -> [Value] -> ErrIO HTMLout 
+panrep2html2 debug masterfn vals = do 
+
 
     p :: HTMLout <- putValinMaster debug vals masterfn
     when (informNone debug) $ putIOwords ["\n panrep2html done"]

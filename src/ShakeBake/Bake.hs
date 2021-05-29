@@ -40,12 +40,12 @@ type BakeOp =
     PubFlags ->
     -- | md file
     Path Abs File ->
-    SiteLayout ->
+    Settings->
     Path Abs File ->
     ErrIO ()
 
 bakeOneMD2docrep :: BakeOp --    MD -> DOCREP
-bakeOneMD2docrep debug flags inputFn layout resfn2 = do
+bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
     when (inform debug) $    putIOwords
         [ "\n-----------------"
         , "bakeOneMD2docrep 1 fn"
@@ -57,6 +57,8 @@ bakeOneMD2docrep debug flags inputFn layout resfn2 = do
         ]
 
     md1 <- read8 inputFn markdownFileType
+    let layout = storage sett3
+
     dr3 <- md2docrep debug layout inputFn md1
 
     write8 resfn2 docrepFileType dr3
@@ -70,7 +72,7 @@ bakeOneMD2docrep debug flags inputFn layout resfn2 = do
 
 bakeOneDocrep2panrep :: BakeOp --  DOCREP -> PANREP
 -- change to metaPage and add index data 
-bakeOneDocrep2panrep debug flags inputFn layout resfn2 = do
+bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
     when (inform debug) $    putIOwords
         [ "\n-----------------"
         , "bakeOneDocrep2panrep 1 fn"
@@ -81,6 +83,7 @@ bakeOneDocrep2panrep debug flags inputFn layout resfn2 = do
         , showT resfn2
         ]
     dr1 <- read8 inputFn docrepFileType
+    let layout = storage sett3
     p3 <- docrep2panrep debug layout dr1
 
     write8 resfn2 panrepFileType p3 -- content is html style
@@ -90,7 +93,7 @@ bakeOneDocrep2panrep debug flags inputFn layout resfn2 = do
     return ()
 
 bakeOnePanrep2html :: BakeOp -- PANREP -> HTML  -- TODO
-bakeOnePanrep2html debug flags inputFn layout resfn2 = do
+bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
     when (inform debug) $    putIOwords
         [ "\n-----------------"
         , "bakeOnePanrep2html 1 fn"
@@ -101,7 +104,12 @@ bakeOnePanrep2html debug flags inputFn layout resfn2 = do
         , showT resfn2
         ]
     dr1 <- read8 inputFn panrepFileType
-    p <- panrep2html debug layout dr1
+    let layout = storage sett3
+    let staticMenu = menuitems sett3
+    let mf = masterTemplateFile layout
+    let masterfn = templatesDir layout </> mf
+
+    p <- panrep2html debug masterfn staticMenu dr1
     write8 resfn2 htmloutFileType p -- content is html style
     when (inform debug) $
         putIOwords

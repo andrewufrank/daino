@@ -25,26 +25,28 @@ import Uniform.Watch (
 import Uniform.WebServer (Port, runScotty)
 import UniformBase
 
-mainWatch :: NoticeLevel -> SiteLayout -> Port -> PubFlags -> ErrIO ()
+mainWatch :: NoticeLevel -> Settings -> PubFlags -> ErrIO ()
 
 {- | the landing page must be given here because it is special for scotty
  and the name of the banner imgage which must be copied by shake
 -}
-mainWatch debug layout port flags = do
-    -- let layout = (storage sett3)
+mainWatch debug sett3 flags = do
+    let layout = (storage sett3)
+    let port = (localhostPort sett3)
+
     let bakedPath = bakedDir layout
         doughPath = doughDir layout
     let watchDough2, watchThemes2 :: WatchOpType
         watchDough2 =
             makeWatch
                 doughPath
-                (shakeAll debug layout flags)
+                (shakeAll debug sett3 flags)
                 [Glob "**/*.md", Glob "**/*.bib", Glob "**/*.yaml"]
 
         watchThemes2 =
             makeWatch
                 doughPath
-                (shakeAll debug layout flags)
+                (shakeAll debug sett3 flags)
                 [ Glob "**/*.yaml"
                 , Glob "**/*.dtpl"
                 , Glob "**/*.css"
