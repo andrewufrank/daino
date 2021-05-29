@@ -30,7 +30,7 @@ putValinMaster :: NoticeLevel -> [Value] -> Path Abs File -> ErrIO HTMLout
  for now: use the master TODO
 -}
 putValinMaster debug vals masterfn = do
-    when (informAll debug) $ putIOwords ["putValinMaster", "masterfn", showT masterfn]
+    when (inform debug) $ putIOwords ["putValinMaster", "masterfn", showT masterfn]
     -- let mf = masterTemplateFileName
     -- let masterfn = templatesP </> mf
     template2 :: Text <- readFile2 (toFilePath masterfn)

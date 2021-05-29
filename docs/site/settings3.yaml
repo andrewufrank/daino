@@ -31,12 +31,13 @@ settings :
 
 menuitems:
     menuA:
-     - navlink: /Blog/index.html
+     - navlink: Blog/index.html
+     # navlink must not start with /
        navtext: Blog
-     - navlink : /PublicationList/index.html
+     - navlink : PublicationList/index.html
        navtext : Publications
-     - navlink : /SSGdesign/index.html
-       navtext : SSG Documentation  
+    #  - navlink : SSGdesign/index.html
+      #  navtext : SSG Documentation  
 
 # the menu is for the navigation part
 
