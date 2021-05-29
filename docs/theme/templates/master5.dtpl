@@ -52,8 +52,8 @@
 
             <section class="menu">
 		<ul>
-            	$for(menu)$
-				<li><a href=/$menu.link$>$menu.text$</a></li>
+            	$for(menuA)$
+				<li><a href=/$menuA.navlink$>$menuA.navtext$</a></li>
             		$endfor$
 		</ul>
     </section>
