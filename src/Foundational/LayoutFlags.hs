@@ -73,8 +73,8 @@ instance ToJSON SiteLayout
 instance FromJSON SiteLayout
 --  Read known issue of reading path
 
-instance NiceStrings SiteLayout where
-    shownice d = replace' ", " ",\n " (showT d)
+-- instance NiceStrings SiteLayout where
+--     shownice d = replace' ", " ",\n " (showT d)
 
 instance Default SiteLayout where 
     def = layoutDefaults
