@@ -21,6 +21,8 @@ import Uniform.Yaml
 
 -- import           Lib.Templating  
 import ShakeBake.ReadSettingFile
+-- import Data.Aeson
+import Uniform.Json  
 
 programName = "ssg"
 
@@ -45,9 +47,14 @@ test_readSettings1 = do
     res <- runErr $ do 
         let settingsfilename = (sourceDirTestSite) </> settingsFileName
         putIOwords [" settings file name", showT settingsfilename ]
-        settingsTxt <- read8 settingsfilename yamlFileType
-        putIOwords ["raw settings file", showT settingsTxt ]
-        s1 :: Settings <- genericParseJSON . showT $ settingsTxt
+        -- settingsTxt <- read8 settingsfilename yamlFileType
+        s0 <- readYaml2value settingsfilename 
+        putIOwords ["yaml read", showPretty s0 ]
+
+        -- let s1 = eitherDecode   .  t2bl . unYAML $ settingsTxt  ::  Either String Settings 
+
+        -- putIOwords ["json parsed", showT s1 ]
+
         return "zz"
     assertEqual (Right "x") res
 
