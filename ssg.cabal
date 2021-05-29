@@ -30,7 +30,6 @@ library
       Foundational.Filetypes4sites
       Foundational.LayoutFlags
       Foundational.MetaPage
-      Lib.CheckProcess
       Lib.Indexing
       Lib.IndexMake
       Lib.Templating

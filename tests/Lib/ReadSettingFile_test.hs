@@ -43,20 +43,49 @@ test_checkSettings_def = do
             return lay 
     assertEqual (Right layoutDefaults) res 
 
-test_readSettings1 = do 
+readYaml2rec :: (FromJSON a, Show a) => Path Abs File -> ErrIO a 
+-- | read a yaml file into a record Value 
+-- error when syntax fault
+readYaml2rec fn = do 
+    putIOwords [" yaml file name", showT fn ]
+    -- settingsTxt <- read8 settingsfilename yamlFileType
+    s0 :: Value <- readYaml2value fn 
+    putIOwords ["yaml read", showPretty s0 ]
+
+    s1  <-  fromJSONerrio  s0  -- :: Result Settings 
+
+    putIOwords ["json parsed", showT s1 ]
+
+    return s1
+test_readSettings2 = do 
     res <- runErr $ do 
         let settingsfilename = (sourceDirTestSite) </> settingsFileName
         putIOwords [" settings file name", showT settingsfilename ]
         -- settingsTxt <- read8 settingsfilename yamlFileType
-        s0 :: Value <- readYaml2value settingsfilename 
-        putIOwords ["yaml read", showPretty s0 ]
+        s1 <- readYaml2rec settingsfilename 
 
-        s1 :: Settings <-  fromJSONerrio  s0  -- :: Result Settings 
+         
 
         putIOwords ["json parsed", showT s1 ]
 
         return s1
     assertEqual (Right settings1) res
+ 
+
+-- test_readSettings1 = do 
+--     res <- runErr $ do 
+--         let settingsfilename = (sourceDirTestSite) </> settingsFileName
+--         putIOwords [" settings file name", showT settingsfilename ]
+--         -- settingsTxt <- read8 settingsfilename yamlFileType
+--         s0 :: Value <- readYaml2value settingsfilename 
+--         putIOwords ["yaml read", showPretty s0 ]
+
+--         s1 :: Settings <-  fromJSONerrio  s0  -- :: Result Settings 
+
+--         putIOwords ["json parsed", showT s1 ]
+
+--         return s1
+--     assertEqual (Right settings1) res
 
 -- as long as path and prettyprint do not parse 
 -- produce error 

@@ -3,6 +3,7 @@
 -- Module      :  the process to check the input files
 -- TODO - check for filenames with blanks (specially at end)
 -- questionable: needed - used ? TODO
+-- probably not usable 
 ----------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
@@ -34,8 +35,8 @@ checkProcess :: NoticeLevel -> FilePath -> ErrIO ()
 -- ^ checking all md files
 checkProcess debug filepath = do
     let settingsFileName1 = makeAbsFile filepath
-    (layout2, _) <- readSettings debug settingsFileName1
-    let doughP = doughDir layout2 -- the regular dough
+    sett3 <- readSettings debug settingsFileName1
+    let doughP = doughDir (storage sett3)-- the regular dough
     when (inform debug) $
         putIOwords
             [ "\nstart with \n"

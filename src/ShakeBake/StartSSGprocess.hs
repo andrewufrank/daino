@@ -31,7 +31,7 @@ import UniformBase
 
 ssgProcess :: NoticeLevel -> PubFlags -> ErrIO ()
 ssgProcess debug flags = do
-    (layout2, port2) <- readSettings debug (settingsFile flags)
+    sett3 <- readSettings debug (settingsFile flags)
 
     -- read the time of the last upload
     -- uploadFileExist <- doesFileExist' testLastUploadFileName
@@ -45,7 +45,8 @@ ssgProcess debug flags = do
 
     -- let testWithLastTime  = testNewerModTime  lastUpload
     -- compare with year2000 if all should be uploaded
-
+    let layout2 = storage sett3 
+    let port2 = localhostPort sett3 
     if watchFlag flags -- implies server
         then mainWatch debug layout2 flags port2
         else do
