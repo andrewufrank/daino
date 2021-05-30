@@ -153,7 +153,7 @@ hr {
 .container {
     position: relative;
     text-align: center;
-    color: white;
+    color: wheat;
     object-fit: cover;
   }
   
@@ -162,7 +162,7 @@ hr {
     position: absolute;
     bottom: 8px;
     left: 16px;
-    color:aqua;
+    color:wheat;
   }
 
   /* Bottom left text */

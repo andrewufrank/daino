@@ -10,5 +10,5 @@ author : Author of Settings
 date: 2019-01-01
 ---
 
-The landing page of the **Example Site** giving access to all the files in the site. Use the Navigation Line above! 
+The landing page of the **Example Site** giving access to all the files in the site. Use the black Navigation Ribbon above! 
 
