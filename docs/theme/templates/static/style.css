@@ -58,12 +58,11 @@ hr {
 }
 
 .hero img {
-    /* position: top center;
-    size: 100% 10%; */
-    /* position: relative; */
+     /* position: relative; */
     text-align: center;
     color: white;
     object-fit: scale-down;
+    max-height: 400px;
 }
 
 .hero h1 {
@@ -154,7 +153,7 @@ hr {
 .container {
     position: relative;
     text-align: center;
-    color: wheat;
+    color: white;
     object-fit: cover;
   }
   
@@ -163,7 +162,7 @@ hr {
     position: absolute;
     bottom: 8px;
     left: 16px;
-    color: wheat;
+    color:aqua;
   }
 
   /* Bottom left text */
