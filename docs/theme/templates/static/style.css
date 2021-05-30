@@ -53,16 +53,17 @@ hr {
 }
 
 .hero {
-    padding: 0 1rem;
-    background-size: cover;
-    background-position: 50% 40%;
+    padding: 0;
     color: white;
 }
 
 .hero img {
-    position: top center;
-    size: 50% 10%
-
+    /* position: top center;
+    size: 100% 10%; */
+    /* position: relative; */
+    text-align: center;
+    color: white;
+    object-fit: scale-down;
 }
 
 .hero h1 {
@@ -81,6 +82,7 @@ hr {
     margin: 0;
     padding: 0;
     padding-bottom: 0.5em;
+    color: blue;
 }
 
 .hero a {
@@ -147,3 +149,28 @@ hr {
     padding: 2px;
     border: solid 1px silver;
 }
+
+/* Container holding the image and the text */
+.container {
+    position: relative;
+    text-align: center;
+    color: wheat;
+    object-fit: cover;
+  }
+  
+  /* Bottom left text */
+  .bottom-left {
+    position: absolute;
+    bottom: 8px;
+    left: 16px;
+    color: wheat;
+  }
+
+  /* Bottom left text */
+  .middle-left {
+    position: absolute;
+    bottom: 50px;
+    left: 16px;
+    /* transform: translate(-50%, -50%); */
+  }
+  

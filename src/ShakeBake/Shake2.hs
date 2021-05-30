@@ -99,15 +99,18 @@ shakeAll debug sett3 flags causedby = do
         , "\n======================================="
         ]
     let layout = storage sett3 
+        themeP = themeDir layout 
         doughP = doughDir layout -- the regular dough
         bakedP = bakedDir layout
-    callIO $ shakeMD debug sett3 flags doughP bakedP
+    callIO $ shakeMD debug sett3 flags themeP doughP bakedP
 
 
 shakeMD ::
     NoticeLevel ->
     Settings ->
     PubFlags ->
+    Path Abs Dir -> -- theme (source for files)
+    -- not currently used because the copy searches in dough for sources (put link to templates)
     Path Abs Dir -> -- dough (source for files)
     Path Abs Dir -> -- baked (target dir for site)
     IO ()
@@ -119,7 +122,7 @@ shakeMD ::
  in IO
  TOP shake call
 -}
-shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
+shakeMD debug layout flags themeP doughP bakedP = shakeArgs2 bakedP $ do
     -- the special filenames which are necessary
     -- because the file types are not automatically
     -- copied
@@ -137,13 +140,16 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         -- these are functions to construct the desired results
         -- which then produce them
         -- the original start needs in baked (from the files in dough)
-        pdfs <- getNeeds debug doughP bakedP "md" "pdf"
+        
+        -- pdfs <- getNeeds debug doughP bakedP "md" "pdf"
+        -- needP pdfs
         htmls <- getNeeds debug doughP bakedP "md" "html"
-        needP pdfs
         needP htmls
 
         csss <- getNeeds debug doughP bakedP "css" "css"
+        -- cssStatic <- getNeeds debug themeP bakedP "css" "css"
         needP csss
+        -- needP cssStatic
         imgs <- getNeeds debug doughP bakedP "jpg" "jpg"
         imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
         needP imgs
@@ -153,7 +159,15 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
     -- calls the copy html and the conversion from md
         do
             when (inform debug) $ putIOwords ["rule **/*.html", showT out]
-
+            -- csss <- getNeeds debug doughP bakedP "css" "css"
+            -- needP csss
+            -- -- csss seems not necessary
+            -- imgs <- getNeeds debug doughP bakedP "jpg" "jpg"
+            -- imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
+            -- needP imgs
+            -- needP imgs2
+            -- when (inform debug) $ putIOwords ["rule **/*.html", showT out]
+  
             convertAny debug bakedP bakedP flags layout out convPanrep2html "convPanrep2html"
 
     -- (toFilePath bakedP <> "**/*.html") %> \out -> -- from Panrep
