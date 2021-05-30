@@ -81,7 +81,7 @@ hr {
     margin: 0;
     padding: 0;
     padding-bottom: 0.5em;
-    color: blue;
+    color:white;
 }
 
 .hero a {
@@ -153,7 +153,7 @@ hr {
 .container {
     position: relative;
     text-align: center;
-    color: wheat;
+    color: white;
     object-fit: cover;
   }
   
@@ -162,14 +162,15 @@ hr {
     position: absolute;
     bottom: 8px;
     left: 16px;
-    color:wheat;
+    color:white;
   }
 
-  /* Bottom left text */
+  /* middle left text */
   .middle-left {
     position: absolute;
     bottom: 50px;
     left: 16px;
+    color:white;
     /* transform: translate(-50%, -50%); */
   }
   
