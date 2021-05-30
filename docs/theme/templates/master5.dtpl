@@ -11,6 +11,10 @@
 	(absolute web, inserted a / in the template)
     removed highlighting-css and css to load 
     files available are tufte.css and w3c.css not used
+
+    sollten fuer die indexseiten ein anderer master verwendet werden?
+
+    info background http://www-hera-b.desy.de/subgroup/computing/IT/www/selfhtml/css/eigenschaften/hintergrund.htm#background_position
 	-->
 <html lang="$lang$">
   <head>
@@ -18,6 +22,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <link rel="stylesheet" href="/templates/static/style.css" type="text/css">
   <link rel="stylesheet" href="/templates/static/menu.css" type="text/css">
+
+ 
+    <style type="text/css">
+    #Tanz {
+    background-image:/resources/img/121-2117_IMG.JPG; background-repeat:no-repeat;
+            background-position:top center;
+    }
+    </style>
 
 
     $for(author)$
@@ -41,6 +53,14 @@
         $endfor$
 
 
+
+    <div id="Tanz">
+    <h1>Tanz der Bilder!</h1>
+    <img src="background_foreground.gif" width="321" height="262" border="0" alt="Ein transparentest Bild &uuml;ber dem Hintergrundbild">
+    </div>
+
+
+
     <section class="hero">
         <div class="hero-image">
             
@@ -52,8 +72,8 @@
 
             <section class="menu">
 		<ul>
-            	$for(menuA)$
-				<li><a href=/$menuA.navlink$>$menuA.navtext$</a></li>
+            	$for(menuitems.menuA)$
+				<li><a href=/$menuitems.menuA.navlink$>$menuitems.menuA.navtext$</a></li>
             		$endfor$
 		</ul>
     </section>
