@@ -144,10 +144,10 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
 
         csss <- getNeeds debug doughP bakedP "css" "css"
         needP csss
-        -- imgs <- getNeeds debug doughP bakedP "jpg" "jpg"
-        -- imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
-        -- needP imgs
-        -- needP imgs2
+        imgs <- getNeeds debug doughP bakedP "jpg" "jpg"
+        imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
+        needP imgs
+        needP imgs2
 
     (toFilePath bakedP <> "**/*.html") %> \out -> -- from Panrep
     -- calls the copy html and the conversion from md
@@ -179,10 +179,10 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
     (toFilePath bakedP <> "**/*.pdf") %> \out -> -- insert pdfFIles1
         do
             when (inform debug) $ putIOwords ["rule **/*.pdf", showT out]
-            imgs <- getNeeds debug doughP bakedP "jpg" "jpg"
-            imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
-            needP imgs
-            needP imgs2
+            -- imgs <- getNeeds debug doughP bakedP "jpg" "jpg"
+            -- imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
+            -- needP imgs
+            -- needP imgs2
             -- when (inform debug) $ putIOwords ["rule **/*.pdf need", showT imgs, showT imgs2]
             convertAny debug bakedP bakedP flags layout out convTex2pdf "convTex2pdf"
 

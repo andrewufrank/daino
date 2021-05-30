@@ -46,6 +46,7 @@
 
     <section class="hero">
         <div class="hero-image">
+        <img src=/templates/img/cropped-DSC05127-1024x330.jpg alt="ruhiger Sommer im Garten in Geras" width=100% height=20% center top /img>
             
                 <h1>$settings.sitename$</h1>
                 <h3>$settings.byline$</h3>

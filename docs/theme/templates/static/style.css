@@ -59,6 +59,12 @@ hr {
     color: white;
 }
 
+.hero img {
+    position: top center;
+    size: 50% 10%
+
+}
+
 .hero h1 {
     font-size: 4rem;
     line-height: 1.5;
