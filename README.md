@@ -4,7 +4,7 @@ SSG uses files to manage data to permit version management with git. Page appear
 Index pages are automatically formated, but minimal content must be provided initially.
 # Layout
 The code includes an example site in the `docs/site` directory. It contains a file `settingsNN.yaml` which describes the layout of the site. A correponding file must be created for a new site. 
-in the `docs` directgory is the separated `theme` directory, which determines the apparence of the site. 
+in the `docs` directgory is the separated `theme` directory, which determines the apparence of the site. There must be a link to the theme directory in the dough directory (TODO remove the needs)
 Starting with `-t` for `test` selects the settingsfile in the example test site. 
 
 # Test site
