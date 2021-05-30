@@ -179,11 +179,14 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
     (toFilePath bakedP <> "**/*.pdf") %> \out -> -- insert pdfFIles1
         do
             when (inform debug) $ putIOwords ["rule **/*.pdf", showT out]
-            -- imgs <- getNeeds debug doughP bakedP "jpg" "jpg"
-            -- imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
-            -- needP imgs
-            -- needP imgs2
-            -- when (inform debug) $ putIOwords ["rule **/*.pdf need", showT imgs, showT imgs2]
+            imgs <- getNeeds debug doughP bakedP "jpg" "jpg"
+            imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
+            needP imgs
+            needP imgs2
+            -- why is this here necessary: failed on testSort.pdf?
+            -- was ein jpg will ?
+            -- TODO improve error from lualatex
+            -- when (informAll debug) $ putIOwords ["rule **/*.pdf need", showT imgs, showT imgs2]
             convertAny debug bakedP bakedP flags layout out convTex2pdf "convTex2pdf"
 
     (toFilePath bakedP <> "**/*.tex") %> \out -> -- insert pdfFIles1
