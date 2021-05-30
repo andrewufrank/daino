@@ -74,12 +74,12 @@ docrep2panrep debug layout (Docrep y1 p1) = do
 -- ------------------------------------ panrep2html
 -- panrep2html :: Panrep -> ErrIO HTMLout
 -- implements the bake
-panrep2html :: NoticeLevel -> Path Abs File -> MenuItems -> Panrep -> ErrIO HTMLout
+panrep2html :: NoticeLevel -> Path Abs File -> Settings -> Panrep -> ErrIO HTMLout
 panrep2html debug masterfn staticMenu (Panrep m1 p1) = do
         vals <- panrep2vals  debug staticMenu (Panrep m1 p1)
         p :: HTMLout <- panrep2html2 debug masterfn vals
         return p 
-panrep2vals ::  NoticeLevel -> MenuItems -> Panrep -> ErrIO [Value]
+panrep2vals ::  NoticeLevel -> Settings -> Panrep -> ErrIO [Value]
 panrep2vals debug staticMenu (Panrep m1 p1) = do 
     let ixe1 = dyIndexEntry m1
     menu4 :: MenuEntry <- convertIndexEntries debug ixe1 

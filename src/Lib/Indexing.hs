@@ -109,7 +109,7 @@ getFile2index :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> Path Abs File ->
 -- produce separately to preserve the two groups
 getFile2index debug doughP bakedP fnin =
     do
-        putIOwords ["getFile2index fnin", showPretty fnin]
+        when (inform debug) $ putIOwords ["getFile2index fnin", showPretty fnin]
 
         -- (Docrep y1 _) <- read8 fnin docrepFileType
         mdfile <- read8 fnin markdownFileType 
@@ -120,6 +120,6 @@ getFile2index debug doughP bakedP fnin =
         -- needs the indexentry initialized
         let ix1 :: IndexEntry = dyIndexEntry y1
 
-        putIOwords ["getFile2index ix1", showPretty ix1]
+        when (inform debug) $ putIOwords ["getFile2index ix1", showPretty ix1]
 
         return . Just $ ix1
