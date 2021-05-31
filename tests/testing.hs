@@ -14,7 +14,7 @@ import     Test.Framework
 
 -- import    {-@ HTF_TESTS @-}        Lib.Example_test
 -- import    {-@ HTF_TESTS @-}        Lib.ReadSettingFile_test
--- import    {-@ HTF_TESTS @-}        Lib.Md2doc_test
+import    {-@ HTF_TESTS @-}        Lib.Md2doc_test
 
 -- import    {-@ HTF_TESTS @-}        Lib.Indexing_test
                 -- braucht md2doc zuerst

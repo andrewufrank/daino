@@ -41,10 +41,10 @@ convertIndexEntries debug   ixe1 =
     today1 :: UTCTime <- getCurrentTimeUTC
     menu2a <- if isIndexPage fn 
         then do 
-            let dirs = dirEntries ixe1 -- dyDirEntries y
             let fils = fileEntries ixe1 -- fileEntries dyFileEntries MetaPage
+            let dirs = dirEntries ixe1 -- dyDirEntries y
 
-            let menu1 = convert2index (ixe1, dirs, fils)
+            let menu1 = convert2index (ixe1, fils, dirs)
             when (inform debug) $ putIOwords ["convertIndexEntries", "menu1", showT menu1]
             return menu1
         else return zero 
@@ -56,24 +56,29 @@ convertIndexEntries debug   ixe1 =
 convert2index ::
   (IndexEntry, [IndexEntry], [IndexEntry]) ->
   MenuEntry
-convert2index (this, content, subix) =
+convert2index (this, fils, dirs) =
   MenuEntry
-    { menu2 =
-        [a]
-          ++ ( if null c
-                 then zero
-                 else zero {title2 = "--- list of subdirectories here ---"} : c
-             )
-          ++ ( if null b
-                 then zero
-                 else zero {title2 = "--- list of files ---"} : b
-             )
-    ,  today2 = zero 
+    { menu2subdir =map getOneIndexEntryPure dirs
+    , menu2files = map getOneIndexEntryPure fils
+    , today2 = zero -- is set above
     }
-  where
-    a = getOneIndexEntryPure this
-    b = map getOneIndexEntryPure content -- braucht wohl filter
-    c = map getOneIndexEntryPure subix
+    -- TODO add a return?
+
+--         [a]
+--           ++ ( if null c
+--                  then zero
+--                  else zero {title2 = "--- list of subdirectories here ---"} : c
+--              )
+--           ++ ( if null b
+--                  then zero
+--                  else zero {title2 = "--- list of files ---"} : b
+--              )
+--     ,  today2 = zero 
+--     }
+--   where
+--     a = getOneIndexEntryPure this
+--     b = map map getOneIndexEntryPure subixt -- braucht wohl filter
+--     c = map getOneIndexEntryPure subix
 
 -- | the lnes for the index 
 -- TODO make a variant for the breaing marks
@@ -127,7 +132,8 @@ getOneIndexEntryPure metaRec =
 
 --       ------  S U P P O R T
 
-data MenuEntry = MenuEntry {menu2 :: [Index4html]
+data MenuEntry = MenuEntry {menu2subdir :: [Index4html]
+                            , menu2files :: [Index4html]
                                 , today2 :: Text }
   -- menu2 is referenced in the template
   deriving (Generic, Eq, Ord, Show, Read)
@@ -136,7 +142,7 @@ data MenuEntry = MenuEntry {menu2 :: [Index4html]
 --     shownice = showNice
 
 instance Zeros MenuEntry where
-  zero = MenuEntry zero zero
+  zero = MenuEntry zero zero zero 
 
 instance FromJSON MenuEntry
 

@@ -86,16 +86,22 @@
 
     <section class=menu2>
 		<ul>
-            	$for(menu2)$
-				<li>
-				    <a href=/$menu2.link2$><em>$menu2.title2$ </em></a>
-				    $if(menu2.abstract2)$<br>$menu2.abstract2$$endif$		     
-				    <span class=tiny>$menu2.author2$ $menu2.date2$ 
-            $menu2.link2$ $menu2.publish2$
-                    </span>
+            	$for(menu2files)$
+				  <li>
+				    <a href=/$menu2files.link2$><em>$menu2files.title2$ </em></a>
+				    $if(menu2files.abstract2)$<br>$menu2files.abstract2$$endif$		     
+				    <span class=tiny>$menu2files.author2$ $menu2files.date2$ $menu2files.publish2$
+                     </span>
+                  </li>
+                $endfor$ 
+                <p>Directories with more related files:</p>
+                $for(menu2subdir)$ 
+                  <li> 
+                    <a href=/$menu2subdir.link2$><em>$menu2subdir.title2$</em></a>
+                   $if(menu2subdir.abstract2)$<br>$menu2subdir.abstract2$$endif$		
                     
-    			</li>
-            		$endfor$
+    			  </li>
+                $endfor$
 		</ul>
     </section>
 
