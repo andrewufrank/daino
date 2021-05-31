@@ -58,11 +58,11 @@ convert2index (this, content, subix) =
         [a]
           ++ ( if null c
                  then zero
-                 else zero {title2 = "--- subdir ---"} : c
+                 else zero {title2 = "--- list of subdirectories here ---"} : c
              )
           ++ ( if null b
                  then zero
-                 else zero {title2 = "--- content ---"} : b
+                 else zero {title2 = "--- list of files ---"} : b
              )
     }
   where
