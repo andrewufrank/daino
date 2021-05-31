@@ -25,8 +25,8 @@ localhostPort: 3000
 settingsAuthor : Author of Settings 
 settingsDate: 2019-01-01
 settings : 
-    sitename : siteNameExample
-    byline : siteByLineExample
+    sitename : siteName
+    byline : siteByLine 
     banner: /templates/img/symmetricGeras2.jpg
 
 menuitems:

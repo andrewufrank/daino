@@ -99,8 +99,8 @@ settingsDefault = Settings
     settingsAuthor = "Author of Settings", 
     settingsDate = "2019-01-01", 
     settings = Settings2 
-        {sitename = "siteNameExample", 
-        byline = "siteByLineExample", 
+        {sitename = "siteNameExample-Default", 
+        byline = "siteByLineExample-Default", 
         banner = "/templates/img/symmetricGeras2.jpg"
         }, 
     menuitems = MenuItems 

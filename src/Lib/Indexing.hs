@@ -73,6 +73,9 @@ getDirContent2dirs_files debug doughP bakedP indexpageFn = do
     let dirs4 = filter ( not . (isPrefixOf' "templates"
         -- (toFilePath templatesDirName :: FilePath)
          ) .   getNakedDir) dirs3
+    let dirs5 = filter ( not . (isPrefixOf' "."
+        -- (toFilePath templatesDirName :: FilePath)
+         ) .   getNakedDir) dirs4
     -- TODO may need extension (change to list of excluded)
     -- build from constants in foundation
 
@@ -91,7 +94,7 @@ getDirContent2dirs_files debug doughP bakedP indexpageFn = do
     ixfiles <- mapM (getFile2index debug doughP bakedP) files2
     -- putIOwords ["getDirContent2dirs ixfiles", showPretty ixfiles]
 
-    let subindexDirs = map (\d -> d </> makeRelFile "index.md") dirs4
+    let subindexDirs = map (\d -> d </> makeRelFile "index.md") dirs5
     -- "index.docrep" 
     -- putIOwords ["getDirContent2dirs subindexDirs", showPretty subindexDirs]
     ixdirs <- mapM (getFile2index debug doughP bakedP) subindexDirs
