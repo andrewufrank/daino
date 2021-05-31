@@ -163,8 +163,10 @@ data IndexEntry = IndexEntry
     -- , indexPage :: Bool
     , dirEntries :: [IndexEntry] -- def []
     , fileEntries :: [IndexEntry] -- def []
-    }
-    deriving (Show, Read, Eq, Ord, Zeros, Generic)
+    } deriving (Show, Read, Eq, Ord, Generic, Zeros)
+    --  IndexTitleSubdirs | IndexTitleFiles 
+
+-- instance Zeros IndexEntry where zero = IndexEntry zero zero zero zero zero zero zero zero zero
 
 instance ToJSON IndexEntry
 instance FromJSON IndexEntry

@@ -16,10 +16,12 @@ import     Test.Framework
 -- import    {-@ HTF_TESTS @-}        Lib.ReadSettingFile_test
 -- import    {-@ HTF_TESTS @-}        Lib.Md2doc_test
 
-import    {-@ HTF_TESTS @-}        Lib.Indexing_test
--- import    {-@ HTF_TESTS @-}        Lib.Doc2html_test
+-- import    {-@ HTF_TESTS @-}        Lib.Indexing_test
+                -- braucht md2doc zuerst
+import    {-@ HTF_TESTS @-}        Lib.Doc2html_test
 -- import    {-@ HTF_TESTS @-}        Lib.Panrep2pdf_test
--- import    {-@ HTF_TESTS @-}        Lib.IndexMake_test
+import    {-@ HTF_TESTS @-}        Lib.IndexMake_test
+        -- braucht doc2html zuerst
 
 
 main :: IO ()
