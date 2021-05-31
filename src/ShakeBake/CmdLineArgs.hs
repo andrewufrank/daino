@@ -87,7 +87,7 @@ parseArgs2input testdataDir t1 t2 = do
                          , draftFlag    = draftSwitch args1
                          , testFlag     = testSwitch args1
                          , watchFlag    = watchSwitch args1
-                         , serverFlag   = True -- serverSwitch args1
+                         , serverFlag   = serverSwitch args1
                          , settingsFile = workingdir1 </> settingsFileName 
                          -- perhaps wrong, could be site/dough?
                         ,  uploadFlag = uploadSwitch args1

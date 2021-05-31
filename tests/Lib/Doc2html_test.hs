@@ -57,7 +57,7 @@ test_pan2HTMLout_withRef = testing_pan2HTMLout "withRef"
 testing_pan2vals f = test1FileIO "ssg" 
     (f <> "_panrep" ) (f <> "_vals1") op2 -- dr1 <- read8 inputFn docrepFileType
 op2 :: Panrep -> ErrIO [Value]
-op2 =  panrep2vals NoticeLevel0 (menu def) -- static menu
+op2 =  panrep2vals NoticeLevel0 ( def) -- static menu
 
 test_pan2vals_blog1 = testing_pan2vals "blog1"
 test_pan2vals_index = testing_pan2vals "index"

@@ -140,7 +140,8 @@ shakeMD debug layout flags themeP doughP bakedP = shakeArgs2 bakedP $ do
         -- these are functions to construct the desired results
         -- which then produce them
         -- the original start needs in baked (from the files in dough)
-        
+
+    -- uncomment to produce pdf's!   
         -- pdfs <- getNeeds debug doughP bakedP "md" "pdf"
         -- needP pdfs
         htmls <- getNeeds debug doughP bakedP "md" "html"
