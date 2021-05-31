@@ -30,7 +30,7 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color:#3e662a;
+  background-color:transparent;
 }
 
 /* example https://www.w3schools.com/css/css_navbar.asp */
@@ -39,7 +39,7 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #3e662a;
+  background-color: transparent;
 }
 
 
