@@ -92,8 +92,8 @@ hr {
 }
 
 .header, .content, .stuff {
-    padding: 1rem;
-    color: #15100C
+    padding: 0;
+    color: #3e662a;
 }
 
 .content img {
@@ -160,7 +160,7 @@ hr {
   /* Bottom left text */
   .bottom-left {
     position: absolute;
-    bottom: 8px;
+    bottom: 30px;
     left: 16px;
     color:white;
   }
@@ -168,7 +168,7 @@ hr {
   /* middle left text */
   .middle-left {
     position: absolute;
-    bottom: 50px;
+    bottom: 60px;
     left: 16px;
     color:white;
     /* transform: translate(-50%, -50%); */

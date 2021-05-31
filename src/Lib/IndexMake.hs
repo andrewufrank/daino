@@ -28,16 +28,18 @@ import           UniformBase
 import Uniform2.HTMLout
 
 
-convertIndexEntries :: NoticeLevel -> IndexEntry -> ErrIO MenuEntry
+convertIndexEntries :: NoticeLevel ->   IndexEntry -> ErrIO MenuEntry
 -- ^ take the index entries and convert their
 -- form and push them back into the json
 -- converts to values for printing if indexpage else null
-convertIndexEntries debug ixe1 =
+-- date today is passed to feed in pages 
+convertIndexEntries debug   ixe1 =
   do
     when (inform debug) $ putIOwords ["convertIndexEntries", "start ixe1", showT ixe1]
     let fn = makeAbsFile $ ixfn ixe1 
     when (inform debug) $ putIOwords ["convertIndexEntries", "fn", showT fn]
-    if isIndexPage fn 
+    today1 :: UTCTime <- getCurrentTimeUTC
+    menu2a <- if isIndexPage fn 
         then do 
             let dirs = dirEntries ixe1 -- dyDirEntries y
             let fils = fileEntries ixe1 -- fileEntries dyFileEntries MetaPage
@@ -46,6 +48,8 @@ convertIndexEntries debug ixe1 =
             when (inform debug) $ putIOwords ["convertIndexEntries", "menu1", showT menu1]
             return menu1
         else return zero 
+    let menu3 = menu2a{today2 = showT today1}
+    return menu3
 
 -- | convert the metarecs and put some divider between
 -- TODO  - avoid dividers if list empty
@@ -64,6 +68,7 @@ convert2index (this, content, subix) =
                  then zero
                  else zero {title2 = "--- list of files ---"} : b
              )
+    ,  today2 = zero 
     }
   where
     a = getOneIndexEntryPure this
@@ -89,7 +94,7 @@ data Index4html = Index4html
   deriving (Generic, Eq, Ord, Show, Read)
 
 instance Zeros Index4html where
-  zero = Index4html zero zero zero zero zero zero zero
+  zero = Index4html zero zero zero zero zero zero zero 
 
 instance FromJSON Index4html
 
@@ -122,7 +127,8 @@ getOneIndexEntryPure metaRec =
 
 --       ------  S U P P O R T
 
-newtype MenuEntry = MenuEntry {menu2 :: [Index4html]}
+data MenuEntry = MenuEntry {menu2 :: [Index4html]
+                                , today2 :: Text }
   -- menu2 is referenced in the template
   deriving (Generic, Eq, Ord, Show, Read)
 
@@ -130,7 +136,7 @@ newtype MenuEntry = MenuEntry {menu2 :: [Index4html]}
 --     shownice = showNice
 
 instance Zeros MenuEntry where
-  zero = MenuEntry zero
+  zero = MenuEntry zero zero
 
 instance FromJSON MenuEntry
 

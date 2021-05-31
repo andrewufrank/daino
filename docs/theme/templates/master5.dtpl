@@ -44,15 +44,14 @@
         $endfor$
 
 
+    <div class="container">
     <section class="hero">
         <div class="hero-image">
-            <div class="container">
                 <img src=/resources/templates/img/DSC04907.JPG
                     alt="ruhiger Sommer im Garten in Geras" >
 
                 <div class="middle-left"><h1>siteNameExample</h1></div>
                 <div class="bottom-left"><h3>siteByLineExample</h3></div>
-            </div>       
                 
         <div/>
     </section>
@@ -65,6 +64,7 @@
             		$endfor$
 		</ul>
     </section>
+    </div>       
     <section>
         $if(title)$
         <header>
@@ -110,7 +110,7 @@
 
 
         <p class=tiny>
-        Produced with SGG $ssgversion$ on $today$ from $filename$ with master5.dtpl.
+        Produced with SGG $ssgversion$ on $today2$ from $filename$ with master5.dtpl.
         </p>
 
         $for(include-after)$

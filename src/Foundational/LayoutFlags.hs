@@ -39,6 +39,7 @@ data Settings = Settings
     , settingsDate :: Text -- should be UTC 
     , settings :: Settings2 
     , menuitems :: MenuItems
+    -- , today :: Text
     } deriving (Show, Read, Ord, Eq, Generic, Zeros)
 
 instance ToJSON Settings
@@ -52,7 +53,7 @@ data Settings2 = Settings2
 instance ToJSON Settings2
 instance FromJSON Settings2
 
-data MenuItems = MenuItems {menuA:: [MenuItem]
+newtype MenuItems = MenuItems {menuA:: [MenuItem]
                             -- , menuB:: Text
                             } deriving (Show, Read, Ord, Eq, Generic, Zeros)
 instance ToJSON MenuItems 
@@ -109,6 +110,7 @@ settingsDefault = Settings
             MenuItem {navlink = "/SSGdesign/index.html", navtext = "SSG Documentation"}
             ]
         }
+    -- today = "2021-05-30"
     }
 
 -- MenuItem where 
