@@ -45,26 +45,29 @@
 
 
     <div class="container">
-    <section class="hero">
+      <section class="hero">
         <div class="hero-image">
-                <img src=/resources/templates/img/DSC04907.JPG
-                    alt="ruhiger Sommer im Garten in Geras" >
+            <img src=/resources/templates/img/DSC04907.JPG
+                alt="ruhiger Sommer im Garten in Geras" >
 
-                <div class="middle-left"><h1>siteNameExample</h1></div>
-                <div class="bottom-left"><h3>siteByLineExample</h3></div>
-                
+            <div class="middle-left"><h1>siteNameExample</h1></div>
+            <div class="bottom-left"><h3>siteByLineExample</h3></div>
+            <div class="bottomzero"> 
+            
+                <section class="header">
+                    <section class="menu">
+                    <ul>
+                            $for(menuitems.menuNav)$
+                            <li><a href=/$menuitems.menuNav.navlink$>$menuitems.menuNav.navtext$</a></li>
+                                $endfor$
+                    </ul>
+                    </section>
+                </section>
+            </div>       
         <div/>
-    </section>
-    <section class="header">
+      </section>
+    </div>
 
-            <section class="menu">
-		<ul>
-            	$for(menuitems.menuA)$
-				<li><a href=/$menuitems.menuA.navlink$>$menuitems.menuA.navtext$</a></li>
-            		$endfor$
-		</ul>
-    </section>
-    </div>       
     <section>
         $if(title)$
         <header>

@@ -53,7 +53,7 @@ data Settings2 = Settings2
 instance ToJSON Settings2
 instance FromJSON Settings2
 
-newtype MenuItems = MenuItems {menuA:: [MenuItem]
+newtype MenuItems = MenuItems {menuNav:: [MenuItem]
                             -- , menuB:: Text
                             } deriving (Show, Read, Ord, Eq, Generic, Zeros)
 instance ToJSON MenuItems 
@@ -104,7 +104,7 @@ settingsDefault = Settings
         banner = "/templates/img/symmetricGeras2.jpg"
         }, 
     menuitems = MenuItems 
-        {menuA=[
+        {menuNav=[
             MenuItem {navlink = "/Blog/index.html", navtext = "Blog"},
             MenuItem {navlink = "/PublicationList/index.html", navtext = "Publications"},
             MenuItem {navlink = "/SSGdesign/index.html", navtext = "SSG Documentation"}

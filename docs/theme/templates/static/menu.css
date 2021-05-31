@@ -11,7 +11,7 @@
 }
 
 .menu span {
-    padding: 0 1rem;
+    padding: 0 8px;
 }
 
 .menu {
@@ -51,7 +51,7 @@
   display: block;
   color: white;
   text-align: center;
-  padding: 14px 0px;
+  padding: 14px 8px;
   text-decoration: none;
 }
 

@@ -157,6 +157,13 @@ hr {
     object-fit: cover;
   }
   
+/* Bottomzero for nav banner*/
+.bottomzero  {
+    position: absolute;
+    bottom: 8px;
+    left: 16px;
+    color:white;
+  }
   /* Bottom left text */
   .bottom-left {
     position: absolute;

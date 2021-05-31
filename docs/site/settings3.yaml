@@ -30,7 +30,7 @@ settings :
     banner: /templates/img/symmetricGeras2.jpg
 
 menuitems:
-    menuA:
+    menuNav:
      - navlink: Blog/index.html
      # navlink must not start with /
        navtext: Blog
