@@ -59,7 +59,7 @@ other-extensions:  # besides the automatically Haskell2010
 
 dependencies: 
     - base  
-    - uniformBase  
+    - uniformBase  == 0.1.2
     -  uniform-json
     -  uniform-shake
     - uniform-convenience # from u2to

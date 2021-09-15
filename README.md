@@ -106,3 +106,7 @@ With
     - *cabal.project*, updated to use the uBase as moved to Hackage
 
     check with *ghcup tui* which version is installed - currently 8.10.4 (ghcup -h)
+
+    There are changes 
+        - uniformBase 
+        - uniform-strings
