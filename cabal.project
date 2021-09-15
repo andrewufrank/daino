@@ -1,15 +1,15 @@
  
 packages: 
     ./ssg.cabal
-    ../uBase/uniformBase/*.cabal
-    ../uBase/uniform-algebras/*.cabal
-    ../uBase/uniform-strings/*.cabal
-    ../uBase/uniform-error/*.cabal
-   ../uBase/uniform-time/*.cabal
+--    ../uBase/uniformBase/*.cabal
+--    ../uBase/uniform-algebras/*.cabal
+--    ../uBase/uniform-strings/*.cabal
+--    ../uBase/uniform-error/*.cabal
+--   ../uBase/uniform-time/*.cabal
     ../uBase/uniform-fileio/*.cabal 
 
     ../u4blog/uniform-json/*.cabal
---/home/frank/Workspace11/u4blog/uniform-json/uniform-json.cabal
+-- --/home/frank/Workspace11/u4blog/uniform-json/uniform-json.cabal
     ../u4blog/uniform-webserver/*.cabal
     ../u4blog/uniform-watch/*.cabal
     ../u4blog/uniform-latex2pdf/*.cabal

@@ -95,3 +95,14 @@ Each transformation step identified in Shake2 is used to organize the tests for 
 
 The tests are indexed by the transformation AtoB 
 <!-- was named by A -->
+
+# Compilationm - Build - Run 
+## Compile
+With 
+    *cabal build* in the ssg directory 
+
+    uses 
+    - ssg.cabal
+    - *cabal.project*, updated to use the uBase as moved to Hackage
+
+    check with *ghcup tui* which version is installed - currently 8.10.4 (ghcup -h)
