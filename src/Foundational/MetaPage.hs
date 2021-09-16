@@ -48,7 +48,7 @@ data MetaPage = MetaPage
       -- set in ? initializeIndex
       dyLink :: FilePath
     , -- | the fields of miniblog
-      dyLang :: Text -- DocLanguage
+      dyLang :: Text -- DocLanguage not used yet 
     , dyTitle :: Text
     , dyAbstract :: Text
     , dyAuthor :: Text
@@ -60,7 +60,7 @@ data MetaPage = MetaPage
     , dyStyle :: Maybe Text
     , dyReferences :: Maybe Value --  [Reference]
     , dyNoCite :: Maybe Text
-    , dyPublish :: Maybe Text
+    , dyPublish :: Maybe Text -- not used yet!
     -- , dyIndexPage :: Bool
     , dyIndexSort :: Maybe Text
     , dyIndexEntry :: IndexEntry
