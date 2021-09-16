@@ -36,11 +36,11 @@ convertIndexEntries :: NoticeLevel ->   IndexEntry -> ErrIO MenuEntry
 convertIndexEntries debug   ixe1 =
   do
     when (inform debug) $ putIOwords ["convertIndexEntries", "start ixe1", showT ixe1]
-    let fn = makeAbsFile $ ixfn ixe1 
+    let fn = makeAbsFile $ ixfn ixe1
     when (inform debug) $ putIOwords ["convertIndexEntries", "fn", showT fn]
     today1 :: UTCTime <- getCurrentTimeUTC
-    menu4 <- if isIndexPage fn 
-        then do 
+    menu4 <- if isIndexPage fn
+        then do
             let fils = fileEntries ixe1 -- fileEntries dyFileEntries MetaPage
             let dirs = dirEntries ixe1 -- dyDirEntries y
 
@@ -48,18 +48,18 @@ convertIndexEntries debug   ixe1 =
             let menu3 = menu1{today2 = showT today1}
             when (inform debug) $ putIOwords ["convertIndexEntries", "menu1", showT menu3]
             return menu3
-        else return zero 
+        else return zero
     return menu4
 
--- | convert the metarecs and put some divider between
+-- | convert the indexEntry1s and put some divider between
 -- TODO  - avoid dividers if list empty
 convert2index ::
   (IndexEntry, [IndexEntry], [IndexEntry]) ->
   MenuEntry
 convert2index (this, fils, dirs) =
   MenuEntry
-    { menu2subdir =map getOneIndexEntryPure dirs
-    , menu2files = map getOneIndexEntryPure fils
+    { menu2subdir = getIndexEntryPure dirs
+    , menu2files =  getIndexEntryPure fils
     , today2 = zero -- is set above
     }
     -- TODO add a return?
@@ -99,7 +99,7 @@ data Index4html = Index4html
   deriving (Generic, Eq, Ord, Show, Read)
 
 instance Zeros Index4html where
-  zero = Index4html zero zero zero zero zero zero zero 
+  zero = Index4html zero zero zero zero zero zero zero
 
 instance FromJSON Index4html
 
@@ -107,27 +107,32 @@ instance FromJSON Index4html
 instance ToJSON Index4html
 
 
+getIndexEntryPure :: [IndexEntry] -> [Index4html]
+getIndexEntryPure ixe2 = mapMaybe (\i -> if isJust (publish i)
+                                  then Just $ getOneIndexEntryPure i
+                                  else Nothing ) ixe2
+
 getOneIndexEntryPure :: IndexEntry -> Index4html
 
 -- | the pure code to compute an IndexEntry
 -- Text should be "/Blog/postTufteStyled.html"
-getOneIndexEntryPure metaRec =
+getOneIndexEntryPure indexEntry1 =
   Index4html
-    { text2 = s2t . takeBaseName'   . ixfn $ metaRec,
+    { text2 = s2t . takeBaseName'   . ixfn $ indexEntry1,
       link2 =  s2t . -- s2t . toFilePath $ 
           setExtension "html" . removeExtension
           -- TODO use extHTML
             . link
-            $ metaRec,
-      abstract2 = abstract metaRec,
+            $ indexEntry1,
+      abstract2 = abstract indexEntry1,
       title2 =
-        if isZero (title metaRec :: Text)
-          then s2t . takeBaseName'   .  ixfn $ metaRec
-          else title metaRec,
-      author2 = author metaRec,
-      date2 = showT $ date metaRec,
-      publish2 = shownice $ publish metaRec
-    --   indexPage2 = indexPage metaRec
+        if isZero (title indexEntry1 :: Text)
+          then s2t . takeBaseName'   .  ixfn $ indexEntry1
+          else title indexEntry1,
+      author2 = author indexEntry1,
+      date2 = showT $ date indexEntry1,
+      publish2 = shownice $ publish indexEntry1
+    --   indexPage2 = indexPage indexEntry1
     }
 
 --       ------  S U P P O R T
@@ -142,7 +147,7 @@ data MenuEntry = MenuEntry {menu2subdir :: [Index4html]
 --     shownice = showNice
 
 instance Zeros MenuEntry where
-  zero = MenuEntry zero zero zero 
+  zero = MenuEntry zero zero zero
 
 instance FromJSON MenuEntry
 
