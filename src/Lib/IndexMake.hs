@@ -108,9 +108,9 @@ instance ToJSON Index4html
 
 
 getIndexEntryPure :: [IndexEntry] -> [Index4html]
-getIndexEntryPure ixe2 = mapMaybe (\i -> if isJust (publish i)
+getIndexEntryPure ixe2 = mapMaybe (\i -> if (Just "true" == publish i)
                                   then Just $ getOneIndexEntryPure i
-                                  else Nothing ) ixe2
+                                  else error "xsdwer" ) ixe2
 
 getOneIndexEntryPure :: IndexEntry -> Index4html
 

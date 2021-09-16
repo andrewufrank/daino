@@ -48,7 +48,7 @@ data MetaPage = MetaPage
       -- set in ? initializeIndex
       dyLink :: FilePath
     , -- | the fields of miniblog
-      dyLang :: DocLanguage
+      dyLang :: Text -- DocLanguage
     , dyTitle :: Text
     , dyAbstract :: Text
     , dyAuthor :: Text
