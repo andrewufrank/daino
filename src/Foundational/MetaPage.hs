@@ -124,31 +124,33 @@ instance FromJSON MetaPage where
 -- addBakedRoot bakedP Nothing = Nothing
 -- addBakedRoot bakedP (Just fp) = Just . s2t . toFilePath $ addFileName bakedP . t2s $ fp
 
--- | another data type to rep languages
-data DocLanguage = DLgerman | DLenglish
-    deriving (Show, Read, Ord, Eq, Generic)
+-- -- | another data type to rep languages
+-- not yet used - go for de_AT style and uses standard lang codes
+-- data DocLanguage = DLgerman | DLenglish
+--     deriving (Show, Read, Ord, Eq, Generic)
 
-instance Zeros DocLanguage where zero = DLenglish
+-- instance Zeros DocLanguage where zero = DLenglish
 
-instance FromJSON DocLanguage
+-- instance FromJSON DocLanguage
 
-instance ToJSON DocLanguage
+-- instance ToJSON DocLanguage
 
 -- TODO is this clever to have a new language datatype?
 
-data PublicationState = PSpublish | PSdraft | PSold | PSzero
-    deriving (Generic, Show, Read, Ord, Eq)
--- ^ is this file ready to publish
+-- this is not used yet:
+-- data PublicationState = PSpublish | PSdraft | PSold | PSzero
+--     deriving (Generic, Show, Read, Ord, Eq)
+-- -- ^ is this file ready to publish
 
-instance Zeros PublicationState where
-    zero = PSzero
+-- instance Zeros PublicationState where
+--     zero = PSzero
 
-instance NiceStrings PublicationState where
-    shownice = drop' 2 . showT
+-- instance NiceStrings PublicationState where
+--     shownice = drop' 2 . showT
 
-instance ToJSON PublicationState
+-- instance ToJSON PublicationState
 
-instance FromJSON PublicationState
+-- instance FromJSON PublicationState
 
 data IndexEntry = IndexEntry 
     { -- | the abs file path
