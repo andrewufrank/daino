@@ -27,10 +27,10 @@ import Uniform.Json
 testing_indexEntry2MenuEntry f = test1FileIO "ssg"   
     (f <> "_ixEntry1") (f <>  "_ixEntry4") (convertIndexEntries NoticeLevel0)      
  
-test_indexEntry2MenuEntry_blog1 = testing_indexEntry2MenuEntry "blog1"
+test_indexEntry2MenuEntry_blog1 = testing_indexEntry2MenuEntry "01blog1"
 test_indexEntry2MenuEntry_index = testing_indexEntry2MenuEntry "index"
-test_indexEntry2MenuEntry_postwk = testing_indexEntry2MenuEntry "postwk"
-test_indexEntry2MenuEntry_withRef = testing_indexEntry2MenuEntry "withRef"
+test_indexEntry2MenuEntry_postwk = testing_indexEntry2MenuEntry "03postwk"
+test_indexEntry2MenuEntry_withRef = testing_indexEntry2MenuEntry "02withRef"
 
 
 -- testing_MenuEntry2pandoc4 f = test2FileIO "ssg"    (  "ixEntry4_" <> f) (  "pandoc_" <> f) ("pandoc4_" <> f) mergeContent      

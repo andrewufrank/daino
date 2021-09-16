@@ -34,7 +34,7 @@ testing_getMeta f =   test1File "ssg"
 op :: Docrep -> MetaPage 
 op = meta1 
 
-test_getMeta_blog1 = testing_getMeta "blog1"
+test_getMeta_blog1 = testing_getMeta "01blog1"
 test_getMeta_index = testing_getMeta "index"
 
 

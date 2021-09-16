@@ -25,10 +25,10 @@ testing_readMarkdown2pandoc :: FilePath -> IO ()
 -- | test to produce pandoc - step0 in   Md2.doc 
 testing_readMarkdown2pandoc f1  = test1FileIO "ssg" (f1<> ".md") (f1 <> "_pandoc" )(readMarkdown2 . MarkdownText) 
 
-test_blog1_readMarkdown2pandoc = testing_readMarkdown2pandoc   "blog1"
+test_blog1_readMarkdown2pandoc = testing_readMarkdown2pandoc   "01blog1"
 test_index_readMarkdown2pandoc = testing_readMarkdown2pandoc "index"   
-test_postwk_readMarkdown2pandoc = testing_readMarkdown2pandoc "postwk"   
-test_withRef_readMarkdown2pandoc = testing_readMarkdown2pandoc "withRef"   
+test_postwk_readMarkdown2pandoc = testing_readMarkdown2pandoc "03postwk"   
+test_withRef_readMarkdown2pandoc = testing_readMarkdown2pandoc "02withRef"   
 
 -- | conversion of markdown file f1 (with extension) to intermediate d11  
 
@@ -54,10 +54,10 @@ testing_md2dr1 f1 = test1FileIO "ssg"  (f1<> "_pandoc") (f1 <> "_dr1" )  (pandoc
   where 
       fn1 :: Path Abs File 
       fn1 = doughPL </> (makeRelFile f1)
-test_blog1_md2dr1 = testing_md2dr1 "blog1" 
+test_blog1_md2dr1 = testing_md2dr1 "01blog1" 
 test_index_md2dr1 = testing_md2dr1 "index" 
-test_postwk_md2dr1 = testing_md2dr1 "postwk" 
-test_withRef_md2dr1 = testing_md2dr1 "withRef" 
+test_postwk_md2dr1 = testing_md2dr1 "03postwk" 
+test_withRef_md2dr1 = testing_md2dr1 "02withRef" 
 
 testing_dr12dr3 :: FilePath -> IO ()
 -- | op 3 in Md2doc.hs 
@@ -65,10 +65,10 @@ testing_dr12dr3 :: FilePath -> IO ()
 testing_dr12dr3 f1  = test1FileIO "ssg" (f1<> "_dr1") (f1 <> "_dr3" ) (addRefs NoticeLevel0   )
 
 
-test_blog1_dr1_dr3 = testing_dr12dr3 "blog1"   
+test_blog1_dr1_dr3 = testing_dr12dr3 "01blog1"   
 test_index_dr1_dr3 = testing_dr12dr3  "index"  
-test_postwk_dr1_dr3 = testing_dr12dr3  "postwk"   
-test_withRef_dr1_dr3 = testing_dr12dr3  "withRef"    
+test_postwk_dr1_dr3 = testing_dr12dr3  "03postwk"   
+test_withRef_dr1_dr3 = testing_dr12dr3  "02withRef"    
     
 
 -- | testing dr3 to docrep (check stepwise same result)
@@ -80,10 +80,10 @@ testing_md2docrep f1= test1FileIO "ssg" (f1<> ".md") (f1 <> "T.docrep" ) (md2doc
       fn = doughPL </> (makeRelFile f1)
     --   blogRoot = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/dough/Blog"
       -- TODO needs somewhere fix to build to website root
-test_blog1_dm2docrep = testing_md2docrep "blog1"
+test_blog1_dm2docrep = testing_md2docrep "01blog1"
 test_index_dm2docrep = testing_md2docrep "index"
-test_postwk_dm2docrep = testing_md2docrep "postwk"
-test_withRef_dm2docrep = testing_md2docrep "withRef"
+test_postwk_dm2docrep = testing_md2docrep "03postwk"
+test_withRef_dm2docrep = testing_md2docrep "02withRef"
  
 
 instance ShowTestHarness MarkdownText 

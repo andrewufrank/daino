@@ -24,20 +24,20 @@ testing_md2pan f = test1FileIO "ssg"
     (f <> "T.docrep" ) (f <>"_panrep") 
     (docrep2panrep NoticeLevel0 (def::SiteLayout) )
 
-test_blog1_md2pan = testing_md2pan "blog1"
+test_blog1_md2pan = testing_md2pan "01blog1"
 test_index_md2pan = testing_md2pan "index"
-test_postwk_md2pan = testing_md2pan "postwk"
-test_withRef_md2pan = testing_md2pan "withRef"
+test_postwk_md2pan = testing_md2pan "03postwk"
+test_withRef_md2pan = testing_md2pan "02withRef"
 
 testing_pan2indexEntry f = test1File "ssg" 
     (f <> "_panrep" ) (f <>"_ixEntry1") op -- dr1 <- read8 inputFn docrepFileType
 op :: Panrep -> IndexEntry
 op = dyIndexEntry . panyam
 
-test_pan2indexEntry_blog1 = testing_pan2indexEntry "blog1"
+test_pan2indexEntry_blog1 = testing_pan2indexEntry "01blog1"
 test_pan2indexEntry_index = testing_pan2indexEntry "index"
-test_pan2indexEntry_postwk = testing_pan2indexEntry "postwk"
-test_pan2indexEntry_withRef = testing_pan2indexEntry "withRef"
+test_pan2indexEntry_postwk = testing_pan2indexEntry "03postwk"
+test_pan2indexEntry_withRef = testing_pan2indexEntry "02withRef"
 
 testing_pan2HTMLout f = test1FileIO "ssg" 
     (f <> "_panrep" ) (f <> "_htmlout") op1 -- dr1 <- read8 inputFn docrepFileType
@@ -49,20 +49,20 @@ op1 = panrep2html NoticeLevel0 masterfn def
         masterfn :: Path Abs File 
         masterfn = templatesDir layoutDefaults </> mf
 
-test_pan2HTMLout_blog1 = testing_pan2HTMLout "blog1"
+test_pan2HTMLout_blog1 = testing_pan2HTMLout "01blog1"
 test_pan2HTMLout_index = testing_pan2HTMLout "index"
-test_pan2HTMLout_postwk = testing_pan2HTMLout "postwk"
-test_pan2HTMLout_withRef = testing_pan2HTMLout "withRef"
+test_pan2HTMLout_postwk = testing_pan2HTMLout "03postwk"
+test_pan2HTMLout_withRef = testing_pan2HTMLout "02withRef"
 
 testing_pan2vals f = test1FileIO "ssg" 
     (f <> "_panrep" ) (f <> "_vals1") op2 -- dr1 <- read8 inputFn docrepFileType
 op2 :: Panrep -> ErrIO [Value]
 op2 =  panrep2vals NoticeLevel0 ( def) -- static menu
 
-test_pan2vals_blog1 = testing_pan2vals "blog1"
+test_pan2vals_blog1 = testing_pan2vals "01blog1"
 test_pan2vals_index = testing_pan2vals "index"
-test_pan2vals_postwk = testing_pan2vals "postwk"
-test_pan2vals_withRef = testing_pan2vals "withRef"
+test_pan2vals_postwk = testing_pan2vals "03postwk"
+test_pan2vals_withRef = testing_pan2vals "02withRef"
 ------------ old -----
 
 -- -- | conversion of markdown file f1 (with extension) to intermediate d11

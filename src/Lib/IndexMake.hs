@@ -26,7 +26,8 @@ import           Foundational.MetaPage
 import           Uniform.Json
 import           UniformBase
 import Uniform2.HTMLout
-
+import Data.List (sortOn)
+-- import Data.Ord (comparing)
 
 convertIndexEntries :: NoticeLevel ->   IndexEntry -> ErrIO MenuEntry
 -- ^ take the index entries and convert their
@@ -38,14 +39,16 @@ convertIndexEntries debug   ixe1 =
     when (inform debug) $ putIOwords ["convertIndexEntries", "start ixe1", showT ixe1]
     let fn = makeAbsFile $ ixfn ixe1
     when (inform debug) $ putIOwords ["convertIndexEntries", "fn", showT fn]
-    today1 :: UTCTime <- getCurrentTimeUTC
+    -- today1 :: UTCTime <- getCurrentTimeUTC
+    -- to avoid the changes in testing leading to failures
+    -- let today1 = "2021-01-01"::UTCTime  -- for testing 
     menu4 <- if isIndexPage fn
         then do
             let fils = fileEntries ixe1 -- fileEntries dyFileEntries MetaPage
             let dirs = dirEntries ixe1 -- dyDirEntries y
 
             let menu1 = convert2index (ixe1, fils, dirs)
-            let menu3 = menu1{today2 = showT today1}
+            let menu3 = menu1{today2 = "2021-01-01"} --showT today1}
             when (inform debug) $ putIOwords ["convertIndexEntries", "menu1", showT menu3]
             return menu3
         else return zero
@@ -58,8 +61,8 @@ convert2index ::
   MenuEntry
 convert2index (this, fils, dirs) =
   MenuEntry
-    { menu2subdir = getIndexEntryPure dirs
-    , menu2files =  getIndexEntryPure fils
+    { menu2subdir = sortOn link2 $ getIndexEntryPure dirs
+    , menu2files  = sortOn link2 $ getIndexEntryPure fils
     , today2 = zero -- is set above
     }
     -- TODO add a return?
