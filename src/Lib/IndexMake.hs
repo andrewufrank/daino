@@ -80,7 +80,7 @@ convert2index (this, fils, dirs) =
 --     b = map map getOneIndexEntryPure subixt -- braucht wohl filter
 --     c = map getOneIndexEntryPure subix
 
--- | the lnes for the index 
+-- | the lines for the index 
 -- TODO make a variant for the breaing marks
 data Index4html = Index4html
   { -- fn :: Path Abs File   -- ^ naked filename -- not shown
@@ -93,7 +93,8 @@ data Index4html = Index4html
     abstract2  :: Text,
     author2    :: Text,
     date2      :: Text, -- UTCTime -- read the time early one to find errors
-    publish2   :: Text
+    publish2   :: Text  -- not yet used 
+                -- add language ?
     -- indexPage2 :: Bool -- mark for index entries
     }
   deriving (Generic, Eq, Ord, Show, Read)
@@ -108,9 +109,10 @@ instance ToJSON Index4html
 
 
 getIndexEntryPure :: [IndexEntry] -> [Index4html]
-getIndexEntryPure ixe2 = mapMaybe (\i -> if (Just "true" == publish i)
-                                  then Just $ getOneIndexEntryPure i
-                                  else error "xsdwer" ) ixe2
+getIndexEntryPure ixe2 = map getOneIndexEntryPure  ixe2
+                    -- mapMaybe (\i -> if (Just "true" == publish i)
+                    --               then Just $ getOneIndexEntryPure i
+                    --               else error "xsdwer" ) ixe2
 
 getOneIndexEntryPure :: IndexEntry -> Index4html
 

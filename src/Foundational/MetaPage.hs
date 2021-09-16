@@ -75,7 +75,7 @@ instance Default MetaPage where
         zero
             { dyFn = zero
             , dyLink = zero
-            , dyLang = DLenglish
+            , dyLang = "en_US" -- DLenglish
             , dyTitle = "FILL"
             , dyAbstract = zero
             , dyAuthor = "Andrew U Frank"
