@@ -82,7 +82,7 @@ pandoc2docrep debug doughP bakedP filename pd = do
             MetaPage
                 { dyFn = toFilePath filename
                 , dyLink = toFilePath relfn
-                , dyLang = DLenglish -- getAtKey meta2 "language"
+                , dyLang = "en_US" -- DLenglish -- getAtKey meta2 "language"
                 , dyTitle = fromMaybe "FILL TITLE" $ getAtKey meta2 "title"
                 , dyAbstract = fromMaybe "FILL ABSTRCT" $ getAtKey meta2 "abstract"
                 , dyAuthor = fromMaybe "FILL AUTHOR" $ getAtKey meta2 "author"
