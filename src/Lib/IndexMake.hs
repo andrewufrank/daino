@@ -39,17 +39,17 @@ convertIndexEntries debug   ixe1 =
     let fn = makeAbsFile $ ixfn ixe1 
     when (inform debug) $ putIOwords ["convertIndexEntries", "fn", showT fn]
     today1 :: UTCTime <- getCurrentTimeUTC
-    menu2a <- if isIndexPage fn 
+    menu4 <- if isIndexPage fn 
         then do 
             let fils = fileEntries ixe1 -- fileEntries dyFileEntries MetaPage
             let dirs = dirEntries ixe1 -- dyDirEntries y
 
             let menu1 = convert2index (ixe1, fils, dirs)
-            when (inform debug) $ putIOwords ["convertIndexEntries", "menu1", showT menu1]
-            return menu1
+            let menu3 = menu1{today2 = showT today1}
+            when (inform debug) $ putIOwords ["convertIndexEntries", "menu1", showT menu3]
+            return menu3
         else return zero 
-    let menu3 = menu2a{today2 = showT today1}
-    return menu3
+    return menu4
 
 -- | convert the metarecs and put some divider between
 -- TODO  - avoid dividers if list empty

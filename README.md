@@ -10,9 +10,9 @@ Starting with `-t` for `test` selects the settingsfile in the example test site.
 # Test site
 Test with the included example site (in the `docs/site` directory) and the provided `theme` can be extended to include all troublesome cases. The tests are executed with `-t` switch (e.g. `cabal run ssgbake -- -t`). A html server (scotty) is started; the result can be viewed in the broswer at `localhost:3000` (the port can be selected in the `settings` file. 
 Alternatively, the resulting site can be tested in the browser with 
-- SimpleServer (must be installed from Hackage with `cabal install`) with `simpleserver -p <portnumber>` or 
+- SimpleServer (must be installed from Hackage with `cabal install` - not yet on 8.10 with base 4.14) with `simpleserver -p <portnumber>` or 
 - `python3 -m http.server <portnumber>`
- running in `ssg/docs/site/baked`.
+        running in `ssg/docs/site/baked`.
 
 ## Defaults
 The markdonw file for each page included in the site must  contain in the yaml header values for title, author, date etc. Missing values are replaced with defaults, which are stored in the same format in a file.  
@@ -100,6 +100,7 @@ The tests are indexed by the transformation AtoB
 ## Compile
 With 
     *cabal build* in the ssg directory 
+    *cabal install*
 
     uses 
     - ssg.cabal
@@ -110,3 +111,16 @@ With
     There are changes 
         - uniformBase 
         - uniform-strings
+## test with testsite
+- move to ssg
+- cabal run ssgbake -- -t
+- cd docs/site/baked
+- python3 -m http.server 3000
+- localhost:3000
+
+## run on myhomepage (in the folder)
+
+- there must be a file settingsN.yaml
+- in LayoutFlags.hs is the current name as "settings3"
+- ssgbake 
+
