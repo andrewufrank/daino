@@ -21,16 +21,16 @@ import Uniform.Pandoc
 import UniformBase
 -- import Lib.IndexCollect
 
-testing_readMarkdown2pandoc :: FilePath -> IO ()
--- | test to produce pandoc - step0 in   Md2.doc 
-testing_readMarkdown2pandoc f1  = test1FileIO "ssg" (f1<> ".md") (f1 <> "_pandoc" )(readMarkdown2 . MarkdownText) 
+-- testing_readMarkdown2pandoc :: FilePath -> IO ()
+-- -- | test to produce pandoc - step0 in   Md2.doc 
+-- testing_readMarkdown2pandoc f1  = test1FileIO "ssg" (toFilePath (doughPL </>(makeRelDir "Blog") </> f1) <> ".md") (f1 <> "_pandoc" )(readMarkdown2 . MarkdownText) 
 
-test_blog1_readMarkdown2pandoc = testing_readMarkdown2pandoc   "01blog1"
-test_index_readMarkdown2pandoc = testing_readMarkdown2pandoc "index"   
-test_postwk_readMarkdown2pandoc = testing_readMarkdown2pandoc "03postwk"   
-test_withRef_readMarkdown2pandoc = testing_readMarkdown2pandoc "02withRef"   
+-- test_index_readMarkdown2pandoc = testing_readMarkdown2pandoc "index"   
+-- -- test_blog1_readMarkdown2pandoc = testing_readMarkdown2pandoc   "01blog1"
+-- -- test_postwk_readMarkdown2pandoc = testing_readMarkdown2pandoc "03postwk"   
+-- -- test_withRef_readMarkdown2pandoc = testing_readMarkdown2pandoc "02withRef"   
 
--- | conversion of markdown file f1 (with extension) to intermediate d11  
+-- -- | conversion of markdown file f1 (with extension) to intermediate d11  
 
 doughPL:: Path Abs Dir 
 doughPL = doughDir layoutDefaults 
@@ -50,14 +50,14 @@ bakedPL = bakedDir layoutDefaults
 
 testing_md2dr1 :: FilePath -> IO ()
 -- | op 1 in Md2doc.hs
-testing_md2dr1 f1 = test1FileIO "ssg"  (f1<> "_pandoc") (f1 <> "_dr1" )  (pandoc2docrep NoticeLevel1 doughPL bakedPL fn1 )
+testing_md2dr1 f1 = test1File "ssg"  (f1<> "_pandoc") (f1 <> "_dr1" )  (pandoc2docrep NoticeLevel1 doughPL bakedPL fn1 )
   where 
       fn1 :: Path Abs File 
-      fn1 = doughPL </> (makeRelDir "Blog") </> (makeRelFile f1)
-test_blog1_md2dr1 = testing_md2dr1 "01blog1" 
-test_index_md2dr1 = testing_md2dr1 "index" 
-test_postwk_md2dr1 = testing_md2dr1 "03postwk" 
-test_withRef_md2dr1 = testing_md2dr1 "02withRef" 
+      fn1 = bakedPL </> (makeRelFile f1)
+-- test_index_md2dr1 = testing_md2dr1 "index" 
+-- test_blog1_md2dr1 = testing_md2dr1 "01blog1" 
+-- test_postwk_md2dr1 = testing_md2dr1 "03postwk" 
+-- test_withRef_md2dr1 = testing_md2dr1 "02withRef" 
 
 testing_dr12dr3 :: FilePath -> IO ()
 -- | op 3 in Md2doc.hs 
@@ -65,10 +65,10 @@ testing_dr12dr3 :: FilePath -> IO ()
 testing_dr12dr3 f1  = test1FileIO "ssg" (f1<> "_dr1") (f1 <> "_dr3" ) (addRefs NoticeLevel0   )
 
 
-test_blog1_dr1_dr3 = testing_dr12dr3 "01blog1"   
-test_index_dr1_dr3 = testing_dr12dr3  "index"  
-test_postwk_dr1_dr3 = testing_dr12dr3  "03postwk"   
-test_withRef_dr1_dr3 = testing_dr12dr3  "02withRef"    
+-- test_index_dr1_dr3 = testing_dr12dr3  "index"  
+-- test_blog1_dr1_dr3 = testing_dr12dr3 "01blog1"   
+-- test_postwk_dr1_dr3 = testing_dr12dr3  "03postwk"   
+-- test_withRef_dr1_dr3 = testing_dr12dr3  "02withRef"    
     
 
 -- | testing dr3 to docrep (check stepwise same result)
@@ -80,10 +80,10 @@ testing_md2docrep f1= test1FileIO "ssg" (f1<> ".md") (f1 <> "T.docrep" ) (md2doc
       fn = doughPL </> (makeRelFile f1)
     --   blogRoot = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/dough/Blog"
       -- TODO needs somewhere fix to build to website root
-test_blog1_dm2docrep = testing_md2docrep "01blog1"
-test_index_dm2docrep = testing_md2docrep "index"
-test_postwk_dm2docrep = testing_md2docrep "03postwk"
-test_withRef_dm2docrep = testing_md2docrep "02withRef"
+-- test_index_dm2docrep = testing_md2docrep "index"
+-- test_blog1_dm2docrep = testing_md2docrep "01blog1"
+-- test_postwk_dm2docrep = testing_md2docrep "03postwk"
+-- test_withRef_dm2docrep = testing_md2docrep "02withRef"
  
 
 instance ShowTestHarness MarkdownText 

@@ -1,14 +1,20 @@
 # Static Site Generator
 A static site generator from pandoc and other available packages on Hackage (e.g. shake, twitch, scotty), influenced by Chris Penner's [slick](https://github.com/ChrisPenner/slick#readme)(todo: look at [Ema](https://github.com/srid/ema) by  Sridhar Ratnakumar). 
+
 SSG uses files to manage data to permit version management with git. Page appearances are directed with YAML and internally data is structured with JSON. Unlike other Site Generators, for each page a PDF file is produced to gurantee well formated prints. 
+
 Index pages are automatically formated, but minimal content must be provided initially.
+
 # Layout
 The code includes an example site in the `docs/site` directory. It contains a file `settingsNN.yaml` which describes the layout of the site. A correponding file must be created for a new site. 
-in the `docs` directgory is the separated `theme` directory, which determines the apparence of the site. There must be a link to the theme directory in the dough directory (TODO remove the needs)
+
+in the `docs` directgory is the separated `theme` directory, which determines the apparence of the site. There must be a link to the theme directory in the dough directory (TODO remove the needs).
+
 Starting with `-t` for `test` selects the settingsfile in the example test site. 
 
 # Test site
 Test with the included example site (in the `docs/site` directory) and the provided `theme` can be extended to include all troublesome cases. The tests are executed with `-t` switch (e.g. `cabal run ssgbake -- -t`). A html server (scotty) is started; the result can be viewed in the broswer at `localhost:3000` (the port can be selected in the `settings` file. 
+
 Alternatively, the resulting site can be tested in the browser with 
 - SimpleServer (must be installed from Hackage with `cabal install` - not yet on 8.10 with base 4.14) with `simpleserver -p <portnumber>` or 
 - `python3 -m http.server <portnumber>`
@@ -17,6 +23,8 @@ Alternatively, the resulting site can be tested in the browser with
 ## Defaults
 The markdonw file for each page included in the site must  contain in the yaml header values for title, author, date etc. Missing values are replaced with defaults, which are stored in the same format in a file.  
     Missing title and author is replaced by `FILL` - which can be searched for and corrected!
+
+
 TODO
 
 ## Processing 
@@ -96,7 +104,7 @@ Each transformation step identified in Shake2 is used to organize the tests for 
 The tests are indexed by the transformation AtoB 
 <!-- was named by A -->
 
-# Compilationm - Build - Run 
+# Compilation - Build - Run 
 ## Compile
 With 
     *cabal build* in the ssg directory 

@@ -92,7 +92,7 @@ panrep2vals debug staticMenu (Panrep m1 p1) = do
     when (inform debug) $putIOwords ["panrep2vals", "p2", showPretty p2]
     let vals = [toJSON staticMenu, toJSON m1, toJSON menu4, toJSON p2]
     -- order matters left preference?
-    when (inform debug) $putIOwords ["panrep2vals", "vals", showPretty vals]
+    when True $putIOwords ["panrep2vals", "vals", showPretty vals]
     return vals 
 
 panrep2html2 ::  NoticeLevel -> Path Abs File  -> [Value] -> ErrIO HTMLout 
