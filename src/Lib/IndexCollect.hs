@@ -120,7 +120,7 @@ getFile2index debug doughP bakedP fnin =
         pd <- readMarkdown2 mdfile
         -- could perhaps "need" all ix as files?
 
-        (Docrep y1 _) <- pandoc2docrep debug doughP bakedP fnin pd
+        let (Docrep y1 _) = pandoc2docrep debug doughP bakedP fnin pd
         -- needs the indexentry initialized
         let ix1 :: IndexEntry = dyIndexEntry y1
 

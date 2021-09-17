@@ -49,7 +49,7 @@ md2docrep debug layout2 inputFn md1 = do
 
     pd <- readMarkdown2 md1 -- to pandoc 
     -- take metadata and fill metaPage (including IndexEntry)
-    dr1 <- pandoc2docrep debug doughP bakedP inputFn pd -- to dr1
+    let dr1 = pandoc2docrep debug doughP bakedP inputFn pd -- to dr1
     -- with a flattened version of json from Pandoc
     -- convert to metaPage with Index 
 
@@ -67,18 +67,18 @@ md2docrep debug layout2 inputFn md1 = do
 
     return dr3 -- same as T.docrep 
 
-pandoc2docrep :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> Path Abs File -> Pandoc -> ErrIO Docrep
+pandoc2docrep :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> Path Abs File -> Pandoc -> Docrep
 {- | convert the pandoc text to DocrepJSON
  reads the markdown file with pandoc and extracts the yaml metadaat
  the metadata are then converted to metaPage
  -- duplication possible for data in the pandoc metada (no used)
  TODO may use json record parse, which I have already done
 -}
--- is not using io! could be pure 
-pandoc2docrep debug doughP bakedP filename pd = do
+-- pure 
+pandoc2docrep debug doughP bakedP filename pd = 
     let meta2 = flattenMeta . getMeta $ pd
-    let relfn = makeRelativeP doughP filename
-    let meta4 =
+        relfn = makeRelativeP doughP filename
+        meta4 =
             MetaPage
                 { dyFn = toFilePath filename
                 , dyLink = toFilePath relfn
@@ -100,9 +100,9 @@ pandoc2docrep debug doughP bakedP filename pd = do
                                             -- else zero
                 }
                 
-    let ix1 =  initializeIndex meta4
-    let meta6 = meta4{dyIndexEntry = ix1}
-    return (Docrep meta6 pd)
+        ix1 =  initializeIndex meta4
+        meta6 = meta4{dyIndexEntry = ix1}
+    in (Docrep meta6 pd)
 
 
 
