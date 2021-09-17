@@ -50,10 +50,10 @@ bakedPL = bakedDir layoutDefaults
 
 testing_md2dr1 :: FilePath -> IO ()
 -- | op 1 in Md2doc.hs
-testing_md2dr1 f1 = test1FileIO "ssg"  (f1<> "_pandoc") (f1 <> "_dr1" )  (pandoc2docrep NoticeLevel0 doughPL bakedPL fn1 )
+testing_md2dr1 f1 = test1FileIO "ssg"  (f1<> "_pandoc") (f1 <> "_dr1" )  (pandoc2docrep NoticeLevel1 doughPL bakedPL fn1 )
   where 
       fn1 :: Path Abs File 
-      fn1 = doughPL </> (makeRelFile f1)
+      fn1 = doughPL </> (makeRelDir "Blog") </> (makeRelFile f1)
 test_blog1_md2dr1 = testing_md2dr1 "01blog1" 
 test_index_md2dr1 = testing_md2dr1 "index" 
 test_postwk_md2dr1 = testing_md2dr1 "03postwk" 

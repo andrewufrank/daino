@@ -25,9 +25,10 @@ import Wave.Doc2html
 import Uniform.Json
 
 -- the test uses ixEntry1 and converts to ixEntry4
-- ixEntry1 is produced in Doc2html
+-- ixEntry1 is produced in Doc2html
+
 testing_indexEntry2MenuEntry f = test1FileIO "ssg"   
-    (f <> "_ixEntry1") (f <>  "_ixEntry4") (convertIndexEntries NoticeLevel0)      
+    (f <> "_ixEntry1") (f <>  "_ixEntry4") (convertIndexEntries NoticeLevel1)      
  
 test_indexEntry2MenuEntry_blog1 = testing_indexEntry2MenuEntry "01blog1"
 test_indexEntry2MenuEntry_index = testing_indexEntry2MenuEntry "index"

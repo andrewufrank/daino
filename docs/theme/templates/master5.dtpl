@@ -35,9 +35,9 @@
 
 	<title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$</title>
 	
-    </head>
+  </head>
 
-    <body>
+  <body>
     <!-- AF - my template for pandoc page  -->
         $for(include-before)$
         $include-before$
@@ -84,6 +84,24 @@
  
     </section>
 
+    <section> <!-- blog text content section -->
+        $if(toc)$
+        <nav id="$idprefix$TOC">
+        $table-of-contents$
+        </nav>
+        $endif$
+
+        $beforeContent$
+        $if(abstract)$abstract: $abstract$ 
+        $endif$content-from-panrep-blocks: $content$
+        $afterContent$
+
+        $for(include-after)$
+        $include-after$
+        $endfor$
+
+    </section>
+
     <section class=menu2>
 		<ul>
             	$for(menu2files)$
@@ -105,27 +123,10 @@
 		</ul>
     </section>
 
-        $if(toc)$
-        <nav id="$idprefix$TOC">
-        $table-of-contents$
-        </nav>
-        $endif$
-
-<!-- blog text content section -->
-    $beforeContent$
-    $if(abstract)$abstract: $abstract$ 
-    $endif$content-from-panrep-blocks: $content$
-    $afterContent$
+    <p class=tiny>
+    Produced with SGG $ssgversion$ on $today2$ with master5.dtpl.
+    </p>
 
 
-        <p class=tiny>
-        Produced with SGG $ssgversion$ on $today2$ with master5.dtpl.
-        </p>
-
-        $for(include-after)$
-        $include-after$
-        $endfor$
-    </body>
-
-
+  </body>
 </html>

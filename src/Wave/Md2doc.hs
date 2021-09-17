@@ -74,8 +74,8 @@ pandoc2docrep :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> Path Abs File ->
  -- duplication possible for data in the pandoc metada (no used)
  TODO may use json record parse, which I have already done
 -}
+-- is not using io! could be pure 
 pandoc2docrep debug doughP bakedP filename pd = do
- 
     let meta2 = flattenMeta . getMeta $ pd
     let relfn = makeRelativeP doughP filename
     let meta4 =
