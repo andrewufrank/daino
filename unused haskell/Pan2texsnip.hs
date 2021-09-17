@@ -33,7 +33,7 @@ import           Foundational.LayoutFlags
 import           Foundational.MetaPage
 import           GHC.Generics                 (Generic)
 import           Lib.IndexMake
-import           Lib.Indexing
+import           Lib.IndexCollect
 import           Lib.Templating
 -- import Text.CSL as Pars (Reference, readBiblioFile, readCSLFile)
 -- import Text.CSL.Pandoc as Bib (processCites)

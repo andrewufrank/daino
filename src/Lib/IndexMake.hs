@@ -4,10 +4,10 @@
 -- Module      :   
 -- | create an index for a directory
 --  in two steps: 
---  indexing: collect all the date 
+--  IndexCollect: collect all the date 
 --  with call to addIndex2yam
 --  and
---  convert collected data for printing (convertIndexEntries)
+--  indexMake: convert collected data for printing (convertIndexEntries)
 --  . 
 --  the data is stored in a file separately and managed by Shake
 --  operates on metapage (or less? )

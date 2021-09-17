@@ -19,7 +19,7 @@ import Wave.Md2doc
 import Uniform.Pandoc
 -- import Uniform.Json
 import UniformBase
--- import Lib.Indexing
+-- import Lib.IndexCollect
 
 testing_readMarkdown2pandoc :: FilePath -> IO ()
 -- | test to produce pandoc - step0 in   Md2.doc 

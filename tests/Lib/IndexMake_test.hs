@@ -24,6 +24,8 @@ import Wave.Doc2html
 -- import Data.Aeson
 import Uniform.Json
 
+-- the test uses ixEntry1 and converts to ixEntry4
+- ixEntry1 is produced in Doc2html
 testing_indexEntry2MenuEntry f = test1FileIO "ssg"   
     (f <> "_ixEntry1") (f <>  "_ixEntry4") (convertIndexEntries NoticeLevel0)      
  

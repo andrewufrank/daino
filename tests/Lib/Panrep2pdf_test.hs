@@ -22,7 +22,7 @@ import Uniform.Pandoc
 import UniformBase
 import Lib.Md2doc_test
 
--- import Lib.Indexing
+-- import Lib.IndexCollect
 
 testing_panrep2texsnip :: FilePath -> IO ()
 -- | test to produce texsnip

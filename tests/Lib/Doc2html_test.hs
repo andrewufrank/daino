@@ -9,7 +9,7 @@ module Lib.Doc2html_test where
 import Foundational.Filetypes4sites
 import Foundational.LayoutFlags
 import Foundational.MetaPage
-import Lib.Indexing
+import Lib.IndexCollect
 import Lib.Md2doc_test
 import Test.Framework
 import Uniform.Json

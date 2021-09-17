@@ -2,7 +2,8 @@
 --
 -- Module      :   create an index for a directory
 ---- | create an index for a directory
---  in two steps: collect all the date
+--  in two steps: 
+--  IndexCollect collect all the date
 --  with call to completeIndex
 --  and
 --  indexmake: convert collected data for printing (convertIndexEntries)
@@ -15,7 +16,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# OPTIONS_GHC -Wall #-}
 
-module Lib.Indexing where
+module Lib.IndexCollect where
 
 import Uniform.Json  
 import Uniform.PandocImports

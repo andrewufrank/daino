@@ -30,7 +30,7 @@ library
       Foundational.Filetypes4sites
       Foundational.LayoutFlags
       Foundational.MetaPage
-      Lib.Indexing
+      Lib.IndexCollect
       Lib.IndexMake
       Lib.Templating
       ShakeBake.Bake
@@ -97,7 +97,7 @@ test-suite ssgTest
   other-modules:
       Lib.Doc2html_test
       Lib.Example_test
-      Lib.Indexing_test
+      Lib.IndexCollect_test
       Lib.IndexMake_test
       Lib.Md2doc_test
       Lib.Panrep2pdf_test

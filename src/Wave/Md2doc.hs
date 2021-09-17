@@ -28,7 +28,7 @@ import Foundational.LayoutFlags
 import Foundational.MetaPage
 import Uniform.Json
 
--- import Lib.Indexing
+-- import Lib.IndexCollect
 import Uniform.Pandoc
 import Uniform.Shake (makeRelativeP)
 

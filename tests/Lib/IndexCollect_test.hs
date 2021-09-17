@@ -8,7 +8,7 @@
 
 {-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-unused-imports #-}
 
-module Lib.Indexing_test where
+module Lib.IndexCollect_test where
 
 import Test.Framework
 import Uniform.Test.TestHarness
@@ -17,7 +17,7 @@ import Lib.Md2doc_test  -- to have settings (i.e. layout)
 import Foundational.Filetypes4sites
 import Foundational.MetaPage
 import Lib.Templating
-import Lib.Indexing
+import Lib.IndexCollect
 import UniformBase
 import Uniform.Pandoc
 -- import Data.Aeson

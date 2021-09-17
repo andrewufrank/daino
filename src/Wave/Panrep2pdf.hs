@@ -34,7 +34,7 @@ import Foundational.LayoutFlags
 import Foundational.MetaPage
 import GHC.Generics (Generic)
 import Lib.IndexMake
-import Lib.Indexing
+import Lib.IndexCollect
 import Lib.Templating
 import Uniform.Json
 import Uniform.Pandoc
