@@ -28,7 +28,7 @@ The markdonw file for each page included in the site must  contain in the yaml h
 TODO
 
 ## Processing 
-The design is based on Shake which is sort of lazy:
+The design is based on Shake which is lazy:
 
 Each markdown file produces a page (correlate: for each page expected include a markdown file, even for the index pages!). A markdown page starts Shake with a `need` for the html page. 
 To produce html page, a panrep file must be produced, which then ask for a docrep file which is produced from the markdown file. Shake caches the intermediate files and recreates files only if the source changed, which achieves very fast udates and allow dynamic uupdates of pages. 

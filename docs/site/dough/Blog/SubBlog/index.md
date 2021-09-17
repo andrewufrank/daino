@@ -6,7 +6,7 @@ keywords: test
 abstract: index in SubBlog abstract - The subdirectory experiment
 # pageTemplate: page3.yaml
 indexPage: True
-indexSort: title 
+indexSort: date 
 ---
 
 index in SubBlog text - an index page for test 

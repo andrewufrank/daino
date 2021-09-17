@@ -29,12 +29,12 @@ import Uniform2.HTMLout
 import Data.List (sortOn)
 -- import Data.Ord (comparing)
 
-convertIndexEntries :: NoticeLevel ->   IndexEntry -> ErrIO MenuEntry
+convertIndexEntries :: NoticeLevel ->  Text -> IndexEntry -> ErrIO MenuEntry
 -- ^ take the index entries and convert their
 -- form and push them back into the json
 -- converts to values for printing if indexpage else null
 -- date today is passed to feed in pages 
-convertIndexEntries debug   ixe1 =
+convertIndexEntries debug indexSortField  ixe1 =
   do
     when (inform debug) $ putIOwords ["convertIndexEntries", "start ixe1", showT ixe1]
     let fn = makeAbsFile $ ixfn ixe1
@@ -47,7 +47,7 @@ convertIndexEntries debug   ixe1 =
             let fils = fileEntries ixe1 -- fileEntries dyFileEntries MetaPage
             let dirs = dirEntries ixe1 -- dyDirEntries y
 
-            let menu1 = convert2index (ixe1, fils, dirs)
+            let menu1 = convert2index indexSortField (ixe1, fils, dirs)
             let menu3 = menu1{today2 = "2021-01-01"} --showT today1}
             when (inform debug) $ putIOwords ["convertIndexEntries", "menu1", showT menu3]
             return menu3
@@ -56,15 +56,22 @@ convertIndexEntries debug   ixe1 =
 
 -- | convert the indexEntry1s and put some divider between
 -- TODO  - avoid dividers if list empty
-convert2index ::
+convert2index :: Text -> 
   (IndexEntry, [IndexEntry], [IndexEntry]) ->
   MenuEntry
-convert2index (this, fils, dirs) =
-  MenuEntry
-    { menu2subdir = sortOn link2 $ getIndexEntryPure dirs
-    , menu2files  = sortOn link2 $ getIndexEntryPure fils
-    , today2 = zero -- is set above
-    }
+convert2index indexSortField (this, fils, dirs) =
+    MenuEntry
+        { menu2subdir = sortOn sortField $ getIndexEntryPure dirs
+        , menu2files  = sortOn sortField $ getIndexEntryPure fils
+        , today2 = zero -- is set above
+        }
+ where 
+    sortField = case (indexSortField) of 
+        "filename" -> text2
+        "date"      -> date2
+        _ -> date2   -- as a default
+        -- how to deal with reverse sorts??
+
     -- TODO add a return?
 
 --         [a]

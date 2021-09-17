@@ -6,7 +6,7 @@ keywords: test
 abstract: index in blog abstract The directory for experiments.
 # pageTemplate: page3.yaml
 indexPage: True 
-indexSort: reverseDate
+indexSort: filename
 ---
 
 index in blog text an index page for Blog 

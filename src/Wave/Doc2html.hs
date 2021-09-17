@@ -40,6 +40,7 @@ import Uniform.Json
 import Uniform.Pandoc
 import Uniform2.HTMLout
 import UniformBase
+import Data.Maybe (fromMaybe)
 
 -- import Text.Pandoc.Definition
 
@@ -58,9 +59,9 @@ docrep2panrep debug layout (Docrep y1 p1) = do
                 { panyam = y1
                 , panpan = p1
                 }
-    
+
     if isIndexPage (makeAbsFile . dyFn . panyam $ pr )
-        then do 
+        then do
     -- if dyIndexPage . panyam $ pr
             let m1 = panyam pr
             let ix1 =dyIndexEntry  m1
@@ -68,7 +69,7 @@ docrep2panrep debug layout (Docrep y1 p1) = do
             -- todo put ix2 into pr
             let m2 = m1{dyIndexEntry = ix2}
             return pr{panyam = m2}
-        else 
+        else
             return pr
 
 -- ------------------------------------ panrep2html
@@ -78,11 +79,12 @@ panrep2html :: NoticeLevel -> Path Abs File -> Settings -> Panrep -> ErrIO HTMLo
 panrep2html debug masterfn staticMenu (Panrep m1 p1) = do
         vals <- panrep2vals  debug staticMenu (Panrep m1 p1)
         p :: HTMLout <- panrep2html2 debug masterfn vals
-        return p 
+        return p
 panrep2vals ::  NoticeLevel -> Settings -> Panrep -> ErrIO [Value]
-panrep2vals debug staticMenu (Panrep m1 p1) = do 
+panrep2vals debug staticMenu (Panrep m1 p1) = do
     let ixe1 = dyIndexEntry m1
-    menu4 :: MenuEntry <- convertIndexEntries debug ixe1 
+    let indexSortField = Data.Maybe.fromMaybe "" (dyIndexSort m1)
+    menu4 :: MenuEntry <- convertIndexEntries  debug indexSortField ixe1
     html <- writeHtml5String2 p1
     -- in uniform.Pandoc (dort noch mehr moeglicherweise duplicated)
     let p2 = ContentHtml html
@@ -93,10 +95,10 @@ panrep2vals debug staticMenu (Panrep m1 p1) = do
     let vals = [toJSON staticMenu, toJSON m1, toJSON menu4, toJSON p2]
     -- order matters left preference?
     when True $putIOwords ["panrep2vals", "vals", showPretty vals]
-    return vals 
+    return vals
 
-panrep2html2 ::  NoticeLevel -> Path Abs File  -> [Value] -> ErrIO HTMLout 
-panrep2html2 debug masterfn vals = do 
+panrep2html2 ::  NoticeLevel -> Path Abs File  -> [Value] -> ErrIO HTMLout
+panrep2html2 debug masterfn vals = do
 
 
     p :: HTMLout <- putValinMaster debug vals masterfn
