@@ -108,7 +108,7 @@
 				  <li>
 				    <a href=/$menu2files.link2$><em>$menu2files.title2$ </em></a>
 				    $if(menu2files.abstract2)$<br>$menu2files.abstract2$$endif$		     
-				    <span class=tiny>$menu2files.author2$ $menu2files.date2$ $menu2files.publish2$
+				    <span class=tiny>$menu2files.author2$ $menu2files.date2$ 
                      </span>
                   </li>
                 $endfor$ 

@@ -186,7 +186,7 @@ copyFileToBaked ::
     Action ()
 copyFileToBaked debug doughP bakedP out = do
     let outP = makeAbsFile out :: Path Abs File
-    when True $ liftIO $ putIOwords ["\ncopyFileToBaked outP", showT outP]
+    when (inform debug) $ liftIO $ putIOwords ["\ncopyFileToBaked outP", showT outP]
     let fromfile = doughP </> makeRelativeP bakedP outP
     when (inform debug) $
         liftIO $

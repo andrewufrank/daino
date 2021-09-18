@@ -131,7 +131,7 @@ getOneIndexEntryPure indexEntry1 =
           then s2t . takeBaseName'   .  ixfn $ indexEntry1
           else title indexEntry1,
       author2 = author indexEntry1,
-      date2 = showT $ date indexEntry1,
+      date2 = date indexEntry1,
       publish2 = shownice $ publish indexEntry1
     --   indexPage2 = indexPage indexEntry1
     }
