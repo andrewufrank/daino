@@ -11,6 +11,7 @@
 --  . 
 --  the data is stored in a file separately and managed by Shake
 --  operates on metapage (or less? )
+-- this could all be pure code?
 ----------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
@@ -34,6 +35,7 @@ convertIndexEntries :: NoticeLevel ->  Text -> IndexEntry -> ErrIO MenuEntry
 -- form and push them back into the json
 -- converts to values for printing if indexpage else null
 -- date today is passed to feed in pages 
+-- is pure except for today!
 convertIndexEntries debug indexSortField  ixe1 =
   do
     when (inform debug) $ putIOwords ["convertIndexEntries", "start ixe1", showT ixe1]
@@ -76,21 +78,6 @@ indexFilter :: [IndexEntry] -> [IndexEntry]
 indexFilter ixs = ixs -- filter ((Just "true" ==) . publish ) ixs
     -- does not work because publish is not set
 
---         [a]
---           ++ ( if null c
---                  then zero
---                  else zero {title2 = "--- list of subdirectories here ---"} : c
---              )
---           ++ ( if null b
---                  then zero
---                  else zero {title2 = "--- list of files ---"} : b
---              )
---     ,  today2 = zero 
---     }
---   where
---     a = getOneIndexEntryPure this
---     b = map map getOneIndexEntryPure subixt -- braucht wohl filter
---     c = map getOneIndexEntryPure subix
 
 -- | the lines for the index 
 -- TODO make a variant for the breaing marks
