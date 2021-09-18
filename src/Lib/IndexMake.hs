@@ -61,8 +61,8 @@ convert2index :: Text ->
   MenuEntry
 convert2index indexSortField (this, fils, dirs) =
     MenuEntry
-        { menu2subdir = sortOn sortField $ getIndexEntryPure dirs
-        , menu2files  = sortOn sortField $ getIndexEntryPure fils
+        { menu2subdir = sortOn sortField . getIndexEntryPure $ dirs
+        , menu2files  = sortOn sortField . getIndexEntryPure . indexFilter $ fils
         , today2 = zero -- is set above
         }
  where 
@@ -72,7 +72,9 @@ convert2index indexSortField (this, fils, dirs) =
         _ -> date2   -- as a default
         -- how to deal with reverse sorts??
 
-    -- TODO add a return?
+indexFilter :: [IndexEntry] -> [IndexEntry]
+indexFilter ixs = ixs -- filter ((Just "true" ==) . publish ) ixs
+    -- does not work because publish is not set
 
 --         [a]
 --           ++ ( if null c
