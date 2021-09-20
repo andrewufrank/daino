@@ -157,6 +157,8 @@ shakeMD debug layout flags themeP doughP bakedP = shakeArgs2 bakedP $ do
         needP imgs2
         publist <- getNeeds debug doughP bakedP "html" "html"
         needP publist
+        pdfs <- getNeeds debug doughP bakedP "pdf" "pdf"
+        needP pdfs
 
 
     (toFilePath bakedP <> "**/*.html") %> \out -> -- from Panrep
@@ -214,7 +216,16 @@ shakeMD debug layout flags themeP doughP bakedP = shakeArgs2 bakedP $ do
             -- was ein jpg will ?
             -- TODO improve error from lualatex
             -- when (informAll debug) $ putIOwords ["rule **/*.pdf need", showT imgs, showT imgs2]
-            convertAny debug bakedP bakedP flags layout out convTex2pdf "convTex2pdf"
+
+            let outP = makeAbsFile out :: Path Abs File
+            let fromfile = doughP </> makeRelativeP bakedP outP
+            fileExists <- io2bool $ doesFileExist' fromfile
+            when (True) $ putIOwords ["fileExist:", showT fileExists]
+            
+            if fileExists 
+                then copyFileToBaked debug doughP bakedP out
+                else             
+                    convertAny debug bakedP bakedP flags layout out convTex2pdf "convTex2pdf"
 
     (toFilePath bakedP <> "**/*.tex") %> \out -> -- insert pdfFIles1
         convertAny debug bakedP bakedP flags layout out convTexsnip2tex "convTexsnip2tex"
