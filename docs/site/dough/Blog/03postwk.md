@@ -3,18 +3,22 @@ title: 03postwk title postwk with image
 author: AUF
 date: Jan. 4, 2019
 keywords: test
-abstract: 03postwk abstract A silly text not needing an abstract.
+abstract: 03postwk abstract  
 # pageTemplate: page3.yaml
 ---
 
-03postwk text without a hl Some text without meaning; really? with an image 
+03postwk text without a hl 
 
-![first picture ]( /home/frank/Workspace11/ssg/docs/site/dough/resources/img/120-2026_IMG.JPG  "Logo Title Text 1")
+Some text without meaning; really? with an image 
 
- <!-- ![first picture ]( ../resources/img/120-2026_IMG.JPG  "Logo Title Text 1")  -->
+![first picture ]( /Blog/resources/120-2026_IMG.JPG  "Logo Title Text 1")
+<!-- working ![first picture ]( /Blog/resources/120-2026_IMG.JPG  "Logo Title Text 1") -->
 
-absolute statt relative path "/resources/img/120-2026_IMG.JPG"
-  An example post.  postwk but in blog - not in SubBlog
+absolute statt relative path "/Blog/resources/120-2026_IMG.JPG" when image source is in Blog/resources in dough
+
+An example post. 
+
+postwk but in blog - not in SubBlog
 with some additional text 
 which is always changed  
 
