@@ -1,0 +1,995 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>JabRef references</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript">
+<!--
+// QuickSearch script for JabRef HTML export 
+// Version: 3.0
+//
+// Copyright (c) 2006-2013, Mark Schenk
+//
+// This software is distributed under a Creative Commons Attribution 3.0 License
+// http://creativecommons.org/licenses/by/3.0/
+//
+// Features:
+// - intuitive find-as-you-type searching
+//    ~ case insensitive
+//    ~ ignore diacritics (optional)
+//
+// - search with/without Regular Expressions
+// - match BibTeX key
+// - put BibTeX type in a data-attribute
+
+// Search settings
+var searchAbstract = true;	// search in abstract
+var searchReview = true;	// search in review
+
+var noSquiggles = true; 	// ignore diacritics when searching
+var searchRegExp = false; 	// enable RegExp searches
+
+
+if (window.addEventListener) {
+	window.addEventListener("load",initSearch,false); }
+else if (window.attachEvent) {
+	window.attachEvent("onload", initSearch); }
+
+function initSearch() {
+	// check for quick search table and searchfield
+	if (!document.getElementById('qs_table')||!document.getElementById('quicksearch')) { return; }
+
+	// load all the rows and sort into arrays
+	loadTableData();
+	
+	//find the query field
+	qsfield = document.getElementById('qs_field');
+
+	// previous search term; used for speed optimisation
+	prevSearch = '';
+
+	//find statistics location
+	stats = document.getElementById('stat');
+	setStatistics(-1);
+	
+	// set up preferences
+	initPreferences();
+
+	// shows the searchfield
+	document.getElementById('quicksearch').style.display = 'block';
+	document.getElementById('qs_field').onkeyup = quickSearch;
+}
+
+function loadTableData() {
+	// find table and appropriate rows
+	searchTable = document.getElementById('qs_table');
+	var allRows = searchTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+	// split all rows into entryRows and infoRows (e.g. abstract, review, bibtex)
+	entryRows = new Array(); infoRows = new Array(); absRows = new Array(); revRows = new Array();
+
+	// get data from each row
+	entryRowsData = new Array(); absRowsData = new Array(); revRowsData = new Array(); 
+	
+	BibTeXKeys = new Array();
+	RefTypeKeys = new Array();
+
+	for (var i=0, k=0, j=0; i<allRows.length;i++) {
+		if (allRows[i].className.match(/entry/)) {
+			entryRows[j] = allRows[i];
+			entryRowsData[j] = stripDiacritics(getTextContent(allRows[i]));
+			allRows[i].id ? BibTeXKeys[j] = allRows[i].id : allRows[i].id = 'autokey_'+j;
+			RefTypeKeys[j] = allRows[i].getAttribute('data-reftype');
+			j ++;
+		} else {
+			infoRows[k++] = allRows[i];
+			// check for abstract/review
+			if (allRows[i].className.match(/abstract/)) {
+				absRows.push(allRows[i]);
+				absRowsData[j-1] = stripDiacritics(getTextContent(allRows[i]));
+			} else if (allRows[i].className.match(/review/)) {
+				revRows.push(allRows[i]);
+				revRowsData[j-1] = stripDiacritics(getTextContent(allRows[i]));
+			}
+		}
+	}
+	//number of entries and rows
+	numEntries = entryRows.length;
+	numInfo = infoRows.length;
+	numAbs = absRows.length;
+	numRev = revRows.length;
+}
+
+function quickSearch(){
+	
+	tInput = qsfield;
+
+	if (tInput.value.length == 0) {
+		showAll();
+		setStatistics(-1);
+		qsfield.className = '';
+		return;
+	} else {
+		t = stripDiacritics(tInput.value);
+
+		if(!searchRegExp) { t = escapeRegExp(t); }
+			
+		// only search for valid RegExp
+		try {
+			textRegExp = new RegExp(t,"i");
+			closeAllInfo();
+			qsfield.className = '';
+		}
+			catch(err) {
+			prevSearch = tInput.value;
+			qsfield.className = 'invalidsearch';
+			return;
+		}
+	}
+	
+	// count number of hits
+	var hits = 0;
+
+	// start looping through all entry rows
+	for (var i = 0; cRow = entryRows[i]; i++){
+
+		// only show search the cells if it isn't already hidden OR if the search term is getting shorter, then search all
+		if(cRow.className.indexOf('noshow')==-1 || tInput.value.length <= prevSearch.length){
+			var found = false; 
+
+			if (entryRowsData[i].search(textRegExp) != -1 || BibTeXKeys[i].search(textRegExp) != -1 || RefTypeKeys[i].search(textRegExp) != -1){ 
+				found = true;
+			} else {
+				if(searchAbstract && absRowsData[i]!=undefined) {
+					if (absRowsData[i].search(textRegExp) != -1){ found=true; } 
+				}
+				if(searchReview && revRowsData[i]!=undefined) {
+					if (revRowsData[i].search(textRegExp) != -1){ found=true; } 
+				}
+			}
+			
+			if (found){
+				cRow.className = 'entry show';
+				hits++;
+			} else {
+				cRow.className = 'entry noshow';
+			}
+		}
+	}
+
+	// update statistics
+	setStatistics(hits)
+	
+	// set previous search value
+	prevSearch = tInput.value;
+}
+
+
+// Strip Diacritics from text
+// http://stackoverflow.com/questions/990904/javascript-remove-accents-in-strings
+
+// String containing replacement characters for stripping accents 
+var stripstring = 
+    'AAAAAAACEEEEIIII'+
+    'DNOOOOO.OUUUUY..'+
+    'aaaaaaaceeeeiiii'+
+    'dnooooo.ouuuuy.y'+
+    'AaAaAaCcCcCcCcDd'+
+    'DdEeEeEeEeEeGgGg'+
+    'GgGgHhHhIiIiIiIi'+
+    'IiIiJjKkkLlLlLlL'+
+    'lJlNnNnNnnNnOoOo'+
+    'OoOoRrRrRrSsSsSs'+
+    'SsTtTtTtUuUuUuUu'+
+    'UuUuWwYyYZzZzZz.';
+
+function stripDiacritics(str){
+
+    if(noSquiggles==false){
+        return str;
+    }
+
+    var answer='';
+    for(var i=0;i<str.length;i++){
+        var ch=str[i];
+        var chindex=ch.charCodeAt(0)-192;   // Index of character code in the strip string
+        if(chindex>=0 && chindex<stripstring.length){
+            // Character is within our table, so we can strip the accent...
+            var outch=stripstring.charAt(chindex);
+            // ...unless it was shown as a '.'
+            if(outch!='.')ch=outch;
+        }
+        answer+=ch;
+    }
+    return answer;
+}
+
+// http://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
+// NOTE: must escape every \ in the export code because of the JabRef Export...
+function escapeRegExp(str) {
+  return str.replace(/[-[]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+}
+
+function toggleInfo(articleid,info) {
+
+	var entry = document.getElementById(articleid);
+	var abs = document.getElementById('abs_'+articleid);
+	var rev = document.getElementById('rev_'+articleid);
+	var bib = document.getElementById('bib_'+articleid);
+	
+	if (abs && info == 'abstract') {
+		abs.className.indexOf('noshow') == -1?abs.className = 'abstract noshow':abs.className = 'abstract show';
+	} else if (rev && info == 'review') {
+		rev.className.indexOf('noshow') == -1?rev.className = 'review noshow':rev.className = 'review show';
+	} else if (bib && info == 'bibtex') {
+		bib.className.indexOf('noshow') == -1?bib.className = 'bibtex noshow':bib.className = 'bibtex show';
+	} else { 
+		return;
+	}
+
+	// check if one or the other is available
+	var revshow; var absshow; var bibshow;
+	(abs && abs.className.indexOf('noshow') == -1)? absshow = true: absshow = false;
+	(rev && rev.className.indexOf('noshow') == -1)? revshow = true: revshow = false;	
+	(bib && bib.className.indexOf('noshow') == -1)? bibshow = true: bibshow = false;
+	
+	// highlight original entry
+	if(entry) {
+		if (revshow || absshow || bibshow) {
+		entry.className = 'entry highlight show';
+		} else {
+		entry.className = 'entry show';
+		}
+	}
+	
+	// When there's a combination of abstract/review/bibtex showing, need to add class for correct styling
+	if(absshow) {
+		(revshow||bibshow)?abs.className = 'abstract nextshow':abs.className = 'abstract';
+	} 
+	if (revshow) {
+		bibshow?rev.className = 'review nextshow': rev.className = 'review';
+	}	
+	
+}
+
+function setStatistics (hits) {
+	if(hits < 0) { hits=numEntries; }
+	if(stats) { stats.firstChild.data = hits + '/' + numEntries}
+}
+
+function getTextContent(node) {
+	// Function written by Arve Bersvendsen
+	// http://www.virtuelvis.com
+	
+	if (node.nodeType == 3) {
+	return node.nodeValue;
+	} // text node
+	if (node.nodeType == 1 && node.className != "infolinks") { // element node
+	var text = [];
+	for (var chld = node.firstChild;chld;chld=chld.nextSibling) {
+		text.push(getTextContent(chld));
+	}
+	return text.join("");
+	} return ""; // some other node, won't contain text nodes.
+}
+
+function showAll(){
+	closeAllInfo();
+	for (var i = 0; i < numEntries; i++){ entryRows[i].className = 'entry show'; }
+}
+
+function closeAllInfo(){
+	for (var i=0; i < numInfo; i++){
+		if (infoRows[i].className.indexOf('noshow') ==-1) {
+			infoRows[i].className = infoRows[i].className + ' noshow';
+		}
+	}
+}
+
+function clearQS() {
+	qsfield.value = '';
+	showAll();
+}
+
+function redoQS(){
+	showAll();
+	quickSearch(qsfield);
+}
+
+function updateSetting(obj){
+	var option = obj.id;
+	var checked = obj.value;
+
+	switch(option)
+	 {
+	 case "opt_searchAbs":
+	   searchAbstract=!searchAbstract;
+	   redoQS();
+	   break;
+	 case "opt_searchRev":
+	   searchReview=!searchReview;
+	   redoQS();
+	   break;
+	 case "opt_useRegExp":
+	   searchRegExp=!searchRegExp;
+	   redoQS();
+	   break;
+	 case "opt_noAccents":
+	   noSquiggles=!noSquiggles;
+	   loadTableData();
+	   redoQS();
+	   break;
+	 }
+}
+
+function initPreferences(){
+	if(searchAbstract){document.getElementById("opt_searchAbs").checked = true;}
+	if(searchReview){document.getElementById("opt_searchRev").checked = true;}
+	if(noSquiggles){document.getElementById("opt_noAccents").checked = true;}
+	if(searchRegExp){document.getElementById("opt_useRegExp").checked = true;}
+	
+	if(numAbs==0) {document.getElementById("opt_searchAbs").parentNode.style.display = 'none';}
+	if(numRev==0) {document.getElementById("opt_searchRev").parentNode.style.display = 'none';}	
+}
+
+function toggleSettings(){
+	var togglebutton = document.getElementById('showsettings');
+	var settings = document.getElementById('settings');
+	
+	if(settings.className == "hidden"){
+		settings.className = "show";
+		togglebutton.innerText = "close settings";
+		togglebutton.textContent = "close settings";
+	}else{
+		settings.className = "hidden";
+		togglebutton.innerText = "settings...";		
+		togglebutton.textContent = "settings...";
+	}
+}
+
+-->
+</script>
+<style type="text/css">
+body { background-color: white; font-family: Arial, sans-serif; font-size: 13px; line-height: 1.2; padding: 1em; color: #2E2E2E; width: 50em; margin: auto auto; }
+
+form#quicksearch { width: auto; border-style: solid; border-color: gray; border-width: 1px 0px; padding: 0.7em 0.5em; display:none; position:relative; }
+span#searchstat {padding-left: 1em;}
+
+div#settings { margin-top:0.7em; /* border-bottom: 1px transparent solid; background-color: #efefef; border: 1px grey solid; */ }
+div#settings ul {margin: 0; padding: 0; }
+div#settings li {margin: 0; padding: 0 1em 0 0; display: inline; list-style: none; }
+div#settings li + li { border-left: 2px #efefef solid; padding-left: 0.5em;}
+div#settings input { margin-bottom: 0px;}
+
+div#settings.hidden {display:none;}
+
+#showsettings { border: 1px grey solid; padding: 0 0.5em; float:right; line-height: 1.6em; text-align: right; }
+#showsettings:hover { cursor: pointer; }
+
+.invalidsearch { background-color: red; }
+input[type="button"] { background-color: #efefef; border: 1px #2E2E2E solid;}
+
+table { border: 1px gray none; width: 100%; empty-cells: show; border-spacing: 0em 0.1em; margin: 1em 0em; }
+th, td { border: none; padding: 0.5em; vertical-align: top; text-align: justify; }
+
+td a { color: navy; text-decoration: none; }
+td a:hover  { text-decoration: underline; }
+
+tr.noshow { display: none;}
+tr.highlight td { background-color: #EFEFEF; border-top: 2px #2E2E2E solid; font-weight: bold; }
+tr.abstract td, tr.review td, tr.bibtex td { background-color: #EFEFEF; text-align: justify; border-bottom: 2px #2E2E2E solid; }
+tr.nextshow td { border-bottom-style: none; }
+
+tr.bibtex pre { width: 100%; overflow: auto; white-space: pre-wrap;}
+p.infolinks { margin: 0.3em 0em 0em 0em; padding: 0px; }
+
+@media print {
+	p.infolinks, #qs_settings, #quicksearch, t.bibtex { display: none !important; }
+	tr { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<form action="" id="quicksearch">
+<input type="text" id="qs_field" autocomplete="off" placeholder="Type to search..." /> <input type="button" onclick="clearQS()" value="clear" />
+<span id="searchstat">Matching entries: <span id="stat">0</span></span>
+<div id="showsettings" onclick="toggleSettings()">settings...</div>
+<div id="settings" class="hidden">
+<ul>
+<li><input type="checkbox" class="search_setting" id="opt_searchAbs" onchange="updateSetting(this)"><label for="opt_searchAbs"> include abstract</label></li>
+<li><input type="checkbox" class="search_setting" id="opt_searchRev" onchange="updateSetting(this)"><label for="opt_searchRev"> include review</label></li>
+<li><input type="checkbox" class="search_setting" id="opt_useRegExp" onchange="updateSetting(this)"><label for="opt_useRegExp"> use RegExp</label></li>
+<li><input type="checkbox" class="search_setting" id="opt_noAccents" onchange="updateSetting(this)"><label for="opt_noAccents"> ignore accents</label></li>
+</ul>
+</div>
+</form>
+<table id="qs_table" border="1">
+<tbody>
+<tr id="navratil08:93[TUW-173871]" data-reftype="Article" class="entry">
+	<td>
+Navratil G and Frank AU (2008), <i>"Expropriation in the Simple Cadastre"</i>, Nordic Journal of Surveying and Real Estate Research.  Vol. 3(3), pp. 93-101.
+
+  <p class="infolinks">
+[<a href="javascript:toggleInfo('navratil08:93[TUW-173871]','abstract')">Abstract</a>]
+ [<a href="javascript:toggleInfo('navratil08:93[TUW-173871]','bibtex')">BibTeX</a>]
+
+ [<a href="http://publik.tuwien.ac.at/files/PubDat_173871.pdf" target="_blank">URL</a>]
+[<a href="docs/after2010/PubDat_173871.pdf" target="_blank">PDF</a>]
+
+	</p>
+	</td>
+</tr>
+<tr id="abs_navratil08:93[TUW-173871]" class="abstract noshow">
+	<td><b>Abstract</b>: In this paper we investigate the necessary interaction between expropriation and the cadastre. We investigate first the role of expropriation in modern society and the stake holders and then analyze the interaction with land registration and cadastre. The ''simple cadastre'' framework allows a treatment independent of national particulars. A simple cadastre is a minimal model that satisfies the needs of the users of the cadastre and abstracts from non-essential aspects, any national legislation is full of. In this paper we investigate how a cadastre supports expropriation and what the necessary interface is. We conclude that the expropriation procedures need access to registration data and a process to register a transfer of ownership effectuated by a court judgment, but no special arrangements that would only serve expropriation procedures.</td>
+</tr>
+
+
+<tr id="bib_navratil08:93[TUW-173871]" class="bibtex noshow">
+<td><b>BibTeX</b>:
+<pre>
+@article{navratil08:93[TUW-173871],
+
+  author = {Navratil, Gerhard and Frank, Andrew U.},
+  title = {Expropriation in the Simple Cadastre},
+  journal = {Nordic Journal of Surveying and Real Estate Research},
+  year = {2008},
+  volume = {3},
+  number = {3},
+  pages = {93--101},
+  url = {http://publik.tuwien.ac.at/files/PubDat_173871.pdf},
+  file = {docs/after2010/PubDat_173871.pdf}
+}
+</pre></td>
+</tr>
+<tr id="Frank2007b" data-reftype="InCollection" class="entry">
+	<td>
+Frank AU (2007), <i>"A Case for Simple Laws"</i>, In The Mystery of Capital and the New Philosophy of Social Reality. , pp. 288. Open Court.
+
+  <p class="infolinks">
+[<a href="javascript:toggleInfo('Frank2007b','abstract')">Abstract</a>]
+ [<a href="javascript:toggleInfo('Frank2007b','bibtex')">BibTeX</a>]
+
+ [<a href="http://publik.tuwien.ac.at/files/pub-geo_2009.pdf" target="_blank">URL</a>]
+[<a href="docs/docs3/3863_simple_laws_paper_v10.pdf" target="_blank">PDF</a>]
+
+	</p>
+	</td>
+</tr>
+<tr id="abs_Frank2007b" class="abstract noshow">
+	<td><b>Abstract</b>: I start with de Soto's thesis that the poor of the world would prefer capitalism if they could obtain it at a reasonable price. De Soto points out that poor countries lack the institutions to convert their wealth into working capital. The laws are in place in nearly all countries: there are laws defining ownership in land, land registration, and mortgages. These laws are just notbr>used. Why?br>The laws are in place but that is not enough to allow their usage; multiple cooperating participants are necessary to create capital from valuable assets. When we focus on land, we find that capitalization requires a cooperation of land registration, banking system and courts of law. For effective utilization of the opportunities afforded by the law a general understanding of legal issues is necessary; the legal system must correspond in complexity to general education and specialized legal knowledge available.br>I argue that the concentration on technical issues when advising countries of the third world is misguided; the question is not whether the legal organization is in place, but whether it can be effectively used and at what cost. It seems that some of the legal institutions in the world carry a very high price tag and make them inaccessible to the poor. These institutions create inequality and limit freedom of action which is considered by Amartya Sen as the most important agent to development. The history of European saving and loan cooperatives in the late 18th and first half of the 19th century provide instructive models how to convert wealth into capital. Following these models the creation of capitalization methods should be achieved in the informal sector of the third world.</td>
+</tr>
+
+
+<tr id="bib_Frank2007b" class="bibtex noshow">
+<td><b>BibTeX</b>:
+<pre>
+@incollection{Frank2007b,
+
+  author = {Frank, Andrew U.},
+  editor = {Smith, B. and Ehrlich, Isaac and Mark, D.},
+  title = {A Case for Simple Laws},
+  booktitle = {The Mystery of Capital and the New Philosophy of Social Reality},
+  publisher = {Open Court},
+  year = {2007},
+  pages = {288},
+  url = {http://publik.tuwien.ac.at/files/pub-geo_2009.pdf},
+  file = {docs/docs3/3863_simple_laws_paper_v10.pdf}
+}
+</pre></td>
+</tr>
+<tr id="frank07:73[TUW-120823]" data-reftype="Article" class="entry">
+	<td>
+Frank AU (2007), <i>"Cadastre and Capital"</i>, GIM International.  Vol. September, pp. 73.
+
+  <p class="infolinks">
+
+ [<a href="javascript:toggleInfo('frank07:73[TUW-120823]','bibtex')">BibTeX</a>]
+
+
+
+
+	</p>
+	</td>
+</tr>
+
+
+<tr id="bib_frank07:73[TUW-120823]" class="bibtex noshow">
+<td><b>BibTeX</b>:
+<pre>
+@article{frank07:73[TUW-120823],
+
+  author = {Frank, Andrew U.},
+  title = {Cadastre and Capital},
+  journal = {GIM International},
+  year = {2007},
+  volume = {September},
+  pages = {73}
+}
+</pre></td>
+</tr>
+<tr id="navratil07" data-reftype="InCollection" class="entry">
+	<td>
+Navratil G and Frank AU (2007), <i>"Hierarchies in Subdivision Processes"</i>, In Real Property Transactions Procedures, Transaction Costs and Models. Amsterdam, Niederlande , pp. 221-240. IOS Press.
+
+  <p class="infolinks">
+
+ [<a href="javascript:toggleInfo('navratil07','bibtex')">BibTeX</a>]
+
+
+[<a href="docs/docs4/4122_10HierarchiesNavratilFrankV2_corrected.pdf" target="_blank">PDF</a>]
+
+	</p>
+	</td>
+</tr>
+
+
+<tr id="bib_navratil07" class="bibtex noshow">
+<td><b>BibTeX</b>:
+<pre>
+@incollection{navratil07,
+
+  author = {Navratil, Gerhard and Frank, Andrew U.},
+  editor = {Zevenbergen, Jaap and Frank, Andrew U. and Stubkj&aelig;r, Erik},
+  title = {Hierarchies in Subdivision Processes},
+  booktitle = {Real Property Transactions Procedures, Transaction Costs and Models},
+  publisher = {IOS Press},
+  year = {2007},
+  pages = {221--240},
+  file = {docs/docs4/4122_10HierarchiesNavratilFrankV2_corrected.pdf}
+}
+</pre></td>
+</tr>
+<tr id="stubkjær07" data-reftype="InCollection" class="entry">
+	<td>
+Stubkj&aelig;r E, Frank AU and Zevenbergen J (2007), <i>"Modelling Real Property Transactions - An Overview"</i>, In Real Property Transactions Procedures, Transaction Costs and Models. Amsterdam, Niederlande , pp. 3-26. IOS Press.
+
+  <p class="infolinks">
+
+ [<a href="javascript:toggleInfo('stubkjær07','bibtex')">BibTeX</a>]
+
+
+[<a href="docs/docs4/4249_Introduction G9book Stubkjaer Frank Zev _8_.pdf" target="_blank">PDF</a>]
+
+	</p>
+	</td>
+</tr>
+
+
+<tr id="bib_stubkjær07" class="bibtex noshow">
+<td><b>BibTeX</b>:
+<pre>
+@incollection{stubkjær07,
+
+  author = {Stubkj&aelig;r, Erik and Frank, Andrew U. and Zevenbergen, Jaap},
+  editor = {Zevenbergen, Jaap and Frank, Andrew U. and Stubkj&aelig;r, Erik},
+  title = {Modelling Real Property Transactions - An Overview},
+  booktitle = {Real Property Transactions Procedures, Transaction Costs and Models},
+  publisher = {IOS Press},
+  year = {2007},
+  pages = {3--26},
+  file = {docs/docs4/4249_Introduction G9book Stubkjaer Frank Zev _8_.pdf}
+}
+</pre></td>
+</tr>
+<tr id="zevenbergen07[TUW-121069]" data-reftype="Book" class="entry">
+	<td>
+ (2007), <i>"Real Property Transactions Procedures, Transaction Costs and Models"</i> Amsterdam, Niederlande  IOS Press.
+
+  <p class="infolinks">
+
+ [<a href="javascript:toggleInfo('zevenbergen07[TUW-121069]','bibtex')">BibTeX</a>]
+
+
+
+
+	</p>
+	</td>
+</tr>
+
+
+<tr id="bib_zevenbergen07[TUW-121069]" class="bibtex noshow">
+<td><b>BibTeX</b>:
+<pre>
+@book{zevenbergen07[TUW-121069],
+,
+  editor = {Zevenbergen, Jaap and Frank, Andrew U. and Stubkj&aelig;r, Erik},
+  title = {Real Property Transactions Procedures, Transaction Costs and Models},
+  publisher = {IOS Press},
+  year = {2007}
+}
+</pre></td>
+</tr>
+<tr id="frank4274" data-reftype="Article" class="entry">
+	<td>
+Frank AU (2007), <i>"The Importance of the Cadastre for Capital Formation: Is It the Same Everywhere?"</i>, GIM International. 
+
+  <p class="infolinks">
+
+ [<a href="javascript:toggleInfo('frank4274','bibtex')">BibTeX</a>]
+
+ [<a href="https://www.gim-international.com/content/article/cadastre-and-capital" target="_blank">URL</a>]
+[<a href="docs/docs4/4274Capital FormationGIMV7.pdf" target="_blank">PDF</a>]
+
+	</p>
+	</td>
+</tr>
+
+
+<tr id="bib_frank4274" class="bibtex noshow">
+<td><b>BibTeX</b>:
+<pre>
+@article{frank4274,
+
+  author = {Andrew U. Frank},
+  title = {The Importance of the Cadastre for Capital Formation: Is It the Same Everywhere?},
+  journal = {GIM International},
+  year = {2007},
+  url = {https://www.gim-international.com/content/article/cadastre-and-capital},
+  file = {docs/docs4/4274Capital FormationGIMV7.pdf}
+}
+</pre></td>
+</tr>
+<tr id="frank06:1[TUW-120368]" data-reftype="InProceedings" class="entry">
+	<td>
+Frank AU (2006), <i>"Compairing European Cadastres Methodological Questions"</i>, In Standardization in the Cadastral Domain Proceedings. Frederiksberg, Denmark , pp. 1-14. The International Federation of Surveyors.
+
+  <p class="infolinks">
+
+ [<a href="javascript:toggleInfo('frank06:1[TUW-120368]','bibtex')">BibTeX</a>]
+
+
+[<a href="docs/docsA/comparingeuropeancadastresv7bamberg31.pdf" target="_blank">PDF</a>]
+[<a href=" docs/docs_afxxx/afwscostacg904.pdf" target="_blank">PDF</a>]
+	</p>
+	</td>
+</tr>
+
+
+<tr id="bib_frank06:1[TUW-120368]" class="bibtex noshow">
+<td><b>BibTeX</b>:
+<pre>
+@inproceedings{frank06:1[TUW-120368],
+
+  author = {Frank, Andrew U.},
+  editor = {van Oosterom, Peter and Schlieder, Christop and Zevenbergen, Jaap and He&szlig;, Claudia and Lemmen, Christiaan and Fendel, Elfriede},
+  title = {Compairing European Cadastres Methodological Questions},
+  booktitle = {Standardization in the Cadastral Domain Proceedings},
+  publisher = {The International Federation of Surveyors},
+  year = {2006},
+  pages = {1--14},
+  file = {docs/docsA/comparingeuropeancadastresv7bamberg31.pdf},
+  file2 = { docs/docs_afxxx/afwscostacg904.pdf}
+}
+</pre></td>
+</tr>
+<tr id="Navratil2004c" data-reftype="Article" class="entry">
+	<td>
+Navratil G and Frank AU (2004), <i>"Processes in a Cadastre"</i>, International Journal on Computers, Environment and Urban Systems.  Vol. 28(5), pp. 471-486.
+
+  <p class="infolinks">
+[<a href="javascript:toggleInfo('Navratil2004c','abstract')">Abstract</a>]
+ [<a href="javascript:toggleInfo('Navratil2004c','bibtex')">BibTeX</a>]
+
+
+[<a href="docs/docsH/navratilfrank02.pdf" target="_blank">PDF</a>]
+[<a href=" docs/docsA/gnaufprocess04.pdf" target="_blank">PDF</a>]
+	</p>
+	</td>
+</tr>
+<tr id="abs_Navratil2004c" class="abstract noshow">
+	<td><b>Abstract</b>: A cadastre is a system of major importance for economy and planning. A cadastre<br>provides data on land. It is the basis for legal aspects like ownership as well as fiscal<br>aspects like taxation of land. The cadastre also provides data for planning assignments<br>(for example, boundaries of constructions, land use, and soil). Storage and update of<br>these data require a complex system that had been developed in Austria during more<br>than 100 years.<br>Understanding, using, and improving a cadastre requires knowledge on the cadastral<br>processes. The problems a cadastre must solve are important to understand the needs<br>for a cadastre. It is also important to understand the processes of a cadastre to see how<br>a cadastre works. These processes define the way a cadastre handles data and what<br>prerequisites the data must fulfil to be accepted by the cadastre. Improving a system<br>requires analysis of the processes. The user wants to work with a cadastre. He needs<br>processes that meet his demands. Improving the efficiency of the processes, therefore,<br>improves the efficiency of the cadastre directly because then the user will be satisfied<br>(his work will be done better or faster).<br>The paper discusses the tasks of a cadastre. The starting point is the needs of users<br>(owners, government and many others). The needs define the tasks and the data<br>needed to fulfil the tasks. The next step is the definition of the processes to fulfil the<br>tasks. The paper then formalizes these processes. Finally, implementations for two<br>different cadastral systems prove the general validity of the processes.</td>
+</tr>
+
+
+<tr id="bib_Navratil2004c" class="bibtex noshow">
+<td><b>BibTeX</b>:
+<pre>
+@article{Navratil2004c,
+
+  author = {Navratil, Gerhard and Frank, Andrew U.},
+  title = {Processes in a Cadastre},
+  journal = {International Journal on Computers, Environment and Urban Systems},
+  year = {2004},
+  volume = {28},
+  number = {5},
+  pages = {471--486},
+  file = {docs/docsH/navratilfrank02.pdf},
+  file2 = { docs/docsA/gnaufprocess04.pdf}
+}
+</pre></td>
+</tr>
+<tr id="BEV2003" data-reftype="TechReport" class="entry">
+	<td>
+Frank AU and Martinez-Asenjo B (2003), <i>"the surveying activities at the Austrian Federal Office for Metrology and Surveying BEV: an economic analysis"</i>. Thesis at: Geoinformatin, TU WIen. 
+
+  <p class="infolinks">
+[<a href="javascript:toggleInfo('BEV2003','abstract')">Abstract</a>]
+ [<a href="javascript:toggleInfo('BEV2003','bibtex')">BibTeX</a>]
+
+
+[<a href="docs/docsA/frank_BEV_studie_vwl2003_3482.pdf" target="_blank">PDF</a>]
+
+	</p>
+	</td>
+</tr>
+<tr id="abs_BEV2003" class="abstract noshow">
+	<td><b>Abstract</b>: This study analyzes the surveying activities followed by the Austrian Federal Office for<br>Metrology and Surveying (BEV). The BEV, a subordinate agency of the Austrian Federal<br>Ministry of Economics and Labour, accomplishes two main categories of activities within<br>the surveying area. One activity is concerned with the Fiscal Cadastre, which deals with the<br>storage and administration of parcel boundaries at the national level and maintenance at the<br>regional level. The second activity is the Topographic and Mapping Survey, which deals<br>with the production and maintenance of topographic data with national coverage.<br>The study concludes that the Austrian Cadastre, namely the fiscal and ownership<br>cadastre, is cost effective. The contributions of the users to the maintenance of the cadastre,<br>via property and transfer tax, fees for registration of ownership change and mortgage, and<br>revenues from cadastral data sale, seem to be adequate according to the nature and purpose<br>of the cadastral system, i.e. the security and protection of the land owners’ property rights.<br>The Topographic Survey covers broader and diverse data needs, from the public to the<br>private sector, having defence a central role in the production of topographic data. The free<br>access to topographic data seems to be appropriate, given that 75% of the users belong to the<br>public sector. Additionally, topographic data access can contribute to the economic growth<br>in terms of job creation, business opportunities, R&amp;D growth, etc. The biggest impact of this<br>recommended change will be at the level of the SME and the citizens, ending up with the<br>confinement of these data to big business and government. This method of making public<br>data available free of charge is believed to have contributed in the U.S. at the beginning of<br>the 90s to the growth of the American economy, which has affected, in last instance, the tax<br>revenues.</td>
+</tr>
+
+
+<tr id="bib_BEV2003" class="bibtex noshow">
+<td><b>BibTeX</b>:
+<pre>
+@techreport{BEV2003,
+
+  author = {Andrew U. Frank and Belen Martinez-Asenjo},
+  title = {the surveying activities at the Austrian Federal Office for Metrology and Surveying BEV: an economic analysis},
+  school = {Geoinformatin, TU WIen},
+  year = {2003},
+  file = {docs/docsA/frank_BEV_studie_vwl2003_3482.pdf}
+}
+</pre></td>
+</tr>
+<tr id="frank2001spatial" data-reftype="InProceedings" class="entry">
+	<td>
+Frank AU, Bittner S and Raubal M (2001), <i>"Spatial and cognitive simulation with multi-agent systems"</i>, In international conference on spatial information theory. , pp. 124-139.
+
+  <p class="infolinks">
+[<a href="javascript:toggleInfo('frank2001spatial','abstract')">Abstract</a>]
+ [<a href="javascript:toggleInfo('frank2001spatial','bibtex')">BibTeX</a>]
+
+
+[<a href="docs/docs_afxxx/af-cosit01-CognizingAgents.pdf" target="_blank">PDF</a>]
+
+	</p>
+	</td>
+</tr>
+<tr id="abs_frank2001spatial" class="abstract noshow">
+	<td><b>Abstract</b>: The simulation of human behavior in space is an extremely<br>interesting and powerful research method to advance our understanding of<br>human spatial cognition and the interaction of human beings with the<br>environment. Multi-agent systems are an emerging computing paradigm for the<br>construction of such simulations. During the last two years, we have used multi-<br>agent simulations for three different investigations of spatial and cognitive<br>questions:<br>- use of signage in airports to guide travelers to the gate,<br>- communication with maps,<br>- linkage between physical reality and the cadastral (legal) system.<br>In this paper we will report on these efforts. We first discuss the concept of<br>multi-agent systems and explain the special type of multi-agent system used for<br>simulation of cognitive and spatial situations. The following three sections each<br>review one of the three simulations we have constructed. The last section<br>identifies the similarities in these approaches and lists questions we hope to<br>investigate in the future with this method.</td>
+</tr>
+
+
+<tr id="bib_frank2001spatial" class="bibtex noshow">
+<td><b>BibTeX</b>:
+<pre>
+@inproceedings{frank2001spatial,
+
+  author = {Frank, Andrew U and Bittner, Steffen and Raubal, Martin},
+  title = {Spatial and cognitive simulation with multi-agent systems},
+  booktitle = {international conference on spatial information theory},
+  year = {2001},
+  pages = {124--139},
+  file = {docs/docs_afxxx/af-cosit01-CognizingAgents.pdf}
+}
+</pre></td>
+</tr>
+<tr id="Frank1996c" data-reftype="InProceedings" class="entry">
+	<td>
+Frank AU (1996), <i>"An Object-Oriented, Formal Approach to the Design of Cadastral Systems"</i>, In 7th Int. Symposium on Spatial Data Handling, SDH'96.  Vol. 1, pp. 5A.19-5A.35. IGU.
+
+  <p class="infolinks">
+[<a href="javascript:toggleInfo('Frank1996c','abstract')">Abstract</a>]
+ [<a href="javascript:toggleInfo('Frank1996c','bibtex')">BibTeX</a>]
+
+
+[<a href="docs/docsA/cadastral_af.pdf" target="_blank">PDF</a>]
+
+	</p>
+	</td>
+</tr>
+<tr id="abs_Frank1996c" class="abstract noshow">
+	<td><b>Abstract</b>: Modeling GIS or applications of GIS with object-oriented tools is difficult for the practitioners. There are numerous<br>issues involved, from technical to conceptual. In this case study the deed registration system is studied using formal,<br>object-oriented tools. The level of formalism reveals particular properties of ‘administrative logic’, which is less<br>strict than the standard assumptions for database query processing.<br>The deed registration system used in the USA and the property registration system in Europe appear as different<br>solutions to a similar problem. How much do they have in common? A formal modeling approach will demonstrate<br>the functional similarities, due to the similar social demands, and the differences owing to different historic<br>developments. The approach taken here starts from the most fundamental operations of a property registration<br>system.<br>It is found that the models are comparable and the rules are fundamentally similar. The checks for a valid<br>transfer of ownership are quite similar (but differ in detail even within the USA), but the time of checking is<br>different. A Continental title registration system checks documents when they are received, whereas the US<br>counterpart registers first without checking and only later the validity is checked by a prospective buyer's lawyer.<br>Several results from this study can be generalized to other administrative GIS applications:<br>- The question of identity plays a primary role and several types of ‘identities’ may be hierarchically nested.<br>- Administrative rules are less strict than database logic on what constitutes an entity or an identifier (the<br>‘unique name assumption’ is maintained only within a context)..<br>- Administrative time for a registry is a simple ordered scale.<br>These results are of practical importance for the design of GIS software which includes a ‘land ownership layer’ and<br>should be applied in countries with different property registration systems. It shows the designers of property<br>registration software, what can be built into a general, widely usable system and where a system must leave scope to<br>adapt to local rules.<br>The study was motivated by efforts to design a property registration system for a reform country. In this<br>situation, one has to understand how social demands and legal rules relate to the technical solution. To design formal<br>models is the best way to achieve this.</td>
+</tr>
+
+
+<tr id="bib_Frank1996c" class="bibtex noshow">
+<td><b>BibTeX</b>:
+<pre>
+@inproceedings{Frank1996c,
+
+  author = {Frank, A. U.},
+  editor = {Kraak, M. J. and Molenaar, M.},
+  title = {An Object-Oriented, Formal Approach to the Design of Cadastral Systems},
+  booktitle = {7th Int. Symposium on Spatial Data Handling, SDH'96},
+  publisher = {IGU},
+  year = {1996},
+  volume = {1},
+  pages = {5A.19--5A.35},
+  file = {docs/docsA/cadastral_af.pdf}
+}
+</pre></td>
+</tr>
+<tr id="Frank1996g" data-reftype="InProceedings" class="entry">
+	<td>
+Frank AU (1996), <i>"Radial Categories Applied to Object-Oriented Modeling - A Case Study for a Property Registration System"</i>, In 1st Int. Conference on Geographic Information Systems in Urban, Environmental and Regional Planning. 
+
+  <p class="infolinks">
+[<a href="javascript:toggleInfo('Frank1996g','abstract')">Abstract</a>]
+ [<a href="javascript:toggleInfo('Frank1996g','bibtex')">BibTeX</a>]
+
+
+[<a href="docs/docsH/radial_af.pdf" target="_blank">PDF</a>]
+[<a href=" docs/docs1/2316_samos_radialcategories.pdf" target="_blank">PDF</a>]
+	</p>
+	</td>
+</tr>
+<tr id="abs_Frank1996g" class="abstract noshow">
+	<td><b>Abstract</b>: Design of GIS applications must model current systems, including their administrative and legal<br>aspects. The standard concentration on the static data structure in GIS — as captured with database<br>design tools — is insufficient and an object-oriented approach is necessary to include the operations<br>carried out. The combination of operations and data structure in a modeling tool is crucial to properly<br>capture complex administrative or legal processing of documents, including the temporal aspects. This<br>is clearly visible in the application selected here, namely real estate property registration, where one<br>cannot succeed without modeling space and time.<br>Object-Oriented Modeling is the widely acclaimed method in software engineering. It is used for<br>design and programming, but did not reduce the software crisis. The theory of object-orientation is<br>simple, but the application to practical cases points to more difficulties than expected. The primary<br>concept of object-orientation corresponds well with cognitive principles, but the details of practical<br>object-oriented languages add confusion.<br>The non-trivial case study is used here to point out the issues and to propose an approach which is<br>in line with human cognition. First the object-oriented concepts are revisited in the context of a class<br>based functional programming language. It stresses the separation of behavior from implementation<br>inheritance and allows design and rapid prototyping in the same language.<br>Human cognition uses radial categories with a central prototype. This is used to start the design of<br>the property registry. Several refinement steps are then applied. This approach and the set of tools used<br>allows to separate the code of refinement steps and result in very compact, formally checked code.</td>
+</tr>
+
+
+<tr id="bib_Frank1996g" class="bibtex noshow">
+<td><b>BibTeX</b>:
+<pre>
+@inproceedings{Frank1996g,
+
+  author = {Frank, A. U.},
+  title = {Radial Categories Applied to Object-Oriented Modeling - A Case Study for a Property Registration System},
+  booktitle = {1st Int. Conference on Geographic Information Systems in Urban, Environmental and Regional Planning},
+  year = {1996},
+  file = {docs/docsH/radial_af.pdf},
+  file2 = { docs/docs1/2316_samos_radialcategories.pdf}
+}
+</pre></td>
+</tr>
+<tr id="Buyong91geodetskiList" data-reftype="Article" class="entry">
+	<td>
+Buyong TB, Kuhn W and Frank AU (1995), <i>"Konceptcijski Model Visenamjenskog Katastrarskog sustava zasnovanog na mjerentjima"</i>, Geodetski list.  Vol. 72(4), pp. 271 - 364.
+
+  <p class="infolinks">
+
+ [<a href="javascript:toggleInfo('Buyong91geodetskiList','bibtex')">BibTeX</a>]
+
+
+[<a href="docs/docsS/tbwkafkoncepci95.pdf" target="_blank">PDF</a>]
+
+	</p>
+	</td>
+</tr>
+
+
+<tr id="bib_Buyong91geodetskiList" class="bibtex noshow">
+<td><b>BibTeX</b>:
+<pre>
+@article{Buyong91geodetskiList,
+
+  author = {Taher B. Buyong and Werner Kuhn and Andew U. Frank},
+  title = {Konceptcijski Model Visenamjenskog Katastrarskog sustava zasnovanog na mjerentjima},
+  journal = {Geodetski list},
+  year = {1995},
+  volume = {72},
+  number = {4},
+  pages = {271 -- 364},
+  file = {docs/docsS/tbwkafkoncepci95.pdf}
+}
+</pre></td>
+</tr>
+<tr id="altaha92" data-reftype="Unpublished" class="entry">
+	<td>
+Al-Taha K and Frank AU (1992), <i>"The role of knowlegde representation in cadastre - Extended Abstract"</i> 
+
+  <p class="infolinks">
+
+ [<a href="javascript:toggleInfo('altaha92','bibtex')">BibTeX</a>]
+
+
+[<a href="docs/docs_afxxx/afkatcad.pdf" target="_blank">PDF</a>]
+
+	</p>
+	</td>
+</tr>
+
+
+<tr id="bib_altaha92" class="bibtex noshow">
+<td><b>BibTeX</b>:
+<pre>
+@unpublished{altaha92,
+
+  author = {Khaled Al-Taha and Andrew U. Frank},
+  title = {The role of knowlegde representation in cadastre - Extended Abstract},
+  year = {1992},
+  file = {docs/docs_afxxx/afkatcad.pdf}
+}
+</pre></td>
+</tr>
+<tr id="Buyong1991" data-reftype="Article" class="entry">
+	<td>
+Buyong T, Kuhn W and Frank AU (1991), <i>"A Conceptual Model of Measurement-Based Multipurpose Cadastral Systems"</i>, Journal of the Urban and Regional Information Systems Association (URISA).  Vol. 3(2), pp. 35-49.
+
+  <p class="infolinks">
+
+ [<a href="javascript:toggleInfo('Buyong1991','bibtex')">BibTeX</a>]
+
+
+[<a href="docs/docsS/tbbwkaufcadsys91.pdf" target="_blank">PDF</a>]
+
+	</p>
+	</td>
+</tr>
+
+
+<tr id="bib_Buyong1991" class="bibtex noshow">
+<td><b>BibTeX</b>:
+<pre>
+@article{Buyong1991,
+
+  author = {Buyong, Taher and Kuhn, Werner and Frank, Andrew U.},
+  title = {A Conceptual Model of Measurement-Based Multipurpose Cadastral Systems},
+  journal = {Journal of the Urban and Regional Information Systems Association (URISA)},
+  year = {1991},
+  volume = {3},
+  number = {2},
+  pages = {35--49},
+  file = {docs/docsS/tbbwkaufcadsys91.pdf}
+}
+</pre></td>
+</tr>
+<tr id="Buyong1989" data-reftype="InProceedings" class="entry">
+	<td>
+Buyong T and Frank AU (1989), <i>"Measurement-Based Multipurpose Cadastre"</i>, In ACSM/ASPRS Annual Convention.  Vol. 5, pp. 58-66.
+
+  <p class="infolinks">
+
+ [<a href="javascript:toggleInfo('Buyong1989','bibtex')">BibTeX</a>]
+
+
+[<a href="docs/docsS/tbafmeasurbmc89.pdf" target="_blank">PDF</a>]
+
+	</p>
+	</td>
+</tr>
+
+
+<tr id="bib_Buyong1989" class="bibtex noshow">
+<td><b>BibTeX</b>:
+<pre>
+@inproceedings{Buyong1989,
+
+  author = {Buyong, Taher and Frank, Andrew U.},
+  title = {Measurement-Based Multipurpose Cadastre},
+  booktitle = {ACSM/ASPRS Annual Convention},
+  year = {1989},
+  volume = {5},
+  pages = {58--66},
+  file = {docs/docsS/tbafmeasurbmc89.pdf}
+}
+</pre></td>
+</tr>
+<tr id="Dale1988" data-reftype="Book" class="entry">
+	<td>
+Dale PF and McLaughlin JD (1988), <i>"Land Information Management - An Introduction with Special Reference to Cadastral Problems in Third World Countries"</i>  Oxford University Press.
+
+  <p class="infolinks">
+
+ [<a href="javascript:toggleInfo('Dale1988','bibtex')">BibTeX</a>]
+
+
+[<a href="docs/docs1/2287_sdh96_cadastral.pdf" target="_blank">PDF</a>]
+
+	</p>
+	</td>
+</tr>
+
+
+<tr id="bib_Dale1988" class="bibtex noshow">
+<td><b>BibTeX</b>:
+<pre>
+@book{Dale1988,
+
+  author = {Dale, Peter F. and McLaughlin, John D.},
+  title = {Land Information Management - An Introduction with Special Reference to Cadastral Problems in Third World Countries},
+  publisher = {Oxford University Press},
+  year = {1988},
+  file = {docs/docs1/2287_sdh96_cadastral.pdf}
+}
+</pre></td>
+</tr>
+</tbody>
+</table>
+<footer>
+ <small>Created by <a href="http://jabref.sourceforge.net">JabRef</a> on 08/12/2018.</small>
+</footer>
+<!-- file generated by JabRef -->
+</body>
+</html>
