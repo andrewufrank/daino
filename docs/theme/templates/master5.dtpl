@@ -43,7 +43,6 @@
         $include-before$
         $endfor$
 
-
     <div class="container">
       <section class="hero">
         <div class="hero-image">
@@ -52,15 +51,14 @@
 
             <div class="middle-left"><h1><a href="/index.html">$settings.sitename$</h1></div>
             <div class="bottom-left"><h3>$settings.byline$</h3></div>
-            <div class="bottomzero"> 
-            
+            <div class="bottomzero">           
                 <section class="header">
                     <section class="menu">
-                    <ul>
+                        <ul>
                             $for(menuitems.menuNav)$
-                            <li><a href=/$menuitems.menuNav.navlink$>$menuitems.menuNav.navtext$</a></li>
-                                $endfor$
-                    </ul>
+                                <li><a href=/$menuitems.menuNav.navlink$>$menuitems.menuNav.navtext$</a></li>
+                            $endfor$
+                        </ul>
                     </section>
                 </section>
             </div>       
@@ -93,7 +91,8 @@
 
         $beforeContent$
         $if(abstract)$abstract: $abstract$ 
-        $endif$content-from-panrep-blocks: $content$
+        $endif$
+        <!--content-from-panrep-blocks which is the content of the index.md -->$content$
         $afterContent$
 
         $for(include-after)$

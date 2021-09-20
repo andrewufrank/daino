@@ -76,7 +76,7 @@ instance Default MetaPage where
             { dyFn = zero
             , dyLink = zero
             , dyLang = "en_US" -- DLenglish
-            , dyTitle = "FILL"
+            , dyTitle = "FILL_dytitle"
             , dyAbstract = zero
             , dyAuthor = "Andrew U Frank"
             , dyDate = Just . showT $ year2000
