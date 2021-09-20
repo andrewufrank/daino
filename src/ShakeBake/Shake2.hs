@@ -155,11 +155,23 @@ shakeMD debug layout flags themeP doughP bakedP = shakeArgs2 bakedP $ do
         imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
         needP imgs
         needP imgs2
+        publist <- getNeeds debug doughP bakedP "html" "html"
+        needP publist
+
 
     (toFilePath bakedP <> "**/*.html") %> \out -> -- from Panrep
     -- calls the copy html and the conversion from md
         do
-            when (inform debug) $ putIOwords ["rule **/*.html", showT out]
+            when (True) $ putIOwords ["rule **/*.html", showT out]
+
+            let outP = makeAbsFile out :: Path Abs File
+            let fromfile = doughP </> makeRelativeP bakedP outP
+            fileExists <- io2bool $ doesFileExist' fromfile
+            when (True) $ putIOwords ["fileExist:", showT fileExists]
+            
+            if fileExists 
+                then copyFileToBaked debug doughP bakedP out
+                else 
             -- csss <- getNeeds debug doughP bakedP "css" "css"
             -- needP csss
             -- -- csss seems not necessary
@@ -169,7 +181,7 @@ shakeMD debug layout flags themeP doughP bakedP = shakeArgs2 bakedP $ do
             -- needP imgs2
             -- when (inform debug) $ putIOwords ["rule **/*.html", showT out]
   
-            convertAny debug bakedP bakedP flags layout out convPanrep2html "convPanrep2html"
+                    convertAny debug bakedP bakedP flags layout out convPanrep2html "convPanrep2html"
 
     -- (toFilePath bakedP <> "**/*.html") %> \out -> -- from Panrep
     -- -- calls the copy html and the conversion from md

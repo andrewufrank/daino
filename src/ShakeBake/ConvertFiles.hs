@@ -147,7 +147,7 @@ convertAny debug sourceP targetP flags layout out anyop anyopName = do
     putIOwords ["-----------------", "convertAny for", anyopName]
     let outP = makeAbsFile out :: Path Abs File
     when (inform debug) $ putIOwords ["\nproduceAny", "\n file out", showT out]
-    if sourceP == targetP
+    if sourceP == targetP  -- is this needed?
         then anyop debug sourceP targetP flags layout out
         else do
             let fromfile = sourceP </> makeRelativeP targetP outP
