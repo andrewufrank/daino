@@ -93,32 +93,22 @@ convTex2pdf debug doughP bakedP flags layout out =
 convA2B :: ConvertA2BOp
 -- ^ produce the B files from A
 convA2B debug sourceP targetP flags sett3 out sourceExtA bakeop = do
-    when (inform debug) $ putIOwords ["\n  convA2B   1 new extension, new file\n", showT sourceExtA, showT out]
+    when (True) $ putIOwords ["\n  convA2B   1 new extension, new file\n", showT sourceExtA, showT out]
     let outP = makeAbsFile out :: Path Abs File
 
     let infile1 =
             replaceExtension' (s2t . unExtension $ sourceExtA) outP :: Path Abs File
-    when (inform debug) $ putIOwords ["\n  convA2B   2  needP infile1 ", showT infile1]
-    needP [infile1]
-
     let infile2 = sourceP </> stripProperPrefixP targetP infile1 :: Path Abs File
-    need [toFilePath infile2]
-    when (inform debug) $
+
+    when (True) $
         putIOwords
             ["\n  convA2B - 3 needed infile2", showPretty infile2]
-    when ((inform debug) && (infile1 /= infile2)) $
-        putIOwords
-            [ "\n  convA2B - 3 file differ"
-            , "\n infile1"
-            , showPretty infile1
-            , "\n infile2"
-            , showPretty infile2
-            ]
+    need [toFilePath infile2]
 
     res <-
         runErr2action $
             bakeop debug flags infile2 sett3 outP
-    when (inform debug) $ putIOwords ["\n  convA2B - return 4 file produced", showT res, "file produce out", showPretty outP, "\n"]
+    when (inform debug) $ putIOwords ["\n  convA2B - 5 return file produced", showT res, "file produce out", showPretty outP, "\n"]
     return ()
 
 io2bool :: MonadIO m => ErrIO b -> m b
@@ -143,32 +133,50 @@ convertAny ::
     Text ->
     Action ()
 -- produce any (either copy available in baked or produce with anyop)
-convertAny debug sourceP targetP flags layout out anyop anyopName = do
+convertAny debug sourceP targetP flags layout out anyop2 anyopName = do
     putIOwords ["-----------------", "convertAny for", anyopName]
     let outP = makeAbsFile out :: Path Abs File
-    when (inform debug) $ putIOwords ["\nproduceAny", "\n file out", showT out]
-    if sourceP == targetP  -- is this needed?
-        then anyop debug sourceP targetP flags layout out
-        else do
-            let fromfile = sourceP </> makeRelativeP targetP outP
-            -- needP [fromfile]
-            fileExists <- io2bool $ doesFileExist' fromfile
+    when (True) $ putIOwords ["\nconvertAny 1", "\n file out", showT out]
+    let (anyop, sourceExtA) = case anyopName of 
+            "convMD2docrep" -> (convMD2docrep, extMD)
+            "convDocrep2panrep" -> (convDocrep2panrep, extDocrep)
+            "convPanrep2texsnip" -> (convPanrep2texsnip, extPanrep )
+            "convPanrep2html" -> (convPanrep2html, extPanrep )
+            "convTex2pdf" -> (convTex2pdf, extTex )
+            "convTexsnip2tex" -> (convTexsnip2tex, extTexSnip )
+            _  -> errorT ["convertAny error unknown anyopName ", anyopName]
+
+    let fromfile1 = sourceP </> makeRelativeP targetP outP
+    let fromfile = replaceExtension' (s2t . unExtension $ sourceExtA) fromfile1 
+
+    putIOwords ["\nconvertAny 2", anyopName
+                , "extension" (s2t . unExtension $ sourceExtA)
+                ,  "\n fromfile", showT fromfile  -- fasle ext
+                ,  "\n file out", showT out
+                ] 
+        
+    fileExists <- io2bool $ doesFileExist' fromfile
+    when (inform debug) $
+        putIOwords
+            [ "\nconvertAny - fromfile exist:"
+            , showT fileExists
+            , "\nfile"
+            , showT fromfile
+            ]
+    if fileExists -- gives recursion, if the file is produced in earlier run
+        then do
+            copyFileChangedP fromfile outP
             when (inform debug) $
-                putIOwords
-                    [ "\nconvertAny - fromfile exist:"
-                    , showT fileExists
-                    , "\nfile"
-                    , showT fromfile
-                    ]
-            if fileExists -- gives recursion, if the file is produced in earlier run
-                then do
-                    copyFileChangedP fromfile outP
-                    when (inform debug) $
-                        liftIO $
-                            putIOwords
-                                ["\n convertAny DONE   - staticP - fromfile ", showT fromfile]
-                else anyop debug sourceP targetP flags layout out
-            return ()
+                liftIO $
+                    putIOwords
+                        ["\n convertAny DONE   - staticP - fromfile ", showT fromfile]
+        else do
+            putIOwords ["\nconvertAny call", anyopName
+                ,  "\n fromfile", showT fromfile  -- fasle ext
+                ,  "\n file out", showT out
+                ] 
+            anyop debug sourceP targetP flags layout out
+    return ()
     when (inform debug) $ putIOwords ["convertAny end for", anyopName]
 
 {- | the generic copy for all the files

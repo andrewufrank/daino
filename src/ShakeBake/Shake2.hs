@@ -185,25 +185,6 @@ shakeMD debug layout flags themeP doughP bakedP = shakeArgs2 bakedP $ do
   
                     convertAny debug bakedP bakedP flags layout out convPanrep2html "convPanrep2html"
 
-    -- (toFilePath bakedP <> "**/*.html") %> \out -> -- from Panrep
-    -- -- calls the copy html and the conversion from md
-    --     do
-    --     -- csss <- getNeeds debug doughP bakedP "css" "css"
-    --     -- needP csss
-    --     -- csss seems not necessary
-    --         imgs <- getNeeds debug doughP bakedP "jpg" "jpg"
-    --         imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
-    --         needP imgs
-    --         needP imgs2
-    --         when (inform debug) $ putIOwords ["rule **/*.html", showT out]
-    --         convertAny debug bakedP bakedP flags layout out convPanrep12html "convPanrep12html"
-
-    -- (toFilePath bakedP <> "**/*.panrep1") %> \out -> -- from Panrep
-    -- -- calls the copy html and the conversion from md
-    --     do
-    --         when (inform debug) $ putIOwords ["rule **/*.panrep1", showT out]
-
-    --         convertAny debug bakedP bakedP flags layout out convPanrep2panrep1 "convPanrep2panrep1"
 
     (toFilePath bakedP <> "**/*.pdf") %> \out -> -- insert pdfFIles1
         do

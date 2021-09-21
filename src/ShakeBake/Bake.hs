@@ -46,12 +46,12 @@ type BakeOp =
 
 bakeOneMD2docrep :: BakeOp --    MD -> DOCREP
 bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
-    when (inform debug) $    putIOwords
+    when (True) $    putIOwords
         [ "\n-----------------"
         , "bakeOneMD2docrep 1 fn"
         , showT inputFn
-        , "debug"
-        , showT debug
+        -- , "debug"
+        -- , showT debug
         , "\n resfn2"
         , showT resfn2
         ]
@@ -62,7 +62,7 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
     dr3 <- md2docrep debug layout inputFn md1
 
     write8 resfn2 docrepFileType dr3
-    when (inform debug) $
+    when (True) $
         putIOwords
             [ "\n-----------------"
             , "bakeOneMD2docrep done fn"
@@ -73,7 +73,7 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
 bakeOneDocrep2panrep :: BakeOp --  DOCREP -> PANREP
 -- change to metaPage and add index data 
 bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
-    when (inform debug) $    putIOwords
+    when (True) $    putIOwords
         [ "\n-----------------"
         , "bakeOneDocrep2panrep 1 fn"
         , showT inputFn
