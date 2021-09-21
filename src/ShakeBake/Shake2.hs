@@ -249,8 +249,8 @@ shakeMD debug layout flags themeP doughP bakedP = shakeArgs2 bakedP $ do
 
     -- rest are copies
 
-    (toFilePath bakedP <> "/*.md") -- is this required??
-        %> \out -> -- insert css -- no subdir
+    -- (toFilePath bakedP <> "/*.md") -- is required because the convA2B - but this is fixed 
+    --     %> \out -> -- insert css -- no subdir
             copyFileToBaked debug doughP bakedP out
     (toFilePath bakedP <> "/*.css")
         %> \out -> -- insert css -- no subdir
@@ -304,7 +304,7 @@ getNeeds debug sourceP targetP extSource extTarget = do
                         (replaceExtension' extTarget . (targetP </>))
                         filesWithSource ::
                         [Path Abs File]
-    when (inform debug) $ do
+    when True $ do
         putIOwords
             [ "===================\ngetNeeds -  source files 1"
             , "for ext"
