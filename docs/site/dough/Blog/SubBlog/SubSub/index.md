@@ -6,7 +6,7 @@ keywords: test
 abstract: The subdirectory experiment
 # pageTemplate: page3.yaml
 indexPage: True
-indexSort: title 
+indexSort: filename
 ---
 
 an index page for test 

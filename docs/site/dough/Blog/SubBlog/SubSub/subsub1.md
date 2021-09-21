@@ -1,16 +1,14 @@
 ---
-title: subsub1 
+title: subsub1.md 
 author: AUF
 date: Jan. 4, 2019
 keywords: test
-abstract: subsub1 A silly text not needing an abstract.
+abstract: subsub1 abstract A silly text not needing an abstract.
 # pageTemplate: page3.yaml
 ---
 
 
-the title should become 
-
-\chapter{postwk.md}
+subsub1 the title should become 
 
 Some text without meaning;  postwk.
 
