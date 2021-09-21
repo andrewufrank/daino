@@ -169,7 +169,7 @@ shakeMD debug layout flags themeP doughP bakedP = shakeArgs2 bakedP $ do
             let outP = makeAbsFile out :: Path Abs File
             let fromfile = doughP </> makeRelativeP bakedP outP
             fileExists <- io2bool $ doesFileExist' fromfile
-            when (True) $ putIOwords ["fileExist:", showT fileExists]
+            when (True) $ putIOwords ["rule **/*.html - fileExist:", showT fileExists]
             
             if fileExists 
                 then copyFileToBaked debug doughP bakedP out
@@ -183,7 +183,7 @@ shakeMD debug layout flags themeP doughP bakedP = shakeArgs2 bakedP $ do
             -- needP imgs2
             -- when (inform debug) $ putIOwords ["rule **/*.html", showT out]
   
-                    convertAny debug bakedP bakedP flags layout out convPanrep2html "convPanrep2html"
+                    convertAny debug bakedP bakedP flags layout out  "convPanrep2html"
 
 
     (toFilePath bakedP <> "**/*.pdf") %> \out -> -- insert pdfFIles1
@@ -206,16 +206,16 @@ shakeMD debug layout flags themeP doughP bakedP = shakeArgs2 bakedP $ do
             if fileExists 
                 then copyFileToBaked debug doughP bakedP out
                 else             
-                    convertAny debug bakedP bakedP flags layout out convTex2pdf "convTex2pdf"
+                    convertAny debug bakedP bakedP flags layout out  "convTex2pdf"
 
     (toFilePath bakedP <> "**/*.tex") %> \out -> -- insert pdfFIles1
-        convertAny debug bakedP bakedP flags layout out convTexsnip2tex "convTexsnip2tex"
+        convertAny debug bakedP bakedP flags layout out  "convTexsnip2tex"
 
     (toFilePath bakedP <> "**/*.texsnip") %> \out -> -- insert pdfFIles1
-        convertAny debug bakedP bakedP flags layout out convPanrep2texsnip "convPanrep2texsnip"
+        convertAny debug bakedP bakedP flags layout out  "convPanrep2texsnip"
 
     (toFilePath bakedP <> "**/*.panrep") %> \out -> -- insert pdfFIles1
-        convertAny debug bakedP bakedP flags layout out convDocrep2panrep "convDocrep2panrep"
+        convertAny debug bakedP bakedP flags layout out  "convDocrep2panrep"
 
     (toFilePath bakedP <> "**/*.docrep") %> \out -> -- insert pdfFIles1  -- here start with doughP
         do
@@ -226,7 +226,7 @@ shakeMD debug layout flags themeP doughP bakedP = shakeArgs2 bakedP $ do
             when (inform debug) $ putIOwords ["rule **/*.docrep need", showT bibs]
             when (inform debug) $ putIOwords ["rule **/*.docrep need", showT csls]
 
-            convertAny debug doughP bakedP flags layout out convMD2docrep "convMD2docrep"
+            convertAny debug doughP bakedP flags layout out  "convMD2docrep"
 
     -- rest are copies
 

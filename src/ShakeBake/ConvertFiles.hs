@@ -127,34 +127,35 @@ convertAny ::
     PubFlags ->
     Settings ->
     FilePath ->
-    -- | the operation to carry out
-    ConvertOp ->
+    -- -- | the operation to carry out
+    -- ConvertOp ->
     -- | the name of the operation
     Text ->
     Action ()
 -- produce any (either copy available in baked or produce with anyop)
-convertAny debug sourceP targetP flags layout out anyop2 anyopName = do
+convertAny debug sourceP targetP flags layout out anyopName = do
     putIOwords ["-----------------", "convertAny for", anyopName]
     let outP = makeAbsFile out :: Path Abs File
     when (True) $ putIOwords ["\nconvertAny 1", "\n file out", showT out]
     let (anyop, sourceExtA) = case anyopName of 
-            "convMD2docrep" -> (convMD2docrep, extMD)
-            "convDocrep2panrep" -> (convDocrep2panrep, extDocrep)
-            "convPanrep2texsnip" -> (convPanrep2texsnip, extPanrep )
-            "convPanrep2html" -> (convPanrep2html, extPanrep )
-            "convTex2pdf" -> (convTex2pdf, extTex )
-            "convTexsnip2tex" -> (convTexsnip2tex, extTexSnip )
+            "convMD2docrep" -> (bakeOneMD2docrep, extMD)
+            "convDocrep2panrep" -> (bakeOneDocrep2panrep, extDocrep)
+            "convPanrep2texsnip" -> (bakeOnePanrep2texsnip, extPanrep )
+            "convPanrep2html" -> (bakeOnePanrep2html, extPanrep )
+            "convTex2pdf" -> (bakeOneTex2pdf, extTex )
+            "convTexsnip2tex" -> (bakeOneTexsnip2tex, extTexSnip )
             _  -> errorT ["convertAny error unknown anyopName ", anyopName]
 
     let fromfile1 = sourceP </> makeRelativeP targetP outP
     let fromfile = replaceExtension' (s2t . unExtension $ sourceExtA) fromfile1 
 
     putIOwords ["\nconvertAny 2", anyopName
-                , "extension" (s2t . unExtension $ sourceExtA)
+                , "extension", (s2t . unExtension $ sourceExtA)
                 ,  "\n fromfile", showT fromfile  -- fasle ext
                 ,  "\n file out", showT out
                 ] 
-        
+
+    needP [fromfile]    
     fileExists <- io2bool $ doesFileExist' fromfile
     when (inform debug) $
         putIOwords
@@ -175,7 +176,7 @@ convertAny debug sourceP targetP flags layout out anyop2 anyopName = do
                 ,  "\n fromfile", showT fromfile  -- fasle ext
                 ,  "\n file out", showT out
                 ] 
-            anyop debug sourceP targetP flags layout out
+            runErr2action $ anyop debug flags fromfile layout outP
     return ()
     when (inform debug) $ putIOwords ["convertAny end for", anyopName]
 
