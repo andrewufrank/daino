@@ -146,37 +146,40 @@ convertAny debug sourceP targetP flags layout out anyopName = do
             "convTexsnip2tex" -> (bakeOneTexsnip2tex, extTexSnip )
             _  -> errorT ["convertAny error unknown anyopName ", anyopName]
 
-    let fromfile1 = sourceP </> makeRelativeP targetP outP
-    let fromfile = replaceExtension' (s2t . unExtension $ sourceExtA) fromfile1 
+    let fromfilePath = sourceP </> makeRelativeP targetP outP
+    let fromfilePathExt = replaceExtension' (s2t . unExtension $ sourceExtA) fromfilePath 
 
     putIOwords ["\nconvertAny 2", anyopName
                 , "extension", (s2t . unExtension $ sourceExtA)
-                ,  "\n fromfile", showT fromfile  -- fasle ext
+                ,  "\n fromfilePath", showT fromfilePath, " NEED"   
+                ,  "\n fromfilePathExt", showT fromfilePathExt   
                 ,  "\n file out", showT out
                 ] 
 
-    needP [fromfile]    
-    fileExists <- io2bool $ doesFileExist' fromfile
+    need [toFilePath fromfilePathExt]    
+    fileExists <- io2bool $ doesFileExist' fromfilePath  --targetExt
     when (inform debug) $
         putIOwords
             [ "\nconvertAny - fromfile exist:"
             , showT fileExists
             , "\nfile"
-            , showT fromfile
+            , showT fromfilePath
             ]
     if fileExists -- gives recursion, if the file is produced in earlier run
         then do
-            copyFileChangedP fromfile outP
-            when (inform debug) $
+            copyFileChangedP fromfilePath outP
+            when (True) $
                 liftIO $
                     putIOwords
-                        ["\n convertAny DONE   - staticP - fromfile ", showT fromfile]
+                        ["\n convertAny  copied"
+                         ,   "\n\tfromfilePath ", showT fromfilePath
+                         ,  "\n\t  file out", showT out]
         else do
             putIOwords ["\nconvertAny call", anyopName
-                ,  "\n fromfile", showT fromfile  -- fasle ext
-                ,  "\n file out", showT out
+                ,  "\n\t fromfilePathExt", showT fromfilePathExt  -- fasle ext
+                ,  "\n\t file out", showT out
                 ] 
-            runErr2action $ anyop debug flags fromfile layout outP
+            runErr2action $ anyop debug flags fromfilePathExt layout outP
     return ()
     when (inform debug) $ putIOwords ["convertAny end for", anyopName]
 

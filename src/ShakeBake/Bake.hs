@@ -48,12 +48,10 @@ bakeOneMD2docrep :: BakeOp --    MD -> DOCREP
 bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
     when (True) $    putIOwords
         [ "\n-----------------"
-        , "bakeOneMD2docrep 1 fn"
-        , showT inputFn
+        , "bakeOneMD2docrep 1 fn", showT inputFn
         -- , "debug"
         -- , showT debug
-        , "\n resfn2"
-        , showT resfn2
+        , "\n resfn2", showT resfn2
         ]
 
     md1 <- read8 inputFn markdownFileType
@@ -65,7 +63,7 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
     when (True) $
         putIOwords
             [ "\n-----------------"
-            , "bakeOneMD2docrep done fn"
+            , "bakeOneMD2docrep done resfn2"
             , showT resfn2
             ]
     return ()
