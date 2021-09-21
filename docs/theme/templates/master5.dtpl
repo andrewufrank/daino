@@ -111,14 +111,16 @@
                      </span>
                   </li>
                 $endfor$ 
-                <p>Directories with more related files:</p>
-                $for(menu2subdir)$ 
-                  <li> 
-                    <a href=/$menu2subdir.link2$><em>$menu2subdir.title2$</em></a>
-                   $if(menu2subdir.abstract2)$<br>$menu2subdir.abstract2$$endif$		
-                    
-    			  </li>
-                $endfor$
+                $if(menu2subdir)
+                    <p>Directories with more related files:</p>
+                    $for(menu2subdir)$ 
+                    <li> 
+                        <a href=/$menu2subdir.link2$><em>$menu2subdir.title2$</em></a>
+                    $if(menu2subdir.abstract2)$<br>$menu2subdir.abstract2$$endif$		
+                        
+                    </li>
+                    $endfor$
+                $endif$
 		</ul>
     </section>
 
