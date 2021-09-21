@@ -63,16 +63,16 @@ convert2index :: Text ->
   MenuEntry
 convert2index indexSortField (this, fils, dirs) =
     MenuEntry
-        { menu2subdir = sortOn sortField . getIndexEntryPure $ dirs
-        , menu2files  = sortOn sortField . getIndexEntryPure . indexFilter $ fils
+        { menu2subdir = sortField . getIndexEntryPure $ dirs
+        , menu2files  = sortField . getIndexEntryPure . indexFilter $ fils
         , today2 = zero -- is set above
         }
  where 
     sortField = case (indexSortField) of 
-        "filename" -> text2
-        "date"      -> date2
-        _ -> date2   -- as a default
-        -- how to deal with reverse sorts??
+        "filename" -> sortOn text2
+        "date"      -> sortOn date2
+        "reversedate" -> reverse . sortOn  date2
+        _ -> sortOn text2  -- what is best default? id?
 
 indexFilter :: [IndexEntry] -> [IndexEntry]
 indexFilter ixs = ixs -- filter ((Just "true" ==) . publish ) ixs
