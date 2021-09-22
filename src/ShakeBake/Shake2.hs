@@ -232,12 +232,13 @@ shakeMD debug layout flags themeP doughP bakedP = shakeArgs2 bakedP $ do
             -- when (inform debug) $ putIOwords ["rule **/*.docrep need", showT csls]
 
             convertAny debug doughP bakedP flags layout out  "convMD2docrep"
+            return ()
 
     -- rest are copies
 
     -- (toFilePath bakedP <> "/*.md") -- is required because the convA2B - but this is fixed 
     --     %> \out -> -- insert css -- no subdir
-            copyFileToBaked debug doughP bakedP out
+            -- copyFileToBaked debug doughP bakedP out
     (toFilePath bakedP <> "/*.css")
         %> \out -> -- insert css -- no subdir
             copyFileToBaked debug doughP bakedP out

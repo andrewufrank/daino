@@ -94,8 +94,11 @@ convertAny debug sourceP targetP flags layout out anyopName = do
                 ,  "\n file out", showT out
                 ] 
 
-    fileExists <- io2bool $ doesFileExist' fromfilePath  --targetExt
-    when (inform debug) $
+    fileExists <-  if sourceP == targetP 
+        then return False 
+        else io2bool $ doesFileExist' fromfilePath  --targetExt
+
+    when (True) $
         putIOwords
             [ "\nconvertAny - fromfile exist:"
             , showT fileExists
@@ -112,7 +115,7 @@ convertAny debug sourceP targetP flags layout out anyopName = do
                 liftIO $
                     putIOwords
                         ["\n convertAny  copied"
-                         ,   "\n\tfromfilePath ", showT fromfilePath
+                         ,   "\n\tfromfilePath ", showT fromfilePath, "added NEED automatically"
                          ,  "\n\t  file out", showT out]
         else do
             putIOwords ["\nconvertAny call", anyopName
@@ -120,10 +123,10 @@ convertAny debug sourceP targetP flags layout out anyopName = do
                 ,  "\n\t file out", showT out
                 ] 
             need [toFilePath fromfilePathExt]    
-
+            putIOwords ["\nconvertAny runErr2Action", anyopName]
             runErr2action $ anyop debug flags fromfilePathExt layout outP
+    when (True) $ putIOwords ["convertAny end for", anyopName]
     return ()
-    when (inform debug) $ putIOwords ["convertAny end for", anyopName]
 
 {- | the generic copy for all the files
  which can just be copied
@@ -142,8 +145,8 @@ copyFileToBaked debug doughP bakedP out = do
     let outP = makeAbsFile out :: Path Abs File
     when (inform debug) $ liftIO $ putIOwords ["\ncopyFileToBaked outP", showT outP]
     let fromfile = doughP </> makeRelativeP bakedP outP
-    when (inform debug) $
+    when (True) $
         liftIO $
             putIOwords
-                ["\ncopyFileToBaked fromfile ", showT fromfile]
+                ["\ncopyFileToBaked fromfile ", showT fromfile, "added NEED automatically"]
     copyFileChangedP fromfile outP

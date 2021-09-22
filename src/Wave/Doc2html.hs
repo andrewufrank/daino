@@ -80,6 +80,7 @@ panrep2html debug masterfn staticMenu (Panrep m1 p1) = do
         vals <- panrep2vals  debug staticMenu (Panrep m1 p1)
         p :: HTMLout <- panrep2html2 debug masterfn vals
         return p
+
 panrep2vals ::  NoticeLevel -> Settings -> Panrep -> ErrIO [Value]
 panrep2vals debug staticMenu (Panrep m1 p1) = do
     let ixe1 = dyIndexEntry m1
@@ -99,10 +100,8 @@ panrep2vals debug staticMenu (Panrep m1 p1) = do
 
 panrep2html2 ::  NoticeLevel -> Path Abs File  -> [Value] -> ErrIO HTMLout
 panrep2html2 debug masterfn vals = do
-
-
     p :: HTMLout <- putValinMaster debug vals masterfn
-    when (informNone debug) $ putIOwords ["\n panrep2html done"]
+    when (True) $ putIOwords ["\n panrep2html done"]
     return p
 
 newtype ContentHtml = ContentHtml {content :: Text} deriving (Show, Generic)

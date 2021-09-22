@@ -96,7 +96,7 @@ bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
 
 bakeOnePanrep2html :: BakeOp -- PANREP -> HTML  -- TODO
 bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
-    when (inform debug) $    putIOwords
+    when (True) $    putIOwords
         [ "\n-----------------"
         , "bakeOnePanrep2html 1 fn"
         , showT inputFn
@@ -113,7 +113,7 @@ bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
 
     p <- panrep2html debug masterfn staticMenu dr1
     write8 resfn2 htmloutFileType p -- content is html style
-    when (inform debug) $
+    when (True) $
         putIOwords
             ["\n-----------------", "bakeOnePanrep2html done fn", showT resfn2]
     return ()
