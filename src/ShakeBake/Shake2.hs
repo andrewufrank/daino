@@ -20,6 +20,9 @@
         (problem pfd - dito )
         )
 
+        anders geloest: 
+        test ob file in dough existiert, dann kopiert
+
     ausgeschlossene directories werden durch DNB  markiert
     die files die in diesen gefunden werden, nicht zum umwandeln
         anzumelden, indem deren namen nicht in "want" eingeschlossen
@@ -159,6 +162,8 @@ shakeMD debug layout flags themeP doughP bakedP = shakeArgs2 bakedP $ do
         needP publist
         pdfs <- getNeeds debug doughP bakedP "pdf" "pdf"
         needP pdfs
+        bibs <- getNeeds debug doughP bakedP "bib" "bib"
+        needP bibs
 
 
     (toFilePath bakedP <> "**/*.html") %> \out -> -- from Panrep
@@ -189,10 +194,10 @@ shakeMD debug layout flags themeP doughP bakedP = shakeArgs2 bakedP $ do
     (toFilePath bakedP <> "**/*.pdf") %> \out -> -- insert pdfFIles1
         do
             when (inform debug) $ putIOwords ["rule **/*.pdf", showT out]
-            imgs <- getNeeds debug doughP bakedP "jpg" "jpg"
-            imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
-            needP imgs
-            needP imgs2
+            -- imgs <- getNeeds debug doughP bakedP "jpg" "jpg"
+            -- imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
+            -- needP imgs
+            -- needP imgs2
             -- why is this here necessary: failed on testSort.pdf?
             -- was ein jpg will ?
             -- TODO improve error from lualatex
@@ -219,12 +224,12 @@ shakeMD debug layout flags themeP doughP bakedP = shakeArgs2 bakedP $ do
 
     (toFilePath bakedP <> "**/*.docrep") %> \out -> -- insert pdfFIles1  -- here start with doughP
         do
-            bibs <- getNeeds debug doughP bakedP "bib" "bib"
-            needP bibs
-            csls <- getNeeds debug doughP bakedP "csl" "csl"
-            needP csls
-            when (inform debug) $ putIOwords ["rule **/*.docrep need", showT bibs]
-            when (inform debug) $ putIOwords ["rule **/*.docrep need", showT csls]
+            -- bibs <- getNeeds debug doughP bakedP "bib" "bib"
+            -- needP bibs
+            -- csls <- getNeeds debug doughP bakedP "csl" "csl"
+            -- needP csls
+            -- when (inform debug) $ putIOwords ["rule **/*.docrep need", showT bibs]
+            -- when (inform debug) $ putIOwords ["rule **/*.docrep need", showT csls]
 
             convertAny debug doughP bakedP flags layout out  "convMD2docrep"
 

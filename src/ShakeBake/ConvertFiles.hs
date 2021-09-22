@@ -47,70 +47,6 @@ type ConvertA2BOp =
     BakeOp ->
     Action ()
 
-convMD2docrep :: ConvertOp
-convMD2docrep debug doughP bakedP flags layout out =
-    convA2B debug doughP bakedP flags layout out extMD bakeOneMD2docrep
-
-convDocrep2panrep :: ConvertOp
-convDocrep2panrep debug doughP bakedP flags layout out =
-    convA2B debug doughP bakedP flags layout out extDocrep bakeOneDocrep2panrep
-
--- convPanrep2html :: ConvertOp
--- -- convPanrep2html :: NoticeLevel
--- --     -> Path Abs Dir
--- --     -> Path Abs Dir
--- --     -> PubFlags
--- --     -> SiteLayout
--- --     -> FilePath
--- --     -> Action ()
--- convPanrep2html debug doughP bakedP flags layout out =
---     convA2B debug doughP bakedP flags layout out extPanrep bakeOnePanrep2html
-
-convPanrep2html :: ConvertOp
-convPanrep2html debug doughP bakedP flags layout out =
-    convA2B debug doughP bakedP flags layout out extPanrep bakeOnePanrep2html
-
--- convPanrep2panrep1 :: ConvertOp
--- convPanrep2panrep1 debug doughP bakedP flags layout out =
---     convA2B debug doughP bakedP flags layout out extPanrep bakeOnePanrep2panrep1
-
--- convPanrep12html :: ConvertOp
--- convPanrep12html debug doughP bakedP flags layout out =
---     convA2B debug doughP bakedP flags layout out extPanrep1 bakeOnePanrep12html
-
-convPanrep2texsnip :: ConvertOp
-convPanrep2texsnip debug doughP bakedP flags layout out =
-    convA2B debug doughP bakedP flags layout out extPanrep bakeOnePanrep2texsnip
-
-convTexsnip2tex :: ConvertOp
-convTexsnip2tex debug doughP bakedP flags layout out =
-    convA2B debug doughP bakedP flags layout out extTexSnip bakeOneTexsnip2tex
-
-convTex2pdf :: ConvertOp
-convTex2pdf debug doughP bakedP flags layout out =
-    convA2B debug doughP bakedP flags layout out extTex bakeOneTex2pdf
-
-convA2B :: ConvertA2BOp
--- ^ produce the B files from A
-convA2B debug sourceP targetP flags sett3 out sourceExtA bakeop = do
-    when (True) $ putIOwords ["\n  convA2B   1 new extension, new file\n", showT sourceExtA, showT out]
-    let outP = makeAbsFile out :: Path Abs File
-
-    let infile1 =
-            replaceExtension' (s2t . unExtension $ sourceExtA) outP :: Path Abs File
-    let infile2 = sourceP </> stripProperPrefixP targetP infile1 :: Path Abs File
-
-    when (True) $
-        putIOwords
-            ["\n  convA2B - 3 needed infile2", showPretty infile2]
-    need [toFilePath infile2]
-
-    res <-
-        runErr2action $
-            bakeop debug flags infile2 sett3 outP
-    when (inform debug) $ putIOwords ["\n  convA2B - 5 return file produced", showT res, "file produce out", showPretty outP, "\n"]
-    return ()
-
 io2bool :: MonadIO m => ErrIO b -> m b
 io2bool op = do
     -- todo move
@@ -147,16 +83,17 @@ convertAny debug sourceP targetP flags layout out anyopName = do
             _  -> errorT ["convertAny error unknown anyopName ", anyopName]
 
     let fromfilePath = sourceP </> makeRelativeP targetP outP
+    --  same filename, path to source: for case where file exists and needs to be copied 
     let fromfilePathExt = replaceExtension' (s2t . unExtension $ sourceExtA) fromfilePath 
+    -- source extension - case: to produce from this by conv 
 
     putIOwords ["\nconvertAny 2", anyopName
                 , "extension", (s2t . unExtension $ sourceExtA)
-                ,  "\n fromfilePath", showT fromfilePath, " NEED"   
+                ,  "\n fromfilePath", showT fromfilePath, " was causing NEED"   
                 ,  "\n fromfilePathExt", showT fromfilePathExt   
                 ,  "\n file out", showT out
                 ] 
 
-    need [toFilePath fromfilePathExt]    
     fileExists <- io2bool $ doesFileExist' fromfilePath  --targetExt
     when (inform debug) $
         putIOwords
@@ -165,7 +102,10 @@ convertAny debug sourceP targetP flags layout out anyopName = do
             , "\nfile"
             , showT fromfilePath
             ]
-    if fileExists -- gives recursion, if the file is produced in earlier run
+    if fileExists 
+        -- gives recursion, if the file is produced in earlier run
+            -- should only be case for jpg and publist? 
+            -- pdf,html,jpg is copide in shake2
         then do
             copyFileChangedP fromfilePath outP
             when (True) $
@@ -176,9 +116,11 @@ convertAny debug sourceP targetP flags layout out anyopName = do
                          ,  "\n\t  file out", showT out]
         else do
             putIOwords ["\nconvertAny call", anyopName
-                ,  "\n\t fromfilePathExt", showT fromfilePathExt  -- fasle ext
+                ,  "\n\t fromfilePathExt", showT fromfilePathExt, " cause NEED"   
                 ,  "\n\t file out", showT out
                 ] 
+            need [toFilePath fromfilePathExt]    
+
             runErr2action $ anyop debug flags fromfilePathExt layout outP
     return ()
     when (inform debug) $ putIOwords ["convertAny end for", anyopName]

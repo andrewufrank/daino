@@ -72,12 +72,11 @@ bakeOneDocrep2panrep :: BakeOp --  DOCREP -> PANREP
 -- change to metaPage and add index data 
 bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
     when (True) $    putIOwords
-        [ "\n-----------------"
-        , "bakeOneDocrep2panrep 1 fn"
+        [ "-----------------"
+        , "bakeOneDocrep2panrep 1 inputFn"
         , showT inputFn
-        , "debug"
-        , showT debug
-        , "\n resfn2"
+        -- , "debug"
+        -- , showT debug
         , showT resfn2
         ]
     dr1 <- read8 inputFn docrepFileType
@@ -87,8 +86,13 @@ bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
     write8 resfn2 panrepFileType p3 -- content is html style
     when (inform debug) $
         putIOwords
-            ["\n-----------------", "bakeOneDocrep2panrep done fn", showT resfn2]
+            ["\n-----------------", "bakeOneDocrep2panrep done produced resf2n", showT resfn2]
     return ()
+
+-- ----------------- bakeOneMD2docrep 1 fn Path Abs File /home/frank/Workspace11/ssg/docs/site/dough/index.md 
+--  resfn2 Path Abs File /home/frank/Workspace11/ssg/docs/site/baked/index.docrep
+
+-- ----------------- bakeOneMD2docrep done resfn2 Path Abs File /home/frank/Workspace11/ssg/docs/site/baked/index.docrep
 
 bakeOnePanrep2html :: BakeOp -- PANREP -> HTML  -- TODO
 bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
