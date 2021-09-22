@@ -103,7 +103,7 @@
 
     <section class=menu2>
 		<ul>
-            	$for(menu2files)$
+            	$for(menu2files)$ 
 				  <li>
 				    <a href=/$menu2files.link2$><em>$menu2files.title2$ </em></a>
 				    $if(menu2files.abstract2)$<br>$menu2files.abstract2$$endif$		     
@@ -111,8 +111,8 @@
                      </span>
                   </li>
                 $endfor$ 
-                $if(menu2subdir)
-                    <p>Directories with more related files:</p>
+                $if(menu2subdir)$ 
+                    Directories with more related files:
                     $for(menu2subdir)$ 
                     <li> 
                         <a href=/$menu2subdir.link2$><em>$menu2subdir.title2$</em></a>
