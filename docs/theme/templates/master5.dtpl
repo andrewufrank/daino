@@ -21,8 +21,8 @@ $-- instructions are https://pandoc.org/MANUAL.html#templates
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <link rel="stylesheet" href="/resources/templates/static/style.css" type="text/css">
-  <link rel="stylesheet" href="/resources/templates/static/menu.css" type="text/css">
+    <link rel="stylesheet" href="/resources/templates/static/style.css" type="text/css">
+    <link rel="stylesheet" href="/resources/templates/static/menu.css" type="text/css">
 
     $for(author)$
       <meta name="author" content="$author$" />  $-- if author is AUF then blanked
@@ -40,9 +40,9 @@ $-- instructions are https://pandoc.org/MANUAL.html#templates
 
   <body>
     <!-- AF - my template for pandoc page  -->
-        $for(include-before)$
-        $include-before$
-        $endfor$
+    $for(include-before)$
+    $include-before$
+    $endfor$
 
     <div class="container">
       <section class="hero">
@@ -52,14 +52,15 @@ $-- instructions are https://pandoc.org/MANUAL.html#templates
 
             <div class="middle-left"><h1><a href="/index.html">$settings.sitename$</h1></div>
             <div class="bottom-left"><h3>$settings.byline$</h3></div>
-            <div class="bottomzero">           
+            <div class="bottomzero">        $-- the ribbon with links 
                 <section class="header">
-                    <section class="menu">
-                        <ul>
-                        $for(menuitems.menuNav)$
-                        <li><a href=/$menuitems.menuNav.avlink$>$menuitems.menuNav.navtext$</a></li>
-                        $endfor$</ul>
-                    </section>
+                <section class="menu">
+                    <ul>
+                    $for(menuitems.menuNav)$
+                    <li><a href=/$menuitems.menuNav.navlink$>$menuitems.menuNav.navtext$</a></li>
+                    $endfor$
+                    </ul>
+                </section>
                 </section>
             </div>       
         <div/>

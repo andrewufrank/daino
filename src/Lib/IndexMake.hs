@@ -40,7 +40,7 @@ convertIndexEntries :: NoticeLevel ->  [Text] -> Text -> IndexEntry -> ErrIO Men
 -- use the date from the settings? TODO
 convertIndexEntries debug hpAuthor indexSortField  ixe1 =
   do
-    when (informAll debug) $ putIOwords ["convertIndexEntries", "start ixe1", showT ixe1
+    when (inform debug) $ putIOwords ["convertIndexEntries", "start ixe1", showT ixe1
         , "\n\thpAuthor", showT hpAuthor]
     let fn = makeAbsFile $ ixfn ixe1
     when (inform debug) $ putIOwords ["convertIndexEntries", "fn", showT fn]
