@@ -49,9 +49,10 @@ convertAny ::
     Action ()
 -- produce any (either copy available in baked or produce with anyop)
 convertAny debug sourceP targetP flags layout out anyopName = do
-    putIOwords ["-----------------", "convertAny for", anyopName]
+    when (inform debug) $ 
+        putIOwords ["-----------------", "convertAny for", anyopName]
     let outP = makeAbsFile out :: Path Abs File
-    when (True) $ putIOwords ["\nconvertAny 1", "\n file out", showT out]
+    when (inform debug) $ putIOwords ["\nconvertAny 1", "\n file out", showT out]
     let (anyop, sourceExtA) = case anyopName of 
             "convMD2docrep" -> (bakeOneMD2docrep, extMD)
             "convDocrep2panrep" -> (bakeOneDocrep2panrep, extDocrep)
@@ -64,18 +65,20 @@ convertAny debug sourceP targetP flags layout out anyopName = do
     let fromfilePath = sourceP </> makeRelativeP targetP outP
     let fromfilePathExt = replaceExtension' (s2t . unExtension $ sourceExtA) fromfilePath 
 
-    putIOwords ["\nconvertAny 2", anyopName
-                , "extension", (s2t . unExtension $ sourceExtA)
-                ,  "\n fromfilePath", showT fromfilePath, " was causing NEED"   
-                ,  "\n fromfilePathExt", showT fromfilePathExt   
-                ,  "\n file out", showT out
-                ] 
+    when (inform debug) $putIOwords 
+        ["\nconvertAny 2", anyopName
+        , "extension", (s2t . unExtension $ sourceExtA)
+        ,  "\n fromfilePath", showT fromfilePath
+        , " was causing NEED"   
+        ,  "\n fromfilePathExt", showT fromfilePathExt   
+        ,  "\n file out", showT out
+        ] 
 
     fileExists <-  if sourceP == targetP 
         then return False 
         else io2bool $ doesFileExist' fromfilePath  --targetExt
 
-    when (True) $
+    when (inform debug) $
         putIOwords
             [ "\nconvertAny - fromfile exist:"
             , showT fileExists
@@ -86,21 +89,23 @@ convertAny debug sourceP targetP flags layout out anyopName = do
         -- gives recursion, if the file is produced in earlier run
         then do
             copyFileChangedP fromfilePath outP
-            when (True) $
+            when (inform debug) $
                 -- liftIO $
                     putIOwords
                         ["\n convertAny  copied"
                          ,   "\n\tfromfilePath ", showT fromfilePath, "added NEED automatically"
                          ,  "\n\t  file out", showT out]
         else do
-            putIOwords ["\nconvertAny call", anyopName
+            when (inform debug) $ putIOwords 
+                ["\nconvertAny call", anyopName
                 ,  "\n\t fromfilePathExt", showT fromfilePathExt, " cause NEED"   
                 ,  "\n\t file out", showT out
                 ] 
             need [toFilePath fromfilePathExt]    
-            putIOwords ["\nconvertAny runErr2Action", anyopName]
+            when (inform debug) $ putIOwords 
+                ["\nconvertAny runErr2Action", anyopName]
             runErr2action $ anyop debug flags fromfilePathExt layout outP
-    when (True) $ putIOwords ["convertAny end for", anyopName]
+    when (inform debug) $ putIOwords ["convertAny end for", anyopName]
     return ()
 
 {- | the generic copy for all the files
@@ -120,8 +125,7 @@ copyFileToBaked debug doughP bakedP out = do
     let outP = makeAbsFile out :: Path Abs File
     when (inform debug) $ liftIO $ putIOwords ["\ncopyFileToBaked outP", showT outP]
     let fromfile = doughP </> makeRelativeP bakedP outP
-    when (True) $
-        liftIO $
+    when (inform debug) $
             putIOwords
                 ["\ncopyFileToBaked fromfile ", showT fromfile, "added NEED automatically"]
     copyFileChangedP fromfile outP

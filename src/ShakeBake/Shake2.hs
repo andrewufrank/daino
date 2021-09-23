@@ -169,12 +169,12 @@ shakeMD debug layout flags themeP doughP bakedP = shakeArgs2 bakedP $ do
     (toFilePath bakedP <> "**/*.html") %> \out -> -- from Panrep
     -- calls the copy html and the conversion from md
         do
-            when (True) $ putIOwords ["rule **/*.html", showT out]
+            when (inform debug) $ putIOwords ["rule **/*.html", showT out]
 
             let outP = makeAbsFile out :: Path Abs File
             let fromfile = doughP </> makeRelativeP bakedP outP
             fileExists <- io2bool $ doesFileExist' fromfile
-            when (True) $ putIOwords ["rule **/*.html - fileExist:", showT fileExists]
+            when (inform debug) $ putIOwords ["rule **/*.html - fileExist:", showT fileExists]
             
             if fileExists 
                 then copyFileToBaked debug doughP bakedP out
@@ -206,7 +206,7 @@ shakeMD debug layout flags themeP doughP bakedP = shakeArgs2 bakedP $ do
             let outP = makeAbsFile out :: Path Abs File
             let fromfile = doughP </> makeRelativeP bakedP outP
             fileExists <- io2bool $ doesFileExist' fromfile
-            when (True) $ putIOwords ["fileExist:", showT fileExists]
+            when (inform debug) $ putIOwords ["fileExist:", showT fileExists]
             
             if fileExists 
                 then copyFileToBaked debug doughP bakedP out
@@ -291,7 +291,7 @@ getNeeds debug sourceP targetP extSource extTarget = do
                         (replaceExtension' extTarget . (targetP </>))
                         filesWithSource ::
                         [Path Abs File]
-    when True $ do
+    when (inform debug) $ do
         putIOwords
             [ "===================\ngetNeeds -  source files 1"
             , "for ext"

@@ -85,7 +85,8 @@ panrep2vals ::  NoticeLevel -> Settings -> Panrep -> ErrIO [Value]
 panrep2vals debug staticMenu (Panrep m1 p1) = do
     let ixe1 = dyIndexEntry m1
     let indexSortField = Data.Maybe.fromMaybe "" (dyIndexSort m1)
-    when (True) $ putIOwords ["panrep2vals", "AuthorOppressed", showT (settingsBlogAuthorOppressed staticMenu)]
+    -- when (informAll debug) $ 
+    putIOwords ["\n\t---------------------------panrep2vals", "AuthorOppressed", showT (settingsBlogAuthorOppressed staticMenu)]
     menu4 :: MenuEntry <- convertIndexEntries  debug (settingsBlogAuthorOppressed staticMenu) indexSortField ixe1
     html <- writeHtml5String2 p1
     -- in uniform.Pandoc (dort noch mehr moeglicherweise duplicated)
@@ -105,7 +106,7 @@ panrep2html2 :: NoticeLevel -- ^
   -> ErrIO HTMLout
 panrep2html2 debug masterfn vals = do
     p :: HTMLout <- putValinMaster debug vals masterfn
-    when (True) $ putIOwords ["\n panrep2html done"]
+    when (inform debug) $ putIOwords ["\n panrep2html done"]
     return p
 
 newtype ContentHtml = ContentHtml {content :: Text} deriving (Show, Generic)

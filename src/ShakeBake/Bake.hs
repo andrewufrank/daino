@@ -46,7 +46,7 @@ type BakeOp =
 
 bakeOneMD2docrep :: BakeOp --    MD -> DOCREP
 bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
-    when (True) $    putIOwords
+    when (inform debug) $    putIOwords
         [ "\n-----------------"
         , "bakeOneMD2docrep 1 fn", showT inputFn
         -- , "debug"
@@ -60,7 +60,7 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
     dr3 <- md2docrep debug layout inputFn md1
 
     write8 resfn2 docrepFileType dr3
-    when (True) $
+    when (inform debug) $
         putIOwords
             [ "\n-----------------"
             , "bakeOneMD2docrep done resfn2"
@@ -71,7 +71,7 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
 bakeOneDocrep2panrep :: BakeOp --  DOCREP -> PANREP
 -- change to metaPage and add index data 
 bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
-    when (True) $    putIOwords
+    when (inform debug) $    putIOwords
         [ "-----------------"
         , "bakeOneDocrep2panrep 1 inputFn"
         , showT inputFn
@@ -92,7 +92,7 @@ bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
 
 bakeOnePanrep2html :: BakeOp -- PANREP -> HTML  -- TODO
 bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
-    when (True) $    putIOwords
+    when (inform debug) $    putIOwords
         [ "\n-----------------"
         , "bakeOnePanrep2html 1 fn"
         , showT inputFn
@@ -109,7 +109,7 @@ bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
 
     p <- panrep2html debug masterfn staticMenu dr1
     write8 resfn2 htmloutFileType p -- content is html style
-    when (True) $
+    when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOnePanrep2html done fn", showT resfn2]
     return ()

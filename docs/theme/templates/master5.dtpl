@@ -55,7 +55,8 @@ $-- instructions are https://pandoc.org/MANUAL.html#templates
             <div class="bottomzero">           
                 <section class="header">
                     <section class="menu">
-                        <ul>$for(menuitems.menuNav)$
+                        <ul>
+                        $for(menuitems.menuNav)$
                         <li><a href=/$menuitems.menuNav.avlink$>$menuitems.menuNav.navtext$</a></li>
                         $endfor$</ul>
                     </section>
@@ -68,14 +69,13 @@ $-- instructions are https://pandoc.org/MANUAL.html#templates
     <section>
         $if(title)$
         <header>
-        <h1 class="title">$title$</h1>
-        $if(subtitle)$
-        <p class="subtitle">$subtitle$</p>
-        $endif$
-
-        $for(author)$
-        <p class="author">$author$</p>
-        $endfor$
+            <h1 class="title">$title$</h1>
+            $if(subtitle)$
+            <p class="subtitle">$subtitle$</p>
+            $endif$
+                $-- $for(author)$
+                $-- <p class="author">$author$</p>
+                $-- $endfor$
         </header>
         $endif$
  
