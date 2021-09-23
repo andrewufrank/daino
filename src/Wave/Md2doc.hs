@@ -29,6 +29,7 @@ import Foundational.MetaPage
 import Uniform.Json
 
 -- import Lib.IndexCollect
+-- import Lib.IndexMake 
 import Uniform.Pandoc
 import Uniform.Shake (makeRelativeP)
 

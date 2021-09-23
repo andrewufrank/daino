@@ -30,41 +30,43 @@ import Uniform2.HTMLout
 import Data.List (sortOn)
 -- import Data.Ord (comparing)
 
-convertIndexEntries :: NoticeLevel ->  Text -> IndexEntry -> ErrIO MenuEntry
+convertIndexEntries :: NoticeLevel ->  [Text] -> Text -> IndexEntry -> ErrIO MenuEntry
 -- ^ take the index entries and convert their
 -- form and push them back into the json
 -- converts to values for printing if indexpage else null
 -- date today is passed to feed in pages 
+-- the authors which should be oppressed are passed 
 -- is pure except for today!
-convertIndexEntries debug indexSortField  ixe1 =
+-- use the date from the settings? TODO
+convertIndexEntries debug hpAuthor indexSortField  ixe1 =
   do
     when (inform debug) $ putIOwords ["convertIndexEntries", "start ixe1", showT ixe1]
     let fn = makeAbsFile $ ixfn ixe1
     when (inform debug) $ putIOwords ["convertIndexEntries", "fn", showT fn]
-    -- today1 :: UTCTime <- getCurrentTimeUTC
-    -- to avoid the changes in testing leading to failures
-    -- let today1 = "2021-01-01"::UTCTime  -- for testing 
     menu4 <- if isIndexPage fn
         then do
             let fils = fileEntries ixe1 -- fileEntries dyFileEntries MetaPage
             let dirs = dirEntries ixe1 -- dyDirEntries y
 
-            let menu1 = convert2index indexSortField (ixe1, fils, dirs)
-            let menu3 = menu1{today2 = "2021-01-01"} --showT today1}
-            when (inform debug) $ putIOwords ["convertIndexEntries", "menu1", showT menu3]
+            let menu1 = convert2index hpAuthor (indexSortField ) (ixe1, fils, dirs)
+            -- let menu3 = menu1{today2 = "2021-01-01"}  
+            -- to avoid the changes in testing leading to failures
+            today1 :: UTCTime <- getCurrentTimeUTC
+            let menu3 = menu1{today2 = showT today1}
+            when (inform debug) $ putIOwords ["convertIndexEntries", "menu3", showT menu3]
             return menu3
         else return zero
     return menu4
 
 -- | convert the indexEntry1s and put some divider between
 -- TODO  - avoid dividers if list empty
-convert2index :: Text -> 
+convert2index :: [Text] -> Text -> 
   (IndexEntry, [IndexEntry], [IndexEntry]) ->
   MenuEntry
-convert2index indexSortField (this, fils, dirs) =
+convert2index hpAuthor indexSortField (this, fils, dirs) =
     MenuEntry
-        { menu2subdir = sortField . getIndexEntryPure $ dirs
-        , menu2files  = sortField . getIndexEntryPure . indexFilter $ fils
+        { menu2subdir = sortField . (getIndexEntryPure hpAuthor) $ dirs
+        , menu2files  = sortField . (getIndexEntryPure hpAuthor) . indexFilter $ fils
         , today2 = zero -- is set above
         }
  where 
@@ -107,17 +109,18 @@ instance FromJSON Index4html
 instance ToJSON Index4html
 
 
-getIndexEntryPure :: [IndexEntry] -> [Index4html]
-getIndexEntryPure ixe2 = map getOneIndexEntryPure  ixe2
+getIndexEntryPure :: [Text]-> [IndexEntry] -> [Index4html]
+-- pass the author names which should be oppressed in indices
+getIndexEntryPure hpAuthor ixe2 = map (getOneIndexEntryPure hpAuthor)  ixe2
                     -- mapMaybe (\i -> if (Just "true" == publish i)
                     --               then Just $ getOneIndexEntryPure i
                     --               else error "xsdwer" ) ixe2
 
-getOneIndexEntryPure :: IndexEntry -> Index4html
+getOneIndexEntryPure :: [Text] -> IndexEntry -> Index4html
 
 -- | the pure code to compute an IndexEntry
 -- Text should be "/Blog/postTufteStyled.html"
-getOneIndexEntryPure indexEntry1 =
+getOneIndexEntryPure hpAuthor indexEntry1 =
   Index4html
     { text2 = s2t . takeBaseName'   . ixfn $ indexEntry1,
       link2 =  s2t . -- s2t . toFilePath $ 
@@ -130,11 +133,24 @@ getOneIndexEntryPure indexEntry1 =
         if isZero (title indexEntry1 :: Text)
           then s2t . takeBaseName'   .  ixfn $ indexEntry1
           else title indexEntry1,
-      author2 = author indexEntry1,
+      author2 = blankAuthorName hpAuthor (author indexEntry1),
       date2 = date indexEntry1,
       publish2 = shownice $ publish indexEntry1
     --   indexPage2 = indexPage indexEntry1
     }
+
+blankAuthorName :: [Text] -> Text -> Text 
+-- if the author name is the same as one in the first arg (AUF, Andrew U..) then set it to empty else copy 
+-- idea is to avoid to have each page say the obvious "author XX"
+blankAuthorName names current = 
+    if current `elem` names 
+        then zero 
+        else current 
+
+-- hpAuthor :: [Text]
+-- the list of authornames which are blanked
+-- should be the author of the blog
+-- hpAuthor = ["AUF", "Andrew U. Frank"]
 
 --       ------  S U P P O R T
 

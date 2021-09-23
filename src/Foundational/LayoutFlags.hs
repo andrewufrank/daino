@@ -36,6 +36,7 @@ data Settings = Settings
     { storage :: SiteLayout 
     , localhostPort :: Int 
     , settingsAuthor :: Text 
+    , settingsBlogAuthorOppressed :: [Text]
     , settingsDate :: Text -- should be UTC 
     , settings :: Settings2 
     , menuitems :: MenuItems
@@ -97,6 +98,7 @@ settingsDefault = Settings
         }, 
     localhostPort = 3000, 
     settingsAuthor = "Author of Settings", 
+    settingsBlogAuthorOppressed = ["AUF", "Andrew U. Frank"],
     settingsDate = "2019-01-01", 
     settings = Settings2 
         {sitename = "siteNameExample-Default", 

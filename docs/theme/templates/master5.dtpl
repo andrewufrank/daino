@@ -14,17 +14,18 @@
 
     sollten fuer die indexseiten ein anderer master verwendet werden?
 	-->
-<html lang="$lang$">
+
+$-- instructions are https://pandoc.org/MANUAL.html#templates
+
+<html lang="$lang$">  $--this is a comment
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <link rel="stylesheet" href="/resources/templates/static/style.css" type="text/css">
   <link rel="stylesheet" href="/resources/templates/static/menu.css" type="text/css">
 
-
-
     $for(author)$
-      <meta name="author" content="$author$" />
+      <meta name="author" content="$author$" />  $-- if author is AUF then blanked
     $endfor$
     $if(date)$
       <meta name="dcterms.date" content="$date$" />
@@ -54,11 +55,9 @@
             <div class="bottomzero">           
                 <section class="header">
                     <section class="menu">
-                        <ul>
-                            $for(menuitems.menuNav)$
-                                <li><a href=/$menuitems.menuNav.navlink$>$menuitems.menuNav.navtext$</a></li>
-                            $endfor$
-                        </ul>
+                        <ul>$for(menuitems.menuNav)$
+                        <li><a href=/$menuitems.menuNav.avlink$>$menuitems.menuNav.navtext$</a></li>
+                        $endfor$</ul>
                     </section>
                 </section>
             </div>       

@@ -23,6 +23,9 @@ localhostPort: 3000
 
 # content for landing page
 settingsAuthor : Author of Settings 
+settingsBlogAuthorOppressed: 
+  - "AUF"
+  - "Andrew U. Frank" 
 settingsDate: 2019-01-01
 settings : 
     sitename : siteName

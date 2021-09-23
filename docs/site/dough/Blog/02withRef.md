@@ -1,6 +1,6 @@
 ---
 title: 02witRef title postWithReference
-#author: NNauthor
+author: AUF
 date: 2010-07-29
 keywords: homepage
 # pageTemplate: page3.yaml

@@ -43,7 +43,10 @@ import Uniform.Json
 -- -- test_MenuEntry2pandoc4_postwk = testing_MenuEntry2pandoc4 "postwk"
 -- -- test_MenuEntry2pandoc4_withRef = testing_MenuEntry2pandoc4 "withRef"
 
-
+test_BlankAuthor_AUF = assertEqual ""  (blankAuthorName  ["AUF", "Andrew U. Frank"] "AUF")
+test_BlankAuthor_notAUF = assertEqual a2 (blankAuthorName  ["AUF", "Andrew U. Frank"] a2 )
+    where a2 = "XX"
+    
 -- instance ShowTestHarness Docrep
 -- instance ShowTestHarness MetaPage
 instance ShowTestHarness MenuEntry 

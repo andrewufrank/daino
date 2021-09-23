@@ -85,7 +85,8 @@ panrep2vals ::  NoticeLevel -> Settings -> Panrep -> ErrIO [Value]
 panrep2vals debug staticMenu (Panrep m1 p1) = do
     let ixe1 = dyIndexEntry m1
     let indexSortField = Data.Maybe.fromMaybe "" (dyIndexSort m1)
-    menu4 :: MenuEntry <- convertIndexEntries  debug indexSortField ixe1
+    when (True) $ putIOwords ["panrep2vals", "AuthorOppressed", showT (settingsBlogAuthorOppressed staticMenu)]
+    menu4 :: MenuEntry <- convertIndexEntries  debug (settingsBlogAuthorOppressed staticMenu) indexSortField ixe1
     html <- writeHtml5String2 p1
     -- in uniform.Pandoc (dort noch mehr moeglicherweise duplicated)
     let p2 = ContentHtml html
