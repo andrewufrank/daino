@@ -98,7 +98,10 @@ panrep2vals debug staticMenu (Panrep m1 p1) = do
     when (inform debug) $putIOwords ["panrep2vals", "vals", showPretty vals]
     return vals
 
-panrep2html2 ::  NoticeLevel -> Path Abs File  -> [Value] -> ErrIO HTMLout
+panrep2html2 :: NoticeLevel -- ^ 
+  -> Path Abs File -- ^ 
+  -> [Value] -- ^ 
+  -> ErrIO HTMLout
 panrep2html2 debug masterfn vals = do
     p :: HTMLout <- putValinMaster debug vals masterfn
     when (True) $ putIOwords ["\n panrep2html done"]

@@ -27,25 +27,6 @@ import Uniform.Pandoc
 
 import Uniform.Shake
 
-type ConvertOp =
-    NoticeLevel ->
-    Path Abs Dir ->
-    Path Abs Dir ->
-    PubFlags ->
-    Settings ->
-    FilePath ->
-    Action ()
-
-type ConvertA2BOp =
-    NoticeLevel ->
-    Path Abs Dir ->
-    Path Abs Dir ->
-    PubFlags ->
-    Settings->
-    FilePath ->
-    Extension ->
-    BakeOp ->
-    Action ()
 
 io2bool :: MonadIO m => ErrIO b -> m b
 io2bool op = do
@@ -63,8 +44,6 @@ convertAny ::
     PubFlags ->
     Settings ->
     FilePath ->
-    -- -- | the operation to carry out
-    -- ConvertOp ->
     -- | the name of the operation
     Text ->
     Action ()
@@ -83,9 +62,7 @@ convertAny debug sourceP targetP flags layout out anyopName = do
             _  -> errorT ["convertAny error unknown anyopName ", anyopName]
 
     let fromfilePath = sourceP </> makeRelativeP targetP outP
-    --  same filename, path to source: for case where file exists and needs to be copied 
     let fromfilePathExt = replaceExtension' (s2t . unExtension $ sourceExtA) fromfilePath 
-    -- source extension - case: to produce from this by conv 
 
     putIOwords ["\nconvertAny 2", anyopName
                 , "extension", (s2t . unExtension $ sourceExtA)
@@ -102,17 +79,15 @@ convertAny debug sourceP targetP flags layout out anyopName = do
         putIOwords
             [ "\nconvertAny - fromfile exist:"
             , showT fileExists
-            , "\nfile"
-            , showT fromfilePath
+            -- , "\nfile"
+            -- , showT fromfilePath
             ]
     if fileExists 
         -- gives recursion, if the file is produced in earlier run
-            -- should only be case for jpg and publist? 
-            -- pdf,html,jpg is copide in shake2
         then do
             copyFileChangedP fromfilePath outP
             when (True) $
-                liftIO $
+                -- liftIO $
                     putIOwords
                         ["\n convertAny  copied"
                          ,   "\n\tfromfilePath ", showT fromfilePath, "added NEED automatically"
