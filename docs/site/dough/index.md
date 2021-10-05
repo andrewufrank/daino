@@ -10,5 +10,5 @@ abstract: |
 author : Author of Settings 
 ---
 
-index in site text The landing page of the **Example Site** giving access to all the files in the site. Use the black Navigation Ribbon above! 
+index in site text The landing page of the **Example Site** giving access to all the files in the site. The Navigation Ribbon can be used despite overwriting! 
 

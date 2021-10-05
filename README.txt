@@ -161,3 +161,11 @@ With *cabal build* in the ssg directory *cabal install*
 -   there must be a file settingsN.yaml
 -   in LayoutFlags.hs is the current name as "settings3"
 -   ssgbake
+
+## ftp to hosted server 
+
+to transfer the baked code to a hosted server use ncftp (apt install ncftp in debian, documentation [https://www.ncftp.com/ncftp/doc/ncftpput.html])
+
+> cd /home/frank/Workspace11/ssg/doc/site/baked 
+> ncftpput -R -z -u "gerastre" -p "PASSWORD" gerastree.at /ssg.gerastree.at/ .
+
