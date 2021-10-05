@@ -52,8 +52,6 @@ import Data.Maybe (fromMaybe)
 -}
 
 docrep2panrep debug layout (Docrep y1 p1) = do
-    let bakedP = bakedDir layout
-    let doughP = doughDir layout
     let pr =
             Panrep
                 { panyam = y1
@@ -65,6 +63,8 @@ docrep2panrep debug layout (Docrep y1 p1) = do
     -- if dyIndexPage . panyam $ pr
             let m1 = panyam pr
             let ix1 =dyIndexEntry  m1
+            let bakedP = bakedDir layout
+            let doughP = doughDir layout
             ix2 <- completeIndex debug doughP bakedP ix1
             -- todo put ix2 into pr
             let m2 = m1{dyIndexEntry = ix2}

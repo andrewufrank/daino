@@ -128,7 +128,8 @@ With
 
 ## run on myhomepage (in the folder)
 
-- there must be a file settingsN.yaml
+- there must be a file settingsN.yaml in the folder with the dough 
+(except of the test homepage, where the settings3.yaml is in the outer dir *site* and not in *site/dough*)
 - in LayoutFlags.hs is the current name as "settings3"
 - ssgbake 
 
