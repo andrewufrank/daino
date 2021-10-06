@@ -8,7 +8,7 @@ Index pages are automatically formated, but minimal content must be provided ini
 # Layout
 The code includes an example site in the `docs/site` directory. It contains a file `settingsNN.yaml` which describes the layout of the site. A correponding file must be created for a new site. 
 
-The special directory `resources` is used to keep style (`csl`) and biliography (`bib`) files. In blogs, they are referenced with relative path.
+The special directory `resources` is used to keep style (`csl`) and biliography (`bib`) files. In blogs, they are referenced with relative path, but including `resources/...`. For the style, the default `resources/chicago-fullnote-bibliography-bb.csl` is set if nothing else given.
 
 in the `docs` directgory is the separated `theme` directory, which determines the apparence of the site. There must be a link to the theme directory in the dough directory (TODO remove the needs).
 

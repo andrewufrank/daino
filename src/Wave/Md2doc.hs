@@ -59,14 +59,14 @@ md2docrep debug layout2 inputFn md1 = do
     -- merge the yaml metadata with default to have the
     -- necessary values set
 
-    when (informAll debug) $ putIOwords ["md2docrep", "dr1", showT dr1]
+    when (inform debug) $ putIOwords ["md2docrep", "dr1", showT dr1]
 
     -- uses the refs listed in the file and discovred by pandoc,
     -- as well as nocite
     -- therefore must use json
     dr3 <- addRefs debug doughP dr1  -- to dr3 
 
-    when (informAll debug) $ putIOwords ["md2docrep after addRefs", "dr1", showT dr1]
+    when (inform debug) $ putIOwords ["md2docrep after addRefs", "dr1", showT dr1]
 
     return dr3 -- same as T.docrep 
 
@@ -130,7 +130,7 @@ addRefs :: NoticeLevel -> Path Abs Dir -> Docrep -> ErrIO Docrep
 addRefs debug doughP dr1 = do
     -- the biblio entry is the signal that refs need to be processed
     -- only refs do not work
-    when (informAll debug) $ putIOwords ["addRefs", showT dr1, "\n"]
+    when (inform debug) $ putIOwords ["addRefs", showT dr1, "\n"]
     let biblio1 = dyBibliography . meta1 $ dr1
     maybe (return dr1) (addRefs2 debug doughP dr1) biblio1
 
@@ -142,10 +142,10 @@ addRefs2 ::
     ErrIO Docrep
 addRefs2 debug doughP dr1@(Docrep y1 p1) biblio1 = do
     --   let debugx = False
-    when (informAll debug) $ putIOwords ["addRefs2-1", showT dr1, "\n"]
+    when (inform debug) $ putIOwords ["addRefs2-1", showT dr1, "\n"]
     let style1 = dyStyle y1
 
-    when (informAll debug) $
+    when (inform debug) $
         putIOwords
             [ "addRefs2-2"
             , "\n\t biblio1" , showT biblio1
@@ -153,7 +153,7 @@ addRefs2 debug doughP dr1@(Docrep y1 p1) biblio1 = do
             ]
 
     let biblioRP = makeRelFile . t2s $ biblio1
-    let styleRP = makeRelFile . t2s . fromJustNote "style is not set - needs default" $ style1 
+    let styleRP = makeRelFile . t2s . fromMaybe "resources/chicago-fullnote-bibliography-bb.csl" $ style1 
     let biblioP =  doughP </> biblioRP
     let styleP = doughP </> styleRP 
 
@@ -162,19 +162,19 @@ addRefs2 debug doughP dr1@(Docrep y1 p1) biblio1 = do
     -- must be 2 char (all other seems to be difficult with pandoc-citeproc)
     -- change to new citeproc TODO later - not used 
 
-    let bibliofp =
-            t2s biblio1 :: FilePath
-    let stylefp =
-            t2s . fromJustNote "style1 in addRefs2 wer23" $ style1 :: FilePath
+    -- let bibliofp =
+    --         t2s biblio1 :: FilePath
+    -- let stylefp =
+    --         t2s . fromMaybe "style1 in addRefs2 wer23" $ style1 :: FilePath
     --  Raised the exception when style empty
-    when (informAll debug) $ putIOwords ["addRefs2-3-1 v0.4.5"
-            , "\n\tstylefp", s2t stylefp
-            , "\n\tbibliofp", s2t bibliofp
+    when (inform debug) $ putIOwords ["addRefs2-3-1 v0.4.5"
+            , "\n\tstyleP", showT styleP
+            , "\n\tbiblioP", showT biblioP
             ]
 
     -- p2 <- readBiblioRefs True bibliofp loc1 stylefp (dyReferences y1) p1
     p2 <- readBiblioRefs True biblioP loc1 styleP (dyReferences y1) p1
 
-    when (informAll debug) $ putIOwords ["addRefs2-4", "p2\n", showT p2]
+    when (inform debug) $ putIOwords ["addRefs2-4", "p2\n", showT p2]
 
     return (Docrep y1 p2)
