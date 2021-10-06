@@ -8,7 +8,8 @@ name:           ssg
 version:        0.0.4.5
 synopsis:       a static site generator using shake and pandoc
 description:    A static site generator from pandoc and other available packages on Hackage (e.g. shake, twitch, scotty), influenced by Chris Penner's [slick](https://github.com/ChrisPenner/slick#readme). It uses files to manage data to permit version management with git. Page appearances are directed with YAML and internally data is structured with JSON, for each page a PDF file is produced to allow regular looking prints. Index pages are automatically created.
-        0.0.4.5 change to new shake 0.19.6, issues with index.md
+                version 0.0.4.5 to fix references 
+                  with uniformBase 0.1.2, pandoc 0.0.2.3
                 .
 category:       Development Web
 homepage:       https://github.com/frank/ssg#readme
@@ -60,11 +61,11 @@ library
     , uniform-convenience
     , uniform-json
     , uniform-latex2pdf
-    , uniform-pandoc
-    , uniform-shake == 0.0.1.2
+    , uniform-pandoc ==0.0.2.3
+    , uniform-shake
     , uniform-watch
     , uniform-webserver
-    , uniformBase
+    , uniformBase ==0.1.2
   default-language: Haskell2010
 
 executable ssgbake
@@ -85,11 +86,11 @@ executable ssgbake
     , uniform-convenience
     , uniform-json
     , uniform-latex2pdf
-    , uniform-pandoc
+    , uniform-pandoc ==0.0.2.3
     , uniform-shake
     , uniform-watch
     , uniform-webserver
-    , uniformBase
+    , uniformBase ==0.1.2
   default-language: Haskell2010
 
 test-suite ssgTest
@@ -120,9 +121,9 @@ test-suite ssgTest
     , uniform-convenience
     , uniform-json
     , uniform-latex2pdf
-    , uniform-pandoc
+    , uniform-pandoc ==0.0.2.3
     , uniform-shake
     , uniform-watch
     , uniform-webserver
-    , uniformBase
+    , uniformBase ==0.1.2
   default-language: Haskell2010

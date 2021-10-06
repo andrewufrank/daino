@@ -96,16 +96,16 @@ convertAny debug sourceP targetP flags layout out anyopName = do
                          ,   "\n\tfromfilePath ", showT fromfilePath, "added NEED automatically"
                          ,  "\n\t  file out", showT out]
         else do
-            when (inform debug) $ putIOwords 
+            when (informAll debug) $ putIOwords 
                 ["\nconvertAny call", anyopName
                 ,  "\n\t fromfilePathExt", showT fromfilePathExt, " cause NEED"   
                 ,  "\n\t file out", showT out
                 ] 
             need [toFilePath fromfilePathExt]    
-            when (inform debug) $ putIOwords 
+            when (informAll debug) $ putIOwords 
                 ["\nconvertAny runErr2Action", anyopName]
             runErr2action $ anyop debug flags fromfilePathExt layout outP
-    when (inform debug) $ putIOwords ["convertAny end for", anyopName]
+    when (informAll debug) $ putIOwords ["convertAny end for", anyopName]
     return ()
 
 {- | the generic copy for all the files

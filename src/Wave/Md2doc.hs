@@ -59,12 +59,14 @@ md2docrep debug layout2 inputFn md1 = do
     -- merge the yaml metadata with default to have the
     -- necessary values set
 
-    when (inform debug) $ putIOwords ["md2docrep", "dr1", showT dr1]
+    when (informAll debug) $ putIOwords ["md2docrep", "dr1", showT dr1]
 
     -- uses the refs listed in the file and discovred by pandoc,
     -- as well as nocite
     -- therefore must use json
-    dr3 <- addRefs debug dr1  -- to dr3 
+    dr3 <- addRefs debug doughP dr1  -- to dr3 
+
+    when (informAll debug) $ putIOwords ["md2docrep after addRefs", "dr1", showT dr1]
 
     return dr3 -- same as T.docrep 
 
@@ -92,7 +94,7 @@ pandoc2docrep debug doughP bakedP filename pd =
                 , dyStyle = getAtKey meta2 "style"
                 , dyNoCite = getAtKey meta2 "nocite"
                 , dyReferences = gak meta2 "references"
-                , dyBibliography = zero
+                , dyBibliography = getAtKey meta2 "bibliography"
                 , dyPublish = getAtKey meta2 "publish"
                 -- , -- TODO use pbulicationState
                 --   dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
@@ -109,7 +111,7 @@ pandoc2docrep debug doughP bakedP filename pd =
 
 
 --------------------------------
-addRefs :: NoticeLevel -> Docrep -> ErrIO Docrep
+addRefs :: NoticeLevel -> Path Abs Dir -> Docrep -> ErrIO Docrep
 {- ^ add the references to the pandoc block
  the biblio is in the yam (otherwise nothing is done)
  ths cls file must be in the yam
@@ -125,43 +127,54 @@ addRefs :: NoticeLevel -> Docrep -> ErrIO Docrep
 --   let result = citeproc procOpts s m $ [cites]
 --   putStrLn . unlines . map (renderPlainStrict) . citations $ result
 
-addRefs debug dr1 = do
+addRefs debug doughP dr1 = do
     -- the biblio entry is the signal that refs need to be processed
     -- only refs do not work
-    when (inform debug) $ putIOwords ["addRefs", showT dr1, "\n"]
+    when (informAll debug) $ putIOwords ["addRefs", showT dr1, "\n"]
     let biblio1 = dyBibliography . meta1 $ dr1
-    maybe (return dr1) (addRefs2 debug dr1) biblio1
+    maybe (return dr1) (addRefs2 debug doughP dr1) biblio1
 
 addRefs2 ::
     NoticeLevel ->
+    Path Abs Dir ->   -- ^ path to dough (source)
     Docrep ->
     Text ->
     ErrIO Docrep
-addRefs2 debug dr1@(Docrep y1 p1) biblio1 = do
+addRefs2 debug doughP dr1@(Docrep y1 p1) biblio1 = do
     --   let debugx = False
-    when (inform debug) $ putIOwords ["addRefs2-1", showT dr1, "\n"]
+    when (informAll debug) $ putIOwords ["addRefs2-1", showT dr1, "\n"]
     let style1 = dyStyle y1
 
-    when (inform debug) $
+    when (informAll debug) $
         putIOwords
             [ "addRefs2-2"
-            , "\n biblio"
-            , showT biblio1
+            , "\n\t biblio1" , showT biblio1
+            , "\n\t style1" , showT style1
             ]
+
+    let biblioRP = makeRelFile . t2s $ biblio1
+    let styleRP = makeRelFile . t2s . fromJustNote "style is not set - needs default" $ style1 
+    let biblioP =  doughP </> biblioRP
+    let styleP = doughP </> styleRP 
 
     let loc1 = Just "en" -- TODO depends on language to be used for
     -- for the conventions in the lit list
     -- must be 2 char (all other seems to be difficult with pandoc-citeproc)
-    -- change to new citeproc TODO later
+    -- change to new citeproc TODO later - not used 
+
     let bibliofp =
             t2s biblio1 :: FilePath
     let stylefp =
             t2s . fromJustNote "style1 in addRefs2 wer23" $ style1 :: FilePath
     --  Raised the exception when style empty
-    when (inform debug) $ putIOwords ["addRefs2-3-1", "done"]
+    when (informAll debug) $ putIOwords ["addRefs2-3-1 v0.4.5"
+            , "\n\tstylefp", s2t stylefp
+            , "\n\tbibliofp", s2t bibliofp
+            ]
 
-    p2 <- readBiblioRefs (inform debug) bibliofp loc1 stylefp (dyReferences y1) p1
+    -- p2 <- readBiblioRefs True bibliofp loc1 stylefp (dyReferences y1) p1
+    p2 <- readBiblioRefs True biblioP loc1 styleP (dyReferences y1) p1
 
-    when (inform debug) $ putIOwords ["addRefs2-4", "p2\n", showT p2]
+    when (informAll debug) $ putIOwords ["addRefs2-4", "p2\n", showT p2]
 
     return (Docrep y1 p2)

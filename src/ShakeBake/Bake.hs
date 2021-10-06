@@ -46,7 +46,7 @@ type BakeOp =
 
 bakeOneMD2docrep :: BakeOp --    MD -> DOCREP
 bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
-    when (inform debug) $    putIOwords
+    when (informAll debug) $    putIOwords
         [ "\n-----------------"
         , "bakeOneMD2docrep 1 fn", showT inputFn
         -- , "debug"
@@ -60,7 +60,7 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
     dr3 <- md2docrep debug layout inputFn md1
 
     write8 resfn2 docrepFileType dr3
-    when (inform debug) $
+    when (informAll debug) $
         putIOwords
             [ "\n-----------------"
             , "bakeOneMD2docrep done resfn2"

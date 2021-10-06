@@ -1,10 +1,14 @@
 name: ssg
-version: 0.0.4.4
+version: 0.0.4.5
 synopsis: a static site generator using shake and pandoc
 description: | 
   A static site generator from pandoc and other available packages on Hackage (e.g. shake, twitch, scotty), influenced by Chris Penner's [slick](https://github.com/ChrisPenner/slick#readme). It uses files to manage data to permit version management with git. Page appearances are directed with YAML and internally data is structured with JSON, for each page a PDF file is produced to allow regular looking prints. Index pages are automatically created.
+  version 0.0.4.5 to fix references 
+    with uniformBase 0.1.2, pandoc 0.0.2.3
     
 category: Development Web
+
+# run with hpack before cabal build
 
 license-file: LICENSE
 author: Andrew U. Frank (frank@geoinfo.tuwien.ac.at)
@@ -67,7 +71,7 @@ dependencies:
     - uniform-watch 
     - uniform-webserver  # - shake
     - data-default
-    - uniform-pandoc 
+    - uniform-pandoc == 0.0.2.3 # from u4blog
     - uniform-latex2pdf 
     - pandoc-types
     # -- - uniform-ftp
@@ -120,7 +124,7 @@ tests:
       - quickcheck-text
       # - uniform-strings
       # - uniform-http
-      - uniformBase
+      - uniformBase == 0.1.2
       - ssg
       # - shake  # from error
     

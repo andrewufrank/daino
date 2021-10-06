@@ -15,6 +15,7 @@ packages:
     ../u4blog/uniform-latex2pdf/*.cabal
     ../u4blog/uniform-shake/*.cabal
     ../u4blog/uniform-pandoc/*.cabal
+--    /home/frank/Workspace11/u4blog/uniform-pandoc/uniform-pandoc.cabal
     ../u2to/uniform-convenience/*.cabal
     ../u2to/uniform-cmdLineArgs/*.cabal
 

@@ -51,6 +51,7 @@ import Data.Maybe (fromMaybe)
  and will do index, but this goes to ssg
 -}
 
+docrep2panrep :: NoticeLevel -> SiteLayout -> Docrep -> ErrorT Text IO Panrep
 docrep2panrep debug layout (Docrep y1 p1) = do
     let pr =
             Panrep

@@ -8,6 +8,8 @@ Index pages are automatically formated, but minimal content must be provided ini
 # Layout
 The code includes an example site in the `docs/site` directory. It contains a file `settingsNN.yaml` which describes the layout of the site. A correponding file must be created for a new site. 
 
+The special directory `resources` is used to keep style (`csl`) and biliography (`bib`) files. In blogs, they are referenced with relative path.
+
 in the `docs` directgory is the separated `theme` directory, which determines the apparence of the site. There must be a link to the theme directory in the dough directory (TODO remove the needs).
 
 Starting with `-t` for `test` selects the settingsfile in the example test site. 
@@ -106,9 +108,12 @@ The tests are indexed by the transformation AtoB
 
 # Compilation - Build - Run 
 ## Compile
+
+run hpack to make sure cabal file is updated
 With 
     *cabal build* in the ssg directory 
-    *cabal install*
+    *cabal run ssbbake -- -t* to run on test data 
+    *cabal install* to make it usable in other directories
 
     uses 
     - ssg.cabal
@@ -119,12 +124,13 @@ With
     There are changes 
         - uniformBase 
         - uniform-strings
+        - uniform-pandoc (only debug output)
 ## test with testsite
 - move to ssg
-- cabal run ssgbake -- -t
+- cabal run ssgbake -- -t (this can be repeated)
 - cd docs/site/baked
-- python3 -m http.server 3000
-- localhost:3000
+- python3 -m http.server 3000 (once after reboot)
+- in browser: localhost:3000
 
 ## run on myhomepage (in the folder)
 
