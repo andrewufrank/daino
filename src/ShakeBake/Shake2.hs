@@ -145,8 +145,9 @@ shakeMD debug layout flags themeP doughP bakedP = shakeArgs2 bakedP $ do
         -- the original start needs in baked (from the files in dough)
 
     -- uncomment to produce pdf's!   
-        -- pdfs <- getNeeds debug doughP bakedP "md" "pdf"
-        -- needP pdfs
+        pdfs <- getNeeds debug doughP bakedP "md" "pdf"
+        needP pdfs
+
         htmls <- getNeeds debug doughP bakedP "md" "html"
         needP htmls
 
@@ -160,8 +161,9 @@ shakeMD debug layout flags themeP doughP bakedP = shakeArgs2 bakedP $ do
         needP imgs2
         publist <- getNeeds debug doughP bakedP "html" "html"
         needP publist
-        pdfs <- getNeeds debug doughP bakedP "pdf" "pdf"
-        needP pdfs
+        -- for the pdfs which are already given in dough
+        pdfs2 <- getNeeds debug doughP bakedP "pdf" "pdf"
+        needP pdfs2
         bibs <- getNeeds debug doughP bakedP "bib" "bib"
         needP bibs
 
@@ -201,7 +203,7 @@ shakeMD debug layout flags themeP doughP bakedP = shakeArgs2 bakedP $ do
             -- why is this here necessary: failed on testSort.pdf?
             -- was ein jpg will ?
             -- TODO improve error from lualatex
-            -- when (informAll debug) $ putIOwords ["rule **/*.pdf need", showT imgs, showT imgs2]
+            -- when (inform debug) $ putIOwords ["rule **/*.pdf need", showT imgs, showT imgs2]
 
             let outP = makeAbsFile out :: Path Abs File
             let fromfile = doughP </> makeRelativeP bakedP outP

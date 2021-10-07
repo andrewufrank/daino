@@ -60,7 +60,7 @@ library
     , uniform-cmdLineArgs
     , uniform-convenience
     , uniform-json
-    , uniform-latex2pdf
+    , uniform-latex2pdf ==0.0.1.1
     , uniform-pandoc ==0.0.2.3
     , uniform-shake
     , uniform-watch
@@ -85,7 +85,7 @@ executable ssgbake
     , uniform-cmdLineArgs
     , uniform-convenience
     , uniform-json
-    , uniform-latex2pdf
+    , uniform-latex2pdf ==0.0.1.1
     , uniform-pandoc ==0.0.2.3
     , uniform-shake
     , uniform-watch
@@ -120,7 +120,7 @@ test-suite ssgTest
     , uniform-cmdLineArgs
     , uniform-convenience
     , uniform-json
-    , uniform-latex2pdf
+    , uniform-latex2pdf ==0.0.1.1
     , uniform-pandoc ==0.0.2.3
     , uniform-shake
     , uniform-watch

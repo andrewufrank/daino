@@ -42,7 +42,7 @@ import Uniform2.HTMLout
 import UniformBase
 
 import Uniform.PandocImports
-import Uniform.Latex
+import Uniform.Latex  -- used for 
 
 
 -- ------------------------------------ panrep2texsnip
@@ -79,9 +79,9 @@ texsnip2tex debug p = do
 -- refdir must be set to current 
 tex2pdf :: NoticeLevel -> Path Abs File ->  Path Abs File ->   ErrIO ()
 tex2pdf debug fn fnres  =  do
-    when (inform debug) $ putIOwords ["\n tex2pdf start"]
+    when (inform debug) $ putIOwords ["\n tex2pdf start for", showT fn]
     let refDir =
             makeAbsDir . getParentDir . toFilePath $ fn :: Path Abs Dir
-    writePDF2 debug fn fnres refDir
+    writePDF2 debug  fn fnres refDir
     when (inform debug) $ putIOwords ["\n tex2pdf done"]
     return ()

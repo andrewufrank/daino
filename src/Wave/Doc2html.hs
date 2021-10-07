@@ -86,7 +86,7 @@ panrep2vals ::  NoticeLevel -> Settings -> Panrep -> ErrIO [Value]
 panrep2vals debug staticMenu (Panrep m1 p1) = do
     let ixe1 = dyIndexEntry m1
     let indexSortField = Data.Maybe.fromMaybe "" (dyIndexSort m1)
-    -- when (informAll debug) $ 
+    -- when (inform debug) $ 
     when (inform debug) $
         putIOwords ["\n\t---------------------------panrep2vals"
                 , "AuthorOppressed"

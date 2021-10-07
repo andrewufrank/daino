@@ -17,7 +17,7 @@ bibliography: "resources/BibTexLatex.bib"
 
 02withRef but no style text - 
  
-The [@frank2010a] and [@frank09geo] is a
+The [@frank2010a] and [@frank09quality] is a
 The references are in "resources/BibTexLatex.bib". 
 The default style is /home/frank/Desktop/myHomepage/resources/chicago-fullnote-bibliography-bb.csl 
 

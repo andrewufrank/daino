@@ -46,7 +46,7 @@ type BakeOp =
 
 bakeOneMD2docrep :: BakeOp --    MD -> DOCREP
 bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
-    when (informAll debug) $    putIOwords
+    when (inform debug) $    putIOwords
         [ "\n-----------------"
         , "bakeOneMD2docrep 1 fn", showT inputFn
         -- , "debug"
@@ -60,7 +60,7 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
     dr3 <- md2docrep debug layout inputFn md1
 
     write8 resfn2 docrepFileType dr3
-    when (informAll debug) $
+    when (inform debug) $
         putIOwords
             [ "\n-----------------"
             , "bakeOneMD2docrep done resfn2"
@@ -182,7 +182,7 @@ bakeOneTex2pdf :: BakeOp
 bakeOneTex2pdf debug flags inputFn layout resfn2 = do
     when (inform debug) $    putIOwords
         [ "\n-----------------"
-        , "bakeOneFile2pdf 1 fn:"
+        , "bakeOneTex2pdf 1 fn:"
         , showT inputFn
         , "\n\t debug:"
         , showT debug
@@ -192,8 +192,8 @@ bakeOneTex2pdf debug flags inputFn layout resfn2 = do
 
     -- let refDir =
             -- makeAbsDir . getParentDir . toFilePath $ inputFn :: Path Abs Dir
-    tex2pdf debug inputFn resfn2  -- content is html style
+    tex2pdf NoticeLevel0  inputFn resfn2  -- content is html style
     when (inform debug) $
         putIOwords
-            ["\n-----------------", "bakeOneFile2pdf done fn", showT resfn2]
+            ["\n-----------------", "bakeOneTex2pdf done fn", showT resfn2]
     return ()

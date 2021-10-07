@@ -173,7 +173,7 @@ addRefs2 debug doughP dr1@(Docrep y1 p1) biblio1 = do
             ]
 
     -- p2 <- readBiblioRefs True bibliofp loc1 stylefp (dyReferences y1) p1
-    p2 <- readBiblioRefs True biblioP loc1 styleP (dyReferences y1) p1
+    p2 <- readBiblioRefs (inform debug) biblioP loc1 styleP (dyReferences y1) p1
 
     when (inform debug) $ putIOwords ["addRefs2-4", "p2\n", showT p2]
 

@@ -87,7 +87,7 @@ convertAny debug sourceP targetP flags layout out anyopName = do
             ]
     if fileExists 
         -- gives recursion, if the file is produced in earlier run
-        then do
+        then do  -- copy file from source to target
             copyFileChangedP fromfilePath outP
             when (inform debug) $
                 -- liftIO $
@@ -96,16 +96,20 @@ convertAny debug sourceP targetP flags layout out anyopName = do
                          ,   "\n\tfromfilePath ", showT fromfilePath, "added NEED automatically"
                          ,  "\n\t  file out", showT out]
         else do
-            when (informAll debug) $ putIOwords 
+            when (inform debug) $ putIOwords 
                 ["\nconvertAny call", anyopName
-                ,  "\n\t fromfilePathExt", showT fromfilePathExt, " cause NEED"   
+                ,  "\n\t fromfilePathExt"
+                    ,  " cause NEED for" ,showT fromfilePathExt  
                 ,  "\n\t file out", showT out
                 ] 
             need [toFilePath fromfilePathExt]    
-            when (informAll debug) $ putIOwords 
-                ["\nconvertAny runErr2Action", anyopName]
+            when (inform debug) $ putIOwords 
+                ["\nconvertAny runErr2Action", anyopName
+                ,  "\n\t fromfilePathExt",  " caused NEED which was then probably satisfied for ", showT fromfilePathExt   
+                ,  "\n\t file out", showT out
+                ]
             runErr2action $ anyop debug flags fromfilePathExt layout outP
-    when (informAll debug) $ putIOwords ["convertAny end for", anyopName]
+    when (inform debug) $ putIOwords ["convertAny end for", anyopName]
     return ()
 
 {- | the generic copy for all the files

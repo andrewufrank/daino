@@ -72,7 +72,7 @@ dependencies:
     - uniform-webserver  # - shake
     - data-default
     - uniform-pandoc == 0.0.2.3 # from u4blog
-    - uniform-latex2pdf 
+    - uniform-latex2pdf ==0.0.1.1
     - pandoc-types
     # -- - uniform-ftp
     # - aeson 
