@@ -86,6 +86,7 @@ texsnip2tex debug p = do
     -- let snips2 =  [p]
     let latexparam = LatexParam 
             { latTitle = dyTitle (snipyam p) 
+            , latAuthor = dyAuthor (snipyam p)
             , latAbstract = dyAbstract (snipyam p)
             , latBibliography = dyBibliography (snipyam p)
             , latStyle    = dyStyle (snipyam p)
