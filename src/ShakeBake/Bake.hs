@@ -69,7 +69,7 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
     return ()
 
 bakeOneDocrep2panrep :: BakeOp --  DOCREP -> PANREP
--- change to metaPage and add index data 
+-- change to metaPage and add index and biblio ref data 
 bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
     when (inform debug) $    putIOwords
         [ "-----------------"
@@ -138,7 +138,8 @@ bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
 
 bakeOnePanrep2texsnip :: BakeOp --  PANREP -> TEXSNIP
 -- TODO
-bakeOnePanrep2texsnip debug flags inputFn layout resfn2 = do
+bakeOnePanrep2texsnip debug flags inputFn sett3 resfn2 = do
+                -- debug flags inputFn layout resfn2 
     when (inform debug) $    putIOwords
         [ "\n-----------------"
         , "bakeOnePanrep2texsnip 1 fn"
@@ -158,7 +159,7 @@ bakeOnePanrep2texsnip debug flags inputFn layout resfn2 = do
     return ()
 
 bakeOneTexsnip2tex :: BakeOp -- TEXSNIP -> TEX
-bakeOneTexsnip2tex debug flags inputFn layout resfn2 = do
+bakeOneTexsnip2tex debug flags inputFn sett3 resfn2 = do
     when (inform debug) $   putIOwords
         [ "\n-----------------"
         , "bakeOneFile2tex 1 fn"
@@ -169,8 +170,14 @@ bakeOneTexsnip2tex debug flags inputFn layout resfn2 = do
         , showT resfn2
         ]
 
+
     snip1 <- read8 inputFn texSnipFileType
-    tex1 <- texsnip2tex NoticeLevel2   snip1 
+
+    let layout = storage sett3
+    let doughP = doughDir layout
+
+
+    tex1 <- texsnip2tex NoticeLevel2 doughP  snip1 
     -- let tex1 = tex2latex2 zero [snip1]
     write8 resfn2 texFileType tex1 -- content is html style
     when (inform debug) $
@@ -179,7 +186,7 @@ bakeOneTexsnip2tex debug flags inputFn layout resfn2 = do
     return ()
 
 bakeOneTex2pdf :: BakeOp
-bakeOneTex2pdf debug flags inputFn layout resfn2 = do
+bakeOneTex2pdf debug flags inputFn sett3 resfn2 = do
     when (inform debug) $    putIOwords
         [ "\n-----------------"
         , "bakeOneTex2pdf 1 fn:"
@@ -192,7 +199,11 @@ bakeOneTex2pdf debug flags inputFn layout resfn2 = do
 
     -- let refDir =
             -- makeAbsDir . getParentDir . toFilePath $ inputFn :: Path Abs Dir
-    tex2pdf NoticeLevel2  inputFn resfn2  -- content is html style
+    -- dr1 <- read8 inputFn docrepFileType
+    let layout = storage sett3
+    let doughP = doughDir layout
+
+    tex2pdf NoticeLevel2  inputFn resfn2 doughP -- content is html style
     when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOneTex2pdf done fn", showT resfn2]

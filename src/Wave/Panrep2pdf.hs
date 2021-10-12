@@ -67,28 +67,34 @@ panrep2texsnip debug (Panrep y p) = do
 -- and a panrep can produce multiple? 
 -- how to deal with shake? 
 
--- data LatexParam = LatexParam
+-- ata LatexParam = LatexParam
 -- -- | the fields from the yaml date passed to latex-pdf
---     { latTitle :: Maybe Text  
---     , latAbstract :: Maybe Text
---     , latBibliography :: Maybe Text
---     , latStyle :: Maybe Text
---     , latContent :: Maybe Text -- ^ a list of the .md files which are collected into a multi-md pdf
+--     { latTitle ::  Text  
+--     , latAuthor :: Text 
+--     , latAbstract ::  Text
+--    , latBibliography :: Maybe (Path Abs File)  -- the bibliio file 
+ --     , latStyle :: Maybe Text
+--     , latContent :: [Text] -- ^ a list of the .md files which are collected into a multi-md pdf
 --     }
- 
-texsnip2tex :: NoticeLevel ->  TexSnip -> ErrIO Latex
+--     deriving (Eq, Ord, Read, Show, Generic)
+
+text2absfile :: Path Abs Dir -> Text -> Path Abs File 
+text2absfile doughP t = doughP </> makeRelFile (t2s t)
+
+texsnip2tex :: NoticeLevel ->  Path Abs Dir -> TexSnip ->  ErrIO Latex
 -- the (lead) snip which comes from the md which gives the name to the resulting tex and pdf 
 -- and ist metadata are included (taken from the snip)
 -- it may include other filenames, the snips of these
 -- are then included in the pdf built. 
-texsnip2tex debug p = do
+texsnip2tex  debug doughP p = do
     when (inform debug) $ putIOwords ["\n texsnip2tex start"]
     -- let snips2 =  [p]
     let latexparam = LatexParam 
             { latTitle = dyTitle (snipyam p) 
             , latAuthor = dyAuthor (snipyam p)
             , latAbstract = dyAbstract (snipyam p)
-            , latBibliography = dyBibliography (snipyam p)
+            , latBibliographyP = fmap (text2absfile doughP) (dyBibliography $ snipyam p)
+            -- make this an abs file name 
             , latStyle    = dyStyle (snipyam p)
             , latContent = dyContentFiles (snipyam p)
         }
@@ -108,12 +114,16 @@ texsnip2tex debug p = do
 -- implements the bake to convert tex to pdf 
 -- input tex must be an ordinary latx file 
 -- operations are with files (not texts)
--- refdir must be set to current 
-tex2pdf :: NoticeLevel -> Path Abs File ->  Path Abs File ->   ErrIO ()
-tex2pdf debug fn fnres  =  do
+
+-- refdir must be set to the dir where searches for 
+-- biblio etc start - 
+-- this is fnres - just the doughPath
+tex2pdf :: NoticeLevel -> Path Abs File ->  Path Abs File ->  Path Abs Dir ->  ErrIO ()
+tex2pdf debug fn fnres doughP  =  do
     when (inform debug) $ putIOwords ["\n tex2pdf start for", showT fn]
-    let refDir =
-            makeAbsDir . getParentDir . toFilePath $ fn :: Path Abs Dir
-    writePDF2 debug  fn fnres refDir
+    -- let refDir =
+    --         makeAbsDir . getParentDir . toFilePath $ fn :: Path Abs Dir
+    -- refDir must be the place where biblio is place (or searched from - best ) - i.e. the root for dough 
+    writePDF2 debug  fn fnres doughP
     when (inform debug) $ putIOwords ["\n tex2pdf done"]
     return ()

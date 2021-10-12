@@ -6,12 +6,13 @@ keywords: homepage
 # pageTemplate: page3.yaml
 abstract: |
     02withRef abstract What are the objects of
-    ontologists .
+    ontologists changed2345.
 
 nocite: |
   @navratil08
 
-bibliography: "resources/BibTexLatex.bib"
+bibliography: "resources/BibTexExample.bib"
+
 style: "resources/chicago-fullnote-bibliography-bb.csl"
 references:
 - id: fenner2012a
@@ -29,10 +30,17 @@ references:
     month: 3
 ---
 
-02withRef text - An example post [@fenner2012a]. With a reference to [@frank09geo] given and navratil08 as nocite. 
-Not including the "TUxx9999" addition in brackets.
-The [@frank-machbarkeit] and [@frank09geo] is a
+02withRef text - An example post 
+
+With a reference to [@frank09geo]  and navratil08 as nocite from the biblio given.
+
+unclear what means: Not including the "TUxx9999" addition in brackets.
+
+The [@frank-machbarkeit] and [@frank09geo] is in the biblio.
+The referenfere [@fenner2012a] is given in the file.
+
 The references are in "resources/BibTexLatex.bib".
+changed to /home/frank/Workspace11/ssg/docs/site/dough/resources/BibTexExample.bib
 
 # References
 
