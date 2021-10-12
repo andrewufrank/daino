@@ -89,7 +89,7 @@ texsnip2tex debug p = do
             , latAbstract = dyAbstract (snipyam p)
             , latBibliography = dyBibliography (snipyam p)
             , latStyle    = dyStyle (snipyam p)
-            , latContent = dyContent (snipyam p)
+            , latContent = dyContentFiles (snipyam p)
         }
  
     let res2 = Latex $ tex2latex latexparam (  unTexSnip p)

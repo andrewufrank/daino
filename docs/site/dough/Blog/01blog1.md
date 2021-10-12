@@ -14,7 +14,7 @@ ein PDF umgewandelt wird.
 # 01blog1 level1 Dies ist der zweite Abschnitt
 und auch ein bischen text.
 
-## mit einer unterabschnitt
-hier.
+## mit einem unterabschnitt
+hier ist der text fuer den unterabschnitt.
 
 das waers. es fehlt Referenzen, listen und aehnliches

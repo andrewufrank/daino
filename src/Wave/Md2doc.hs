@@ -94,7 +94,7 @@ pandoc2docrep debug doughP bakedP filename pd =
                 , dyStyle = getAtKey meta2 "style"
                 , dyNoCite = getAtKey meta2 "nocite"
                 , dyReferences = gak meta2 "references"
-                , dyContent = maybeToList  . getAtKey meta2 $ "content"
+                , dyContentFiles = maybeToList  . getAtKey meta2 $ "content"
                 -- TODO make reading a list
                 , dyBibliography = getAtKey meta2 "bibliography"
                 , dyPublish = getAtKey meta2 "publish"

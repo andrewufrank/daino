@@ -60,7 +60,7 @@ data MetaPage = MetaPage
     -- a bibliography is trigger to process
     , dyStyle :: Maybe Text
     , dyReferences :: Maybe Value --  [Reference]
-    , dyContent :: [Text] -- the list of md files to include 
+    , dyContentFiles :: [Text] -- the list of md files to include 
     , dyNoCite :: Maybe Text
     , dyPublish :: Maybe Text -- not used yet!
     -- , dyIndexPage :: Bool
