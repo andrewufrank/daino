@@ -15,7 +15,8 @@ the [pdf_file](/Blog/resources/blogtest.pdf)
 
 probably a ref [alternate](./resources/blogtest.pdf)
 
-An example post. 
+In the pdf for the blog only the alternate is found!
+
 
 postwk but in blog - not in SubBlog
 with some additional text 

@@ -33,6 +33,7 @@
     jedes texsnip gibt ein tex
         die indexseiten, die grosse themen zusammenfassen
         produzieren ein tex mit includes fuer die subseiten
+        und der preamble/post fuer e.g. biblio
     jedes tex gibt ein pdf
     das heisst: jedes md gibt ein pdf (auch eingestellte)
     -}

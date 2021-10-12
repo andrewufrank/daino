@@ -170,7 +170,7 @@ bakeOneTexsnip2tex debug flags inputFn layout resfn2 = do
         ]
 
     snip1 <- read8 inputFn texSnipFileType
-    tex1 <- texsnip2tex debug snip1 
+    tex1 <- texsnip2tex NoticeLevel2   snip1 
     -- let tex1 = tex2latex2 zero [snip1]
     write8 resfn2 texFileType tex1 -- content is html style
     when (inform debug) $
@@ -192,7 +192,7 @@ bakeOneTex2pdf debug flags inputFn layout resfn2 = do
 
     -- let refDir =
             -- makeAbsDir . getParentDir . toFilePath $ inputFn :: Path Abs Dir
-    tex2pdf NoticeLevel0  inputFn resfn2  -- content is html style
+    tex2pdf NoticeLevel2  inputFn resfn2  -- content is html style
     when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOneTex2pdf done fn", showT resfn2]

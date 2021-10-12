@@ -57,8 +57,10 @@ data MetaPage = MetaPage
       dyDate :: Maybe Text
     , dyKeywords :: Text -- should be [Text]
     , dyBibliography :: Maybe Text
+    -- a bibliography is trigger to process
     , dyStyle :: Maybe Text
     , dyReferences :: Maybe Value --  [Reference]
+    , dyContent :: [Text] -- the list of md files to include 
     , dyNoCite :: Maybe Text
     , dyPublish :: Maybe Text -- not used yet!
     -- , dyIndexPage :: Bool

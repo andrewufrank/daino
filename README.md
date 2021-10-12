@@ -59,7 +59,7 @@ The code is in the subdir `ShakeBake`.
 
 - `panrep`: Input format for pandoc with metadata as record; same format as docrep, but index completed
 - `html`: a page for the browser to show
-- `texsnip`: intermediate format of a part of a page
+- `texsnip`: intermediate format of a part of a page, contains the metapage (yaml metadata)
 - `tex`: a tex file for a page
 - `pdf`: a printable page
 

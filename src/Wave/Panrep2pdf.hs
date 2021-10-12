@@ -24,6 +24,7 @@
 {- | the representation with indices
  ready for processing to HTML or to TexSnip -> Tex -> Pdf
 -}
+{-# OPTIONS_GHC -Wno-deferred-type-errors #-}
 module Wave.Panrep2pdf (
     module Wave.Panrep2pdf,
 ) where
@@ -42,7 +43,7 @@ import Uniform2.HTMLout
 import UniformBase
 
 import Uniform.PandocImports
-import Uniform.Latex  -- used for 
+import Uniform.Latex ( tex2latex, writePDF2, LatexParam (..))  -- used for 
 
 
 -- ------------------------------------ panrep2texsnip
@@ -65,17 +66,47 @@ panrep2texsnip debug (Panrep y p) = do
 -- is this just a single language snip
 -- and a panrep can produce multiple? 
 -- how to deal with shake? 
-texsnip2tex :: NoticeLevel -> TexSnip -> ErrIO Latex
+
+-- data LatexParam = LatexParam
+-- -- | the fields from the yaml date passed to latex-pdf
+--     { latTitle :: Maybe Text  
+--     , latAbstract :: Maybe Text
+--     , latBibliography :: Maybe Text
+--     , latStyle :: Maybe Text
+--     , latContent :: Maybe Text -- ^ a list of the .md files which are collected into a multi-md pdf
+--     }
+ 
+texsnip2tex :: NoticeLevel ->  TexSnip -> ErrIO Latex
+-- the (lead) snip which comes from the md which gives the name to the resulting tex and pdf 
+-- and ist metadata are included (taken from the snip)
+-- it may include other filenames, the snips of these
+-- are then included in the pdf built. 
 texsnip2tex debug p = do
     when (inform debug) $ putIOwords ["\n texsnip2tex start"]
-    let snips2 =  [p]
-    let res2 = Latex $ tex2latex zero (map unTexSnip snips2)
+    -- let snips2 =  [p]
+    let latexparam = LatexParam 
+            { latTitle = dyTitle (snipyam p) 
+            , latAbstract = dyAbstract (snipyam p)
+            , latBibliography = dyBibliography (snipyam p)
+            , latStyle    = dyStyle (snipyam p)
+            , latContent = dyContent (snipyam p)
+        }
+ 
+    let res2 = Latex $ tex2latex latexparam (  unTexSnip p)
+    -- TODO add here the LatexParam (title, abstract, content, biblio, style)
+    -- extracted from first param of texsnip
+    -- which texsnip if there are multiple?
+        -- allow multiple biblios?
+
+    -- tex file must be full, ordinary latex content
+
     when (inform debug) $ putIOwords ["\n texsnip2tex done"]
     return res2
 
 -- ------------------------------------ tex2pdf
--- implements the bake
--- TODO simplify, operations are with files (not texts)
+-- implements the bake to convert tex to pdf 
+-- input tex must be an ordinary latx file 
+-- operations are with files (not texts)
 -- refdir must be set to current 
 tex2pdf :: NoticeLevel -> Path Abs File ->  Path Abs File ->   ErrIO ()
 tex2pdf debug fn fnres  =  do
