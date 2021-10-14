@@ -3,6 +3,8 @@
 *.bbl
 *.run.xml
 *.synctex.gz
+*.pdf
+*.tex
 dist
 dist-newstyle
 .stack-work
