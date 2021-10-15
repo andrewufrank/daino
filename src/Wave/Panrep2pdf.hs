@@ -95,7 +95,8 @@ texsnip2tex  debug doughP p = do
             , latAbstract = dyAbstract (snipyam p)
             , latBibliographyP = fmap (text2absfile doughP) (dyBibliography $ snipyam p)
             -- make this an abs file name 
-            , latStyle    = dyStyle (snipyam p)
+            -- , latStyle    = dyStyle (snipyam p)
+            , latBook = False  -- will be used for books
             , latContent = dyContentFiles (snipyam p)
         }
  
