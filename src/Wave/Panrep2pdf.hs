@@ -116,14 +116,15 @@ texsnip2tex  debug doughP p = do
 -- operations are with files (not texts)
 
 -- refdir must be set to the dir where searches for 
--- biblio etc start - 
+-- biblio etc start - seems not correct
+-- the refdir is where the intermediate files are put
 -- this is fnres - just the doughPath
 tex2pdf :: NoticeLevel -> Path Abs File ->  Path Abs File ->  Path Abs Dir ->  ErrIO ()
 tex2pdf debug fn fnres doughP  =  do
     when (inform debug) $ putIOwords ["\n tex2pdf start for", showT fn]
-    -- let refDir =
-    --         makeAbsDir . getParentDir . toFilePath $ fn :: Path Abs Dir
+    let refDir =
+            makeAbsDir . getParentDir . toFilePath $ fn :: Path Abs Dir
     -- refDir must be the place where biblio is place (or searched from - best ) - i.e. the root for dough 
-    writePDF2 debug  fn fnres doughP
+    writePDF2 debug  fn fnres refDir
     when (inform debug) $ putIOwords ["\n tex2pdf done"]
     return ()
