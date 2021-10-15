@@ -11,7 +11,7 @@ abstract: |
 nocite: |
   @navratil08
 
-bibliography: "resources/BibTexExample.bib"
+bibliography: "resources/BibTexLatex.bib"
 
 style: "resources/chicago-fullnote-bibliography-bb.csl"
 references:
