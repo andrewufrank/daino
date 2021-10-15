@@ -31,7 +31,7 @@ references:
     month: 3
 ---
 
-02withRef text - An example post version 1234
+02withRef text - An example post version 12345
 
 With a reference to [@frank09geo]  and navratil08 as nocite from the biblio given.
 

@@ -92,6 +92,7 @@ pandoc2docrep debug doughP bakedP filename pd =
                 , dyDate = getAtKey meta2 "date"
                 , dyKeywords = fromMaybe "" $ getAtKey meta2 "keywords"
                 , dyStyle = getAtKey meta2 "style"
+                , dyStyleBiber = fromMaybe "authoryear" $ getAtKey meta2 "styleBiber"
                 , dyNoCite = getAtKey meta2 "nocite"
                 , dyReferences = gak meta2 "references"
                 , dyContentFiles = maybeToList  . getAtKey meta2 $ "content"

@@ -59,6 +59,7 @@ data MetaPage = MetaPage
     , dyBibliography :: Maybe Text
     -- a bibliography is trigger to process
     , dyStyle :: Maybe Text
+    , dyStyleBiber :: Text
     , dyReferences :: Maybe Value --  [Reference]
     , dyContentFiles :: [Text] -- the list of md files to include 
     , dyNoCite :: Maybe Text
@@ -85,7 +86,7 @@ instance Default MetaPage where
             , dyKeywords = zero
             , dyBibliography = Just "resources/BibTexLatex.bib"
             , dyStyle = Just "chicago-fullnote-bibliography-bb.csl"
-            -- , dyStyleBiber = "authoryear"
+            , dyStyleBiber = "authoryear"
             , dyPublish = Nothing
             -- , dyIndexPage = False
             , dyIndexSort = zero

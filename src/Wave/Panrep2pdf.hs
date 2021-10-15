@@ -99,7 +99,7 @@ texsnip2tex  debug doughP p = do
                 -- fmap (text2absfile doughP) 
                 (dyBibliography $ snipyam p)
             -- make this an abs file name 
-            , latStyle    = "authoryear"
+            , latStyle    = dyStyleBiber (snipyam  p)
                 --  maybe "authoryear" id $ dyStyleBiber (snipyam p)
             , latBook = False  -- will be used for books
             , latContent = dyContentFiles (snipyam p)
