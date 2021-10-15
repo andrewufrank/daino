@@ -83,8 +83,9 @@ instance Default MetaPage where
             , dyAuthor = "Andrew U Frank"
             , dyDate = Just . showT $ year2000
             , dyKeywords = zero
-            , dyBibliography = Just "BibTexLatex.bib"
+            , dyBibliography = Just "resources/BibTexLatex.bib"
             , dyStyle = Just "chicago-fullnote-bibliography-bb.csl"
+            -- , dyStyleBiber = "authoryear"
             , dyPublish = Nothing
             -- , dyIndexPage = False
             , dyIndexSort = zero

@@ -68,18 +68,20 @@ panrep2texsnip debug (Panrep y p) = do
 -- how to deal with shake? 
 
 -- ata LatexParam = LatexParam
--- -- | the fields from the yaml date passed to latex-pdf
---     { latTitle ::  Text  
+-- { latTitle ::  Text  
 --     , latAuthor :: Text 
 --     , latAbstract ::  Text
---    , latBibliography :: Maybe (Path Abs File)  -- the bibliio file 
- --     , latStyle :: Maybe Text
+--     , latBibliographyP :: Text  -- the bibliio file 
+--             -- problem with multiple files? 
+--     , latStyle :: Text
+--             -- is not used 
+--     , latBook :: Bool  -- is this a long text for a book/booklet
 --     , latContent :: [Text] -- ^ a list of the .md files which are collected into a multi-md pdf
---     }
+--     -- }
 --     deriving (Eq, Ord, Read, Show, Generic)
 
-text2absfile :: Path Abs Dir -> Text -> Path Abs File 
-text2absfile doughP t = doughP </> makeRelFile (t2s t)
+text2absFile :: Path Abs Dir -> Text -> Path Abs File 
+text2absFile doughP t = doughP </> makeRelFile (t2s t)
 
 texsnip2tex :: NoticeLevel ->  Path Abs Dir -> TexSnip ->  ErrIO Latex
 -- the (lead) snip which comes from the md which gives the name to the resulting tex and pdf 
@@ -93,9 +95,12 @@ texsnip2tex  debug doughP p = do
             { latTitle = dyTitle (snipyam p) 
             , latAuthor = dyAuthor (snipyam p)
             , latAbstract = dyAbstract (snipyam p)
-            , latBibliographyP = fmap (text2absfile doughP) (dyBibliography $ snipyam p)
+            , latBibliographyP = maybe "" (s2t . toFilePath . text2absFile doughP)
+                -- fmap (text2absfile doughP) 
+                (dyBibliography $ snipyam p)
             -- make this an abs file name 
-            -- , latStyle    = dyStyle (snipyam p)
+            , latStyle    = "authoryear"
+                --  maybe "authoryear" id $ dyStyleBiber (snipyam p)
             , latBook = False  -- will be used for books
             , latContent = dyContentFiles (snipyam p)
         }

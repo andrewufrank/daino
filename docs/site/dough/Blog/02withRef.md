@@ -14,6 +14,7 @@ nocite: |
 bibliography: "resources/BibTexLatex.bib"
 
 style: "resources/chicago-fullnote-bibliography-bb.csl"
+styleBiber: "numeric"
 references:
 - id: fenner2012a
   title: One-click science marketing

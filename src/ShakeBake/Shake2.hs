@@ -245,7 +245,7 @@ shakeMD debug layout flags themeP doughP bakedP = shakeArgs2 bakedP $ do
     (toFilePath bakedP <> "/*.css")
         %> \out -> -- insert css -- no subdir
             copyFileToBaked debug doughP bakedP out
-    (toFilePath bakedP <> "/*.csl")
+    (toFilePath bakedP <> "/*.csl")  -- not used with biber TODO 
         %> \out -> -- insert css -- no subdir
             copyFileToBaked debug doughP bakedP out
 
