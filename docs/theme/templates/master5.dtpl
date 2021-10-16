@@ -53,6 +53,7 @@ $-- instructions are https://pandoc.org/MANUAL.html#templates
             <div class="middle-left"><h1><a href="/index.html">$settings.sitename$</h1></div>
             <div class="bottom-left"><h3>$settings.byline$</h3></div>
             <div class="bottomzero">        $-- the ribbon with links 
+                <!--  here some problem with the ribbon jumping up -->
                 <section class="header">
                 <section class="menu">
                     <ul>

@@ -89,6 +89,10 @@ instance Default SiteLayout where
 instance Default Settings where 
     def = settingsDefault
 
+settingsDefault :: Settings
+-- | the default values for settings
+-- valid should be the content from the settings3.yaml file
+-- which is stored ind docs/site (and linked in ssg/ )
 settingsDefault = Settings 
     {storage = SiteLayout 
         {themeDir = makeAbsDir "/home/frank/Workspace11/ssg/docs/theme/", 
