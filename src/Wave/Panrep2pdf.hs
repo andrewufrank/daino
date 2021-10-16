@@ -39,6 +39,7 @@ import Lib.IndexCollect
 import Lib.Templating
 import Uniform.Json
 import Uniform.Pandoc
+-- import encodeToLazyText
 import Uniform2.HTMLout
 import UniformBase
 
@@ -99,6 +100,7 @@ texsnip2tex  debug doughP p = do
                 -- fmap (text2absfile doughP) 
                 (dyBibliography $ snipyam p)
             -- make this an abs file name 
+            , latReferences = maybe "" (shownice ) $ dyReferences (snipyam p)
             , latStyle    = dyStyleBiber (snipyam  p)
                 --  maybe "authoryear" id $ dyStyleBiber (snipyam p)
             , latBook = False  -- will be used for books
