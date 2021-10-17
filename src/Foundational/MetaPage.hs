@@ -59,6 +59,8 @@ data MetaPage = MetaPage
       --  should be utctime
       dyDate :: Maybe Text
     , dyKeywords :: Text -- should be [Text]
+    , dyImage ::  Text  -- empty if nothing given
+    , dyImageCaption :: Text 
     , dyBibliography :: Maybe Text
     -- a bibliography is trigger to process
     , dyStyle :: Maybe Text

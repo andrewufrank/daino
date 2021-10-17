@@ -90,6 +90,9 @@ pandoc2docrep debug doughP bakedP filename pd =
                 , dyAbstract = fromMaybe "FILL_dyAbstract" $ getAtKey meta2 "abstract"
                 , dyAuthor = fromMaybe "FILL_dyAuthor" $ getAtKey meta2 "author"
                 , dyDate = getAtKey meta2 "date"
+                , dyBibliography = getAtKey meta2 "bibliography"
+                , dyImage = fromMaybe "" $ getAtKey meta2 "image"
+                , dyImageCaption = fromMaybe "" $ getAtKey meta2 "caption"
                 , dyKeywords = fromMaybe "" $ getAtKey meta2 "keywords"
                 , dyStyle = getAtKey meta2 "style"
                 , dyStyleBiber = fromMaybe "authoryear" $ getAtKey meta2 "styleBiber"
@@ -97,7 +100,6 @@ pandoc2docrep debug doughP bakedP filename pd =
                 , dyReferences = gak meta2 "references"
                 , dyContentFiles = maybeToList  . getAtKey meta2 $ "content"
                 -- TODO make reading a list
-                , dyBibliography = getAtKey meta2 "bibliography"
                 , dyPublish = getAtKey meta2 "publish"
                 -- , -- TODO use pbulicationState
                 --   dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"

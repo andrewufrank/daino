@@ -1,10 +1,12 @@
 ---
-title: 04mitPDF title post mit pdf
+title: 06mitImage title post mit pdf
 author: AUF
 date: Jan. 4, 2019
 keywords: test
 abstract: 04mitPDF abstract  
 # pageTemplate: page3.yaml
+image: /Blog/resources/120-2026_IMG.JPG
+caption: "Skipiste oberhalb Obergurgl"
 ---
 
 04mitPDF text without a hl version1
