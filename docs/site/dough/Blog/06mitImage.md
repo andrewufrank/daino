@@ -9,7 +9,7 @@ image: /Blog/resources/120-2026_IMG.JPG
 caption: "Skipiste oberhalb Obergurgl"
 ---
 
-04mitPDF text without a hl version1
+04mitPDF text without a hl version12
 
 Some text without meaning; really? with an image 
 

@@ -28,9 +28,10 @@ settingsBlogAuthorOppressed:
   - "Andrew U. Frank" 
 settingsDate: 2019-01-01
 settings : 
-    sitename : siteName
-    byline : siteByLine 
-    banner: /templates/img/symmetricGeras2.jpg
+    sitename : siteName3
+    byline : siteByLine3 
+    banner: /resources/templates/img/symmetricGeras2.jpg
+    bannerCaption: "ruhiger Sommer im Garten in Geras"
 
 menuitems:
     menuNav:

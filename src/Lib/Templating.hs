@@ -49,6 +49,8 @@ include-before
 settings
     sitename 
     byline 
+    banner 
+    bannerCaptionm
 menu 
     link 
     text 

@@ -50,6 +50,7 @@ data Settings2 = Settings2
     { sitename :: FilePath 
     , byline :: Text 
     , banner :: FilePath 
+    , bannerCaption :: Text 
     } deriving (Show, Read, Ord, Eq, Generic, Zeros)
 instance ToJSON Settings2
 instance FromJSON Settings2

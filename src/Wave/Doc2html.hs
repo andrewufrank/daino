@@ -96,14 +96,14 @@ panrep2vals debug staticMenu (Panrep m1 p1) = do
     -- in uniform.Pandoc (dort noch mehr moeglicherweise duplicated)
     p2 <-  fillContent ixe1 html
     when (inform debug) $ putIOwords ["panrep2vals", "m1", showPretty m1]
-    when (inform debug) $ putIOwords ["panrep2vals", "staticmenu", showPretty staticMenu]
+    when (informAll debug) $ putIOwords ["panrep2vals", "staticmenu", showPretty staticMenu]
     when (inform debug) $putIOwords ["panrep2vals", "menu4", showPretty menu4]
     when (inform debug) $putIOwords ["panrep2vals", "p2", showPretty p2]
     let vals = [toJSON staticMenu, toJSON m1, toJSON menu4, toJSON p2]
     -- m1 is what is from the yaml meta from the file
     -- menu4 is menu collected 
     -- order matters left preference?
-    when (inform debug) $putIOwords ["panrep2vals", "vals", showPretty vals]
+    when (informAll debug) $putIOwords ["panrep2vals", "vals", showPretty vals]
     return vals
 
 panrep2html2 :: NoticeLevel -- ^ 
