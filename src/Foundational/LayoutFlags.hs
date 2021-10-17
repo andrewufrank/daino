@@ -64,6 +64,7 @@ data MenuItem = MenuItem
     { navlink :: FilePath 
     , navtext :: Text
     -- , navpdf :: Text  -- for the link to the pdf 
+    -- not a good idead to put here
     } deriving (Show, Read, Ord, Eq, Generic, Zeros)
 instance ToJSON MenuItem
 instance FromJSON MenuItem

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- the master page `master5.dtpl` 
+<!-- the master page `master5.dtpl` version 1
     (name is printed at bottom of page and must be edited if changed!)
     
     master for the pandoc templating mechanism (putValInMaster in Templating.hs)
@@ -17,7 +17,7 @@
 
 $-- instructions are https://pandoc.org/MANUAL.html#templates
 
-<html lang="$lang$">  $--this is a comment
+<html lang="$lang$">  $--this is a comment not inserted in html 
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
@@ -39,13 +39,13 @@ $-- instructions are https://pandoc.org/MANUAL.html#templates
   </head>
 
   <body>
-    <!-- AF - my template for pandoc page  -->
+    <!-- body of html page  -->
     $for(include-before)$
     $include-before$
     $endfor$
 
     <div class="container">
-      <section class="hero">
+      <section class="hero">  <!-- hero section  -->
         <div class="hero-image">
             <img src=/resources/templates/img/DSC04907.JPG
                 alt="ruhiger Sommer im Garten in Geras" >
@@ -68,7 +68,7 @@ $-- instructions are https://pandoc.org/MANUAL.html#templates
       </section>
     </div>
 
-    <section>
+    <section>  <!-- title section  -->
         $if(title)$
         <header>
             <h1 class="title">$title$</h1>
@@ -92,6 +92,7 @@ $-- instructions are https://pandoc.org/MANUAL.html#templates
 
         $beforeContent$
         $if(abstract)$abstract: $abstract$ 
+        $-- <br> for pdf: $menu2
         $endif$
         <!--content-from-panrep-blocks which is the content of the index.md -->$content$
         $afterContent$
@@ -102,12 +103,14 @@ $-- instructions are https://pandoc.org/MANUAL.html#templates
 
     </section>
 
-    <section class=menu2>
+    <section class=menu2>     <!-- menu2 section  -->
 		<ul>
             	$for(menu2files)$ 
-				  <li>
+				  <li>     <!-- list item menu2files:  -->
 				    <a href=/$menu2files.link2$><em>$menu2files.title2$ </em></a>
-				    $if(menu2files.abstract2)$<br>$menu2files.abstract2$$endif$		     
+				    $if(menu2files.abstract2)$<br>$menu2files.abstract2$
+                    <a href=/$menu2files.pdf2$>  for pdf</a>
+                    $endif$		     
 				    <span class=tiny>$menu2files.author2$ $menu2files.date2$ 
                      </span>
                   </li>
@@ -125,10 +128,9 @@ $-- instructions are https://pandoc.org/MANUAL.html#templates
 		</ul>
     </section>
 
-    <p class=tiny>
+    <p class=tiny>  <!-- bottom tiny section  -->
     Produced with SGG $ssgversion$ on $today2$ with master5.dtpl.
     </p>
-
 
   </body>
 </html>

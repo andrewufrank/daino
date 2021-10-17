@@ -89,7 +89,8 @@ data Index4html = Index4html
     text2      :: Text, -- the filename with no extension as title 
 
     -- | the url relative web root
-    link2      :: Text,
+    link2      :: Text,  -- ^ link to html 
+    pdf2        :: Text, -- ^ link to pdf 
     -- | the title as shown
     title2     :: Text,
     abstract2  :: Text,
@@ -102,7 +103,7 @@ data Index4html = Index4html
   deriving (Generic, Eq, Ord, Show, Read)
 
 instance Zeros Index4html where
-  zero = Index4html zero zero zero zero zero zero zero
+  zero = Index4html zero zero zero zero zero zero zero zero
 
 instance FromJSON Index4html
 
@@ -127,6 +128,11 @@ getOneIndexEntryPure hpAuthor indexEntry1 =
       link2 =  s2t . -- s2t . toFilePath $ 
           setExtension "html" . removeExtension
           -- TODO use extHTML
+            . link
+            $ indexEntry1,
+      pdf2 =  s2t . -- s2t . toFilePath $ 
+          setExtension "pdf" . removeExtension
+          -- TODO use extPDF
             . link
             $ indexEntry1,
       abstract2 = abstract indexEntry1,
