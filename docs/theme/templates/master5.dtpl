@@ -15,7 +15,7 @@
     sollten fuer die indexseiten ein anderer master verwendet werden?
 	-->
 
-$-- instructions are https://pandoc.org/MANUAL.html#templates
+$-- instructions are 
 
 <html lang="$lang$">  $--this is a comment not inserted in html 
   <head>
@@ -47,10 +47,13 @@ $-- instructions are https://pandoc.org/MANUAL.html#templates
     <div class="container">
       <section class="hero">  <!-- hero section  -->
         <div class="hero-image">
-            <img src=$settings.banner$  
-            $--/resources/templates/img/DSC04907.JPG
-                alt=$settings.bannerCaption$> $-- "ruhiger Sommer im Garten in Geras" >
-
+            $if(image)$ 
+                <img src=$image$  $-- should be scaled to width
+                    alt=$imageCaption$>  
+            $else$
+                <img src=$settings.banner$  
+                    alt=$settings.bannerCaption$>  
+            $endif$
             <div class="middle-left"><h1><a href="/index.html">$settings.sitename$</h1></div>
             <div class="bottom-left"><h3>$settings.byline$</h3></div>
             <div class="bottomzero">        $-- the ribbon with links 

@@ -3,13 +3,13 @@ title: 06mitImage title post mit image
 author: AUF
 date: Jan. 4, 2019
 keywords: test
-abstract: 04mitPDF abstract  
+abstract: 06mit image abstract  
 # pageTemplate: page3.yaml
 image: /Blog/resources/120-2026_IMG.JPG
 caption: "Skipiste oberhalb Obergurgl"
 ---
 
-06mimage text with an image in the banner version12
+06mimage text with an image in the banner version1234
 
 Some text without meaning; really? with an image 
 
