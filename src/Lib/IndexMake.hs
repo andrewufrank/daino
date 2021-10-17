@@ -125,15 +125,8 @@ getOneIndexEntryPure :: [Text] -> IndexEntry -> Index4html
 getOneIndexEntryPure hpAuthor indexEntry1 =
   Index4html
     { text2 = s2t . takeBaseName'   . ixfn $ indexEntry1
-    , link2 =  convertLink2html $
-          -- TODO use extHTML
-              indexEntry1
-    , pdf2 =  convertLink2pdf $  indexEntry1 
-    --   s2t . -- s2t . toFilePath $ 
-    --       setExtension "pdf" . removeExtension
-    --       -- TODO use extPDF
-    --         . link
-    --         $ indexEntry1,
+    , link2 =  convertLink2html indexEntry1
+    , pdf2 =  convertLink2pdf  indexEntry1 
     , abstract2 = abstract indexEntry1
     , title2 =
         if isZero (title indexEntry1 :: Text)

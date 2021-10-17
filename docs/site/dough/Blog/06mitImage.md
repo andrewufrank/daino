@@ -1,5 +1,5 @@
 ---
-title: 06mitImage title post mit pdf
+title: 06mitImage title post mit image
 author: AUF
 date: Jan. 4, 2019
 keywords: test
@@ -9,7 +9,7 @@ image: /Blog/resources/120-2026_IMG.JPG
 caption: "Skipiste oberhalb Obergurgl"
 ---
 
-04mitPDF text without a hl version12
+06mimage text with an image in the banner version12
 
 Some text without meaning; really? with an image 
 
