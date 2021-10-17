@@ -15,7 +15,7 @@ bibliography: "resources/BibTexLatex.bib"
 
 ---
 
-02withRef but no style text - version1234
+02withRef but no style text - version123456
  
 The [@frank09geo] and [@frank-machbarkeit] are just refs.
 

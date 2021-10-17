@@ -197,3 +197,9 @@ initializeIndex MetaPage{..} = ix1
 
 isIndexPage :: Path Abs File -> Bool 
 isIndexPage filename =  getNakedFileName filename == "index"
+
+convertLink2html ix = s2t . -- s2t . toFilePath $ 
+          setExtension "html" . removeExtension $ ixfn ix
+
+convertLink2pdf ix =  s2t . -- s2t . toFilePath $ 
+          setExtension "pdf" . removeExtension $ link ix

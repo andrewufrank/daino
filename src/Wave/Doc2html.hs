@@ -94,7 +94,7 @@ panrep2vals debug staticMenu (Panrep m1 p1) = do
     menu4 :: MenuEntry <- convertIndexEntries  debug (settingsBlogAuthorOppressed staticMenu) indexSortField ixe1
     html <- writeHtml5String2 p1
     -- in uniform.Pandoc (dort noch mehr moeglicherweise duplicated)
-    p2 <-  fillContent (ixfn ixe1) (link ixe1) html
+    p2 <-  fillContent ixe1 html
     when (inform debug) $ putIOwords ["panrep2vals", "m1", showPretty m1]
     when (inform debug) $ putIOwords ["panrep2vals", "staticmenu", showPretty staticMenu]
     when (inform debug) $putIOwords ["panrep2vals", "menu4", showPretty menu4]
@@ -115,13 +115,13 @@ panrep2html2 debug masterfn vals = do
     when (inform debug) $ putIOwords ["\n panrep2html done"]
     return p
 
-fillContent origfn relFp cont = do 
+fillContent ix cont = do 
         today1 :: UTCTime <- getCurrentTimeUTC
         let res = ContentHtml
                 { content3 = cont 
                 , today3 = showT today1
-                , linkpdf3 = s2t origfn -- TODO 
-                , filename3 = s2t origfn
+                , linkpdf3 = convertLink2pdf ix   
+                , filename3 = convertLink2html ix
                 }
         return res
 

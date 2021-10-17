@@ -124,25 +124,24 @@ getOneIndexEntryPure :: [Text] -> IndexEntry -> Index4html
 -- Text should be "/Blog/postTufteStyled.html"
 getOneIndexEntryPure hpAuthor indexEntry1 =
   Index4html
-    { text2 = s2t . takeBaseName'   . ixfn $ indexEntry1,
-      link2 =  s2t . -- s2t . toFilePath $ 
-          setExtension "html" . removeExtension
+    { text2 = s2t . takeBaseName'   . ixfn $ indexEntry1
+    , link2 =  convertLink2html $
           -- TODO use extHTML
-            . link
-            $ indexEntry1,
-      pdf2 =  s2t . -- s2t . toFilePath $ 
-          setExtension "pdf" . removeExtension
-          -- TODO use extPDF
-            . link
-            $ indexEntry1,
-      abstract2 = abstract indexEntry1,
-      title2 =
+              indexEntry1
+    , pdf2 =  convertLink2pdf $  indexEntry1 
+    --   s2t . -- s2t . toFilePath $ 
+    --       setExtension "pdf" . removeExtension
+    --       -- TODO use extPDF
+    --         . link
+    --         $ indexEntry1,
+    , abstract2 = abstract indexEntry1
+    , title2 =
         if isZero (title indexEntry1 :: Text)
           then s2t . takeBaseName'   .  ixfn $ indexEntry1
-          else title indexEntry1,
-      author2 = blankAuthorName hpAuthor (author indexEntry1),
-      date2 = date indexEntry1,
-      publish2 = shownice $ publish indexEntry1
+          else title indexEntry1
+    , author2 = blankAuthorName hpAuthor (author indexEntry1)
+    , date2 = date indexEntry1
+    , publish2 = shownice $ publish indexEntry1
     --   indexPage2 = indexPage indexEntry1
     }
 
