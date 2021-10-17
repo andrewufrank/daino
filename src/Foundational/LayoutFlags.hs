@@ -63,6 +63,7 @@ instance FromJSON MenuItems
 data MenuItem = MenuItem  
     { navlink :: FilePath 
     , navtext :: Text
+    -- , navpdf :: Text  -- for the link to the pdf 
     } deriving (Show, Read, Ord, Eq, Generic, Zeros)
 instance ToJSON MenuItem
 instance FromJSON MenuItem
@@ -84,40 +85,40 @@ instance FromJSON SiteLayout
 -- instance NiceStrings SiteLayout where
 --     shownice d = replace' ", " ",\n " (showT d)
 
-instance Default SiteLayout where 
-    def = layoutDefaults
-instance Default Settings where 
-    def = settingsDefault
+-- instance Default SiteLayout where 
+--     def = layoutDefaults
+-- instance Default Settings where 
+--     def = settingsDefault
 
-settingsDefault :: Settings
--- | the default values for settings
--- valid should be the content from the settings3.yaml file
--- which is stored ind docs/site (and linked in ssg/ )
-settingsDefault = Settings 
-    {storage = SiteLayout 
-        {themeDir = makeAbsDir "/home/frank/Workspace11/ssg/docs/theme/", 
-        doughDir = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/dough/", 
-        bakedDir = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/baked/", 
-        masterTemplateFile = makeRelFile "master5.dtpl"
-        }, 
-    localhostPort = 3000, 
-    settingsAuthor = "Author of Settings", 
-    settingsBlogAuthorOppressed = ["AUF", "Andrew U. Frank"],
-    settingsDate = "2019-01-01", 
-    settings = Settings2 
-        {sitename = "siteNameExample-Default", 
-        byline = "siteByLineExample-Default", 
-        banner = "/templates/img/symmetricGeras2.jpg"
-        }, 
-    menuitems = MenuItems 
-        {menuNav=[
-            MenuItem {navlink = "/Blog/index.html", navtext = "Blog"},
-            MenuItem {navlink = "/PublicationList/index.html", navtext = "Publications"},
-            MenuItem {navlink = "/SSGdesign/index.html", navtext = "SSG Documentation"}
-            ]
-        }
-    -- today = "2021-05-30"
-    }
+-- settingsDefault :: Settings
+-- -- | the default values for settings
+-- -- valid should be the content from the settings3.yaml file
+-- -- which is stored ind docs/site (and linked in ssg/ )
+-- settingsDefault = Settings 
+--     {storage = SiteLayout 
+--         {themeDir = makeAbsDir "/home/frank/Workspace11/ssg/docs/theme/", 
+--         doughDir = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/dough/", 
+--         bakedDir = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/baked/", 
+--         masterTemplateFile = makeRelFile "master5.dtpl"
+--         }, 
+--     localhostPort = 3000, 
+--     settingsAuthor = "Author of Settings", 
+--     settingsBlogAuthorOppressed = ["AUF", "Andrew U. Frank"],
+--     settingsDate = "2019-01-01", 
+--     settings = Settings2 
+--         {sitename = "siteNameExample-Default", 
+--         byline = "siteByLineExample-Default", 
+--         banner = "/templates/img/symmetricGeras2.jpg"
+--         }, 
+--     menuitems = MenuItems 
+--         {menuNav=[
+--             MenuItem {navlink = "/Blog/index.html", navtext = "Blog"},
+--             MenuItem {navlink = "/PublicationList/index.html", navtext = "Publications"},
+--             MenuItem {navlink = "/SSGdesign/index.html", navtext = "SSG Documentation"}
+--             ]
+--         }
+--     -- today = "2021-05-30"
+--     }
 
 -- MenuItem where 
 --     def = MenuItem{navlink = "/Blog/index.html", navtext = "SingleMenu"}
