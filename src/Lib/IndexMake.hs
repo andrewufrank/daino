@@ -36,7 +36,7 @@ convertIndexEntries :: NoticeLevel ->  [Text] -> Text -> IndexEntry -> ErrIO Men
 -- converts to values for printing if indexpage else null
 -- date today is passed to feed in pages 
 -- the authors which should be oppressed are passed 
--- is pure except for today!
+-- is pure except for today! TODO today is not used 
 -- use the date from the settings? TODO
 convertIndexEntries debug hpAuthor indexSortField  ixe1 =
   do
@@ -50,10 +50,10 @@ convertIndexEntries debug hpAuthor indexSortField  ixe1 =
             let dirs = dirEntries ixe1 -- dyDirEntries y
 
             let menu1 = convert2index hpAuthor (indexSortField ) (ixe1, fils, dirs)
-            -- let menu3 = menu1{today2 = "2021-01-01"}  
+            -- let menu3 = menu1{today3 = "2021-01-01"}  
             -- to avoid the changes in testing leading to failures
             today1 :: UTCTime <- getCurrentTimeUTC
-            let menu3 = menu1{today2 = showT today1}
+            let menu3 = menu1 -- {today3 = showT today1}
             when (inform debug) $ putIOwords ["convertIndexEntries", "menu3", showT menu3]
             return menu3
         else return zero
@@ -68,7 +68,7 @@ convert2index hpAuthor indexSortField (this, fils, dirs) =
     MenuEntry
         { menu2subdir = sortField . (getIndexEntryPure hpAuthor) $ dirs
         , menu2files  = sortField . (getIndexEntryPure hpAuthor) . indexFilter $ fils
-        , today2 = zero -- is set above
+        -- , today3 = zero -- is set afterwards
         }
  where 
     sortField = case (indexSortField) of 
@@ -160,10 +160,11 @@ blankAuthorName names current =
 -- hpAuthor = ["AUF", "Andrew U. Frank"]
 
 --       ------  S U P P O R T
-
+-- the MenuEntry is one entry in the menu list 
 data MenuEntry = MenuEntry {menu2subdir :: [Index4html]
                             , menu2files :: [Index4html]
-                                , today2 :: Text }
+    -- , today3 :: Text 
+                            }
   -- menu2 is referenced in the template
   deriving (Generic, Eq, Ord, Show, Read)
 
@@ -171,7 +172,7 @@ data MenuEntry = MenuEntry {menu2subdir :: [Index4html]
 --     shownice = showNice
 
 instance Zeros MenuEntry where
-  zero = MenuEntry zero zero zero
+  zero = MenuEntry zero zero 
 
 instance FromJSON MenuEntry
 

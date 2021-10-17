@@ -94,12 +94,14 @@ panrep2vals debug staticMenu (Panrep m1 p1) = do
     menu4 :: MenuEntry <- convertIndexEntries  debug (settingsBlogAuthorOppressed staticMenu) indexSortField ixe1
     html <- writeHtml5String2 p1
     -- in uniform.Pandoc (dort noch mehr moeglicherweise duplicated)
-    let p2 = ContentHtml html
+    p2 <-  fillContent (ixfn ixe1) (link ixe1) html
     when (inform debug) $ putIOwords ["panrep2vals", "m1", showPretty m1]
     when (inform debug) $ putIOwords ["panrep2vals", "staticmenu", showPretty staticMenu]
     when (inform debug) $putIOwords ["panrep2vals", "menu4", showPretty menu4]
     when (inform debug) $putIOwords ["panrep2vals", "p2", showPretty p2]
     let vals = [toJSON staticMenu, toJSON m1, toJSON menu4, toJSON p2]
+    -- m1 is what is from the yaml meta from the file
+    -- menu4 is menu collected 
     -- order matters left preference?
     when (inform debug) $putIOwords ["panrep2vals", "vals", showPretty vals]
     return vals
@@ -113,7 +115,27 @@ panrep2html2 debug masterfn vals = do
     when (inform debug) $ putIOwords ["\n panrep2html done"]
     return p
 
-newtype ContentHtml = ContentHtml {content :: Text} deriving (Show, Generic)
+fillContent origfn relFp cont = do 
+        today1 :: UTCTime <- getCurrentTimeUTC
+        let res = ContentHtml
+                { content3 = cont 
+                , today3 = showT today1
+                , linkpdf3 = s2t origfn -- TODO 
+                , filename3 = s2t origfn
+                }
+        return res
+
+data ContentHtml = ContentHtml  
+        { content3 :: Text
+        , today3 :: Text 
+        , linkpdf3 :: Text 
+        , filename3 :: Text 
+        } deriving (Show, Generic)
 -- | the record which contains the blog text in html format 
+-- the ref to the pdf File 
+-- todays date 
+-- filename3 the original file name 
 -- mit id,h1, h2,.. span und p tags 
 instance ToJSON ContentHtml
+instance Zeros ContentHtml where
+  zero = ContentHtml zero zero zero zero
