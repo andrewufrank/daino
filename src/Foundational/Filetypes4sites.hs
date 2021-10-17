@@ -25,7 +25,7 @@ module Foundational.Filetypes4sites (
 import Uniform.Json (FromJSON, ToJSON, Value)
 import Uniform.PandocImports ( Pandoc )
 import UniformBase
-import Foundational.MetaPage ( MetaPage )
+import Foundational.MetaPage ( MetaPage, extPDF )
 
 
 --------------------------------------------typed file Docrep
@@ -147,9 +147,7 @@ instance Zeros Latex where
     zero = Latex zero
 
 ---------------------------------------------- PDF
-
-extPDF :: Extension
-extPDF = Extension "pdf"
+-- extension in metapage
 
 pdfFileType :: TypedFile5 Text PDFfile
 pdfFileType = TypedFile5{tpext5 = extPDF} :: TypedFile5 Text PDFfile

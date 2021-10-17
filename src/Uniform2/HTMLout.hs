@@ -96,8 +96,7 @@ instance TypedFiles7 Text HTMLout where
     wrap7 = HTMLout
     unwrap7 (HTMLout a) = a
 
-extHTML :: Extension
-extHTML = Extension "html"
+-- extension in metapage
 
 -------------------- fileType --- Dtemplate---------
 

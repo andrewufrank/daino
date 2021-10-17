@@ -32,13 +32,16 @@ module Foundational.MetaPage (
 -- import Data.Aeson.Types
 import Data.Default.Class  
 import Foundational.LayoutFlags  
+-- import Foundational.Filetypes4sites(extPDF, extHTML)
 -- import Lib.CmdLineArgs (PubFlags (..))
 import Uniform.Json
 import Uniform.Pandoc
 import Uniform.PandocImports
 import Uniform.Shake (makeRelativeP)
+import Uniform.Filenames (setFileExtension)
 import Uniform.Yaml
 import UniformBase
+-- import Uniform.HTMLout (extHTML)
 
 data MetaPage = MetaPage
     { -- | the original dough fn
@@ -183,14 +186,13 @@ initializeIndex MetaPage{..} = ix1
   where
     ix1 =
         zero
-            { ixfn = dyFn -- makeAbsFile dyFn
+            { ixfn = dyFn  
             , title = dyTitle
-            , link = dyLink --- makeRelFile dyLink
+            , link = dyLink 
             , abstract = dyAbstract
             , author = dyAuthor
             , date = fromMaybe (showT year2000) dyDate
             , publish = dyPublish
-            -- , indexPage = dyIndexPage
             , dirEntries = zero
             , fileEntries = zero
             }
@@ -199,7 +201,15 @@ isIndexPage :: Path Abs File -> Bool
 isIndexPage filename =  getNakedFileName filename == "index"
 
 convertLink2html ix = s2t . -- s2t . toFilePath $ 
-          setExtension "html" . removeExtension $ ixfn ix
+          setFileExtension (unExtension extHTML)   $ ixfn ix
 
 convertLink2pdf ix =  s2t . -- s2t . toFilePath $ 
-          setExtension "pdf" . removeExtension $ link ix
+          setFileExtension (unExtension extPDF)   $ link ix
+
+
+extHTML :: Extension
+extHTML = Extension "html"
+
+
+extPDF :: Extension
+extPDF = Extension "pdf"
