@@ -96,7 +96,7 @@ $-- instructions are
 
         $beforeContent$
         $if(abstract)$abstract: $abstract$ 
-        <a href=/$linkpdf3$>  view as pdf</a>
+        <a href=/$linkpdf3$>  (view as pdf)</a>
         $-- <br> for pdf: $menu2
         $endif$
         <!--content-from-panrep-blocks which is the content of the index.md -->$content3$
@@ -114,7 +114,7 @@ $-- instructions are
 				  <li>     <!-- list item menu2files:  -->
 				    <a href=/$menu2files.link2$><em>$menu2files.title2$ </em></a>
 				    $if(menu2files.abstract2)$<br>$menu2files.abstract2$
-                    <a href=/$menu2files.pdf2$>  view as pdf</a>
+                    <a href=/$menu2files.pdf2$>  (view as pdf)</a>
                     $endif$		     
 				    <span class=tiny>$menu2files.author2$ $menu2files.date2$ 
                      </span>
