@@ -1,16 +1,18 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.34.2.
+-- This file has been generated from package.yaml by hpack version 0.34.5.
 --
 -- see: https://github.com/sol/hpack
 
 name:           ssg
-version:        0.0.4.5
+version:        0.0.4.6
 synopsis:       a static site generator using shake and pandoc
 description:    A static site generator from pandoc and other available packages on Hackage (e.g. shake, twitch, scotty), influenced by Chris Penner's [slick](https://github.com/ChrisPenner/slick#readme). It uses files to manage data to permit version management with git. Page appearances are directed with YAML and internally data is structured with JSON, for each page a PDF file is produced to allow regular looking prints. Index pages are automatically created.
                 version 0.0.4.5 to fix references 
                   with uniformBase 0.1.2, pandoc 0.0.2.3
-                .
+                  pdf produced for every blog 
+                  made images in banner
+                0.0.4.6  
 category:       Development Web
 homepage:       https://github.com/frank/ssg#readme
 bug-reports:    https://github.com/frank/ssg/issues
@@ -50,7 +52,8 @@ library
       Paths_ssg
   hs-source-dirs:
       src
-  other-extensions: OverloadedStrings
+  other-extensions:
+      OverloadedStrings
   ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-unused-imports -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports
   build-depends:
       base
@@ -66,7 +69,7 @@ library
     , uniform-shake
     , uniform-watch
     , uniform-webserver
-    , uniformBase ==0.1.2
+    , uniformBase ==0.1.3
   default-language: Haskell2010
 
 executable ssgbake
@@ -75,7 +78,8 @@ executable ssgbake
       Paths_ssg
   hs-source-dirs:
       app
-  other-extensions: OverloadedStrings
+  other-extensions:
+      OverloadedStrings
   ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-unused-imports -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports
   build-depends:
       base
@@ -92,7 +96,7 @@ executable ssgbake
     , uniform-shake
     , uniform-watch
     , uniform-webserver
-    , uniformBase ==0.1.2
+    , uniformBase ==0.1.3
   default-language: Haskell2010
 
 test-suite ssgTest
@@ -109,7 +113,8 @@ test-suite ssgTest
       Paths_ssg
   hs-source-dirs:
       tests
-  other-extensions: OverloadedStrings
+  other-extensions:
+      OverloadedStrings
   ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-unused-imports -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       HTF
