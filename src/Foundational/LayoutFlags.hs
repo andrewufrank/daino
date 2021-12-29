@@ -166,6 +166,7 @@ data PubFlags = PubFlags
       , oldFlag
       , draftFlag
       , testFlag
+      , quickFlag
       , watchFlag
       , serverFlag :: Bool
     , uploadFlag :: Bool
@@ -174,7 +175,7 @@ data PubFlags = PubFlags
     deriving (Show, Eq) -- no read for path
 
 instance Zeros PubFlags where
-    zero = PubFlags zero zero zero zero zero zero zero zero
+    zero = PubFlags zero zero zero zero zero zero zero zero zero
 instance Default PubFlags where 
         def = testFlags 
 

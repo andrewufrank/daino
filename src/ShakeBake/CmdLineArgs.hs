@@ -32,6 +32,7 @@ data LitArgs = LitArgs
   , oldSwitch -- x^ o
   , draftSwitch -- x^ d
   , testSwitch  -- x^ t
+  , quickSwitch -- x^ q
   , serverSwitch -- x^ s 
   , watchSwitch -- x^ w 
   , uploadSwitch -- x^ u  -- not yet used  
@@ -52,6 +53,10 @@ cmdArgs  =
     <*> switch
           (long "test" <> short 't' <> help
             "use test data in layout (site/dough), start server on port set"
+          )
+    <*> switch
+          (long "quick" <> short 'q' <> help
+            "produce only html, but not the (slow) pdf's"
           )
     <*> switch
           (long "server" <> short 's' 
@@ -86,6 +91,7 @@ parseArgs2input testdataDir t1 t2 = do
                          , oldFlag      = oldSwitch args1
                          , draftFlag    = draftSwitch args1
                          , testFlag     = testSwitch args1
+                         , quickFlag    = quickSwitch args1
                          , watchFlag    = watchSwitch args1
                          , serverFlag   = serverSwitch args1
                          , settingsFile = workingdir1 </> settingsFileName 

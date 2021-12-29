@@ -7,7 +7,7 @@ description: |
     with uniformBase 0.1.2, pandoc 0.0.2.3
     pdf produced for every blog 
     made images in banner
-  0.0.4.6  
+  0.0.4.6  fixed pdf production, new flag 
   
 category: Development Web
 
