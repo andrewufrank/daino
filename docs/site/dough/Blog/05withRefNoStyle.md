@@ -11,13 +11,13 @@ abstract: |
 nocite: |
   @navratil08
 language: en_US
-bibliography: "resources/BibTexLatex.bib"
+#bibliography: "/resources/BibTexLatex.bib"
 
 ---
 
 02withRef but no style text - version12345678
  
-The [@frank09geo] and [@frank-machbarkeit] are just refs.
+<!-- The [@frank09geo] and [@frank-machbarkeit] are just refs. -->
 
 The references are in "resources/BibTexLatex.bib". 
 The default style is /home/frank/Desktop/myHomepage/resources/chicago-fullnote-bibliography-bb.csl 

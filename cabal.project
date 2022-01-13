@@ -2,7 +2,7 @@
 packages: 
     ./ssg.cabal
     ../uBase/uniformBase/*.cabal
---    ../uBase/uniform-algebras/*.cabal
+    ../uBase/uniform-algebras/*.cabal
     ../uBase/uniform-strings/*.cabal
 --    ../uBase/uniform-error/*.cabal
 --   ../uBase/uniform-time/*.cabal

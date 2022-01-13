@@ -8,7 +8,12 @@ description: |
     pdf produced for every blog 
     made images in banner
   0.0.4.6  fixed pdf production, new flag 
-  
+  0.0.4.7  use Pandoc processCitations - for ghc 8.10.7
+
+# installation needed:
+#     texlive-luatex
+# then run at least once the texstudio with lualatex as compiler
+
 category: Development Web
 
 # run with hpack before cabal build
@@ -74,10 +79,10 @@ dependencies:
     - uniform-watch 
     - uniform-webserver  # - shake
     - data-default
-    - uniform-pandoc == 0.0.2.3 # from u4blog
+    - uniform-pandoc == 0.0.2.4 # from u4blog
     - uniform-latex2pdf ==0.0.1.1
     - uniform-fileio
-    - pandoc-types
+    - pandoc-types  # needed? 
     # -- - uniform-ftp
     # - aeson 
     # - optparse-applicative -- does not allow value in cmdlineargs
@@ -114,21 +119,21 @@ executables:   # file names wiwth lowercase to avoid forcing Main
   #       ssg
 
  
-tests:
-  ssgTest:
-    main: testing.hs
-    source-dirs: tests
+# tests:
+#   ssgTest:
+#     main: testing.hs
+#     source-dirs: tests
 
-    ghc-options: 
-      -threaded 
-      -rtsopts 
-      -with-rtsopts=-N    
-    dependencies:
-      - HTF
-      - quickcheck-text
-      # - uniform-strings
-      # - uniform-http
-      - uniformBase == 0.1.2
-      - ssg
-      # - shake  # from error
+#     ghc-options: 
+#       -threaded 
+#       -rtsopts 
+#       -with-rtsopts=-N    
+#     dependencies:
+#       - HTF
+#       - quickcheck-text
+#       # - uniform-strings
+#       # - uniform-http
+#       - uniformBase == 0.1.2
+#       - ssg
+#       # - shake  # from error
     

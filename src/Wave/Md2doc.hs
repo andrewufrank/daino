@@ -176,8 +176,12 @@ addRefs2 debug doughP dr1@(Docrep y1 p1) biblio1 = do
             , "\n\tbiblioP", showT biblioP
             ]
 
+    -- pandoc.citeproc version 
     -- p2 <- readBiblioRefs True bibliofp loc1 stylefp (dyReferences y1) p1
-    p2 <- readBiblioRefs (inform debug) biblioP loc1 styleP (dyReferences y1) p1
+    -- p2 <- readBiblioRefs (inform debug) biblioP loc1 styleP (dyReferences y1) p1
+    -- 8.10.7 version 
+ 
+    p2 <- pandocProcessCites  p1
 
     when (inform debug) $ putIOwords ["addRefs2-4", "p2\n", showT p2]
 
