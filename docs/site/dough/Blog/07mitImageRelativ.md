@@ -9,7 +9,7 @@ image: /resources/img/121-2117_IMG.JPG
 caption: "Skipiste oberhalb Obergurgl"
 ---
 
-06mimage text with an image in the banner version1234
+07mimage text with an image in the banner version1234
 
 the image is in docs/site/dough/resources/img/121-2117_IMG.JPG - i.e. collection for all site
 Some text without meaning; really? with an image 
