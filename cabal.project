@@ -1,12 +1,13 @@
  
 packages: 
+-- test1
     ./ssg.cabal
     ../uBase/uniformBase/*.cabal
-    ../uBase/uniform-algebras/*.cabal
-    ../uBase/uniform-strings/*.cabal
+--    ../uBase/uniform-algebras/*.cabal
+--    ../uBase/uniform-strings/*.cabal
 --    ../uBase/uniform-error/*.cabal
 --   ../uBase/uniform-time/*.cabal
-    ../uBase/uniform-fileio/*.cabal 
+--    ../uBase/uniform-fileio/*.cabal 
 
     ../u4blog/uniform-json/*.cabal
 -- --/home/frank/Workspace11/u4blog/uniform-json/uniform-json.cabal
