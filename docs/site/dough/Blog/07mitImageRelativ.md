@@ -1,20 +1,17 @@
 ---
-title: 06mitImage title post mit image
+title: 07mitImage title post mit image ref relativ to root
 author: AUF
 date: Jan. 4, 2019
 keywords: test
-abstract: 06mit image abstract  
+abstract: 07mit image relative to root abstract  
 # pageTemplate: page3.yaml
-image: /Blog/resources/120-2026_IMG.JPG
+image: /resources/img/121-2117_IMG.JPG
 caption: "Skipiste oberhalb Obergurgl"
 ---
 
 06mimage text with an image in the banner version1234
 
-the image is in /home/frank/Workspace11/ssg/docs/site/dough/Blog/resources/120-2026_IMG.JPG i.e. in a directory parallel to file
-
-and found with image: /Blog/resources/120-2026_IMG.JPG
-
+the image is in docs/site/dough/resources/img/121-2117_IMG.JPG - i.e. collection for all site
 Some text without meaning; really? with an image 
 
 the [pdf_file](/Blog/resources/blogtest.pdf)
