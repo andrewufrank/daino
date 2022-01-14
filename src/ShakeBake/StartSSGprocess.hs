@@ -33,6 +33,30 @@ ssgProcess :: NoticeLevel -> PubFlags -> ErrIO ()
 ssgProcess debug flags = do
     sett3 <- readSettings debug (settingsFile flags)
 
+-- set the currentWorkingDir CWD to doughDir
+    let doughP = doughDir (storage sett3)
+-- it should be allways be the same, independent of start 
+    currDir <- currentDir
+    putIOwords ["ssgProcess", "currDir", showT currDir, "\nwill beomce doughP", showT doughP]
+    setCurrentDir doughP
+
+    if watchFlag flags -- implies server
+        then mainWatch debug sett3 flags 
+        else do
+            shakeAll debug sett3 flags ""
+            -- the last is the filename that caused the shake call
+            when (serverFlag flags) $ do 
+                runScotty (localhostPort sett3) (bakedDir (storage sett3)) (makeRelFile "index.html") 
+                    -- was landingPageName
+                putIOwords ["server started on ", showT (localhostPort sett3)]
+
+-- return the dir as set before
+    setCurrentDir currDir
+    putIOwords ["ssgProcess", "again currDir as before", showT currDir, "\nwas doughP", showT doughP] 
+    putIOwords ["ssgProcess done"]
+    return ()
+
+-- idea to automate upload (before call to shakeAll)
     -- read the time of the last upload
     -- uploadFileExist <- doesFileExist' testLastUploadFileName
     -- lastUpload <-
@@ -45,19 +69,11 @@ ssgProcess debug flags = do
 
     -- let testWithLastTime  = testNewerModTime  lastUpload
     -- compare with year2000 if all should be uploaded
-    -- let layout2 = storage sett3 
+   -- let layout2 = storage sett3 
     -- let port2 = localhostPort sett3 
-    if watchFlag flags -- implies server
-        then mainWatch debug sett3 flags 
-        else do
-            shakeAll debug sett3 flags ""
-            -- the last is the filename that caused the shake call
-            when (serverFlag flags) $ do 
-                runScotty (localhostPort sett3) (bakedDir (storage sett3)) (makeRelFile "index.html") 
-                    -- was landingPageName
-                putIOwords ["server started on ", showT (localhostPort sett3)]
 
-    -- sollte default index.html sein (landingPage layout2)
+-- nach call to shake all 
+   -- sollte default index.html sein (landingPage layout2)
     -- when (uploadFlag flags) $ do
     --     (_,_) <- runStateT
     --         (ftpUploadDirsRecurse testWithLastTime (bakedDir layout2)
@@ -68,6 +84,3 @@ ssgProcess debug flags = do
     --     currentTime <- getCurrentTimeUTC
     --     writeFile2 testLastUploadFileName (show currentTime)
 
-
-    putIOwords ["ssgProcess done"]
-    return ()
