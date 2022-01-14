@@ -66,7 +66,7 @@ md2docrep debug layout2 inputFn md1 = do
     -- therefore must use json
     dr3 <- addRefs debug doughP dr1  -- to dr3 
 
-    when (inform debug) $ putIOwords ["md2docrep after addRefs", "dr1", showT dr1]
+    when (inform debug) $ putIOwords ["\nmd2docrep after addRefs", "dr3", showT dr3]
 
     return dr3 -- same as T.docrep 
 
@@ -171,18 +171,23 @@ addRefs2 debug doughP dr1@(Docrep y1 p1) biblio1 = do
     -- let stylefp =
     --         t2s . fromMaybe "style1 in addRefs2 wer23" $ style1 :: FilePath
     --  Raised the exception when style empty
-    when (inform debug) $ putIOwords ["addRefs2-3-1 v0.4.5"
+    when (inform debug) $ putIOwords ["addRefs2-3-1 v0.4.7"
             , "\n\tstyleP", showT styleP
             , "\n\tbiblioP", showT biblioP
             ]
+-- values are 
+--         styleP Path Abs File /home/frank/Workspace11/ssg/docs/site/dough/resources/chicago-fullnote-bibliography-bb.csl 
+--         biblioP Path Abs File /home/frank/Workspace11/ssg/docs/site/dough/resources/BibTexLatex.bib
 
-    -- pandoc.citeproc version 
+    p2 <- pandocProcessCites  p1
+    -- uses value set in p1, not biblioP
+    -- would it work with the curren working dir set here?
+
+    -- pandoc.citeproc version 0.4.5
     -- p2 <- readBiblioRefs True bibliofp loc1 stylefp (dyReferences y1) p1
     -- p2 <- readBiblioRefs (inform debug) biblioP loc1 styleP (dyReferences y1) p1
     -- 8.10.7 version 
  
-    p2 <- pandocProcessCites  p1
-
     when (inform debug) $ putIOwords ["addRefs2-4", "p2\n", showT p2]
 
     return (Docrep y1 p2)

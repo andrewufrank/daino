@@ -8,10 +8,10 @@ abstract: |
     02withRef abstract What are the objects of
     ontologists changed2345.
 
-#nocite: |
-#  @navratil08
+nocite: |
+ @navratil08
 
-#bibliography: "resources/BibTexLatex.bib"
+bibliography: "resources/BibTexLatex.bib"
 
 style: "resources/chicago-fullnote-bibliography-bb.csl"
 styleBiber: "numeric"
@@ -33,12 +33,12 @@ references:
 
 02withRef text - An example post version 12345678
 
-<!-- With a reference to [@frank09geo]  and navratil08 as nocite from the biblio given.
+With a reference to [@frank09geo]  and navratil08 as nocite from the biblio given.
 
 unclear what means: Not including the "TUxx9999" addition in brackets.
 
 The [@frank-machbarkeit] and [@frank09geo] is in the biblio.
-The referenfere [@fenner2012a] is given in the file. -->
+The referenfere [@fenner2012a] is given in the file.
 
 The references are in "resources/BibTexLatex.bib".
 changed to /home/frank/Workspace11/ssg/docs/site/dough/resources/BibTexExample.bib
