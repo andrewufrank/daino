@@ -53,6 +53,10 @@ import Data.Maybe (fromMaybe)
 
 docrep2panrep :: NoticeLevel -> SiteLayout -> Docrep -> ErrorT Text IO Panrep
 docrep2panrep debug layout (Docrep y1 p1) = do
+    when (inform debug) $
+        putIOwords ["\n\ty1,p1-------------------------docrep2panrep"
+                , showT y1
+                , showT p1]
     let pr =
             Panrep
                 { panyam = y1
@@ -69,6 +73,11 @@ docrep2panrep debug layout (Docrep y1 p1) = do
             ix2 <- completeIndex debug doughP bakedP ix1
             -- todo put ix2 into pr
             let m2 = m1{dyIndexEntry = ix2}
+
+            when (inform debug) $
+                putIOwords ["\n\tm2------------------------docrep2panrep end if"
+                , showT m2]
+
             return pr{panyam = m2}
         else
             return pr

@@ -39,7 +39,7 @@ completeIndex debug doughP bakedP ix1 = do
 
     let fn = doughP </> (link ix1) :: Path Abs File
     -- changed to search in dough (but no extension yet)
-    when (inform debug) $
+    when (informAll debug) $   -- to have indication where error is if pandoc error 
         putIOwords
             [ "completeIndex"
             , "fn"
@@ -122,6 +122,7 @@ getFile2index debug doughP bakedP fnin =
 
         let (Docrep y1 _) = pandoc2docrep debug doughP bakedP fnin pd
         -- needs the indexentry initialized
+        -- does include the DNB files, bombs with ff ligature
         let ix1 :: IndexEntry = dyIndexEntry y1
 
         when (inform debug) $ putIOwords ["getFile2index ix1", showPretty ix1]
