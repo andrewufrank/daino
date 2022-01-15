@@ -24,7 +24,7 @@ module Wave.Md2doc (
 
 import UniformBase
 
-import Foundational.LayoutFlags ( SiteLayout(doughDir, bakedDir) )
+import Foundational.LayoutFlags ( SiteLayout(doughDir) )
 import Foundational.MetaPage
 import Uniform.Json ( gak, AtKey(getAtKey) )
 
@@ -52,7 +52,7 @@ md2docrep :: NoticeLevel
     -> ErrorT Text IO Docrep
 md2docrep debug layout2 inputFn md1 = do
     let doughP = doughDir layout2 -- the regular dough
-        bakedP = bakedDir layout2
+        -- bakedP = bakedDir layout2
 
     pd <- readMarkdown2 md1 -- to pandoc 
     -- take metadata and fill metaPage (including IndexEntry)
