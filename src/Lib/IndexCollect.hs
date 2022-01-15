@@ -30,11 +30,11 @@ import Wave.Md2doc ( pandoc2docrep )
 
 
 
-completeIndex :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> IndexEntry -> ErrIO IndexEntry
+completeIndex :: NoticeLevel -> Path Abs Dir ->   IndexEntry -> ErrIO IndexEntry
 {- ^ the top call to form the index data into the MetaPage
 later only the format for output must be fixed
 -}
-completeIndex debug doughP bakedP ix1 = do
+completeIndex debug doughP  ix1 = do
     when (inform debug) $ putIOwords ["completeIndex", "start", showPretty ix1]
 
     let fn = doughP </> (link ix1) :: Path Abs File
@@ -48,7 +48,7 @@ completeIndex debug doughP bakedP ix1 = do
             ]
     -- unless (isIndexPage fn) $ errorT ["completeIndex should only be called for indexPage True"]
 
-    (dirs, files) <- getDirContent2dirs_files debug doughP bakedP fn
+    (dirs, files) <- getDirContent2dirs_files debug doughP  fn
     when (inform debug) $ putIOwords ["completeIndex", "\n dirs", showT dirs, "\n files", showT files]
     let ix2 = ix1{dirEntries = dirs, fileEntries = files}
     when (inform debug) $ putIOwords ["completeIndex", "x2", showT ix2]
@@ -60,8 +60,8 @@ completeIndex debug doughP bakedP ix1 = do
  currently checks index.docrep in dough (which are not existing)
  indexfile itself is removed and files which are not markdown
 -}
-getDirContent2dirs_files :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> Path Abs File -> ErrIO ([IndexEntry], [IndexEntry])
-getDirContent2dirs_files debug doughP bakedP indexpageFn = do
+getDirContent2dirs_files :: NoticeLevel -> Path Abs Dir ->  Path Abs File -> ErrIO ([IndexEntry], [IndexEntry])
+getDirContent2dirs_files debug doughP  indexpageFn = do
     when (inform debug) $ putIOwords ["getDirContent2dirs_files for", showPretty indexpageFn]
     let pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir
     -- get the dir in which the index file is embedded
@@ -90,14 +90,14 @@ getDirContent2dirs_files debug doughP bakedP indexpageFn = do
                 $ files1
     when (inform debug) $ putIOwords ["getDirContent2dirs files2", showPretty files2]
 
-    ixfiles <- mapM (getFile2index debug doughP bakedP) files2
+    ixfiles <- mapM (getFile2index debug doughP) files2
 
     when (inform debug) $ putIOwords ["getDirContent2dirs ixfiles", showPretty ixfiles]
 
     let subindexDirs = map (\d -> d </> makeRelFile "index.md") dirs5
 
     when (inform debug) $  putIOwords ["getDirContent2dirs subindexDirs", showPretty subindexDirs]
-    ixdirs <- mapM (getFile2index debug doughP bakedP) subindexDirs
+    ixdirs <- mapM (getFile2index debug doughP ) subindexDirs
 
     when (inform debug) $ putIOwords ["getDirContent2dirs xfiles", showPretty ixfiles, "\n ixdirs", showPretty ixdirs]
 
@@ -105,12 +105,12 @@ getDirContent2dirs_files debug doughP bakedP indexpageFn = do
 
 
 
-getFile2index :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> Path Abs File -> ErrIO (Maybe IndexEntry)
+getFile2index :: NoticeLevel -> Path Abs Dir  -> Path Abs File -> ErrIO (Maybe IndexEntry)
 -- get a file and its index
 -- collect data for indexentry (but not recursively, only this file)
 -- the directories are represented by their index files
 -- produce separately to preserve the two groups
-getFile2index debug doughP bakedP fnin =
+getFile2index debug doughP  fnin =
     do
         when (inform debug) $ putIOwords ["getFile2index fnin", showPretty fnin]
 
@@ -118,7 +118,7 @@ getFile2index debug doughP bakedP fnin =
         pd <- readMarkdown2 mdfile
         -- could perhaps "need" all ix as files?
 
-        let (Docrep y1 _) = pandoc2docrep debug doughP bakedP fnin pd
+        let (Docrep y1 _) = pandoc2docrep doughP fnin pd
         -- needs the indexentry initialized
         -- does include the DNB files, bombs with ff ligature
         let ix1 :: IndexEntry = dyIndexEntry y1

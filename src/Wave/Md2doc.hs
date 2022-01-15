@@ -56,7 +56,7 @@ md2docrep debug layout2 inputFn md1 = do
 
     pd <- readMarkdown2 md1 -- to pandoc 
     -- take metadata and fill metaPage (including IndexEntry)
-    let dr1 = pandoc2docrep debug doughP bakedP inputFn pd -- to dr1
+    let dr1 = pandoc2docrep  doughP inputFn pd -- to dr1
     -- with a flattened version of json from Pandoc
     -- convert to metaPage with Index 
 

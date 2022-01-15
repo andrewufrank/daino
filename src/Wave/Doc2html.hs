@@ -72,9 +72,9 @@ docrep2panrep debug layout (Docrep y1 p1) = do
     -- if dyIndexPage . panyam $ pr
             let m1 = panyam pr
             let ix1 =dyIndexEntry  m1
-            let bakedP = bakedDir layout
+            -- let bakedP = bakedDir layout
             let doughP = doughDir layout
-            ix2 <- completeIndex debug doughP bakedP ix1
+            ix2 <- completeIndex debug doughP ix1
             -- todo put ix2 into pr
             let m2 = m1{dyIndexEntry = ix2}
 
