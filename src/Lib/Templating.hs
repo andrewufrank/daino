@@ -13,14 +13,10 @@
 
 module Lib.Templating where -- (openMain, htf_thisModuelsTests)
 
-import Foundational.LayoutFlags
-import Uniform2.HTMLout
+import Uniform2.HTMLout ( HTMLout(HTMLout) )
 
---(Abs, AtKey (getAtKey), Dir, ErrIO, Filenames3 ((</>)), HTMLout, Panrep (..), Path, Text, applyTemplate3, makeRelFile, putIOwords, showT, t2s, when)
-
-import Foundational.Filetypes4sites
-import Uniform.Json
-import Uniform.PandocHTMLwriter
+import Uniform.Json ( Value, ErrIO )
+import Uniform.PandocHTMLwriter ( applyTemplate4 )
 import UniformBase
 
 putValinMaster :: NoticeLevel -> [Value] -> Path Abs File -> ErrIO HTMLout
@@ -31,12 +27,11 @@ putValinMaster :: NoticeLevel -> [Value] -> Path Abs File -> ErrIO HTMLout
 -}
 putValinMaster debug vals masterfn = do
     when (inform debug) $ putIOwords ["putValinMaster", "masterfn", showT masterfn]
-    -- let mf = masterTemplateFileName
-    -- let masterfn = templatesP </> mf
+
     template2 :: Text <- readFile2 (toFilePath masterfn)
+
     -- templatapplyTemplate3 debug masterfn vals -- inTemplate.html
-    html2 <- applyTemplate4 (inform debug) template2 vals -- inTemplate.html
-    -- when (inform debug) $ putIOwords ["putValinMaster", showT html2]
+    html2 <- applyTemplate4 (inform debug) template2 vals  
     return . HTMLout $ html2
 
 {- list of variables potentially used by Master5.dtpl:

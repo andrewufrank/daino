@@ -24,11 +24,9 @@ module Lib.IndexMake (module Lib.IndexMake) where
 
 -- import           Foundational.Filetypes4sites
 import           Foundational.MetaPage
-import           Uniform.Json
+import Uniform.Json ( FromJSON, ToJSON, ErrIO ) 
 import           UniformBase
-import Uniform2.HTMLout
 import Data.List (sortOn)
--- import Data.Ord (comparing)
 
 convertIndexEntries :: NoticeLevel ->  [Text] -> Text -> IndexEntry -> ErrIO MenuEntry
 -- ^ take the index entries and convert their
@@ -46,8 +44,8 @@ convertIndexEntries debug hpAuthor indexSortField  ixe1 =
     when (inform debug) $ putIOwords ["convertIndexEntries", "fn", showT fn]
     menu4 <- if isIndexPage fn
         then do
-            let fils = fileEntries ixe1 -- fileEntries dyFileEntries MetaPage
-            let dirs = dirEntries ixe1 -- dyDirEntries y
+            let fils = fileEntries ixe1  
+            let dirs = dirEntries ixe1  
 
             let menu1 = convert2index hpAuthor (indexSortField ) (ixe1, fils, dirs)
             -- let menu3 = menu1{today3 = "2021-01-01"}  

@@ -18,13 +18,15 @@
 
 module Lib.IndexCollect where
 
-import Uniform.Json  
+-- import Uniform.Json  
 import Uniform.PandocImports
--- import Foundational.LayoutFlags
-import Foundational.Filetypes4sites
+import Foundational.Filetypes4sites ( Docrep(Docrep) )
 import Foundational.MetaPage
+    ( IndexEntry(link, dirEntries, fileEntries),
+      MetaPage(dyIndexEntry) )
 import UniformBase
-import Wave.Md2doc
+
+import Wave.Md2doc ( pandoc2docrep )
 
 
 
@@ -34,11 +36,10 @@ later only the format for output must be fixed
 -}
 completeIndex debug doughP bakedP ix1 = do
     when (inform debug) $ putIOwords ["completeIndex", "start", showPretty ix1]
-    -- x1 :: IndexEntry <- fromJSONerrio yam1
-    -- let x1 = panyam pr
 
     let fn = doughP </> (link ix1) :: Path Abs File
     -- changed to search in dough (but no extension yet)
+
     when (informAll debug) $   -- to have indication where error is if pandoc error 
         putIOwords
             [ "completeIndex"
@@ -61,46 +62,44 @@ completeIndex debug doughP bakedP ix1 = do
 -}
 getDirContent2dirs_files :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> Path Abs File -> ErrIO ([IndexEntry], [IndexEntry])
 getDirContent2dirs_files debug doughP bakedP indexpageFn = do
-    -- putIOwords ["getDirContent2dirs_files for", showPretty indexpageFn]
+    when (inform debug) $ putIOwords ["getDirContent2dirs_files for", showPretty indexpageFn]
     let pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir
     -- get the dir in which the index file is embedded
-    -- putIOwords ["getDirContent2dirs_files pageFn", showPretty pageFn]
+    when (inform debug) $ putIOwords ["getDirContent2dirs_files pageFn", showPretty pageFn]
 
     dirs1 :: [Path Abs Dir] <- getDirectoryDirs' pageFn
     let dirs2 = filter ( not . (isPrefixOf' ("DNB" :: FilePath) ) .   getNakedDir) dirs1
     let dirs3 = filter ( not . (isPrefixOf' "resources"
-        -- (toFilePath resourcesDirName :: FilePath)
          ) .   getNakedDir) dirs2
     let dirs4 = filter ( not . (isPrefixOf' "templates"
-        -- (toFilePath templatesDirName :: FilePath)
          ) .   getNakedDir) dirs3
     let dirs5 = filter ( not . (isPrefixOf' "."
-        -- (toFilePath templatesDirName :: FilePath)
          ) .   getNakedDir) dirs4
     -- TODO may need extension (change to list of excluded)
     -- build from constants in foundation
 
-    -- putIOwords ["\ngetDirContent2dirs_files excluded", s2t$ toFilePath templatesDirName , s2t$ toFilePath resourcesDirName]
-    -- putIOwords ["\ngetDirContent2dirs_files dirs4", showPretty dirs4]
+    when (inform debug) $ putIOwords ["\ngetDirContent2dirs_files dirs4", showPretty dirs4]
 
     files1 :: [Path Abs File] <- getDirContentFiles pageFn
 
-    -- putIOwords ["getDirContent2dirs_files files1", showPretty files1]
+    when (inform debug) $ putIOwords ["getDirContent2dirs_files files1", showPretty files1]
 
     let files2 =
             filter (indexpageFn /=) -- should not exclude all index pages but has only this one in this dir?
-                . filter (hasExtension extMD) -- extDocrep)
+                . filter (hasExtension extMD)  
                 $ files1
-    -- putIOwords ["getDirContent2dirs files2", showPretty files2]
+    when (inform debug) $ putIOwords ["getDirContent2dirs files2", showPretty files2]
+
     ixfiles <- mapM (getFile2index debug doughP bakedP) files2
-    -- putIOwords ["getDirContent2dirs ixfiles", showPretty ixfiles]
+
+    when (inform debug) $ putIOwords ["getDirContent2dirs ixfiles", showPretty ixfiles]
 
     let subindexDirs = map (\d -> d </> makeRelFile "index.md") dirs5
-    -- "index.docrep" 
-    -- putIOwords ["getDirContent2dirs subindexDirs", showPretty subindexDirs]
+
+    when (inform debug) $  putIOwords ["getDirContent2dirs subindexDirs", showPretty subindexDirs]
     ixdirs <- mapM (getFile2index debug doughP bakedP) subindexDirs
 
-    -- putIOwords ["getDirContent2dirs xfiles", showPretty ixfiles, "\n ixdirs", showPretty ixdirs]
+    when (inform debug) $ putIOwords ["getDirContent2dirs xfiles", showPretty ixfiles, "\n ixdirs", showPretty ixdirs]
 
     return (catMaybes ixdirs, catMaybes ixfiles)
 
@@ -115,7 +114,6 @@ getFile2index debug doughP bakedP fnin =
     do
         when (inform debug) $ putIOwords ["getFile2index fnin", showPretty fnin]
 
-        -- (Docrep y1 _) <- read8 fnin docrepFileType
         mdfile <- read8 fnin markdownFileType 
         pd <- readMarkdown2 mdfile
         -- could perhaps "need" all ix as files?

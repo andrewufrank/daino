@@ -55,9 +55,10 @@ module ShakeBake.Shake2 where
 import           Uniform.Shake
 
 import Foundational.LayoutFlags
-    ( SiteLayout(themeDir, doughDir, bakedDir),
+    ( SiteLayout(doughDir, bakedDir),
       Settings(storage),
       PubFlags(quickFlag) )
+      
 import ShakeBake.ConvertFiles
     ( io2bool, convertAny, copyFileToBaked )
 

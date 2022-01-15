@@ -39,7 +39,7 @@ ghc-options:
     -fno-warn-orphans
     -fno-warn-type-defaults 
     -fno-warn-unused-matches 
-    -fno-warn-warnings-deprecations 
+    -fno-warn-warnings-deprecations   # scheint nicht zu wirken 
     -fno-warn-missing-methods 
     -fno-warn-missing-home-modules
     -fno-warn-duplicate-exports 

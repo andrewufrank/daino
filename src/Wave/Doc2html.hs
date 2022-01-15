@@ -1,6 +1,11 @@
 ---------------------------------------------------------------------
 --
 -- Module      :  Uniform.Doc2html
+--  converts an md document in 2steps 
+--      docrep -> panrep
+        --     includes preparing of index pages 
+        --     the processsing of the refs are already done in doc processing 
+        -- panrep -> html 
 ---------------------------------------------------------------------
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE DeriveAnyClass #-}
@@ -21,9 +26,7 @@
             -fno-warn-unused-imports
             -fno-warn-unused-matches #-}
 
-{- | the representation with indices
- ready for processing to HTML or to TexSnip -> Tex -> Pdf
--}
+ 
 module Wave.Doc2html (
     module Wave.Doc2html,
 ) where
@@ -33,24 +36,24 @@ import Foundational.Filetypes4sites
 import Foundational.LayoutFlags
 import Foundational.MetaPage
 import GHC.Generics (Generic)
-import Lib.IndexMake
-import Lib.IndexCollect
-import Lib.Templating
-import Uniform.Json
-import Uniform.Pandoc
-import Uniform2.HTMLout
+
+import Uniform.Json ( ToJSON(toJSON), Value, ErrIO )
+import Uniform.Pandoc ( writeHtml5String2 )
+import Uniform2.HTMLout ( HTMLout )
 import UniformBase
+
 import Data.Maybe (fromMaybe)
 
--- import Text.Pandoc.Definition
+import Lib.IndexMake ( convertIndexEntries, MenuEntry )
+import Lib.IndexCollect ( completeIndex )
+import Lib.Templating ( putValinMaster )
 
 ------------------------------------------------docrep -> panrep
 
-{- ^ transform a docrep to a panrep (which is the pandoc rep)
- completes the index (if indexpage else nothing done)
+-- | transform a docrep to a panrep (which is the pandoc rep)
+--  completes the index (if indexpage else nothing done)
 
- the refs are processed before in docrep
--}
+--  the refs are processed before in md2docrep
 
 docrep2panrep :: NoticeLevel -> SiteLayout -> Docrep -> ErrorT Text IO Panrep
 docrep2panrep debug layout (Docrep y1 p1) = do
@@ -96,23 +99,27 @@ panrep2vals ::  NoticeLevel -> Settings -> Panrep -> ErrIO [Value]
 panrep2vals debug staticMenu (Panrep m1 p1) = do
     let ixe1 = dyIndexEntry m1
     let indexSortField = Data.Maybe.fromMaybe "" (dyIndexSort m1)
-    -- when (inform debug) $ 
+
     when (inform debug) $
         putIOwords ["\n\t---------------------------panrep2vals"
                 , "AuthorOppressed"
                 , showT (settingsBlogAuthorOppressed staticMenu)]
+
     menu4 :: MenuEntry <- convertIndexEntries  debug (settingsBlogAuthorOppressed staticMenu) indexSortField ixe1
     html <- writeHtml5String2 p1
     -- in uniform.Pandoc (dort noch mehr moeglicherweise duplicated)
     p2 <-  fillContent ixe1 html
+
     when (inform debug) $ putIOwords ["panrep2vals", "m1", showPretty m1]
     when (inform debug) $ putIOwords ["panrep2vals", "staticmenu", showPretty staticMenu]
     when (inform debug) $putIOwords ["panrep2vals", "menu4", showPretty menu4]
     when (inform debug) $putIOwords ["panrep2vals", "p2", showPretty p2]
+
     let vals = [toJSON staticMenu, toJSON m1, toJSON menu4, toJSON p2]
     -- m1 is what is from the yaml meta from the file
     -- menu4 is menu collected 
     -- order matters left preference?
+
     when (inform debug) $putIOwords ["panrep2vals", "vals", showPretty vals]
     return vals
 

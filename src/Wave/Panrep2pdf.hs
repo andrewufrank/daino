@@ -21,38 +21,24 @@
             -fno-warn-unused-imports
             -fno-warn-unused-matches #-}
 
-{- | the representation with indices
- ready for processing to HTML or to TexSnip -> Tex -> Pdf
+{- |  ready for processing to HTML or to TexSnip -> Tex -> Pdf
 -}
 {-# OPTIONS_GHC -Wno-deferred-type-errors #-}
 module Wave.Panrep2pdf (
     module Wave.Panrep2pdf,
 ) where
 
--- import Data.Default
 import Foundational.Filetypes4sites
-import Foundational.LayoutFlags
 import Foundational.MetaPage
 import GHC.Generics (Generic)
-import Lib.IndexMake
-import Lib.IndexCollect
-import Lib.Templating
-import Uniform.Json
-import Uniform.Pandoc
--- import encodeToLazyText
-import Uniform2.HTMLout
+import Uniform.Pandoc ( writeTexSnip2 )
 import UniformBase
 
-import Uniform.PandocImports
-import Uniform.Latex ( tex2latex, writePDF2, LatexParam (..))  -- used for 
+import Uniform.Latex ( tex2latex, writePDF2, LatexParam (..))  
 
 
 -- ------------------------------------ panrep2texsnip
--- implements the bake
--- TODO simplify, just an op on second part
--- is this just a single language snip
--- and a panrep can produce multiple? 
--- how to deal with shake? 
+
 panrep2texsnip :: NoticeLevel -> Panrep -> ErrIO TexSnip
 panrep2texsnip debug (Panrep y p) = do
     when (inform debug) $ putIOwords ["\n panrep2texsnip start"]
@@ -61,25 +47,6 @@ panrep2texsnip debug (Panrep y p) = do
     when (inform debug) $ putIOwords ["\n panrep2texsnip done"]
     return res
 
--- ------------------------------------ texsnip2tex
--- implements the bake
--- TODO simplify, just an op on second part
--- is this just a single language snip
--- and a panrep can produce multiple? 
--- how to deal with shake? 
-
--- ata LatexParam = LatexParam
--- { latTitle ::  Text  
---     , latAuthor :: Text 
---     , latAbstract ::  Text
---     , latBibliographyP :: Text  -- the bibliio file 
---             -- problem with multiple files? 
---     , latStyle :: Text
---             -- is not used 
---     , latBook :: Bool  -- is this a long text for a book/booklet
---     , latContent :: [Text] -- ^ a list of the .md files which are collected into a multi-md pdf
---     -- }
---     deriving (Eq, Ord, Read, Show, Generic)
 
 text2absFile :: Path Abs Dir -> Text -> Path Abs File 
 text2absFile doughP t = doughP </> makeRelFile (t2s t)
@@ -108,20 +75,14 @@ texsnip2tex  debug doughP p = do
         }
  
     let res2 = Latex $ tex2latex latexparam (  unTexSnip p)
-    -- TODO add here the LatexParam (title, abstract, content, biblio, style)
-    -- extracted from first param of texsnip
-    -- which texsnip if there are multiple?
-        -- allow multiple biblios?
-
+   
     -- tex file must be full, ordinary latex content
 
     when (inform debug) $ putIOwords ["\n texsnip2tex done"]
     return res2
 
 -- ------------------------------------ tex2pdf
--- implements the bake to convert tex to pdf 
--- input tex must be an ordinary latx file 
--- operations are with files (not texts)
+
 
 -- refdir must be set to the dir where searches for 
 -- biblio etc start - seems not correct

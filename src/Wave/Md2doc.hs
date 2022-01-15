@@ -24,16 +24,21 @@ module Wave.Md2doc (
 
 import UniformBase
 
-import Foundational.LayoutFlags
+import Foundational.LayoutFlags ( SiteLayout(doughDir, bakedDir) )
 import Foundational.MetaPage
-import Uniform.Json
+import Uniform.Json ( gak, AtKey(getAtKey) )
 
--- import Lib.IndexCollect
--- import Lib.IndexMake 
 import Uniform.Pandoc
+    ( MarkdownText(..),
+      Pandoc,
+      pandocProcessCites,
+      getMeta,
+      flattenMeta,
+      readMarkdown2 
+      )
 import Uniform.Shake (makeRelativeP)
 
-import Foundational.Filetypes4sites
+import Foundational.Filetypes4sites ( Docrep(Docrep, meta1) )
 
 
 {- | process one md to a docrep
@@ -60,12 +65,14 @@ md2docrep debug layout2 inputFn md1 = do
     -- merge the yaml metadata with default to have the
     -- necessary values set
 
-    when (inform debug) $ putIOwords ["md2docrep", "dr1", showT dr1]
+    when (inform debug) $ putIOwords ["\nmd2docrep", "dr1", showT dr1]
 
     -- uses the refs listed in the file and discovred by pandoc,
     -- as well as nocite
     -- therefore must use json
     dr3 <- addRefs debug doughP dr1  -- to dr3 
+
+    -- does currently not add anything.. needs minimal working siteNameExample
 
     when (inform debug) $ putIOwords ["\nmd2docrep after addRefs", "dr3", showT dr3]
 
@@ -120,6 +127,8 @@ addRefs :: NoticeLevel -> Path Abs Dir -> Docrep -> ErrIO Docrep
 {- ^ add the references to the pandoc block
  the biblio is in the yam (otherwise nothing is done)
  ths cls file must be in the yam
+
+ not yet working  - need example
 -}
 
 -- example:
