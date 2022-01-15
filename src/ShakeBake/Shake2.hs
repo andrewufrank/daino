@@ -102,41 +102,37 @@ shakeAll debug sett3 flags causedby = do
         , "\n======================================="
         ]
     let layout = storage sett3 
-        themeP = themeDir layout 
         doughP = doughDir layout -- the regular dough
         bakedP = bakedDir layout
-    callIO $ shakeMD debug sett3 flags themeP doughP bakedP
+    callIO $ shakeMD debug sett3 flags doughP bakedP
 
 
 shakeMD ::
     NoticeLevel ->
     Settings ->
     PubFlags ->
-    Path Abs Dir -> -- theme (source for files)
-    -- not currently used because the copy searches in dough for sources (put link to templates)
     Path Abs Dir -> -- dough (source for files)
     Path Abs Dir -> -- baked (target dir for site)
     IO ()
 {- ^ bake all md files and copy the resources
  from each md produce:
- -
+    - html 
+    - pdf 
  sets the current dir to doughDir
  copies banner image
  in IO
  TOP shake call
 -}
-shakeMD debug layout flags themeP doughP bakedP = shakeArgs2 bakedP $ do
+shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
     -- the special filenames which are necessary
     -- because the file types are not automatically
     -- copied
 
-    putIOwords
-        [ "shakeMD dirs\n"
-        -- , "\tstaticDirName"
-        -- , showT staticDirName
-        , "\tbakedP\n"
-        , showT bakedP
-        ]
+    when (inform debug) $ putIOwords
+                                [ "shakeMD dirs\n"
+                                    , "\tbakedP\n"
+                                , showT bakedP
+                                ]
     want ["allMarkdownConversion"]
 
     phony "allMarkdownConversion" $ do
@@ -169,7 +165,9 @@ shakeMD debug layout flags themeP doughP bakedP = shakeArgs2 bakedP $ do
 
 
     (toFilePath bakedP <> "**/*.html") %> \out -> -- from Panrep
-    -- calls the copy html and the conversion from md
+    -- calls the copy html if a html exist in dough 
+            -- else calls the conversion from md
+
         do
             when (inform debug) $ putIOwords ["rule **/*.html", showT out]
 
