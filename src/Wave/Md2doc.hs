@@ -78,7 +78,7 @@ md2docrep debug layout2 inputFn md1 = do
 
     return dr3 -- same as T.docrep 
 
-pandoc2docrep :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> Path Abs File -> Pandoc -> Docrep
+pandoc2docrep ::  Path Abs Dir ->  Path Abs File -> Pandoc -> Docrep
 {- | convert the pandoc text to DocrepJSON
  reads the markdown file with pandoc and extracts the yaml metadaat
  the metadata are then converted to metaPage
@@ -86,7 +86,7 @@ pandoc2docrep :: NoticeLevel -> Path Abs Dir -> Path Abs Dir -> Path Abs File ->
  TODO may use json record parse, which I have already done
 -}
 -- pure 
-pandoc2docrep debug doughP bakedP filename pd = 
+pandoc2docrep  doughP filename pd = 
     let meta2 = flattenMeta . getMeta $ pd
         relfn = makeRelativeP doughP filename
         meta4 =
@@ -171,7 +171,8 @@ addRefs2 debug doughP dr1@(Docrep y1 p1) biblio1 = do
     let biblioP =  doughP </> biblioRP
     let styleP = doughP </> styleRP 
 
-    let loc1 = Just "en" -- TODO depends on language to be used for
+    -- let loc1 = Just "en" -- TODO depends on language to be used for
+    
     -- for the conventions in the lit list
     -- must be 2 char (all other seems to be difficult with pandoc-citeproc)
     -- change to new citeproc TODO later - not used 

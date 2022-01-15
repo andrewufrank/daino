@@ -9,7 +9,7 @@ description: |
     made images in banner
   0.0.4.6  fixed pdf production, new flag 
   0.0.4.7  use Pandoc processCitations - for ghc 8.10.7
-  0.0.4.8
+  0.0.4.8  reduced, removed unused code, cleaned
 
 # installation needed:
 #     texlive-luatex
@@ -29,20 +29,20 @@ extra-source-files:
   - README.md
 # language: Haskell2010 is default
 
-ghc-options: 
-    -Wall
-    -fno-warn-unused-binds 
-    -fno-warn-deprecations 
-    -fno-warn-unused-do-bind 
-    -fno-warn-unused-imports
-    -fno-warn-missing-signatures
-    -fno-warn-orphans
-    -fno-warn-type-defaults 
-    -fno-warn-unused-matches 
-    -fno-warn-warnings-deprecations   # scheint nicht zu wirken 
-    -fno-warn-missing-methods 
-    -fno-warn-missing-home-modules
-    -fno-warn-duplicate-exports 
+# ghc-options: 
+#     -Wall
+#     -fno-warn-unused-binds 
+#     -fno-warn-deprecations 
+#     -fno-warn-unused-do-bind 
+#     -fno-warn-unused-imports
+#     -fno-warn-missing-signatures
+#     -fno-warn-orphans
+#     -fno-warn-type-defaults 
+#     -fno-warn-unused-matches 
+#     -fno-warn-warnings-deprecations   
+#     -fno-warn-missing-methods 
+#     -fno-warn-missing-home-modules
+#     -fno-warn-duplicate-exports 
 other-extensions:  # besides the automatically Haskell2010
 # has no effect...
     # - DeriveGeneric
@@ -71,9 +71,9 @@ other-extensions:  # besides the automatically Haskell2010
     # -XUndecidableInstances  
 
 dependencies: 
-    - base  
+    - base  > 4.7 && < 5
     - uniformBase  >= 0.1.3
-    -  uniform-json
+    - uniform-json
     -  uniform-shake
     # - uniform-convenience # from u2to
     - uniform-startapp # from u2to

@@ -59,7 +59,7 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
     md1 <- read8 inputFn markdownFileType
     let layout = storage sett3
 
-    dr3 <- md2docrep NoticeLevel1 layout inputFn md1
+    dr3 <- md2docrep debug layout inputFn md1
 
     write8 resfn2 docrepFileType dr3
     when (inform debug) $
