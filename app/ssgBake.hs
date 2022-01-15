@@ -16,11 +16,11 @@
 -}
 module Main where -- must have Main (main) or Main where
 
-import ShakeBake.CmdLineArgs  
-import Foundational.LayoutFlags  
-import ShakeBake.StartSSGprocess  
-import Uniform.Convenience.StartApp  
-import UniformBase  
+import ShakeBake.CmdLineArgs ( parseArgs2input )  
+import Foundational.LayoutFlags ( PubFlags, sourceDirTestSite )  
+import ShakeBake.StartSSGprocess ( ssgProcess )  
+import Uniform.StartApp ( startProgWithTitle )  
+import UniformBase ( Text, NoticeLevel(NoticeLevel0), unlinesT )  
 
 programName, progTitle :: Text
 programName = "ssgBake" :: Text
@@ -45,7 +45,7 @@ main =
                         , "\n -d drafts"
                         , "\n -o old"
                         , "\n -t test (use data in package)"
-                        , "\n -q quick (not producing the pdfs)"
+                        , "\n -q quick (not producing the pdfs, which is slowing down)"
                         , "\n -w start to watch the files for changes and rebake (implies -s s cancels -u"
                         , "\n -s start local server (port is fixed in settings)"
                         , "\n -u upload to external server (not yet implemented"

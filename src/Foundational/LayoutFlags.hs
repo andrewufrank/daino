@@ -25,7 +25,7 @@ module Foundational.LayoutFlags
     , def ) where
 
 import UniformBase
-import Data.Default.Class
+import Data.Default.Class -- to define a default class for pub flags 
 import Uniform.Json
 
 progName :: Text

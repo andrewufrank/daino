@@ -29,7 +29,7 @@ module Wave.Panrep2pdf (
     module Wave.Panrep2pdf,
 ) where
 
-import Data.Default
+-- import Data.Default
 import Foundational.Filetypes4sites
 import Foundational.LayoutFlags
 import Foundational.MetaPage

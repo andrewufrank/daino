@@ -28,7 +28,7 @@ module Wave.Doc2html (
     module Wave.Doc2html,
 ) where
 
-import Data.Default
+-- import Data.Default
 import Foundational.Filetypes4sites
 import Foundational.LayoutFlags
 import Foundational.MetaPage
@@ -47,8 +47,9 @@ import Data.Maybe (fromMaybe)
 ------------------------------------------------docrep -> panrep
 
 {- ^ transform a docrep to a panrep (which is the pandoc rep)
- does process the references
- and will do index, but this goes to ssg
+ completes the index (if indexpage else nothing done)
+
+ the refs are processed before in docrep
 -}
 
 docrep2panrep :: NoticeLevel -> SiteLayout -> Docrep -> ErrorT Text IO Panrep
@@ -145,6 +146,7 @@ data ContentHtml = ContentHtml
 -- todays date 
 -- filename3 the original file name 
 -- mit id,h1, h2,.. span und p tags 
+
 instance ToJSON ContentHtml
 instance Zeros ContentHtml where
   zero = ContentHtml zero zero zero zero

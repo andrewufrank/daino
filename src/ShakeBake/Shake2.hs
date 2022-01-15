@@ -49,18 +49,17 @@
             -fno-warn-missing-methods
             -fno-warn-duplicate-exports  #-}
 
-{- | to convert
-              files in any input format to html and pdf
-              orginals are found in doughDir and go to bakeDir
--}
+
 module ShakeBake.Shake2 where
 
 import           Uniform.Shake
 
 import Foundational.LayoutFlags
-    -- ( SiteLayout(doughDir, bakedDir), inform, staticDirName )
--- import           Lib.CmdLineArgs         (PubFlags (..))
-import           ShakeBake.ConvertFiles
+    ( SiteLayout(themeDir, doughDir, bakedDir),
+      Settings(storage),
+      PubFlags(quickFlag) )
+import ShakeBake.ConvertFiles
+    ( io2bool, convertAny, copyFileToBaked )
 
 -- shakeDelete :: SiteLayout -> FilePath -> ErrIO ()
 -- {- ^ experimental - twich found delete of md

@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------
 --
--- Module      :   the  process
+-- Module      :   convert a homepage
 ----------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
@@ -16,12 +16,13 @@
             -fno-warn-unused-matches #-}
 
 {- | to convert
-              files in any input format to html
+              files in any input format (primarily md) 
+                to html and to pdf 
               orginals are found in dire doughDir and go to bakeDir
 -}
+
 module ShakeBake.StartSSGprocess (ssgProcess) where
 
--- import Wave.CmdLineArgs (PubFlags (..))
 import ShakeBake.ReadSettingFile (readSettings)
 import ShakeBake.Shake2 (shakeAll)
 import ShakeBake.Watch (mainWatch)
@@ -36,6 +37,9 @@ ssgProcess debug flags = do
 -- set the currentWorkingDir CWD to doughDir
     let doughP = doughDir (storage sett3)
 -- it should be allways be the same, independent of start 
+-- when started to convert the tests the CWD is not 
+-- the same then when starting in a directory to convert
+
     currDir <- currentDir
     putIOwords ["ssgProcess", "currDir", showT currDir, "\nwill beomce doughP", showT doughP]
     setCurrentDir doughP

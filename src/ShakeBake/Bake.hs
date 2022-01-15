@@ -45,6 +45,8 @@ type BakeOp =
     ErrIO ()
 
 bakeOneMD2docrep :: BakeOp --    MD -> DOCREP
+-- process the md to pandoc format (parser)
+-- and add the refs 
 bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
     when (inform debug) $    putIOwords
         [ "\n-----------------"
@@ -57,7 +59,7 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
     md1 <- read8 inputFn markdownFileType
     let layout = storage sett3
 
-    dr3 <- md2docrep debug layout inputFn md1
+    dr3 <- md2docrep NoticeLevel1 layout inputFn md1
 
     write8 resfn2 docrepFileType dr3
     when (inform debug) $
@@ -69,7 +71,7 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
     return ()
 
 bakeOneDocrep2panrep :: BakeOp --  DOCREP -> PANREP
--- change to metaPage and add index and biblio ref data 
+-- change to metaPage and add index  
 bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
     when (inform debug) $    putIOwords
         [ "-----------------"
@@ -82,6 +84,7 @@ bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
     dr1 <- read8 inputFn docrepFileType
     let layout = storage sett3
     p3 <- docrep2panrep debug layout dr1
+            -- completes index and should process reps 
 
     write8 resfn2 panrepFileType p3 -- content is html style
     when (inform debug) $

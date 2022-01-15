@@ -38,7 +38,7 @@ import Uniform.Json
 import Uniform.Pandoc
 import Uniform.PandocImports
 import Uniform.Shake (makeRelativeP)
-import Uniform.Filenames (setFileExtension)
+-- import Uniform.Filenames (setFileExtension)
 import Uniform.Yaml
 import UniformBase
 -- import Uniform.HTMLout (extHTML)

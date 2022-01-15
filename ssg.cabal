@@ -59,19 +59,16 @@ library
   ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-unused-imports -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports
   build-depends:
       base
-    , data-default
     , data-default-class
-    , pandoc-types
     , uniform-cmdLineArgs
-    , uniform-convenience
-    , uniform-fileio
     , uniform-json
-    , uniform-latex2pdf ==0.0.1.1
-    , uniform-pandoc ==0.0.2.4
+    , uniform-latex2pdf >=0.0.1.1
+    , uniform-pandoc >=0.0.2.4
     , uniform-shake
+    , uniform-startapp
     , uniform-watch
     , uniform-webserver
-    , uniformBase ==0.1.3
+    , uniformBase >=0.1.3
   default-language: Haskell2010
 
 executable ssgbake
@@ -85,18 +82,15 @@ executable ssgbake
   ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-unused-imports -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports
   build-depends:
       base
-    , data-default
     , data-default-class
-    , pandoc-types
     , ssg
     , uniform-cmdLineArgs
-    , uniform-convenience
-    , uniform-fileio
     , uniform-json
-    , uniform-latex2pdf ==0.0.1.1
-    , uniform-pandoc ==0.0.2.4
+    , uniform-latex2pdf >=0.0.1.1
+    , uniform-pandoc >=0.0.2.4
     , uniform-shake
+    , uniform-startapp
     , uniform-watch
     , uniform-webserver
-    , uniformBase ==0.1.3
+    , uniformBase >=0.1.3
   default-language: Haskell2010

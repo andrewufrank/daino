@@ -2,7 +2,7 @@
 packages: 
 -- test1
     ./ssg.cabal
-    ../uBase/uniformBase/*.cabal
+--    ../uBase/uniformBase/*.cabal
 --    ../uBase/uniform-algebras/*.cabal
 --    ../uBase/uniform-strings/*.cabal
 --    ../uBase/uniform-error/*.cabal
@@ -17,7 +17,8 @@ packages:
     ../u4blog/uniform-shake/*.cabal
     ../u4blog/uniform-pandoc/*.cabal
 --    /home/frank/Workspace11/u4blog/uniform-pandoc/uniform-pandoc.cabal
-    ../u2to/uniform-convenience/*.cabal
+--    ../u2to/uniform-convenience/*.cabal
+    ../u2to/uniform-startapp/*.cabal
     ../u2to/uniform-cmdLineArgs/*.cabal
 
 

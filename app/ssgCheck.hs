@@ -34,6 +34,6 @@ main =
     ( do
         let flags = True -- the debug flag
             sitefn :: FilePath
-            sitefn = "/home/frank/Workspace11/ssg/docs/site/dough/settings2"
+            sitefn = "/home/frank/Workspace11/ssg/docs/site/dough/settings3"
         checkProcess flags sitefn
     )

@@ -38,6 +38,7 @@ import Foundational.Filetypes4sites
 
 {- | process one md to a docrep
  for bakeOneMD2docrep and report_metaRec
+ add the refs 
 -}
 md2docrep :: NoticeLevel
     -> SiteLayout
