@@ -142,29 +142,22 @@ addRefs :: NoticeLevel -> Docrep -> ErrIO Docrep
 --   let result = citeproc procOpts s m $ [cites]
 --   putStrLn . unlines . map (renderPlainStrict) . citations $ result
 
-addRefs debug dr1 = do
+addRefs debug dr1@(Docrep y1 p1) = do
     -- the biblio entry is the signal that refs need to be processed
     when (inform debug) $ putIOwords ["addRefs", showT dr1, "\n"]
-    case (dyBibliography . meta1 $ dr1) of
+    case (dyBibliography y1) of
         Nothing -> (return dr1) 
-        Just _ -> (addRefs2 debug  dr1)  
+        Just _ ->  do
 
-addRefs2 ::
-    NoticeLevel ->
-    -- Path Abs Dir ->   -- ^ path to dough (source)
-    Docrep ->
-    ErrIO Docrep
-addRefs2 debug  dr1@(Docrep y1 p1)  = do
+            when (informAll debug) $ putIOwords 
+                ["addRefs2-1", showT $ dyFn y1
+                    -- , "\npandoc", showT dr1, "\n"
+                    , "\n\t biblio1" , showT $ dyBibliography y1
+                    , "\n\t style1" , showT $ dyStyle y1
+                    ]
 
-    when (informAll debug) $ putIOwords 
-        ["addRefs2-1", showT $ dyFn y1
-            -- , "\npandoc", showT dr1, "\n"
-            , "\n\t biblio1" , showT $ dyBibliography y1
-            , "\n\t style1" , showT $ dyStyle y1
-            ]
+            p2 <- pandocProcessCites  p1
+        
+            when (inform debug) $ putIOwords ["addRefs2-4", "p2\n", showT p2]
 
-    p2 <- pandocProcessCites  p1
-   
-    when (inform debug) $ putIOwords ["addRefs2-4", "p2\n", showT p2]
-
-    return (Docrep y1 p2)
+            return (Docrep y1 p2)
