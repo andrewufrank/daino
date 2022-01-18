@@ -96,8 +96,6 @@ bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
         [ "\n-----------------"
         , "bakeOnePanrep2html 1 fn"
         , showT inputFn
-        , "debug"
-        , showT debug
         , "\n resfn2"
         , showT resfn2
         ]
@@ -108,33 +106,13 @@ bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
     let masterfn = templatesDir layout </> mf
 
     p <- panrep2html debug masterfn staticMenu dr1
+
     write8 resfn2 htmloutFileType p -- content is html style
     when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOnePanrep2html done fn", showT resfn2]
     return ()
 
--- bakeOnePanrep2panrep1 :: BakeOp -- PANREP -> Panrep1  -- TODO
--- -- split in panrep -> panrep1
--- bakeOnePanrep2panrep1 debug flags inputFn layout resfn2 = do
---     dr1 <- read8 inputFn panrepFileType
---     p :: Panrep1 <- panrep2panrep1 debug layout dr1
---     write8 resfn2 panrep1FileType p  
---     when (inform debug) $
---         putIOwords
---             ["\n-----------------", "bakeOnePanrep2panrep1 done fn", showT resfn2]
---     return ()
-
--- bakeOnePanrep12html :: BakeOp -- PANREP -> Panrep1  -- TODO
--- -- split in panrep -> panrep1
--- bakeOnePanrep12html debug flags inputFn layout resfn2 = do
---     dr1 <- read8 inputFn panrep1FileType
---     p :: HTMLout <- panrep12html debug layout dr1
---     write8 resfn2 htmloutFileType p  
---     when (inform debug) $
---         putIOwords
---             ["\n-----------------", "bakeOnePanrep12html done fn", showT resfn2]
---     return ()
 
 bakeOnePanrep2texsnip :: BakeOp --  PANREP -> TEXSNIP
 -- TODO
@@ -164,8 +142,6 @@ bakeOneTexsnip2tex debug flags inputFn sett3 resfn2 = do
         [ "\n-----------------"
         , "bakeOneFile2tex 1 fn"
         , showT inputFn
-        , "debug"
-        , showT debug
         , "\n resfn2"
         , showT resfn2
         ]
@@ -203,7 +179,7 @@ bakeOneTex2pdf debug flags inputFn sett3 resfn2 = do
     let layout = storage sett3
     let doughP = doughDir layout
 
-    tex2pdf NoticeLevel0  inputFn resfn2 doughP -- content is html style
+    tex2pdf debug  inputFn resfn2 doughP -- content is html style
     when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOneTex2pdf done fn", showT resfn2]
