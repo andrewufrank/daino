@@ -14,7 +14,7 @@ description:    A static site generator from pandoc and other available packages
                   made images in banner
                 0.0.4.6  fixed pdf production, new flag 
                 0.0.4.7  use Pandoc processCitations - for ghc 8.10.7
-                0.0.4.8
+                0.0.4.8  reduced, removed unused code, cleaned
 category:       Development Web
 homepage:       https://github.com/frank/ssg#readme
 bug-reports:    https://github.com/frank/ssg/issues

@@ -39,6 +39,8 @@ import Foundational.MetaPage ( MetaPage, extPDF )
  because it is possible to convert the Meta from Pandoc to JSON
  with flattenMeta (in PandocImports)
  but I do not see an easy way to convert back
+ - Where would this be required? 
+ - probably for the index construction? 
 -}
 data Docrep = Docrep {meta1 :: MetaPage, pan1 :: Pandoc} -- a json value
     deriving (Show, Read, Eq, Generic, Zeros)

@@ -70,7 +70,7 @@ md2docrep debug layout2 inputFn md1 = do
     -- uses the refs listed in the file and discovred by pandoc,
     -- as well as nocite
     -- therefore must use json
-    dr3 <- addRefs debug doughP dr1  -- to dr3 
+    dr3 <- addRefs debug dr1  -- to dr3 
 
     -- does currently not add anything.. needs minimal working siteNameExample
 
@@ -99,6 +99,7 @@ pandoc2docrep  doughP filename pd =
                 , dyAuthor = fromMaybe "FILL_dyAuthor" $ getAtKey meta2 "author"
                 , dyDate = getAtKey meta2 "date"
                 , dyBibliography = getAtKey meta2 "bibliography"
+                -- used as signal for processing biblio
                 , dyImage = fromMaybe "" $ getAtKey meta2 "image"
                 , dyImageCaption = fromMaybe "" $ getAtKey meta2 "caption"
                 , dyKeywords = fromMaybe "" $ getAtKey meta2 "keywords"
@@ -123,7 +124,7 @@ pandoc2docrep  doughP filename pd =
 
 
 --------------------------------
-addRefs :: NoticeLevel -> Path Abs Dir -> Docrep -> ErrIO Docrep
+addRefs :: NoticeLevel -> Docrep -> ErrIO Docrep
 {- ^ add the references to the pandoc block
  the biblio is in the yam (otherwise nothing is done)
  ths cls file must be in the yam
@@ -141,35 +142,34 @@ addRefs :: NoticeLevel -> Path Abs Dir -> Docrep -> ErrIO Docrep
 --   let result = citeproc procOpts s m $ [cites]
 --   putStrLn . unlines . map (renderPlainStrict) . citations $ result
 
-addRefs debug doughP dr1 = do
+addRefs debug dr1 = do
     -- the biblio entry is the signal that refs need to be processed
-    -- only refs do not work
     when (inform debug) $ putIOwords ["addRefs", showT dr1, "\n"]
-    let biblio1 = dyBibliography . meta1 $ dr1
-    maybe (return dr1) (addRefs2 debug doughP dr1) biblio1
+    case (dyBibliography . meta1 $ dr1) of
+        Nothing -> (return dr1) 
+        Just _ -> (addRefs2 debug  dr1)  
 
 addRefs2 ::
     NoticeLevel ->
-    Path Abs Dir ->   -- ^ path to dough (source)
+    -- Path Abs Dir ->   -- ^ path to dough (source)
     Docrep ->
-    Text ->
     ErrIO Docrep
-addRefs2 debug doughP dr1@(Docrep y1 p1) biblio1 = do
+addRefs2 debug  dr1@(Docrep y1 p1)  = do
     --   let debugx = False
     when (inform debug) $ putIOwords ["addRefs2-1", showT dr1, "\n"]
-    let style1 = dyStyle y1
+    -- let style1 = dyStyle y1
 
-    when (inform debug) $
+    when (informAll debug) $
         putIOwords
             [ "addRefs2-2"
-            , "\n\t biblio1" , showT biblio1
-            , "\n\t style1" , showT style1
+            , "\n\t biblio1" , showT $ dyBibliography y1
+            , "\n\t style1" , showT $ dyStyle y1
             ]
 
-    let biblioRP = makeRelFile . t2s $ biblio1
-    let styleRP = makeRelFile . t2s . fromMaybe "resources/chicago-fullnote-bibliography-bb.csl" $ style1 
-    let biblioP =  doughP </> biblioRP
-    let styleP = doughP </> styleRP 
+    -- let biblioRP = makeRelFile . t2s $ biblio1
+    -- let styleRP = makeRelFile . t2s . fromMaybe "resources/chicago-fullnote-bibliography-bb.csl" $ style1 
+    -- let biblioP =  doughP </> biblioRP
+    -- let styleP = doughP </> styleRP 
 
     -- let loc1 = Just "en" -- TODO depends on language to be used for
     
@@ -182,10 +182,10 @@ addRefs2 debug doughP dr1@(Docrep y1 p1) biblio1 = do
     -- let stylefp =
     --         t2s . fromMaybe "style1 in addRefs2 wer23" $ style1 :: FilePath
     --  Raised the exception when style empty
-    when (inform debug) $ putIOwords ["addRefs2-3-1 v0.4.7"
-            , "\n\tstyleP", showT styleP
-            , "\n\tbiblioP", showT biblioP
-            ]
+    -- when (inform debug) $ putIOwords ["addRefs2-3-1 v0.4.7"
+    --         , "\n\tstyleP", showT styleP
+    --         , "\n\tbiblioP", showT biblioP
+    --         ]
 -- values are 
 --         styleP Path Abs File /home/frank/Workspace11/ssg/docs/site/dough/resources/chicago-fullnote-bibliography-bb.csl 
 --         biblioP Path Abs File /home/frank/Workspace11/ssg/docs/site/dough/resources/BibTexLatex.bib
