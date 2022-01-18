@@ -19,7 +19,7 @@
 module Lib.IndexCollect where
 
 -- import Uniform.Json  
-import Uniform.PandocImports
+import Uniform.Pandoc
 import Foundational.Filetypes4sites ( Docrep(Docrep) )
 import Foundational.MetaPage
     ( IndexEntry(link, dirEntries, fileEntries),

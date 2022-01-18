@@ -126,21 +126,13 @@ pandoc2docrep  doughP filename pd =
 --------------------------------
 addRefs :: NoticeLevel -> Docrep -> ErrIO Docrep
 {- ^ add the references to the pandoc block
- the biblio is in the yam (otherwise nothing is done)
- ths cls file must be in the yam
+ the biblio is in the yaml (otherwise nothing is done)
+ ths cls file must be in the yaml as well
 
- not yet working  - need example
 -}
 
--- example:
--- processCites :: Style -> [Reference] -> Pandoc -> Pandoc
 
 -- Process a Pandoc document by adding citations formatted according to a CSL style. Add a bibliography (if one is called for) at the end of the document.
--- http://hackage.haskell.org/package/citeproc-hs-0.3.10/docs/Text-CSL.html
---   m <- readBiblioFile "mybibdb.bib"
---   s <- readCSLFile "apa-x.csl"
---   let result = citeproc procOpts s m $ [cites]
---   putStrLn . unlines . map (renderPlainStrict) . citations $ result
 
 addRefs debug dr1@(Docrep y1 p1) = do
     -- the biblio entry is the signal that refs need to be processed
