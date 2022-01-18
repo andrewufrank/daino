@@ -47,8 +47,9 @@ library
       ShakeBake.StartSSGprocess
       ShakeBake.Watch
       Uniform2.HTMLout
-      Wave.Doc2html
+      Wave.Docrep2panrep
       Wave.Md2doc
+      Wave.Panrep2html
       Wave.Panrep2pdf
   other-modules:
       Paths_ssg

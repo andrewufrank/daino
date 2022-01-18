@@ -22,7 +22,7 @@ module ShakeBake.Bake where
 import Foundational.LayoutFlags  
 import Foundational.Filetypes4sites
 
--- import Wave.Docrep 
+import Wave.Docrep2panrep 
 import Wave.Md2doc  
 import Wave.Panrep2pdf
 
@@ -32,7 +32,7 @@ import Wave.Panrep2pdf
 -- import Uniform2.ProcessPDF  
 import Uniform2.HTMLout
 
-import Wave.Doc2html  
+import Wave.Panrep2html  
 import UniformBase
 
 type BakeOp =
@@ -51,20 +51,15 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
     when (inform debug) $    putIOwords
         [ "\n-----------------"
         , "bakeOneMD2docrep 1 fn", showT inputFn
-        -- , "debug"
-        -- , showT debug
         , "\n resfn2", showT resfn2
         ]
     let layout = storage sett3
     let doughP = doughDir layout
     dr3 <- readMarkdownFile2docrep debug doughP inputFn 
-    -- md1 <- read8 inputFn markdownFileType
-
-    -- dr3 <- md2docrep debug layout inputFn md1
-
     dr4 <- addRefs debug dr3
 
     write8 resfn2 docrepFileType dr4
+
     when (inform debug) $
         putIOwords
             [ "\n-----------------"
@@ -73,20 +68,17 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
             ]
     return ()
 
-
-
 bakeOneDocrep2panrep :: BakeOp --  DOCREP -> PANREP
--- change to metaPage and add index  
+--   add index  
 bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
     when (inform debug) $    putIOwords
         [ "-----------------"
         , "bakeOneDocrep2panrep 1 inputFn"
         , showT inputFn
-        -- , "debug"
-        -- , showT debug
         , showT resfn2
         ]
     dr1 <- read8 inputFn docrepFileType
+
     let layout = storage sett3
     p3 <- docrep2panrep debug layout dr1
             -- completes index and should process reps 
