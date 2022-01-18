@@ -19,16 +19,16 @@
 -}
 module ShakeBake.Bake where
 
--- import Lib.CmdLineArgs (PubFlags (..))
 import Foundational.LayoutFlags  
--- import Wave.Docrep 
-import Wave.Md2doc
-import Wave.Panrep2pdf
-
 import Foundational.Filetypes4sites
 
+-- import Wave.Docrep 
+import Wave.Md2doc  
+import Wave.Panrep2pdf
+
+
 -- import Uniform2.Markdown  
-import Uniform.Pandoc
+-- import Uniform.Pandoc
 -- import Uniform2.ProcessPDF  
 import Uniform2.HTMLout
 
@@ -62,7 +62,9 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
 
     -- dr3 <- md2docrep debug layout inputFn md1
 
-    write8 resfn2 docrepFileType dr3
+    dr4 <- addRefs debug dr3
+
+    write8 resfn2 docrepFileType dr4
     when (inform debug) $
         putIOwords
             [ "\n-----------------"

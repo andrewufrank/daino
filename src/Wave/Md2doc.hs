@@ -53,42 +53,42 @@ readMarkdownFile2docrep debug doughP fnin = do
     let doc1 = pandoc2docrep doughP fnin pd
     return doc1
 
-{- | process one md to a docrep
- for bakeOneMD2docrep and report_metaRec
- add the refs 
--}
-md2docrep :: NoticeLevel
-    -> SiteLayout
-    -> Path Abs File
-    -> MarkdownText
-    -> ErrorT Text IO Docrep
-md2docrep debug layout2 inputFn md1 = do
-    let doughP = doughDir layout2 -- the regular dough
-        -- bakedP = bakedDir layout2
+-- {- | process one md to a docrep
+--  for bakeOneMD2docrep and report_metaRec
+--  add the refs 
+-- -}
+-- md2docrep :: NoticeLevel
+--     -> SiteLayout
+--     -> Path Abs File
+--     -> MarkdownText
+--     -> ErrorT Text IO Docrep
+-- md2docrep debug layout2 inputFn md1 = do
+--     let doughP = doughDir layout2 -- the regular dough
+--         -- bakedP = bakedDir layout2
 
-    pd <- readMarkdown2 md1 -- to pandoc 
-    -- take metadata and fill metaPage (including IndexEntry)
-    let dr1 = pandoc2docrep  doughP inputFn pd -- to dr1
-    -- with a flattened version of json from Pandoc
-    -- convert to metaPage with Index 
+--     pd <- readMarkdown2 md1 -- to pandoc 
+--     -- take metadata and fill metaPage (including IndexEntry)
+--     let dr1 = pandoc2docrep  doughP inputFn pd -- to dr1
+--     -- with a flattened version of json from Pandoc
+--     -- convert to metaPage with Index 
 
-    -- check
-    -- the fields for the index are prepared
-    -- merge the yaml metadata with default to have the
-    -- necessary values set
+--     -- check
+--     -- the fields for the index are prepared
+--     -- merge the yaml metadata with default to have the
+--     -- necessary values set
 
-    when (inform debug) $ putIOwords ["\nmd2docrep", "dr1", showT dr1]
+--     when (inform debug) $ putIOwords ["\nmd2docrep", "dr1", showT dr1]
 
-    -- uses the refs listed in the file and discovred by pandoc,
-    -- as well as nocite
-    -- therefore must use json
-    dr3 <- addRefs debug dr1  -- to dr3 
+--     -- uses the refs listed in the file and discovred by pandoc,
+--     -- as well as nocite
+--     -- therefore must use json
+--     dr3 <- addRefs debug dr1  -- to dr3 
 
-    -- does currently not add anything.. needs minimal working siteNameExample
+--     -- does currently not add anything.. needs minimal working siteNameExample
 
-    when (inform debug) $ putIOwords ["\nmd2docrep after addRefs", "dr3", showT dr3]
+--     when (inform debug) $ putIOwords ["\nmd2docrep after addRefs", "dr3", showT dr3]
 
-    return dr3 -- same as T.docrep 
+--     return dr3 -- same as T.docrep 
 
 pandoc2docrep ::  Path Abs Dir ->  Path Abs File -> Pandoc -> Docrep
 {- | convert the pandoc text to DocrepJSON
