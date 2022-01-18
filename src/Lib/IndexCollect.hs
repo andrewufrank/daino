@@ -26,7 +26,8 @@ import Foundational.MetaPage
       MetaPage(dyIndexEntry) )
 import UniformBase
 
-import Wave.Md2doc ( pandoc2docrep )
+import Wave.Md2doc 
+-- import ShakeBake.Bake (readMarkdownFile2docrep)
 
 
 
@@ -114,11 +115,12 @@ getFile2index debug doughP  fnin =
     do
         when (inform debug) $ putIOwords ["getFile2index fnin", showPretty fnin]
 
-        mdfile <- read8 fnin markdownFileType 
-        pd <- readMarkdown2 mdfile
-        -- could perhaps "need" all ix as files?
+        -- mdfile <- read8 fnin markdownFileType 
+        -- pd <- readMarkdown2 mdfile
+        -- -- could perhaps "need" all ix as files?
 
-        let (Docrep y1 _) = pandoc2docrep doughP fnin pd
+        -- let (Docrep y1 _) = pandoc2docrep doughP fnin pd
+        (Docrep y1 _) <- readMarkdownFile2docrep debug doughP fnin 
         -- needs the indexentry initialized
         -- does include the DNB files, bombs with ff ligature
         let ix1 :: IndexEntry = dyIndexEntry y1

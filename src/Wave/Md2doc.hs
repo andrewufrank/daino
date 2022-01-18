@@ -29,17 +29,29 @@ import Foundational.MetaPage
 import Uniform.Json ( gak, AtKey(getAtKey) )
 
 import Uniform.Pandoc
-    ( MarkdownText(..),
-      Pandoc,
-      pandocProcessCites,
-      getMeta,
-      flattenMeta,
-      readMarkdown2 
-      )
+    -- ( MarkdownText(..),
+    --   Pandoc,
+    --   pandocProcessCites,
+    --   getMeta,
+    --   flattenMeta,
+    --   readMarkdown2 
+    --   )
 import Uniform.Shake (makeRelativeP)
 
 import Foundational.Filetypes4sites ( Docrep(Docrep, meta1) )
 
+readMarkdownFile2docrep  :: NoticeLevel -> Path Abs Dir -> Path Abs File -> ErrIO Docrep 
+-- read a markdown file and convert to docrep
+readMarkdownFile2docrep debug doughP fnin = do
+    when (inform debug) $ putIOwords 
+        ["getFile2index fnin", showPretty fnin]
+
+    mdfile <- read8 fnin markdownFileType 
+    pd <- readMarkdown2 mdfile
+    -- could perhaps "need" all ix as files?
+
+    let doc1 = pandoc2docrep doughP fnin pd
+    return doc1
 
 {- | process one md to a docrep
  for bakeOneMD2docrep and report_metaRec
@@ -86,40 +98,9 @@ pandoc2docrep ::  Path Abs Dir ->  Path Abs File -> Pandoc -> Docrep
  TODO may use json record parse, which I have already done
 -}
 -- pure 
-pandoc2docrep  doughP filename pd = 
-    let meta2 = flattenMeta . getMeta $ pd
-        relfn = makeRelativeP doughP filename
-        meta4 =
-            MetaPage
-                { dyFn = toFilePath filename
-                , dyLink = toFilePath relfn
-                , dyLang = "en_US" -- DLenglish -- getAtKey meta2 "language"
-                , dyTitle = fromMaybe "FILL_dyTitle2" $ getAtKey meta2 "title"
-                , dyAbstract = fromMaybe "FILL_dyAbstract" $ getAtKey meta2 "abstract"
-                , dyAuthor = fromMaybe "FILL_dyAuthor" $ getAtKey meta2 "author"
-                , dyDate = getAtKey meta2 "date"
-                , dyBibliography = getAtKey meta2 "bibliography"
-                -- used as signal for processing biblio
-                , dyImage = fromMaybe "" $ getAtKey meta2 "image"
-                , dyImageCaption = fromMaybe "" $ getAtKey meta2 "caption"
-                , dyKeywords = fromMaybe "" $ getAtKey meta2 "keywords"
-                , dyStyle = getAtKey meta2 "style"
-                , dyStyleBiber = fromMaybe "authoryear" $ getAtKey meta2 "styleBiber"
-                , dyNoCite = getAtKey meta2 "nocite"
-                , dyReferences = gak meta2 "references"
-                , dyContentFiles = maybeToList  . getAtKey meta2 $ "content"
-                -- TODO make reading a list
-                , dyPublish = getAtKey meta2 "publish"
-                -- , -- TODO use pbulicationState
-                --   dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
-                , dyIndexSort = getAtKey meta2 "indexSort"
-                , dyIndexEntry =   zero
-                                            -- else zero
-                }
-                
-        ix1 =  initializeIndex meta4
-        meta6 = meta4{dyIndexEntry = ix1}
-    in (Docrep meta6 pd)
+pandoc2docrep  doughP filename pd = Docrep meta6 pd
+    where 
+        meta6 = pandoc2MetaPage doughP filename pd 
 
 
 

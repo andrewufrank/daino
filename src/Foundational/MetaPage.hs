@@ -35,13 +35,15 @@ import Foundational.LayoutFlags
 -- import Foundational.Filetypes4sites(extPDF, extHTML)
 -- import Lib.CmdLineArgs (PubFlags (..))
 import Uniform.Json
+import Uniform.Shake
 import Uniform.Pandoc
-import Uniform.PandocImports
+-- import Uniform.PandocImports
 -- import Uniform.Shake (makeRelativeP)
 -- import Uniform.Filenames (setFileExtension)
 import Uniform.Yaml
 import UniformBase
 -- import Uniform.HTMLout (extHTML)
+import Uniform.Json ( gak, AtKey(getAtKey) )
 
 data MetaPage = MetaPage
     { -- | the original dough fn
@@ -112,6 +114,43 @@ instance ToJSON MetaPage where
 instance FromJSON MetaPage where
     parseJSON = genericParseJSON docyamlOptions
 
+pandoc2MetaPage::  Path Abs Dir ->  Path Abs File -> Pandoc -> MetaPage
+pandoc2MetaPage doughP filename pd =  meta6
+
+  where
+    meta2 = flattenMeta . getMeta $ pd
+    relfn = makeRelativeP doughP filename
+    meta4 =
+        MetaPage
+            { dyFn = toFilePath filename
+            , dyLink = toFilePath relfn
+            , dyLang = "en_US" -- DLenglish -- getAtKey meta2 "language"
+            , dyTitle = fromMaybe "FILL_dyTitle2" $ getAtKey meta2 "title"
+            , dyAbstract = fromMaybe "FILL_dyAbstract" $ getAtKey meta2 "abstract"
+            , dyAuthor = fromMaybe "FILL_dyAuthor" $ getAtKey meta2 "author"
+            , dyDate = getAtKey meta2 "date"
+            , dyBibliography = getAtKey meta2 "bibliography"
+            -- used as signal for processing biblio
+            , dyImage = fromMaybe "" $ getAtKey meta2 "image"
+            , dyImageCaption = fromMaybe "" $ getAtKey meta2 "caption"
+            , dyKeywords = fromMaybe "" $ getAtKey meta2 "keywords"
+            , dyStyle = getAtKey meta2 "style"
+            , dyStyleBiber = fromMaybe "authoryear" $ getAtKey meta2 "styleBiber"
+            , dyNoCite = getAtKey meta2 "nocite"
+            , dyReferences = gak meta2 "references"
+            , dyContentFiles = maybeToList  . getAtKey meta2 $ "content"
+            -- TODO make reading a list
+            , dyPublish = getAtKey meta2 "publish"
+            -- , -- TODO use pbulicationState
+            --   dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
+            , dyIndexSort = getAtKey meta2 "indexSort"
+            , dyIndexEntry =   zero
+                                        -- else zero
+            }
+            
+    ix1 =  initializeIndex meta4
+    meta6 = meta4{dyIndexEntry = ix1} 
+ 
 -- addFileMetaPage :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> MetaPage
 -- addFileMetaPage doughP bakedP fn =
 --     if getNakedFileName fn == "index"

@@ -55,11 +55,12 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
         -- , showT debug
         , "\n resfn2", showT resfn2
         ]
-
-    md1 <- read8 inputFn markdownFileType
     let layout = storage sett3
+    let doughP = doughDir layout
+    dr3 <- readMarkdownFile2docrep debug doughP inputFn 
+    -- md1 <- read8 inputFn markdownFileType
 
-    dr3 <- md2docrep debug layout inputFn md1
+    -- dr3 <- md2docrep debug layout inputFn md1
 
     write8 resfn2 docrepFileType dr3
     when (inform debug) $
@@ -69,6 +70,8 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
             , showT resfn2
             ]
     return ()
+
+
 
 bakeOneDocrep2panrep :: BakeOp --  DOCREP -> PANREP
 -- change to metaPage and add index  

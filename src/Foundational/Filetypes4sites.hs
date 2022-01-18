@@ -23,9 +23,10 @@ module Foundational.Filetypes4sites (
 ) where
 
 import Uniform.Json (FromJSON, ToJSON, Value)
-import Uniform.PandocImports ( Pandoc )
+import Uniform.Pandoc  
 import UniformBase
 import Foundational.MetaPage ( MetaPage, extPDF )
+-- import Wave.Md2doc (pandoc2docrep)
 
 
 --------------------------------------------typed file Docrep
