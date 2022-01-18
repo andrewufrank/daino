@@ -155,50 +155,16 @@ addRefs2 ::
     Docrep ->
     ErrIO Docrep
 addRefs2 debug  dr1@(Docrep y1 p1)  = do
-    --   let debugx = False
-    when (inform debug) $ putIOwords ["addRefs2-1", showT dr1, "\n"]
-    -- let style1 = dyStyle y1
 
-    when (informAll debug) $
-        putIOwords
-            [ "addRefs2-2"
+    when (informAll debug) $ putIOwords 
+        ["addRefs2-1", showT $ dyFn y1
+            -- , "\npandoc", showT dr1, "\n"
             , "\n\t biblio1" , showT $ dyBibliography y1
             , "\n\t style1" , showT $ dyStyle y1
             ]
 
-    -- let biblioRP = makeRelFile . t2s $ biblio1
-    -- let styleRP = makeRelFile . t2s . fromMaybe "resources/chicago-fullnote-bibliography-bb.csl" $ style1 
-    -- let biblioP =  doughP </> biblioRP
-    -- let styleP = doughP </> styleRP 
-
-    -- let loc1 = Just "en" -- TODO depends on language to be used for
-    
-    -- for the conventions in the lit list
-    -- must be 2 char (all other seems to be difficult with pandoc-citeproc)
-    -- change to new citeproc TODO later - not used 
-
-    -- let bibliofp =
-    --         t2s biblio1 :: FilePath
-    -- let stylefp =
-    --         t2s . fromMaybe "style1 in addRefs2 wer23" $ style1 :: FilePath
-    --  Raised the exception when style empty
-    -- when (inform debug) $ putIOwords ["addRefs2-3-1 v0.4.7"
-    --         , "\n\tstyleP", showT styleP
-    --         , "\n\tbiblioP", showT biblioP
-    --         ]
--- values are 
---         styleP Path Abs File /home/frank/Workspace11/ssg/docs/site/dough/resources/chicago-fullnote-bibliography-bb.csl 
---         biblioP Path Abs File /home/frank/Workspace11/ssg/docs/site/dough/resources/BibTexLatex.bib
-
     p2 <- pandocProcessCites  p1
-    -- uses value set in p1, not biblioP
-    -- would it work with the curren working dir set here?
-
-    -- pandoc.citeproc version 0.4.5
-    -- p2 <- readBiblioRefs True bibliofp loc1 stylefp (dyReferences y1) p1
-    -- p2 <- readBiblioRefs (inform debug) biblioP loc1 styleP (dyReferences y1) p1
-    -- 8.10.7 version 
- 
+   
     when (inform debug) $ putIOwords ["addRefs2-4", "p2\n", showT p2]
 
     return (Docrep y1 p2)
