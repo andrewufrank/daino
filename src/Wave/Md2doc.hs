@@ -81,7 +81,7 @@ addRefs debug dr1@(Docrep y1 p1) = do
         Nothing -> (return dr1) 
         Just _ ->  do
 
-            when (informAll debug) $ putIOwords 
+            when (inform debug) $ putIOwords 
                 ["addRefs2-1", showT $ dyFn y1
                     -- , "\npandoc", showT dr1, "\n"
                     , "\n\t biblio1" , showT $ dyBibliography y1

@@ -41,7 +41,7 @@ completeIndex debug doughP  ix1 = do
     let fn = doughP </> (link ix1) :: Path Abs File
     -- changed to search in dough (but no extension yet)
 
-    when (informAll debug) $   -- to have indication where error is if pandoc error 
+    when (inform debug) $   -- to have indication where error is if pandoc error 
         putIOwords
             [ "completeIndex"
             , "fn"
