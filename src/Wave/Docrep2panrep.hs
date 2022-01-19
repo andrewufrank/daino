@@ -55,7 +55,7 @@ import Lib.Templating ( putValinMaster )
 
 --  the refs are processed before in md2docrep
 
-docrep2panrep :: NoticeLevel -> SiteLayout -> Docrep -> ErrorT Text IO Panrep
+docrep2panrep :: NoticeLevel -> SiteLayout -> Docrep -> ErrIO Panrep
 docrep2panrep debug layout (Docrep y1 p1) = do
     when (inform debug) $
         putIOwords ["\n\ty1,p1-------------------------docrep2panrep"

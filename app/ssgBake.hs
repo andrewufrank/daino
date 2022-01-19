@@ -19,8 +19,9 @@ module Main where -- must have Main (main) or Main where
 import ShakeBake.CmdLineArgs ( parseArgs2input )  
 import Foundational.LayoutFlags ( PubFlags, sourceDirTestSite )  
 import ShakeBake.StartSSGprocess ( ssgProcess )  
-import Uniform.StartApp ( startProgWithTitle )  
-import UniformBase ( Text, NoticeLevel(NoticeLevel0), unlinesT )  
+-- import Uniform.StartApp ( startProgWithTitle )  
+import UniformBase 
+-- ( Text, NoticeLevel(NoticeLevel0), unlinesT )  
 
 programName, progTitle :: Text
 programName = "ssgBake" :: Text
@@ -30,9 +31,8 @@ progTitle = "constructing a static site generator 0.0.4.4" :: Text
 
 main :: IO ()
 main =
-    startProgWithTitle
-        programName
-        progTitle
+    startProg
+        (unwords' [programName, progTitle])
         ( do
             flags :: PubFlags <-
                 parseArgs2input

@@ -26,7 +26,7 @@ import Foundational.LayoutFlags
 import Uniform.Pandoc
 
 import Uniform.Shake
--- import UniformBase 
+-- import UniformBase
 
 
 io2bool :: MonadIO m => ErrIO b -> m b

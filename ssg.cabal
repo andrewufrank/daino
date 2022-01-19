@@ -5,16 +5,13 @@ cabal-version: 1.12
 -- see: https://github.com/sol/hpack
 
 name:           ssg
-version:        0.0.4.8
+version:        0.0.4.9
 synopsis:       a static site generator using shake and pandoc
 description:    A static site generator from pandoc and other available packages on Hackage (e.g. shake, twitch, scotty), influenced by Chris Penner's [slick](https://github.com/ChrisPenner/slick#readme). It uses files to manage data to permit version management with git. Page appearances are directed with YAML and internally data is structured with JSON, for each page a PDF file is produced to allow regular looking prints. Index pages are automatically created.
                 version 0.0.4.5 to fix references 
                   with uniformBase 0.1.2, pandoc 0.0.2.3
                   pdf produced for every blog 
                   made images in banner
-                0.0.4.6  fixed pdf production, new flag 
-                0.0.4.7  use Pandoc processCitations - for ghc 8.10.7
-                0.0.4.8  reduced, removed unused code, cleaned
 category:       Development Web
 homepage:       https://github.com/frank/ssg#readme
 bug-reports:    https://github.com/frank/ssg/issues
@@ -64,11 +61,10 @@ library
     , uniform-json
     , uniform-latex2pdf >=0.0.1.1
     , uniform-pandoc >=0.0.2.4
-    , uniform-shake
-    , uniform-startapp
+    , uniform-shake >=0.0.1.2
     , uniform-watch
     , uniform-webserver
-    , uniformBase >=0.1.3
+    , uniformBase ==0.1.4
   default-language: Haskell2010
 
 executable ssgbake
@@ -87,9 +83,8 @@ executable ssgbake
     , uniform-json
     , uniform-latex2pdf >=0.0.1.1
     , uniform-pandoc >=0.0.2.4
-    , uniform-shake
-    , uniform-startapp
+    , uniform-shake >=0.0.1.2
     , uniform-watch
     , uniform-webserver
-    , uniformBase >=0.1.3
+    , uniformBase ==0.1.4
   default-language: Haskell2010

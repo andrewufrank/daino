@@ -242,10 +242,10 @@ isIndexPage :: Path Abs File -> Bool
 isIndexPage filename =  getNakedFileName filename == "index"
 
 convertLink2html ix = s2t . -- s2t . toFilePath $ 
-          setFileExtension (unExtension extHTML)   $ link ix
+          setExtension (unExtension extHTML)   $ link ix
 
 convertLink2pdf ix =  s2t . -- s2t . toFilePath $ 
-          setFileExtension (unExtension extPDF)   $ link ix
+          setExtension (unExtension extPDF)   $ link ix
 
 
 extHTML :: Extension

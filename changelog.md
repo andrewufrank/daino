@@ -17,3 +17,8 @@ a static site generator
 # 0.0.4.4
     construct the test environment, 
     generalized the bake any (aka convert any)  
+  0.0.4.6  fixed pdf production, new flag 
+  0.0.4.7  use Pandoc processCitations - for ghc 8.10.7
+
+  0.0.4.8  reduced, removed unused code, cleaned
+  0.0.4.9  change for error to use ExceptionT

@@ -96,7 +96,7 @@ panrep2html2 debug masterfn vals = do
     when (inform debug) $ putIOwords ["\n panrep2html done"]
     return p
 
-fillContent :: IndexEntry -> Text -> ErrorT Text IO ContentHtml
+fillContent :: IndexEntry -> Text -> ErrIO ContentHtml
 fillContent ix cont = do 
         today1 :: UTCTime <- getCurrentTimeUTC
         let res = ContentHtml
