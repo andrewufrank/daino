@@ -17,8 +17,17 @@ a static site generator
 # 0.0.4.4
     construct the test environment, 
     generalized the bake any (aka convert any)  
+# 0.0.4.5 to fix references 
+    with uniformBase 0.1.2, pandoc 0.0.2.3
+    pdf produced for every blog 
+    made images in banner
   0.0.4.6  fixed pdf production, new flag 
   0.0.4.7  use Pandoc processCitations - for ghc 8.10.7
 
   0.0.4.8  reduced, removed unused code, cleaned
   0.0.4.9  change for error to use ExceptionT
+  0.0.4.10  add the private/public and the completion status
+                ppvalue (private/publis) command line flag private includes the privates, otherwise only publis 
+                completion: idea/sketch/draft/nearly/publish
+                        include command line flag with these values
+                        include what is more than stated 
