@@ -161,6 +161,8 @@ settingsFileName = makeRelFile "settings3" -- the yaml file
 
 
 -- | the switches for material to include
+-- they are (for now) just bools which allow the 
+-- baking of all md
 data PubFlags = PubFlags
     { publishFlag
       , oldFlag

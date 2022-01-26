@@ -141,6 +141,8 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         -- which then produce them
         -- the original start needs in baked (from the files in dough)
 
+
+
         unless (quickFlag flags) $ do 
             pdfs <- getNeeds debug doughP bakedP "md" "pdf"
             needP pdfs
@@ -279,7 +281,7 @@ getNeeds debug sourceP targetP extSource extTarget = do
             ]
 
     filesWithSource :: [Path Rel File] <-
-        getDirectoryToBake
+        getFilesToBake
             "DNB"  -- exclude files containing
             sourceP
             ["**/*." <> t2s extSource]
@@ -290,8 +292,8 @@ getNeeds debug sourceP targetP extSource extTarget = do
                 else
                     map
                         (replaceExtension' extTarget . (targetP </>))
-                        filesWithSource ::
-                        [Path Abs File]
+                        (filter (const True) filesWithSource) 
+                        :: [Path Abs File]
     when (inform debug) $ do
         putIOwords
             [ "===================\ngetNeeds -  source files 1"
