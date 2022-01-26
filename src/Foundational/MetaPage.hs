@@ -70,8 +70,8 @@ data MetaPage = MetaPage
     , dyReferences :: Maybe Value --  [Reference]
     , dyContentFiles :: [Text] -- the list of md files to include 
     , dyNoCite :: Maybe Text
-    , dyPublish :: Maybe Text -- should be "publish"
-    , dyPP :: Maybe Text -- should be "public"
+    , dyPublish ::  Text -- should be "publish"
+    , dyPP ::  Text -- should be "public"
     -- , dyIndexPage :: Bool
     , dyIndexSort :: Maybe Text
     , dyIndexEntry :: IndexEntry
@@ -95,8 +95,8 @@ instance Default MetaPage where
             , dyBibliography = Just "resources/BibTexLatex.bib"
             , dyStyle = Just "chicago-fullnote-bibliography-bb.csl"
             , dyStyleBiber = "authoryear"
-            , dyPublish = Just "publish"   -- change in future to restrictive default "private"
-            , dyPP = Just "public" -- cange to "draft"
+            , dyPublish =  "private"
+            , dyPP =  "draft"
             -- , dyIndexPage = False
             , dyIndexSort = zero
             , dyIndexEntry = zero
@@ -142,8 +142,8 @@ pandoc2MetaPage doughP filename pd =  meta6
             , dyReferences = gak meta2 "references"
             , dyContentFiles = maybeToList  . getAtKey meta2 $ "content"
             -- TODO make reading a list
-            , dyPublish = getAtKey meta2 "publish"
-            , dyPP = getAtKey meta2 "private"
+            , dyPublish = fromMaybe "publish" $ getAtKey meta2 "publish"  -- questionalbe default
+            , dyPP = fromMaybe "public" $ getAtKey meta2 "pp" -- questionalbe default 
             -- , -- TODO use pbulicationState
             --   dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
             , dyIndexSort = getAtKey meta2 "indexSort"
@@ -212,7 +212,7 @@ data IndexEntry = IndexEntry
     , abstract :: Text
     , author :: Text
     , date :: Text
-    , publish :: Maybe Text
+    -- , publish :: Maybe Text
     -- , indexPage :: Bool
     , dirEntries :: [IndexEntry] -- def []
     , fileEntries :: [IndexEntry] -- def []
@@ -236,7 +236,7 @@ initializeIndex MetaPage{..} = ix1
             , abstract = dyAbstract
             , author = dyAuthor
             , date = fromMaybe (showT year2000) dyDate
-            , publish = dyPublish
+            -- , publish = dyPublish
             , dirEntries = zero
             , fileEntries = zero
             }

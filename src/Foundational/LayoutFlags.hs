@@ -119,29 +119,28 @@ settingsFileName = makeRelFile "settings3" -- the yaml file
 -- they are (for now) just bools which allow the 
 -- baking of all md (higher than the switch)
 data PubFlags = PubFlags
-    { publishFlag
-      , oldFlag
+    { privateFlag
       , draftFlag
-      , privateFlag
-      , testFlag, testNewFlag 
+    --   , oldFlag
+      , testFlag
+      , testNewFlag 
       , quickFlag
       , watchFlag
       , serverFlag :: Bool
-    , uploadFlag :: Bool
+    -- , uploadFlag :: Bool
     , settingsFile :: Path Abs File
     }
     deriving (Show, Eq) -- no read for path
 
 instance Zeros PubFlags where
-    zero = PubFlags zero zero zero zero zero zero zero zero zero zero zero 
+    zero = PubFlags zero zero zero zero zero zero zero zero 
 instance Default PubFlags where 
         def = testFlags 
 
 testFlags :: PubFlags
 testFlags =
     zero
-        { publishFlag = True -- not including draft
-        , oldFlag = True
+        { privateFlag = False -- not including draft
         , draftFlag = False
         , settingsFile = sourceDirTestSite </> settingsFileName
         }

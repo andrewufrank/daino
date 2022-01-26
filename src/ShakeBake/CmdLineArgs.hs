@@ -28,32 +28,37 @@ import Foundational.MetaPage
 --  number of args must correspond in order and number with the
 --  command arguments described in the parser
 data LitArgs = LitArgs
-  { publishSwitch  -- x^ p
-  , oldSwitch -- x^ o
-  , draftSwitch -- x^ d
+  {
+   draftSwitch -- x^ d
+  , privateSwitch -- x^ v
+--   , publishSwitch  -- x^ p
+--   , oldSwitch -- x^ o
 --   , finishedSwitch -- x^ f 
   , testSwitch  -- x^ t
   , testNewSwitch -- x^ T -- test after delete to create all new
   , quickSwitch -- x^ q
   , serverSwitch -- x^ s 
   , watchSwitch -- x^ w 
-  , uploadSwitch -- x^ u  -- not yet used  
-  , privateSwitch -- x^ v
+--   , uploadSwitch -- x^ u  -- not yet used  
          :: Bool
    } deriving (Show)
 
 cmdArgs :: Parser LitArgs
 -- | strings which have no default result in enforced arguments
 -- order and type of arguments must correspod to LitArgs
-cmdArgs  =
+cmdArgs  =  
   LitArgs
-    <$> switch
-          (long "publish" <> short 'p' <> help
-            "include material ready to publish"
-          )
-    <*> switch (long "old" <> short 'o' <> help "include old material")
-    <*> switch (long "draft" <> short 'd' 
+    <$> switch (long "draft" <> short 'd' 
         <> help "include draft material")
+    <*> switch
+          (long "private" <> short 'p' <> help
+            "include the private data, else only public"
+          )
+    -- <$> switch
+    --       (long "publish" <> short 'p' <> help
+    --         "include material ready to publish"
+    --       )
+    -- <*> switch (long "old" <> short 'o' <> help "include old material")
     <*> switch
           (long "test" <> short 't' <> help
             "use test data in layout (site/dough), continue test, start server on port set"
@@ -67,10 +72,6 @@ cmdArgs  =
             "produce only html, but not the (slow) pdf's"
           )
     <*> switch
-          (long "private" <> short 'v' <> help
-            "include the private data, else only public"
-          )
-    <*> switch
           (long "server" <> short 's' 
                 -- <> value True   -- not working
                 <> help "start a server on port set in settings file")
@@ -78,10 +79,10 @@ cmdArgs  =
         (long "watch" <> short 'w' <> help
           "start the watch of files for restarting bake"
         )
-    <*> switch
-        (long "upload" <> short 'u' <> help
-          "upload to external server"
-        )
+    -- <*> switch
+    --     (long "upload" <> short 'u' <> help
+    --       "upload to external server"
+    --     )
 
 
 
@@ -99,18 +100,18 @@ parseArgs2input testdataDir t1 t2 = do
   workingdir1 :: Path Abs Dir <- currentDir
 
 
-  let flags1 = PubFlags { publishFlag  = publishSwitch args1
-                         , oldFlag      = oldSwitch args1
-                         , draftFlag    = draftSwitch args1
+  let flags1 = PubFlags { draftFlag    = draftSwitch args1
+                        -- , publishFlag  = publishSwitch args1
+                        --  , oldFlag      = oldSwitch args1
                          , privateFlag  = privateSwitch args1
                          , testFlag     = testSwitch args1
                          , testNewFlag = testNewSwitch args1
                          , quickFlag    = quickSwitch args1
-                         , watchFlag    = watchSwitch args1
                          , serverFlag   = serverSwitch args1
+                         , watchFlag    = watchSwitch args1
                          , settingsFile = workingdir1 </> settingsFileName 
                          -- perhaps wrong, could be site/dough?
-                        ,  uploadFlag = uploadSwitch args1
+                        -- ,  uploadFlag = uploadSwitch args1
                          }
 
   let flags2 = if testFlag flags1

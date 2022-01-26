@@ -33,7 +33,7 @@ import Uniform.Pandoc
     --   Pandoc,
     --   markdownFileType,
     --   readMarkdown2 )
-import Uniform.Shake
+-- import Uniform.Shake
 
 readMarkdownFile2docrep  :: NoticeLevel -> Path Abs Dir -> Path Abs File -> ErrIO Docrep 
 -- read a markdown file and convert to docrep
@@ -99,7 +99,10 @@ filterNeeds :: NoticeLevel -> PubFlags -> Path Abs Dir -> Path Rel File -> ErrIO
 -- ^ for md check the flags
 
 filterNeeds debug pubf doughP fn =  do 
+        putIOwords ["filterNeeds", "\nPubFlags", showT pubf ]
         d1 <- readMarkdownFile2docrep debug doughP (doughP </> fn) 
+        putIOwords ["filterNeeds2", "\nMeta", showT (meta1 d1) ]
+
         let t = includeBakeTest3docrep pubf d1 
         return $ if t then Just fn else Nothing
    
@@ -110,8 +113,8 @@ includeBakeTest3docrep :: PubFlags -> Docrep -> Bool
 -- ^ decide whether this is to be included in the bake 
 
 includeBakeTest3docrep pubf doc1 = 
-        (draftFlag pubf || publish1 ==  Just "publish")
-            && (privateFlag pubf || pp1 == Just "private")
+        (draftFlag pubf || publish1 ==   "publish") -- should be less than eq
+            && (privateFlag pubf || pp1 ==  "public")
     where
         -- draftF = draftFlag pubf 
         publish1 = dyPublish . meta1 $ doc1

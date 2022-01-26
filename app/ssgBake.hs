@@ -41,14 +41,15 @@ main =
                     ( unlinesT
                         [ "the flags to select what is included:"
                         , "default is nothing included"
-                        , "\n -p publish"
+                        , "\n -p private"
                         , "\n -d drafts"
-                        , "\n -o old"
-                        , "\n -t test (use data in package)"
+                        -- , "\n -o old"
+                        , "\n -t test (use data in package, continue)"
+                        , "\n -T test (use data in package, fresh start)"
                         , "\n -q quick (not producing the pdfs, which is slowing down)"
                         , "\n -w start to watch the files for changes and rebake (implies -s s cancels -u"
                         , "\n -s start local server (port is fixed in settings)"
-                        , "\n -u upload to external server (not yet implemented"
+                        -- , "\n -u upload to external server (not yet implemented"
                         ]
                     )
                     "list flags to include"

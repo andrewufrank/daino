@@ -58,7 +58,7 @@ menu2
     abstract2
     author2 
     date2 
-    publish2 
+    -- publish2 
 table-of-contents 
 beforeContent
 abstract 

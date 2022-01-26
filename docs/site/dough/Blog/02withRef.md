@@ -10,7 +10,7 @@ abstract: |
 
 nocite: |
  @navratil08
-
+pp: private
 bibliography: "resources/BibTexLatex.bib"
 
 style: "resources/chicago-fullnote-bibliography-bb.csl"

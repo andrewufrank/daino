@@ -5,6 +5,7 @@ date: Jan. 4, 2019
 keywords: test
 abstract: 03postwk abstract  
 # pageTemplate: page3.yaml
+publish: draft
 ---
 
 03postwk text without a hl 

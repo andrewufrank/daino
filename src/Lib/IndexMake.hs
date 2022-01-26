@@ -93,16 +93,15 @@ data Index4html = Index4html
     title2     :: Text,
     abstract2  :: Text,
     author2    :: Text,
-    date2      :: Text, -- UTCTime -- read the time early one to find errors
-    publish2   :: Text  -- not yet used 
+    date2      :: Text -- UTCTime -- read the time early one to find errors
+    -- publish2   :: Text  -- not yet used 
                 -- add language ?
     -- indexPage2 :: Bool -- mark for index entries
     }
   deriving (Generic, Eq, Ord, Show, Read)
 
 instance Zeros Index4html where
-  zero = Index4html zero zero zero zero zero zero zero zero
-
+  zero = Index4html zero zero zero zero zero zero zero 
 instance FromJSON Index4html
 
 -- parseJSON = genericParseJSON h4Options
@@ -132,7 +131,7 @@ getOneIndexEntryPure hpAuthor indexEntry1 =
           else title indexEntry1
     , author2 = blankAuthorName hpAuthor (author indexEntry1)
     , date2 = date indexEntry1
-    , publish2 = shownice $ publish indexEntry1
+    -- , publish2 = shownice $ publish indexEntry1
     --   indexPage2 = indexPage indexEntry1
     }
 
