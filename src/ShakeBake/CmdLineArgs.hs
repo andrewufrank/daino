@@ -31,11 +31,13 @@ data LitArgs = LitArgs
   { publishSwitch  -- x^ p
   , oldSwitch -- x^ o
   , draftSwitch -- x^ d
+--   , finishedSwitch -- x^ f 
   , testSwitch  -- x^ t
   , quickSwitch -- x^ q
   , serverSwitch -- x^ s 
   , watchSwitch -- x^ w 
   , uploadSwitch -- x^ u  -- not yet used  
+  , privateSwitch -- x^ v
          :: Bool
    } deriving (Show)
 
@@ -49,7 +51,8 @@ cmdArgs  =
             "include material ready to publish"
           )
     <*> switch (long "old" <> short 'o' <> help "include old material")
-    <*> switch (long "draft" <> short 'd' <> help "include draft material")
+    <*> switch (long "draft" <> short 'd' 
+        <> help "include draft material")
     <*> switch
           (long "test" <> short 't' <> help
             "use test data in layout (site/dough), start server on port set"
@@ -57,6 +60,10 @@ cmdArgs  =
     <*> switch
           (long "quick" <> short 'q' <> help
             "produce only html, but not the (slow) pdf's"
+          )
+    <*> switch
+          (long "private" <> short 'v' <> help
+            "include the private data, else only public"
           )
     <*> switch
           (long "server" <> short 's' 
@@ -90,6 +97,7 @@ parseArgs2input testdataDir t1 t2 = do
   let flags1 = PubFlags { publishFlag  = publishSwitch args1
                          , oldFlag      = oldSwitch args1
                          , draftFlag    = draftSwitch args1
+                         , privateFlag  = privateSwitch args1
                          , testFlag     = testSwitch args1
                          , quickFlag    = quickSwitch args1
                          , watchFlag    = watchSwitch args1
