@@ -25,14 +25,15 @@ module Wave.Md2doc (
 import UniformBase
 
 import Foundational.MetaPage
-    ( MetaPage(dyFn, dyBibliography, dyStyle), pandoc2MetaPage )
-import Foundational.Filetypes4sites ( Docrep(Docrep) )
+    -- ( MetaPage(dyFn, dyBibliography, dyStyle, dyPublish), pandoc2MetaPage )
+import Foundational.Filetypes4sites ( Docrep(Docrep), meta1)
+import Foundational.LayoutFlags
 import Uniform.Pandoc
-    ( pandocProcessCites,
-      Pandoc,
-      markdownFileType,
-      readMarkdown2 )
-
+    -- ( pandocProcessCites,
+    --   Pandoc,
+    --   markdownFileType,
+    --   readMarkdown2 )
+import Uniform.Shake
 
 readMarkdownFile2docrep  :: NoticeLevel -> Path Abs Dir -> Path Abs File -> ErrIO Docrep 
 -- read a markdown file and convert to docrep
@@ -51,7 +52,7 @@ readMarkdownFile2docrep debug doughP fnin = do
 
 pandoc2docrep ::  Path Abs Dir ->  Path Abs File -> Pandoc -> Docrep
 {- | convert the pandoc text to DocrepJSON
- reads the markdown file with pandoc and extracts the yaml metadaat
+ reads the markdown file with pandoc and extracts the yaml metadat
  the metadata are then converted to metaPage
  -- duplication possible for data in the pandoc metada (no used)
  TODO may use json record parse, which I have already done
@@ -93,3 +94,25 @@ addRefs debug dr1@(Docrep y1 p1) = do
             when (inform debug) $ putIOwords ["addRefs2-4", "p2\n", showT p2]
 
             return (Docrep y1 p2)
+
+filterNeeds :: NoticeLevel -> PubFlags -> Path Abs Dir -> Path Rel File -> ErrIO(Maybe (Path Rel File))
+-- ^ for md check the flags
+
+filterNeeds debug pubf doughP fn =  do 
+        d1 <- readMarkdownFile2docrep debug doughP (doughP </> fn) 
+        let t = includeBakeTest3docrep pubf d1 
+        return $ if t then Just fn else Nothing
+   
+
+
+includeBakeTest3docrep :: PubFlags -> Docrep -> Bool 
+
+-- ^ decide whether this is to be included in the bake 
+
+includeBakeTest3docrep pubf doc1 = 
+        (draftFlag pubf || publish1 ==  Just "publish")
+            && (privateFlag pubf || pp1 == Just "private")
+    where
+        -- draftF = draftFlag pubf 
+        publish1 = dyPublish . meta1 $ doc1
+        pp1 = dyPP . meta1 $ doc1

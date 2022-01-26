@@ -143,7 +143,7 @@ pandoc2MetaPage doughP filename pd =  meta6
             , dyContentFiles = maybeToList  . getAtKey meta2 $ "content"
             -- TODO make reading a list
             , dyPublish = getAtKey meta2 "publish"
-            , dyPP = getAtKey meta2 "pp"
+            , dyPP = getAtKey meta2 "private"
             -- , -- TODO use pbulicationState
             --   dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
             , dyIndexSort = getAtKey meta2 "indexSort"

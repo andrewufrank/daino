@@ -62,6 +62,8 @@ import Foundational.LayoutFlags
 import ShakeBake.ConvertFiles
     ( io2bool, convertAny, copyFileToBaked )
 
+import Wave.Md2doc 
+
 -- shakeDelete :: SiteLayout -> FilePath -> ErrIO ()
 -- {- ^ experimental - twich found delete of md
 --  not yet used
@@ -144,10 +146,10 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
 
 
         unless (quickFlag flags) $ do 
-            pdfs <- getNeeds debug doughP bakedP "md" "pdf"
+            pdfs <- getNeedsMD debug flags doughP bakedP "md" "pdf"
             needP pdfs
 
-        htmls <- getNeeds debug doughP bakedP "md" "html"
+        htmls <- getNeedsMD debug flags doughP bakedP "md" "html"
         needP htmls
 
         csss <- getNeeds debug doughP bakedP "css" "css"
@@ -292,8 +294,63 @@ getNeeds debug sourceP targetP extSource extTarget = do
                 else
                     map
                         (replaceExtension' extTarget . (targetP </>))
-                        (filter (const True) filesWithSource) 
-                        :: [Path Abs File]
+                         filesWithSource  
+                                :: [Path Abs File]
+    when (inform debug) $ do
+        putIOwords
+            [ "===================\ngetNeeds -  source files 1"
+            , "for ext"
+            , extSource
+            , "files\n"
+            , showT filesWithSource
+            ]
+        putIOwords
+            [ "\nbakePDF -  target files 2"
+            , "for ext"
+            , extTarget
+            , "files\n"
+            , showT filesWithTarget
+            ]
+    return filesWithTarget
+
+getNeedsMD ::
+    NoticeLevel 
+    -> PubFlags 
+    -> Path Abs Dir  -- ^ source dir
+    -> Path Abs Dir  -- ^ target dir
+    -> Text  -- ^ extension source
+    -> Text  -- ^ extension target
+    -> Action [Path Abs File]
+{- ^ find the files which are needed (generic)
+  from source with extension ext
+  does not include directory DNB (do not bake)
+-}
+getNeedsMD debug flags sourceP targetP extSource extTarget = do
+    let sameExt = extSource == extTarget
+    when (inform debug) $
+        putIOwords
+            [ "===================\ngetNeeds extSource"
+            , extSource
+            , "extTarget"
+            , extSource
+            , "sameExt"
+            , showT sameExt
+            ]
+
+    filesWithSource :: [Path Rel File] <-
+        getFilesToBake
+            "DNB"  -- exclude files containing
+            sourceP
+            ["**/*." <> t2s extSource]
+    files2 <- runErr2action $ mapM (filterNeeds debug flags sourceP) filesWithSource
+    -- subdirs
+    let filesWithTarget =
+            if sameExt
+                then [targetP </> c | c <- filesWithSource]
+                else
+                    map
+                        (replaceExtension' extTarget . (targetP </>))
+                            (catMaybes files2) :: [Path Abs File]
     when (inform debug) $ do
         putIOwords
             [ "===================\ngetNeeds -  source files 1"
