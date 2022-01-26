@@ -33,6 +33,7 @@ data LitArgs = LitArgs
   , draftSwitch -- x^ d
 --   , finishedSwitch -- x^ f 
   , testSwitch  -- x^ t
+  , testNewSwitch -- x^ T -- test after delete to create all new
   , quickSwitch -- x^ q
   , serverSwitch -- x^ s 
   , watchSwitch -- x^ w 
@@ -55,7 +56,11 @@ cmdArgs  =
         <> help "include draft material")
     <*> switch
           (long "test" <> short 't' <> help
-            "use test data in layout (site/dough), start server on port set"
+            "use test data in layout (site/dough), continue test, start server on port set"
+          )
+    <*> switch
+          (long "testComplete" <> short 'T' <> help
+            "use test data in layout (site/dough), complete test, start server on port set"
           )
     <*> switch
           (long "quick" <> short 'q' <> help
@@ -99,6 +104,7 @@ parseArgs2input testdataDir t1 t2 = do
                          , draftFlag    = draftSwitch args1
                          , privateFlag  = privateSwitch args1
                          , testFlag     = testSwitch args1
+                         , testNewFlag = testNewSwitch args1
                          , quickFlag    = quickSwitch args1
                          , watchFlag    = watchSwitch args1
                          , serverFlag   = serverSwitch args1

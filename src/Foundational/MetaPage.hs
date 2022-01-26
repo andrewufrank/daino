@@ -43,7 +43,7 @@ import Uniform.Pandoc
 import Uniform.Yaml
 import UniformBase
 -- import Uniform.HTMLout (extHTML)
-import Uniform.Json ( gak, AtKey(getAtKey) )
+-- import Uniform.Json ( gak, AtKey(getAtKey) )
 
 data MetaPage = MetaPage
     { -- | the original dough fn
@@ -70,7 +70,8 @@ data MetaPage = MetaPage
     , dyReferences :: Maybe Value --  [Reference]
     , dyContentFiles :: [Text] -- the list of md files to include 
     , dyNoCite :: Maybe Text
-    , dyPublish :: Maybe Text -- not used yet!
+    , dyPublish :: Maybe Text -- should be "publish"
+    , dyPP :: Maybe Text -- should be "public"
     -- , dyIndexPage :: Bool
     , dyIndexSort :: Maybe Text
     , dyIndexEntry :: IndexEntry
@@ -94,7 +95,8 @@ instance Default MetaPage where
             , dyBibliography = Just "resources/BibTexLatex.bib"
             , dyStyle = Just "chicago-fullnote-bibliography-bb.csl"
             , dyStyleBiber = "authoryear"
-            , dyPublish = Nothing
+            , dyPublish = Just "publish"   -- change in future to restrictive default "private"
+            , dyPP = Just "public" -- cange to "draft"
             -- , dyIndexPage = False
             , dyIndexSort = zero
             , dyIndexEntry = zero
@@ -141,6 +143,7 @@ pandoc2MetaPage doughP filename pd =  meta6
             , dyContentFiles = maybeToList  . getAtKey meta2 $ "content"
             -- TODO make reading a list
             , dyPublish = getAtKey meta2 "publish"
+            , dyPP = getAtKey meta2 "pp"
             -- , -- TODO use pbulicationState
             --   dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
             , dyIndexSort = getAtKey meta2 "indexSort"

@@ -158,17 +158,17 @@ settingsFileName :: Path Rel File
 settingsFileName = makeRelFile "settings3" -- the yaml file
 -- -- the value for cannot go into layout as this is its name!
 -- is then set in flags
-
+-- testNew bakes all test data, test alone continue the previous test
 
 -- | the switches for material to include
 -- they are (for now) just bools which allow the 
--- baking of all md
+-- baking of all md (higher than the switch)
 data PubFlags = PubFlags
     { publishFlag
       , oldFlag
       , draftFlag
       , privateFlag
-      , testFlag
+      , testFlag, testNewFlag 
       , quickFlag
       , watchFlag
       , serverFlag :: Bool
@@ -178,7 +178,7 @@ data PubFlags = PubFlags
     deriving (Show, Eq) -- no read for path
 
 instance Zeros PubFlags where
-    zero = PubFlags zero zero zero zero zero zero zero zero zero zero
+    zero = PubFlags zero zero zero zero zero zero zero zero zero zero zero 
 instance Default PubFlags where 
         def = testFlags 
 
