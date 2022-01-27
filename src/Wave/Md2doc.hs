@@ -99,13 +99,15 @@ filterNeeds :: NoticeLevel -> PubFlags -> Path Abs Dir -> Path Rel File -> ErrIO
 -- ^ for md check the flags
 
 filterNeeds debug pubf doughP fn =  do 
+    when (inform debug) $ 
         putIOwords ["filterNeeds", "\nPubFlags", showT pubf ]
-        d1 <- readMarkdownFile2docrep debug doughP (doughP </> fn) 
+    d1 <- readMarkdownFile2docrep debug doughP (doughP </> fn) 
+    when (inform debug) $ 
         putIOwords ["filterNeeds2", "\nMeta", showT (meta1 d1) ]
 
-        let t = includeBakeTest3docrep pubf d1 
-        return $ if t then Just fn else Nothing
-   
+    let t = includeBakeTest3docrep pubf d1 
+    return $ if t then Just fn else Nothing
+
 
 
 includeBakeTest3docrep :: PubFlags -> Docrep -> Bool 
