@@ -39,7 +39,7 @@ import GHC.Generics (Generic)
 
 import Uniform.Json ( ToJSON(toJSON), Value, ErrIO )
 import Uniform.Pandoc ( writeHtml5String2 )
-import Uniform2.HTMLout ( HTMLout )
+import Uniform.Http --- out ( HTMLout )
 import UniformBase
 
 import Data.Maybe (fromMaybe)

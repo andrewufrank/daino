@@ -13,7 +13,7 @@
 
 module Lib.Templating where -- (openMain, htf_thisModuelsTests)
 
-import Uniform2.HTMLout ( HTMLout(HTMLout) )
+import Uniform.Http -- ( HTMLout(HTMLout) )
 
 import Uniform.Json ( Value, ErrIO )
 import Uniform.PandocHTMLwriter ( applyTemplate4 )

@@ -39,7 +39,6 @@ library
       ShakeBake.Shake2
       ShakeBake.StartSSGprocess
       ShakeBake.Watch
-      Uniform2.HTMLout
       Wave.Docrep2panrep
       Wave.Md2doc
       Wave.Panrep2html
@@ -54,6 +53,7 @@ library
       base >4.7 && <5
     , data-default-class
     , uniform-cmdLineArgs
+    , uniform-http
     , uniform-json
     , uniform-latex2pdf >=0.0.1.1
     , uniform-pandoc >=0.0.2.4
@@ -76,6 +76,7 @@ executable ssgbake
     , data-default-class
     , ssg
     , uniform-cmdLineArgs
+    , uniform-http
     , uniform-json
     , uniform-latex2pdf >=0.0.1.1
     , uniform-pandoc >=0.0.2.4

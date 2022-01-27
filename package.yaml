@@ -69,6 +69,7 @@ dependencies:
     - uniformBase  == 0.1.4
     - uniform-json
     -  uniform-shake >= 0.0.1.2
+    - uniform-http
     # - uniform-convenience # from u2to
     # - uniform-startapp # from u2to - replace with startProg in uniform-error 
     - uniform-cmdLineArgs # from u2to

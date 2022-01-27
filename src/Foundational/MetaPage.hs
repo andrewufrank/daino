@@ -42,7 +42,7 @@ import Uniform.Pandoc
 -- import Uniform.Filenames (setFileExtension)
 import Uniform.Yaml
 import UniformBase
--- import Uniform.HTMLout (extHTML)
+import Uniform.HTMLout (extHTML)
 -- import Uniform.Json ( gak, AtKey(getAtKey) )
 
 data MetaPage = MetaPage
@@ -251,8 +251,8 @@ convertLink2pdf ix =  s2t . -- s2t . toFilePath $
           setExtension (unExtension extPDF)   $ link ix
 
 
-extHTML :: Extension
-extHTML = Extension "html"
+-- extHTML :: Extension
+-- extHTML = Extension "html"
 
 
 extPDF :: Extension

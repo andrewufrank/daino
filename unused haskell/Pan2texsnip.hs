@@ -41,7 +41,7 @@ import           Lib.Templating
 import           Foundational.Filetypes4sites
 import           Uniform.Json
 import           Uniform.Pandoc
-import           Uniform2.HTMLout
+import           Uniform.Http
 import           UniformBase
 
 -- ------------------------------------------------docrep -> panrep

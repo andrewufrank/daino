@@ -30,7 +30,7 @@ import Wave.Panrep2pdf
 -- import Uniform2.Markdown  
 -- import Uniform.Pandoc
 -- import Uniform2.ProcessPDF  
-import Uniform2.HTMLout
+import Uniform.Http
 
 import Wave.Panrep2html  
 import UniformBase

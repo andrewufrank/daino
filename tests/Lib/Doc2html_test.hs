@@ -15,7 +15,7 @@ import Test.Framework
 import Uniform.Json
 import Uniform.Pandoc
 import Uniform.Test.TestHarness
-import Uniform2.HTMLout
+import Uniform.Http
 import UniformBase
 import Wave.Doc2html
 
