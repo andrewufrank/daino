@@ -67,5 +67,7 @@ afterContent
 ssgversion
 today
 Filenames 
+filename3  -- the current filename producing the page
 include_after  
+ssgversion
 -}

@@ -68,7 +68,7 @@ $-- instructions are
                 </section>
                 </section>
             </div>       
-        <div/>
+        </div>
       </section>
     </div>
 
@@ -134,7 +134,7 @@ $-- instructions are
     </section>
 
     <p class=tiny>  <!-- bottom tiny section  -->
-    Produced with SGG $ssgversion$ from $filename3$ on $today3$ with master5.dtpl.
+    Produced with SGG $ssgversion$ from $filename3$ with master5.dtpl.
     </p>
 
   </body>
