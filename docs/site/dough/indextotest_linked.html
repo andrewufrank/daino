@@ -17,7 +17,7 @@ body {font-size:16px;}
 <body>
 
 <!-- Sidebar/menu -->
-<nav class="w3-sidebar w3-red w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:300px;font-weight:bold;" id="mySidebar"><br>
+<!-- <nav class="w3-sidebar w3-red w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:300px;font-weight:bold;" id="mySidebar"><br>
 
   <a href="javascript:void(0)" onclick="w3_close()" class="w3-button w3-hide-large w3-display-topleft" style="width:100%;font-size:22px">Close Menu</a>
 
@@ -35,15 +35,36 @@ body {font-size:16px;}
 
     <a href="/PublicationList/index.html" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">PublicationList</a> 
   </div>
-</nav>
+</nav> -->
 
 <!-- Top menu on small screens -->
-<header class="w3-container w3-top w3-hide-large w3-red w3-xlarge w3-padding">
+<!-- <header class="w3-container w3-top w3-hide-large w3-red w3-xlarge w3-padding">
   <a href="javascript:void(0)" class="w3-button w3-red w3-margin-right" onclick="w3_open()">☰</a>
   <span>Andrew U. Frank header</span>
-</header>
+</header> -->
 
-​
+
+<!-- Navbar (sit on top) -->
+<div class="w3-top">
+    <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+      <a href="#home" class="w3-bar-item w3-button"><b>BR</b> Architects</a>
+      <!-- Float links to the right. Hide them on small screens -->
+      <div class="w3-right w3-hide-small">
+        <a href="#projects" class="w3-bar-item w3-button">Projects</a>
+        <a href="#about" class="w3-bar-item w3-button">About</a>
+        <a href="#contact" class="w3-bar-item w3-button">Contact</a>
+      </div>
+    </div>
+</div>
+
+​<!-- Header  with ribbon on top-->
+<header class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
+    <img class="w3-image" src="/resources/templates/img/DSC04809.JPG" alt="Architecture" width="1500" height="800">
+    <div class="w3-display-middle w3-margin-top w3-center">
+      <h1 class="w3-xxlarge w3-text-white"><span class="w3-padding w3-black w3-opacity-min"><b>BR</b></span> <span class="w3-hide-small w3-text-light-grey">Architects</span></h1>
+    </div>
+  </header>
+  
 
 <!-- Overlay effect when opening sidebar on small screens -->
 
