@@ -13,6 +13,7 @@ storage:
     # fixed in testharness
 #    uploadServer: "sgg.gerastree.at"
     
+    # needs link in resources/templates to themes/templates
 localhostPort: 3000
 
 #quotes: True 
@@ -30,7 +31,7 @@ settingsDate: 2019-01-01
 settings : 
     sitename : siteName3
     byline : siteByLine3 
-    # banner: /resources/templates/img/symmetricGeras2.jpg
+    # banner: /resources/templates/img/symmetricGeras2.jpg  
     banner: /resources/templates/img/DSC04809.JPG
     bannerCaption: "ruhiger Sommer im Garten in Geras"
 

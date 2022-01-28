@@ -45,7 +45,7 @@ settings
     sitename 
     byline 
     banner 
-    bannerCaptionm
+    bannerCaption
 menu 
     link 
     text 

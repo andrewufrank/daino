@@ -44,33 +44,33 @@ $-- instructions are
     $include-before$
     $endfor$
 
-    <div class="container">
-      <section class="hero">  <!-- hero section  -->
+    <section class="container">
+      <!-- <section class="hero">    -->
         <div class="hero-image">
-            $if(image)$ 
+            $if(image)$   $-- image in md yaml 
                 <img src=$image$  $-- should be scaled to width
                     alt=$imageCaption$>  
-            $else$
+            $else$        $-- no image in head 
                 <img src=$settings.banner$  
                     alt=$settings.bannerCaption$>  
             $endif$
-            <div class="middle-left"><h1><a href="/index.html">$settings.sitename$</h1></div>
+            <div class="middle-left"><h1><a href="/index.html">$settings.sitename$ X</h1></div>
             <div class="bottom-left"><h3>$settings.byline$</h3></div>
-            <div class="bottomzero">        $-- the ribbon with links 
+            <div class="bottomzero">        
+                <!-- $-- the ribbon with links  -->
                 <!--  here some problem with the ribbon jumping up -->
-                <section class="header">
-                <section class="menu">
+                <!-- <section class="header"> -->
+                <div class="menu">
                     <ul>
                     $for(menuitems.menuNav)$
                     <li><a href=/$menuitems.menuNav.navlink$>$menuitems.menuNav.navtext$</a></li>
                     $endfor$
                     </ul>
-                </section>
-                </section>
+                </div>
             </div>       
-        </div>
-      </section>
-    </div>
+        </div>   $-- end hero image
+      <!-- </section> -->
+    </section>
 
     <section>  <!-- title section  -->
         $if(title)$

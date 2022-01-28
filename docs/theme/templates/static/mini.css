@@ -1,0 +1,137 @@
+/* the menu stuff */
+/* assumes style.css */
+
+.menu>li {
+    list-style: none;
+    display: inline-block;
+    vertical-align: top;
+    padding: 0;
+    margin: 0;
+    text-indent: 0;
+}
+
+.menu span {
+    padding: 0 8px;
+}
+
+.menu {
+    padding: 0;
+    margin: 0;
+    text-indent: 0;
+    font-weight: bold;
+}
+
+.menu menu {
+    font-size: 12px;
+}
+
+.menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color:transparent;
+}
+
+/* example https://www.w3schools.com/css/css_navbar.asp */
+.menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: transparent;
+}
+
+
+.menu li {
+  float: left;
+}
+
+.menu li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 8px;
+  text-decoration: none;
+}
+
+.menu li a:hover {
+  background-color: #111;
+}
+
+.menu .active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.hero {
+    padding: 0;
+    color: white;
+}
+
+.hero img {
+     /* position: relative; */
+    text-align: center;
+    color: white;
+    object-fit: scale-down;
+    max-height: 400px;
+}
+
+.hero h1 {
+    font-size: 4rem;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+    text-shadow: 2px 2px 8px black;
+    font-weight: bold;
+    vertical-align: top;
+}
+
+.hero h3 {
+    font-size: 1.5rem;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+    padding-bottom: 0.5em;
+    color:white;
+}
+
+.hero a {
+    color: white;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container holding the image and the text */
+.container {
+    position: relative;
+    text-align: center;
+    color: white;
+    object-fit: cover;
+  }
+  
+/* Bottomzero for nav banner*/
+.bottomzero  {
+    position: absolute;
+    bottom: 0px;
+    left: 8px;
+    color:white;
+  }
+  /* Bottom left text */
+  .bottom-left {
+    position: absolute;
+    bottom: 30px;
+    left: 16px;
+    color:white;
+  }
+
+  /* middle left text */
+  .middle-left {
+    position: absolute;
+    bottom: 60px;
+    left: 16px;
+    color:white;
+    /* transform: translate(-50%, -50%); */
+  }
+  
