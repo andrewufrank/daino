@@ -7,7 +7,7 @@ storage:
     bakedDir: /home/frank/Workspace11/ssg/docs/site/baked
     reportFile: /home/frank/ssgReport.txt
     testDir: /home/frank/.ssg 
-    masterTemplateFile: master5.dtpl  #in themeDir
+    masterTemplateFile: master6.dtpl  #in themeDir
     # create dir in ExampleTesting
     # filename must be homedir + program name (in Foundation) - hidden
     # fixed in testharness

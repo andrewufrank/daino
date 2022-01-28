@@ -1,49 +1,58 @@
 <!DOCTYPE html>
+<!-- the master page `master6.dtpl` version 1
+    (name is printed at bottom of page and must be edited if changed!)
+    
+    master for the pandoc templating mechanism (putValInMaster in Templating.hs)
+	needs page-title, page-title-postfix
+		author date and keywords for IndexCollectlect
+    contentHtml, beforeContent, afterContent to wrap htmlcontent 
+    
+    based on w3c examples (design, architects)
+	uses w3c.css as default, other can be loaded with key css 
 
-<html lang="en">
-<title>MyTemplage</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+	refs in the menus are relative to the web root
+	(absolute web, inserted a / in the template)
+    removed highlighting-css and css to load 
+    files available are tufte.css and w3c.css not used
+
+    sollten fuer die indexseiten ein anderer master verwendet werden?
+	-->
+
+
+<html lang="en_US">  
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/resources/templates/static/w3c.css" type="text/css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+            
+
+          <meta name="author" content="Author of Settings" />  
+              <meta name="dcterms.date" content="2010-01-29" />
+              <meta name="keywords" content="homepage" />
+    
+<title></title>
 
 <style>
-body,h1,h2,h3,h4,h5 {font-family: "Poppins", sans-serif}
-body {font-size:16px;}
-.w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer}
-.w3-half img:hover{opacity:1}
+    body,h1,h2,h3,h4,h5 {font-family: "Poppins", sans-serif}
+    body {font-size:16px;}
+    .w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer}
+    .w3-half img:hover{opacity:1}
+
+    .menu2 {
+    font-family: sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    padding: 0;
+    margin: 0;
+    color: #2a4127;
+    }
 </style>
+    
+            
 
 <body>
-
-<!-- Sidebar/menu -->
-<!-- <nav class="w3-sidebar w3-red w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:300px;font-weight:bold;" id="mySidebar"><br>
-
-  <a href="javascript:void(0)" onclick="w3_close()" class="w3-button w3-hide-large w3-display-topleft" style="width:100%;font-size:22px">Close Menu</a>
-
-  <div class="w3-container">
-
-    <h3 class="w3-padding-64"><b>Andrew<br>Frank<br>sidebarmenu</b></h3>
-
-  </div>
-
-  <div class="w3-bar-block">
-
-    <a href="#" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Home</a> 
-
-    <a href="/Blog/index.html" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Blog</a> 
-
-    <a href="/PublicationList/index.html" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">PublicationList</a> 
-  </div>
-</nav> -->
-
-<!-- Top menu on small screens -->
-<!-- <header class="w3-container w3-top w3-hide-large w3-red w3-xlarge w3-padding">
-  <a href="javascript:void(0)" class="w3-button w3-red w3-margin-right" onclick="w3_open()">☰</a>
-  <span>Andrew U. Frank header</span>
-</header> -->
-
-
+    <!-- body of html page  -->
+    
 <!-- Navbar (sit on top) -->
 <div class="w3-top">
     <div class="w3-bar w3-white w3-wide w3-padding w3-card">
@@ -58,202 +67,96 @@ body {font-size:16px;}
 
 ​<!-- Header  with ribbon on top-->
 <header class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
-    <img class="w3-image" src="/resources/templates/img/DSC04809.JPG" alt="ruhiger Sommer im Garten in GerassiteName3" width="1500" height="800">
+            
+        <img class="w3-image" src=/resources/templates/img/DSC04809.JPG  
+            alt=ruhiger Sommer im Garten in Geras>  
+    
+
     <div class="w3-display-middle w3-margin-top w3-center">
       <h1 class="w3-xxlarge w3-text-white"><span class="w3-padding w3-black w3-opacity-min"><b>AUF</b></span> <span class="w3-hide-small w3-text-light-grey">siteName3</span></h1>
     </div>
   </header>
-  
+      <section class="container">
+      <!-- <section class="hero">    -->
+        <div class="hero-image">
+                    
+                <img src=/resources/templates/img/DSC04809.JPG  
+                    alt=ruhiger Sommer im Garten in Geras>  
+            
+            <div class="middle-left"><h1><a href="/index.html">siteName3 X</h1></div>
+            <div class="bottom-left"><h3>siteByLine3</h3></div>
+            <div class="bottomzero">        
+                <!-- 
+                <!--  here some problem with the ribbon jumping up -->
+                <!-- <section class="header"> -->
+                <div class="menu">
+                    <ul>
+                                        <li><a href=/Blog/index.html>Blog</a></li>
+                                        <li><a href=/PublicationList/index.html>Publications</a></li>
+                                        </ul>
+                </div>
+            </div>       
+        </div>   
+      <!-- </section> -->
+    </section>
 
-<!-- Overlay effect when opening sidebar on small screens -->
+    <section>  <!-- title section  -->
+                <header>
+            <!-- <h1 class="title">index in site title "Example homepage"</h1> -->
+            <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">index in site title "Example homepage"</h3>
+                            
+                
+                
+        </header>
+         
+    </section>
 
-<!-- <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div> -->
-
-​
-
-<!-- !PAGE CONTENT! -->
-
-<!-- <div class="w3-main" style="margin-left:340px;margin-right:40px">
-
-  <!-- Header -->
-  <div class="w3-container" style="margin-top:80px" id="showcase">
-    <h1 class="w3-jumbo"><b>Sitename af</b></h1>
-    <h1 class="w3-xxxlarge w3-text-red"><b>Homepage.point</b></h1>
-    <hr style="width:50px;border:5px solid red" class="w3-round">
-  </div>
-
-   <!-- Photo grid (modal) -->
-  <div class="w3-row-padding">
-    <div class="w3-half">
-      <img src="/w3images/kitchenconcrete.jpg" style="width:100%" onclick="onClick(this)" alt="Concrete meets bricks">
-      <img src="/w3images/livingroom.jpg" style="width:100%" onclick="onClick(this)" alt="Light, white and tight scandinavian design">
-      <img src="/w3images/diningroom.jpg" style="width:100%" onclick="onClick(this)" alt="White walls with designer chairs">
-    </div>
-
-    <div class="w3-half">
-      <img src="/w3images/atrium.jpg" style="width:100%" onclick="onClick(this)" alt="Windows for the atrium">
-      <img src="/w3images/bedroom.jpg" style="width:100%" onclick="onClick(this)" alt="Bedroom and office in one space">
-      <img src="/w3images/livingroom2.jpg" style="width:100%" onclick="onClick(this)" alt="Scandinavian design">
-    </div>
-  </div> -->
-
-​  <!-- Project Section -->
-<div class="w3-container w3-padding-32" id="projects">
-  <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Projects</h3>
-</div>
-
-
-  <!-- Modal for full size images on click-->
-
-  <div id="modal01" class="w3-modal w3-black" style="padding-top:0" onclick="this.style.display='none'">
-
-    <span class="w3-button w3-black w3-xxlarge w3-display-topright">×</span>
-
-    <div class="w3-modal-content w3-animate-zoom w3-center w3-transparent w3-padding-64">
-
-      <img id="img01" class="w3-image">
-
-      <p id="caption"></p>
-
-    </div>
-
-
-
-  <!-- Modal for full size images on click-->
-  <div id="modal01" class="w3-modal w3-black" style="padding-top:0" onclick="this.style.display='none'">
-    <span class="w3-button w3-black w3-xxlarge w3-display-topright">×</span>
-    <div class="w3-modal-content w3-animate-zoom w3-center w3-transparent w3-padding-64">
-      <img id="img01" class="w3-image">
-      <p id="caption"></p>
-    </div>
-  </div>
-
-  <!-- Services -->
-  <div class="w3-container" id="services" style="margin-top:75px">
-    <h1 class="w3-xxxlarge w3-text-red"><b>Services.</b></h1>
-    <hr style="width:50px;border:5px solid red" class="w3-round">
-    <p>We are a interior design service that focus on what's best for your home and what's best for you!</p>
-    <p>Some text about our services - what we do and what we offer. We are lorem ipsum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-    dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor
-    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-    </p>
-  </div>
-  
-  <!-- Designers -->
-  <div class="w3-container" id="designers" style="margin-top:75px">
-    <h1 class="w3-xxxlarge w3-text-red"><b>Designers.</b></h1>
-    <hr style="width:50px;border:5px solid red" class="w3-round">
-    <p>The best team in the world.</p>
-    <p>We are lorem ipsum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-    dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor
-    incididunt ut labore et quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-    </p>
-    <p><b>Our designers are thoughtfully chosen</b>:</p>
-  </div>
-
-  <!-- The Team -->
-  <div class="w3-row-padding w3-grayscale">
-    <div class="w3-col m4 w3-margin-bottom">
-      <div class="w3-light-grey">
-        <img src="/w3images/team2.jpg" alt="John" style="width:100%">
-        <div class="w3-container">
-          <h3>John Doe</h3>
-          <p class="w3-opacity">CEO & Founder</p>
-          <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.</p>
-        </div>
-      </div>
-    </div>
-    <div class="w3-col m4 w3-margin-bottom">
-      <div class="w3-light-grey">
-        <img src="/w3images/team1.jpg" alt="Jane" style="width:100%">
-        <div class="w3-container">
-          <h3>Jane Doe</h3>
-          <p class="w3-opacity">Designer</p>
-          <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.</p>
-        </div>
-      </div>
-    </div>
-    <div class="w3-col m4 w3-margin-bottom">
-      <div class="w3-light-grey">
-        <img src="/w3images/team3.jpg" alt="Mike" style="width:100%">
-        <div class="w3-container">
-          <h3>Mike Ross</h3>
-          <p class="w3-opacity">Architect</p>
-          <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Packages / Pricing Tables -->
-  <div class="w3-container" id="packages" style="margin-top:75px">
-    <h1 class="w3-xxxlarge w3-text-red"><b>Packages.</b></h1>
-    <hr style="width:50px;border:5px solid red" class="w3-round">
-    <p>Some text our prices. Lorem ipsum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure</p>
-  </div>
-
-  <div class="w3-row-padding">
-    <div class="w3-half w3-margin-bottom">
-      <ul class="w3-ul w3-light-grey w3-center">
-        <li class="w3-dark-grey w3-xlarge w3-padding-32">Basic</li>
-        <li class="w3-padding-16">Floorplanning</li>
-        <li class="w3-padding-16">10 hours support</li>
-        <li class="w3-padding-16">Photography</li>
-        <li class="w3-padding-16">20% furniture discount</li>
-        <li class="w3-padding-16">Good deals</li>
-        <li class="w3-padding-16">
-          <h2>$ 199</h2>
-          <span class="w3-opacity">per room</span>
-        </li>
-        <li class="w3-light-grey w3-padding-24">
-          <button class="w3-button w3-white w3-padding-large w3-hover-black">Sign Up</button>
-        </li>
-      </ul>
-    </div>
+    <section> <!-- blog text content section -->
         
-    <div class="w3-half">
-      <ul class="w3-ul w3-light-grey w3-center">
-        <li class="w3-red w3-xlarge w3-padding-32">Pro</li>
-        <li class="w3-padding-16">Floorplanning</li>
-        <li class="w3-padding-16">50 hours support</li>
-        <li class="w3-padding-16">Photography</li>
-        <li class="w3-padding-16">50% furniture discount</li>
-        <li class="w3-padding-16">GREAT deals</li>
-        <li class="w3-padding-16">
-          <h2>$ 249</h2>
-          <span class="w3-opacity">per room</span>
-        </li>
-        <li class="w3-light-grey w3-padding-24">
-          <button class="w3-button w3-red w3-padding-large w3-hover-black">Sign Up</button>
-        </li>
-      </ul>
-    </div>
-  </div>
-  
-  <!-- Contact -->
-  <div class="w3-container" id="contact" style="margin-top:75px">
-    <h1 class="w3-xxxlarge w3-text-red"><b>Contact.</b></h1>
-    <hr style="width:50px;border:5px solid red" class="w3-round">
-    <p>Do you want us to style your home? Fill out the form and fill me in with the details :) We love meeting new people!</p>
-    <form action="/action_page.php" target="_blank">
-      <div class="w3-section">
-        <label>Name</label>
-        <input class="w3-input w3-border" type="text" name="Name" required>
-      </div>
-      <div class="w3-section">
-        <label>Email</label>
-        <input class="w3-input w3-border" type="text" name="Email" required>
-      </div>
-      <div class="w3-section">
-        <label>Message</label>
-        <input class="w3-input w3-border" type="text" name="Message" required>
-      </div>
-      <button type="submit" class="w3-button w3-block w3-padding-large w3-red w3-margin-bottom">Send Message</button>
-    </form>  
-  </div>
+        
+        abstract: index in site abstract The index page for site. 
+        <a href=/index.pdf>  (view as pdf)</a>
+        
+        
+        <!--content-from-panrep-blocks which is the content of the index.md --><p>index in site text The landing page of the <strong>Example
+Site</strong> giving access to all the files in the site. The Navigation
+Ribbon can be used despite overwriting!</p>
+        
 
-<!-- End page content -->
-</div>
+        
+    </section>
+
+    <section class=menu2>     <!-- menu2 section  -->
+		<ul>
+            	 
+                 
+                    Directories with more related files:
+                     
+                    <li> 
+                        <a href=/Event/index.html><em>Events I recently attended and planed - before COVID - to attend</em></a>
+                    <br>Since becoming emeritus I attend less conferences than before and some events have been converted to virtual. I plan to collect here slides from presentations, but some are still missing.		
+                        
+                    </li>
+                     
+                    <li> 
+                        <a href=/PublicationList/index.html><em>index for publication list (this text should be overwritten)</em></a>
+                    <br>index for the publication directory		
+                        
+                    </li>
+                     
+                    <li> 
+                        <a href=/Blog/index.html><em>index in blog title primary index for Blog</em></a>
+                    <br>index in blog abstract The directory for experiments.		
+                        
+                    </li>
+                    
+                
+		</ul>
+    </section>
+
+    <p class=tiny>  <!-- bottom tiny section  -->
+    Produced with SGG  from index.html with master6.dtpl.
+    </p>
 
 <!-- W3.CSS Container -->
 <div class="w3-light-grey w3-container w3-padding-32" style="margin-top:75px;padding-right:58px"><p class="w3-right">Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a></p></div>

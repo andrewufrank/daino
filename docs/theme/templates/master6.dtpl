@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<!-- the master page `master6.dtpl` version 1
+    (name is printed at bottom of page and must be edited if changed!)
+    
+    master for the pandoc templating mechanism (putValInMaster in Templating.hs)
+	needs page-title, page-title-postfix
+		author date and keywords for IndexCollectlect
+    contentHtml, beforeContent, afterContent to wrap htmlcontent 
+    
+    based on w3c examples (design, architects)
+	uses w3c.css as default, other can be loaded with key css 
+
+	refs in the menus are relative to the web root
+	(absolute web, inserted a / in the template)
+    removed highlighting-css and css to load 
+    files available are tufte.css and w3c.css not used
+
+    sollten fuer die indexseiten ein anderer master verwendet werden?
+	-->
+
+
+<html lang="$lang$">  $--this is a comment not inserted in html 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/resources/templates/static/w3c.css" type="text/css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+            $-- what is this used for?
+
+    $for(author)$
+    <meta name="author" content="$author$" />  $-- if author is AUF then blanked
+    $endfor$
+    $if(date)$
+    <meta name="dcterms.date" content="$date$" />
+    $endif$
+    $if(keywords)$
+    <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
+    $endif$
+
+<title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itlenotset</title>
+        $-- not set?
+
+<style>
+    body,h1,h2,h3,h4,h5 {font-family: "Poppins", sans-serif}
+    body {font-size:16px;}
+    .w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer}
+    .w3-half img:hover{opacity:1}
+
+    .menu2 {
+    font-family: sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    padding: 0;
+    margin: 0;
+    color: #2a4127;
+    }
+    .tiny {
+    font-size: 75%;
+    }
+</style>
+    
+            
+
+<body>
+    <!-- body of html page  -->
+    $for(include-before)$
+    $include-before$
+    $endfor$
+
+<!-- Navbar (sit on top) -->
+<div class="w3-top">
+    <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+      <a href="/index.html" class="w3-bar-item w3-button"><b>AF</b>$settings.sitename$ X</a>
+      <!-- Float links to the right. Hide them on small screens -->
+      <div class="w3-right w3-hide-small">
+        $for(menuitems.menuNav)$
+        <a href=/$menuitems.menuNav.navlink$ class="w3-bar-item w3-button">$menuitems.menuNav.navtext$</a>
+        $endfor$
+        <!-- <a href="Blog/index.html" class="w3-bar-item w3-button">Blog</a>
+        <a href="PublicationList/index.html" class="w3-bar-item w3-button">Publications</a> -->
+      </div>
+    </div>
+</div>
+
+​<!-- Header  with ribbon on top-->
+<header class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
+    $if(image)$   $-- image in md yaml 
+        <img class="w3-image" src=$image$  $-- should be scaled to width, perhaps not needed
+            alt=$imageCaption$>  
+    $else$        $-- no image in head 
+        <img class="w3-image" src=$settings.banner$  
+            alt=$settings.bannerCaption$>  
+    $endif$
+
+    <div class="w3-display-middle w3-margin-top w3-center">
+      <h1 class="w3-xxlarge w3-text-white"><span class="w3-padding w3-black w3-opacity-min"><b>AUF</b></span> <span class="w3-hide-small w3-text-light-grey">siteName3</span></h1>
+    </div>
+
+            <!-- <div class="middle-left"><h1><a href="/index.html">$settings.sitename$ X</h1></div>
+            <div class="bottom-left"><h3>$settings.byline$</h3></div> -->
+
+    <section>  <!-- title section  -->
+        $if(title)$
+        <header>
+            <!-- <h1 class="title">$title$</h1> -->
+            <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">$title$</h3>
+            $if(subtitle)$
+            <h5 >$subtitle$</p>
+            $endif$
+                $-- $for(author)$
+                $-- <p class="w3-large class="author">$author$</p> $-- class author here? 
+                $-- $endfor$
+        </header>
+        $endif$
+ 
+    </section>
+
+    <section> <!-- blog text content section -->
+        $if(toc)$
+        <nav id="$idprefix$TOC">
+        $table-of-contents$
+        </nav>
+        $endif$
+
+        $beforeContent$
+        $if(abstract)$abstract: $abstract$ 
+        <a href=/$linkpdf3$>  (view as pdf)</a>
+        $-- <br> for pdf: $menu2
+        $endif$
+        <!--content-from-panrep-blocks which is the content of the index.md -->$content3$
+        $afterContent$
+
+        $for(include-after)$
+        $include-after$
+        $endfor$
+
+    </section>
+
+    <section class=menu2>     <!-- menu2 section  -->
+		<ul>
+            	$for(menu2files)$ 
+				  <li>     <!-- list item menu2files:  -->
+				    <a href=/$menu2files.link2$><em>$menu2files.title2$ </em></a>
+				    $if(menu2files.abstract2)$<br>$menu2files.abstract2$
+                    <a href=/$menu2files.pdf2$>  (view as pdf)</a>
+                    $endif$		     
+				    <span class=tiny>$menu2files.author2$ $menu2files.date2$ 
+                     </span>
+                  </li>
+                $endfor$ 
+                $if(menu2subdir)$ 
+                    Directories with more related files:
+                    $for(menu2subdir)$ 
+                    <li> 
+                        <a href=/$menu2subdir.link2$><em>$menu2subdir.title2$</em></a>
+                    $if(menu2subdir.abstract2)$<br>$menu2subdir.abstract2$$endif$		
+                        
+                    </li>
+                    $endfor$
+                $endif$
+		</ul>
+    </section>
+
+    <p class=tiny>  <!-- bottom tiny section  -->
+    Produced with SGG $ssgversion$ from $filename3$ with master6.dtpl.
+    </p>
+
+<!-- W3.CSS Container -->
+<div class="w3-light-grey w3-container w3-padding-32" style="margin-top:75px;padding-right:58px"><p class="w3-right">Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a></p></div>
+
+<script>
+// Script to open and close sidebar
+function w3_open() {
+  document.getElementById("mySidebar").style.display = "block";
+  document.getElementById("myOverlay").style.display = "block";
+}
+ 
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+  document.getElementById("myOverlay").style.display = "none";
+}
+
+// Modal Image Gallery
+function onClick(element) {
+  document.getElementById("img01").src = element.src;
+  document.getElementById("modal01").style.display = "block";
+  var captionText = document.getElementById("caption");
+  captionText.innerHTML = element.alt;
+}
+</script>
+
+</body>
+</html>
+
