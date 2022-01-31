@@ -48,8 +48,9 @@ ssgProcess debug flags = do
         then mainWatch debug sett3 flags 
         else do
             when (testNewFlag flags) $ do
-                deleteDirRecursive ("docs/baked" :: FilePath)
-                putIOwords ["ssgProcess", "testNewFlag",  "deleted docs/baked"]
+                let bakedP = bakedDir (storage sett3)
+                deleteDirRecursive bakedP 
+                putIOwords ["ssgProcess", "testNewFlag",  "deleted", showT bakedP]
             shakeAll debug sett3 flags ""
             -- the last is the filename that caused the shake call
             when (serverFlag flags) $ do 

@@ -31,3 +31,4 @@ a static site generator
                 completion: idea/sketch/draft/nearly/publish
                         include command line flag with these values
                         include what is more than stated 
+                landing page is mostly produced from index.md in dough, needed is only top directory structure.
