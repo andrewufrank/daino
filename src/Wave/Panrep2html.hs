@@ -53,6 +53,7 @@ import Lib.Templating ( putValinMaster )
 -- ------------------------------------ panrep2html
 -- panrep2html :: Panrep -> ErrIO HTMLout
 -- implements the bake
+-- settings (staticMenu, above sett3) is the content of the settingsN.yml file
 panrep2html :: NoticeLevel -> Path Abs File -> Settings -> Panrep -> ErrIO HTMLout
 panrep2html debug masterfn staticMenu (Panrep m1 p1) = do
         vals <- panrep2vals  debug staticMenu (Panrep m1 p1)

@@ -101,6 +101,7 @@ bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
         ]
     dr1 <- read8 inputFn panrepFileType
     let layout = storage sett3
+    -- this gives the storage section of settingsN.yml file
     let staticMenu = sett3
     let mf = masterTemplateFile layout
     let masterfn = templatesDir layout </> mf

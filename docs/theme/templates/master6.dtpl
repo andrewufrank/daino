@@ -2,7 +2,7 @@
 <!-- the master page `master6.dtpl` version 1
     using w3c css 
 
-    (name of masterN.dtpl is printed at bottom of page and must be edited if changed!)
+    (name of masterN.dtpl is printed at bottom of page automatically from settingsN.yml file)
     
     master for the pandoc templating mechanism (putValInMaster in Templating.hs)
 	needs page-title, page-title-postfix
@@ -162,8 +162,8 @@
 		</ul>
     </section>
 
-    <p class=tiny>  <!-- bottom tiny section  -->
-    Produced with SGG $ssgversion$ from $filename3$ with master6.dtpl.
+    <p class=tiny>  <!-- bottom tiny section - not including data, but version -->
+    Produced with SGG $ssgversion$ from $filename3$ with $storage.masterTemplateFile$.
     </p>
 
 <!-- W3.CSS Container -->
