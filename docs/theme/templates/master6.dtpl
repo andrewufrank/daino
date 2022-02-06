@@ -25,8 +25,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="/resources/templates/static/w3c.css" type="text/css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
-            $-- what is this used for?
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins"> -->
+            $-- getting other fonts?
 
     $for(author)$
     <meta name="author" content="$author$" />  $-- if author is AUF then blanked
@@ -42,8 +42,8 @@
         $-- not set?
 
 <style>
-    body,h1,h2,h3,h4,h5 {font-family: "Poppins", sans-serif}
-    body {font-size:16px;}
+    body,h1,h2,h3,h4,h5 {font-family: 'Times New Roman', serif}
+    body {font-size:14px;}
     .w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer}
     .w3-half img:hover{opacity:1}
 
@@ -70,7 +70,7 @@
 
 <!-- Navbar (sit on top) -->
 <div class="w3-top">
-    <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+    <div class="w3-bar w3-white w3-padding w3-card">
       <a href="/index.html" class="w3-bar-item w3-button"><b>AF</b>$settings.sitename$ X</a>
       <!-- Float links to the right. Hide them on small screens -->
       <div class="w3-right w3-hide-small">
@@ -84,7 +84,7 @@
 </div>
 
 ​<!-- Header  with ribbon on top-->
-<header class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
+<header class="w3-display-container w3-content" style="max-width:1500px;" id="home">
     $if(image)$   $-- image in md yaml 
         <img class="w3-image" src=$image$  $-- should be scaled to width, perhaps not needed
             alt=$imageCaption$>  
