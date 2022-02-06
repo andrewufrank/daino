@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <!-- the master page `master6.dtpl` version 1
-    (name is printed at bottom of page and must be edited if changed!)
+    using w3c css 
+
+    (name of masterN.dtpl is printed at bottom of page and must be edited if changed!)
     
     master for the pandoc templating mechanism (putValInMaster in Templating.hs)
 	needs page-title, page-title-postfix

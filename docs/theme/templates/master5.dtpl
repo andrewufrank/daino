@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<!-- the master page `master5.dtpl` version 1
+<!-- OLD 
+    see master6.dtpl with w3c css
+    
+    the master page `master5.dtpl` version 1
     (name is printed at bottom of page and must be edited if changed!)
     
     master for the pandoc templating mechanism (putValInMaster in Templating.hs)
