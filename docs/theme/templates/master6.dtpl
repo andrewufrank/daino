@@ -42,9 +42,9 @@
         $-- not set?
 
 <style>
-    body,h1,h2,h3,h4,h5 {font-family: 'Times New Roman', sans-serif}
+    body,h1,h2,h3,h4,h5 {font-family: 'Helvetica', sans-serif}
     body {font-size:16px;
-          font-family: sans-serif;}
+          font-family: serif;}
     .w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer}
     .w3-half img:hover{opacity:1}
 
@@ -94,7 +94,7 @@
             alt=$settings.bannerCaption$>  
     $endif$
 
-    <div class="w3-display-bottomleft w3-padding-large w3-border w3-wide w3-text-light-grey w3-center">
+    <div class="w3-display-bottomleft w3-padding-large w3-wide w3-text-light-grey w3-center">
         <h1 class="w3-hide-medium w3-hide-small w3-xxxlarge">$settings.sitename$sitename3</h1>
         <h5 class="w3-hide-large" style="white-space:nowrap">$settings.sitename$sitename3</h5>
         <h3 class="w3-hide-medium w3-hide-small">$settings.byline$byline</h3> 
@@ -105,23 +105,19 @@
             <!-- <div class="middle-left"><h1><a href="/index.html">$settings.sitename$ X</h1></div>
             <div class="bottom-left"><h3>$settings.byline$</h3></div> -->
 
-    <section>  <!-- title section  -->
-        $if(title)$
-        <header>
-            <!-- <h1 class="title">$title$</h1> -->
-            <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">$title$</h3>
-            $if(subtitle)$
-            <h5 >$subtitle$</p>
-            $endif$
-                $-- $for(author)$
-                $-- <p class="w3-large class="author">$author$</p> $-- class author here? 
-                $-- $endfor$
-        </header>
+<section  class="w3-container"  style="max-width:900px">  <!-- title section  -->
+    $if(title)$
+        <!-- <h1 class="title">$title$</h1> -->
+        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">$title$</h3>
+        $if(subtitle)$
+        <h5 >$subtitle$</p>
         $endif$
- 
-    </section>
+            $-- $for(author)$
+            $-- <p class="w3-large class="author">$author$</p> $-- class author here? 
+            $-- $endfor$
+    $endif$
 
-    <section> <!-- blog text content section -->
+
         $if(toc)$
         <nav id="$idprefix$TOC">
         $table-of-contents$
@@ -140,7 +136,7 @@
         $include-after$
         $endfor$
 
-    </section>
+</section>
 
     <section class=menu2>     <!-- menu2 section  -->
 		<ul>
