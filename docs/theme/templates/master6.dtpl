@@ -56,9 +56,9 @@
     margin: 0;
     color: #2a4127;
     } */
-    .tiny {
+    /* .tiny {
     font-size: 75%;
-    }
+    } */
 </style>
     
             
@@ -94,7 +94,9 @@
             alt=$settings.bannerCaption$>  
     $endif$
 
-    <div class="w3-display-bottomleft w3-padding-large w3-wide w3-text-light-grey w3-center">
+    <div class="w3-display-bottomleft w3-padding-large w3-wide w3-text-light-grey"; 
+        display: flex;
+        align-items:flex-start;>
         <h1 class="w3-hide-medium w3-hide-small w3-xxxlarge">$settings.sitename$sitename3</h1>
         <h5 class="w3-hide-large" style="white-space:nowrap">$settings.sitename$sitename3</h5>
         <h3 class="w3-hide-medium w3-hide-small">$settings.byline$byline</h3> 
@@ -151,7 +153,7 @@
                 </li>
             $endfor$ 
             $if(menu2subdir)$ 
-                <a>The blogs (or directories with more related blogs):menu2subdirXX</a>
+                <a>Directories with more related blogs:menu2subdirXX</a>
                 $for(menu2subdir)$ 
                 <li> 
                     <a href=/$menu2subdir.link2$><em>$menu2subdir.title2$</em></a>
@@ -165,11 +167,12 @@
 
 
 <!-- footer -->
-<div class="w3-light-grey w3-container w3-padding-32" style="margin-top:75px;padding-right:58px">
-    <p class=w3-tiny>  <!--  not including data, but version -->
-        Produced with SGG $ssgversion$ from $filename3$ with $storage.masterTemplateFile$.
+<div class="w3-light-grey w3-container w3-padding-32 w3-tiny" style="margin-top:24px;padding-right:58px">
+    <p >  <!--  not including data, but version -->
+        <a>Produced with SGG $ssgversion$ from $filename3$ with $storage.masterTemplateFile$.</a>
         </p>
-    <p class="w3-left" tiny>Design <a href="http://frank.gerastree.at/Blog/SSGdesign/index.html">Rationale for page layout design</a></p>
+    <p class="w3-left">
+        <a href="http://frank.gerastree.at/Blog/SSGdesign/index.html">Rationale for page layout design</a></p>
     <p class="w3-right">Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a></p>
 </div>
 
