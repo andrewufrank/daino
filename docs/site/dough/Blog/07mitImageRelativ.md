@@ -6,7 +6,7 @@ keywords: test
 abstract: 07mit image relative to root abstract  
 # pageTemplate: page3.yaml
 image: /resources/img/121-2117_IMG.JPG
-caption: "Skipiste oberhalb Obergurgl"
+caption: "3 Mädchend und ein Bernahrdiner-Hund"
 ---
 
 07mimage text with an image in the banner version1234

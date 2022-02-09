@@ -29,10 +29,10 @@
             $-- getting other fonts?
 
     $for(author)$
-    <meta name="author" content="$author$" />  $-- if author is AUF then blanked
+    <meta name="author" content="$author$" />  $-- if author is AUF then blanked - TODO
     $endfor$
     $if(date)$
-    <meta name="dcterms.date" content="$date$" />
+    <meta name="dcterms.date" content="$date$" />  $-- which data is used? not in meta
     $endif$
     $if(keywords)$
     <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
@@ -47,29 +47,19 @@
           font-family: serif;}
     .w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer}
     .w3-half img:hover{opacity:1}
+    /* img {
+        max-width: 100%;
+        height: auto;
+        } */
+</style>    
 
-    /* .menu2 {
-    font-family: sans-serif;
-    font-size: 16px;
-    line-height: 1.5;
-    padding: 0;
-    margin: 0;
-    color: #2a4127;
-    } */
-    /* .tiny {
-    font-size: 75%;
-    } */
-</style>
-    
-            
+<body> $-- body of html page
 
-<body>
-    <!-- body of html page  -->
     $for(include-before)$
     $include-before$
     $endfor$
 
-<!-- Navbar (sit on top) -->
+<!-- Navbar ribbon (sits on top) -->
 <div class="w3-top">
     <div class="w3-bar w3-white w3-padding w3-card">
       <a href="/index.html" class="w3-bar-item w3-button"><b>AF</b>$settings.sitename$ X</a>
@@ -78,21 +68,18 @@
         $for(menuitems.menuNav)$
         <a href=/$menuitems.menuNav.navlink$ class="w3-bar-item w3-button">$menuitems.menuNav.navtext$</a>
         $endfor$
-        <!-- <a href="Blog/index.html" class="w3-bar-item w3-button">Blog</a>
-        <a href="PublicationList/index.html" class="w3-bar-item w3-button">Publications</a> -->
       </div>
     </div>
 </div>
 
 ​<!-- Head   under ribbon on top-->  $-- height limited to 300, how to adapt?
-<header class="w3-display-container w3-content" style="max-width:2200px;max-height:440px" id="home">
+<header class="w3-display-container w3-content"  id="home">
     $if(image)$   $-- image in md yaml 
-        <img class="w3-image" src=$image$  $-- should be scaled to width, perhaps not needed
+        <img class="w3-image" src=$image$  style="max-width:100%;height:auto"  $-- should be scaled to width, perhaps not needed
             alt=$imageCaption$>  
     $else$        $-- no image in head 
-        <img class="w3-image" src=$settings.banner$  
+        <img class="w3-image" src=$settings.banner$ style="max-width:2200px;max-height:440px"
             alt=$settings.bannerCaption$>  
-    $endif$
 
     <div class="w3-display-bottomleft w3-padding-large w3-wide w3-text-light-grey"; 
         display: flex;
@@ -102,6 +89,7 @@
         <h3 class="w3-hide-medium w3-hide-small">$settings.byline$byline</h3> 
                 $-- byline is not shown on small screens
       </div>
+    $endif$
     
 </header>
             <!-- <div class="middle-left"><h1><a href="/index.html">$settings.sitename$ X</h1></div>
@@ -168,12 +156,12 @@
 
 <!-- footer -->
 <div class="w3-light-grey w3-container w3-tiny" style="margin-top:24px;padding-right:58px"> $-- removed w3-padding-32
-    <p >  <!--  not including data, but version -->
-        <a>Produced with SGG $ssgversion$ from $filename3$ with $storage.masterTemplateFile$.</a>
-        </p>
-    <p class="w3-left">
-        <a href="http://frank.gerastree.at/Blog/SSGdesign/index.html">Rationale for page layout design</a></p>
-    <p class="w3-right">Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a></p>
+    <p class="w3-left">  <!--  not including data, but version -->
+        <a>Produced with SGG $ssgversion$ from $filename3$ with $storage.masterTemplateFile$.</a>  
+        <a href="http://frank.gerastree.at/Blog/SSGdesign/index.html">Rationale for page layout design</a>
+    
+    <a class="w3-right">Powered by</a>
+    <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a>
 </div>
 
 <script>
