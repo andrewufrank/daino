@@ -84,7 +84,7 @@
     </div>
 </div>
 
-​<!-- Header   under ribbon on top-->  $-- height limited to 300, how to adapt?
+​<!-- Head   under ribbon on top-->  $-- height limited to 300, how to adapt?
 <header class="w3-display-container w3-content" style="max-width:1500px;max-height:300px" id="home">
     $if(image)$   $-- image in md yaml 
         <img class="w3-image" src=$image$  $-- should be scaled to width, perhaps not needed
@@ -105,36 +105,38 @@
             <!-- <div class="middle-left"><h1><a href="/index.html">$settings.sitename$ X</h1></div>
             <div class="bottom-left"><h3>$settings.byline$</h3></div> -->
 
+<!-- content -->
 <section  class="w3-container"  style="max-width:900px">  <!-- title section  -->
     $if(title)$
         <!-- <h1 class="title">$title$</h1> -->
-        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">$title$</h3>
+            <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">$title$</h3>
         $if(subtitle)$
-        <h5 >$subtitle$</p>
+            <h5 >$subtitle$</p>
         $endif$
-            $-- $for(author)$
-            $-- <p class="w3-large class="author">$author$</p> $-- class author here? 
-            $-- $endfor$
+        $for(author)$  $-- author should be supressed when same as set in settingsN.yml
+            <p class="w3-large class="author">$author$</p> $-- class author here? 
+        $endfor$
     $endif$
 
 
-        $if(toc)$
+    $if(toc)$
         <nav id="$idprefix$TOC">
-        $table-of-contents$
+        $table-of-contents$toc
         </nav>
-        $endif$
+    $endif$
 
-        $beforeContent$
-        $if(abstract)$abstract: $abstract$ 
+    $beforeContent$beforeContentX
+        
+    $if(abstract)$abstract:xx $abstract$ 
         <a href=/$linkpdf3$>  (view as pdf)</a>
         $-- <br> for pdf: $menu2
-        $endif$
-        <!--content-from-panrep-blocks which is the content of the index.md -->$content3$
-        $afterContent$
+    $endif$
+     
+    $afterContent$afterContentX
 
-        $for(include-after)$
-        $include-after$
-        $endfor$
+    $for(include-after)$
+        $include-after$includeAfterX
+    $endfor$
 
 </section>
 
@@ -163,12 +165,15 @@
 		</ul>
     </section>
 
-    <p class=tiny>  <!-- bottom tiny section - not including data, but version -->
-    Produced with SGG $ssgversion$ from $filename3$ with $storage.masterTemplateFile$.
-    </p>
 
-<!-- W3.CSS Container -->
-<div class="w3-light-grey w3-container w3-padding-32" style="margin-top:75px;padding-right:58px"><p class="w3-right">Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a></p></div>
+<!-- footer -->
+<div class="w3-light-grey w3-container w3-padding-32" style="margin-top:75px;padding-right:58px">
+    <p class=tiny>  <!--  not including data, but version -->
+        Produced with SGG $ssgversion$ from $filename3$ with $storage.masterTemplateFile$.
+        </p>
+    <p class="w3-left" tiny>Design <a href="http://frank.gerastree.at/Blog/InformationScience/index.html">Rationale for page layout design Andrew U. Frank</a></p>
+    <p class="w3-right">Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a></p>
+</div>
 
 <script>
 // Script to open and close sidebar
