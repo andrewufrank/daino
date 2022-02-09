@@ -48,14 +48,14 @@
     .w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer}
     .w3-half img:hover{opacity:1}
 
-    .menu2 {
+    /* .menu2 {
     font-family: sans-serif;
     font-size: 16px;
     line-height: 1.5;
     padding: 0;
     margin: 0;
     color: #2a4127;
-    }
+    } */
     .tiny {
     font-size: 75%;
     }
@@ -85,7 +85,7 @@
 </div>
 
 ​<!-- Head   under ribbon on top-->  $-- height limited to 300, how to adapt?
-<header class="w3-display-container w3-content" style="max-width:1500px;max-height:300px" id="home">
+<header class="w3-display-container w3-content" style="max-width:2200px;max-height:440px" id="home">
     $if(image)$   $-- image in md yaml 
         <img class="w3-image" src=$image$  $-- should be scaled to width, perhaps not needed
             alt=$imageCaption$>  
@@ -138,40 +138,38 @@
         $include-after$includeAfterX
     $endfor$
 
+   <!-- menu section  -->
+    <ul class="w3-ul w3-margin-top w3-hoverable">
+            $for(menu2files)$ 
+                <li>     <!-- list item menu2files:  -->
+                <a href=/$menu2files.link2$><em>$menu2files.title2$ </em></a>
+                $if(menu2files.abstract2)$<br>$menu2files.abstract2$
+                <a href=/$menu2files.pdf2$>  (view as pdf)</a>
+                $endif$		     
+                <span class=w3-tiny>$menu2files.author2$ $menu2files.date2$ 
+                    </span>
+                </li>
+            $endfor$ 
+            $if(menu2subdir)$ 
+                <a>The blogs (or directories with more related blogs):menu2subdirXX</a>
+                $for(menu2subdir)$ 
+                <li> 
+                    <a href=/$menu2subdir.link2$><em>$menu2subdir.title2$</em></a>
+                $if(menu2subdir.abstract2)$<br>$menu2subdir.abstract2$$endif$		
+                    
+                </li>
+                $endfor$
+            $endif$
+    </ul>
 </section>
-
-    <section class=menu2>     <!-- menu2 section  -->
-		<ul>
-            	$for(menu2files)$ 
-				  <li>     <!-- list item menu2files:  -->
-				    <a href=/$menu2files.link2$><em>$menu2files.title2$ </em></a>
-				    $if(menu2files.abstract2)$<br>$menu2files.abstract2$
-                    <a href=/$menu2files.pdf2$>  (view as pdf)</a>
-                    $endif$		     
-				    <span class=tiny>$menu2files.author2$ $menu2files.date2$ 
-                     </span>
-                  </li>
-                $endfor$ 
-                $if(menu2subdir)$ 
-                    Directories with more related files:
-                    $for(menu2subdir)$ 
-                    <li> 
-                        <a href=/$menu2subdir.link2$><em>$menu2subdir.title2$</em></a>
-                    $if(menu2subdir.abstract2)$<br>$menu2subdir.abstract2$$endif$		
-                        
-                    </li>
-                    $endfor$
-                $endif$
-		</ul>
-    </section>
 
 
 <!-- footer -->
 <div class="w3-light-grey w3-container w3-padding-32" style="margin-top:75px;padding-right:58px">
-    <p class=tiny>  <!--  not including data, but version -->
+    <p class=w3-tiny>  <!--  not including data, but version -->
         Produced with SGG $ssgversion$ from $filename3$ with $storage.masterTemplateFile$.
         </p>
-    <p class="w3-left" tiny>Design <a href="http://frank.gerastree.at/Blog/InformationScience/index.html">Rationale for page layout design Andrew U. Frank</a></p>
+    <p class="w3-left" tiny>Design <a href="http://frank.gerastree.at/Blog/SSGdesign/index.html">Rationale for page layout design</a></p>
     <p class="w3-right">Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a></p>
 </div>
 
