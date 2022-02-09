@@ -56,7 +56,7 @@
 <body> $-- body of html page
 
     $for(include-before)$
-    $include-before$
+    $include-before$include-beforeXX
     $endfor$
 
 <!-- Navbar ribbon (sits on top) -->
@@ -75,11 +75,11 @@
 ​<!-- Head   under ribbon on top-->  $-- height limited to 300, how to adapt?
 <header class="w3-display-container w3-content"  style="max-width:2200px">
     $if(image)$   $-- image in md yaml 
-        <img class="w3-image" src=$image$  style="max-width:100%;height:auto"  $-- should be scaled to width, perhaps not needed
-            alt="$imageCaption$">  
+        <img class="w3-image" src=$image$  style="width:auto;max-height:400px"  
+            alt="$imageCaption$">  $-- the image put into index.md
     $else$        $-- no image in head 
         <img class="w3-image" src=$settings.banner$ style="max-width:2200px;max-height:440px"
-            alt="$settings.bannerCaption$">  
+            alt="$settings.bannerCaption$">  $-- the image put in the settings.yml
 
     <div class="w3-display-bottomleft w3-padding-large w3-wide w3-text-light-grey"; 
         display: flex;
@@ -92,13 +92,10 @@
     $endif$
     
 </header>
-            <!-- <div class="middle-left"><h1><a href="/index.html">$settings.sitename$ X</h1></div>
-            <div class="bottom-left"><h3>$settings.byline$</h3></div> -->
 
 <!-- content -->
 <section  class="w3-container"  style="max-width:900px">  <!-- title section  -->
     $if(title)$
-        <!-- <h1 class="title">$title$</h1> -->
             <h3 class="w3-border-bottom w3-border-light-grey">$title$</h3> $-- removed w3-padding
         $if(subtitle)$
             <h5 >$subtitle$</p>
@@ -108,17 +105,16 @@
         $endfor$
     $endif$
 
-
     $if(toc)$
         <nav id="$idprefix$TOC">
-        $table-of-contents$toc
+        $table-of-contents$
         </nav>
     $endif$
 
     $beforeContent$beforeContentX
         
     $if(abstract)$
-        <a>abstract:xx $abstract$</a>
+        <a>abstract: $abstract$</a>
         <a href=/$linkpdf3$>  (view as pdf)</a>
     $endif$
      
