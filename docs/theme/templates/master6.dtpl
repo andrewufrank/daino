@@ -32,7 +32,7 @@
     <meta name="author" content="$author$" />  $-- if author is AUF then blanked - TODO
     $endfor$
     $if(date)$
-    <meta name="dcterms.date" content="$date$" />  $-- which data is used? not in meta
+    <meta name="dcterms.date" content="$date$" />  $-- date in index.md yml head
     $endif$
     $if(keywords)$
     <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
@@ -73,13 +73,13 @@
 </div>
 
 ​<!-- Head   under ribbon on top-->  $-- height limited to 300, how to adapt?
-<header class="w3-display-container w3-content"  id="home">
+<header class="w3-display-container w3-content"  style="max-width:2200px">
     $if(image)$   $-- image in md yaml 
         <img class="w3-image" src=$image$  style="max-width:100%;height:auto"  $-- should be scaled to width, perhaps not needed
-            alt=$imageCaption$>  
+            alt="$imageCaption$">  
     $else$        $-- no image in head 
         <img class="w3-image" src=$settings.banner$ style="max-width:2200px;max-height:440px"
-            alt=$settings.bannerCaption$>  
+            alt="$settings.bannerCaption$">  
 
     <div class="w3-display-bottomleft w3-padding-large w3-wide w3-text-light-grey"; 
         display: flex;

@@ -33,7 +33,7 @@ settings :
     byline : siteByLine3 
     # banner: /resources/templates/img/symmetricGeras2.jpg  
     banner: /resources/templates/img/DSC04809.JPG
-    bannerCaption: "ruhiger Sommer im Garten in Geras"
+    bannerCaption: "Ruhiger Sommer im Garten in Geras"
     # keywords ??
 
 menuitems:
