@@ -111,12 +111,12 @@
 <section  class="w3-container"  style="max-width:900px">  <!-- title section  -->
     $if(title)$
         <!-- <h1 class="title">$title$</h1> -->
-            <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">$title$</h3>
+            <h3 class="w3-border-bottom w3-border-light-grey">$title$</h3> $-- removed w3-padding
         $if(subtitle)$
             <h5 >$subtitle$</p>
         $endif$
         $for(author)$  $-- author should be supressed when same as set in settingsN.yml
-            <p class="w3-large class="author">$author$</p> $-- class author here? 
+            <p  class="author">$author$</p> $-- class author here? removed class="w3-large
         $endfor$
     $endif$
 
@@ -129,9 +129,9 @@
 
     $beforeContent$beforeContentX
         
-    $if(abstract)$abstract:xx $abstract$ 
+    $if(abstract)$
+        <a>abstract:xx $abstract$</a>
         <a href=/$linkpdf3$>  (view as pdf)</a>
-        $-- <br> for pdf: $menu2
     $endif$
      
     $afterContent$afterContentX
@@ -167,7 +167,7 @@
 
 
 <!-- footer -->
-<div class="w3-light-grey w3-container w3-padding-32 w3-tiny" style="margin-top:24px;padding-right:58px">
+<div class="w3-light-grey w3-container w3-tiny" style="margin-top:24px;padding-right:58px"> $-- removed w3-padding-32
     <p >  <!--  not including data, but version -->
         <a>Produced with SGG $ssgversion$ from $filename3$ with $storage.masterTemplateFile$.</a>
         </p>
