@@ -117,8 +117,8 @@ instance FromJSON MetaPage where
     parseJSON = genericParseJSON docyamlOptions
 
 pandoc2MetaPage::  Path Abs Dir ->  Path Abs File -> Pandoc -> MetaPage
+-- removed most default values, left only for image and caption, keywords
 pandoc2MetaPage doughP filename pd =  meta6
-
   where
     meta2 = flattenMeta . getMeta $ pd
     relfn = makeRelativeP doughP filename
@@ -127,23 +127,23 @@ pandoc2MetaPage doughP filename pd =  meta6
             { dyFn = toFilePath filename
             , dyLink = toFilePath relfn
             , dyLang = "en_US" -- DLenglish -- getAtKey meta2 "language"
-            , dyTitle = fromMaybe "FILL_dyTitle2" $ getAtKey meta2 "title"
-            , dyAbstract = fromMaybe "FILL_dyAbstract" $ getAtKey meta2 "abstract"
-            , dyAuthor = fromMaybe "FILL_dyAuthor" $ getAtKey meta2 "author"
+            , dyTitle = fromJust $ getAtKey meta2 "title"
+            , dyAbstract = fromJust $ getAtKey meta2 "abstract"
+            , dyAuthor = fromJust $ getAtKey meta2 "author"
             , dyDate = getAtKey meta2 "date"
             , dyBibliography = getAtKey meta2 "bibliography"
             -- used as signal for processing biblio
             , dyImage = fromMaybe "" $ getAtKey meta2 "image"
             , dyImageCaption = fromMaybe "" $ getAtKey meta2 "caption"
-            , dyKeywords = fromMaybe "" $ getAtKey meta2 "keywords"
+            , dyKeywords = fromJust $ getAtKey meta2 "keywords"
             , dyStyle = getAtKey meta2 "style"
             , dyStyleBiber = fromMaybe "authoryear" $ getAtKey meta2 "styleBiber"
             , dyNoCite = getAtKey meta2 "nocite"
             , dyReferences = gak meta2 "references"
             , dyContentFiles = maybeToList  . getAtKey meta2 $ "content"
             -- TODO make reading a list
-            , dyVersion = fromMaybe "publish" $ getAtKey meta2 "version"  -- questionalbe default
-            , dyVisibility = fromMaybe "private" $ getAtKey meta2 "visibility"   
+            , dyVersion = fromJust $ getAtKey meta2 "version"  -- questionalbe default
+            , dyVisibility = fromJust $ getAtKey meta2 "visibility"   
             -- , -- TODO use pbulicationState
             --   dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
             , dyIndexSort = getAtKey meta2 "indexSort"
