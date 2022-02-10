@@ -31,6 +31,8 @@ main =
   startProg
     (unwords' [programName, progTitle])
     ( do
-        let sitefn = makeAbsFile "/home/frank/Workspace11/ssg/docs/site/settings3"
+        -- let sitefn = makeAbsFile "/home/frank/Workspace11/ssg/docs/site/settings3"
+        workingdir1 :: Path Abs Dir <- currentDir 
+        let sitefn = workingdir1 </> (makeRelFile "settings3" )  
         checkProcess NoticeLevel0 sitefn
     )
