@@ -85,6 +85,7 @@ dependencies:
     # - data-default
     - data-default-class # for default values, move down 
     - dir-traverse # for checkprocess
+    - deepseq
 
 library:
   source-dirs: 

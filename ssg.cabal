@@ -53,6 +53,7 @@ library
   build-depends:
       base >4.7 && <5
     , data-default-class
+    , deepseq
     , dir-traverse
     , uniform-cmdLineArgs
     , uniform-http
@@ -76,6 +77,7 @@ executable ssgbake
   build-depends:
       base >4.7 && <5
     , data-default-class
+    , deepseq
     , dir-traverse
     , ssg
     , uniform-cmdLineArgs
@@ -100,6 +102,7 @@ executable ssgcheck
   build-depends:
       base >4.7 && <5
     , data-default-class
+    , deepseq
     , dir-traverse
     , ssg
     , uniform-cmdLineArgs

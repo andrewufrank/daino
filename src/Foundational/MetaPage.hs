@@ -127,23 +127,23 @@ pandoc2MetaPage doughP filename pd =  meta6
             { dyFn = toFilePath filename
             , dyLink = toFilePath relfn
             , dyLang = "en_US" -- DLenglish -- getAtKey meta2 "language"
-            , dyTitle = fromJust $ getAtKey meta2 "title"
-            , dyAbstract = fromJust $ getAtKey meta2 "abstract"
-            , dyAuthor = fromJust $ getAtKey meta2 "author"
+            , dyTitle = fromJustN "title" $ getAtKey meta2 "title"
+            , dyAbstract = fromJustN "abstract" $ getAtKey meta2 "abstract"
+            , dyAuthor = fromJustN "author" $ getAtKey meta2 "author"
             , dyDate = getAtKey meta2 "date"
             , dyBibliography = getAtKey meta2 "bibliography"
             -- used as signal for processing biblio
             , dyImage = fromMaybe "" $ getAtKey meta2 "image"
             , dyImageCaption = fromMaybe "" $ getAtKey meta2 "caption"
-            , dyKeywords = fromJust $ getAtKey meta2 "keywords"
+            , dyKeywords = fromJustN "keywords" $ getAtKey meta2 "keywords"
             , dyStyle = getAtKey meta2 "style"
             , dyStyleBiber = fromMaybe "authoryear" $ getAtKey meta2 "styleBiber"
             , dyNoCite = getAtKey meta2 "nocite"
             , dyReferences = gak meta2 "references"
             , dyContentFiles = maybeToList  . getAtKey meta2 $ "content"
             -- TODO make reading a list
-            , dyVersion = fromJust $ getAtKey meta2 "version"  -- questionalbe default
-            , dyVisibility = fromJust $ getAtKey meta2 "visibility"   
+            , dyVersion = fromJustN "version" $ getAtKey meta2 "version"  -- questionalbe default
+            , dyVisibility = fromJustN "visibility" $ getAtKey meta2 "visibility"   
             -- , -- TODO use pbulicationState
             --   dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
             , dyIndexSort = getAtKey meta2 "indexSort"
@@ -153,7 +153,9 @@ pandoc2MetaPage doughP filename pd =  meta6
             
     ix1 =  initializeIndex meta4
     meta6 = meta4{dyIndexEntry = ix1} 
-
+    fromJustN a = fromJustNoteT ["fromJust Nothing pandoc2MetaPage\n", showT filename, "\n", a]
+    -- fromJust Nothing = errorT ["fromJust Nothing pandoc2MetaPage", showT filename]
+    -- fromJust (Just a) = a
  
 -- addFileMetaPage :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> MetaPage
 -- addFileMetaPage doughP bakedP fn =

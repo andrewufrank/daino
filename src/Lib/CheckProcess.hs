@@ -17,7 +17,9 @@ import Uniform.Pandoc
 import Foundational.Filetypes4sites  
 import Wave.Md2doc 
 import Foundational.MetaPage 
-
+import Control.Exception
+import Control.DeepSeq
+import Data.Char
 
 checkProcess :: NoticeLevel -> Path Abs File-> ErrIO ()
 {- ^ the top call to check the md files. first collect all the filenames
@@ -60,7 +62,7 @@ checkOneMD debug doughP fnin =
         when (inform debug) $ putIOwords ["checkOneMD 1"]
         y1 <- check_readMeta debug doughP fnin pd 
 
-        when (inform debug) $ putIOwords ["checkOneMD 2", "metapage", showPretty  y1]
+        -- when (inform debug) $ putIOwords ["checkOneMD 2", "metapage", showPretty  y1]
 
         when (inform debug) $ putIOwords ["checkOneMD", "done"]
         return ()
@@ -77,15 +79,21 @@ check_readMeta debug doughP fnin pd = do
     when (inform debug) $ putIOwords ["check_readMeta 1"]
 
     let y1 = pandoc2MetaPage doughP fnin pd
-    when (informAll debug) $ putIOwords ["check_readMeta 2", "metapage", showPretty  y1]    
-    -- output is necessary to force evaluation - use !
-    return y1
+    
+    y2 <- liftIO $ do 
+        let ll =sum .  map ord .  show $ y1
+        -- when (informAll debug) $ putIOwords ["check_readMeta 2", "metapage", showPretty  y1]    
+        putStr .   show $ ll  
+        let y3 =   deepseq ll y1
+    -- output is necessary to force evaluation - deepseq seems not to do it
+        return y3
 
-    `catchError`(\e -> do 
-        putIOwords ["check_readMeta", "discovered error in file", showT fnin]
-        -- putIOwords ["the yaml head is read as:", showPretty y1]
-        putIOwords ["the error msg is:", showT (e :: SomeException)]
-        return zero 
-        
-        )
+        `catch`(\e -> do 
+            putIOwords ["\n\ncheck_readMeta", "discovered error in file", showT fnin]
+            -- putIOwords ["the yaml head is read as:", showPretty y1]
+            putIOwords ["the error msg is:", showT (e :: SomeException), "\n"]
+            return zero 
+            
+            )
+    return y2
 
