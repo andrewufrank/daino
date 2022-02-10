@@ -99,7 +99,7 @@ executables:   # file names wiwth lowercase to avoid forcing Main
     # - uniform-webserver
     # - uniform-convenience
   
-  ssgcheck:
+  ssgcheck:  # breaks on first error and indicates where this is. fix and retry!
     main: ssgCheck.hs
     source-dirs: app
     dependencies:

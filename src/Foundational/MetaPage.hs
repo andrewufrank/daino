@@ -153,6 +153,7 @@ pandoc2MetaPage doughP filename pd =  meta6
             
     ix1 =  initializeIndex meta4
     meta6 = meta4{dyIndexEntry = ix1} 
+
  
 -- addFileMetaPage :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> MetaPage
 -- addFileMetaPage doughP bakedP fn =

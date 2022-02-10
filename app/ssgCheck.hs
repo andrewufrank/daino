@@ -32,5 +32,5 @@ main =
     (unwords' [programName, progTitle])
     ( do
         let sitefn = makeAbsFile "/home/frank/Workspace11/ssg/docs/site/settings3"
-        checkProcess NoticeLevel2 sitefn
+        checkProcess NoticeLevel0 sitefn
     )
