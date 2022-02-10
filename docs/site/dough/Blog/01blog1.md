@@ -3,7 +3,7 @@ title: 01blog1 titel Mein erster Blog
 author: AUF
 version: publish
 visibility: public
-# keywords: Blog
+keywords: Blog
 abstract: 01blog1 abstract Ein Blog ohne Sinn auf Deutsch
 date: 2020-06-18
 publish: true

@@ -78,6 +78,7 @@ convert2index hpAuthor indexSortField (this, fils, dirs) =
 indexFilter :: [IndexEntry] -> [IndexEntry]
 indexFilter ixs = ixs -- filter ((Just "true" ==) . publish ) ixs
     -- does not work because publish is not set
+    -- todo remove 
 
 
 -- | the lines for the index 

@@ -105,12 +105,12 @@ filterNeeds debug pubf doughP fn =  do
     when (inform debug) $ 
         putIOwords ["filterNeeds2", "\nMeta", showT (meta1 d1) ]
 
-    let t = includeBakeTest3docrep pubf d1 
+    let t = includeBakeTest3docrep pubf (meta1 d1)
     return $ if t then Just fn else Nothing
 
 
 
-includeBakeTest3docrep :: PubFlags -> Docrep -> Bool 
+includeBakeTest3docrep :: PubFlags -> MetaPage -> Bool 
 
 -- ^ decide whether this is to be included in the bake 
 
@@ -120,5 +120,5 @@ includeBakeTest3docrep pubf doc1 =
             && (privateFlag pubf || vis1 ==  "public")
     where
         -- draftF = draftFlag pubf 
-        vers1 = dyVersion . meta1 $ doc1
-        vis1 = dyVisibility . meta1 $ doc1
+        vers1 = dyVersion   doc1
+        vis1 = dyVisibility  doc1

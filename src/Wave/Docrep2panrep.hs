@@ -55,8 +55,8 @@ import Lib.Templating ( putValinMaster )
 
 --  the refs are processed before in md2docrep
 
-docrep2panrep :: NoticeLevel -> SiteLayout -> Docrep -> ErrIO Panrep
-docrep2panrep debug layout (Docrep y1 p1) = do
+docrep2panrep :: NoticeLevel -> PubFlags -> SiteLayout -> Docrep -> ErrIO Panrep
+docrep2panrep debug pubf layout (Docrep y1 p1) = do
     when (inform debug) $
         putIOwords ["\n\ty1,p1-------------------------docrep2panrep"
                 , showT y1
@@ -73,7 +73,7 @@ docrep2panrep debug layout (Docrep y1 p1) = do
             let ix1 =dyIndexEntry  m1
             -- let bakedP = bakedDir layout
             let doughP = doughDir layout
-            ix2 <- completeIndex debug doughP ix1
+            ix2 <- completeIndex debug pubf doughP ix1
             -- todo put ix2 into pr
             let m2 = m1{dyIndexEntry = ix2}
 

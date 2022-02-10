@@ -80,7 +80,7 @@ bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
     dr1 <- read8 inputFn docrepFileType
 
     let layout = storage sett3
-    p3 <- docrep2panrep debug layout dr1
+    p3 <- docrep2panrep debug flags layout dr1
             -- completes index and should process reps 
 
     write8 resfn2 panrepFileType p3 -- content is html style
