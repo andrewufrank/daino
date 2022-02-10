@@ -37,16 +37,19 @@ checkProcess debug sitefn = do
 
     let mds = filter (hasExtension "md") fns 
     -- let mds = filter (hasExtension extMD) fns -- TODO 
-
-
     when (inform debug) $ putIOwords ["checkProcess 2", "mds", showT . take 10 $ mds]
-    let mds2 = map makeAbsFile mds
+
+    let mds1 = filter notDNB mds
+    when (inform debug) $ putIOwords ["checkProcess 2", "mds1", showT . take 10 $ mds1]
+    let mds2 = map makeAbsFile mds1
 
     _ <- mapM (checkOneMD debug doughP) mds2 
 
     when (inform debug) $ putIOwords ["checkProcess", "end"]
     return ()
 
+notDNB :: FilePath -> Bool 
+notDNB  = not . isInfixOf' "DNB" 
 
 checkOneMD:: NoticeLevel -> Path Abs Dir -> Path Abs File -> ErrIO ()
 -- check one md file (only the yaml head) for necessary values 
