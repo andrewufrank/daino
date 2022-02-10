@@ -16,15 +16,38 @@ module Lib.CheckProcess where
 --     ( IndexEntry(link, dirEntries, fileEntries),
 --       MetaPage(dyIndexEntry) )
 import UniformBase
+import ShakeBake.ReadSettingFile  
+import Foundational.LayoutFlags
+import System.Directory.Recursive
+import Uniform.Pandoc
+-- import Text.Printf (FormatParse(fpChar))
+import Foundational.Filetypes4sites  
+import Wave.Md2doc 
 
 
-
-checkProcess :: NoticeLevel -> Path Abs Dir ->  ErrIO ()
+checkProcess :: NoticeLevel -> Path Abs File-> ErrIO ()
 {- ^ the top call to form the index data into the MetaPage
 later only the format for output must be fixed
 -}
 checkProcess debug sitefn = do
     when (inform debug) $ putIOwords ["checkProcess", "start"]
+    sett3 <- readSettings debug (sitefn)
+    let doughP = doughDir (storage sett3)
+    when (inform debug) $ putIOwords ["checkProcess 1", "doughP", showPretty doughP]
+
+    -- get all md files in doughP 
+    fns :: [FilePath] <- callIO $ getDirRecursive (toFilePath doughP) 
+
+    when (inform debug) $ putIOwords ["checkProcess 1", "fns", showT . take 10 $ fns]
+
+    let mds = filter (hasExtension "md") fns 
+    -- let mds = filter (hasExtension extMD) fns -- TODO 
+
+
+    when (inform debug) $ putIOwords ["checkProcess 2", "mds", showT . take 10 $ mds]
+    let mds2 = map makeAbsFile mds
+
+    _ <- mapM (checkOneMD debug doughP) mds2 
 
     -- let fn = doughP </> (link ix1) :: Path Abs File
     -- -- changed to search in dough (but no extension yet)
@@ -42,6 +65,37 @@ checkProcess debug sitefn = do
     -- let ix2 = ix1{dirEntries = dirs, fileEntries = files}
     when (inform debug) $ putIOwords ["checkProcess", "end"]
     return ()
+
+-- fileFilterMD :: FilePath -> IO Bool 
+-- fileFilterMD fp = do 
+--     let r = hasExtension (show extMD) fp
+--     return r 
+
+checkOneMD:: NoticeLevel -> Path Abs Dir -> Path Abs File -> ErrIO ()
+-- -- get a file and its index
+-- -- collect data for indexentry (but not recursively, only this file)
+-- -- the directories are represented by their index files
+-- -- produce separately to preserve the two groups
+checkOneMD debug doughP fnin =
+    do
+        when (inform debug) $ putIOwords ["checkOneMD fnin", showPretty fnin]
+
+--         -- mdfile <- read8 fnin markdownFileType 
+--         -- pd <- readMarkdown2 mdfile
+--         -- -- could perhaps "need" all ix as files?
+
+--         -- let (Docrep y1 _) = pandoc2docrep doughP fnin pd
+--         (Docrep y1 _) <- readMarkdownFile2docrep debug doughP fnin 
+--         -- needs the indexentry initialized
+--         -- does include the DNB files, bombs with ff ligature
+--         let ix1 :: IndexEntry = dyIndexEntry y1
+
+
+        (Docrep y1 _) <- readMarkdownFile2docrep debug doughP fnin
+        when (inform debug) $ putIOwords ["checkOneMD 1", "docrep", showPretty  y1]
+
+        when (inform debug) $ putIOwords ["checkOneMD", "done"]
+        return ()
 
 -- {- | get the contents of a directory, separated into dirs and files
 --  the directory is given by the index file

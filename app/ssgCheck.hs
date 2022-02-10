@@ -24,13 +24,13 @@ import UniformBase
 
 programName, progTitle :: Text
 programName = "ssgCheck" :: Text
-progTitle = "checking the input files for a static site generator x6 0.0.4.2" :: Text
+progTitle = "checking the input files for a static site generator 0.0.4.10" :: Text
 
 main :: IO ()
 main =
   startProg
     (unwords' [programName, progTitle])
     ( do
-        let sitefn = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/dough/settings3"
-        checkProcess NoticeLevel0 sitefn
+        let sitefn = makeAbsFile "/home/frank/Workspace11/ssg/docs/site/settings3"
+        checkProcess NoticeLevel2 sitefn
     )
