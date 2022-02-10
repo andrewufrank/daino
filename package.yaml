@@ -98,11 +98,11 @@ executables:   # file names wiwth lowercase to avoid forcing Main
     # - uniform-webserver
     # - uniform-convenience
   
-  # ssgcheck:
-  #   main: ssgCheck.hs
-  #   source-dirs: app
-  #   dependencies:
-  #       ssg
+  ssgcheck:
+    main: ssgCheck.hs
+    source-dirs: app
+    dependencies:
+        ssg
 
   # ssgPrepareTest:  #wohl nicht notwendig, verwende die von ssgbake gebauten werte
   #   main: prepareTest.hs

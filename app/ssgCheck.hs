@@ -19,8 +19,8 @@
 module Main where
 
 import Lib.CheckProcess (checkProcess)
-import Uniform.Convenience.StartApp (startProg)
-import UniformBase (Text)
+-- import Uniform.Convenience.StartApp (startProg)
+import UniformBase 
 
 programName, progTitle :: Text
 programName = "ssgCheck" :: Text
@@ -29,11 +29,8 @@ progTitle = "checking the input files for a static site generator x6 0.0.4.2" ::
 main :: IO ()
 main =
   startProg
-    programName
-    progTitle
+    (unwords' [programName, progTitle])
     ( do
-        let flags = True -- the debug flag
-            sitefn :: FilePath
-            sitefn = "/home/frank/Workspace11/ssg/docs/site/dough/settings3"
-        checkProcess flags sitefn
+        let sitefn = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/dough/settings3"
+        checkProcess NoticeLevel0 sitefn
     )
