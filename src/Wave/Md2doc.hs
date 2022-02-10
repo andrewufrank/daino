@@ -25,7 +25,7 @@ module Wave.Md2doc (
 import UniformBase
 
 import Foundational.MetaPage
-    -- ( MetaPage(dyFn, dyBibliography, dyStyle, dyPublish), pandoc2MetaPage )
+    -- ( MetaPage(dyFn, dyBibliography, dyStyle, dyVersion), pandoc2MetaPage )
 import Foundational.Filetypes4sites ( Docrep(Docrep), meta1)
 import Foundational.LayoutFlags
 import Uniform.Pandoc
@@ -115,9 +115,10 @@ includeBakeTest3docrep :: PubFlags -> Docrep -> Bool
 -- ^ decide whether this is to be included in the bake 
 
 includeBakeTest3docrep pubf doc1 = 
-        (draftFlag pubf || publish1 ==   "publish") -- should be less than eq
-            && (privateFlag pubf || pp1 ==  "public")
+        (draftFlag pubf || vers1 ==   "publish") 
+        -- should be less than eq
+            && (privateFlag pubf || vis1 ==  "public")
     where
         -- draftF = draftFlag pubf 
-        publish1 = dyPublish . meta1 $ doc1
-        pp1 = dyPP . meta1 $ doc1
+        vers1 = dyVersion . meta1 $ doc1
+        vis1 = dyVisibility . meta1 $ doc1

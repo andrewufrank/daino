@@ -70,8 +70,8 @@ data MetaPage = MetaPage
     , dyReferences :: Maybe Value --  [Reference]
     , dyContentFiles :: [Text] -- the list of md files to include 
     , dyNoCite :: Maybe Text
-    , dyPublish ::  Text -- should be "publish"
-    , dyPP ::  Text -- should be "public"
+    , dyVersion ::  Text -- should be "publish"
+    , dyVisibility ::  Text -- should be "public"
     -- , dyIndexPage :: Bool
     , dyIndexSort :: Maybe Text
     , dyIndexEntry :: IndexEntry
@@ -95,8 +95,8 @@ instance Default MetaPage where
             , dyBibliography = Just "resources/BibTexLatex.bib"
             , dyStyle = Just "chicago-fullnote-bibliography-bb.csl"
             , dyStyleBiber = "authoryear"
-            , dyPublish =  "private"
-            , dyPP =  "draft"
+            , dyVersion =  "private"
+            , dyVisibility =  "draft"
             -- , dyIndexPage = False
             , dyIndexSort = zero
             , dyIndexEntry = zero
@@ -142,8 +142,8 @@ pandoc2MetaPage doughP filename pd =  meta6
             , dyReferences = gak meta2 "references"
             , dyContentFiles = maybeToList  . getAtKey meta2 $ "content"
             -- TODO make reading a list
-            , dyPublish = fromMaybe "publish" $ getAtKey meta2 "version"  -- questionalbe default
-            , dyPP = fromMaybe "private" $ getAtKey meta2 "visibility"   
+            , dyVersion = fromMaybe "publish" $ getAtKey meta2 "version"  -- questionalbe default
+            , dyVisibility = fromMaybe "private" $ getAtKey meta2 "visibility"   
             -- , -- TODO use pbulicationState
             --   dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
             , dyIndexSort = getAtKey meta2 "indexSort"
@@ -236,7 +236,7 @@ initializeIndex MetaPage{..} = ix1
             , abstract = dyAbstract
             , author = dyAuthor
             , date = fromMaybe (showT year2000) dyDate
-            -- , publish = dyPublish
+            -- , publish = dyVersion
             , dirEntries = zero
             , fileEntries = zero
             }
