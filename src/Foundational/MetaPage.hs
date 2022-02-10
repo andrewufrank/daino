@@ -142,8 +142,8 @@ pandoc2MetaPage doughP filename pd =  meta6
             , dyReferences = gak meta2 "references"
             , dyContentFiles = maybeToList  . getAtKey meta2 $ "content"
             -- TODO make reading a list
-            , dyPublish = fromMaybe "publish" $ getAtKey meta2 "publish"  -- questionalbe default
-            , dyPP = fromMaybe "public" $ getAtKey meta2 "pp" -- questionalbe default 
+            , dyPublish = fromMaybe "publish" $ getAtKey meta2 "version"  -- questionalbe default
+            , dyPP = fromMaybe "private" $ getAtKey meta2 "visibility"   
             -- , -- TODO use pbulicationState
             --   dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
             , dyIndexSort = getAtKey meta2 "indexSort"

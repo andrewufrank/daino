@@ -1,6 +1,8 @@
 ---
 title: 05withRefnoStyle blog 
 author: AUF
+version: publish
+visibility: public
 date: 2010-07-29
 keywords: homepage
 # pageTemplate: page3.yaml

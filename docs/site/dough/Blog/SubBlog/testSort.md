@@ -1,6 +1,8 @@
 ---
 title: testSort title z
 author: AUF
+version: publish
+visibility: public
 date: Jan. 4, 2018
 keywords: notest
 abstract: testSort abstract A silly text not needing an abstract.

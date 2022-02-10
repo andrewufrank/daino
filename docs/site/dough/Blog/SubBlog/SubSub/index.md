@@ -1,6 +1,8 @@
 ---
 title: index for subsubdir 
 author: AUF
+version: publish
+visibility: public
 date: Jan. 4, 2019
 keywords: test
 abstract: The subdirectory experiment

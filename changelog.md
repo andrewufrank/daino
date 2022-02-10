@@ -27,8 +27,10 @@ a static site generator
   0.0.4.8  reduced, removed unused code, cleaned
   0.0.4.9  change for error to use ExceptionT
   0.0.4.10  add the private/public and the completion status
-                ppvalue (private/publis) command line flag private includes the privates, otherwise only publis 
-                completion: idea/sketch/draft/nearly/publish
+                visibility (private/public) command line flag private includes the privates, otherwise only public 
+                version: idea/sketch/draft/nearly/publish
                         include command line flag with these values
                         include what is more than stated 
                 landing page is mostly produced from index.md in dough, needed is only top directory structure.
+                        must not include the banner image (must be in settingsN.yml): difference in formatting
+                        

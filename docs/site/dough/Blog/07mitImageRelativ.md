@@ -1,6 +1,8 @@
 ---
 title: 07mitImage title post mit image ref relativ to root
 author: AUF
+version: publish
+visibility: public
 date: Jan. 4, 2019
 keywords: test
 abstract: 07mit image relative to root abstract  

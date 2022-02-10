@@ -1,6 +1,8 @@
 ---
 title: index in SubBlog title index for subdir 
 author: AUF
+version: publish
+visibility: public
 date: Jan. 4, 2019
 keywords: test
 abstract: index in SubBlog abstract - The subdirectory experiment

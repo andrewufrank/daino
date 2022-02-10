@@ -1,6 +1,8 @@
 ---
 title: subsub1.md 
 author: AUF
+version: publish
+visibility: public
 date: Jan. 4, 2019
 keywords: test
 abstract: subsub1 abstract A silly text not needing an abstract.

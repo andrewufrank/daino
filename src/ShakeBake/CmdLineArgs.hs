@@ -49,7 +49,7 @@ cmdArgs :: Parser LitArgs
 cmdArgs  =  
   LitArgs
     <$> switch (long "draft" <> short 'd' 
-        <> help "include draft material")
+        <> help "include draft material, else only `publish`")
     <*> switch
           (long "private" <> short 'p' <> help
             "include the private data, else only public"

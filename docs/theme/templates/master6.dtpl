@@ -38,13 +38,13 @@
     <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
     $endif$
 
-<title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itlenotset</title>
+$-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itlenotset</title>
         $-- not set?
-
+    <title>$settings.sitename$</title>  $-- simple (for now?)
 <style>
-    body,h1,h2,h3,h4,h5 {font-family: 'Helvetica', sans-serif}
+    h1,h2,h3,h4,h5 {font-family: 'Helvetica', sans-serif; font-weight: bold;}
     body {font-size:16px;
-          font-family: serif;}
+          font-family: 'Times New Roman', serif;}
     .w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer}
     .w3-half img:hover{opacity:1}
     /* img {
@@ -62,7 +62,7 @@
 <!-- Navbar ribbon (sits on top) -->
 <div class="w3-top">
     <div class="w3-bar w3-white w3-padding w3-card">
-      <a href="/index.html" class="w3-bar-item w3-button"><b>AF</b>$settings.sitename$ X</a>
+      <a href="/index.html" class="w3-bar-item w3-button"><b>faviconMissing </b>$settings.sitename$</a>
       <!-- Float links to the right. Hide them on small screens -->
       <div class="w3-right w3-hide-small">
         $for(menuitems.menuNav)$
@@ -78,15 +78,15 @@
         <img class="w3-image" src=$image$  style="width:auto;max-height:400px"  
             alt="$imageCaption$">  $-- the image put into index.md
     $else$        $-- no image in head 
-        <img class="w3-image" src=$settings.banner$ style="max-width:2200px;max-height:440px"
+        <img class="w3-image" src=$settings.banner$ style="max-width:2200px;max-height:440px; object-position: 50% 50%"
             alt="$settings.bannerCaption$">  $-- the image put in the settings.yml
 
-    <div class="w3-display-bottomleft w3-padding-large w3-wide w3-text-light-grey"; 
+    <div class="w3-display-bottomleft w3-padding-large w3-text-light-grey"; 
         display: flex;
         align-items:flex-start;>
-        <h1 class="w3-hide-medium w3-hide-small w3-xxxlarge">$settings.sitename$sitename3</h1>
-        <h5 class="w3-hide-large" style="white-space:nowrap">$settings.sitename$sitename3</h5>
-        <h3 class="w3-hide-medium w3-hide-small">$settings.byline$byline</h3> 
+        <h1 class="w3-hide-medium w3-hide-small w3-xxxlarge">$settings.sitename$</h1>
+        <h5 class="w3-hide-large" style="white-space:nowrap">$settings.sitename$</h5>
+        <h3 class="w3-hide-medium w3-hide-small">$settings.byline$</h3> 
                 $-- byline is not shown on small screens
       </div>
     $endif$
@@ -111,14 +111,17 @@
         </nav>
     $endif$
 
-    $beforeContent$beforeContentX
+    $beforeContent$
         
     $if(abstract)$
-        <a>abstract: $abstract$</a>
+        <a>$abstract$</a>
         <a href=/$linkpdf3$>  (view as pdf)</a>
     $endif$
-     
-    $afterContent$afterContentX
+
+    <!--content-from-panrep-blocks which is the content of the index.md -->
+    $content3$
+      
+    $afterContent$
 
     $for(include-after)$
         $include-after$includeAfterX
@@ -137,7 +140,7 @@
                 </li>
             $endfor$ 
             $if(menu2subdir)$ 
-                <a>Directories with more related blogs:menu2subdirXX</a>
+                <a>Directories with more related blogs:</a>
                 $for(menu2subdir)$ 
                 <li> 
                     <a href=/$menu2subdir.link2$><em>$menu2subdir.title2$</em></a>
@@ -160,7 +163,7 @@
     <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a>
 </div>
 
-<script>
+<!-- <script>
 // Script to open and close sidebar
 function w3_open() {
   document.getElementById("mySidebar").style.display = "block";
@@ -179,7 +182,7 @@ function onClick(element) {
   var captionText = document.getElementById("caption");
   captionText.innerHTML = element.alt;
 }
-</script>
+</script> -->
 
 </body>
 </html>

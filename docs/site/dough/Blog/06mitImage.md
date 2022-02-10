@@ -1,6 +1,8 @@
 ---
 title: 06mitImage title post mit image
 author: AUF
+version: publish
+visibility: public
 date: Jan. 4, 2019
 keywords: test
 abstract: 06mit image abstract  

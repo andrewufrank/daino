@@ -1,6 +1,8 @@
 ---
 title: 03postwk title postwk with image
 author: AUF
+version: publish
+visibility: public
 date: Jan. 4, 2019
 keywords: test
 abstract: 03postwk abstract  

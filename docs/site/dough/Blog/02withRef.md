@@ -1,6 +1,8 @@
 ---
 title: 02witRef title postWithReference
 author: AUF
+version: publish
+visibility: private
 date: 2010-07-29
 keywords: homepage
 # pageTemplate: page3.yaml
@@ -10,7 +12,6 @@ abstract: |
 
 nocite: |
  @navratil08
-pp: private
 bibliography: "resources/BibTexLatex.bib"
 
 style: "resources/chicago-fullnote-bibliography-bb.csl"

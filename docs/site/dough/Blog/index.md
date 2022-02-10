@@ -1,6 +1,8 @@
 ---
 title: index in blog title primary index for Blog 
 author: AUF
+version: publish
+visibility: public
 date: Jan. 4, 2019
 keywords: test
 abstract: index in blog abstract The directory for experiments.

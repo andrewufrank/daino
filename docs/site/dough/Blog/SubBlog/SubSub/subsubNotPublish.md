@@ -1,6 +1,8 @@
 ---
 title: subsubNotPublish.md title
 author: AUF
+version: publish
+visibility: public
 date: Jan. 4, 2022
 keywords: notest
 abstract: subsubNotPublish abstractA silly text not needing an abstract.

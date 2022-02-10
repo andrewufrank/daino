@@ -1,6 +1,8 @@
 ---
 title: 04mitPDF title post mit pdf
 author: AUF
+version: publish
+visibility: public
 date: Jan. 4, 2019
 keywords: test
 abstract: 04mitPDF abstract  

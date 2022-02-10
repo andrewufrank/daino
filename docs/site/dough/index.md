@@ -8,6 +8,8 @@ abstract: |
     The index page for site.
 
 author : Author of Settings 
+visibility: public
+version: publish
 # image: /resources/templates/img/DSC04809.JPG
 # caption: "ruhiger Sommer im Garten in Geras"
 ---

@@ -1,6 +1,8 @@
 ---
 title: subsubTest z
 author: AUF
+version: publish
+visibility: public
 date: Jan. 4, 2022
 keywords: notest
 abstract: subsubTest A silly text not needing an abstract.
