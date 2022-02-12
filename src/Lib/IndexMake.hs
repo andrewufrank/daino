@@ -27,6 +27,7 @@ import           Foundational.MetaPage
 import Uniform.Json ( FromJSON, ToJSON, ErrIO ) 
 import           UniformBase
 import Data.List (sortOn)
+import Wave.Md2doc (includeBakeTest3docrep)
 
 convertIndexEntries :: NoticeLevel ->  [Text] -> Text -> IndexEntry -> ErrIO MenuEntry
 -- ^ take the index entries and convert their
@@ -65,7 +66,8 @@ convert2index :: [Text] -> Text ->
 convert2index hpAuthor indexSortField (this, fils, dirs) =
     MenuEntry
         { menu2subdir = sortField . (getIndexEntryPure hpAuthor) $ dirs
-        , menu2files  = sortField . (getIndexEntryPure hpAuthor) . indexFilter $ fils
+        , menu2files  = sortField . (getIndexEntryPure hpAuthor) $ fils
+        -- . indexFilter - if needed then use includeBakeTest3docrep from md2doc 
         -- , today3 = zero -- is set afterwards
         }
  where 
@@ -75,10 +77,10 @@ convert2index hpAuthor indexSortField (this, fils, dirs) =
         "reversedate" -> reverse . sortOn  date2
         _ -> sortOn text2  -- what is best default? id?
 
-indexFilter :: [IndexEntry] -> [IndexEntry]
-indexFilter ixs = ixs -- filter ((Just "true" ==) . publish ) ixs
-    -- does not work because publish is not set
-    -- todo remove 
+-- indexFilter :: [IndexEntry] -> [IndexEntry]
+-- indexFilter ixs = ixs -- filter ((Just "true" ==) . publish ) ixs
+--     -- does not work because publish is not set
+--     -- todo remove 
 
 
 -- | the lines for the index 
