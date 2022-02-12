@@ -78,6 +78,7 @@ data SiteLayout = SiteLayout
     , -- | the webroot, the dir with all the produced files
       bakedDir :: Path Abs Dir
     , masterTemplateFile :: Path Rel File
+    , donNotPublish :: Text 
     }
     deriving (Show, Read, Ord, Eq, Generic, Zeros)
 instance ToJSON SiteLayout
@@ -101,6 +102,7 @@ layoutDefaults =
         ,  themeDir = sourceDirTestDocs </> makeRelDir "theme"
  
         ,  masterTemplateFile = makeRelFile "master5.dtpl"
+        , donNotPublish = "DNB"
         }
 
 templatesDirName = makeRelDir "templates"

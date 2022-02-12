@@ -27,7 +27,7 @@ import           Foundational.MetaPage
 import Uniform.Json ( FromJSON, ToJSON, ErrIO ) 
 import           UniformBase
 import Data.List (sortOn)
-import Wave.Md2doc (includeBakeTest3docrep)
+-- import Wave.Md2doc (includeBakeTest3docrep)
 
 convertIndexEntries :: NoticeLevel ->  [Text] -> Text -> IndexEntry -> ErrIO MenuEntry
 -- ^ take the index entries and convert their

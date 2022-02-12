@@ -14,8 +14,8 @@ import ShakeBake.ReadSettingFile
 import Foundational.LayoutFlags
 import System.Directory.Recursive
 import Uniform.Pandoc
-import Foundational.Filetypes4sites  
-import Wave.Md2doc 
+-- import Foundational.Filetypes4sites  
+-- import Wave.Md2doc 
 import Foundational.MetaPage 
 import Control.Exception
 import Control.DeepSeq
@@ -63,7 +63,7 @@ checkOneMD debug doughP fnin =
         mdfile <- read8 fnin markdownFileType 
         pd <- readMarkdown2 mdfile
         when (inform debug) $ putIOwords ["checkOneMD 1"]
-        y1 <- check_readMeta debug doughP fnin pd 
+        -- y1 <- check_readMeta debug doughP fnin pd 
 
         -- when (inform debug) $ putIOwords ["checkOneMD 2", "metapage", showPretty  y1]
 

@@ -8,6 +8,7 @@ storage:
     reportFile: /home/frank/ssgReport.txt
     testDir: /home/frank/.ssg 
     masterTemplateFile: master6.dtpl  #in themeDir
+    donNotPublish: "DNB"
     # create dir in ExampleTesting
     # filename must be homedir + program name (in Foundation) - hidden
     # fixed in testharness
