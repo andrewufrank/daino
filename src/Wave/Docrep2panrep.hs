@@ -73,7 +73,7 @@ docrep2panrep debug pubf layout (Docrep y1 p1) = do
             let ix1 =dyIndexEntry  m1
             -- let bakedP = bakedDir layout
             let doughP = doughDir layout
-            ix2 <- completeIndex debug pubf doughP ix1
+            ix2 <- completeIndex debug pubf layout doughP ix1
             -- todo put ix2 into pr
             let m2 = m1{dyIndexEntry = ix2}
 

@@ -32,11 +32,11 @@ import Foundational.LayoutFlags
 
 
 
-completeIndex :: NoticeLevel -> PubFlags -> Path Abs Dir ->   IndexEntry -> ErrIO IndexEntry
+completeIndex :: NoticeLevel -> PubFlags -> SiteLayout -> Path Abs Dir ->   IndexEntry -> ErrIO IndexEntry
 {- ^ the top call to form the index data into the MetaPage
 later only the format for output must be fixed
 -}
-completeIndex debug pubf doughP  ix1 = do
+completeIndex debug pubf layout doughP  ix1 = do
     when (inform debug) $ putIOwords ["completeIndex", "start", showPretty ix1]
 
     let fn = doughP </> (link ix1) :: Path Abs File
@@ -50,7 +50,7 @@ completeIndex debug pubf doughP  ix1 = do
             ]
     -- unless (isIndexPage fn) $ errorT ["completeIndex should only be called for indexPage True"]
 
-    (dirs, files) <- getDirContent2dirs_files debug pubf doughP  fn
+    (dirs, files) <- getDirContent2dirs_files debug pubf layout doughP  fn
     when (inform debug) $ putIOwords ["completeIndex", "\n dirs", showT dirs, "\n files", showT files]
     let ix2 = ix1{dirEntries = dirs, fileEntries = files}
     when (inform debug) $ putIOwords ["completeIndex", "x2", showT ix2]
@@ -62,15 +62,15 @@ completeIndex debug pubf doughP  ix1 = do
  currently checks index.docrep in dough (which are not existing)
  indexfile itself is removed and files which are not markdown
 -}
-getDirContent2dirs_files :: NoticeLevel -> PubFlags -> Path Abs Dir ->  Path Abs File -> ErrIO ([IndexEntry], [IndexEntry])
-getDirContent2dirs_files debug pubf doughP  indexpageFn = do
+getDirContent2dirs_files :: NoticeLevel -> PubFlags -> SiteLayout -> Path Abs Dir ->  Path Abs File -> ErrIO ([IndexEntry], [IndexEntry])
+getDirContent2dirs_files debug pubf layout doughP  indexpageFn = do
     when (inform debug) $ putIOwords ["getDirContent2dirs_files for", showPretty indexpageFn]
     let pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir
     -- get the dir in which the index file is embedded
     when (inform debug) $ putIOwords ["getDirContent2dirs_files pageFn", showPretty pageFn]
 
     dirs1 :: [Path Abs Dir] <- getDirectoryDirs' pageFn
-    let dirs2 = filter ( not . (isPrefixOf' ("DNB" :: FilePath) ) .   getNakedDir) dirs1
+    let dirs2 = filter ( (notDNB (layout)).   getNakedDir) dirs1
     let dirs3 = filter ( not . (isPrefixOf' "resources"
          ) .   getNakedDir) dirs2
     let dirs4 = filter ( not . (isPrefixOf' "templates"

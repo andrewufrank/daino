@@ -122,3 +122,4 @@ includeBakeTest3docrep pubf doc1 =
         -- draftF = draftFlag pubf 
         vers1 = dyVersion   doc1
         vis1 = dyVisibility  doc1
+

@@ -55,7 +55,7 @@ module ShakeBake.Shake2 where
 import           Uniform.Shake
 
 import Foundational.LayoutFlags
-    ( SiteLayout(doughDir, bakedDir),
+    ( SiteLayout(doughDir, bakedDir, doNotPublish),
       Settings(storage),
       PubFlags(quickFlag) )
       
@@ -152,20 +152,20 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         htmls <- getNeedsMD debug flags doughP bakedP "md" "html"
         needP htmls
 
-        csss <- getNeeds debug doughP bakedP "css" "css"
+        csss <- getNeeds debug layout doughP bakedP "css" "css"
         -- cssStatic <- getNeeds debug themeP bakedP "css" "css"
         needP csss
         -- needP cssStatic
-        imgs <- getNeeds debug doughP bakedP "jpg" "jpg"
-        imgs2 <- getNeeds debug doughP bakedP "JPG" "JPG"
+        imgs <- getNeeds debug layout doughP bakedP "jpg" "jpg"
+        imgs2 <- getNeeds debug layout doughP bakedP "JPG" "JPG"
         needP imgs
         needP imgs2
-        publist <- getNeeds debug doughP bakedP "html" "html"
+        publist <- getNeeds debug layout doughP bakedP "html" "html"
         needP publist
         -- for the pdfs which are already given in dough
-        pdfs2 <- getNeeds debug doughP bakedP "pdf" "pdf"
+        pdfs2 <- getNeeds debug layout doughP bakedP "pdf" "pdf"
         needP pdfs2
-        bibs <- getNeeds debug doughP bakedP "bib" "bib"
+        bibs <- getNeeds debug layout doughP bakedP "bib" "bib"
         needP bibs
 
 
@@ -261,6 +261,7 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
 
 getNeeds ::
     NoticeLevel 
+    -> Settings -- ^ the site layout etc
     -> Path Abs Dir  -- ^ source dir
     -> Path Abs Dir  -- ^ target dir
     -> Text  -- ^ extension source
@@ -270,7 +271,7 @@ getNeeds ::
   from source with extension ext
   does not include directory DNB (do not bake)
 -}
-getNeeds debug sourceP targetP extSource extTarget = do
+getNeeds debug layout sourceP targetP extSource extTarget = do
     let sameExt = extSource == extTarget
     when (inform debug) $
         putIOwords
@@ -284,7 +285,7 @@ getNeeds debug sourceP targetP extSource extTarget = do
 
     filesWithSource :: [Path Rel File] <-
         getFilesToBake
-            "DNB"  -- exclude files containing
+            (doNotPublish  (storage layout)) -- exclude files containing
             sourceP
             ["**/*." <> t2s extSource]
     -- subdirs
