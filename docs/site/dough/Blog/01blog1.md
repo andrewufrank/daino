@@ -3,11 +3,11 @@ abstract: 01blog1 abstract Ein Blog ohne Sinn auf Deutsch
 author: AUF
 date: 2020-06-18
 keywords: Blog
+language: de_CH
 publish: true
 title: 01blog1 titel Mein erster Blog
 version: publish
 visibility: public
-language: de-CH
 ---
 # 01blog1 level1 Ein erster Abschnitt
 Ein Blog ohne Sinn und dem einzigen Zweck, zu testen, wie ein Blog in 
