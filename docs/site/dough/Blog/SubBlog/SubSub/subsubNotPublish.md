@@ -1,15 +1,13 @@
 ---
-title: subsubNotPublish.md title
+abstract: subsubNotPublish abstractA silly text not needing an abstract.
 author: AUF
-version: publish
-visibility: public
 date: Jan. 4, 2022
 keywords: notest
-abstract: subsubNotPublish abstractA silly text not needing an abstract.
-# pageTemplate: page3.yaml
 publish: false
+title: subsubNotPublish.md title
+version: publish
+visibility: public
 ---
-
 subsubNotPublish text another test with title z for testing sort order
 
 

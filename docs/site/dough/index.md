@@ -1,20 +1,13 @@
 ---
-title: index in site title "Example homepage"
-page-title : ExampleHomepage
+abstract: "index in site abstract \nThe index page for site.\n"
+author: Author of Settings
 date: 2010-01-29
 keywords: homepage
-abstract: |
-    index in site abstract 
-    The index page for site.
-
-author : Author of Settings 
-visibility: public
+page-title: ExampleHomepage
+title: index in site title "Example homepage"
 version: publish
-# image: /resources/templates/img/DSC04809.JPG
-# caption: "ruhiger Sommer im Garten in Geras"
+visibility: public
 ---
-
 index in site text The landing page of the **Example Site** giving access to all the files in the site. The Navigation Ribbon can be used despite overwriting! 
 
-Here no image, but use the one set in the settingsN.yml banner. 
-
+Here no image, but use the one set in the settingsN.yml banner.

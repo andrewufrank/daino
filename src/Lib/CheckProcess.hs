@@ -37,6 +37,7 @@ checkProcess debug sitefn = do
 
     let mds = filter (hasExtension "md") fns 
     -- let mds = filter (hasExtension extMD) fns -- TODO 
+    
     when (inform debug) $ putIOwords ["checkProcess 2", "mds", showT . take 10 $ mds]
 
     let mds1 = filter (notDNB (storage $ sett3)) mds
@@ -55,14 +56,14 @@ checkOneMD:: NoticeLevel -> Path Abs Dir -> Path Abs File -> ErrIO ()
 checkOneMD debug doughP fnin =
     
     ( do
-        when (inform debug) $ putIOwords ["checkOneMD fnin", showPretty fnin]
+        when (informAll debug) $ putIOwords ["checkOneMD fnin", showPretty fnin]
 
         -- (Docrep y1 _) <- readMarkdownFile2docrep debug doughP fnin
         -- copied from md2doc.hs
         mdfile <- read8 fnin markdownFileType 
         pd <- readMarkdown2 mdfile
         when (inform debug) $ putIOwords ["checkOneMD 1"]
-        -- y1 <- check_readMeta debug doughP fnin pd 
+        y1 <- check_readMeta debug doughP fnin pd 
 
         -- when (inform debug) $ putIOwords ["checkOneMD 2", "metapage", showPretty  y1]
 

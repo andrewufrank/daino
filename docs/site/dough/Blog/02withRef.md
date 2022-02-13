@@ -1,37 +1,33 @@
 ---
-title: 02witRef title postWithReference
+abstract: |
+  02withRef abstract What are the objects of
+  ontologists changed2345.
 author: AUF
-version: publish
-visibility: private
+bibliography: resources/BibTexLatex.bib
 date: 2010-07-29
 keywords: homepage
-# pageTemplate: page3.yaml
-abstract: |
-    02withRef abstract What are the objects of
-    ontologists changed2345.
-
 nocite: |
- @navratil08
-bibliography: "resources/BibTexLatex.bib"
-
-style: "resources/chicago-fullnote-bibliography-bb.csl"
-styleBiber: "numeric"
+  @navratil08
 references:
-- id: fenner2012a
-  title: One-click science marketing
-  author:
+- author:
   - family: Fenner
     given: Martin Beat
   container-title: Nature Materials
-  volume: 11
-  publisher: Nature Publishing Group
-  page: 261-263
-  type: article-journal
+  id: fenner2012a
   issued:
-    year: 2212
     month: 3
+    year: 2212
+  page: 261-263
+  publisher: Nature Publishing Group
+  title: One-click science marketing
+  type: article-journal
+  volume: 11
+style: resources/chicago-fullnote-bibliography-bb.csl
+styleBiber: numeric
+title: 02witRef title postWithReference
+version: publish
+visibility: private
 ---
-
 02withRef text - An example post version 12345678
 
 With a reference to [@frank09geo]  and navratil08 as nocite from the biblio given.
@@ -45,4 +41,3 @@ The references are in "resources/BibTexLatex.bib".
 changed to /home/frank/Workspace11/ssg/docs/site/dough/resources/BibTexExample.bib
 
 # References
-

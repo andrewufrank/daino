@@ -1,17 +1,12 @@
 ---
-title: index for subsubdir 
+abstract: The subdirectory experiment
 author: AUF
+date: Jan. 4, 2019
+indexPage: true
+indexSort: filename
+keywords: test
+title: index for subsubdir
 version: publish
 visibility: public
-date: Jan. 4, 2019
-keywords: test
-abstract: The subdirectory experiment
-# pageTemplate: page3.yaml
-indexPage: True
-indexSort: filename
 ---
-
-an index page for test 
-
-
-
+an index page for test

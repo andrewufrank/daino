@@ -40,7 +40,7 @@ main =
                     --  add a delete flag
                     ( unlinesT
                         [ "the flags to select what is included:"
-                        , "default is nothing included"
+                        , "default is publish and public included"
                         , "\n -p private"
                         , "\n -d drafts"
                         -- , "\n -o old"

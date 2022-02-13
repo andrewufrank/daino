@@ -1,15 +1,13 @@
 ---
-title: 03postwk title postwk with image
+abstract: 03postwk abstract
 author: AUF
-version: publish
-visibility: public
 date: Jan. 4, 2019
 keywords: test
-abstract: 03postwk abstract  
-# pageTemplate: page3.yaml
 publish: draft
+title: 03postwk title postwk with image
+version: publish
+visibility: public
 ---
-
 03postwk text without a hl 
 
 Some text without meaning; really? with an image 

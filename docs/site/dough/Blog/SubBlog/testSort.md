@@ -1,15 +1,12 @@
 ---
-title: testSort title z
+abstract: testSort abstract A silly text not needing an abstract.
 author: AUF
-version: publish
-visibility: public
 date: Jan. 4, 2018
 keywords: notest
-abstract: testSort abstract A silly text not needing an abstract.
-# pageTemplate: page3.yaml
-# image: resources/DSC08138.JPG
+title: testSort title z
+version: publish
+visibility: public
 ---
-
 testSort text another test with title z for testing sort order
 
 <!-- ![Alt text](DSC08138.JPG) -->

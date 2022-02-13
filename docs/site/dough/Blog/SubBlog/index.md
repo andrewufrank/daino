@@ -1,17 +1,12 @@
 ---
-title: index in SubBlog title index for subdir 
+abstract: index in SubBlog abstract - The subdirectory experiment
 author: AUF
+date: Jan. 4, 2019
+indexPage: true
+indexSort: reversedate
+keywords: test
+title: index in SubBlog title index for subdir
 version: publish
 visibility: public
-date: Jan. 4, 2019
-keywords: test
-abstract: index in SubBlog abstract - The subdirectory experiment
-# pageTemplate: page3.yaml
-indexPage: True
-indexSort: reversedate
 ---
-
-index in SubBlog text - an index page for test 
-
-
-
+index in SubBlog text - an index page for test

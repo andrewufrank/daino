@@ -1,18 +1,13 @@
 ---
-title: index for publication list (this text should be overwritten)
+abstract: index for the publication directory
 author: AUF
+date: Jan. 4, 2019
+indexSort: filename
+keywords: test
+title: index for publication list (this text should be overwritten)
 version: publish
 visibility: public
-date: Jan. 4, 2019
-keywords: test
-abstract: index for the publication directory 
-# pageTemplate: page3.yaml
-# indexPage: True 
-indexSort: filename
 ---
-
 an index page for testing publication list
 
 - [cadastre](/PublicationList/resources/cadastre.html)
-
-

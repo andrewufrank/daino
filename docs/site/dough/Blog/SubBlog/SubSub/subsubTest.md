@@ -1,14 +1,12 @@
 ---
-title: subsubTest z
+abstract: subsubTest A silly text not needing an abstract.
 author: AUF
-version: publish
-visibility: public
 date: Jan. 4, 2022
 keywords: notest
-abstract: subsubTest A silly text not needing an abstract.
-# pageTemplate: page3.yaml
+title: subsubTest z
+version: publish
+visibility: public
 ---
-
 another test with title z for testing sort order
 
 

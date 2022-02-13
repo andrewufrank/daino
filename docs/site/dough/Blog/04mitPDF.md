@@ -1,14 +1,12 @@
 ---
-title: 04mitPDF title post mit pdf
+abstract: 04mitPDF abstract
 author: AUF
-version: publish
-visibility: public
 date: Jan. 4, 2019
 keywords: test
-abstract: 04mitPDF abstract  
-# pageTemplate: page3.yaml
+title: 04mitPDF title post mit pdf
+version: publish
+visibility: public
 ---
-
 04mitPDF text without a hl version123456
 
 Some text without meaning; really? with an image 

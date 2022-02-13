@@ -1,23 +1,18 @@
 ---
-title: 05withRefnoStyle blog 
+abstract: |
+  02withRef abstract What are the objects of
+  ontologists .
 author: AUF
-version: publish
-visibility: public
+bibliography: resources/BibTexLatex.bib
 date: 2010-07-29
 keywords: homepage
-# pageTemplate: page3.yaml
-abstract: |
-    02withRef abstract What are the objects of
-    ontologists .
-
+language: en_US
 nocite: |
   @navratil08
-language: en_US
-bibliography: "resources/BibTexLatex.bib"
-# bibliography: "docs/site/dough/resources/BibTexLatex.bib"
-
+title: 05withRefnoStyle blog
+version: publish
+visibility: public
 ---
-
 05withRefnoStyle  but no style text - version12345678
  
 The [@frank09geo] and [@frank-machbarkeit] are just refs.
@@ -27,4 +22,3 @@ The default style is /home/frank/Desktop/myHomepage/resources/chicago-fullnote-b
 test12
 
 # References
-

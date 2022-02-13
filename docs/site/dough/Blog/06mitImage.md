@@ -1,16 +1,14 @@
 ---
-title: 06mitImage title post mit image
+abstract: 06mit image abstract
 author: AUF
+caption: Skipiste oberhalb Obergurgl
+date: Jan. 4, 2019
+image: /Blog/resources/120-2026_IMG.JPG
+keywords: test
+title: 06mitImage title post mit image
 version: publish
 visibility: public
-date: Jan. 4, 2019
-keywords: test
-abstract: 06mit image abstract  
-# pageTemplate: page3.yaml
-image: /Blog/resources/120-2026_IMG.JPG
-caption: "Skipiste oberhalb Obergurgl"
 ---
-
 06mimage text with an image in the banner version1234
 
 the image is in /home/frank/Workspace11/ssg/docs/site/dough/Blog/resources/120-2026_IMG.JPG i.e. in a directory parallel to file

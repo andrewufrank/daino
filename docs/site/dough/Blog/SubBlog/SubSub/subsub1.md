@@ -1,15 +1,12 @@
 ---
-title: subsub1.md 
+abstract: subsub1 abstract A silly text not needing an abstract.
 author: AUF
-version: publish
-visibility: public
 date: Jan. 4, 2019
 keywords: test
-abstract: subsub1 abstract A silly text not needing an abstract.
-# pageTemplate: page3.yaml
+title: subsub1.md
+version: publish
+visibility: public
 ---
-
-
 subsub1 the title should become 
 
 Some text without meaning;  postwk.
@@ -23,4 +20,4 @@ and a
 
 
 
-  An example post.  
+  An example post.
