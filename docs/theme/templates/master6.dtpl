@@ -42,11 +42,17 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
         $-- not set?
     <title>$settings.sitename$</title>  $-- simple (for now?)
 <style>
-    h1,h2,h3,h4,h5 {font-family: 'Helvetica', sans-serif; font-weight: bold;}
+    h1,h2,h3,h4,h5 {font-family: 'Helvetica', sans-serif;  }
+    h1 {font-size: 30px; font-weight: bold;}
+    h2 {font-size: 24px; font-weight: bold;}
+    h3 {font-size: 20px; font-weight: bold;}
+    h4 {font-size: 16px;  font-weight: bold;}
+    h5 {font-size: 16px; font-style: italic; }
+
     body {font-size:16px;
           font-family: 'Times New Roman', serif;}
-    .w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer}
-    .w3-half img:hover{opacity:1}
+    /* .w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer} */
+    /* .w3-half img:hover{opacity:1} */
     /* img {
         max-width: 100%;
         height: auto;
@@ -85,7 +91,7 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
         display: flex;
         align-items:flex-start;>
         <h1 class="w3-hide-medium w3-hide-small w3-xxxlarge">$settings.sitename$</h1>
-        <h5 class="w3-hide-large" style="white-space:nowrap">$settings.sitename$</h5>
+        <h2 class="w3-hide-large" style="white-space:nowrap">$settings.sitename$</h5>
         <h3 class="w3-hide-medium w3-hide-small">$settings.byline$</h3> 
                 $-- byline is not shown on small screens
       </div>
