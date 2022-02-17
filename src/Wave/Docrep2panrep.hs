@@ -61,15 +61,23 @@ docrep2panrep debug pubf layout (Docrep y1 p1) = do
         putIOwords ["\n\ty1,p1-------------------------docrep2panrep"
                 , showT y1
                 , showT p1]
-    let pr = Panrep
-                { panyam = y1
-                , panpan = p1
-                }
+    -- let pr = Panrep
+    --             { panyam = y1
+    --             , panpan = p1
+    --             }
+    let hpname = blogAuthorToSuppress layout
+    let authorReduced = blankAuthorName hpname (dyAuthor y1)
+    let y2 = y1{dyAuthor = authorReduced}
+    
+    let pr2 = Panrep y2 p1
 
-    if isIndexPage (makeAbsFile . dyFn . panyam $ pr )
+    putIOwords ["docrep2panrep", "hpname", showT hpname
+            , "\nauthorReduced", authorReduced]
+
+    if isIndexPage (makeAbsFile . dyFn . panyam $ pr2 )
         then do
     -- if dyIndexPage . panyam $ pr
-            let m1 = panyam pr
+            let m1 = panyam pr2
             let ix1 =dyIndexEntry  m1
             -- let bakedP = bakedDir layout
             let doughP = doughDir layout
@@ -81,8 +89,8 @@ docrep2panrep debug pubf layout (Docrep y1 p1) = do
                 putIOwords ["\n\tm2------------------------docrep2panrep end if"
                 , showT m2]
 
-            return pr{panyam = m2}
+            return pr2{panyam = m2}
         else
-            return pr
+            return pr2
 
 
