@@ -41,8 +41,9 @@ import Uniform.Pandoc
 -- import Uniform.Shake (makeRelativeP)
 -- import Uniform.Filenames (setFileExtension)
 import Uniform.Yaml
-import UniformBase
+-- import UniformBase
 import Uniform.HTMLout (extHTML)
+-- import Lib.IndexMake (blankAuthorName)
 -- import Uniform.Json ( gak, AtKey(getAtKey) )
 
 data MetaPage = MetaPage
@@ -116,9 +117,9 @@ instance ToJSON MetaPage where
 instance FromJSON MetaPage where
     parseJSON = genericParseJSON docyamlOptions
 
-pandoc2MetaPage::  Path Abs Dir ->  Path Abs File -> Pandoc -> MetaPage
+pandoc2MetaPage::  Path Abs Dir ->  Path Abs File  -> Pandoc -> MetaPage
 -- removed most default values, left only for image and caption, keywords
-pandoc2MetaPage doughP filename pd =  meta6
+pandoc2MetaPage doughP filename  pd =  meta6
   where
     meta2 = flattenMeta . getMeta $ pd
     relfn = makeRelativeP doughP filename
@@ -152,7 +153,8 @@ pandoc2MetaPage doughP filename pd =  meta6
             }
             
     ix1 =  initializeIndex meta4
-    meta6 = meta4{dyIndexEntry = ix1} 
+    meta5 = meta4   -- {dyAuthor=blankAuthorName hpnames (dyAuthor meta4) }
+    meta6 = meta5{dyIndexEntry = ix1} 
     fromJustN a = fromJustNoteT ["fromJust Nothing pandoc2MetaPage\n", showT filename, "\n", a]
     -- fromJust Nothing = errorT ["fromJust Nothing pandoc2MetaPage", showT filename]
     -- fromJust (Just a) = a

@@ -55,7 +55,8 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
         ]
     let layout = storage sett3
     let doughP = doughDir layout
-    dr3 <- readMarkdownFile2docrep debug doughP inputFn 
+    -- let hpname = blogAuthorToSuppress . storage $ sett3
+    dr3 <- readMarkdownFile2docrep debug doughP  inputFn 
     dr4 <- addRefs debug dr3
 
     write8 resfn2 docrepFileType dr4

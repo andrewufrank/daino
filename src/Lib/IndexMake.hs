@@ -139,7 +139,7 @@ getOneIndexEntryPure hpAuthor indexEntry1 =
     }
 
 blankAuthorName :: [Text] -> Text -> Text 
--- if the author name is the same as one in the first arg (AUF, Andrew U..) then set it to empty else copy 
+-- suppress/oppress author name, if the author name is the same as one in the first arg (AUF, Andrew U..) then set it to empty else copy 
 -- idea is to avoid to have each page say the obvious "author XX"
 blankAuthorName names current = 
     if current `elem` names 

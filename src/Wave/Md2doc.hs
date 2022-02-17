@@ -35,7 +35,7 @@ import Uniform.Pandoc
     --   readMarkdown2 )
 -- import Uniform.Shake
 
-readMarkdownFile2docrep  :: NoticeLevel -> Path Abs Dir -> Path Abs File -> ErrIO Docrep 
+readMarkdownFile2docrep  :: NoticeLevel -> Path Abs Dir ->  Path Abs File ->  ErrIO Docrep 
 -- read a markdown file and convert to docrep
 readMarkdownFile2docrep debug doughP fnin = do
     when (informAll debug) $ putIOwords 
@@ -45,12 +45,12 @@ readMarkdownFile2docrep debug doughP fnin = do
     pd <- readMarkdown2 mdfile
     -- could perhaps "need" all ix as files?
 
-    let doc1 = pandoc2docrep doughP fnin pd
+    let doc1 = pandoc2docrep doughP fnin  pd
     return doc1
 
 
 
-pandoc2docrep ::  Path Abs Dir ->  Path Abs File -> Pandoc -> Docrep
+pandoc2docrep ::  Path Abs Dir ->  Path Abs File  ->Pandoc -> Docrep
 {- | convert the pandoc text to DocrepJSON
  reads the markdown file with pandoc and extracts the yaml metadat
  the metadata are then converted to metaPage
@@ -58,9 +58,9 @@ pandoc2docrep ::  Path Abs Dir ->  Path Abs File -> Pandoc -> Docrep
  TODO may use json record parse, which I have already done
 -}
 -- pure 
-pandoc2docrep  doughP filename pd = Docrep meta6 pd
+pandoc2docrep  doughP filename  pd = Docrep meta6  pd
     where 
-        meta6 = pandoc2MetaPage doughP filename pd 
+        meta6 = pandoc2MetaPage doughP filename  pd 
 
 
 
@@ -101,7 +101,7 @@ filterNeeds :: NoticeLevel -> PubFlags -> Path Abs Dir -> Path Rel File -> ErrIO
 filterNeeds debug pubf doughP fn =  do 
     when (inform debug) $ 
         putIOwords ["filterNeeds", "\nPubFlags", showT pubf ]
-    d1 <- readMarkdownFile2docrep debug doughP (doughP </> fn) 
+    d1 <- readMarkdownFile2docrep debug doughP  (doughP </> fn) 
     when (inform debug) $ 
         putIOwords ["filterNeeds2", "\nMeta", showT (meta1 d1) ]
 

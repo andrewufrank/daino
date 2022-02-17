@@ -36,7 +36,6 @@ data Settings = Settings
     { storage :: SiteLayout 
     , localhostPort :: Int 
     , settingsAuthor :: Text 
-    , settingsBlogAuthorOppressed :: [Text]
     , settingsDate :: Text -- should be UTC 
     , settings :: Settings2 
     , menuitems :: MenuItems
@@ -79,6 +78,7 @@ data SiteLayout = SiteLayout
       bakedDir :: Path Abs Dir
     , masterTemplateFile :: Path Rel File
     , doNotPublish :: Text 
+    , blogAuthorToSuppress :: [Text]
     }
     deriving (Show, Read, Ord, Eq, Generic, Zeros)
 instance ToJSON SiteLayout
@@ -103,6 +103,7 @@ layoutDefaults =
  
         ,  masterTemplateFile = makeRelFile "master5.dtpl"
         , doNotPublish = "DNB"
+        , blogAuthorToSuppress = []
         }
 
 notDNB :: SiteLayout -> FilePath -> Bool 
@@ -149,6 +150,19 @@ testFlags =
         , draftFlag = False
         , settingsFile = sourceDirTestSite </> settingsFileName
         }
+
+blankAuthorName :: [Text] -> Text -> Text 
+-- suppress/oppress author name, if the author name is the same as one in the first arg (AUF, Andrew U..) then set it to empty else copy 
+-- idea is to avoid to have each page say the obvious "author XX"
+blankAuthorName names current = 
+    if current `elem` names 
+        then zero 
+        else current 
+
+-- hpAuthor :: [Text]
+-- the list of authornames which are blanked
+-- should be the author of the blog
+-- hpAuthor = ["AUF", "Andrew U. Frank"]
 
 -- old ideas
 --  Read known issue of reading path

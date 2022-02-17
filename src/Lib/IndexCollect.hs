@@ -63,7 +63,7 @@ completeIndex debug pubf layout doughP  ix1 = do
  indexfile itself is removed and files which are not markdown
 -}
 getDirContent2dirs_files :: NoticeLevel -> PubFlags -> SiteLayout -> Path Abs Dir ->  Path Abs File -> ErrIO ([IndexEntry], [IndexEntry])
-getDirContent2dirs_files debug pubf layout doughP  indexpageFn = do
+getDirContent2dirs_files debug pubf layout doughP   indexpageFn = do
     when (inform debug) $ putIOwords ["getDirContent2dirs_files for", showPretty indexpageFn]
     let pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir
     -- get the dir in which the index file is embedded
@@ -85,19 +85,19 @@ getDirContent2dirs_files debug pubf layout doughP  indexpageFn = do
     files1 :: [Path Abs File] <- getDirContentFiles pageFn
 
     when (inform debug) $ putIOwords ["getDirContent2dirs_files files1", showPretty files1]
-
+ 
     let files2 =
             filter (indexpageFn /=) -- should not exclude all index pages but has only this one in this dir?
                 . filter (hasExtension extMD)  
                 $ files1
     when (inform debug) $ putIOwords ["getDirContent2dirs files2", showPretty files2]
-
-    ixfiles <- mapM (getFile2index debug pubf doughP) files2
+    let hpname = blogAuthorToSuppress layout
+    ixfiles <- mapM (getFile2index debug pubf doughP ) files2
 
     when (inform debug) $ putIOwords ["getDirContent2dirs ixfiles", showPretty ixfiles]
 
     let subindexDirs = map (\d -> d </> makeRelFile "index.md") dirs5
-
+    let
     when (inform debug) $  putIOwords ["getDirContent2dirs subindexDirs", showPretty subindexDirs]
     ixdirs <- mapM (getFile2index  debug pubf doughP ) subindexDirs
 
@@ -112,7 +112,7 @@ getFile2index :: NoticeLevel -> PubFlags -> Path Abs Dir  -> Path Abs File -> Er
 -- collect data for indexentry (but not recursively, only this file)
 -- the directories are represented by their index files
 -- produce separately to preserve the two groups
-getFile2index debug pubf doughP  fnin =
+getFile2index debug pubf doughP   fnin =
     do
         when (inform debug) $ putIOwords ["getFile2index fnin", showPretty fnin]
 
@@ -121,7 +121,7 @@ getFile2index debug pubf doughP  fnin =
         -- -- could perhaps "need" all ix as files?
 
         -- let (Docrep y1 _) = pandoc2docrep doughP fnin pd
-        (Docrep y1 _) <- readMarkdownFile2docrep debug doughP fnin 
+        (Docrep y1 _) <- readMarkdownFile2docrep debug doughP  fnin 
         -- needs the indexentry initialized
         -- does include the DNB files, bombs with ff ligature
         let incl = includeBakeTest3docrep pubf y1

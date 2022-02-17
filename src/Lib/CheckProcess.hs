@@ -43,8 +43,9 @@ checkProcess debug sitefn = do
     let mds1 = filter (notDNB (storage $ sett3)) mds
     when (inform debug) $ putIOwords ["checkProcess 2", "mds1", showT . take 10 $ mds1]
     let mds2 = map makeAbsFile mds1
+    -- let hpname = blogAuthorToSuppress.storag sett3
 
-    _ <- mapM (checkOneMD debug doughP) mds2 
+    _ <- mapM (checkOneMD debug doughP ) mds2 
 
     when (inform debug) $ putIOwords ["checkProcess", "end"]
     return ()
@@ -53,7 +54,7 @@ checkProcess debug sitefn = do
 
 checkOneMD:: NoticeLevel -> Path Abs Dir -> Path Abs File -> ErrIO ()
 -- check one md file (only the yaml head) for necessary values 
-checkOneMD debug doughP fnin =
+checkOneMD debug doughP  fnin  =
     
     ( do
         when (informAll debug) $ putIOwords ["checkOneMD fnin", showPretty fnin]
@@ -63,7 +64,7 @@ checkOneMD debug doughP fnin =
         mdfile <- read8 fnin markdownFileType 
         pd <- readMarkdown2 mdfile
         when (inform debug) $ putIOwords ["checkOneMD 1"]
-        y1 <- check_readMeta debug doughP fnin pd 
+        y1 <- check_readMeta debug doughP fnin  pd 
 
         -- when (inform debug) $ putIOwords ["checkOneMD 2", "metapage", showPretty  y1]
 
@@ -78,10 +79,10 @@ checkOneMD debug doughP fnin =
         )
 
 check_readMeta:: NoticeLevel -> Path Abs Dir ->  Path Abs File -> Pandoc -> ErrIO  MetaPage
-check_readMeta debug doughP fnin pd = do 
+check_readMeta debug doughP fnin  pd = do 
     when (inform debug) $ putIOwords ["check_readMeta 1"]
 
-    let y1 = pandoc2MetaPage doughP fnin pd
+    let y1 = pandoc2MetaPage doughP fnin  pd
     
     y2 <- liftIO $ do 
         let ll =sum .  map ord .  show $ y1
