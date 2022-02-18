@@ -80,6 +80,14 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
         max-width: 100%;
         height: auto;
         } */
+    div.sticky {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+        background-color: #eefbb5; $-- vom geras bild
+        /* padding: 10px; */
+        font-size: 20px;
+        }
 </style>    
 
 <body> $-- body of html page
@@ -87,19 +95,6 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
     $for(include-before)$
     $include-before$include-beforeXX
     $endfor$
-
-<!-- Navbar ribbon (sits on top) -->
-<div class="w3-top">
-    <div class="w3-bar w3-white">
-      <a href="/index.html" class="w3-bar-item w3-button"><b>faviconMissing </b>$settings.sitename$  </a>
-      <!-- Float links to the right. Hide them on small screens -->
-      <div class="w3-right w3-hide-small">
-        $for(menuitems.menuNav)$
-        <a href=/$menuitems.menuNav.navlink$ class="w3-bar-item w3-button">$menuitems.menuNav.navtext$</a>
-        $endfor$
-      </div>
-    </div>
-</div>
 
 ​<!-- Head   under ribbon on top-->  $-- height limited to 300, how to adapt?
 <header class="w3-display-container ">
@@ -119,6 +114,19 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
                 $-- byline is not shown on small screens
       </div>
     $endif$
+
+<!-- Navbar ribbon (sits on top) -->
+<div class="sticky">
+    <div class="w3-bar">
+      <a href="/index.html" class="w3-bar-item w3-button"><b>faviconMissing </b>$settings.sitename$  </a>
+      <!-- Float links to the right. Hide them on small screens -->
+      <div class="w3-right w3-hide-small">
+        $for(menuitems.menuNav)$
+        <a href=/$menuitems.menuNav.navlink$ class="w3-bar-item w3-button">$menuitems.menuNav.navtext$</a>
+        $endfor$
+      </div>
+    </div>
+</div>
     
 </header>
 
