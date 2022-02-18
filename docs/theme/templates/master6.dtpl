@@ -42,27 +42,34 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
         $-- not set?
     <title>$settings.sitename$</title>  $-- simple (for now?)
 <style>
-    h1,h2,h3,h4,h5 {font-family: 'Helvetica', sans-serif; line-height: 1;} 
+    h1,h2,h3,h4,h5 {font-family: 'Helvetica', sans-serif; line-height: 1; margin: 0px;} 
     @media   (max-width: 1000px) {   $-- must correspond to min-width in next!
         h1 {font-size: 20px; font-weight: bold;}
         h2 {font-size: 20px; }
         h3 {font-size: 20px; font-style: italic;}
-
+        h4 {font-size: 16px;  font-weight: bold;}
+        h5 {font-size: 16px; font-style: italic; }
+        body {font-size:16px;
+              font-family: 'Times New Roman', serif; line-height: 1.2;}
     }
     @media  (min-width: 1000px) {
         h1 {font-size: 30px; font-weight: bold;}
         h2 {font-size: 24px; font-weight: bold;}
         h3 {font-size: 20px; font-weight: bold;}
+        h4 {font-size: 20px;  font-style: italic;}
+        h5 {font-size: 20px;  }
+        body {font-size:20px;
+              font-family: 'Times New Roman', serif; line-height: 1.2;}
 
     }
     /* h1 {font-size: 30px; font-weight: bold;} */
-    h2 {font-size: 24px; font-weight: bold;}
-    h3 {font-size: 20px; font-weight: bold;}
-    h4 {font-size: 16px;  font-weight: bold;}
+    /* h2 {font-size: 24px; font-weight: bold;} */
+    /* h3 {font-size: 20px; font-weight: bold;} */
+    /* h4 {font-size: 16px;  font-weight: bold;}
     h5 {font-size: 16px; font-style: italic; }
 
     body {font-size:16px;
-          font-family: 'Times New Roman', serif; line-height: 1.2;}
+          font-family: 'Times New Roman', serif; line-height: 1.2;} */
 
     h1,h2,h3,h4,h5 {margin-top: 16px; margin-bottom: 6px; }
     p {margin-top: 6px; margin-bottom: 16px; }
@@ -117,7 +124,7 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
 
 <!-- content -->
 <section class="w3-container w3-content"> $-- content 
-    <section  class="w3-container w3-silver"  style="max-width:900px">  <!-- title section  -->
+    <section  class="w3-grey"  style="max-width:900px">  <!-- title section  -->
         $if(title)$
                 <h1 >$title$</h3> $-- removed w3-padding
             $if(subtitle)$
@@ -180,7 +187,7 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
 
 
 <!-- footer -->
-<div class="w3-silver w3-container w3-tiny" style="margin-top:24px;padding-right:58px"> $-- removed w3-padding-32
+<div class="w3-grey w3-container w3-tiny" style="margin-top:24px;padding-right:58px"> $-- removed w3-padding-32
     <p class="w3-left">  <!--  not including data, but version -->
         <a>Produced with SGG $ssgversion$ from $filename3$ ($visibility$, $version$) with $storage.masterTemplateFile$.</a>  
         <a href="http://frank.gerastree.at/Journals/SSGdesign/index.html">Rationale for page layout design</a>
