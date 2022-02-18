@@ -1,6 +1,6 @@
 ---
 title: Example Layout
-abstract: Example Layout to show use fo header levels.
+abstract: Example Layout to show use of header levels.
 author: AUF
 date: 2022-02-18
 keywords: layout
@@ -9,7 +9,7 @@ visibility: public
 ---
 
 # goal-section
-this file should show how to use the headerleves in a blog. It also demonstrates the placement of title. 
+This file should show how to use the header levels in a blog. It also demonstrates the placement of title. 
 
 Footnotes and references will be dealt with later. 
 

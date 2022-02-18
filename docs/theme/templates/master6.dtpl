@@ -43,14 +43,26 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
     <title>$settings.sitename$</title>  $-- simple (for now?)
 <style>
     h1,h2,h3,h4,h5 {font-family: 'Helvetica', sans-serif; line-height: 1;} 
-    h1 {font-size: 30px; font-weight: bold;}
+    @media   (max-width: 1000px) {   $-- must correspond to min-width in next!
+        h1 {font-size: 20px; font-weight: bold;}
+        h2 {font-size: 20px; }
+        h3 {font-size: 20px; font-style: italic;}
+
+    }
+    @media  (min-width: 1000px) {
+        h1 {font-size: 30px; font-weight: bold;}
+        h2 {font-size: 24px; font-weight: bold;}
+        h3 {font-size: 20px; font-weight: bold;}
+
+    }
+    /* h1 {font-size: 30px; font-weight: bold;} */
     h2 {font-size: 24px; font-weight: bold;}
     h3 {font-size: 20px; font-weight: bold;}
     h4 {font-size: 16px;  font-weight: bold;}
     h5 {font-size: 16px; font-style: italic; }
 
     body {font-size:16px;
-          font-family: 'Times New Roman', serif;}
+          font-family: 'Times New Roman', serif; line-height: 1.2;}
 
     h1,h2,h3,h4,h5 {margin-top: 16px; margin-bottom: 6px; }
     p {margin-top: 6px; margin-bottom: 16px; }
@@ -71,7 +83,7 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
 
 <!-- Navbar ribbon (sits on top) -->
 <div class="w3-top">
-    <div class="w3-bar w3-white w3-padding w3-card">
+    <div class="w3-bar w3-white">
       <a href="/index.html" class="w3-bar-item w3-button"><b>faviconMissing </b>$settings.sitename$  </a>
       <!-- Float links to the right. Hide them on small screens -->
       <div class="w3-right w3-hide-small">
@@ -105,7 +117,7 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
 
 <!-- content -->
 <section class="w3-container w3-content"> $-- content 
-    <section  class="w3-container w3-light-grey"  style="max-width:900px">  <!-- title section  -->
+    <section  class="w3-container w3-silver"  style="max-width:900px">  <!-- title section  -->
         $if(title)$
                 <h1 >$title$</h3> $-- removed w3-padding
             $if(subtitle)$
