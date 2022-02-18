@@ -88,6 +88,12 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
         /* padding: 10px; */
         font-size: 20px;
         }
+    .centerImage {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 80%;
+        }
 </style>    
 
 <body> $-- body of html page
@@ -99,7 +105,7 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
 ​<!-- Head   under ribbon on top-->  $-- height limited to 300, how to adapt?
 <header class="w3-display-container ">
     $if(image)$   $-- image in md yaml 
-        <img class="w3-image" src=$image$  style="object-fit: cover"  
+        <img class="w3-image centerImage" src=$image$  style="object-fit: contain; max-height: 400px; height: auto; width: auto; "  
             alt="$imageCaption$">  $-- the image put into index.md
     $else$        $-- no image in head 
         <img class="w3-image" src=$settings.banner$ style="object-fit: contain;"
