@@ -102,29 +102,30 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
 <!-- content -->
 <section  class="w3-container"  style="max-width:900px">  <!-- title section  -->
     $if(title)$
-            <h3 class="w3-border-bottom w3-border-light-grey">$title$</h3> $-- removed w3-padding
+            <h1 class="w3-border-bottom w3-border-light-grey">$title$</h3> $-- removed w3-padding
         $if(subtitle)$
-            <h5 >$subtitle$</p>
+            <h2 >$subtitle$</p>
         $endif$
         $for(author)$  $-- author should be supressed when same as set in settingsN.yml
             <p  class="author">$author$</p> $-- class author here? removed class="w3-large
         $endfor$
     $endif$
 
-    $if(toc)$
-        <nav id="$idprefix$TOC">
-        $table-of-contents$
-        </nav>
-    $endif$
+    <section style="padding-left: 20px;" >  $-- abstracts and tableof contente after title  
+        $if(toc)$
+            <nav id="$idprefix$TOC">
+            $table-of-contents$
+            </nav>
+        $endif$
 
-    $beforeContent$
-        
-    $if(abstract)$
-        <a>$abstract$</a>
-        <a href=/$linkpdf3$>  (view as pdf)</a>
-    $endif$
-
-    <!--content-from-panrep-blocks which is the content of the index.md -->
+        $beforeContent$
+            
+        $if(abstract)$
+            <a>$abstract$</a>
+            <a href=/$linkpdf3$>  (view as pdf)</a>
+        $endif$
+    </section>
+        <!--content-from-panrep-blocks which is the content of the index.md -->
     $content3$
       
     $afterContent$
