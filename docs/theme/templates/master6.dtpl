@@ -42,7 +42,7 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
         $-- not set?
     <title>$settings.sitename$</title>  $-- simple (for now?)
 <style>
-    h1,h2,h3,h4,h5 {font-family: 'Helvetica', sans-serif;  }
+    h1,h2,h3,h4,h5 {font-family: 'Helvetica', sans-serif; line-height: 1;} 
     h1 {font-size: 30px; font-weight: bold;}
     h2 {font-size: 24px; font-weight: bold;}
     h3 {font-size: 20px; font-weight: bold;}
@@ -51,6 +51,10 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
 
     body {font-size:16px;
           font-family: 'Times New Roman', serif;}
+
+    h1,h2,h3,h4,h5 {margin-top: 16px; margin-bottom: 6px; }
+    p {margin-top: 6px; margin-bottom: 16px; }
+          $-- assymmetrisch to attach title and following text 
     /* .w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer} */
     /* .w3-half img:hover{opacity:1} */
     /* img {
@@ -68,7 +72,7 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
 <!-- Navbar ribbon (sits on top) -->
 <div class="w3-top">
     <div class="w3-bar w3-white w3-padding w3-card">
-      <a href="/index.html" class="w3-bar-item w3-button"><b>faviconMissing </b>$settings.sitename$</a>
+      <a href="/index.html" class="w3-bar-item w3-button"><b>faviconMissing </b>$settings.sitename$  </a>
       <!-- Float links to the right. Hide them on small screens -->
       <div class="w3-right w3-hide-small">
         $for(menuitems.menuNav)$
@@ -100,33 +104,36 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
 </header>
 
 <!-- content -->
-<section  class="w3-container"  style="max-width:900px">  <!-- title section  -->
-    $if(title)$
-            <h1 class="w3-border-bottom w3-border-light-grey">$title$</h3> $-- removed w3-padding
-        $if(subtitle)$
-            <h2 >$subtitle$</p>
-        $endif$
-        $for(author)$  $-- author should be supressed when same as set in settingsN.yml
-            <p  class="author">$author$</p> $-- class author here? removed class="w3-large
-        $endfor$
-    $endif$
-
-    <section style="padding-left: 20px;" >  $-- abstracts and tableof contente after title  
-        $if(toc)$
-            <nav id="$idprefix$TOC">
-            $table-of-contents$
-            </nav>
+<section class="w3-container"> $-- content 
+    <section  class="w3-container w3-light-grey"  style="max-width:900px">  <!-- title section  -->
+        $if(title)$
+                <h1 >$title$</h3> $-- removed w3-padding
+            $if(subtitle)$
+                <h2 >$subtitle$</p>
+            $endif$
+            $-- author should be supressed when same as set in settingsN.yml
+            $if(author)$ 
+                <p style="font-style: italic; padding-left: 40px;">$author$</p> $-- removed class=author,  class="w3-large
+            $endif$
         $endif$
 
-        $beforeContent$
-            
-        $if(abstract)$
-            <a>$abstract$</a>
-            <a href=/$linkpdf3$>  (view as pdf)</a>
-        $endif$
-    </section>
-        <!--content-from-panrep-blocks which is the content of the index.md -->
-    $content3$
+        <section  style="padding-left: 40px;" >  $-- abstracts and tableof contente after title  
+            $if(toc)$
+                <nav id="$idprefix$TOC">
+                $table-of-contents$
+                </nav>
+            $endif$
+
+            $beforeContent$
+                
+            $if(abstract)$
+                <a>$abstract$</a>
+                <a href=/$linkpdf3$>  (view as pdf)</a>
+            $endif$
+        </section>
+    </section> $-- end title
+        
+    $content3$  <!--content-from-panrep-blocks which is the content of the index.md -->
       
     $afterContent$
 

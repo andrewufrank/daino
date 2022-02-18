@@ -25,17 +25,17 @@ The header level 1 (with on `#`) is marking sections - first subdivision.
 ## subsection
 Subsections are marked with two `#`.
 
-### subsubsectins 
+### subsubsections 
 marked with 3 `#`. but when necessary,
 
 #### subsubsubsections 
 marked with 4 `#` are possible as are 
 
 ##### further
-a further subdivision is possible with `#` marks. 
+a further subdivision is possible with five `#` marks. 
 
 # title numbering
-The titles are not numbered. This could be changed with ??
+The titles are not numbered. This could be changed - TODO
 
 
 <!-- ![Alt text](DSC08138.JPG) -->

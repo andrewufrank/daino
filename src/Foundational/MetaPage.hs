@@ -153,8 +153,8 @@ pandoc2MetaPage doughP filename  pd =  meta6
             }
             
     ix1 =  initializeIndex meta4
-    meta5 = meta4   -- {dyAuthor=blankAuthorName hpnames (dyAuthor meta4) }
-    meta6 = meta5{dyIndexEntry = ix1} 
+    -- meta5 = meta4   -- {dyAuthor=blankAuthorName hpnames (dyAuthor meta4) }
+    meta6 = meta4{dyIndexEntry = ix1} 
     fromJustN a = fromJustNoteT ["fromJust Nothing pandoc2MetaPage\n", showT filename, "\n", a]
     -- fromJust Nothing = errorT ["fromJust Nothing pandoc2MetaPage", showT filename]
     -- fromJust (Just a) = a
