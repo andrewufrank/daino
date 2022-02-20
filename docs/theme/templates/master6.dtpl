@@ -43,6 +43,7 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
     <title>$settings.sitename$</title>  $-- simple (for now?)
 <style>
     h1,h2,h3,h4,h5 {font-family: 'Helvetica', sans-serif; line-height: 1; margin: 0px;} 
+    
     @media   (max-width: 1000px) {   $-- must correspond to min-width in next!
         h1 {font-size: 20px; font-weight: bold;}
         h2 {font-size: 20px; }
@@ -51,7 +52,11 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
         h5 {font-size: 16px; font-style: italic; }
         body {font-size:16px;
               font-family: 'Times New Roman', serif; line-height: 1.2;}
+        img{vertical-align: top;
+            max-height: 400px;}  $-- should not affect the banner image setting
     }
+
+    
     @media  (min-width: 1000px) {
         h1 {font-size: 30px; font-weight: bold;}
         h2 {font-size: 24px; font-weight: bold;}
@@ -60,6 +65,11 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
         h5 {font-size: 20px;  }
         body {font-size:20px;
               font-family: 'Times New Roman', serif; line-height: 1.2;}
+        img{vertical-align: top;
+            max-height: 400px;
+            margin-right: -60%;
+            }  $-- should not affect the banner image setting
+
 
     }
     /* h1 {font-size: 30px; font-weight: bold;} */
@@ -137,7 +147,7 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
 </header>
 
 <!-- content -->
-<section class="w3-container w3-content"> $-- content 
+<section class="w3-container w3-content content"> $-- content 
     <section  class="w3-grey"  style="max-width:900px">  <!-- title section  -->
         $if(title)$
                 <h1 >$title$</h3> $-- removed w3-padding

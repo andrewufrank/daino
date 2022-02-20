@@ -1,12 +1,12 @@
 ---
-abstract: index in SubBlog abstract - The subdirectory experiment
-author: AUF
+abstract: index in SubBlog abstract - The directory for the layout examples
 date: Jan. 4, 2019
+author: AUF
 indexPage: true
 indexSort: reversedate
 keywords: test
-title: index in SubBlog title index for subdir
+title: The layout examples
 version: publish
 visibility: public
 ---
-index in SubBlog text - an index page for test
+here I show examples for the layout and how to control it.
