@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------
 --
--- Module      : layout and flags 
+-- Module      : layout and flags  takes data from the settinsgN.yaml file (metaPage deals with the md file YAML header)
 ----------------------------------------------------------------------
 {-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}

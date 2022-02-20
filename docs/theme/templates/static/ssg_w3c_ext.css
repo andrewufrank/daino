@@ -1,0 +1,64 @@
+/* my extensions to the w3c stylesheet for ssg */
+@charset "UTF-8";
+h1,h2,h3,h4,h5 {font-family: 'Helvetica', sans-serif; line-height: 1; margin: 0px;} 
+    
+@media   (max-width: 1000px) {   $-- must correspond to min-width in next!
+    h1 {font-size: 20px; font-weight: bold;}
+    h2 {font-size: 20px; }
+    h3 {font-size: 20px; font-style: italic;}
+    h4 {font-size: 16px;  font-weight: bold;}
+    h5 {font-size: 16px; font-style: italic; }
+    body {font-size:16px;
+          font-family: 'Times New Roman', serif; line-height: 1.2;}
+    img{vertical-align: top;
+        max-height: 400px;}  $-- should not affect the banner image setting
+}
+
+
+@media  (min-width: 1000px) {
+    h1 {font-size: 30px; font-weight: bold;}
+    h2 {font-size: 24px; font-weight: bold;}
+    h3 {font-size: 20px; font-weight: bold;}
+    h4 {font-size: 20px;  font-style: italic;}
+    h5 {font-size: 20px;  }
+    body {font-size:20px;
+          font-family: 'Times New Roman', serif; line-height: 1.2;}
+    img{vertical-align: top;
+        max-height: 400px;
+        margin-right: -60%;
+        }  $-- should not affect the banner image setting
+
+
+}
+/* h1 {font-size: 30px; font-weight: bold;} */
+/* h2 {font-size: 24px; font-weight: bold;} */
+/* h3 {font-size: 20px; font-weight: bold;} */
+/* h4 {font-size: 16px;  font-weight: bold;}
+h5 {font-size: 16px; font-style: italic; }
+
+body {font-size:16px;
+      font-family: 'Times New Roman', serif; line-height: 1.2;} */
+
+h1,h2,h3,h4,h5 {margin-top: 16px; margin-bottom: 6px; }
+p {margin-top: 6px; margin-bottom: 16px; }
+      $-- assymmetrisch to attach title and following text 
+/* .w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer} */
+/* .w3-half img:hover{opacity:1} */
+/* img {
+    max-width: 100%;
+    height: auto;
+    } */
+div.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background-color: #eefbb5; $-- vom geras bild
+    /* padding: 10px; */
+    font-size: 20px;
+    }
+.centerImage {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    }

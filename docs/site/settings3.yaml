@@ -7,7 +7,9 @@ storage:
     bakedDir: /home/frank/Workspace11/ssg/docs/site/baked
     reportFile: /home/frank/ssgReport.txt
     testDir: /home/frank/.ssg 
-    masterTemplateFile: master6.dtpl  #in themeDir
+    # masterTemplateFile: master6.dtpl  #in themeDir
+    masterTemplateFile: master7tufte.dtpl  #in themeDir
+    # change is global for the site, not per page TODO?
     doNotPublish: "DNB"
     blogAuthorToSuppress: 
       - "AUF"

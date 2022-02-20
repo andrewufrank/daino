@@ -2,7 +2,8 @@
 {-# LANGUAGE DeriveGeneric #-}
 ---------------------------------------------------------------
 --
--- MetaPage   :
+-- MetaPage   : The information taken from the yaml header of each md file. 
+--  LayoutFlags deals with the data from the settingsN.yaml
 ---------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}

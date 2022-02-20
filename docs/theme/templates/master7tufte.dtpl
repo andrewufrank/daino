@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<!-- the master page `master6.dtpl` version 1
-    using w3c css 
+<!-- the master page `master7tufte.dtpl` version 1
+    using css-tufte from github
+    but using w3c for the index pages
 
     (name of masterN.dtpl is printed at bottom of page automatically from settingsN.yml file)
     
@@ -9,8 +10,7 @@
 		author date and keywords for IndexCollectlect
     contentHtml, beforeContent, afterContent to wrap htmlcontent 
     
-    based on w3c examples (design, architects)
-	uses w3c.css as default, other can be loaded with key css 
+    based on tufte css example code fount at https://github.com/edwardtufte/tufte-css
 
 	refs in the menus are relative to the web root
 	(absolute web, inserted a / in the template)
@@ -18,16 +18,19 @@
     files available are tufte.css and w3c.css not used
 
     sollten fuer die indexseiten ein anderer master verwendet werden?
+    sollte der master per file ausgewaehlt werden koennen?
 	-->
 
 
 <html lang="$lang$">  $--this is a comment not inserted in html 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="/resources/templates/static/w3c.css" type="text/css">
-    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins"> -->
-            $-- getting other fonts?
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="tufte.css"/>
     <link rel="stylesheet" href="/resources/templates/static/ssg_ext_w3c.css" type="text/css">
+    <link rel="stylesheet" href="/resources/templates/static/w3c.css" type="text/css">
+
     $for(author)$
     <meta name="author" content="$author$" />  $-- if author is AUF then blanked - TODO
     $endfor$
@@ -41,9 +44,7 @@
 $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itlenotset</title>
         $-- not set?
     <title>$settings.sitename$</title>  $-- simple (for now?)
-<style>
-
-</style>    
+  
 
 <body> $-- body of html page
 
@@ -86,20 +87,22 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
 </header>
 
 <!-- content -->
-<section class="w3-container w3-content content"> $-- content 
-    <section  class="w3-grey"  style="max-width:900px">  <!-- title section  -->
+<!-- <section class="w3-container w3-content content"> $-- content  -->
+    <!-- <section  class="w3-grey"  style="max-width:900px">  title section  -->
+<article> 
         $if(title)$
-                <h1 >$title$</h3> $-- removed w3-padding
+                <h1 id="tufte-css" >$title$</h1> $-- removed w3-padding
             $if(subtitle)$
-                <h2 >$subtitle$</p>
+                <p class="subtitle">$subtitle$</p>
             $endif$
-            $-- author should be supressed when same as set in settingsN.yml
             $if(author)$ 
-                <p style="font-style: italic; padding-left: 40px;">$author$</p> $-- removed class=author,  class="w3-large
+                <p class="subtitle">$author$</p>   
             $endif$
         $endif$
 
-        <section  style="padding-left: 40px;" >  $-- abstracts and tableof contente after title  
+        <!-- <section  style="padding-left: 40px;" >  $-- abstracts and tableof contente after 
+            title   -->
+        <section>
             $if(toc)$
                 <nav id="$idprefix$TOC">
                 $table-of-contents$
@@ -109,14 +112,15 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
             $beforeContent$
                 
             $if(abstract)$
-                <a>$abstract$</a>
-                <a href=/$linkpdf3$>  (view as pdf)</a>
+                <p>$abstract$</p>
+                <p href=/$linkpdf3$>  (view as pdf)</p>
             $endif$
         </section>
-    </section> $-- end title
-        
-    $content3$  <!--content-from-panrep-blocks which is the content of the index.md -->
-      
+    <!-- </section> $-- end title -->
+
+    <section>   
+        $content3$  <!--content-from-panrep-blocks which is the content of the index.md -->
+    </section>   
     $afterContent$
 
     $for(include-after)$
@@ -147,7 +151,7 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
             $endif$
     </ul>
 </section>
-
+</article>
 
 <!-- footer -->
 <div class="w3-grey w3-container w3-tiny" style="margin-top:24px;padding-right:58px"> $-- removed w3-padding-32
@@ -160,27 +164,6 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
         <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank">w3.css</a>
     </div>
 </div>
-
-<!-- <script>
-// Script to open and close sidebar
-function w3_open() {
-  document.getElementById("mySidebar").style.display = "block";
-  document.getElementById("myOverlay").style.display = "block";
-}
- 
-function w3_close() {
-  document.getElementById("mySidebar").style.display = "none";
-  document.getElementById("myOverlay").style.display = "none";
-}
-
-// Modal Image Gallery
-function onClick(element) {
-  document.getElementById("img01").src = element.src;
-  document.getElementById("modal01").style.display = "block";
-  var captionText = document.getElementById("caption");
-  captionText.innerHTML = element.alt;
-}
-</script> -->
 
 </body>
 </html>
