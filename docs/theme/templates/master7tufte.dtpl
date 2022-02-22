@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- the master page `master7tufte.dtpl` version 1
+<!-- the master page `master7tufte.dtpl` version 2
     using css-tufte from github
     but using w3c for the index pages
 
@@ -26,11 +26,18 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    
-    <link rel="stylesheet" href="tufte.css"/>  $-- the et-book font is also in the template 
-    $-- <link rel="stylesheet" href="/resources/templates/static/et-book">  $-- these are all fonts in dir
+    <meta name="robots" content="index"/>
+    <meta name="robots" content="follow"/>
+    <meta name="copyright" content="$author" />    
+
+    <link rel="stylesheet" href="/resources/templates/static/tufte.css"/>  $-- the et-book font is also in the template 
+    <link rel="stylesheet" href="/resources/templates/static/tufte-extra.css"/>  $-- the et-book font is also in the template 
+    <link rel="stylesheet" href="/resources/templates/static/pandoc.css"/>  $-- the et-book font is also in the template 
+    $-- <link rel="stylesheet" href="/resources/templates/static/et-book">  $-- these are all fonts in dir, but called from the tufte.css
     <!-- <link rel="stylesheet" href="/resources/templates/static/ssg_ext_w3c.css" type="text/css">
     <link rel="stylesheet" href="/resources/templates/static/w3c.css" type="text/css"> -->
+
+    <meta name="description" content="The HomePage of $author$ with address, url, cv and publications."/>
 
     $for(author)$
     <meta name="author" content="$author$" />  $-- if author is AUF then blanked - TODO
@@ -90,6 +97,8 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
 <!-- content -->
 <!-- <section class="w3-container w3-content content"> $-- content  -->
     <!-- <section  class="w3-grey"  style="max-width:900px">  title section  -->
+
+        <!-- here starts the tufte styled content  --------------------------------------------  -->
 <article> 
         $if(title)$
                 <h1 id="tufte-css" >$title$</h1> $-- removed w3-padding
