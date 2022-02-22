@@ -10,7 +10,7 @@ bibliography: resources/BibTexLatex.bib
 ---
 
 # goal
-List the special syntax for references. Useful is probably also the description of [MultiMarkdown](https://fletcherpenney.net/multimarkdown/cms/), whic us mostly enabled in Pandoc as `MMD`.
+List the special syntax for references. Useful is probably also the description of [MultiMarkdown](https://fletcherpenney.net/multimarkdown/cms/), which are mostly enabled in Pandoc, sometimes with slightly improved syntax.
 
 # Footnotes
 A footnote is marked as `[^id]` and it's text as `[^id] : text`. 
@@ -28,7 +28,7 @@ The format is `^2^` and `~2~` for example x^2^ and H~2~O.
 <!-- The format is `^2` and `~2` for example x^2 and H~2O. -->
 
 ## Strikeout 
-To strike out text, surround it with `~~`. For example ~~this crossed out~~. [^note]
+To strike out text, surround it with `~~`. For example ~~this is crossed out~~. [^note]
 
 [^note]: Note for coding Pandoc Extensions: 
 

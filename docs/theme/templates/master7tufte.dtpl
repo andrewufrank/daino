@@ -23,13 +23,14 @@
 
 
 <html lang="$lang$">  $--this is a comment not inserted in html 
+<head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <link rel="stylesheet" href="tufte.css"/>
-    <link rel="stylesheet" href="/resources/templates/static/ssg_ext_w3c.css" type="text/css">
-    <link rel="stylesheet" href="/resources/templates/static/w3c.css" type="text/css">
+    <link rel="stylesheet" href="tufte.css"/>  $-- the et-book font is also in the template 
+    $-- <link rel="stylesheet" href="/resources/templates/static/et-book">  $-- these are all fonts in dir
+    <!-- <link rel="stylesheet" href="/resources/templates/static/ssg_ext_w3c.css" type="text/css">
+    <link rel="stylesheet" href="/resources/templates/static/w3c.css" type="text/css"> -->
 
     $for(author)$
     <meta name="author" content="$author$" />  $-- if author is AUF then blanked - TODO
@@ -44,7 +45,7 @@
 $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itlenotset</title>
         $-- not set?
     <title>$settings.sitename$</title>  $-- simple (for now?)
-  
+</head>  
 
 <body> $-- body of html page
 
@@ -115,8 +116,8 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
                 <p>$abstract$</p>
                 <p href=/$linkpdf3$>  (view as pdf)</p>
             $endif$
-        </section>
-    <!-- </section> $-- end title -->
+        </section> 
+    <!-- end title of entry -->
 
     <section>   
         $content3$  <!--content-from-panrep-blocks which is the content of the index.md -->

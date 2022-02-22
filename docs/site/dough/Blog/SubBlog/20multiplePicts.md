@@ -36,4 +36,4 @@ without much text ![Three girls and dog](/resources/img/121-2128_IMG.JPG)
 
 # Picture placement
 
-The intetion is that pictures are include in the flow of the text regularly, but if the sreen is wide, they should be shown adjacent to the text on the right. 
+The intention is that pictures are include in the flow of the text regularly, but if the screen is wide, they should be shown adjacent to the text on the right. 
