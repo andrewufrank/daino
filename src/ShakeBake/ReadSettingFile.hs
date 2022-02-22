@@ -20,7 +20,7 @@ import UniformBase
 readSettings :: NoticeLevel -> Path Abs File -> ErrIO  Settings
 
 {- | must be the settingsNN.yaml file, (absolute, fixed before to current dir)
- which contain the rest of the settings
+ which contain the rest of the siteHeader
  returns layout and port
 -}
 readSettings debug settingsfilename =

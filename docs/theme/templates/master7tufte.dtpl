@@ -28,7 +28,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="index"/>
     <meta name="robots" content="follow"/>
-    <meta name="copyright" content="$author" />    
+    <meta name="copyright" content="$author$"/>    
 
     <link rel="stylesheet" href="/resources/templates/static/tufte.css"/>  $-- the et-book font is also in the template 
     <link rel="stylesheet" href="/resources/templates/static/tufte-extra.css"/>  $-- the et-book font is also in the template 
@@ -50,8 +50,8 @@
     $endif$
 
 $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itlenotset</title>
-        $-- not set?
-    <title>$settings.sitename$</title>  $-- simple (for now?)
+        $-- only siteHeader.sitename is set
+    <title>$siteHeader.sitename$</title>  $-- simple (for now?)
 </head>  
 
 <body> $-- body of html page
@@ -66,15 +66,15 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
         <img class="w3-image centerImage" src=$image$  style="object-fit: contain; max-height: 400px; height: auto; width: auto; "  
             alt="$imageCaption$">  $-- the image put into index.md
     $else$        $-- no image in head 
-        <img class="w3-image" src=$settings.banner$ style="object-fit: contain;"
-            alt="$settings.bannerCaption$">  $-- the image put in the settings.yml
+        <img class="w3-image" src=$siteHeader.banner$ style="object-fit: contain;"
+            alt="$siteHeader.bannerCaption$">  $-- the image put in the settings.yml
 
     <div class="w3-display-bottomleft w3-padding-large w3-text-light-grey"; 
         display: flex;
         align-items:flex-start;>
-        <h1 class="w3-hide-medium w3-hide-small w3-xxxlarge">$settings.sitename$</h1>
-        <h2 class="w3-hide-large" style="white-space:nowrap">$settings.sitename$</h5>
-        <h3 class="w3-hide-medium w3-hide-small">$settings.byline$</h3> 
+        <h1 class="w3-hide-medium w3-hide-small w3-xxxlarge">$siteHeader.sitename$</h1>
+        <h2 class="w3-hide-large" style="white-space:nowrap">$siteHeader.sitename$</h5>
+        <h3 class="w3-hide-medium w3-hide-small">$siteHeader.byline$</h3> 
                 $-- byline is not shown on small screens
       </div>
     $endif$
@@ -82,7 +82,7 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
 <!-- Navbar ribbon (sits on top) -->
 <div class="sticky">
     <div class="w3-bar">
-      <a href="/index.html" class="w3-bar-item w3-button"><b>faviconMissing </b>$settings.sitename$  </a>
+      <a href="/index.html" class="w3-bar-item w3-button"><b>faviconMissing </b>$siteHeader.sitename$  </a>
       <!-- Float links to the right. Hide them on small screens -->
       <div class="w3-right w3-hide-small">
         $for(menuitems.menuNav)$

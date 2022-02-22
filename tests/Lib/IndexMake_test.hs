@@ -12,7 +12,7 @@ module Lib.IndexMake_test where
 
 import Test.Framework
 import Uniform.Test.TestHarness
-import Lib.Md2doc_test  -- to have settings (i.e. layout)
+import Lib.Md2doc_test  -- to have siteHeader (i.e. layout)
  
 import Foundational.Filetypes4sites
 import Foundational.MetaPage

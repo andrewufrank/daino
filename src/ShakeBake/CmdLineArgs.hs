@@ -74,7 +74,7 @@ cmdArgs  =
     <*> switch
           (long "server" <> short 's' 
                 -- <> value True   -- not working
-                <> help "start a server on port set in settings file")
+                <> help "start a server on port set in siteHeader file")
     <*> switch
         (long "watch" <> short 'w' <> help
           "start the watch of files for restarting bake"

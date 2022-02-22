@@ -48,7 +48,7 @@ main =
                         , "\n -T test (use data in package, fresh start)"
                         , "\n -q quick (not producing the pdfs, which is slowing down)"
                         , "\n -w start to watch the files for changes and rebake (implies -s s cancels -u"
-                        , "\n -s start local server (port is fixed in settings)"
+                        , "\n -s start local server (port is fixed in siteHeader)"
                         -- , "\n -u upload to external server (not yet implemented"
                         ]
                     )

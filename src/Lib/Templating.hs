@@ -41,7 +41,7 @@ keywords  (list)
 page-title 
 page-title-isPostfix 
 include-before 
-settings
+siteHeader
     sitename 
     byline 
     banner 

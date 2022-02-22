@@ -29,9 +29,9 @@ localhostPort: 3000
 
 # content for landing page
 settingsAuthor : Author of Settings 
-
 settingsDate: 2019-01-01
-settings : 
+
+siteHeader : 
     sitename : siteName3
     byline : siteByLine3 
     # banner: /resources/templates/img/symmetricGeras2.jpg  

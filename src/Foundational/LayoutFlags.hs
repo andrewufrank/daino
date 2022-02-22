@@ -13,9 +13,9 @@
 {-# LANGUAGE TypeFamilies #-}
 
 {- | the defintion for a layout and a flags type
-  which carry info from the command line and the settings file
+  which carry info from the command line and the siteHeader file
  the defaults for flags are set up for testing  are overridden
- the defaults for layout must correspond to what is set in the test settings file.
+ the defaults for layout must correspond to what is set in the test siteHeader file.
  layout defaults are used in testing
 
  content dirs are those, which have *.md files
@@ -31,13 +31,13 @@ import Uniform.Json
 progName :: Text
 progName = "SSG"  
 
--- | the settings file with all fields 
+-- | the siteHeader file with all fields 
 data Settings = Settings
     { siteLayout :: SiteLayout 
     , localhostPort :: Int 
     , settingsAuthor :: Text 
     , settingsDate :: Text -- should be UTC 
-    , settings :: Settings2 
+    , siteHeader :: SiteHeader 
     , menuitems :: MenuItems
     -- , today :: Text
     } deriving (Show, Read, Ord, Eq, Generic, Zeros)
@@ -45,14 +45,14 @@ data Settings = Settings
 instance ToJSON Settings
 instance FromJSON Settings
 
-data Settings2 = Settings2 
+data SiteHeader = SiteHeader 
     { sitename :: FilePath 
     , byline :: Text 
     , banner :: FilePath 
     , bannerCaption :: Text 
     } deriving (Show, Read, Ord, Eq, Generic, Zeros)
-instance ToJSON Settings2
-instance FromJSON Settings2
+instance ToJSON SiteHeader
+instance FromJSON SiteHeader
 
 newtype MenuItems = MenuItems {menuNav:: [MenuItem]
                             -- , menuB:: Text
@@ -115,7 +115,7 @@ templatesDir layout = themeDir layout `addFileName` templatesDirName
 
 
 settingsFileName :: Path Rel File
--- ^ the yaml file in which the settings are fixec
+-- ^ the yaml file in which the siteHeader are fixec
 settingsFileName = makeRelFile "settings3" -- the yaml file
 -- -- the value for cannot go into layout as this is its name!
 -- is then set in flags

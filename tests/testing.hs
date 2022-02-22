@@ -31,7 +31,7 @@ mainTest        -- with tests in other modules
   = do
     putStrLn "HTF ExampleTest.hs:\n"
     -- runErrorVoid $ createDirIfMissing' "/home/frank/.SSG"
-    -- is in settings.yaml testDir  - must correspond
+    -- is in siteHeader.yaml testDir  - must correspond
     p <- htfMain htf_importedTests
     putStrLn
       ("HTF end ExampleTest.hs test:\n" ++ show p ++ "\nEND HTF ExampleTest")

@@ -36,7 +36,7 @@ convertIndexEntries :: NoticeLevel ->  [Text] -> Text -> IndexEntry -> ErrIO Men
 -- date today is passed to feed in pages 
 -- the authors which should be oppressed are passed 
 -- is pure except for today! TODO today is not used 
--- use the date from the settings? TODO
+-- use the date from the siteHeader? TODO
 convertIndexEntries debug hpAuthor indexSortField  ixe1 =
   do
     when (inform debug) $ putIOwords ["convertIndexEntries", "start ixe1", showT ixe1

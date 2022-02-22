@@ -62,7 +62,7 @@ test_checkSettings_def = do
 -- test_readSettings2 = do 
 --     res <- runErr $ do 
 --         let settingsfilename = (sourceDirTestSite) </> settingsFileName
---         putIOwords [" settings file name", showT settingsfilename ]
+--         putIOwords [" siteHeader file name", showT settingsfilename ]
 --         -- settingsTxt <- read8 settingsfilename yamlFileType
 --         s1 <- readYaml2rec settingsfilename 
 
@@ -77,7 +77,7 @@ test_checkSettings_def = do
 -- test_readSettings1 = do 
 --     res <- runErr $ do 
 --         let settingsfilename = (sourceDirTestSite) </> settingsFileName
---         putIOwords [" settings file name", showT settingsfilename ]
+--         putIOwords [" siteHeader file name", showT settingsfilename ]
 --         -- settingsTxt <- read8 settingsfilename yamlFileType
 --         s0 :: Value <- readYaml2value settingsfilename 
 --         putIOwords ["yaml read", showPretty s0 ]
@@ -93,7 +93,7 @@ test_checkSettings_def = do
 -- produce error 
 
 settings1 = zero :: Settings 
-    -- Right (Settings {siteLayout = SiteLayout {themeDir = Path Abs Dir /home/frank/Workspace11/ssg/docs/theme/, doughDir = Path Abs Dir /home/frank/Workspace11/ssg/docs/site/dough/, bakedDir = Path Abs Dir /home/frank/Workspace11/ssg/docs/site/baked/, masterTemplateFile = Path Rel File master5.dtpl}, localhostPort = 3000, settingsAuthor = "Author of Settings", settingsDate = "2019-01-01", settings = Settings2 {sitename = "siteNameExample", byline = "siteByLineExample", banner = "/templates/img/symmetricGeras2.jpg"}, menu = [MenuItem {navlink = "/Blog/index.html", navtext = "Blog"},MenuItem {navlink = "/PublicationList/index.html", navtext = "Publications"},MenuItem {navlink = "/SSGdesign/index.html", navtext = "SSG Documentation"}]})
+    -- Right (Settings {siteLayout = SiteLayout {themeDir = Path Abs Dir /home/frank/Workspace11/ssg/docs/theme/, doughDir = Path Abs Dir /home/frank/Workspace11/ssg/docs/site/dough/, bakedDir = Path Abs Dir /home/frank/Workspace11/ssg/docs/site/baked/, masterTemplateFile = Path Rel File master5.dtpl}, localhostPort = 3000, settingsAuthor = "Author of Settings", settingsDate = "2019-01-01", siteHeader = SiteHeader {sitename = "siteNameExample", byline = "siteByLineExample", banner = "/templates/img/symmetricGeras2.jpg"}, menu = [MenuItem {navlink = "/Blog/index.html", navtext = "Blog"},MenuItem {navlink = "/PublicationList/index.html", navtext = "Publications"},MenuItem {navlink = "/SSGdesign/index.html", navtext = "SSG Documentation"}]})
 
 instance ShowTestHarness (Path Abs File)
 instance ShowTestHarness SiteLayout
