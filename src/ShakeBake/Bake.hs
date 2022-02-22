@@ -53,9 +53,9 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
         , "bakeOneMD2docrep 1 fn", showT inputFn
         , "\n resfn2", showT resfn2
         ]
-    let layout = storage sett3
+    let layout = siteLayout sett3
     let doughP = doughDir layout
-    -- let hpname = blogAuthorToSuppress . storage $ sett3
+    -- let hpname = blogAuthorToSuppress . siteLayout $ sett3
     dr3 <- readMarkdownFile2docrep debug doughP  inputFn 
     dr4 <- addRefs debug dr3
 
@@ -80,7 +80,7 @@ bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
         ]
     dr1 <- read8 inputFn docrepFileType
 
-    let layout = storage sett3
+    let layout = siteLayout sett3
     p3 <- docrep2panrep debug flags layout dr1
             -- completes index and should process reps 
 
@@ -101,8 +101,8 @@ bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
         , showT resfn2
         ]
     dr1 <- read8 inputFn panrepFileType
-    let layout = storage sett3
-    -- this gives the storage section of settingsN.yml file
+    let layout = siteLayout sett3
+    -- this gives the siteLayout section of settingsN.yml file
     let staticMenu = sett3
     let mf = masterTemplateFile layout
     let masterfn = templatesDir layout </> mf
@@ -151,7 +151,7 @@ bakeOneTexsnip2tex debug flags inputFn sett3 resfn2 = do
 
     snip1 <- read8 inputFn texSnipFileType
 
-    let layout = storage sett3
+    let layout = siteLayout sett3
     let doughP = doughDir layout
 
 
@@ -178,7 +178,7 @@ bakeOneTex2pdf debug flags inputFn sett3 resfn2 = do
     -- let refDir =
             -- makeAbsDir . getParentDir . toFilePath $ inputFn :: Path Abs Dir
     -- dr1 <- read8 inputFn docrepFileType
-    let layout = storage sett3
+    let layout = siteLayout sett3
     let doughP = doughDir layout
 
     tex2pdf debug  inputFn resfn2 doughP -- content is html style

@@ -33,7 +33,7 @@ progName = "SSG"
 
 -- | the settings file with all fields 
 data Settings = Settings
-    { storage :: SiteLayout 
+    { siteLayout :: SiteLayout 
     , localhostPort :: Int 
     , settingsAuthor :: Text 
     , settingsDate :: Text -- should be UTC 
@@ -159,55 +159,3 @@ blankAuthorName names current =
         then zero 
         else current 
 
--- hpAuthor :: [Text]
--- the list of authornames which are blanked
--- should be the author of the blog
--- hpAuthor = ["AUF", "Andrew U. Frank"]
-
--- old ideas
---  Read known issue of reading path
-
--- instance NiceStrings SiteLayout where
---     shownice d = replace' ", " ",\n " (showT d)
-
--- instance Default SiteLayout where 
---     def = layoutDefaults
--- instance Default Settings where 
---     def = settingsDefault
-
--- settingsDefault :: Settings
--- -- | the default values for settings
--- -- valid should be the content from the settings3.yaml file
--- -- which is stored ind docs/site (and linked in ssg/ )
--- settingsDefault = Settings 
---     {storage = SiteLayout 
---         {themeDir = makeAbsDir "/home/frank/Workspace11/ssg/docs/theme/", 
---         doughDir = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/dough/", 
---         bakedDir = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/baked/", 
---         masterTemplateFile = makeRelFile "master5.dtpl"
---         }, 
---     localhostPort = 3000, 
---     settingsAuthor = "Author of Settings", 
---     settingsBlogAuthorOppressed = ["AUF", "Andrew U. Frank"],
---     settingsDate = "2019-01-01", 
---     settings = Settings2 
---         {sitename = "siteNameExample-Default", 
---         byline = "siteByLineExample-Default", 
---         banner = "/templates/img/symmetricGeras2.jpg"
---         }, 
---     menuitems = MenuItems 
---         {menuNav=[
---             MenuItem {navlink = "/Blog/index.html", navtext = "Blog"},
---             MenuItem {navlink = "/PublicationList/index.html", navtext = "Publications"},
---             MenuItem {navlink = "/SSGdesign/index.html", navtext = "SSG Documentation"}
---             ]
---         }
---     -- today = "2021-05-30"
---     }
-
--- MenuItem where 
---     def = MenuItem{navlink = "/Blog/index.html", navtext = "SingleMenu"}
--- newtype Menu1 = Menu1 {mENU::[MenuItem]}deriving (Show, Read, Ord, Eq, Generic, Zeros)
-
--- instance Default Menu1 where 
---         def = Menu :: [def]

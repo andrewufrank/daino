@@ -68,9 +68,9 @@ panrep2vals debug staticMenu (Panrep m1 p1) = do
     when (inform debug) $
         putIOwords ["\n\t---------------------------panrep2vals"
                 , "AuthorOppressed"
-                , showT (blogAuthorToSuppress . storage $ staticMenu)]
+                , showT (blogAuthorToSuppress . siteLayout $ staticMenu)]
 
-    menu4 :: MenuEntry <- convertIndexEntries  debug (blogAuthorToSuppress.storage $ staticMenu) indexSortField ixe1
+    menu4 :: MenuEntry <- convertIndexEntries  debug (blogAuthorToSuppress.siteLayout $ staticMenu) indexSortField ixe1
     html <- writeHtml5String2 p1
     -- in uniform.Pandoc (dort noch mehr moeglicherweise duplicated)
     p2 <-  fillContent ixe1 html

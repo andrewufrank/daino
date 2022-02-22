@@ -1,7 +1,7 @@
 # settings3.yaml -- the basic setup of the test site
 
 # goes into SiteLayout
-storage:
+siteLayout:
     themeDir:  /home/frank/Workspace11/ssg/docs/theme
     doughDir: /home/frank/Workspace11/ssg/docs/site/dough
     bakedDir: /home/frank/Workspace11/ssg/docs/site/baked

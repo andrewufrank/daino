@@ -56,7 +56,7 @@ import           Uniform.Shake
 
 import Foundational.LayoutFlags
     ( SiteLayout(doughDir, bakedDir, doNotPublish),
-      Settings(storage),
+      Settings(siteLayout),
       PubFlags(quickFlag) )
       
 import ShakeBake.ConvertFiles
@@ -104,7 +104,7 @@ shakeAll debug sett3 flags causedby = do
         , "."
         , "\n======================================="
         ]
-    let layout = storage sett3 
+    let layout = siteLayout sett3 
         doughP = doughDir layout -- the regular dough
         bakedP = bakedDir layout
     callIO $ shakeMD debug sett3 flags doughP bakedP
@@ -285,7 +285,7 @@ getNeeds debug layout sourceP targetP extSource extTarget = do
 
     filesWithSource :: [Path Rel File] <-
         getFilesToBake
-            (doNotPublish  (storage layout)) -- exclude files containing
+            (doNotPublish  (siteLayout layout)) -- exclude files containing
             sourceP
             ["**/*." <> t2s extSource]
     -- subdirs

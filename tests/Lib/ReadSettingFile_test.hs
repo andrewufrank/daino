@@ -34,13 +34,13 @@ test_settings =
     testVar0FileIO programName  
         (sourceDirTestSite </> settingsFileName) 
         "settingsFile" 
-        (fmap storage . readSettings NoticeLevel0 )  
+        (fmap siteLayout . readSettings NoticeLevel0 )  
 
 test_checkSettings_def = do 
     res <- runErr $ do 
             sett3 <- readSettings NoticeLevel0 
                 (sourceDirTestSite </> settingsFileName)
-            return (storage sett3)
+            return (siteLayout sett3)
     assertEqual (Right layoutDefaults) res 
 
 -- readYaml2rec :: (FromJSON a, Show a) => Path Abs File -> ErrIO a 
@@ -93,7 +93,7 @@ test_checkSettings_def = do
 -- produce error 
 
 settings1 = zero :: Settings 
-    -- Right (Settings {storage = SiteLayout {themeDir = Path Abs Dir /home/frank/Workspace11/ssg/docs/theme/, doughDir = Path Abs Dir /home/frank/Workspace11/ssg/docs/site/dough/, bakedDir = Path Abs Dir /home/frank/Workspace11/ssg/docs/site/baked/, masterTemplateFile = Path Rel File master5.dtpl}, localhostPort = 3000, settingsAuthor = "Author of Settings", settingsDate = "2019-01-01", settings = Settings2 {sitename = "siteNameExample", byline = "siteByLineExample", banner = "/templates/img/symmetricGeras2.jpg"}, menu = [MenuItem {navlink = "/Blog/index.html", navtext = "Blog"},MenuItem {navlink = "/PublicationList/index.html", navtext = "Publications"},MenuItem {navlink = "/SSGdesign/index.html", navtext = "SSG Documentation"}]})
+    -- Right (Settings {siteLayout = SiteLayout {themeDir = Path Abs Dir /home/frank/Workspace11/ssg/docs/theme/, doughDir = Path Abs Dir /home/frank/Workspace11/ssg/docs/site/dough/, bakedDir = Path Abs Dir /home/frank/Workspace11/ssg/docs/site/baked/, masterTemplateFile = Path Rel File master5.dtpl}, localhostPort = 3000, settingsAuthor = "Author of Settings", settingsDate = "2019-01-01", settings = Settings2 {sitename = "siteNameExample", byline = "siteByLineExample", banner = "/templates/img/symmetricGeras2.jpg"}, menu = [MenuItem {navlink = "/Blog/index.html", navtext = "Blog"},MenuItem {navlink = "/PublicationList/index.html", navtext = "Publications"},MenuItem {navlink = "/SSGdesign/index.html", navtext = "SSG Documentation"}]})
 
 instance ShowTestHarness (Path Abs File)
 instance ShowTestHarness SiteLayout

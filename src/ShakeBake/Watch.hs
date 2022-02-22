@@ -31,7 +31,7 @@ mainWatch :: NoticeLevel -> Settings -> PubFlags -> ErrIO ()
  and the name of the banner imgage which must be copied by shake
 -}
 mainWatch debug sett3 flags = do
-    let layout = (storage sett3)
+    let layout = (siteLayout sett3)
     let port = (localhostPort sett3)
 
     let bakedPath = bakedDir layout

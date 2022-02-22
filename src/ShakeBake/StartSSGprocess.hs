@@ -35,7 +35,7 @@ ssgProcess debug flags = do
     sett3 <- readSettings debug (settingsFile flags)
 
 -- set the currentWorkingDir CWD to doughDir
-    let doughP = doughDir (storage sett3)
+    let doughP = doughDir (siteLayout sett3)
 -- it should be allways be the same, independent of start 
 -- when started to convert the tests the CWD is not 
 -- the same then when starting in a directory to convert
@@ -48,13 +48,13 @@ ssgProcess debug flags = do
         then mainWatch debug sett3 flags 
         else do
             when (testNewFlag flags) $ do
-                let bakedP = bakedDir (storage sett3)
+                let bakedP = bakedDir (siteLayout sett3)
                 deleteDirRecursive bakedP 
                 putIOwords ["ssgProcess", "testNewFlag",  "deleted", showT bakedP]
             shakeAll debug sett3 flags ""
             -- the last is the filename that caused the shake call
             when (serverFlag flags) $ do 
-                runScotty (localhostPort sett3) (bakedDir (storage sett3)) (makeRelFile "index.html") 
+                runScotty (localhostPort sett3) (bakedDir (siteLayout sett3)) (makeRelFile "index.html") 
                     -- was landingPageName
                 putIOwords ["server started on ", showT (localhostPort sett3)]
 
@@ -77,7 +77,7 @@ ssgProcess debug flags = do
 
     -- let testWithLastTime  = testNewerModTime  lastUpload
     -- compare with year2000 if all should be uploaded
-   -- let layout2 = storage sett3 
+   -- let layout2 = siteLayout sett3 
     -- let port2 = localhostPort sett3 
 
 -- nach call to shake all 

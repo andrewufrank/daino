@@ -27,7 +27,7 @@ checkProcess :: NoticeLevel -> Path Abs File-> ErrIO ()
 checkProcess debug sitefn = do
     when (inform debug) $ putIOwords ["checkProcess", "start"]
     sett3 <- readSettings debug (sitefn)
-    let doughP = doughDir (storage sett3)
+    let doughP = doughDir (siteLayout sett3)
     when (inform debug) $ putIOwords ["checkProcess 1", "doughP", showPretty doughP]
 
     -- get all md files in doughP 
@@ -40,7 +40,7 @@ checkProcess debug sitefn = do
     
     when (inform debug) $ putIOwords ["checkProcess 2", "mds", showT . take 10 $ mds]
 
-    let mds1 = filter (notDNB (storage $ sett3)) mds
+    let mds1 = filter (notDNB (siteLayout $ sett3)) mds
     when (inform debug) $ putIOwords ["checkProcess 2", "mds1", showT . take 10 $ mds1]
     let mds2 = map makeAbsFile mds1
     -- let hpname = blogAuthorToSuppress.storag sett3
