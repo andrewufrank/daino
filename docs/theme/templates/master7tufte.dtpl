@@ -93,6 +93,7 @@
                 $-- byline is not shown on small screens
       </div>
     $endif$
+</header>
 
 <!-- Navbar ribbon (sits on top) -->
 <div class="sticky"> some text stick
@@ -107,7 +108,7 @@
     </div>
 </div>
     
-</header>
+
 
 <!-- content -->
 <!-- <section class="w3-container w3-content content"> $-- content  -->
