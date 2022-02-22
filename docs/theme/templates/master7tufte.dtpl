@@ -28,19 +28,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="index"/>
     <meta name="robots" content="follow"/>
-    <meta name="copyright" content="$author$"/>    
+    <meta name="copyright" content="$settingsAuthor$"/>   
+    
+    $-- two w3c related stylesheets before the tufte one  
 
-    <link rel="stylesheet" href="/resources/templates/static/tufte.css"/>  $-- the et-book font is also in the template 
-    <link rel="stylesheet" href="/resources/templates/static/tufte-extra.css"/>  $-- the et-book font is also in the template 
-    <link rel="stylesheet" href="/resources/templates/static/pandoc.css"/>  $-- the et-book font is also in the template 
-    $-- <link rel="stylesheet" href="/resources/templates/static/et-book">  $-- these are all fonts in dir, but called from the tufte.css
-    <!-- <link rel="stylesheet" href="/resources/templates/static/ssg_ext_w3c.css" type="text/css">
-    <link rel="stylesheet" href="/resources/templates/static/w3c.css" type="text/css"> -->
+    <link rel="stylesheet" href="/resources/templates/static/w3c.css" type="text/css">  
+    <link rel="stylesheet" href="/resources/templates/static/ssg_ext_w3c.css" type="text/css">  
 
-    <meta name="description" content="The HomePage of $author$ with address, url, cv and publications."/>
+    <link rel="stylesheet" href="/resources/templates/static/tufte.css"/>  
+    <link rel="stylesheet" href="/resources/templates/static/tufte-extra.css"/>   
+    <link rel="stylesheet" href="/resources/templates/static/pandoc.css"/>  
 
-    $for(author)$
-    <meta name="author" content="$author$" />  $-- if author is AUF then blanked - TODO
+    $-- the tufte fonts are included from tufte.css
+
+    <meta name="description" content="The HomePage of $settingsAuthor$ with address, url, cv and publications."/>
+
+    $for(settingsAuthor)$
+    <meta name="author" content="$settingsAuthor$" />  
     $endfor$
     $if(date)$
     <meta name="dcterms.date" content="$date$" />  $-- date in index.md yml head
@@ -49,9 +53,20 @@
     <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
     $endif$
 
-$-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itlenotset</title>
+    $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itlenotset</title>
         $-- only siteHeader.sitename is set
     <title>$siteHeader.sitename$</title>  $-- simple (for now?)
+
+    <style>
+        div.sticky {
+          position: -webkit-sticky;
+          position: sticky;
+          top: 0;
+          background-color: yellow;
+          padding: 50px;
+          font-size: 20px;
+        }
+    </style>
 </head>  
 
 <body> $-- body of html page
@@ -80,7 +95,7 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
     $endif$
 
 <!-- Navbar ribbon (sits on top) -->
-<div class="sticky">
+<div class="sticky"> some text stick
     <div class="w3-bar">
       <a href="/index.html" class="w3-bar-item w3-button"><b>faviconMissing </b>$siteHeader.sitename$  </a>
       <!-- Float links to the right. Hide them on small screens -->

@@ -52,7 +52,7 @@ div.sticky {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    background-color: #eefbb5; $-- vom geras bild
+    background-color: #eefbb5; 
     /* padding: 10px; */
     font-size: 20px;
     }
