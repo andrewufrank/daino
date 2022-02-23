@@ -55,6 +55,7 @@ library
     , data-default-class
     , deepseq
     , dir-traverse
+    , pandoc-sidenote
     , uniform-cmdLineArgs
     , uniform-http
     , uniform-json
@@ -79,6 +80,7 @@ executable ssgbake
     , data-default-class
     , deepseq
     , dir-traverse
+    , pandoc-sidenote
     , ssg
     , uniform-cmdLineArgs
     , uniform-http
@@ -104,6 +106,7 @@ executable ssgcheck
     , data-default-class
     , deepseq
     , dir-traverse
+    , pandoc-sidenote
     , ssg
     , uniform-cmdLineArgs
     , uniform-http

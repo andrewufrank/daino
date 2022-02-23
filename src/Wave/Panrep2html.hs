@@ -47,16 +47,18 @@ import Data.Maybe (fromMaybe)
 import Lib.IndexMake ( convertIndexEntries, MenuEntry )
 import Lib.IndexCollect ( completeIndex )
 import Lib.Templating ( putValinMaster )
-
+import Text.Pandoc.SideNote
 
 
 -- ------------------------------------ panrep2html
 -- panrep2html :: Panrep -> ErrIO HTMLout
 -- implements the bake
 -- siteHeader (staticMenu, above sett3) is the content of the settingsN.yml file
+-- added here the transformations to tufte sidenotes (from pandoc-sidenotes)
 panrep2html :: NoticeLevel -> Path Abs File -> Settings -> Panrep -> ErrIO HTMLout
 panrep2html debug masterfn staticMenu (Panrep m1 p1) = do
-        vals <- panrep2vals  debug staticMenu (Panrep m1 p1)
+        let p2 = usingSideNotes p1  -- :: Pandoc -> Pandoc
+        vals <- panrep2vals  debug staticMenu (Panrep m1 p2)
         p :: HTMLout <- panrep2html2 debug masterfn vals
         return p
 

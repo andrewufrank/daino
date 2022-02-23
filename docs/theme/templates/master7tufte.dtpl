@@ -166,8 +166,9 @@
                 
             $if(abstract)$
                 <p>
-                <a>$abstract$</a>
-                <a href=/$linkpdf3$>  (view as pdf)</a></p>
+                    <a>$abstract$</a>
+                    <a href=/$linkpdf3$>  (view as pdf)</a>
+                </p>
             $endif$
         $-- </section> 
     <!-- end title of entry -->
@@ -189,7 +190,7 @@
                 $if(menu2files.abstract2)$<br>$menu2files.abstract2$
                 <a href=/$menu2files.pdf2$>  (view as pdf)</a>
                 $endif$		     
-                <span class=w3-tiny>$menu2files.author2$ $menu2files.date2$ 
+                <span class=af-tiny>$menu2files.author2$ $menu2files.date2$ 
                     </span>
                 </li>
             $endfor$ 

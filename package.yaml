@@ -86,6 +86,7 @@ dependencies:
     - data-default-class # for default values, move down 
     - dir-traverse # for checkprocess
     - deepseq
+    - pandoc-sidenote
 
 library:
   source-dirs: 
