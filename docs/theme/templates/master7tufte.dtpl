@@ -123,7 +123,7 @@
 </header>
 
 <!-- Navbar ribbon (sits on top) -->
-<div class="sticky af-garden-light">
+<div class="sticky af-garden-light w3-container">
     <div class="w3-bar">
       <a href="/index.html" class=" w3-bar-item w3-button"><b>faviconMissing </b>$siteHeader.sitename$  </a>
       <!-- Float links to the right. Hide them on small screens -->
@@ -155,7 +155,7 @@
 
         <!-- <section  style="padding-left: 40px;" >  $-- abstracts and tableof contente after 
             title   -->
-        <section>
+        $-- <section>
             $if(toc)$
                 <nav id="$idprefix$TOC">
                 $table-of-contents$
@@ -165,10 +165,11 @@
             $beforeContent$
                 
             $if(abstract)$
-                <p>$abstract$</p>
-                <p href=/$linkpdf3$>  (view as pdf)</p>
+                <p>
+                <a>$abstract$</a>
+                <a href=/$linkpdf3$>  (view as pdf)</a></p>
             $endif$
-        </section> 
+        $-- </section> 
     <!-- end title of entry -->
 
     <section>   
@@ -181,7 +182,7 @@
     $endfor$
 
    <!-- menu section  -->
-    <ul class="w3-ul w3-margin-top w3-hoverable">
+    <ul class="w3-ul w3-hoverable">
             $for(menu2files)$ 
                 <li>     <!-- list item menu2files:  -->
                 <a href=/$menu2files.link2$><em>$menu2files.title2$ </em></a>
@@ -203,7 +204,7 @@
                 $endfor$
             $endif$
     </ul>
-</section>
+$-- </section>
 </article>
 
 <!-- footer -->

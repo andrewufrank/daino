@@ -5,8 +5,8 @@ date: Jan. 4, 2019
 indexPage: true
 indexSort: filename
 keywords: test
-title: index in blog title primary index for Blog
+title: Index in blog title primary index for Blog
 version: publish
 visibility: public
 ---
-index in blog text an index page for Blog
+Index in blog text an index page for Blog
