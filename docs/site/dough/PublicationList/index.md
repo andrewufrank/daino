@@ -1,5 +1,5 @@
 ---
-abstract: index for the publication directory
+abstract: Index for the publication directory
 author: AUF
 date: Jan. 4, 2019
 indexSort: filename

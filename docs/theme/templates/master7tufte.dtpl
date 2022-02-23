@@ -62,14 +62,37 @@
           position: -webkit-sticky;
           position: sticky;
           top: 0;
-          background-color: #eefbb5;
+          background-color: af-garden-light;}
           /* padding: 50px; */
           font-size: 20px;
         }
-        tiny {h1 {
+        .af-tiny  {
             font-size: 0.7rem;
             line-height: 1.5;
         }
+            
+            .base03  { background-color: #002b36; }
+            .base02  { background-color: #073642; }
+            .base01  { background-color: #586e75; }
+            .base00  { background-color: #657b83; }
+            .base0   { background-color: #839496; }
+            .base1   { background-color: #93a1a1; }
+            .af-base {background-color: #ccc}
+            .af-garden-light {background-color: #eefbb5; }
+            .base2   { background-color: #eee8d5; }
+            .base3   { background-color: #fdf6e3; }
+            .yellow  { background-color: #b58900; }
+            .orange  { background-color: #cb4b16; }
+            .red     { background-color: #dc322f; }
+            .magenta { background-color: #d33682; }
+            .violet  { background-color: #6c71c4; }
+            .blue    { background-color: #268bd2; }
+            .cyan    { background-color: #2aa198; }
+            .green   { background-color: #859900; }
+
+
+
+
     </style>
 </head>  
 
@@ -100,9 +123,9 @@
 </header>
 
 <!-- Navbar ribbon (sits on top) -->
-<div class="sticky"> some text stick
+<div class="sticky af-garden-light">
     <div class="w3-bar">
-      <a href="/index.html" class="w3-bar-item w3-button"><b>faviconMissing </b>$siteHeader.sitename$  </a>
+      <a href="/index.html" class=" w3-bar-item w3-button"><b>faviconMissing </b>$siteHeader.sitename$  </a>
       <!-- Float links to the right. Hide them on small screens -->
       <div class="w3-right w3-hide-small">
         $for(menuitems.menuNav)$
@@ -184,16 +207,16 @@
 </article>
 
 <!-- footer -->
-<div class="w3-grey w3-container" style="margin-top:24px;padding-right:58px tiny"> $-- removed w3-padding-32
+<div class="af-garden-light w3-container .af-tiny" style="margin-top:24px;padding-right:58px ">  
     <div class="w3-left">  <!--  not including data, but version -->
         <a>Produced with SGG $ssgversion$ from $filename3$ ($visibility$, $version$) with $siteLayout.masterTemplateFile$.</a>  
         <a>See the</a>
-        <a href="http://frank.gerastree.at/Journals/SSGdesign/index.html" target="
-        _blank">Rationale for page layout design</a>
     </div>
     <div class="w3-right">
         <a><Powered by</a>
-        <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank">w3.css</a>
+            <a href="http://frank.gerastree.at/Journals/SSGdesign/index.html" target="
+            _blank">SSG</a> and
+            <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank">w3.css</a>
     </div>
 </div>
 

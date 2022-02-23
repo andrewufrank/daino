@@ -1,5 +1,5 @@
 ---
-abstract: index in blog abstract The directory for experiments.
+abstract: "Index in blog. Abstract: The directory for experiments."
 author: AUF
 date: Jan. 4, 2019
 indexPage: true
