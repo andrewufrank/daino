@@ -32,10 +32,7 @@ To strike out text, surround it with `~~`. For example ~~this is crossed out~~. 
 
 [^note]: Note for coding Pandoc Extensions: 
 
-    Attention to the interaction between strikeout and subscript, probably also between carets for footnotes and superscript.
-
-    The current set is:
-
+    Attention to the interaction between strikeout and subscript, probably also between carets for footnotes and superscript.  The current set is: should be wrapped in `.blockquote`
     ```` haskell
         exts = mconcat
             [ Pandoc.extensionsFromList

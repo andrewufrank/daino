@@ -90,6 +90,19 @@
             .cyan    { background-color: #2aa198; }
             .green   { background-color: #859900; }
 
+            $-- to avoid blockquotes only halfway rendered (see https://github.com/jez/pandoc-sidenote/issues/4)
+            span.blockquote, span.sourceCode {
+                display:block;
+                float:left;
+                left:1rem;
+                margin-top:-5%;
+                margin-bottom:5%;
+                clear:both;
+                width:90%;
+                position:relative;
+                border-left:0.5rem solid #ccc;
+                padding:0.5rem
+            }
 
 
 
@@ -212,7 +225,6 @@ $-- </section>
 <div class="af-garden-light w3-container .af-tiny" style="margin-top:24px;padding-right:58px ">  
     <div class="w3-left">  <!--  not including data, but version -->
         <a>Produced with SGG $ssgversion$ from $filename3$ ($visibility$, $version$) with $siteLayout.masterTemplateFile$.</a>  
-        <a>See the</a>
     </div>
     <div class="w3-right">
         <a><Powered by</a>

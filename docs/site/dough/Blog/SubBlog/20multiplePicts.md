@@ -22,11 +22,11 @@ The pictures are stored in the global resource section, i.e. `/resources/templat
 The pictures are in the global resource section, because they are reused in the test site multiple times. 
 
 # a picture in the text. 
-The picture in the text is called with the regular markdown syntax `![Street in Vienna](image location)` for example 
+The picture in the text is called with the regular markdown syntax `![Street in Vienna](image location)` but is probably better included in a footnote[^pic1] to move to the side; captions can be set automatically[^cap]. 
 
-![Street in Vienna](/resources/img/134-3437_IMG.JPG)
+[^pic1]: ![Street in Vienna](/resources/img/134-3437_IMG.JPG)
 
-Note: a picture alone in a paragraph includes the caption automatically!
+[^cap]: A picture alone in a paragraph includes the caption automatically!
 
 # picture in the banner
 The picture at the top of the blog is called from the yaml header of the file and replaces the standard banner. It is inserted in the yaml header with the label `image`. 
