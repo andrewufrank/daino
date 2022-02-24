@@ -108,9 +108,34 @@
                 border-left:0.5rem solid #ccc;
                 padding:0.5rem
             }
-
-
-
+            .bottomleft {
+                position: absolute;
+                bottom: 8px;
+                left: 16px;
+                font-size: 18px;
+                }
+            @media (min-width:993px){.w3-modal-content{width:900px}.w3-hide-large{display:none!important}.w3-sidebar.w3-collapse{display:block!important}}
+            @media (max-width:992px) and (min-width:601px){.w3-hide-medium{display:none!important}}
+            @media (max-width:992px){.w3-sidebar.w3-collapse{display:none}.w3-main{margin-left:0!important;margin-right:0!important}.w3-auto{max-width:100%}}
+            .w3-bar-block .w3-dropdown-hover,.w3-bar-block .w3-dropdown-click{width:100%}
+            .w3-bar-block .w3-dropdown-hover .w3-dropdown-content,.w3-bar-block .w3-dropdown-click .w3-dropdown-content{min-width:100%}
+            .w3-bar-block .w3-dropdown-hover .w3-button,.w3-bar-block .w3-dropdown-click .w3-button{width:100%;text-align:left;padding:8px 16px}
+            .w3-main,#main{transition:margin-left .4s}
+            .w3-modal{z-index:3;display:none;padding-top:100px;position:fixed;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgb(0,0,0);background-color:rgba(0,0,0,0.4)}
+            .w3-modal-content{margin:auto;background-color:#fff;position:relative;padding:0;outline:0;width:600px}
+            .w3-bar{width:100%;overflow:hidden}.w3-center .w3-bar{display:inline-block;width:auto}
+            .w3-bar .w3-bar-item{padding:8px 16px;float:left;width:auto;border:none;display:block;outline:0}
+            .w3-bar .w3-dropdown-hover,.w3-bar .w3-dropdown-click{position:static;float:left}
+            .w3-bar .w3-button{white-space:normal}
+            .w3-bar-block .w3-bar-item{width:100%;display:block;padding:8px 16px;text-align:left;border:none;white-space:normal;float:none;outline:0}
+            .w3-bar-block.w3-center .w3-bar-item{text-align:center}.w3-block{display:block;width:100%}
+            .w3-right-align{text-align:right!important}
+            .w3-hoverable tbody tr:hover,.w3-ul.w3-hoverable li:hover{background-color:#ccc}.w3-centered tr th,.w3-centered tr td{text-align:center}
+            .w3-left{float:left!important}
+            .w3-right{float:right!important}
+            .w3-xxxlarge{font-size:48px!important}
+            .w3-display-container{position:relative;}
+            .w3-text-light-grey,.w3-hover-text-light-grey:hover,.w3-text-light-gray,.w3-hover-text-light-gray:hover{color:#f1f1f1!important}
     </style>
 </head>  
 
@@ -121,15 +146,15 @@
     $endfor$
 
 ​<!-- Head   under ribbon on top-->  $-- height limited to 300, how to adapt?
-<header class="w3-display-container ">
+<header class="w3-display-container">
     $if(image)$   $-- image in md yaml 
-        <img class="w3-image centerImage" src=$image$  style="object-fit: contain; max-height: 400px; height: auto; width: auto; "  
+        <img class="centerImage" src=$image$  style="object-fit: contain; max-height: 400px; height: auto; width: auto; "  
             alt="$imageCaption$">  $-- the image put into index.md
     $else$        $-- no image in head 
-        <img class="w3-image" src=$siteHeader.banner$ style="object-fit: contain;"
+        <img class="" src=$siteHeader.banner$ style="object-fit: contain;"
             alt="$siteHeader.bannerCaption$">  $-- the image put in the settings.yml
 
-    <div class="w3-display-bottomleft w3-padding-large w3-text-light-grey"; 
+    <div class="bottomleft w3-text-light-grey";  $--  w3-padding-large w3-text-light-grey
         display: flex;
         align-items:flex-start;>
         <h1 class="w3-hide-medium w3-hide-small w3-xxxlarge">$siteHeader.sitename$</h1>
@@ -141,7 +166,7 @@
 </header>
 
 <!-- Navbar ribbon (sits on top) -->
-<div class="sticky af-garden-light w3-container">
+<div class="sticky af-garden-light">
     <div class="w3-bar">
       <a href="/index.html" class=" w3-bar-item w3-button"><b>faviconMissing </b>$siteHeader.sitename$  </a>
       <!-- Float links to the right. Hide them on small screens -->
@@ -227,7 +252,7 @@ $-- </section>
 </article>
 
 <!-- footer -->
-<div class="af-garden-light w3-container .af-tiny" style="margin-top:24px;padding-right:58px ">  
+<div class="af-garden-light   .af-tiny" style="margin-top:24px;padding-right:58px ">  
     <div class="w3-left">  <!--  not including data, but version -->
         <a>Produced with SGG $ssgversion$ from $filename3$ ($visibility$, $version$) with $siteLayout.masterTemplateFile$.</a>  
     </div>
