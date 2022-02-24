@@ -40,6 +40,7 @@
 }
 
 /* Tufte CSS styles */
+/* this is the base for font sizes in rem */
 html {
     font-size: 15px;
 }
@@ -50,8 +51,8 @@ body {
     margin-right: auto;
     /* padding-left: 12.5%; seems not necessary for screens af*/
     font-family: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
-    background-color: #fffff8;
-    color: #111;
+    background-color: var(--base2, #fffff8);
+    color: var(--base03,#111);
     max-width: 1400px;
     counter-reset: sidenote-counter;
 }
@@ -95,7 +96,7 @@ hr {
     height: 1px;
     width: 55%;
     border: 0;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid var(--af-base, #ccc);
     margin: 1em 0;
     padding: 0;
 }
@@ -114,7 +115,7 @@ p.subtitle {
 }
 
 .danger {
-    color: red;
+    color: var(--red, red);
 }
 
 article {

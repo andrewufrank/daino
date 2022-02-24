@@ -62,12 +62,15 @@
             --main-color: #06c;
             --accent-color: #006;
             --af-garden-light: #eefbb5; 
-            --af-base:  #ccc;   $-- lighter gray than base1
-            --af-light: #f1f1f1;  $-- same as base3?
+            --af-base:  #ccc;     /*lighter gray than base1 */
+            --af-light: #f1f1f1;  /* same as base3 */
 
+            --base2:     #eee8d5;  /* nearly white */
+            --base03:  #073642; /* nearly black */
+            --red: #dc322f; 
 
-            --small-limit: 480px;
-            --medium-limit: 1000px;
+            --limit-small: 480px;
+            --limit-medium: 1000px;
         
         }
 
@@ -122,7 +125,7 @@
                 font-size: 18px;
                 }
             @media (min-width:993px){.w3-modal-content{width:900px}.w3-hide-large{display:none!important}.w3-sidebar.w3-collapse{display:block!important}}
-            @media (max-width:992px) and (min-width:601px){.w3-hide-medium{display:none!important}}
+            @media (max-width:var(--limit-medium)) and (min-width:var(--limit-small)){.w3-hide-medium{display:none!important}}
             @media (max-width:992px){.w3-sidebar.w3-collapse{display:none}.w3-main{margin-left:0!important;margin-right:0!important}.w3-auto{max-width:100%}}
             .w3-bar-block .w3-dropdown-hover,.w3-bar-block .w3-dropdown-click{width:100%}
             .w3-bar-block .w3-dropdown-hover .w3-dropdown-content,.w3-bar-block .w3-dropdown-click .w3-dropdown-content{min-width:100%}
@@ -147,13 +150,14 @@
                     .w3-cell-row:before,.w3-cell-row:after,.w3-clear:after,.w3-clear:before,.w3-bar:before,.w3-bar:after{content:"";display:table;clear:both}
             .w3-text-light-grey,.w3-hover-text-light-grey:hover,.w3-text-light-gray,.w3-hover-text-light-gray:hover{color:var(--af-light)!important}
 
-            @media only screen and (max-width: var(--small-limit)) {
-                        html { font-size: 10px; }  $-- overrides tufte's 15px
-                }
-            @media only screen and (max-width: var(--medium-limit)) {
-                    html { font-size: 12px; }  $-- overrides tufte's 15px
-            }
+                $-- order media queries from large to small, later overrides earlier ones!
             html { font-size: 14px; }  $-- overrides tufte's 15px
+            @media only screen and (max-width: var(--limit-medium)) {
+                    html { font-size: 12px; }  $-- overrides14px
+            }
+            @media only screen and (max-width: var(--limit-small)) {
+                        html { font-size: 10px; }  $-- overrides 12px
+                }
 
     </style>
 </head>  
