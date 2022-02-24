@@ -68,12 +68,13 @@
             --base2:     #eee8d5;  /* nearly white */
             --base03:  #073642; /* nearly black */
             --red: #dc322f; 
-
+            --link-color: #567e30;
             --limit-small: 480px;
             --limit-medium: 1000px;
         
         }
-
+        .light-background {color: var(--af-garden-light);
+        }
 
         div.sticky {
           position: -webkit-sticky;
@@ -189,9 +190,9 @@
 </header>
 
 <!-- Navbar ribbon (sits on top) -->
-<div class="sticky" style="background-color: var(--af-garden-light)">
+<div class="sticky light-background" >
     <div class="w3-bar">  $-- removed w3-button
-      <a href="/index.html" class=" w3-bar-item "><b>faviconMissing </b>$siteHeader.sitename$  </a>
+      <a href="/resources/img/squared16.ico" class=" w3-bar-item " alt="favicon not found"><b></b>$siteHeader.sitename$  </a>
       <!-- Float links to the right. Hide them on small screens -->
       <div class="w3-right w3-hide-small">
         $for(menuitems.menuNav)$  $-- removed w3-button
@@ -241,41 +242,45 @@
 
     <section>   
         $content3$  <!--content-from-panrep-blocks which is the content of the index.md -->
-    </section>   
+    
     $afterContent$
 
     $for(include-after)$
         $include-after$includeAfterX
     $endfor$
 
-   <!-- menu section  -->
-    <ul class="w3-ul w3-hoverable">
-            $for(menu2files)$ 
-                <li>     <!-- list item menu2files:  -->
-                <a href=/$menu2files.link2$><em>$menu2files.title2$ </em></a>
-                $if(menu2files.abstract2)$<br>$menu2files.abstract2$
-                <a href=/$menu2files.pdf2$>  (view as pdf)</a>
-                $endif$		     
-                <span class="af-tiny">$menu2files.author2$ $menu2files.date2$ 
-                    </span>
-                </li>
-            $endfor$ 
-            $if(menu2subdir)$ 
-                <p>Directories with more related blogs:</p>
-                $for(menu2subdir)$ 
-                <li> 
-                    <a href=/$menu2subdir.link2$><em>$menu2subdir.title2$</em></a>
-                $if(menu2subdir.abstract2)$<br>$menu2subdir.abstract2$$endif$		
-                    
-                </li>
-                $endfor$
-            $endif$
-    </ul>
-$-- </section>
+        <!-- menu section  -->
+        <ul class="w3-ul w3-hoverable">
+                $for(menu2files)$ 
+                    <li>     <!-- list item menu2files:  -->
+                    <a href=/$menu2files.link2$><em>$menu2files.title2$ </em></a>
+                    $if(menu2files.abstract2)$<br>$menu2files.abstract2$
+                    <a href=/$menu2files.pdf2$>  (view as pdf)</a>
+                    $endif$		     
+                    <span class="af-tiny">$menu2files.author2$ $menu2files.date2$ 
+                        </span>
+                    </li>
+                $endfor$ 
+        </ul>
+                 
+        $if(menu2subdir)$ 
+        <p>Directories with more related blogs:</p>
+        <ul class="w3-ul w3-hoverable">
+                    $for(menu2subdir)$ 
+                    <li> 
+                        <a href=/$menu2subdir.link2$><em>$menu2subdir.title2$</em></a>
+                    $if(menu2subdir.abstract2)$<br>$menu2subdir.abstract2$$endif$		
+                        
+                    </li>
+                    $endfor$
+        $endif$
+        </ul>
+
+    </section>
 </article>
 
 <!-- footer -->
-<div class=" w3-container af-tiny" style="background-color: var(--af-garden-light);margin-top:24px;padding-right:58px ">  
+<div class=" w3-container af-tiny light-background" style="margin-top:24px;padding-right:58px ">  
     <div class="w3-left">  <!--  not including data, but version -->
         <a>Produced with SGG $ssgversion$ from $filename3$ ($visibility$, $version$) with $siteLayout.masterTemplateFile$.</a>  
     </div>
