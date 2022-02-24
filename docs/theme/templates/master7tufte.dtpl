@@ -58,6 +58,11 @@
     <title>$siteHeader.sitename$</title>  $-- simple (for now?)
 
     <style>
+        :root {
+            --main-color: #06c;
+            --accent-color: #006;
+}
+
         div.sticky {
           position: -webkit-sticky;
           position: sticky;
