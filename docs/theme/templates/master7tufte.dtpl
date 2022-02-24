@@ -32,8 +32,8 @@
     
     $-- two w3c related stylesheets before the tufte one  
 
-    <link rel="stylesheet" href="/resources/templates/static/w3c.css" type="text/css">  
-    <link rel="stylesheet" href="/resources/templates/static/ssg_ext_w3c.css" type="text/css">  
+    <!-- <link rel="stylesheet" href="/resources/templates/static/w3c.css" type="text/css">   -->
+    <!-- <link rel="stylesheet" href="/resources/templates/static/ssg_ext_w3c.css" type="text/css">   -->
 
     <link rel="stylesheet" href="/resources/templates/static/tufte.css"/>  
     <link rel="stylesheet" href="/resources/templates/static/tufte-extra.css"/>   
@@ -135,6 +135,9 @@
             .w3-right{float:right!important}
             .w3-xxxlarge{font-size:48px!important}
             .w3-display-container{position:relative;}
+            .w3-container,.w3-panel{padding:0.01em 16px}
+            .w3-container:after,.w3-container:before,.w3-panel:after,.w3-panel:before,.w3-row:after,.w3-row:before,.w3-row-padding:after,.w3-row-padding:before,
+                    .w3-cell-row:before,.w3-cell-row:after,.w3-clear:after,.w3-clear:before,.w3-bar:before,.w3-bar:after{content:"";display:table;clear:both}
             .w3-text-light-grey,.w3-hover-text-light-grey:hover,.w3-text-light-gray,.w3-hover-text-light-gray:hover{color:#f1f1f1!important}
     </style>
 </head>  
@@ -167,12 +170,12 @@
 
 <!-- Navbar ribbon (sits on top) -->
 <div class="sticky af-garden-light">
-    <div class="w3-bar">
-      <a href="/index.html" class=" w3-bar-item w3-button"><b>faviconMissing </b>$siteHeader.sitename$  </a>
+    <div class="w3-bar">  $-- removed w3-button
+      <a href="/index.html" class=" w3-bar-item "><b>faviconMissing </b>$siteHeader.sitename$  </a>
       <!-- Float links to the right. Hide them on small screens -->
       <div class="w3-right w3-hide-small">
-        $for(menuitems.menuNav)$
-        <a href=/$menuitems.menuNav.navlink$ class="w3-bar-item w3-button">$menuitems.menuNav.navtext$</a>
+        $for(menuitems.menuNav)$  $-- removed w3-button
+        <a href=/$menuitems.menuNav.navlink$ class="w3-bar-item">$menuitems.menuNav.navtext$</a>
         $endfor$
       </div>
     </div>
@@ -252,7 +255,7 @@ $-- </section>
 </article>
 
 <!-- footer -->
-<div class="af-garden-light   .af-tiny" style="margin-top:24px;padding-right:58px ">  
+<div class="af-garden-light w3-container  .af-tiny" style="margin-top:24px;padding-right:58px ">  
     <div class="w3-left">  <!--  not including data, but version -->
         <a>Produced with SGG $ssgversion$ from $filename3$ ($visibility$, $version$) with $siteLayout.masterTemplateFile$.</a>  
     </div>
