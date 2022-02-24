@@ -64,10 +64,13 @@
             --af-garden-light: #eefbb5; 
             --af-base:  #ccc;   $-- lighter gray than base1
             --af-light: #f1f1f1;  $-- same as base3?
+
+
+            --small-limit: 480px;
+            --medium-limit: 1000px;
         
         }
 
-}
 
         div.sticky {
           position: -webkit-sticky;
@@ -81,8 +84,8 @@
             font-size: 0.7rem;
             line-height: 1.5;
         }
-            
-            .base03  { background-color: #002b36; }
+         /* replace with vars    */
+            /* .base03  { background-color: #002b36; }
             .base02  { background-color: #073642; }
             .base01  { background-color: #586e75; }
             .base00  { background-color: #657b83; }
@@ -97,7 +100,7 @@
             .violet  { background-color: #6c71c4; }
             .blue    { background-color: #268bd2; }
             .cyan    { background-color: #2aa198; }
-            .green   { background-color: #859900; }
+            .green   { background-color: #859900; } */
 
             $-- to avoid blockquotes only halfway rendered (see https://github.com/jez/pandoc-sidenote/issues/4)
             span.blockquote, span.sourceCode {
@@ -143,6 +146,15 @@
             .w3-container:after,.w3-container:before,.w3-panel:after,.w3-panel:before,.w3-row:after,.w3-row:before,.w3-row-padding:after,.w3-row-padding:before,
                     .w3-cell-row:before,.w3-cell-row:after,.w3-clear:after,.w3-clear:before,.w3-bar:before,.w3-bar:after{content:"";display:table;clear:both}
             .w3-text-light-grey,.w3-hover-text-light-grey:hover,.w3-text-light-gray,.w3-hover-text-light-gray:hover{color:var(--af-light)!important}
+
+            @media only screen and (max-width: var(--small-limit)) {
+                        html { font-size: 10px; }  $-- overrides tufte's 15px
+                }
+            @media only screen and (max-width: var(--medium-limit)) {
+                    html { font-size: 12px; }  $-- overrides tufte's 15px
+            }
+            html { font-size: 14px; }  $-- overrides tufte's 15px
+
     </style>
 </head>  
 
