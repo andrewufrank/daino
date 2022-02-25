@@ -8,15 +8,21 @@ version: publish
 visibility: public
 ---
 
-## goal-section
+## goal-section: How to use header levels
 This file should show how to use the header levels in a blog. It also demonstrates the placement of title. 
 This example is experimental and different from other `md` files. It uses `h1` for the title and `h2` of the sections, corresponding to `##` (and so forth). 
 
+### HTML output
 There are two conventions in the Pandoc community, depending on how the source material is initially written. Some start with the title and go to `#` for the sections, other used `#` for the title and go to `##` for the sections. Given that SSG assumes that there is a `yml` header, including the title and abstract (which is useful to list the blogs in directories), the suggested standard would be the first and not as shown here. 
 
 The decision is influencing the presentation^[The different header levels introduce different amounts of vertical space for separation] and for the output as pdf.
 
-Footnotes and references will be dealt with later. 
+### PDF output
+Using `#` for title gives the expected title^[The title is taken from the `yaml` header!], but the secions are numbered as "0.1 goal-section" etc. 
+
+The alternative, with `#` for sections give regularly numbered section: "1 goal". 
+
+<!-- Footnotes and references will be dealt with later.  -->
 
 ## titles-section
 The title of is set in the header (with title:) and is used to head the full text. There is only one title text (in the header) which is used both for the html and the pdf version output.

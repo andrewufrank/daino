@@ -19,7 +19,7 @@ Pay attention to the colon[^e] immediately after the closing bracket.
 
 [^e]: This is an example footnote.
 
-Alternatively, a footnote can be written in-line with the text as `^[text]`, for example ^[inline footnote example].
+Alternatively, a footnote can be written in-line with the text as `^[text]`, for example^[inline footnote example]. Attention: no space between the last word and the `^`!
 
 # Text ornaments
 ## Super and subscripts
