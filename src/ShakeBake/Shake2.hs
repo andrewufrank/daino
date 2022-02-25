@@ -160,6 +160,9 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         imgs2 <- getNeeds debug layout doughP bakedP "JPG" "JPG"
         needP imgs
         needP imgs2
+        -- fonts, takes only the woff
+        woffs <- getNeeds debug layout doughP bakedP "woff" "woff"
+        needP woffs
         publist <- getNeeds debug layout doughP bakedP "html" "html"
         needP publist
         -- for the pdfs which are already given in dough
@@ -257,6 +260,9 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
             copyFileToBaked debug doughP bakedP out
 
     (toFilePath bakedP <> "**/*.bib")
+        %> \out -> copyFileToBaked debug doughP bakedP out
+    -- the fonts
+    (toFilePath bakedP <> "**/*.woff")
         %> \out -> copyFileToBaked debug doughP bakedP out
 
 getNeeds ::

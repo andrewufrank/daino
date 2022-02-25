@@ -10,6 +10,7 @@
             --base2:     #eee8d5;  /* nearly white */
             --base03:  #073642; /* nearly black */
             --red: #dc322f; 
+
             --link-color: #567e30;
             --limit-small: 480px;
             --limit-medium: 1000px;
@@ -48,7 +49,7 @@
             .cyan    { background-color: #2aa198; }
             .green   { background-color: #859900; } */
 
-            $-- to avoid blockquotes only halfway rendered (see https://github.com/jez/pandoc-sidenote/issues/4)
+          /* to avoid blockquotes only halfway rendered (see https://github.com/jez/pandoc-sidenote/issues/4) */
             span.blockquote, span.sourceCode {
                 display:block;
                 float:left;
@@ -93,11 +94,12 @@
                     .w3-cell-row:before,.w3-cell-row:after,.w3-clear:after,.w3-clear:before,.w3-bar:before,.w3-bar:after{content:"";display:table;clear:both}
             .w3-text-light-grey,.w3-hover-text-light-grey:hover,.w3-text-light-gray,.w3-hover-text-light-gray:hover{color:var(--af-light)!important}
 
-                $-- order media queries from large to small, later overrides earlier ones!
-            html { font-size: 14px; }  $-- overrides tufte's 15px
+                /* order media queries from large to small, later overrides earlier ones! */
+                
+            html { font-size: 14px; }   
             @media only screen and (max-width: var(--limit-medium)) {
-                    html { font-size: 12px; }  $-- overrides14px
+                    html { font-size: 12px; }   
             }
             @media only screen and (max-width: var(--limit-small)) {
-                        html { font-size: 10px; }  $-- overrides 12px
+                        html { font-size: 10px; }  
                 }
