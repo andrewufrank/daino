@@ -44,6 +44,12 @@
 
     <meta name="description" content="The HomePage of $settingsAuthor$ with address, url, cv and publications."/>
 
+    $-- the favicon should be in img
+    <link rel="icon" type="image/jpeg" href="/resources/img/squared16.jpg" sizes="16x16">
+    <link rel="icon" type="image/jpeg" href="/resources/img/squared32.jpg" sizes="32x32">
+    <link rel="icon" type="image/jpeg" href="/resources/img/squared64.jpg" sizes="64x64">
+    <link rel="icon" type="image/jpeg" href="/resources/img/squared152.jpg" sizes="152x152">
+
     $for(settingsAuthor)$
     <meta name="author" content="$settingsAuthor$" />  
     $endfor$
@@ -57,7 +63,8 @@
     $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itlenotset</title>
         $-- only siteHeader.sitename is set
     <title>$siteHeader.sitename$</title>  $-- simple (for now?)
-
+    $-- the favicon should be in img
+ 
     <style>
     
     </style>
@@ -92,8 +99,8 @@
 <!-- Navbar ribbon (sits on top) -->
 <div class="sticky light-background" >
     <div class="w3-bar">  $-- removed w3-button
-      <a href="/resources/img/squared16.ico" class=" w3-bar-item " alt="favicon not found"><b></b>$siteHeader.sitename$  </a>
-      <!-- Float links to the right. Hide them on small screens -->
+        <a href="/index.html" class=" w3-bar-item ">$siteHeader.sitename$</a>
+        <!-- Float links to the right. Hide them on small screens -->
       <div class="w3-right w3-hide-small">
         $for(menuitems.menuNav)$  $-- removed w3-button
         <a href=/$menuitems.menuNav.navlink$ class="w3-bar-item">$menuitems.menuNav.navtext$</a>
