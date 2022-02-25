@@ -1,6 +1,6 @@
 ---
 title: Layout with multiple pictures
-abstract: Example Layout to show how to use include multiple pictures, one in the banner and two included with text.
+abstract: Example layout to show how to use include multiple pictures, one in the banner and two included with text.
 author: AUF
 date: 2022-02-18
 keywords: layout
@@ -26,13 +26,15 @@ The picture in the text is called with the regular markdown syntax `![Street in 
 
 [^pic1]: ![Street in Vienna](/resources/img/134-3437_IMG.JPG)
 
-[^cap]: A picture alone in a paragraph includes the caption automatically!
+[^cap]: A picture alone in a paragraph includes the caption automatically - but not in a sidenote!
 
 # picture in the banner
 The picture at the top of the blog is called from the yaml header of the file and replaces the standard banner. It is inserted in the yaml header with the label `image`. 
 
 # another picture in the text
-without much text ![Three girls and dog](/resources/img/121-2128_IMG.JPG)
+without much text but a caption.
+
+![Misty landscape](/resources/img/121-2128_IMG.JPG)
 
 # Picture placement
 

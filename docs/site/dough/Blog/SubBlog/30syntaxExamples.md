@@ -1,6 +1,6 @@
 ---
 title: Examples of the markdown syntax which can be used in SSG
-abstract: "Example for different not so obvious markdown syntaxes: footnotes, inline notes, fenced code blocks."
+abstract: "List of available markdown syntax extensions: footnotes, inline notes, fenced code blocks."
 author: AUF
 date: 2022-02-18
 keywords: layout

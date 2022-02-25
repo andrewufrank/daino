@@ -126,7 +126,7 @@
             $if(author)$ 
                 <p class="subtitle">$author$</p>   
             $endif$
-        $endif$
+       $endif$
 
         <!-- <section  style="padding-left: 40px;" >  $-- abstracts and tableof contente after 
             title   -->
@@ -142,10 +142,13 @@
             $if(abstract)$
                 <p>
                     <a>$abstract$</a>
-                    <a href=/$linkpdf3$>  (view as pdf)</a>
+                    <a href=/$linkpdf3$>  (pdf)</a>
                 </p>
             $endif$
-        $-- </section> 
+            $if(date)$ 
+                <p class="subtitle">$date$</p>   
+            $endif$
+         $-- </section> 
     <!-- end title of entry -->
 
     <section>   $-- necessary for sidenotes to work
@@ -164,7 +167,7 @@
                     <li>     <!-- list item menu2files:  -->
                     <a href=/$menu2files.link2$><em>$menu2files.title2$ </em></a>
                     $if(menu2files.abstract2)$<br>$menu2files.abstract2$
-                    <a href=/$menu2files.pdf2$>  (view as pdf)</a>
+                    <a href=/$menu2files.pdf2$>  (pdf)</a>
                     $endif$		     
                     <span class="af-tiny">$menu2files.author2$ $menu2files.date2$ 
                         </span>
