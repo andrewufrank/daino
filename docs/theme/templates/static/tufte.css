@@ -69,8 +69,9 @@ body {
 
 h1 {
     font-weight: 400;
-    margin-top: 4rem;
-    margin-bottom: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    /* reduced was 4rem and 1.5rem */
     font-size: 3.2rem;
     line-height: 1;
 }
@@ -121,12 +122,14 @@ p.subtitle {
 }
 
 article {
-    padding: 5rem 0rem;
+    padding: 1rem 0rem; 
+    /*  reduced was 5rem */
 }
 
 section {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    /* reduced was 1 rem */
 }
 
 p,

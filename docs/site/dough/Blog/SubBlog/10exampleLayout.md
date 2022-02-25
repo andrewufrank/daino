@@ -8,33 +8,38 @@ version: publish
 visibility: public
 ---
 
-# goal-section
+## goal-section
 This file should show how to use the header levels in a blog. It also demonstrates the placement of title. 
+This example is experimental and different from other `md` files. It uses `h1` for the title and `h2` of the sections, corresponding to `##` (and so forth). 
+
+There are two conventions in the Pandoc community, depending on how the source material is initially written. Some start with the title and go to `#` for the sections, other used `#` for the title and go to `##` for the sections. Given that SSG assumes that there is a `yml` header, including the title and abstract (which is useful to list the blogs in directories), the suggested standard would be the first and not as shown here. 
+
+The decision is influencing the presentation^[The different header levels introduce different amounts of vertical space for separation] and for the output as pdf.
 
 Footnotes and references will be dealt with later. 
 
-# titles-section
+## titles-section
 The title of is set in the header (with title:) and is used to head the full text. There is only one title text (in the header) which is used both for the html and the pdf version output.
 
-## abstract-subsection
+### abstract-subsection
 After the title follows the text given as abstract in the yaml header (after: abstract). Again, this is used for html and pdf produced. 
 
-# header levels-section
+## header levels-section
 The header level 1 (with on `#`) is marking sections - first subdivision. 
 
-## subsection
+### subsection
 Subsections are marked with two `#`.
 
-### subsubsections 
+#### subsubsections 
 marked with 3 `#`. but when necessary,
 
-#### subsubsubsections 
+##### subsubsubsections 
 marked with 4 `#` are possible as are 
 
-##### further
+###### further
 a further subdivision is possible with five `#` marks. 
 
-# title numbering
+## title numbering
 The titles are not numbered. This could be changed - TODO
 
 

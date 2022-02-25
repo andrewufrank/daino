@@ -10,8 +10,9 @@ section {
   padding-bottom: initial;
 }
 article > section {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+  /* reduced was 1rem */
 }
 
 /* Make byline (date and/or author) small */

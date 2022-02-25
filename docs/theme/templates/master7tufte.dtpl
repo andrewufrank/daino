@@ -92,6 +92,7 @@
         <h2 class="w3-hide-large" style="white-space:nowrap">$siteHeader.sitename$</h5>
         <h3 class="w3-hide-medium w3-hide-small">$siteHeader.byline$</h3> 
                 $-- byline is not shown on small screens
+                $-- could be p.byline see pandoc.css
       </div>
     $endif$
 </header>
@@ -116,7 +117,7 @@
     <!-- <section  class="w3-grey"  style="max-width:900px">  title section  -->
 
         <!-- here starts the tufte styled content  --------------------------------------------  -->
-<article> 
+<article class="group"> 
         $if(title)$
                 <h1 id="tufte-css" >$title$</h1> $-- removed w3-padding
             $if(subtitle)$
@@ -147,7 +148,7 @@
         $-- </section> 
     <!-- end title of entry -->
 
-    <section>   
+    <section>   $-- necessary for sidenotes to work
         $content3$  <!--content-from-panrep-blocks which is the content of the index.md -->
     
     $afterContent$
@@ -155,7 +156,8 @@
     $for(include-after)$
         $include-after$includeAfterX
     $endfor$
-
+    </section> 
+    <section> 
         <!-- menu section  -->
         <ul class="w3-ul w3-hoverable">
                 $for(menu2files)$ 
