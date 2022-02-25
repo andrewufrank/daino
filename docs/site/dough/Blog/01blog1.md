@@ -1,5 +1,5 @@
 ---
-abstract: 01blog1 abstract Ein Blog ohne Sinn auf Deutsch mit einem ae im abstract
+abstract: 01blog1 abstract Ein Blog ohne Sinn auf Deutsch mit einem ä im abstract
         und einer zweiten zeile im abstract
 author: AUF
 date: 2020-06-18
@@ -19,9 +19,9 @@ und auch ein bischen text.
 
 ### level3 mit einem unterabschnitt
 hier ist der text für den unterabschnitt.
-und der 
+und der
 #### level 4
-und dann 
+und dann
 ##### level 5
 
 das wärs. es fehlt Referenzen, listen und ähnliches
