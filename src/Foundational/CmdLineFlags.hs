@@ -24,10 +24,10 @@ module Foundational.CmdLineFlags
     (module Foundational.CmdLineFlags
     , def ) where
 
-import UniformBase
-import Data.Default.Class -- to define a default class for pub flags 
-import Foundational.SettingsPage
-import Uniform.Json
+import UniformBase ( Text, Zeros(zero) )
+import Data.Default.Class ( Default(..) ) -- to define a default class for pub flags 
+-- import Foundational.SettingsPage
+-- import Uniform.Json
 
 progName :: Text
 progName = "SSG"  

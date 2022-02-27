@@ -25,8 +25,8 @@ module Foundational.SettingsPage
     , def ) where
 
 import UniformBase
-import Data.Default.Class -- to define a default class for pub flags 
-import Uniform.Json
+import Data.Default.Class ( Default(def) ) -- to define a default class for pub flags 
+import Uniform.Json ( FromJSON, ToJSON )
 
 progName :: Text
 progName = "SSG"  

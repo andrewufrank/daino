@@ -93,7 +93,7 @@ getDirContent2dirs_files debug pubf layout doughP   indexpageFn = do
                 . filter (hasExtension extMD)  
                 $ files1
     when (inform debug) $ putIOwords ["getDirContent2dirs files2", showPretty files2]
-    let hpname = blogAuthorToSuppress layout
+    -- let hpname = blogAuthorToSuppress layout
     ixfiles <- mapM (getFile2index debug pubf doughP ) files2
 
     when (inform debug) $ putIOwords ["getDirContent2dirs ixfiles", showPretty ixfiles]
