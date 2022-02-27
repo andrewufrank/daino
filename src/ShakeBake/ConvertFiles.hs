@@ -22,7 +22,7 @@ module ShakeBake.ConvertFiles where
 import ShakeBake.Bake
 
 import Foundational.Filetypes4sites
-import Foundational.LayoutFlags
+import Foundational.SettingsPage
 import Foundational.CmdLineFlags
 
 import Uniform.Pandoc

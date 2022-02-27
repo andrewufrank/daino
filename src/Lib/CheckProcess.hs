@@ -11,7 +11,7 @@ module Lib.CheckProcess where
 
 import UniformBase
 import ShakeBake.ReadSettingFile  
-import Foundational.LayoutFlags
+import Foundational.SettingsPage
 import System.Directory.Recursive
 import Uniform.Pandoc
 -- import Foundational.Filetypes4sites  

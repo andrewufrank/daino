@@ -21,7 +21,7 @@ import UniformBase
 import Uniform.CmdLineArgs   -- from u2to 
   
 import Foundational.CmdLineFlags 
--- import Foundational.LayoutFlags 
+-- import Foundational.SettingsPage 
 import Foundational.MetaPage
 -- import Options.Applicative.Builder()
 

@@ -19,7 +19,7 @@
 -}
 module ShakeBake.Bake where
 
-import Foundational.LayoutFlags  
+import Foundational.SettingsPage  
 import Foundational.CmdLineFlags
 
 import Foundational.Filetypes4sites

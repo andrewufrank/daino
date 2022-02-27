@@ -33,7 +33,7 @@ module Wave.Docrep2panrep (
 
 -- import Data.Default
 import Foundational.Filetypes4sites
-import Foundational.LayoutFlags
+import Foundational.SettingsPage
 import Foundational.CmdLineFlags
 
 import Foundational.MetaPage

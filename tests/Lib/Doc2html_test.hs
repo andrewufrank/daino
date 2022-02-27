@@ -7,7 +7,7 @@
 module Lib.Doc2html_test where
 
 import Foundational.Filetypes4sites
-import Foundational.LayoutFlags
+import Foundational.SettingsPage
 import Foundational.MetaPage
 import Lib.IndexCollect
 import Lib.Md2doc_test

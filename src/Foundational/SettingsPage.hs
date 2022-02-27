@@ -20,8 +20,8 @@
 
  content dirs are those, which have *.md files
 -}
-module Foundational.LayoutFlags
-    (module Foundational.LayoutFlags
+module Foundational.SettingsPage
+    (module Foundational.SettingsPage
     , def ) where
 
 import UniformBase

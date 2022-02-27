@@ -14,7 +14,7 @@ module Lib.ReadSettingFile_test where
 import           Test.Framework hiding (Result)
 import           Uniform.Test.TestHarness hiding (Result)
 import UniformBase 
-import Foundational.LayoutFlags
+import Foundational.SettingsPage
 import Foundational.Filetypes4sites
 
 import Uniform.Yaml

@@ -13,7 +13,7 @@ module Lib.Md2doc_test
 import Test.Framework
 import Uniform.Test.TestHarness
 import Foundational.MetaPage 
-import Foundational.LayoutFlags
+import Foundational.SettingsPage
 import Foundational.Filetypes4sites
 import Wave.Md2doc
 import Uniform.Pandoc

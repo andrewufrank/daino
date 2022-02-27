@@ -54,7 +54,7 @@ module ShakeBake.Shake2 where
 
 import           Uniform.Shake
 
-import Foundational.LayoutFlags
+import Foundational.SettingsPage
     ( SiteLayout(doughDir, bakedDir, doNotPublish),
       Settings(siteLayout) )
 import Foundational.CmdLineFlags

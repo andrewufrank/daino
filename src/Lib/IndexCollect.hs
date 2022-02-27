@@ -30,7 +30,7 @@ import UniformBase
 
 import Wave.Md2doc 
 -- import ShakeBake.Bake (readMarkdownFile2docrep)
-import Foundational.LayoutFlags
+import Foundational.SettingsPage
 
 
 

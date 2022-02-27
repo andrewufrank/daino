@@ -32,7 +32,7 @@ module Foundational.MetaPage (
 
 -- import Data.Aeson.Types
 import Data.Default.Class  
-import Foundational.LayoutFlags  
+import Foundational.SettingsPage  
 -- import Foundational.Filetypes4sites(extPDF, extHTML)
 -- import Lib.CmdLineArgs (PubFlags (..))
 import Uniform.Json

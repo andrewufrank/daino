@@ -28,8 +28,8 @@ library
   exposed-modules:
       Foundational.CmdLineFlags
       Foundational.Filetypes4sites
-      Foundational.LayoutFlags
       Foundational.MetaPage
+      Foundational.SettingsPage
       Lib.CheckProcess
       Lib.IndexCollect
       Lib.IndexMake

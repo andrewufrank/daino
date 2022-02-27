@@ -26,7 +26,7 @@ module Foundational.CmdLineFlags
 
 import UniformBase
 import Data.Default.Class -- to define a default class for pub flags 
-import Foundational.LayoutFlags
+import Foundational.SettingsPage
 import Uniform.Json
 
 progName :: Text

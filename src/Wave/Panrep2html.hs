@@ -33,7 +33,7 @@ module Wave.Panrep2html (
 
 -- import Data.Default
 import Foundational.Filetypes4sites
-import Foundational.LayoutFlags
+import Foundational.SettingsPage
 import Foundational.MetaPage
 import GHC.Generics (Generic)
 
