@@ -20,7 +20,8 @@ module ShakeBake.CmdLineArgs where
 import UniformBase
 import Uniform.CmdLineArgs   -- from u2to 
   
-import Foundational.LayoutFlags 
+import Foundational.CmdLineFlags 
+-- import Foundational.LayoutFlags 
 import Foundational.MetaPage
 -- import Options.Applicative.Builder()
 

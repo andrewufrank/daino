@@ -17,7 +17,9 @@
 module Main where -- must have Main (main) or Main where
 
 import ShakeBake.CmdLineArgs ( parseArgs2input )  
-import Foundational.LayoutFlags ( PubFlags, sourceDirTestSite )  
+import Foundational.LayoutFlags (sourceDirTestSite )  
+import Foundational.CmdLineFlags
+
 import ShakeBake.StartSSGprocess ( ssgProcess )  
 -- import Uniform.StartApp ( startProgWithTitle )  
 import UniformBase 
@@ -47,7 +49,7 @@ main =
                         , "\n -t test (use data in package, continue)"
                         , "\n -T test (use data in package, fresh start)"
                         , "\n -q quick (not producing the pdfs, which is slowing down)"
-                        , "\n -w start to watch the files for changes and rebake (implies -s s cancels -u"
+                        , "\n -w start to watch the files for changes and rebake (implies -s"
                         , "\n -s start local server (port is fixed in siteHeader)"
                         -- , "\n -u upload to external server (not yet implemented"
                         ]

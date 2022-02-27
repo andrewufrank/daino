@@ -26,6 +26,7 @@ source-repository head
 
 library
   exposed-modules:
+      Foundational.CmdLineFlags
       Foundational.Filetypes4sites
       Foundational.LayoutFlags
       Foundational.MetaPage

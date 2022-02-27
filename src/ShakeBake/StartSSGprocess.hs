@@ -28,6 +28,8 @@ import ShakeBake.Shake2 (shakeAll)
 import ShakeBake.Watch (mainWatch)
 import Uniform.WebServer (runScotty)
 import Foundational.LayoutFlags
+import Foundational.CmdLineFlags
+
 import UniformBase
 
 ssgProcess :: NoticeLevel -> PubFlags -> ErrIO ()

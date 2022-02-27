@@ -23,6 +23,8 @@ import ShakeBake.Bake
 
 import Foundational.Filetypes4sites
 import Foundational.LayoutFlags
+import Foundational.CmdLineFlags
+
 import Uniform.Pandoc
 
 import Uniform.Shake

@@ -28,6 +28,7 @@ import Foundational.MetaPage
     -- ( MetaPage(dyFn, dyBibliography, dyStyle, dyVersion), pandoc2MetaPage )
 import Foundational.Filetypes4sites ( Docrep(Docrep), meta1)
 import Foundational.LayoutFlags
+import Foundational.CmdLineFlags
 import Uniform.Pandoc
     -- ( pandocProcessCites,
     --   Pandoc,

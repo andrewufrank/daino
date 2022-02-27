@@ -24,6 +24,8 @@ import Foundational.Filetypes4sites ( Docrep(Docrep) )
 import Foundational.MetaPage
     ( IndexEntry(link, dirEntries, fileEntries),
       MetaPage(dyIndexEntry) )
+import Foundational.CmdLineFlags
+
 import UniformBase
 
 import Wave.Md2doc 

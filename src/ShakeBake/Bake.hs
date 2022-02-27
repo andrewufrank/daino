@@ -20,6 +20,8 @@
 module ShakeBake.Bake where
 
 import Foundational.LayoutFlags  
+import Foundational.CmdLineFlags
+
 import Foundational.Filetypes4sites
 
 import Wave.Docrep2panrep 

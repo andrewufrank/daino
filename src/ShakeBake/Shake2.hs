@@ -56,8 +56,8 @@ import           Uniform.Shake
 
 import Foundational.LayoutFlags
     ( SiteLayout(doughDir, bakedDir, doNotPublish),
-      Settings(siteLayout),
-      PubFlags(quickFlag) )
+      Settings(siteLayout) )
+import Foundational.CmdLineFlags
       
 import ShakeBake.ConvertFiles
     ( io2bool, convertAny, copyFileToBaked )
