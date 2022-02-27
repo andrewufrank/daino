@@ -17,7 +17,7 @@ import Uniform.Pandoc
 import Uniform.Test.TestHarness
 import Uniform.Http
 import UniformBase
-import Wave.Doc2html
+-- import Wave.Doc2html
 
 -- not working ok, because the file names are not corresponding
 -- to the path given

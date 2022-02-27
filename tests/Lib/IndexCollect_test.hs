@@ -42,9 +42,9 @@ testing_initializeIx f1 = test1File "ssg"
     (f1 <> "_meta" ) (f1 <> "_ix" ) (initializeIndex )
 test_initializeIx_index = testing_initializeIx "index"
 
-testing_complete f1 =  test1FileIO "ssg"   
-    (f1 <> "_ix" )(f1 <> "_ixComp")
-        (completeIndex NoticeLevel0 doughPL bakedPL)
+-- testing_complete f1 =  test1FileIO "ssg"   
+--     (f1 <> "_ix" )(f1 <> "_ixComp")
+--         (completeIndex NoticeLevel0 doughPL bakedPL)
 
-test_completeIndex = testing_complete "index"
+-- test_completeIndex = testing_complete "index"
  

@@ -119,3 +119,41 @@ executable ssgcheck
     , uniform-webserver
     , uniformBase ==0.1.4
   default-language: Haskell2010
+
+test-suite ssgTest
+  type: exitcode-stdio-1.0
+  main-is: testing.hs
+  other-modules:
+      Lib.Doc2html_test
+      Lib.Example_test
+      Lib.IndexCollect_test
+      Lib.IndexMake_test
+      Lib.Md2doc_test
+      Lib.Panrep2pdf_test
+      Lib.ReadSettingFile_test
+      Paths_ssg
+  hs-source-dirs:
+      tests
+  other-extensions:
+      OverloadedStrings
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      HTF
+    , base >4.7 && <5
+    , data-default-class
+    , deepseq
+    , dir-traverse
+    , pandoc-sidenote
+    , quickcheck-text
+    , ssg
+    , uniform-cmdLineArgs
+    , uniform-convenience
+    , uniform-http
+    , uniform-json
+    , uniform-latex2pdf >=0.0.1.1
+    , uniform-pandoc >=0.0.2.4
+    , uniform-shake >=0.0.1.2
+    , uniform-watch
+    , uniform-webserver
+    , uniformBase
+  default-language: Haskell2010

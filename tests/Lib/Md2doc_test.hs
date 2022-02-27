@@ -48,12 +48,12 @@ bakedPL = bakedDir layoutDefaults
 -- test_postwk_md2pandoc = testing_md2pandoc "postwk" 
 -- test_withRef_md2pandoc = testing_md2pandoc "withRef" 
 
-testing_md2dr1 :: FilePath -> IO ()
--- | op 1 in Md2doc.hs
-testing_md2dr1 f1 = test1File "ssg"  (f1<> "_pandoc") (f1 <> "_dr1" )  (pandoc2docrep NoticeLevel1 doughPL bakedPL fn1 )
-  where 
-      fn1 :: Path Abs File 
-      fn1 = bakedPL </> (makeRelFile f1)
+-- testing_md2dr1 :: FilePath -> IO ()
+-- -- | op 1 in Md2doc.hs
+-- testing_md2dr1 f1 = test1File "ssg"  (f1<> "_pandoc") (f1 <> "_dr1" )  (pandoc2docrep NoticeLevel1 doughPL bakedPL fn1 )
+--   where 
+--       fn1 :: Path Abs File 
+--       fn1 = bakedPL </> (makeRelFile f1)
 -- test_index_md2dr1 = testing_md2dr1 "index" 
 -- test_blog1_md2dr1 = testing_md2dr1 "01blog1" 
 -- test_postwk_md2dr1 = testing_md2dr1 "03postwk" 
@@ -74,10 +74,10 @@ testing_dr12dr3 f1  = test1FileIO "ssg" (f1<> "_dr1") (f1 <> "_dr3" ) (addRefs N
 -- | testing dr3 to docrep (check stepwise same result)
 -- this is the op in Bake.hs
 -- should be the same as dr3
-testing_md2docrep f1= test1FileIO "ssg" (f1<> ".md") (f1 <> "T.docrep" ) (md2docrep NoticeLevel0 layoutDefaults fn .  MarkdownText) 
-  where 
-      fn :: Path Abs File 
-      fn = doughPL </> (makeRelFile f1)
+-- testing_md2docrep f1= test1FileIO "ssg" (f1<> ".md") (f1 <> "T.docrep" ) (md2docrep NoticeLevel0 layoutDefaults fn .  MarkdownText) 
+--   where 
+--       fn :: Path Abs File 
+--       fn = doughPL </> (makeRelFile f1)
     --   blogRoot = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/dough/Blog"
       -- TODO needs somewhere fix to build to website root
 -- test_index_dm2docrep = testing_md2docrep "index"

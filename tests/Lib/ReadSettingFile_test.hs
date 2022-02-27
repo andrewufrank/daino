@@ -30,18 +30,18 @@ programName = "ssg"
 
 -- (layout7, port7) <- readSettings True settingsFile 
 
-test_settings = 
-    testVar0FileIO programName  
-        (sourceDirTestSite </> settingsFileName) 
-        "settingsFile" 
-        (fmap siteLayout . readSettings NoticeLevel0 )  
+-- test_settings = 
+--     testVar0FileIO programName  
+--         (sourceDirTestSite </> settingsFileName) 
+--         "settingsFile" 
+--         (fmap siteLayout . readSettings NoticeLevel0 )  
 
-test_checkSettings_def = do 
-    res <- runErr $ do 
-            sett3 <- readSettings NoticeLevel0 
-                (sourceDirTestSite </> settingsFileName)
-            return (siteLayout sett3)
-    assertEqual (Right layoutDefaults) res 
+-- test_checkSettings_def = do 
+--     res <- runErr $ do 
+--             sett3 <- readSettings NoticeLevel0 
+--                 (sourceDirTestSite </> settingsFileName)
+--             return (siteLayout sett3)
+--     assertEqual (Right layoutDefaults) res 
 
 -- readYaml2rec :: (FromJSON a, Show a) => Path Abs File -> ErrIO a 
 -- -- | read a yaml file into a record Value 

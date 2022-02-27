@@ -9,6 +9,8 @@ packages:
 --   ../uBase/uniform-time/*.cabal
     ../uBase/uniform-fileio/*.cabal 
 
+    ../u2to/uniform-convenience
+    
     ../u4blog/uniform-json/*.cabal
 -- --/home/frank/Workspace11/u4blog/uniform-json/uniform-json.cabal
     ../u4blog/uniform-webserver/*.cabal
