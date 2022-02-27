@@ -34,9 +34,8 @@ progName = "SSG"
 
 
 
--- | the switches for material to include
--- they are (for now) just bools which allow the 
--- baking of all md (higher than the switch)
+-- | the flags represent the switches from CmdLineArgs
+-- see there for meaning
 data PubFlags = PubFlags
     { privateFlag
       , draftFlag
@@ -46,8 +45,6 @@ data PubFlags = PubFlags
       , quickFlag
       , watchFlag
       , serverFlag :: Bool
-    -- , uploadFlag :: Bool
-    -- , settingsFile :: Path Abs File
     }
     deriving (Show, Eq) -- no read for path
 
@@ -61,7 +58,6 @@ testFlags =
     zero
         { privateFlag = False -- not including draft
         , draftFlag = False
-        -- , settingsFile = sourceDirTestSite </> settingsFileName
         }
 
 

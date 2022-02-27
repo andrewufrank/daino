@@ -35,9 +35,6 @@ import UniformBase
 ssgProcess :: NoticeLevel -> PubFlags -> ErrIO ()
 ssgProcess debug flags = do
     currDir :: Path Abs Dir  <- currentDir 
-    -- settfn :: Path Abs File
-    -- let t1 :: Path Abs File = sourceDirTestSite </> settingsFileName
-    -- let t2 :: Path Abs File = currDir </> settingsFileName
     let settfn = if (testFlag flags)   
             then   sourceDirTestSite </> settingsFileName 
             else currDir </> settingsFileName
