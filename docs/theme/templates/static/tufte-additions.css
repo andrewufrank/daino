@@ -16,7 +16,7 @@
             --limit-medium: 1000px;
         
         }
-        .light-background {color: var(--af-garden-light);
+        .light-background {background-color: var(--af-garden-light);
         }
 
         div.sticky {
@@ -28,7 +28,7 @@
           font-size: 20px;
         }
         .af-tiny  {
-            font-size: 0.7rem;
+            font-size: 1.2rem;
             line-height: 1.5;
         }
          /* replace with vars    */

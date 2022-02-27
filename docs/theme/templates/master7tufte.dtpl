@@ -197,7 +197,7 @@
         <a>Produced with SGG $ssgversion$ from $filename3$ ($visibility$, $version$) with $siteLayout.masterTemplateFile$.</a>  
     </div>
     <div class="w3-right">
-        <a><Powered by</a>
+        <a><Rationale: consult</a>
             <a href="http://frank.gerastree.at/Journals/SSGdesign/index.html" target="
             _blank">SSG</a> and
             <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank">w3.css</a>
