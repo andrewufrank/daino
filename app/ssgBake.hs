@@ -17,8 +17,8 @@
 module Main where -- must have Main (main) or Main where
 
 import ShakeBake.CmdLineArgs ( parseArgs2input )  
-import Foundational.SettingsPage (sourceDirTestSite )  
 import Foundational.CmdLineFlags
+-- import Foundational.SettingsPage (sourceDirTestSite )  
 
 import ShakeBake.StartSSGprocess ( ssgProcess )  
 -- import Uniform.StartApp ( startProgWithTitle )  
@@ -38,7 +38,7 @@ main =
         ( do
             flags :: PubFlags <-
                 parseArgs2input
-                    sourceDirTestSite 
+                    -- sourceDirTestSite 
                     --  add a delete flag
                     ( unlinesT
                         [ "the flags to select what is included:"

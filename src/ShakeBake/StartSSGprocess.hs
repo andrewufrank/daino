@@ -34,7 +34,15 @@ import UniformBase
 
 ssgProcess :: NoticeLevel -> PubFlags -> ErrIO ()
 ssgProcess debug flags = do
-    sett3 <- readSettings debug (settingsFile flags)
+    currDir :: Path Abs Dir  <- currentDir 
+    -- settfn :: Path Abs File
+    -- let t1 :: Path Abs File = sourceDirTestSite </> settingsFileName
+    -- let t2 :: Path Abs File = currDir </> settingsFileName
+    let settfn = if (testFlag flags)   
+            then   sourceDirTestSite </> settingsFileName 
+            else currDir </> settingsFileName
+
+    sett3 <- readSettings debug settfn 
 
 -- set the currentWorkingDir CWD to doughDir
     let doughP = doughDir (siteLayout sett3)
@@ -42,7 +50,6 @@ ssgProcess debug flags = do
 -- when started to convert the tests the CWD is not 
 -- the same then when starting in a directory to convert
 
-    currDir <- currentDir
     putIOwords ["ssgProcess", "currDir", showT currDir, "\nwill beomce doughP", showT doughP]
     setCurrentDir doughP
 
@@ -65,6 +72,11 @@ ssgProcess debug flags = do
     putIOwords ["ssgProcess", "again currDir as before", showT currDir, "\nwas doughP", showT doughP] 
     putIOwords ["ssgProcess done"]
     return ()
+
+settingsFileName :: Path Rel File
+-- ^ the yaml file in which the siteHeader are fixec
+settingsFileName = makeRelFile "settings3" -- the yaml file
+-- testNew bakes all test data, test alone continue the previous test
 
 -- idea to automate upload (before call to shakeAll)
     -- read the time of the last upload

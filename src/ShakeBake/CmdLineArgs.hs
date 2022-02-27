@@ -89,13 +89,13 @@ cmdArgs  =
 
 
 
-parseArgs2input :: Path Abs Dir -> Text -> Text -> ErrIO PubFlags
+parseArgs2input ::   Text -> Text -> ErrIO PubFlags
 -- getting cmd line arguments, produces the input in the usable form
 --  with a default value for the file name
 -- the two text arguments are used in the cmd arg parse
 -- is specific to the parser (and thus to the cmd line arguments
 
-parseArgs2input testdataDir t1 t2 = do
+parseArgs2input   t1 t2 = do
   args1 <- getArgsParsed t1 t2
   when False $ putIOwords ["parseArgs2input: args found", showPretty args1]
   workingdir1 :: Path Abs Dir <- currentDir
@@ -110,18 +110,19 @@ parseArgs2input testdataDir t1 t2 = do
                          , quickFlag    = quickSwitch args1
                          , serverFlag   = serverSwitch args1
                          , watchFlag    = watchSwitch args1
-                         , settingsFile = workingdir1 </> settingsFileName 
+                        --  , settingsFile = workingdir1 </> settingsFileName 
                          -- perhaps wrong, could be site/dough?
                         -- ,  uploadFlag = uploadSwitch args1
                          }
 
-  let flags2 = if testFlag flags1
-        then flags1 { settingsFile = testdataDir </> settingsFileName }
-                    --  ,  PortNumber = sourceDirTest
-        else flags1
+--   let flags2 = if testFlag flags1
+--         then flags1 { settingsFile = testdataDir </> settingsFileName }
+--                     --  ,  PortNumber = sourceDirTest
+--         else flags1
 
-  when False $ putIOwords ["parseArgs2input:  inputs ", showPretty flags2]
-  return flags2
+  when False $ putIOwords ["parseArgs2input:  inputs ", showPretty flags1]
+  return flags1
+
 
 
 getArgsParsed :: Text -> Text -> ErrIO LitArgs
