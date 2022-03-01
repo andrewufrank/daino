@@ -8,8 +8,8 @@
         -- panrep -> html 
 ---------------------------------------------------------------------
 {-# LANGUAGE ConstraintKinds #-}
-{-# LANGUAGE DeriveAnyClass #-}
-{-# LANGUAGE DeriveGeneric #-}
+-- {-# LANGUAGE DeriveAnyClass #-}
+-- {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DoAndIfThenElse #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleContexts #-}
@@ -31,10 +31,11 @@ module Wave.Docrep2panrep (
     module Wave.Docrep2panrep,
 ) where
 
--- import Data.Default
 import Foundational.Filetypes4sites
+    ( Docrep(Docrep), Panrep(Panrep, panyam) )
 import Foundational.SettingsPage
-import Foundational.CmdLineFlags
+    ( blankAuthorName, SiteLayout(blogAuthorToSuppress, doughDir) )
+import Foundational.CmdLineFlags ( PubFlags )
 
 import Foundational.MetaPage
 import GHC.Generics (Generic)

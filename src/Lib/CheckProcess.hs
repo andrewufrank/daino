@@ -3,7 +3,7 @@
 -- Module      :   check the md files 
 ----------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE RecordWildCards #-}
+-- {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# OPTIONS_GHC -Wall #-}
 
@@ -40,31 +40,31 @@ checkProcess debug sitefn = do
     
     when (inform debug) $ putIOwords ["checkProcess 2", "mds", showT . take 10 $ mds]
 
-    let mds1 = filter (notDNB (siteLayout $ sett3)) mds
+    let mds1 = filter (notDNB (siteLayout sett3)) mds
     when (inform debug) $ putIOwords ["checkProcess 2", "mds1", showT . take 10 $ mds1]
     let mds2 = map makeAbsFile mds1
     -- let hpname = blogAuthorToSuppress.storag sett3
 
-    _ <- mapM (checkOneMD debug doughP ) mds2 
+    mapM_ (checkOneMD debug ) mds2 
 
     when (inform debug) $ putIOwords ["checkProcess", "end"]
     return ()
 
 
 
-checkOneMD:: NoticeLevel -> Path Abs Dir -> Path Abs File -> ErrIO ()
+checkOneMD:: NoticeLevel ->  Path Abs File -> ErrIO ()
 -- check one md file (only the yaml head) for necessary values 
-checkOneMD debug doughP  fnin  =
+checkOneMD debug  fnin  =
     
     ( do
         when (informAll debug) $ putIOwords ["checkOneMD fnin", showPretty fnin]
 
         -- (Docrep y1 _) <- readMarkdownFile2docrep debug doughP fnin
         -- copied from md2doc.hs
-        mdfile <- read8 fnin markdownFileType 
-        pd <- readMarkdown2 mdfile
+        -- mdfile <- read8 fnin markdownFileType 
+        -- pd <- readMarkdown2 mdfile
         when (inform debug) $ putIOwords ["checkOneMD 1"]
-        y1 <- check_readMeta debug doughP fnin  pd 
+        -- y1 <- check_readMeta debug doughP fnin  pd 
 
         -- when (inform debug) $ putIOwords ["checkOneMD 2", "metapage", showPretty  y1]
 
@@ -74,7 +74,7 @@ checkOneMD debug doughP  fnin  =
     `catchError` (\e -> do
         putIOwords ["checkOneMD", "discovered error in file", showT fnin]
         -- putIOwords ["the yaml head is read as:", showPretty y1]
-        putIOwords ["the error msg is:", showT e]
+        putIOwords ["the error msg is:", showT (e :: SomeException)]
         return () 
         )
 

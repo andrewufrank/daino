@@ -14,7 +14,8 @@
 - ignore: {name: "Use camelCase"}
 #- ignore: {name: "Use fewer imports"}
 - ignore: {name: "Eta reduce"}
-# - ignore: {name: "spelling"}
+- ignore: {name: "spelling"}
+- ignore: {name: "craddle"}
 
 
 # Specify additional command line arguments

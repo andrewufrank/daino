@@ -2,8 +2,8 @@
 --
 -- Module      : l flags  values from command line
 ----------------------------------------------------------------------
-{-# LANGUAGE DeriveAnyClass #-}
-{-# LANGUAGE DeriveGeneric #-}
+-- {-# LANGUAGE DeriveAnyClass #-}
+-- {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -24,10 +24,8 @@ module Foundational.CmdLineFlags
     (module Foundational.CmdLineFlags
     , def ) where
 
-import UniformBase ( Text, Zeros(zero) )
-import Data.Default.Class ( Default(..) ) -- to define a default class for pub flags 
--- import Foundational.SettingsPage
--- import Uniform.Json
+import Data.Default.Class ( Default(..) )
+import UniformBase ( Text, Zeros(zero) ) -- to define a default class for pub flags 
 
 progName :: Text
 progName = "SSG"  

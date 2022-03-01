@@ -3,18 +3,18 @@
 -- Module      :  Wave.Md2doc
 -- the conversion of markdown to docrep
 ------------------------------------------------------------------
-{-# LANGUAGE ConstraintKinds #-}
+{-# LANGUAGE ConstraintKinds       #-}
 -- {-# LANGUAGE DeriveAnyClass #-}
 -- {-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE DoAndIfThenElse #-}
+{-# LANGUAGE DoAndIfThenElse       #-}
 {-# LANGUAGE DuplicateRecordFields #-}
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE FlexibleContexts      #-}
+{-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE UndecidableInstances #-}
+{-# LANGUAGE OverloadedStrings     #-}
+{-# LANGUAGE ScopedTypeVariables   #-}
+{-# LANGUAGE TypeFamilies          #-}
+{-# LANGUAGE UndecidableInstances  #-}
 {-# OPTIONS_GHC -Wall #-}
 
 module Wave.Md2doc (
@@ -25,16 +25,14 @@ module Wave.Md2doc (
 import UniformBase
 
 import Foundational.MetaPage
-    -- ( MetaPage(dyFn, dyBibliography, dyStyle, dyVersion), pandoc2MetaPage )
+    ( pandoc2MetaPage,
+      MetaPage(dyFn, dyBibliography, dyStyle, dyVersion, dyVisibility) )
 import Foundational.Filetypes4sites ( Docrep(Docrep), meta1)
--- import Foundational.SettingsPage
 import Foundational.CmdLineFlags
+    ( PubFlags(draftFlag, privateFlag) )
 import Uniform.Pandoc
-    -- ( pandocProcessCites,
-    --   Pandoc,
-    --   markdownFileType,
-    --   readMarkdown2 )
--- import Uniform.Shake
+    ( Pandoc, pandocProcessCites, markdownFileType, readMarkdown2 )
+
 
 readMarkdownFile2docrep  :: NoticeLevel -> Path Abs Dir ->  Path Abs File ->  ErrIO Docrep 
 -- read a markdown file and convert to docrep

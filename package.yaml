@@ -82,8 +82,8 @@ dependencies:
     # -- - uniform-ftp
     # - aeson 
     # - optparse-applicative -- does not allow value in cmdlineargs
-    # - data-default
-    - data-default-class # for default values, move down 
+    - data-default-class
+    # for default values, move down 
     - dir-traverse # for checkprocess
     - deepseq
     - pandoc-sidenote

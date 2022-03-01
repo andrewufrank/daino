@@ -62,5 +62,4 @@ mainWatch debug sett3 flags = do
             port
             bakedPath
             (makeRelFile "index.html")
-            -- landingPageName -- default  (landingPage layout)
         )

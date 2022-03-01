@@ -9,4 +9,4 @@ title: Index in blog title primary index for Blog
 version: publish
 visibility: public
 ---
-Index in blog text an index page for Blog - ae test
+Index in blog text an index page for Blog - ae test for change

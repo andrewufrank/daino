@@ -8,7 +8,7 @@
         -- panrep -> html 
 ---------------------------------------------------------------------
 {-# LANGUAGE ConstraintKinds #-}
-{-# LANGUAGE DeriveAnyClass #-}
+-- {-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DoAndIfThenElse #-}
 {-# LANGUAGE DuplicateRecordFields #-}
@@ -47,7 +47,7 @@ import Data.Maybe (fromMaybe)
 import Lib.IndexMake ( convertIndexEntries, MenuEntry )
 import Lib.IndexCollect ( completeIndex )
 import Lib.Templating ( putValinMaster )
-import Text.Pandoc.SideNote
+import Text.Pandoc.SideNote ( usingSideNotes )
 
 
 -- ------------------------------------ panrep2html

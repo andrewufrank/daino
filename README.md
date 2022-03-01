@@ -139,3 +139,46 @@ With
 - in LayoutFlags.hs is the current name as "settings3"
 - ssgbake 
 
+# protection
+
+It is possible to protect some parts of the site with passwords. A regex expression can be used to identify the URIs which should require a password. The NGINX config file looks like:
+
+````
+#  setup for local web server 
+map $uri $realm {
+        ~^/Reserved/  "Protected area";
+# wildcards only with regex!
+#       /Reserved/*     "Username and 11 Password required (heiden.gerastree.at)";
+        default                 off;
+}
+
+server {
+    server_name heiden.gerastree.at;
+
+    root /var/www/html/homepage;
+
+#    auth_basic "Password required";
+    auth_basic $realm;
+    auth_basic_user_file /etc/nginx/.htpasswd1;
+
+        # Add index.php to the list if you are using PHP
+        index index.html index.htm index.nginx-debian.html;
+
+        location /homepage {
+                # First attempt to serve request as file, then
+                # as directory, then fall back to displaying a 404.
+                try_files $uri $uri/ =404;
+        }
+
+     access_log /var/log/nginx/heiden.log;
+
+    listen [::]:443 ssl ipv6only=on; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/heiden.gerastree.at/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/heiden.gerastree.at/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+}
+````
