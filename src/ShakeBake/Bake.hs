@@ -44,7 +44,7 @@ type BakeOp =
     Path Abs File ->
     Settings->
     Path Abs File ->
-    ErrIO ()
+    ErrIO [FilePath] -- additional needs found 
 
 bakeOneMD2docrep :: BakeOp --    MD -> DOCREP
 -- process the md to pandoc format (parser)
@@ -69,7 +69,7 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
             , "bakeOneMD2docrep done resfn2"
             , showT resfn2
             ]
-    return ()
+    return []
 
 bakeOneDocrep2panrep :: BakeOp --  DOCREP -> PANREP
 --   add index  
@@ -83,14 +83,14 @@ bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
     dr1 <- read8 inputFn docrepFileType
 
     let layout = siteLayout sett3
-    p3 <- docrep2panrep debug flags layout dr1
+    (p3, needsFound) <- docrep2panrep debug flags layout dr1
             -- completes index and should process reps 
 
     write8 resfn2 panrepFileType p3 -- content is html style
     when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOneDocrep2panrep done produced resf2n", showT resfn2]
-    return ()
+    return []
 
 
 bakeOnePanrep2html :: BakeOp -- PANREP -> HTML  -- TODO
@@ -115,7 +115,7 @@ bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
     when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOnePanrep2html done fn", showT resfn2]
-    return ()
+    return []
 
 
 bakeOnePanrep2texsnip :: BakeOp --  PANREP -> TEXSNIP
@@ -138,7 +138,7 @@ bakeOnePanrep2texsnip debug flags inputFn sett3 resfn2 = do
     when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOneFile2html done fn", showT resfn2]
-    return ()
+    return []
 
 bakeOneTexsnip2tex :: BakeOp -- TEXSNIP -> TEX
 bakeOneTexsnip2tex debug flags inputFn sett3 resfn2 = do
@@ -163,7 +163,7 @@ bakeOneTexsnip2tex debug flags inputFn sett3 resfn2 = do
     when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOneFile2tex done fn", showT resfn2]
-    return ()
+    return []
 
 bakeOneTex2pdf :: BakeOp
 bakeOneTex2pdf debug flags inputFn sett3 resfn2 = do
@@ -187,4 +187,4 @@ bakeOneTex2pdf debug flags inputFn sett3 resfn2 = do
     when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOneTex2pdf done fn", showT resfn2]
-    return ()
+    return []

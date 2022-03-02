@@ -111,7 +111,8 @@ convertAny debug sourceP targetP flags layout out anyopName = do
                 ,  "\n\t fromfilePathExt",  " caused NEED which was then probably satisfied for ", showT fromfilePathExt   
                 ,  "\n\t file out", showT out
                 ]
-            runErr2action $ anyop debug flags fromfilePathExt layout outP
+            needsFound <- runErr2action $ anyop debug flags fromfilePathExt layout outP
+            need needsFound
     when (inform debug) $ putIOwords ["convertAny end for", anyopName]
     return ()
 

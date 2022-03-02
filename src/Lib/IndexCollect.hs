@@ -100,7 +100,7 @@ getDirContent2dirs_files debug pubf layout doughP   indexpageFn = do
     when (inform debug) $ putIOwords ["getDirContent2dirs ixfiles", showPretty ixfiles]
 
     let subindexDirs = map (\d -> d </> makeRelFile "index.md") dirs5
-    let
+    
     when (inform debug) $  putIOwords ["getDirContent2dirs subindexDirs", showPretty subindexDirs]
     ixdirs <- mapM (getFile2index  debug pubf doughP ) subindexDirs
 
@@ -117,7 +117,8 @@ getFile2index :: NoticeLevel -> PubFlags -> Path Abs Dir  -> Path Abs File -> Er
 -- produce separately to preserve the two groups
 getFile2index debug pubf doughP   fnin =
     do
-        when (inform debug) $ putIOwords ["getFile2index fnin", showPretty fnin]
+        when (inform debug) $ putIOwords ["getFile2index fnin", showPretty fnin
+                ,"\ndebug", showT debug]
 
         -- mdfile <- read8 fnin markdownFileType 
         -- pd <- readMarkdown2 mdfile

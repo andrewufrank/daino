@@ -38,7 +38,7 @@ readMarkdownFile2docrep  :: NoticeLevel -> Path Abs Dir ->  Path Abs File ->  Er
 -- read a markdown file and convert to docrep
 readMarkdownFile2docrep debug doughP fnin = do
     when (informAll debug) $ putIOwords 
-        ["getFile2index fnin", showPretty fnin]
+        ["readMarkdownFile2docrep fnin", showPretty fnin]
 
     mdfile <- read8 fnin markdownFileType 
     pd <- readMarkdown2 mdfile

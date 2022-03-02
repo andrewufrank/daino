@@ -58,12 +58,12 @@ import Lib.Templating ( putValinMaster )
 
 --  the refs are processed before in md2docrep
 
-docrep2panrep :: NoticeLevel -> PubFlags -> SiteLayout -> Docrep -> ErrIO Panrep
+docrep2panrep :: NoticeLevel -> PubFlags -> SiteLayout -> Docrep -> ErrIO (Panrep, [FilePath])
 docrep2panrep debug pubf layout (Docrep y1 p1) = do
-    when (inform debug) $
+    when (informAll debug) $
         putIOwords ["\n\ty1,p1-------------------------docrep2panrep"
-                , showT y1
-                , showT p1]
+                , "\ny1: ", showT y1
+                , "\np1: ", showT p1]
     -- let pr = Panrep
     --             { panyam = y1
     --             , panpan = p1
@@ -74,7 +74,7 @@ docrep2panrep debug pubf layout (Docrep y1 p1) = do
     
     let pr2 = Panrep y2 p1
 
-    when (inform debug) $ putIOwords ["docrep2panrep"
+    when (informAll debug) $ putIOwords ["docrep2panrep"
                 , "hpname", showT hpname
                 , "\nauthorReduced", authorReduced]
 
@@ -88,13 +88,15 @@ docrep2panrep debug pubf layout (Docrep y1 p1) = do
             ix2 <- completeIndex debug pubf layout doughP ix1
             -- todo put ix2 into pr
             let m2 = m1{dyIndexEntry = ix2}
-
-            when (inform debug) $
+            let ixs = dirEntries  ix2 ++ fileEntries ix2
+            let needs :: [FilePath] = map ixfn ixs 
+            when (informAll debug) $
                 putIOwords ["\n\tm2------------------------docrep2panrep end if"
-                , showT m2]
+                , showT m2
+                , "needs", showT needs]
 
-            return pr2{panyam = m2}
+            return (pr2{panyam = m2}, needs)
         else
-            return pr2
+            return (pr2, [])
 
 
