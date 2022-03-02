@@ -103,13 +103,13 @@ bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
         , showT resfn2
         ]
     dr1 <- read8 inputFn panrepFileType
-    let layout = siteLayout sett3
+    -- let layout = siteLayout sett3
     -- this gives the siteLayout section of settingsN.yml file
-    let staticMenu = sett3
-    let mf = masterTemplateFile layout
-    let masterfn = templatesDir layout </> mf
+    -- let staticMenu = sett3
+    -- let mf = masterTemplateFile layout
+    -- let masterfn = templatesDir layout </> mf
 
-    p <- panrep2html debug masterfn staticMenu dr1
+    p <- panrep2html debug  sett3 dr1
 
     write8 resfn2 htmloutFileType p -- content is html style
     when (inform debug) $

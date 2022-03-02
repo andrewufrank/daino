@@ -74,8 +74,9 @@ docrep2panrep debug pubf layout (Docrep y1 p1) = do
     
     let pr2 = Panrep y2 p1
 
-    putIOwords ["docrep2panrep", "hpname", showT hpname
-            , "\nauthorReduced", authorReduced]
+    when (inform debug) $ putIOwords ["docrep2panrep"
+                , "hpname", showT hpname
+                , "\nauthorReduced", authorReduced]
 
     if isIndexPage (makeAbsFile . dyFn . panyam $ pr2 )
         then do
