@@ -33,4 +33,4 @@ a static site generator
                         include what is more than stated 
                 landing page is mostly produced from index.md in dough, needed is only top directory structure.
                         must not include the banner image (must be in settingsN.yml): difference in formatting
-                        
+    0.0.4.11 add shiftHeaderLevel to use title as h1, `#` as h2 etc. this corresponds better with latex                        

@@ -1,5 +1,5 @@
 name: ssg
-version: 0.0.4.10
+version: 0.0.4.11
 synopsis: a static site generator using shake and pandoc
 description: | 
   A static site generator from pandoc and other available packages on Hackage (e.g. shake, twitch, scotty), influenced by Chris Penner's [slick](https://github.com/ChrisPenner/slick#readme). It uses files to manage data to permit version management with git. Page appearances are directed with YAML and internally data is structured with JSON, for each page a PDF file is produced to allow regular looking prints. Index pages are automatically created.
@@ -67,7 +67,7 @@ other-extensions:  # besides the automatically Haskell2010
 dependencies: 
     - base  > 4.7 && < 5
     - uniformBase  == 0.1.4
-    - uniform-json
+    - uniform-json ==0.0.6.1
     -  uniform-shake >= 0.0.1.2
     - uniform-http
     # - uniform-convenience # from u2to
@@ -87,6 +87,7 @@ dependencies:
     - dir-traverse # for checkprocess
     - deepseq
     - pandoc-sidenote
+    - pandoc
 
 library:
   source-dirs: 

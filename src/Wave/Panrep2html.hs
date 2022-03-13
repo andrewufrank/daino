@@ -36,14 +36,15 @@ import Foundational.Filetypes4sites ( Panrep(Panrep) )
 import Foundational.SettingsPage
     -- ( Settings(siteLayout), SiteLayout(blogAuthorToSuppress) )
 import Foundational.MetaPage
-    ( convertLink2html,
-      convertLink2pdf,
-      IndexEntry,
-      MetaPage(dyIndexEntry, dyIndexSort) )
+    -- ( convertLink2html,
+    --   convertLink2pdf,
+    --   IndexEntry,
+    --   MetaPage(dyIndexEntry, dyIndexSort) )
 import GHC.Generics (Generic)
 
 import Uniform.Json ( ToJSON(toJSON), Value, ErrIO )
 import Uniform.Pandoc ( writeHtml5String2 )
+import qualified Text.Pandoc.Shared as P
 import Uniform.Http ( HTMLout ) 
 import UniformBase
 
@@ -65,9 +66,14 @@ panrep2html debug  sett3 (Panrep m1 p1) = do
     let mf = masterTemplateFile $ siteLayout sett3
     -- let mfn = templatesDir layout </> mf
     let masterfn = templatesDir (siteLayout sett3) </> mf
-
-    let p2 = usingSideNotes p1  -- :: Pandoc -> Pandoc
-    vals <- panrep2vals  debug sett3 (Panrep m1 p2)
+    let h = dyHeaderShift m1
+    when (informAll debug) $
+        putIOwords ["\n\t---------------------------panrep2html"
+                , "shiftHeaderLevel"
+                , showT h]    
+    let p2 = P.headerShift h p1
+    let p3 = usingSideNotes p2  -- :: Pandoc -> Pandoc
+    vals <- panrep2vals  debug sett3 (Panrep m1 p3)
     p :: HTMLout <- panrep2html2 debug masterfn vals
     return p
 

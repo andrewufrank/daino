@@ -40,12 +40,12 @@ completeIndex :: NoticeLevel -> PubFlags -> SiteLayout -> Path Abs Dir ->   Inde
 later only the format for output must be fixed
 -}
 completeIndex debug pubf layout doughP  ix1 = do
-    when (informAll debug) $ putIOwords ["completeIndex", "start", showPretty ix1]
+    when (inform debug) $ putIOwords ["completeIndex", "start", showPretty ix1]
 
     let fn = doughP </> (link ix1) :: Path Abs File
     -- changed to search in dough (but no extension yet)
 
-    when (informAll debug) $   -- to have indication where error is if pandoc error 
+    when (inform debug) $   -- to have indication where error is if pandoc error 
         putIOwords
             [ "completeIndex"
             , "fn"
@@ -54,9 +54,9 @@ completeIndex debug pubf layout doughP  ix1 = do
     -- unless (isIndexPage fn) $ errorT ["completeIndex should only be called for indexPage True"]
 
     (dirs, files) <- getDirContent2dirs_files debug pubf layout doughP  fn
-    when (informAll debug) $ putIOwords ["completeIndex", "\n dirs", showT dirs, "\n files", showT files]
+    when (inform debug) $ putIOwords ["completeIndex", "\n dirs", showT dirs, "\n files", showT files]
     let ix2 = ix1{dirEntries = dirs, fileEntries = files}
-    when (informAll debug) $ putIOwords ["completeIndex", "x2", showT ix2]
+    when (inform debug) $ putIOwords ["completeIndex", "x2", showT ix2]
     return ix2
 
 {- | get the contents of a directory, separated into dirs and files

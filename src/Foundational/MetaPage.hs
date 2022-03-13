@@ -30,22 +30,13 @@ module Foundational.MetaPage (
     Default (..),
 ) where
 
--- import Data.Aeson.Types
 import Data.Default.Class  
 import Foundational.SettingsPage  
--- import Foundational.Filetypes4sites(extPDF, extHTML)
--- import Lib.CmdLineArgs (PubFlags (..))
 import Uniform.Json
 import Uniform.Shake
 import Uniform.Pandoc
--- import Uniform.PandocImports
--- import Uniform.Shake (makeRelativeP)
--- import Uniform.Filenames (setFileExtension)
 import Uniform.Yaml
--- import UniformBase
 import Uniform.HTMLout (extHTML)
--- import Lib.IndexMake (blankAuthorName)
--- import Uniform.Json ( gak, AtKey(getAtKey) )
 
 data MetaPage = MetaPage
     { -- | the original dough fn
@@ -80,8 +71,12 @@ data MetaPage = MetaPage
     -- , dyDirEntries   :: [IndexEntry]  -- reduce to one for indexEntry
     -- , dyFileEntries  :: [IndexEntry]
     -- is defined later, necessary here?
+    , dyHeaderShift :: Int
+    -- shift the header level, that one # is hl2,
+    -- because hl1 is title
     }
     deriving (Show, Eq, Generic, Zeros, Read) -- ord missing for references
+instance Zeros Integer where zero = 0
 
 instance Default MetaPage where
     def =
@@ -104,6 +99,7 @@ instance Default MetaPage where
             , dyIndexEntry = zero
             -- , dyDirEntries = zero
             -- , dyFileEntries = zero
+            , dyHeaderShift = zero 
             }
 
 docyamlOptions :: Options
@@ -150,7 +146,8 @@ pandoc2MetaPage doughP filename  pd =  meta6
             --   dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
             , dyIndexSort = getAtKey meta2 "indexSort"
             , dyIndexEntry =   zero
-                                        -- else zero
+            , dyHeaderShift = fromMaybe zero . getAtKey  meta2 $ "headerShift"
+                                        -- value 1 is correct
             }
             
     ix1 =  initializeIndex meta4
@@ -222,6 +219,7 @@ data IndexEntry = IndexEntry
     -- , indexPage :: Bool
     , dirEntries :: [IndexEntry] -- def []
     , fileEntries :: [IndexEntry] -- def []
+    , headerShift :: Int   
     } deriving (Show, Read, Eq, Ord, Generic, Zeros)
     --  IndexTitleSubdirs | IndexTitleFiles 
 
@@ -245,6 +243,7 @@ initializeIndex MetaPage{..} = ix1
             -- , publish = dyVersion
             , dirEntries = zero
             , fileEntries = zero
+            , headerShift = dyHeaderShift
             }
 
 isIndexPage :: Path Abs File -> Bool 

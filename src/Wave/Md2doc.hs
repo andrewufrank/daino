@@ -37,7 +37,7 @@ import Uniform.Pandoc
 readMarkdownFile2docrep  :: NoticeLevel -> Path Abs Dir ->  Path Abs File ->  ErrIO Docrep 
 -- read a markdown file and convert to docrep
 readMarkdownFile2docrep debug doughP fnin = do
-    when (informAll debug) $ putIOwords 
+    when (inform debug) $ putIOwords 
         ["readMarkdownFile2docrep fnin", showPretty fnin]
 
     mdfile <- read8 fnin markdownFileType 

@@ -10,6 +10,7 @@
 :set -fno-warn-warnings-deprecations 
 :set -fno-warn-duplicate-exports
 :set -fno-warn-missing-methods 
+:set -
 :set -itests
 :set -isrc
 :set -iapp

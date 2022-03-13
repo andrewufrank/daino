@@ -9,6 +9,7 @@ publish: true
 title: 01blog1 titel Mein erster Blog
 version: publish
 visibility: public
+headerShift: +1
 ---
 # 01blog1 level1 Titel
 Ein Blog ohne Sinn und dem einzigen Zweck, zu testen, wie ein Blog in

@@ -56,10 +56,11 @@ library
     , data-default-class
     , deepseq
     , dir-traverse
+    , pandoc
     , pandoc-sidenote
     , uniform-cmdLineArgs
     , uniform-http
-    , uniform-json
+    , uniform-json ==0.0.6.1
     , uniform-latex2pdf >=0.0.1.1
     , uniform-pandoc >=0.0.2.4
     , uniform-shake >=0.0.1.2
@@ -81,11 +82,12 @@ executable ssgbake
     , data-default-class
     , deepseq
     , dir-traverse
+    , pandoc
     , pandoc-sidenote
     , ssg
     , uniform-cmdLineArgs
     , uniform-http
-    , uniform-json
+    , uniform-json ==0.0.6.1
     , uniform-latex2pdf >=0.0.1.1
     , uniform-pandoc >=0.0.2.4
     , uniform-shake >=0.0.1.2
@@ -107,11 +109,12 @@ executable ssgcheck
     , data-default-class
     , deepseq
     , dir-traverse
+    , pandoc
     , pandoc-sidenote
     , ssg
     , uniform-cmdLineArgs
     , uniform-http
-    , uniform-json
+    , uniform-json ==0.0.6.1
     , uniform-latex2pdf >=0.0.1.1
     , uniform-pandoc >=0.0.2.4
     , uniform-shake >=0.0.1.2
@@ -143,13 +146,14 @@ test-suite ssgTest
     , data-default-class
     , deepseq
     , dir-traverse
+    , pandoc
     , pandoc-sidenote
     , quickcheck-text
     , ssg
     , uniform-cmdLineArgs
     , uniform-convenience
     , uniform-http
-    , uniform-json
+    , uniform-json ==0.0.6.1
     , uniform-latex2pdf >=0.0.1.1
     , uniform-pandoc >=0.0.2.4
     , uniform-shake >=0.0.1.2

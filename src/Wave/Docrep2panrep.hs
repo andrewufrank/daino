@@ -60,7 +60,7 @@ import Lib.Templating ( putValinMaster )
 
 docrep2panrep :: NoticeLevel -> PubFlags -> SiteLayout -> Docrep -> ErrIO (Panrep, [FilePath])
 docrep2panrep debug pubf layout (Docrep y1 p1) = do
-    when (informAll debug) $
+    when (inform debug) $
         putIOwords ["\n\ty1,p1-------------------------docrep2panrep"
                 , "\ny1: ", showT y1
                 , "\np1: ", showT p1]
@@ -74,7 +74,7 @@ docrep2panrep debug pubf layout (Docrep y1 p1) = do
     
     let pr2 = Panrep y2 p1
 
-    when (informAll debug) $ putIOwords ["docrep2panrep"
+    when (inform debug) $ putIOwords ["docrep2panrep"
                 , "hpname", showT hpname
                 , "\nauthorReduced", authorReduced]
 
@@ -90,7 +90,7 @@ docrep2panrep debug pubf layout (Docrep y1 p1) = do
             let m2 = m1{dyIndexEntry = ix2}
             let ixs = dirEntries  ix2 ++ fileEntries ix2
             let needs :: [FilePath] = map ixfn ixs 
-            when (informAll debug) $
+            when (inform debug) $
                 putIOwords ["\n\tm2------------------------docrep2panrep end if"
                 , showT m2
                 , "needs", showT needs]

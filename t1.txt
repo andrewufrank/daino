@@ -1,0 +1,287 @@
+Build profile: -w ghc-8.10.7 -O1
+In order, the following will be built (use -v for more details):
+ - ssg-0.0.4.10 (lib) (file src/Wave/Panrep2html.hs changed)
+ - ssg-0.0.4.10 (exe:ssgbake) (dependency rebuilt)
+Preprocessing library for ssg-0.0.4.10..
+Building library for ssg-0.0.4.10..
+[ 6 of 20] Compiling Foundational.MetaPage ( src/Foundational/MetaPage.hs, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/Foundational/MetaPage.o, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/Foundational/MetaPage.dyn_o )
+[ 7 of 20] Compiling Foundational.Filetypes4sites ( src/Foundational/Filetypes4sites.hs, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/Foundational/Filetypes4sites.o, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/Foundational/Filetypes4sites.dyn_o ) [Foundational.MetaPage changed]
+[ 8 of 20] Compiling Lib.IndexMake    ( src/Lib/IndexMake.hs, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/Lib/IndexMake.o, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/Lib/IndexMake.dyn_o ) [Foundational.MetaPage changed]
+[ 9 of 20] Compiling ShakeBake.CmdLineArgs ( src/ShakeBake/CmdLineArgs.hs, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/ShakeBake/CmdLineArgs.o, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/ShakeBake/CmdLineArgs.dyn_o ) [Foundational.MetaPage changed]
+[10 of 20] Compiling Lib.CheckProcess ( src/Lib/CheckProcess.hs, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/Lib/CheckProcess.o, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/Lib/CheckProcess.dyn_o ) [Foundational.MetaPage changed]
+[11 of 20] Compiling Wave.Md2doc      ( src/Wave/Md2doc.hs, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/Wave/Md2doc.o, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/Wave/Md2doc.dyn_o )
+[12 of 20] Compiling Lib.IndexCollect ( src/Lib/IndexCollect.hs, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/Lib/IndexCollect.o, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/Lib/IndexCollect.dyn_o )
+[13 of 20] Compiling Wave.Docrep2panrep ( src/Wave/Docrep2panrep.hs, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/Wave/Docrep2panrep.o, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/Wave/Docrep2panrep.dyn_o )
+[14 of 20] Compiling Wave.Panrep2html ( src/Wave/Panrep2html.hs, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/Wave/Panrep2html.o, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/Wave/Panrep2html.dyn_o )
+[15 of 20] Compiling Wave.Panrep2pdf  ( src/Wave/Panrep2pdf.hs, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/Wave/Panrep2pdf.o, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/Wave/Panrep2pdf.dyn_o ) [Foundational.Filetypes4sites changed]
+[16 of 20] Compiling ShakeBake.Bake   ( src/ShakeBake/Bake.hs, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/ShakeBake/Bake.o, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/ShakeBake/Bake.dyn_o ) [Foundational.Filetypes4sites changed]
+[17 of 20] Compiling ShakeBake.ConvertFiles ( src/ShakeBake/ConvertFiles.hs, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/ShakeBake/ConvertFiles.o, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/ShakeBake/ConvertFiles.dyn_o ) [Foundational.Filetypes4sites changed]
+[18 of 20] Compiling ShakeBake.Shake2 ( src/ShakeBake/Shake2.hs, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/ShakeBake/Shake2.o, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/ShakeBake/Shake2.dyn_o ) [ShakeBake.ConvertFiles changed]
+[19 of 20] Compiling ShakeBake.Watch  ( src/ShakeBake/Watch.hs, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/ShakeBake/Watch.o, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/ShakeBake/Watch.dyn_o ) [ShakeBake.Shake2 changed]
+[20 of 20] Compiling ShakeBake.StartSSGprocess ( src/ShakeBake/StartSSGprocess.hs, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/ShakeBake/StartSSGprocess.o, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/ShakeBake/StartSSGprocess.dyn_o ) [ShakeBake.Shake2 changed]
+Preprocessing executable 'ssgbake' for ssg-0.0.4.10..
+Building executable 'ssgbake' for ssg-0.0.4.10..
+[1 of 2] Compiling Main             ( app/ssgBake.hs, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/x/ssgbake/build/ssgbake/ssgbake-tmp/Main.o ) [ShakeBake.CmdLineArgs changed]
+Linking /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/x/ssgbake/build/ssgbake/ssgbake ...
+------------------  ssgBake constructing a static site generator 0.0.4.4  ----------------------------
+
+ssgProcess currDir Path Abs Dir /home/frank/Workspace11/ssg/ 
+will beomce doughP Path Abs Dir /home/frank/Workspace11/ssg/docs/site/dough/
+deleted "/home/frank/Workspace11/ssg/docs/site/baked/"
+ssgProcess testNewFlag deleted Path Abs Dir /home/frank/Workspace11/ssg/docs/site/baked/
+
+
+===================================== shakeAll start 
+ flags PubFlags
+  { privateFlag = False
+  , draftFlag = False
+  , testFlag = False
+  , testNewFlag = True
+  , quickFlag = True
+  , watchFlag = False
+  , serverFlag = True
+  } 
+caused by  . 
+=======================================
+# allMarkdownConversion
+# /home/frank/Workspace11/ssg/docs/site/baked/PublicationList/index.html
+# /home/frank/Workspace11/ssg/docs/site/baked/Event/index.html
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsubTest.html
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsubNotPublish.html
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsub1.html
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/SubSub/index.html
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/testSort.html
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/testSort copy 2.html
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/postwk9sub.html
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/index.html
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/30syntaxExamples.html
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/20multiplePicts.html
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/10exampleLayout.html
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/index.html
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/07mitImageRelativ.html
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/06mitImage.html
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/05withRefNoStyle.html
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/04mitPDF.html
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/03postwk.html
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/01blog1.html
+# /home/frank/Workspace11/ssg/docs/site/baked/index.html
+# /home/frank/Workspace11/ssg/docs/site/baked/PublicationList/index.panrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Event/index.panrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsubTest.panrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsubNotPublish.panrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsub1.panrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/SubSub/index.panrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/testSort.panrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/testSort copy 2.panrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/postwk9sub.panrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/index.panrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/30syntaxExamples.panrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/20multiplePicts.panrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/10exampleLayout.panrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/index.panrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/07mitImageRelativ.panrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/06mitImage.panrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/05withRefNoStyle.panrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/04mitPDF.panrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/03postwk.panrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/01blog1.panrep
+# /home/frank/Workspace11/ssg/docs/site/baked/index.panrep
+# /home/frank/Workspace11/ssg/docs/site/baked/PublicationList/index.docrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Event/index.docrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsubTest.docrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsubNotPublish.docrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/SubSub/subsub1.docrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/SubSub/index.docrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/testSort.docrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/testSort copy 2.docrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/postwk9sub.docrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/index.docrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/30syntaxExamples.docrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/20multiplePicts.docrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/10exampleLayout.docrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/index.docrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/07mitImageRelativ.docrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/06mitImage.docrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/05withRefNoStyle.docrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/04mitPDF.docrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/03postwk.docrep
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/01blog1.docrep
+# /home/frank/Workspace11/ssg/docs/site/baked/index.docrep
+# /home/frank/Workspace11/ssg/docs/site/dough/PublicationList/index.md
+
+	---------------------------panrep2html shiftHeaderLevel 0
+# /home/frank/Workspace11/ssg/docs/site/dough/Event/index.md
+
+	---------------------------panrep2html shiftHeaderLevel 0
+# /home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/SubSub/subsubTest.md
+
+	---------------------------panrep2html shiftHeaderLevel 0
+# /home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/SubSub/subsubNotPublish.md
+
+	---------------------------panrep2html shiftHeaderLevel 0
+# /home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/SubSub/subsub1.md
+
+	---------------------------panrep2html shiftHeaderLevel 0
+# /home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/SubSub/index.md
+
+	---------------------------panrep2html shiftHeaderLevel 0
+# /home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/testSort.md
+
+	---------------------------panrep2html shiftHeaderLevel 0
+# /home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/testSort copy 2.md
+
+	---------------------------panrep2html shiftHeaderLevel 0
+# /home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/postwk9sub.md
+
+	---------------------------panrep2html shiftHeaderLevel 0
+# /home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/index.md
+
+	---------------------------panrep2html shiftHeaderLevel 0
+# /home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/30syntaxExamples.md
+
+	---------------------------panrep2html shiftHeaderLevel 0
+# /home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/20multiplePicts.md
+
+	---------------------------panrep2html shiftHeaderLevel 0
+# /home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/10exampleLayout.md
+
+	---------------------------panrep2html shiftHeaderLevel 0
+# /home/frank/Workspace11/ssg/docs/site/dough/Blog/index.md
+
+	---------------------------panrep2html shiftHeaderLevel 0
+# /home/frank/Workspace11/ssg/docs/site/dough/Blog/07mitImageRelativ.md
+
+	---------------------------panrep2html shiftHeaderLevel 0
+# /home/frank/Workspace11/ssg/docs/site/dough/Blog/06mitImage.md
+
+	---------------------------panrep2html shiftHeaderLevel 0
+# /home/frank/Workspace11/ssg/docs/site/dough/Blog/05withRefNoStyle.md
+
+	---------------------------panrep2html shiftHeaderLevel 0
+# /home/frank/Workspace11/ssg/docs/site/dough/Blog/04mitPDF.md
+
+	---------------------------panrep2html shiftHeaderLevel 0
+# /home/frank/Workspace11/ssg/docs/site/dough/Blog/03postwk.md
+
+	---------------------------panrep2html shiftHeaderLevel 0
+# /home/frank/Workspace11/ssg/docs/site/dough/Blog/01blog1.md
+
+	---------------------------panrep2html shiftHeaderLevel 0
+# /home/frank/Workspace11/ssg/docs/site/dough/index.md
+
+	---------------------------panrep2html shiftHeaderLevel 0
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/static/w3c.css
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/static/tufte.css
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/static/tufte-extra.css
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/static/tufte-additions.css
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/static/ssg_w3c_ext.css
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/static/pandoc.css
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/static/w3c.css
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/static/w3c.css to /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/static/w3c.css
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/static/tufte.css
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/static/tufte.css to /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/static/tufte.css
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/static/tufte-extra.css
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/static/tufte-extra.css to /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/static/tufte-extra.css
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/static/tufte-additions.css
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/static/tufte-additions.css to /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/static/tufte-additions.css
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/static/ssg_w3c_ext.css
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/static/ssg_w3c_ext.css to /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/static/ssg_w3c_ext.css
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/static/pandoc.css
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/static/pandoc.css to /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/static/pandoc.css
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/img/geras4013.JPG
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/img/DSC05127.JPG
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/img/DSC04907.JPG
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/img/DSC04809.JPG
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/resources/120-2026_IMG.JPG
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/img/symmetricGeras2.jpg
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/img/symmetricGeras.jpg
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/img/cropped-DSC05127-1024x330.jpg
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/img/squared64.jpg
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/img/squared32.jpg
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/img/squared16.jpg
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/img/squared152.jpg
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/img/geras4013.JPG
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/img/geras4013.JPG to /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/img/geras4013.JPG
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/img/DSC05127.JPG
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/img/DSC05127.JPG to /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/img/DSC05127.JPG
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/img/DSC04907.JPG
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/img/DSC04907.JPG to /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/img/DSC04907.JPG
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/img/DSC04809.JPG
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/img/DSC04809.JPG to /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/img/DSC04809.JPG
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/img/134-3448_IMG.JPG
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/img/134-3448_IMG.JPG to /home/frank/Workspace11/ssg/docs/site/baked/resources/img/134-3448_IMG.JPG
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/img/134-3437_IMG.JPG
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/img/134-3437_IMG.JPG to /home/frank/Workspace11/ssg/docs/site/baked/resources/img/134-3437_IMG.JPG
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/img/121-2128_IMG.JPG
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/img/121-2128_IMG.JPG to /home/frank/Workspace11/ssg/docs/site/baked/resources/img/121-2128_IMG.JPG
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/img/121-2127_IMG.JPG
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/img/121-2127_IMG.JPG to /home/frank/Workspace11/ssg/docs/site/baked/resources/img/121-2127_IMG.JPG
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/img/121-2118_IMG.JPG
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/img/121-2118_IMG.JPG to /home/frank/Workspace11/ssg/docs/site/baked/resources/img/121-2118_IMG.JPG
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/img/121-2117_IMG.JPG
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/img/121-2117_IMG.JPG to /home/frank/Workspace11/ssg/docs/site/baked/resources/img/121-2117_IMG.JPG
+# /home/frank/Workspace11/ssg/docs/site/dough/Blog/resources/120-2026_IMG.JPG
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/Blog/resources/120-2026_IMG.JPG to /home/frank/Workspace11/ssg/docs/site/baked/Blog/resources/120-2026_IMG.JPG
+# /home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/resources/DSC08138.JPG
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/resources/DSC08138.JPG to /home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog/resources/DSC08138.JPG
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/img/symmetricGeras2.jpg
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/img/symmetricGeras2.jpg to /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/img/symmetricGeras2.jpg
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/img/symmetricGeras.jpg
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/img/symmetricGeras.jpg to /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/img/symmetricGeras.jpg
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/img/cropped-DSC05127-1024x330.jpg
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/img/cropped-DSC05127-1024x330.jpg to /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/img/cropped-DSC05127-1024x330.jpg
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/img/squared64.jpg
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/img/squared64.jpg to /home/frank/Workspace11/ssg/docs/site/baked/resources/img/squared64.jpg
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/img/squared32.jpg
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/img/squared32.jpg to /home/frank/Workspace11/ssg/docs/site/baked/resources/img/squared32.jpg
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/img/squared16.jpg
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/img/squared16.jpg to /home/frank/Workspace11/ssg/docs/site/baked/resources/img/squared16.jpg
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/img/squared152.jpg
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/img/squared152.jpg to /home/frank/Workspace11/ssg/docs/site/baked/resources/img/squared152.jpg
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/fonts/et-book-semi-bold-old-style-figures/et-book-semi-bold-old-style-figures.woff
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/fonts/et-book-roman-old-style-figures/et-book-roman-old-style-figures.woff
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/fonts/et-book-roman-line-figures/et-book-roman-line-figures.woff
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/fonts/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.woff
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/fonts/et-book-bold-line-figures/et-book-bold-line-figures.woff
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/fonts/et-book-semi-bold-old-style-figures/et-book-semi-bold-old-style-figures.woff
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/fonts/et-book-semi-bold-old-style-figures/et-book-semi-bold-old-style-figures.woff to /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/fonts/et-book-semi-bold-old-style-figures/et-book-semi-bold-old-style-figures.woff
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/fonts/et-book-roman-old-style-figures/et-book-roman-old-style-figures.woff
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/fonts/et-book-roman-old-style-figures/et-book-roman-old-style-figures.woff to /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/fonts/et-book-roman-old-style-figures/et-book-roman-old-style-figures.woff
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/fonts/et-book-roman-line-figures/et-book-roman-line-figures.woff
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/fonts/et-book-roman-line-figures/et-book-roman-line-figures.woff to /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/fonts/et-book-roman-line-figures/et-book-roman-line-figures.woff
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/fonts/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.woff
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/fonts/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.woff to /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/fonts/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.woff
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/fonts/et-book-bold-line-figures/et-book-bold-line-figures.woff
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/fonts/et-book-bold-line-figures/et-book-bold-line-figures.woff to /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/fonts/et-book-bold-line-figures/et-book-bold-line-figures.woff
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/404.html
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/publications/interop.html
+# /home/frank/Workspace11/ssg/docs/site/baked/PublicationList/resources/cadastre.html
+# /home/frank/Workspace11/ssg/docs/site/baked/indextotest_linked.html
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/404.html
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/templates/404.html to /home/frank/Workspace11/ssg/docs/site/baked/resources/templates/404.html
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/publications/interop.html
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/publications/interop.html to /home/frank/Workspace11/ssg/docs/site/baked/resources/publications/interop.html
+# /home/frank/Workspace11/ssg/docs/site/dough/PublicationList/resources/cadastre.html
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/PublicationList/resources/cadastre.html to /home/frank/Workspace11/ssg/docs/site/baked/PublicationList/resources/cadastre.html
+# /home/frank/Workspace11/ssg/docs/site/dough/indextotest_linked.html
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/indextotest_linked.html to /home/frank/Workspace11/ssg/docs/site/baked/indextotest_linked.html
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/docs/docs5/5044_Wilke_Frank_ACM_2010_PubDat_189049.pdf
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/docs/docs5/5020_GeoValue_2010.pdf
+# /home/frank/Workspace11/ssg/docs/site/baked/Blog/resources/blogtest.pdf
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/docs/docs5/5044_Wilke_Frank_ACM_2010_PubDat_189049.pdf
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/docs/docs5/5044_Wilke_Frank_ACM_2010_PubDat_189049.pdf to /home/frank/Workspace11/ssg/docs/site/baked/resources/docs/docs5/5044_Wilke_Frank_ACM_2010_PubDat_189049.pdf
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/docs/docs5/5020_GeoValue_2010.pdf
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/docs/docs5/5020_GeoValue_2010.pdf to /home/frank/Workspace11/ssg/docs/site/baked/resources/docs/docs5/5020_GeoValue_2010.pdf
+# /home/frank/Workspace11/ssg/docs/site/dough/Blog/resources/blogtest.pdf
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/Blog/resources/blogtest.pdf to /home/frank/Workspace11/ssg/docs/site/baked/Blog/resources/blogtest.pdf
+# /home/frank/Workspace11/ssg/docs/site/baked/resources/BibTexLatex.bib
+# /home/frank/Workspace11/ssg/docs/site/dough/resources/BibTexLatex.bib
+Copying from /home/frank/Workspace11/ssg/docs/site/dough/resources/BibTexLatex.bib to /home/frank/Workspace11/ssg/docs/site/baked/resources/BibTexLatex.bib
+Lint checking succeeded
