@@ -94,7 +94,7 @@ sourceDirTestSite = sourceDirTestDocs </> (makeRelDir "site")
 
 layoutDefaults :: SiteLayout
 -- used for finding the test cases
--- must correspond to the settings2.yaml in source code repository
+-- must correspond to the settings3.yaml in source code repository
 layoutDefaults =
     SiteLayout
         { doughDir = sourceDirTestSite </> makeRelDir "dough"

@@ -16,6 +16,7 @@
 - ignore: {name: "Eta reduce"}
 - ignore: {name: "spelling"}
 - ignore: {name: "craddle"}
+- ignore: {name: "spelling"}
 
 
 # Specify additional command line arguments

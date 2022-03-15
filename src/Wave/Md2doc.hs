@@ -49,10 +49,10 @@ readMarkdownFile2docrep debug doughP fnin = do
 
 
 
-pandoc2docrep ::  Path Abs Dir ->  Path Abs File  ->Pandoc -> Docrep
+pandoc2docrep ::  Path Abs Dir ->  Path Abs File  -> Pandoc -> Docrep
 {- | convert the pandoc text to DocrepJSON
  reads the markdown file with pandoc and extracts the yaml metadat
- the metadata are then converted to metaPage
+ the metadata are then converted to metaPage from the json pandoc
  -- duplication possible for data in the pandoc metada (no used)
  TODO may use json record parse, which I have already done
 -}

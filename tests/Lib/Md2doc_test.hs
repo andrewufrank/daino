@@ -16,17 +16,18 @@ import Foundational.MetaPage
 import Foundational.SettingsPage
 import Foundational.Filetypes4sites
 import Wave.Md2doc
+import Uniform.Markdown
 import Uniform.Pandoc
 -- import Uniform.Json
 import UniformBase
 -- import Lib.IndexCollect
 
--- testing_readMarkdown2pandoc :: FilePath -> IO ()
--- -- | test to produce pandoc - step0 in   Md2.doc 
--- testing_readMarkdown2pandoc f1  = test1FileIO "ssg" (toFilePath (doughPL </>(makeRelDir "Blog") </> f1) <> ".md") (f1 <> "_pandoc" )(readMarkdown2 . MarkdownText) 
+testing_readMarkdown2pandoc :: FilePath -> IO ()
+-- | test to produce pandoc - step0 in   Md2.doc 
+testing_readMarkdown2pandoc f1  = test1FileIO "ssg" (toFilePath (doughPL </>(makeRelDir "Blog") </> f1) <> ".md") (f1 <> "_pandoc" )(readMarkdown2 . MarkdownText) 
 
 -- test_index_readMarkdown2pandoc = testing_readMarkdown2pandoc "index"   
--- -- test_blog1_readMarkdown2pandoc = testing_readMarkdown2pandoc   "01blog1"
+test_blog1_readMarkdown2pandoc = testing_readMarkdown2pandoc   "01blog1"
 -- -- test_postwk_readMarkdown2pandoc = testing_readMarkdown2pandoc "03postwk"   
 -- -- test_withRef_readMarkdown2pandoc = testing_readMarkdown2pandoc "02withRef"   
 

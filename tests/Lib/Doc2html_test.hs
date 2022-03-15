@@ -13,6 +13,7 @@ import Lib.IndexCollect
 import Lib.Md2doc_test
 import Test.Framework
 import Uniform.Json
+import Uniform.Markdown
 import Uniform.Pandoc
 import Uniform.Test.TestHarness
 import Uniform.Http

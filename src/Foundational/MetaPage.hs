@@ -38,6 +38,9 @@ import Uniform.Pandoc
 import Uniform.Yaml
 import Uniform.HTMLout (extHTML)
 
+-- the fields in the yaml header of each md file 
+-- maybe values can be empty
+
 data MetaPage = MetaPage
     { -- | the original dough fn
       dyFn :: FilePath
@@ -47,13 +50,13 @@ data MetaPage = MetaPage
       dyLink :: FilePath
     , -- | the fields of miniblog
       dyLang :: Text -- DocLanguage not used yet 
-    , dyTitle :: Text
-    , dyAbstract :: Text
-    , dyAuthor :: Text
+    , dyTitle :: Text  -- must be set 
+    , dyAbstract :: Text -- must be set 
+    , dyAuthor :: Text  -- default ?
     , -- | this is maybe a string,
       --  should be utctime
-      dyDate :: Maybe Text
-    , dyKeywords :: Text -- should be [Text]
+      dyDate :: Maybe Text -- must be set 
+    , dyKeywords :: Text -- should be [Text] 
     , dyImage ::  Text  -- empty if nothing given
     , dyImageCaption :: Text 
     , dyBibliography :: Maybe Text
