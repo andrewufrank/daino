@@ -74,7 +74,7 @@ data MetaPage = MetaPage
     -- , dyDirEntries   :: [IndexEntry]  -- reduce to one for indexEntry
     -- , dyFileEntries  :: [IndexEntry]
     -- is defined later, necessary here?
-    , dyHeaderShift :: Int
+    , dyHeaderShift :: Int -- pandoc seems not to parse int in the yaml, mark 'zero' or 'one' 
     -- shift the header level, that one # is hl2,
     -- because hl1 is title
     }
@@ -149,14 +149,21 @@ pandoc2MetaPage doughP filename  pd =  meta6
             --   dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
             , dyIndexSort = getAtKey meta2 "indexSort"
             , dyIndexEntry =   zero
-            , dyHeaderShift = fromMaybe zero . getAtKey  meta2 $ "headerShift"
+            , dyHeaderShift = parseHeaderShift $ getAtKey  meta2 $ "headerShift"
                                         -- value 1 is correct
             }
             
     ix1 =  initializeIndex meta4
     -- meta5 = meta4   -- {dyAuthor=blankAuthorName hpnames (dyAuthor meta4) }
     meta6 = meta4{dyIndexEntry = ix1} 
+    fromJustN :: Text -> Maybe a -> a 
     fromJustN a = fromJustNoteT ["fromJust Nothing pandoc2MetaPage\n", showT filename, "\n", a]
+
+    parseHeaderShift :: Maybe Text -> Int 
+    parseHeaderShift Nothing = 0 
+    parseHeaderShift (Just "zero") = 0 
+    parseHeaderShift (Just "one") = 1 
+
     -- fromJust Nothing = errorT ["fromJust Nothing pandoc2MetaPage", showT filename]
     -- fromJust (Just a) = a
  

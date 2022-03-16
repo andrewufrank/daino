@@ -22,21 +22,56 @@ import Uniform.Pandoc
 import UniformBase
 -- import Lib.IndexCollect
 
-testing_readMarkdown2pandoc :: FilePath -> IO ()
+-- test1FileIO  Text ->  FilePath -> FilePath -> (b -> ErrIO c) -> IO ()
 -- | test to produce pandoc - step0 in   Md2.doc 
-testing_readMarkdown2pandoc f1  = test1FileIO "ssg" (toFilePath (doughPL </>(makeRelDir "Blog") </> f1) <> ".md") (f1 <> "_pandoc" )(readMarkdown2 . MarkdownText) 
+-- goal: to verify that YAML header is read 
+testing_readMarkdown2pandoc f1 res1 = do 
+    res <- runErr $ do 
+        let fnin =  blogDir </> makeRelFile (  f1 <> ".md")  
+        
+        -- doc1 <- readMarkdownFile2docrep (def::NoticeLevel) doughPL fnin
+        mdfile <- read8 fnin markdownFileType 
+        -- putIOwords ["the mdfile is", showPretty mdfile]
+        pd <- readMarkdown2 mdfile
+        let meta6 = pandoc2MetaPage doughPL fnin  pd 
+        let doc1 = Docrep meta6 pd 
+        let metaRes = dyHeaderShift . meta1 $ doc1
+        putIOwords ["the meta is", showPretty metaRes]
+        return metaRes 
+    assertEqual (Right res1) res 
 
--- test_index_readMarkdown2pandoc = testing_readMarkdown2pandoc "index"   
-test_blog1_readMarkdown2pandoc = testing_readMarkdown2pandoc   "01blog1"
--- -- test_postwk_readMarkdown2pandoc = testing_readMarkdown2pandoc "03postwk"   
--- -- test_withRef_readMarkdown2pandoc = testing_readMarkdown2pandoc "02withRef"   
+test_blog1_readMarkdown2pandoc = testing_readMarkdown2pandoc   "01blog1" expectedResBlog1
+expectedResBlog1 = 1 :: Int
+test_blog2_readMarkdown2pandoc = testing_readMarkdown2pandoc   "02withRef" expectedResBlog2
+expectedResBlog2 = 0 :: Int
+test_blog3_readMarkdown2pandoc = testing_readMarkdown2pandoc   "03postwk" expectedResBlog3
+expectedResBlog3 = 0 :: Int
 
--- -- | conversion of markdown file f1 (with extension) to intermediate d11  
+-- -- test_index_readMarkdown2pandoc = testing_readMarkdown2pandoc "index"   
+-- test_blog1_readMarkdown2pandoc = testing_readMarkdown2pandoc   "01blog1"
+-- -- -- test_postwk_readMarkdown2pandoc = testing_readMarkdown2pandoc "03postwk"   
+-- -- -- test_withRef_readMarkdown2pandoc = testing_readMarkdown2pandoc "02withRef"   
+
+-- -- -- | conversion of markdown file f1 (with extension) to intermediate d11  
+
+
+-- testing_readMarkdown2pandoc :: FilePath -> IO ()
+-- -- | test to produce pandoc - step0 in   Md2.doc 
+-- testing_readMarkdown2pandoc f1  = test1FileIO "ssg" (toFilePath $  blogDir </> makeRelFile (  f1 <> ".md") ) (readMarkdownFile2docrep (def::NoticeLevel) (toFilePath doughPL)) 
+
+-- -- test_index_readMarkdown2pandoc = testing_readMarkdown2pandoc "index"   
+-- test_blog1_readMarkdown2pandoc = testing_readMarkdown2pandoc   "01blog1"
+-- -- -- test_postwk_readMarkdown2pandoc = testing_readMarkdown2pandoc "03postwk"   
+-- -- -- test_withRef_readMarkdown2pandoc = testing_readMarkdown2pandoc "02withRef"   
+
+-- -- -- | conversion of markdown file f1 (with extension) to intermediate d11  
 
 doughPL:: Path Abs Dir 
-doughPL = doughDir layoutDefaults 
+doughPL = doughDir (def::SiteLayout)
 bakedPL :: Path Abs Dir
-bakedPL = bakedDir layoutDefaults
+bakedPL = bakedDir (def::SiteLayout)
+blogDir :: Path Abs Dir 
+blogDir = doughPL </> (makeRelDir "Blog")
 
 -- testing_md2pandoc :: FilePath -> IO ()
 -- -- | op 1 in Md2doc.hs

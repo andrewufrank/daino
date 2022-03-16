@@ -31,7 +31,7 @@ import Foundational.Filetypes4sites ( Docrep(Docrep), meta1)
 import Foundational.CmdLineFlags
     ( PubFlags(draftFlag, privateFlag) )
 import Uniform.Pandoc
-    ( Pandoc, pandocProcessCites, markdownFileType, readMarkdown2 )
+    (pandocProcessCites, markdownFileType, readMarkdown2 )
 
 
 readMarkdownFile2docrep  :: NoticeLevel -> Path Abs Dir ->  Path Abs File ->  ErrIO Docrep 
@@ -44,22 +44,24 @@ readMarkdownFile2docrep debug doughP fnin = do
     pd <- readMarkdown2 mdfile
     -- could perhaps "need" all ix as files?
 
-    let doc1 = pandoc2docrep doughP fnin  pd
+    -- let doc1 = pandoc2docrep doughP fnin  pd
+    let meta6 = pandoc2MetaPage doughP fnin  pd 
+    let doc1 = Docrep meta6 pd 
     return doc1
 
 
 
-pandoc2docrep ::  Path Abs Dir ->  Path Abs File  -> Pandoc -> Docrep
-{- | convert the pandoc text to DocrepJSON
- reads the markdown file with pandoc and extracts the yaml metadat
- the metadata are then converted to metaPage from the json pandoc
- -- duplication possible for data in the pandoc metada (no used)
- TODO may use json record parse, which I have already done
--}
--- pure 
-pandoc2docrep  doughP filename  pd = Docrep meta6  pd
-    where 
-        meta6 = pandoc2MetaPage doughP filename  pd 
+-- pandoc2docrep ::  Path Abs Dir ->  Path Abs File  -> Pandoc -> Docrep
+-- {- | convert the pandoc text to DocrepJSON
+--  reads the markdown file with pandoc and extracts the yaml metadat
+--  the metadata are then converted to metaPage from the json pandoc
+--  -- duplication possible for data in the pandoc metada (no used)
+--  TODO may use json record parse, which I have already done
+-- -}
+-- -- pure 
+-- pandoc2docrep  doughP filename  pd = Docrep meta6  pd
+--     where 
+--         meta6 = pandoc2MetaPage doughP filename  pd 
 
 
 

@@ -27,6 +27,7 @@ styleBiber: numeric
 title: 02witRef title postWithReference
 version: publish
 visibility: private
+headerShift: zero
 ---
 02withRef text - An example post version 12345678
 
