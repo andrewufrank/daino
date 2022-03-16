@@ -2,7 +2,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 
--- {-# OPTIO-unused-imports #-}
+-- {-# OPTIONS??-unused-imports #-}
 
 module Lib.Doc2html_test where
 
@@ -18,28 +18,29 @@ import Uniform.Pandoc
 import Uniform.Test.TestHarness
 import Uniform.Http
 import UniformBase
--- import Wave.Doc2html
+import Wave.Docrep2panrep
+import Foundational.CmdLineFlags ( PubFlags )
 
 -- not working ok, because the file names are not corresponding
 -- to the path given
 
 -- -- | test to produce pan
--- testing_md2pan f = test1FileIO "ssg" 
---     (f <> "T.docrep" ) (f <>"_panrep") 
---     (docrep2panrep NoticeLevel0 (def::SiteLayout) )
+testing_md2pan f = test1FileIO "ssg" 
+    (f <> "T.docrep" ) (f <>"_panrep") 
+    (docrep2panrep NoticeLevel0 (def::PubFlags) (def::SiteLayout) )
 
--- test_blog1_md2pan = testing_md2pan "01blog1"
+test_blog1_md2pan = testing_md2pan "01blog1"
 -- test_index_md2pan = testing_md2pan "index"
 -- test_postwk_md2pan = testing_md2pan "03postwk"
 -- test_withRef_md2pan = testing_md2pan "02withRef"
 
 
-testing_pan2indexEntry f = test1File "ssg" 
-    (f <> "_panrep" ) (f <>"_ixEntry1") op -- dr1 <- read8 inputFn docrepFileType
-op :: Panrep -> IndexEntry
-op = dyIndexEntry . panyam
+-- testing_pan2indexEntry f = test1File "ssg" 
+--     (f <> "_panrep" ) (f <>"_ixEntry1") op -- dr1 <- read8 inputFn docrepFileType
+-- op :: Panrep -> IndexEntry
+-- op = dyIndexEntry . panyam
 
-test_pan2indexEntry_index = testing_pan2indexEntry "index"
+-- test_pan2indexEntry_index = testing_pan2indexEntry "index"
 -- test_pan2indexEntry_blog1 = testing_pan2indexEntry "01blog1"
 -- test_pan2indexEntry_postwk = testing_pan2indexEntry "03postwk"
 -- test_pan2indexEntry_withRef = testing_pan2indexEntry "02withRef"
@@ -106,3 +107,4 @@ test_pan2indexEntry_index = testing_pan2indexEntry "index"
 instance ShowTestHarness Panrep
 instance ShowTestHarness HTMLout
 instance ShowTestHarness [Value]
+instance ShowTestHarness (Panrep, [FilePath])

@@ -25,7 +25,7 @@ module Foundational.SettingsPage
     , def ) where
 
 import UniformBase
-import Data.Default.Class ( Default(def) ) -- to define a default class for pub flags 
+import Data.Default.Class ( Default(def) ) -- to define a default class for siteLayout 
 import Uniform.Json ( FromJSON, ToJSON )
 
 progName :: Text
@@ -105,6 +105,9 @@ layoutDefaults =
         , doNotPublish = "DNB"
         , blogAuthorToSuppress = []
         }
+
+instance Default SiteLayout where 
+        def = layoutDefaults
 
 notDNB :: SiteLayout -> FilePath -> Bool 
 notDNB siteLayout = not . isInfixOf' (t2s $ doNotPublish siteLayout)
