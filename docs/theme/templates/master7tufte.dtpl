@@ -153,10 +153,10 @@
 
     <section>   $-- necessary for sidenotes to work
         $content3$  <!--content-from-panrep-blocks which is the content of the index.md -->
-        <div id="refs">
+        <!-- <div id="refs">
             <h2>ReferencesTitle</h2>
-            $-- here should be the refs 
-        </div>
+            $-- here should be the refs see https://github.com/jgm/pandoc/issues/7969
+        </div> -->
     $afterContent$
 
     $for(include-after)$
