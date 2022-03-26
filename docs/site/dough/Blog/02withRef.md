@@ -41,4 +41,3 @@ The referenfere [@fenner2012a] is given in the file.
 The references are in "resources/BibTexLatex.bib".
 changed to /home/frank/Workspace11/ssg/docs/site/dough/resources/BibTexExample.bib
 
-# References

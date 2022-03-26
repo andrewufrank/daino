@@ -160,9 +160,12 @@ pandoc2MetaPage doughP filename  pd =  meta6
     fromJustN a = fromJustNoteT ["fromJust Nothing pandoc2MetaPage\n", showT filename, "\n", a]
 
     parseHeaderShift :: Maybe Text -> Int 
-    parseHeaderShift Nothing = 0 
+    parseHeaderShift Nothing = 1   -- this is the default
     parseHeaderShift (Just "zero") = 0 
     parseHeaderShift (Just "one") = 1 
+    parseHeaderShift (Just "0") = 0 
+    parseHeaderShift (Just "1") = 1 
+    parseHeaderShift (Just a) = errorT ["parseHeaderShift", "unexpected Value", a, "!"] 
 
     -- fromJust Nothing = errorT ["fromJust Nothing pandoc2MetaPage", showT filename]
     -- fromJust (Just a) = a

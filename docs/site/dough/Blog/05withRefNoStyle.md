@@ -21,4 +21,4 @@ The references are in "resources/BibTexLatex.bib".
 The default style is /home/frank/Desktop/myHomepage/resources/chicago-fullnote-bibliography-bb.csl 
 test12
 
-# References
+ 
