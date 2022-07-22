@@ -7,8 +7,9 @@
 # A snapshot resolver dictates the compiler version and the set of packages
 # to be used for project dependencies. For example:
 #
-resolver: lts-18.28
+# resolver: lts-18.28
 # for ghc 8.10.7
+resolver: lts-19.16 # for ghc 9.0.2 newest lts
 # resolver: nightly-2015-09-21
 # resolver: ghc-7.10.2
 #
@@ -55,8 +56,7 @@ extra-deps:
 - ../u2to/uniform-cmdLineArgs
 - ../u2to/uniform-convenience
 
-
-- aeson-2.1.0.0@sha256:18a5e5f6f4224d04565e97cec140affb1728c488bf07ef497430ef7d95cd05ff,5959
+# for 9.0.2
 - dir-traverse-0.2.3.0@sha256:adcc128f201ff95131b15ffe41365dc99c50dc3fa3a910f021521dc734013bfa,2137
 - pandoc-sidenote-0.22.1.0@sha256:44a4e9db8dcbd93fdc8b1a6e038b4d6402cace3b5f1bd3532ebd7e4e3ed0f2a2,1732
 - test-invariant-0.4.5.0@sha256:d1aa6b61e0057a4065eeff3286208e947a0b44c6a2186210399f5e5e7fb0d0dd,1902

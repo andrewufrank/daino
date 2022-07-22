@@ -34,5 +34,5 @@ main =
         -- let sitefn = makeAbsFile "/home/frank/Workspace11/ssg/docs/site/settings3"
         workingdir1 :: Path Abs Dir <- currentDir 
         let sitefn = workingdir1 </> (makeRelFile "settings3" )  
-        checkProcess NoticeLevel0 sitefn
+        checkProcess NoticeLevel2 sitefn
     )
