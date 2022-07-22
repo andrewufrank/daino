@@ -46,7 +46,7 @@ extra-deps:
 - ../uBase/uniform-time
 
 - ../u4blog/uniform-http
-- ../u4blog/uniform-json
+- ../u4blog/uniform-json  # braucht version 0.0.6.1 for lts-19.16
 - ../u4blog/uniform-latex2pdf
 - ../u4blog/uniform-pandoc
 - ../u4blog/uniform-shake

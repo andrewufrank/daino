@@ -140,7 +140,7 @@ pandoc2MetaPage doughP filename  pd =  meta6
             , dyStyle = getAtKey meta2 "style"
             , dyStyleBiber = fromMaybe "authoryear" $ getAtKey meta2 "styleBiber"
             , dyNoCite = getAtKey meta2 "nocite"
-            , dyReferences = gak meta2 "references"
+            , dyReferences = getAtKey meta2 "references"
             , dyContentFiles = maybeToList  . getAtKey meta2 $ "content"
             -- TODO make reading a list
             , dyVersion = fromJustN "version" $ getAtKey meta2 "version"  -- questionalbe default

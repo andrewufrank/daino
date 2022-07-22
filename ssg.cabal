@@ -60,13 +60,13 @@ library
     , pandoc-sidenote
     , uniform-cmdLineArgs
     , uniform-http
-    , uniform-json
+    , uniform-json ==0.0.6.2
     , uniform-latex2pdf
-    , uniform-pandoc
+    , uniform-pandoc >=0.0.2.4
     , uniform-shake
     , uniform-watch
     , uniform-webserver
-    , uniformBase
+    , uniformBase ==0.1.4
   default-language: Haskell2010
 
 executable ssgbake
@@ -87,13 +87,13 @@ executable ssgbake
     , ssg
     , uniform-cmdLineArgs
     , uniform-http
-    , uniform-json
+    , uniform-json ==0.0.6.2
     , uniform-latex2pdf
-    , uniform-pandoc
+    , uniform-pandoc >=0.0.2.4
     , uniform-shake
     , uniform-watch
     , uniform-webserver
-    , uniformBase
+    , uniformBase ==0.1.4
   default-language: Haskell2010
 
 executable ssgcheck
@@ -114,13 +114,13 @@ executable ssgcheck
     , ssg
     , uniform-cmdLineArgs
     , uniform-http
-    , uniform-json
+    , uniform-json ==0.0.6.2
     , uniform-latex2pdf
-    , uniform-pandoc
+    , uniform-pandoc >=0.0.2.4
     , uniform-shake
     , uniform-watch
     , uniform-webserver
-    , uniformBase
+    , uniformBase ==0.1.4
   default-language: Haskell2010
 
 test-suite ssgTest
@@ -153,9 +153,9 @@ test-suite ssgTest
     , uniform-cmdLineArgs
     , uniform-convenience
     , uniform-http
-    , uniform-json
+    , uniform-json ==0.0.6.2
     , uniform-latex2pdf
-    , uniform-pandoc
+    , uniform-pandoc >=0.0.2.4
     , uniform-shake
     , uniform-watch
     , uniform-webserver
