@@ -5,13 +5,6 @@
 
 packages:
 - completed:
-    hackage: aeson-2.1.0.0@sha256:18a5e5f6f4224d04565e97cec140affb1728c488bf07ef497430ef7d95cd05ff,5959
-    pantry-tree:
-      size: 38191
-      sha256: b6547599e564e528e357f236426fa8ed8bcc3e38b40b4c766a62fa22e0b5b930
-  original:
-    hackage: aeson-2.1.0.0@sha256:18a5e5f6f4224d04565e97cec140affb1728c488bf07ef497430ef7d95cd05ff,5959
-- completed:
     hackage: dir-traverse-0.2.3.0@sha256:adcc128f201ff95131b15ffe41365dc99c50dc3fa3a910f021521dc734013bfa,2137
     pantry-tree:
       size: 389
@@ -41,7 +34,7 @@ packages:
     hackage: twitch-0.1.7.2@sha256:146a887da4d2d21e489ff823a6058add40c1f9c5ee8e0d00356b497092c9c624,2988
 snapshots:
 - completed:
-    size: 590100
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/28.yaml
-    sha256: 428ec8d5ce932190d3cbe266b9eb3c175cd81e984babf876b64019e2cbe4ea68
-  original: lts-18.28
+    size: 619163
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/19/16.yaml
+    sha256: a27a5761890ade44d7dd21a5f5f93c87e60b9c063655fff835d69dd1071474f0
+  original: lts-19.16

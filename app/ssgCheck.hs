@@ -2,6 +2,7 @@
 --
 -- Module      :   ssgCheck
 -- the main for checking the input files
+-- works always on current dir
 -- for the pages
 -- separated to identify problems of each page individually
 {- simple approach
@@ -34,5 +35,5 @@ main =
         -- let sitefn = makeAbsFile "/home/frank/Workspace11/ssg/docs/site/settings3"
         workingdir1 :: Path Abs Dir <- currentDir 
         let sitefn = workingdir1 </> (makeRelFile "settings3" )  
-        checkProcess NoticeLevel2 sitefn
+        checkProcess NoticeLevel0 sitefn
     )

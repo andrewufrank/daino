@@ -58,15 +58,27 @@ checkOneMD debug  fnin  =
     
     ( do
         when (informAll debug) $ putIOwords ["checkOneMD fnin", showPretty fnin]
+        -- same setup as StartSSGprocess 
+        currDir :: Path Abs Dir  <- currentDir 
+        let settfn =  currDir </> settingsFileName
+
+        sett3 <- readSettings debug settfn 
 
         -- (Docrep y1 _) <- readMarkdownFile2docrep debug doughP fnin
         -- copied from md2doc.hs
         -- mdfile <- read8 fnin markdownFileType 
         -- pd <- readMarkdown2 mdfile
-        when (inform debug) $ putIOwords ["checkOneMD 1"]
-        -- y1 <- check_readMeta debug doughP fnin  pd 
+        
+        let doughP = doughDir (siteLayout sett3)
+        -- let doughP = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/dough/"
+                -- is not used 
+        mdfile <- read8 fnin markdownFileType 
+        pd <- readMarkdown2 mdfile
 
-        -- when (inform debug) $ putIOwords ["checkOneMD 2", "metapage", showPretty  y1]
+        when (inform debug) $ putIOwords ["checkOneMD 1"]
+        y1 <- check_readMeta debug doughP fnin  pd 
+
+        when (inform debug) $ putIOwords ["checkOneMD 2", "metapage", showPretty  y1]
 
         when (inform debug) $ putIOwords ["checkOneMD", "done"]
         return ()
@@ -74,30 +86,35 @@ checkOneMD debug  fnin  =
     `catchError` (\e -> do
         putIOwords ["checkOneMD", "discovered error in file", showT fnin]
         -- putIOwords ["the yaml head is read as:", showPretty y1]
-        putIOwords ["the error msg is:", showT (e :: SomeException)]
+        putIOwords ["the error msg is:", e ] -- showT (e :: SomeException)]
         return () 
         )
 
 check_readMeta:: NoticeLevel -> Path Abs Dir ->  Path Abs File -> Pandoc -> ErrIO  MetaPage
-check_readMeta debug doughP fnin  pd = do 
-    when (inform debug) $ putIOwords ["check_readMeta 1"]
+check_readMeta debug doughP fnin  pd = 
+    (do 
+        when (inform debug) $ putIOwords ["check_readMeta 1"]
 
-    let y1 = pandoc2MetaPage doughP fnin  pd
-    
-    y2 <- liftIO $ do 
-        let ll =sum .  map ord .  show $ y1
-        -- when (informAll debug) $ putIOwords ["check_readMeta 2", "metapage", showPretty  y1]    
-        putStr .   show $ ll  
-        let y3 =   deepseq ll y1
-    -- output is necessary to force evaluation - deepseq seems not to do it
-        return y3
+        let meta6 = pandoc2MetaPage doughP fnin  pd
+        when (inform debug) $ putIOwords ["check_readMeta 2", "metapage", showPretty  meta6]    
 
-        `catch`(\e -> do 
-            putIOwords ["\n\ncheck_readMeta", "discovered error in file", showT fnin]
-            -- putIOwords ["the yaml head is read as:", showPretty y1]
-            putIOwords ["the error msg is:", showT (e :: SomeException), "\n"]
-            return zero 
-            
-            )
-    return y2
+        -- let y2 = meta6
+        -- return y2
+        let ll = sum .  map ord . show $ meta6
+        -- y2 <- liftIO $ do 
+            -- putStr .   show $ ll  
+            -- let y3 =   deepseq ll y1
+        -- output is necessary to force evaluation - deepseq seems not to do it
+        putIOwords [showT  ll]
+        return meta6
+      )
+
+-- catch error is never reached. problem is in pure code (pandoc2meta)
+-- discovered when output is forced 
+--   `catchError` (\e -> do 
+--             putIOwords ["\n\ncheck_readMeta", "discovered error in file", showT fnin]
+--             -- putIOwords ["the yaml head is read as:", showPretty y1]
+--             putIOwords ["the error msg is:", showT (e :: SomeException), "\n"]
+--             return zero 
+--             )
 
