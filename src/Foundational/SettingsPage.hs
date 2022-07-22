@@ -22,7 +22,9 @@
 -}
 module Foundational.SettingsPage
     (module Foundational.SettingsPage
-    , def ) where
+    , def 
+    , settingsFileName
+    ) where
 
 import UniformBase
 import Data.Default.Class ( Default(def) ) -- to define a default class for siteLayout 
@@ -30,6 +32,10 @@ import Uniform.Json ( FromJSON, ToJSON )
 
 progName :: Text
 progName = "SSG"  
+
+settingsFileName :: Path Rel File
+-- ^ the yaml file in which the siteHeader are fixec
+settingsFileName = makeRelFile "settings3" -- the yaml file
 
 -- | the siteHeader file with all fields 
 data Settings = Settings

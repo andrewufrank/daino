@@ -70,9 +70,9 @@ ssgProcess debug flags = do
     putIOwords ["ssgProcess done"]
     return ()
 
-settingsFileName :: Path Rel File
--- ^ the yaml file in which the siteHeader are fixec
-settingsFileName = makeRelFile "settings3" -- the yaml file
+-- settingsFileName :: Path Rel File
+-- -- ^ the yaml file in which the siteHeader are fixec
+-- settingsFileName = makeRelFile "settings3" -- the yaml file
 -- testNew bakes all test data, test alone continue the previous test
 
 -- idea to automate upload (before call to shakeAll)
