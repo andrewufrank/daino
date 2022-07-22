@@ -102,6 +102,7 @@ shakeAll debug sett3 flags causedby = do
         , "\ncaused by"
         , s2t causedby
         , "."
+        , "\ndebug:", showT debug
         , "\n======================================="
         ]
     let layout = siteLayout sett3 

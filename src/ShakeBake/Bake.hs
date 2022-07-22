@@ -50,7 +50,7 @@ bakeOneMD2docrep :: BakeOp --    MD -> DOCREP
 -- process the md to pandoc format (parser)
 -- and add the refs 
 bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
-    when (inform debug) $    putIOwords
+    when True $    putIOwords
         [ "\n-----------------"
         , "bakeOneMD2docrep 1 fn", showT inputFn
         , "\n resfn2", showT resfn2

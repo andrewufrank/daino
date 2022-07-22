@@ -66,17 +66,17 @@ other-extensions:  # besides the automatically Haskell2010
 
 dependencies: 
     - base  > 4.7 && < 5
-    - uniformBase  == 0.1.4
-    - uniform-json ==0.0.6.1
-    -  uniform-shake >= 0.0.1.2
+    - uniformBase  # == 0.1.4
+    - uniform-json # ==0.0.6.1
+    -  uniform-shake # >= 0.0.1.2
     - uniform-http
     # - uniform-convenience # from u2to
     # - uniform-startapp # from u2to - replace with startProg in uniform-error 
     - uniform-cmdLineArgs # from u2to
     - uniform-watch 
     - uniform-webserver  # - shake
-    - uniform-pandoc >= 0.0.2.4 # from u4blog
-    - uniform-latex2pdf >=0.0.1.1
+    - uniform-pandoc # >= 0.0.2.4 # from u4blog
+    - uniform-latex2pdf # >=0.0.1.1
     # - uniform-fileio
     # - pandoc-types  # needed? 
     # -- - uniform-ftp

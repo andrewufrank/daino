@@ -1,7 +1,7 @@
 # Static Site Generator
-A static site generator from pandoc and other available packages on Hackage (e.g. shake, twitch, scotty), influenced by Chris Penner's [slick](https://github.com/ChrisPenner/slick#readme)(todo: look at [Ema](https://github.com/srid/ema) by  Sridhar Ratnakumar). 
+A static site generator from pandoc and other available packages on Hackage (e.g. shake, twitch, scotty), influenced by Chris Penner's [slick](https://github.com/ChrisPenner/slick#readme). Newer, and seemingly simpler is `Ema` ^[`https://github.com/srid/ema` by  Sridhar Ratnakumar] but the documentation does not detail its features neither how it is built. 
 
-SSG uses files to manage data to permit version management with git. Page appearances are directed with YAML and internally data is structured with JSON. Unlike other Site Generators, for each page a PDF file is produced to gurantee well formated prints. 
+SSG uses files to manage data to permit version management with git. Page appearances are directed with YAML and internally data is structured with JSON. Unlike other Site Generators, for each page a PDF file is produced to guarantee well formated prints. 
 
 Index pages are automatically formated, but minimal content must be provided initially.
 
@@ -27,17 +27,13 @@ The markdonw file for each page included in the site must  contain in the yaml h
     Missing title and author is replaced by `FILL` - which can be searched for and corrected!
 
 
-TODO
-
 ## Processing 
 The design is based on Shake which is lazy:
 
 Each markdown file produces a page (correlate: for each page expected include a markdown file, even for the index pages!). A markdown page starts Shake with a `need` for the html page. 
 To produce html page, a panrep file must be produced, which then ask for a docrep file which is produced from the markdown file. Shake caches the intermediate files and recreates files only if the source changed, which achieves very fast udates and allow dynamic uupdates of pages. 
 
-From each markdown page a pdf is produced. The progression is from the TODO 
-
-In this sense, the conversion/transformation progresses in **Waves** and code is kept in modules which each cater for a wave.
+From each markdown page a `.pdf` file is produced. The conversion/transformation progresses in **Waves** and code is kept in modules which each cater for a wave.
 
 ### Organising Shake:
 - main: ssgbake (from app/ssgBake.hs)
@@ -51,7 +47,7 @@ The code is in the subdir `ShakeBake`.
 ## Waves: Transformations of pages for the site
 - `md`: The each page shown on the site starts as an markdown file with yaml meta information. 
 - `docrep`: the pandoc format of the page plus the completed metadata (DocrecJSON meta in json form, Docrep as record)
-        DROP ?? docrep and produce directly panrep
+        <!-- DROP ?? docrep and produce directly panrep -->
     - bakeOneMD2docrep
         - readMarkdown2docrepJSON (the result from pandoc)
         - completeDocRep (complete with defaults, hardcode TODO)

@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.34.6.
+-- This file has been generated from package.yaml by hpack version 0.35.0.
 --
 -- see: https://github.com/sol/hpack
 
@@ -60,13 +60,13 @@ library
     , pandoc-sidenote
     , uniform-cmdLineArgs
     , uniform-http
-    , uniform-json ==0.0.6.1
-    , uniform-latex2pdf >=0.0.1.1
-    , uniform-pandoc >=0.0.2.4
-    , uniform-shake >=0.0.1.2
+    , uniform-json
+    , uniform-latex2pdf
+    , uniform-pandoc
+    , uniform-shake
     , uniform-watch
     , uniform-webserver
-    , uniformBase ==0.1.4
+    , uniformBase
   default-language: Haskell2010
 
 executable ssgbake
@@ -87,13 +87,13 @@ executable ssgbake
     , ssg
     , uniform-cmdLineArgs
     , uniform-http
-    , uniform-json ==0.0.6.1
-    , uniform-latex2pdf >=0.0.1.1
-    , uniform-pandoc >=0.0.2.4
-    , uniform-shake >=0.0.1.2
+    , uniform-json
+    , uniform-latex2pdf
+    , uniform-pandoc
+    , uniform-shake
     , uniform-watch
     , uniform-webserver
-    , uniformBase ==0.1.4
+    , uniformBase
   default-language: Haskell2010
 
 executable ssgcheck
@@ -114,13 +114,13 @@ executable ssgcheck
     , ssg
     , uniform-cmdLineArgs
     , uniform-http
-    , uniform-json ==0.0.6.1
-    , uniform-latex2pdf >=0.0.1.1
-    , uniform-pandoc >=0.0.2.4
-    , uniform-shake >=0.0.1.2
+    , uniform-json
+    , uniform-latex2pdf
+    , uniform-pandoc
+    , uniform-shake
     , uniform-watch
     , uniform-webserver
-    , uniformBase ==0.1.4
+    , uniformBase
   default-language: Haskell2010
 
 test-suite ssgTest
@@ -153,10 +153,10 @@ test-suite ssgTest
     , uniform-cmdLineArgs
     , uniform-convenience
     , uniform-http
-    , uniform-json ==0.0.6.1
-    , uniform-latex2pdf >=0.0.1.1
-    , uniform-pandoc >=0.0.2.4
-    , uniform-shake >=0.0.1.2
+    , uniform-json
+    , uniform-latex2pdf
+    , uniform-pandoc
+    , uniform-shake
     , uniform-watch
     , uniform-webserver
     , uniformBase

@@ -55,5 +55,5 @@ main =
                         ]
                     )
                     "list flags to include"
-            ssgProcess NoticeLevel0 flags
+            ssgProcess NoticeLevel2 flags
         )
