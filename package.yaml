@@ -67,7 +67,7 @@ other-extensions:  # besides the automatically Haskell2010
 dependencies: 
     - base  > 4.7 && < 5
     - uniformBase  ==0.1.4
-    - uniform-json  ==0.0.6.2 # ==0.0.6.1 # -- for lts-19.16
+    - uniform-json  ==0.0.6.1 # -- for lts-19.16 # for 9.2.3 ==0.0.6.2 #
           # needs fixing the version in the stack.yaml
     -  uniform-shake # >= 0.0.1.2
     - uniform-http

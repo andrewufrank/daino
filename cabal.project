@@ -2,12 +2,12 @@
 packages: 
 -- test1
     ./ssg.cabal
-    ../uBase/uniformBase/*.cabal
-    ../uBase/uniform-algebras/*.cabal
-    ../uBase/uniform-strings/*.cabal
-    ../uBase/uniform-error/*.cabal
+--    ../uBase/uniformBase/*.cabal
+--    ../uBase/uniform-algebras/*.cabal
+--    ../uBase/uniform-strings/*.cabal
+--    ../uBase/uniform-error/*.cabal
 --   ../uBase/uniform-time/*.cabal
-    ../uBase/uniform-fileio/*.cabal 
+--    ../uBase/uniform-fileio/*.cabal 
 
     ../u2to/uniform-convenience
 
