@@ -34,3 +34,20 @@ a static site generator
                 landing page is mostly produced from index.md in dough, needed is only top directory structure.
                         must not include the banner image (must be in settingsN.yml): difference in formatting
     0.0.4.11 add shiftHeaderLevel to use title as h1, `#` as h2 etc. this corresponds better with latex                        
+
+used versions
+- twitch-0.1.7.2.1 (lib) (requires build)
+ - uniform-algebras-0.1.4.2 (lib) (requires build)
+ - uniform-strings-0.1.3.5 (lib) (requires build)
+ - uniform-error-0.1.3.2 (lib) (requires build)
+ - uniform-time-0.1.3 (lib) (requires build)
+ - uniform-fileio-0.1.3 (lib) (requires build)
+ - uniformBase-0.1.4.2 (lib) (requires build)
+ - uniform-webserver-0.0.10.3 (lib) (requires build)
+ - uniform-watch-0.0.1.3 (lib) (requires build)
+ - uniform-json-0.0.6.1 (lib) (requires build)
+ - uniform-cmdLineArgs-0.0.1.0 (lib) (requires build)
+ - uniform-shake-0.0.1.3 (lib) (requires build)
+ - uniform-pandoc-0.0.2.4 (lib) (requires build)
+ - uniform-latex2pdf-0.0.1.2 (lib) (requires build)
+ - uniform-http-0.0.2.8 (lib) (requires build)

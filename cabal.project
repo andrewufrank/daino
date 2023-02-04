@@ -2,12 +2,12 @@
 packages: 
 -- test1
     ./ssg.cabal
---    ../uBase/uniformBase/*.cabal
---    ../uBase/uniform-algebras/*.cabal
---    ../uBase/uniform-strings/*.cabal
---    ../uBase/uniform-error/*.cabal
---   ../uBase/uniform-time/*.cabal
---    ../uBase/uniform-fileio/*.cabal 
+    ../uBase/uniformBase/*.cabal
+    ../uBase/uniform-algebras/*.cabal
+    ../uBase/uniform-strings/*.cabal
+    ../uBase/uniform-error/*.cabal
+   ../uBase/uniform-time/*.cabal
+   ../uBase/uniform-fileio/*.cabal 
 
     ../u2to/uniform-convenience
 
@@ -24,6 +24,7 @@ packages:
     ../u2to/uniform-startapp/*.cabal
     ../u2to/uniform-cmdLineArgs/*.cabal
 
+    ../fromOthersInstalled/twitch
 
 -- Disregard all upper bounds when dependency solving
 -- allow-newer: all 
