@@ -179,7 +179,7 @@
         </ul>
                  
         $if(menu2subdir)$ 
-        <p>Directories with more related blogs:</p>
+        <p>Directories with more related texts:</p>
         <ul class="w3-ul w3-hoverable">
                     $for(menu2subdir)$ 
                     <li> 

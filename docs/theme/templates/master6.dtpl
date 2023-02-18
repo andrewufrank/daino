@@ -136,7 +136,7 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
                 </li>
             $endfor$ 
             $if(menu2subdir)$ 
-                <a>Directories with more related blogs:</a>
+                <a>Directories with more related texts:</a>
                 $for(menu2subdir)$ 
                 <li> 
                     <a href=/$menu2subdir.link2$><em>$menu2subdir.title2$</em></a>
