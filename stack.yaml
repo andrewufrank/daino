@@ -9,7 +9,8 @@
 #
 # resolver: lts-18.28
 # for ghc 8.10.7
-resolver: lts-19.16 # for ghc 9.0.2 newest lts
+# resolver: lts-19.16 # for ghc 9.0.2 newest lts
+resolver: lts-20.11 # for ghc 9.2.5
 # resolver: nightly-2015-09-21
 # resolver: ghc-7.10.2
 #
@@ -38,12 +39,12 @@ packages:
 #
 extra-deps:
 
-- ../uBase/uniformBase
-- ../uBase/uniform-algebras
-- ../uBase/uniform-error
-- ../uBase/uniform-fileio
-- ../uBase/uniform-strings
-- ../uBase/uniform-time
+- ../uBase_singleGit/uniformBase
+- ../uBase_singleGit/uniform-algebras
+- ../uBase_singleGit/uniform-error
+- ../uBase_singleGit/uniform-fileio
+- ../uBase_singleGit/uniform-strings
+- ../uBase_singleGit/uniform-time
 
 - ../u4blog/uniform-http
 - ../u4blog/uniform-json  # braucht version 0.0.6.1 for lts-19.16
@@ -56,11 +57,21 @@ extra-deps:
 - ../u2to/uniform-cmdLineArgs
 - ../u2to/uniform-convenience
 
+-  ../fromOthersInstalled/twitch 
+
 # for 9.0.2
-- dir-traverse-0.2.3.0@sha256:adcc128f201ff95131b15ffe41365dc99c50dc3fa3a910f021521dc734013bfa,2137
-- pandoc-sidenote-0.22.1.0@sha256:44a4e9db8dcbd93fdc8b1a6e038b4d6402cace3b5f1bd3532ebd7e4e3ed0f2a2,1732
-- test-invariant-0.4.5.0@sha256:d1aa6b61e0057a4065eeff3286208e947a0b44c6a2186210399f5e5e7fb0d0dd,1902
-- twitch-0.1.7.2@sha256:146a887da4d2d21e489ff823a6058add40c1f9c5ee8e0d00356b497092c9c624,2988
+- dir-traverse-0.2.3.0
+# @sha256:adcc128f201ff95131b15ffe41365dc99c50dc3fa3a910f021521dc734013bfa,2137
+- pandoc-sidenote-0.22.1.0
+# @sha256:44a4e9db8dcbd93fdc8b1a6e038b4d6402cace3b5f1bd3532ebd7e4e3ed0f2a2,1732
+- test-invariant-0.4.5.0
+# @sha256:d1aa6b61e0057a4065eeff3286208e947a0b44c6a2186210399f5e5e7fb0d0dd,1902
+# - twitch-0.1.7.2
+# @sha256:146a887da4d2d21e489ff823a6058add40c1f9c5ee8e0d00356b497092c9c624,2988
+- snap-core-1.0.5.1
+# @sha256:e08cc33b5ad34e8ccfa1436bfd19ac037ce15564d5652a21aaf71a8fd5959da9,9469
+- readable-0.3.1
+# @sha256:ea550740bbee9ae46c6bbf1c5e5185818a1d37509b855c640b0a7f2dfba6dc37,1121
 
 
 # - ../uniformWorking/uniformSources/uniform-strings

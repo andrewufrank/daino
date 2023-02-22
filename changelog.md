@@ -34,8 +34,12 @@ a static site generator
                 landing page is mostly produced from index.md in dough, needed is only top directory structure.
                         must not include the banner image (must be in settingsN.yml): difference in formatting
     0.0.4.11 add shiftHeaderLevel to use title as h1, `#` as h2 etc. this corresponds better with latex                        
+    0.0.4.12 reconstruct feb 2023 for ghc 9.0.2
 
-used versions
+0.1.5 branch for ghc 9.2.5
+0.1.5.1
+
+used versions 9.0.2
 - twitch-0.1.7.2.1 (lib) (requires build)
  - uniform-algebras-0.1.4.2 (lib) (requires build)
  - uniform-strings-0.1.3.5 (lib) (requires build)

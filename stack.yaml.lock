@@ -7,34 +7,41 @@ packages:
 - completed:
     hackage: dir-traverse-0.2.3.0@sha256:adcc128f201ff95131b15ffe41365dc99c50dc3fa3a910f021521dc734013bfa,2137
     pantry-tree:
-      size: 389
       sha256: b19f0562746dfd0f8f21eccab6584592f55fb781ca3e043da9132cc23d8a5b99
+      size: 389
   original:
-    hackage: dir-traverse-0.2.3.0@sha256:adcc128f201ff95131b15ffe41365dc99c50dc3fa3a910f021521dc734013bfa,2137
+    hackage: dir-traverse-0.2.3.0
 - completed:
     hackage: pandoc-sidenote-0.22.1.0@sha256:44a4e9db8dcbd93fdc8b1a6e038b4d6402cace3b5f1bd3532ebd7e4e3ed0f2a2,1732
     pantry-tree:
-      size: 322
       sha256: 836d587c85e9c1d37ca25e7d8fb29f460447bae9d75b400f7fa1f080ad3f2003
+      size: 322
   original:
-    hackage: pandoc-sidenote-0.22.1.0@sha256:44a4e9db8dcbd93fdc8b1a6e038b4d6402cace3b5f1bd3532ebd7e4e3ed0f2a2,1732
+    hackage: pandoc-sidenote-0.22.1.0
 - completed:
     hackage: test-invariant-0.4.5.0@sha256:d1aa6b61e0057a4065eeff3286208e947a0b44c6a2186210399f5e5e7fb0d0dd,1902
     pantry-tree:
-      size: 326
       sha256: 4a43697da369287edfe604a1a9d38f07fd50a49816028f25054b07842567cfa2
+      size: 326
   original:
-    hackage: test-invariant-0.4.5.0@sha256:d1aa6b61e0057a4065eeff3286208e947a0b44c6a2186210399f5e5e7fb0d0dd,1902
+    hackage: test-invariant-0.4.5.0
 - completed:
-    hackage: twitch-0.1.7.2@sha256:146a887da4d2d21e489ff823a6058add40c1f9c5ee8e0d00356b497092c9c624,2988
+    hackage: snap-core-1.0.5.1@sha256:e08cc33b5ad34e8ccfa1436bfd19ac037ce15564d5652a21aaf71a8fd5959da9,9469
     pantry-tree:
-      size: 1138
-      sha256: 7e4db8b9ef3e634e68d68155901a7c3affb873b3cf9a9dca4dcc0ebb4b6eb527
+      sha256: 3183db531aad7bdec4d2cda9eaa0f6adafd44d6c118180639c015165d4f85271
+      size: 3429
   original:
-    hackage: twitch-0.1.7.2@sha256:146a887da4d2d21e489ff823a6058add40c1f9c5ee8e0d00356b497092c9c624,2988
+    hackage: snap-core-1.0.5.1
+- completed:
+    hackage: readable-0.3.1@sha256:ea550740bbee9ae46c6bbf1c5e5185818a1d37509b855c640b0a7f2dfba6dc37,1121
+    pantry-tree:
+      sha256: a93d2c4e208cf064a8b1e8087d7a8ea77c263115e7ba18f3ef6abe935548faca
+      size: 313
+  original:
+    hackage: readable-0.3.1
 snapshots:
 - completed:
-    size: 619163
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/19/16.yaml
-    sha256: a27a5761890ade44d7dd21a5f5f93c87e60b9c063655fff835d69dd1071474f0
-  original: lts-19.16
+    sha256: adbc602422dde10cc330175da7de8609e70afc41449a7e2d6e8b1827aa0e5008
+    size: 649342
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/20/11.yaml
+  original: lts-20.11
