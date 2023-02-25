@@ -24,17 +24,19 @@ import ShakeBake.StartSSGprocess ( ssgProcess )
 -- import Uniform.StartApp ( startProgWithTitle )  
 import UniformBase 
 -- ( Text, NoticeLevel(NoticeLevel0), unlinesT )  
+import Data.Version
 
 programName, progTitle :: Text
 programName = "ssgBake" :: Text
-progTitle = "constructing a static site generator 0.0.4.4" :: Text
+progTitle = "constructing a static site generator" :: Text
+progVersion = "0.1.5.1":: Text
 
 -- the process is centered on the current working dir
 
 main :: IO ()
 main =
     startProg
-        (unwords' [programName, progTitle])
+        (unwords' [programName, progTitle, progVersion])
         ( do
             flags :: PubFlags <-
                 parseArgs2input

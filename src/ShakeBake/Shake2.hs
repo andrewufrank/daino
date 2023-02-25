@@ -108,6 +108,9 @@ shakeAll debug sett3 flags causedby = do
     let layout = siteLayout sett3 
         doughP = doughDir layout -- the regular dough
         bakedP = bakedDir layout
+            
+    putIOwords [showT "\nwill produce bakedP", showT bakedP]
+
     callIO $ shakeMD debug sett3 flags doughP bakedP
 
 

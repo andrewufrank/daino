@@ -47,7 +47,9 @@ ssgProcess debug flags = do
 -- when started to convert the tests the CWD is not 
 -- the same then when starting in a directory to convert
 
-    putIOwords ["ssgProcess", "currDir", showT currDir, "\nwill beomce doughP", showT doughP]
+    putIOwords ["ssgProcess", "currDir"
+        , showT currDir, "\nwill beomce doughP", showT doughP
+        ]
     setCurrentDir doughP
 
     if watchFlag flags -- implies server
@@ -56,7 +58,6 @@ ssgProcess debug flags = do
             when (testNewFlag flags) $ do
                 let bakedP = bakedDir (siteLayout sett3)
                 deleteDirRecursive bakedP 
-                putIOwords ["ssgProcess", "testNewFlag",  "deleted", showT bakedP]
             shakeAll debug sett3 flags ""
             -- the last is the filename that caused the shake call
             when (serverFlag flags) $ do 
