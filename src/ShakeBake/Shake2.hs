@@ -147,7 +147,11 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         -- which then produce them
         -- the original start needs in baked (from the files in dough)
 
-
+            -- do the images first to be findable by latex processor
+        imgs <- getNeeds debug layout doughP bakedP "jpg" "jpg"
+        imgs2 <- getNeeds debug layout doughP bakedP "JPG" "JPG"
+        needP imgs
+        needP imgs2
 
         unless (quickFlag flags) $ do 
             pdfs <- getNeedsMD debug flags doughP bakedP "md" "pdf"
@@ -160,10 +164,7 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         -- cssStatic <- getNeeds debug themeP bakedP "css" "css"
         needP csss
         -- needP cssStatic
-        imgs <- getNeeds debug layout doughP bakedP "jpg" "jpg"
-        imgs2 <- getNeeds debug layout doughP bakedP "JPG" "JPG"
-        needP imgs
-        needP imgs2
+
         -- fonts, takes only the woff
         woffs <- getNeeds debug layout doughP bakedP "woff" "woff"
         needP woffs
@@ -259,6 +260,8 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
             copyFileToBaked debug doughP bakedP out
 
     [toFilePath bakedP <> "/*.JPG", toFilePath bakedP <> "/*.jpg"]
+    -- seems not to differentiate the JPG and jpg; copies whatever the original 
+    -- the html and/or the pdf includegraphics seem to be case sensitive, even for the extension
         |%> \out -> -- insert img files
         -- no subdir (for now)
             copyFileToBaked debug doughP bakedP out
