@@ -1,10 +1,11 @@
 # settings3.yaml -- the basic setup of the test site
+# change to start a new site
 
-# goes into SiteLayout
 siteLayout:
     themeDir:  /home/frank/Workspace11/ssg/docs/theme
     doughDir: /home/frank/Workspace11/ssg/docs/site/dough
-    bakedDir: /home/frank/Workspace11/ssg/docs/site/baked
+    bakedDir: /home/frank/bakedTestSite
+    # bakedDir: /home/frank/Workspace11/ssg/docs/site/baked
     reportFile: /home/frank/ssgReport.txt
     testDir: /home/frank/.ssg 
     # masterTemplateFile: master6.dtpl  #in themeDir
@@ -42,6 +43,9 @@ siteHeader :
 menuitems:
     menuNav:
      # navlink must not start with /
+     # and should reference an index.html file (not .md)
+      - navlink: Contact/index.html
+        navtext: Contact
       - navlink: Blog/index.html
         navtext: Blog
       - navlink : PublicationList/index.html
@@ -49,5 +53,4 @@ menuitems:
       # - navlink : SSGdesign/index.html
       #   navtext : SSG Documentation  
 
-# the menu is for the navigation part
 

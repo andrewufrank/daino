@@ -3,9 +3,11 @@ title: Ontology - big oh and lowercase ontologies
 author: auf
 date: 2010-06-07
 keywords: ontology
-abstract:
-image:
-status: old draft
+abstract: just an example text 
+image: ''
+# status: old draft
+version: publish
+visibility: public
 ---
   
 Ontology - big oh and lowercase ontologies

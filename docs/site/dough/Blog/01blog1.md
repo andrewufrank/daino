@@ -1,28 +1,30 @@
 ---
-abstract: 01blog1 abstract Ein Blog ohne Sinn auf Deutsch mit einem ä im abstract
-        und einer zweiten zeile im abstract
+title: The `01blog1` blog titel 
+abstract: An example blog title and abstract 
+    and a second line in the abstract
+    and two levels of titles. 
 author: AUF
 date: 2020-06-18
 keywords: Blog
-language: de_CH
-publish: true
-title: 01blog1 titel Mein erster Blog
+language: en_US
+# publish: true
 version: publish
 visibility: public
-headerShift: one
+# headerShift: one
 ---
-# 01blog1 level1 Titel
-Ein Blog ohne Sinn und dem einzigen Zweck, zu testen, wie ein Blog in
-ein PDF umgewandelt wird.
 
-## 01blog1 level2 Dies ist der zweite Abschnitt
-und auch ein bischen text.
+# level1 Titel
+nonsense text under level 1 (which will be rendered as level 2 title, given that the title is level1)
 
-### level3 mit einem unterabschnitt
-hier ist der text für den unterabschnitt.
-und der
+## level2 Two
+Some text.
+
+### level3 
+text for level3
+
 #### level 4
-und dann
+textfor level 4
 ##### level 5
+and level 5
 
-das wärs. es fehlt Referenzen, listen und ähnliches
+The next example shows list, references and images.
