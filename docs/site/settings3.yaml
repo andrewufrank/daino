@@ -18,6 +18,8 @@ siteLayout:
     # filename must be homedir + program name (in Foundation) - hidden
     # fixed in testharness
 #    uploadServer: "sgg.gerastree.at"
+
+# add a default biblio file? resources/BibTexLatex.bib
     
     # needs link in resources/templates to themes/templates
 localhostPort: 3000

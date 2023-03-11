@@ -1,21 +1,22 @@
 ---
-abstract: 01blog1 abstract Ein Blog ohne Sinn auf Deutsch mit einem ä im abstract
-        und einer zweiten zeile im abstract
+title: "02german titel: Mein erster Blog"
+abstract: 02german abstract Ein Blog ohne Sinn auf Deutsch 
+    mit einenm Doppelpunkt im Titel (braucht Anfuehrungszeichen)
+    und mit einem ä im abstract
+        und weiteren  Zeilen im abstract
 author: AUF
 date: 2020-06-18
 keywords: Blog
 language: de_CH
 publish: true
-title: 01blog1 titel Mein erster Blog
 version: publish
 visibility: public
 headerShift: one
 ---
 # 01blog1 level1 Titel
-Ein Blog ohne Sinn und dem einzigen Zweck, zu testen, wie ein Blog in
-ein PDF umgewandelt wird.
+Ein Blog ohne Sinn und dem einzigen Zweck, zu testen, wie ein Blog in deutscher Sprache dargestellt wird.
 
-## 01blog1 level2 Dies ist der zweite Abschnitt
+##  level2 Dies ist der   Abschnitt unter dem ersten
 und auch ein bischen text.
 
 ### level3 mit einem unterabschnitt
@@ -25,4 +26,4 @@ und der
 und dann
 ##### level 5
 
-das wärs. es fehlt Referenzen, listen und ähnliches
+Mehr in den naechsten Beispielen!
