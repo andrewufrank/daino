@@ -1,6 +1,6 @@
 ---
 abstract: "Index in blog. Abstract: The directory for experiments."
-author: AUF
+author: AOS
 date: Jan. 4, 2019
 indexPage: true
 indexSort: filename

@@ -1,6 +1,6 @@
 ---
 abstract: Index for the publication directory
-author: AUF
+author: AOS
 date: Jan. 4, 2019
 indexSort: filename
 keywords: test

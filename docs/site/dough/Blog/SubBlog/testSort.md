@@ -1,6 +1,6 @@
 ---
 abstract: testSort abstract A silly text not needing an abstract.
-author: AUF
+author: AOS
 date: Jan. 4, 2018
 keywords: notest
 title: testSort title z

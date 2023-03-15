@@ -1,7 +1,7 @@
 ---
 title: Example Layout
 abstract: Example Layout to show use of header levels.
-author: AUF
+author: AOS
 date: 2022-02-18
 keywords: layout
 version: publish

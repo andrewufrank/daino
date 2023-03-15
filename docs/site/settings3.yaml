@@ -13,8 +13,9 @@ siteLayout:
     # change is global for the site, not per page TODO?
     doNotPublish: "DNB"
     blogAuthorToSuppress: 
-      - "AUF"
-      - "Andrew U. Frank"     # create dir in ExampleTesting
+      - "AOS"
+      - "Author of Settings"     
+    # create dir in ExampleTesting
     # filename must be homedir + program name (in Foundation) - hidden
     # fixed in testharness
 #    uploadServer: "sgg.gerastree.at"

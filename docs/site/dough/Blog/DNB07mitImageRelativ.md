@@ -1,6 +1,6 @@
 ---
 abstract: 07mit image relative to root abstract
-author: AUF
+author: AOS
 caption: Drei Mädchend kämmen einen Bernhardiner-Hund
 date: Jan. 4, 2019
 image: /resources/img/121-2117_IMG.JPG

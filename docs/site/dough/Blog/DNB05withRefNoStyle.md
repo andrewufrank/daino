@@ -3,7 +3,7 @@ title: 05withRefnoStyle blog with default bibliography and style
 abstract: |
   02wi05withRefnoStyle   abstract What are the objects of
   ontologists .
-author: AUF
+author: AOS
 # bibliography: resources/BibTexLatex.bib
 date: 2010-07-29
 keywords: homepage

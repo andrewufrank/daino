@@ -4,7 +4,7 @@ abstract: 02german abstract Ein Blog ohne Sinn auf Deutsch
     mit einenm Doppelpunkt im Titel (braucht Anfuehrungszeichen)
     und mit einem ä im abstract
         und weiteren  Zeilen im abstract
-author: AUF
+author: AOS
 date: 2020-06-18
 keywords: Blog
 language: de_CH

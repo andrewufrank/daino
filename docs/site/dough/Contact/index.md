@@ -1,7 +1,7 @@
 ---
 title: Contacts as an example
 abstract: Contacts page example
-author: AUF
+author: AOS
 # date: Jan. 4, 2019
 keywords: addresses
 language: en_US

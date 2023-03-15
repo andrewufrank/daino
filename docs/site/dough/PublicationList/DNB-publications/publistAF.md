@@ -1,6 +1,6 @@
 ---
 title: publistAF.md
-author: AUF
+author: AOS
 version: publish
 visibility: public
 date: 2010-07-29

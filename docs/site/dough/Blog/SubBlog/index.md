@@ -1,7 +1,7 @@
 ---
 abstract: index in SubBlog abstract - The directory for the layout examples
 date: Jan. 4, 2019
-author: AUF
+author: AOS
 indexPage: true
 indexSort: reversedate
 keywords: test

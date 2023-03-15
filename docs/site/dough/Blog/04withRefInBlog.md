@@ -3,7 +3,7 @@ title: "04witRefInBlog title: page witgh reference given locally"
 abstract: |
     02with04witRefInBlogRef This blog uses a reference given locally.  
  
-author: AUF
+author: AOS
 bibliography: resources/BibTexLatex.bib
 date: 2010-07-29
 keywords: homepage

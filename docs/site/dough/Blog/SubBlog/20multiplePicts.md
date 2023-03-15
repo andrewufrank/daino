@@ -1,7 +1,7 @@
 ---
 title: Layout with multiple pictures
 abstract: Example layout to show how to use include multiple pictures, one in the banner and two included with text.
-author: AUF
+author: AOS
 date: 2022-02-18
 keywords: layout
 version: publish

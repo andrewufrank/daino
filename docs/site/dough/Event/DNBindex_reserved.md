@@ -2,7 +2,7 @@
 abstract: Since becoming emeritus I attend less conferences than before and some events
   have been converted to virtual. I plan to collect here slides from presentations,
   but some are still missing.
-author: AUF
+author: AOS
 date: 2020-09-18
 indexSort: reversedate
 keywords: Events

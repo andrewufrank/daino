@@ -1,6 +1,6 @@
 ---
 abstract: The subdirectory experiment
-author: AUF
+author: AOS
 date: Jan. 4, 2019
 indexPage: true
 indexSort: filename

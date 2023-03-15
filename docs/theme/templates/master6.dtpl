@@ -29,7 +29,7 @@
             $-- getting other fonts?
     <link rel="stylesheet" href="/resources/templates/static/ssg_ext_w3c.css" type="text/css">
     $for(author)$
-    <meta name="author" content="$author$" />  $-- if author is AUF then blanked - TODO
+    <meta name="author" content="$author$" />  $-- if author is AOS then blanked - TODO
     $endfor$
     $if(date)$
     <meta name="dcterms.date" content="$date$" />  $-- date in index.md yml head
