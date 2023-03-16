@@ -20,6 +20,6 @@ Under the banner image a ribbon gives links to the top level subdirectories (as 
 
 <!-- todo add a return button -->
 
-At the bottom of each page the name of `html` file shown, which is typically the same as the name of the `md` file from which the html is produced (the `html` in the `baked`, the `md` in the `dough` directory).
+At the bottom of each page the name of the `html` file shown, which is typically the same file name as the name of the `md` file from which the `html` is produced (the `html` is in the `baked`, the `md` in the `dough` directory).
 
-The pages under `Blog` give examples for diffferent case of web pages and how they can be expressed in markdown.
+The pages under `Blog` give examples for different case of web pages and how they can be expressed in markdown. They are all written in the [Pandoc markup language](https://pandoc.org/MANUAL.html#pandocs-markdown) and include hints how it can be used in conjunction with `SSG`. 
