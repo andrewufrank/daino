@@ -22,8 +22,8 @@ packages:
 --    ../u4blog/uniform-http/*.cabal
 --    /home/frank/Workspace11/u4blog/uniform-pandoc/uniform-pandoc.cabal
 --    ../u2to/uniform-convenience/*.cabal
-    ../u2to/uniform-startapp/*.cabal
-    ../u2to/uniform-cmdLineArgs/*.cabal
+--    ../u2to/uniform-startapp/*.cabal
+    ../u4blog/uniform-cmdLineArgs/*.cabal
 
 --    ../fromOthersInstalled/twitch
 

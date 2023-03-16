@@ -74,7 +74,7 @@ dependencies:
     - uniform-http
     # - uniform-convenience # from u2to
     # - uniform-startapp # from u2to - replace with startProg in uniform-error 
-    - uniform-cmdLineArgs # from u2to
+    - uniform-cmdLineArgs # now from u4blog, was from u2to
     - uniform-watch 
     - uniform-webserver  # - shake
     - uniform-pandoc  # >= 0.0.2.4 # from u4blog
