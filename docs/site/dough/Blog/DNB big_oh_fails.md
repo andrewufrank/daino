@@ -6,8 +6,8 @@ keywords: ontology
 abstract: just an example text 
 image: ''
 # status: old draft
-version: publish
-visibility: public
+version: draft
+visibility: private 
 ---
   
 Ontology - big oh and lowercase ontologies

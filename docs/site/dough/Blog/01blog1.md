@@ -7,6 +7,7 @@ author: AOS
 date: 2020-06-18
 keywords: Blog
 language: en_US
+# todo how are the languages parsed. can there be a default
 # publish: true
 version: publish
 visibility: public
@@ -14,7 +15,7 @@ visibility: public
 ---
 
 # level1 Titel
-nonsense text under level 1 (which will be rendered as level 2 title, given that the title is level1).
+Some nonsense text under level 1 (which will be rendered as level 2 title, given that the title is level1).
 
 The tufte style does discourage the use of multiple levels of titles; the styles for the levels 3, 4 and 5 do not have sensible defaults and should be adapted^[Probably in the `theme/templates/static/tufte.css` file] if intended to be used!
 

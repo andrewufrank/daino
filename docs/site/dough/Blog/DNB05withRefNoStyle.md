@@ -9,7 +9,7 @@ date: 2010-07-29
 keywords: homepage
 language: en_US
 version: publish
-visibility: public
+visibility: private
 ---
 
 

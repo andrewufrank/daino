@@ -7,6 +7,6 @@ indexSort: reversedate
 keywords: test
 title: The layout examples
 version: publish
-visibility: public
+visibility: private
 ---
-touched: here I show examples for the layout and how to control it.
+here I show examples for the layout and how to control it.

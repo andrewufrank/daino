@@ -6,7 +6,7 @@ keywords: test
 publish: draft
 title: 03postwk title postwk with image
 version: publish
-visibility: public
+visibility: private
 ---
 03postwk: text without a header level mark
 

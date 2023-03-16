@@ -18,4 +18,5 @@ bibliography: "resources/BibTexLatex.bib"
 
 An example publication list for AF  -- but not the relative "resources/BibTexLatex.bib"
 
+<!-- todo make this work and explain -->
  

@@ -7,7 +7,7 @@ image: /resources/img/121-2117_IMG.JPG
 keywords: test
 title: 07mitImage title post mit image ref relativ to root
 version: publish
-visibility: public
+visibility: private
 ---
 07mimage text with an image in the banner version1234
 

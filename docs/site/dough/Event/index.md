@@ -1,6 +1,6 @@
 ---
 title: Events recently attended 
-abstract: Since COVID mostly zoon? 
+abstract: Since COVID mostly virtual? 
     Needs attention how to adapt.
 author: AOS
 date: 2020-09-18
@@ -9,3 +9,5 @@ keywords: Events
 version: publish
 visibility: public
 ---
+
+The list is currently empty.
