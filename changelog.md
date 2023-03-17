@@ -37,7 +37,7 @@ a static site generator
     0.0.4.12 reconstruct feb 2023 for ghc 9.0.2
 
 0.1.5 branch for ghc 9.2.5
-0.1.5.1
+0.1.5.1 changed name from ssg to daino
 
 used versions 9.0.2
 - twitch-0.1.7.2.1 (lib) (requires build)

@@ -20,7 +20,7 @@ import ShakeBake.CmdLineArgs ( parseArgs2input )
 import Foundational.CmdLineFlags ( PubFlags )
 -- import Foundational.SettingsPage (sourceDirTestSite )  
 
-import ShakeBake.Startdainoprocess ( dainoProcess )  
+import ShakeBake.StartDainoProcess ( dainoProcess )  
 -- import Uniform.StartApp ( startProgWithTitle )  
 import UniformBase 
 -- ( Text, NoticeLevel(NoticeLevel0), unlinesT )  

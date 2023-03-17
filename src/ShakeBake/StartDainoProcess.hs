@@ -21,7 +21,7 @@
               orginals are found in dire doughDir and go to bakeDir
 -}
 
-module ShakeBake.Startdainoprocess (dainoProcess) where
+module ShakeBake.StartDainoProcess (dainoProcess) where
 
 import ShakeBake.ReadSettingFile (readSettings)
 import ShakeBake.Shake2 (shakeAll)

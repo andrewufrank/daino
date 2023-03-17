@@ -6,7 +6,7 @@ cabal-version: 1.12
 
 name:           daino
 version:        0.1.5.1
-synopsis:       a static site generator using shake and pandoc
+synopsis:       daino is a static site generator (SSG) using shake and pandoc
 description:    A static site generator from pandoc and other available packages on Hackage (e.g. shake, twitch, scotty), influenced by Chris Penner's [slick](https://github.com/ChrisPenner/slick#readme). It uses files to manage data to permit version management with git. Page appearances are directed with YAML and internally data is structured with JSON, for each page a PDF file is produced to allow regular looking prints. Index pages are automatically created.
 category:       Development Web
 homepage:       https://github.com/frank/daino#readme
@@ -39,7 +39,7 @@ library
       ShakeBake.ConvertFiles
       ShakeBake.ReadSettingFile
       ShakeBake.Shake2
-      ShakeBake.Startdainoprocess
+      ShakeBake.StartDainoProcess
       ShakeBake.Watch
       Wave.Docrep2panrep
       Wave.Md2doc
@@ -80,12 +80,12 @@ executable daino
       OverloadedStrings
   build-depends:
       base >4.7 && <5
+    , daino
     , data-default-class
     , deepseq
     , dir-traverse
     , pandoc
     , pandoc-sidenote
-    , daino
     , uniform-cmdLineArgs
     , uniform-http
     , uniform-json >=0.1.5.1
@@ -108,12 +108,12 @@ executable dainocheck
       OverloadedStrings
   build-depends:
       base >4.7 && <5
+    , daino
     , data-default-class
     , deepseq
     , dir-traverse
     , pandoc
     , pandoc-sidenote
-    , daino
     , uniform-cmdLineArgs
     , uniform-http
     , uniform-json >=0.1.5.1
