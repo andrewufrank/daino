@@ -29,16 +29,24 @@ import ShakeBake.Watch (mainWatch)
 import Uniform.WebServer (runScotty)
 import Foundational.SettingsPage
 import Foundational.CmdLineFlags
-
+import Paths_daino  
 import UniformBase
 
 dainoProcess :: NoticeLevel -> PubFlags -> ErrIO ()
 dainoProcess debug flags = do
     currDir :: Path Abs Dir  <- currentDir 
-    let settfn = if (testFlag flags)   
-            then   sourceDirTestSite </> settingsFileName 
+    dough4test <- callIO $ getDataFileName "docs/site/dough"
+    let dough4testAbsDir = makeAbsDir dough4test
+    putIOwords ["dainoProcess docs site dough", showT dough4testAbsDir]
+    putIOwords ["dainoProcess test flags", showT (testFlag flags)]
+
+    let settfn = if (testFlag flags || testNewFlag flags)   
+            then  
+                    -- getDataFileName :: FilePath -> IO FilePath
+                    dough4testAbsDir </> settingsFileName 
             else currDir </> settingsFileName
 
+    putIOwords ["dainoProcess 2 settfn", showT settfn]
     sett3 <- readSettings debug settfn 
 
 -- set the currentWorkingDir CWD to doughDir

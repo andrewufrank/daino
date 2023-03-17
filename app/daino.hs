@@ -25,11 +25,12 @@ import ShakeBake.StartDainoProcess ( dainoProcess )
 import UniformBase 
 -- ( Text, NoticeLevel(NoticeLevel0), unlinesT )  
 import Data.Version
+import Paths_daino (version)
 
 -- programName, progTitle :: Text
 -- programName = "daino" :: Text
 -- progTitle = "constructing a static site generator" :: Text
-progVersion = "0.1.5.2":: Text
+progVersion = showT version  -- "0.1.5.2":: Text
 
 -- the process is centered on the current working dir
 

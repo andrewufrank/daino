@@ -1,5 +1,5 @@
 name: daino
-version: 0.1.5.1 
+version: 0.1.5.2
 
 synopsis: daino is a static site generator (SSG) using shake and pandoc
 description: | 
