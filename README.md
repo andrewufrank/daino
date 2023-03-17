@@ -1,18 +1,34 @@
 # Static Site Generator
-A static site generator from pandoc and other available packages on Hackage (e.g. shake, twitch, scotty), influenced by Chris Penner's [slick](https://github.com/ChrisPenner/slick#readme). Newer, and seemingly simpler is `Ema` ^[`https://github.com/srid/ema` by  Sridhar Ratnakumar] but the documentation does not detail its features neither how it is built. 
+A static site generator focused on software reuse. It uses  pandoc and other available packages on Hackage (e.g. shake, twitch, scotty)/ It was influenced by Chris Penner's [slick](https://github.com/ChrisPenner/slick#readme), newer, and seemingly simpler is `Ema` ^[`https://github.com/srid/ema` by  Sridhar Ratnakumar] but the documentation does not detail its features neither how it is built. 
 
-daino uses files to manage data to permit version management with git. Page appearances are directed with YAML and internally data is structured with JSON. Unlike other Site Generators, for each page a PDF file is produced to guarantee well formated prints. 
+daino uses files to manage data to permit version management with git. Web sources are written in markdown language and converted with pandoc. Page appearances are directed with YAML. Unlike other Site Generators, for each page a PDF file is produced to guarantee well formatted prints. 
 
-Index pages are automatically formated, but minimal content must be provided initially.
+The conversion is managed by shake to avoid unnecessary conversions. Using the `inotify` mechanism, changed pages are detected and reconverted, achieving a quasi dynamic site.
+Index pages in subdirectories are automatically formatted, but minimal explanations are recommended.
 
-# Layout
-The code includes an example site in the `docs/site` directory. It contains a file `settingsNN.yaml` which describes the layout of the site. A correponding file must be created for a new site. 
+# Example site
+The code includes an example site in the `docs/site` directory. It contains a file `settingsNN.yaml` which describes the layout of the site. 
 
-The special directory `resources` is used to keep style (`csl`) and biliography (`bib`) files. In blogs, they are referenced with relative path, but including `resources/...`. For the style, the default `resources/chicago-fullnote-bibliography-bb.csl` is set if nothing else given.
+<!-- The special directory `resources` is used to keep style (`csl`) and bibliography (`bib`) files. In blogs, they are referenced with relative path, but including `resources/...`. For the style, the default `resources/chicago-fullnote-bibliography-bb.csl` is set if nothing else given. -->
 
-in the `docs` directory is the separated `theme` directory, which determines the apparance of the site. There must be a link to the theme directory in the dough directory (TODO remove the needs).
+# Separation content and theme
+in the `docs` directory is the separated `theme` directory, which determines the appearance of the site. There must be a link to the theme directory in the dough directory 
 
-Starting with `daino -t` for `test` selects the settingsfile in the example test site. 
+<!-- (TODO remove the needs). -->
+
+# Testing
+
+Install `daino` with `cabal install daino` and run it with the example site included with `daino -ts` for `test` and `server`, which converts the test site and starts a web server.  The result can be viewed in the broswer at `localhost:3000`^[A different port can be set in the settings file.]
+
+# Build your own site!
+
+Copy the contents from the `dough` directory and the `settings` file to a directory (e.g. `myHomepage`). Adapt the directory names in the settings file and run `daino -qs` and open a `localhost:3000`. 
+
+Your skeleton webpage is shown! 
+
+The test site contains under `ReadMe` and `Blog` more detailed instructions with examples.
+
+<!-- Thisselects the settingsfile in the example test site.  -->
 
 # Test site
 Test with the included example site (in the `docs/site` directory) and the provided `theme` can be extended to include all troublesome cases. The tests are executed with `-t` switch (e.g. `cabal run daino -- -t` or easier `cabal instal daino && daino -t). A html server (scotty) is started; the result can be viewed in the broswer at `localhost:3000` (the port can be selected in the `settings` file. 

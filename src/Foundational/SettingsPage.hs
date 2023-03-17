@@ -30,8 +30,9 @@ import UniformBase
 import Data.Default.Class ( Default(def) ) -- to define a default class for siteLayout 
 import Uniform.Json ( FromJSON, ToJSON )
 
-progName :: Text
+progName, progTitle :: Text
 progName = "daino"  
+progTitle = "constructing a static site generator" :: Text
 
 settingsFileName :: Path Rel File
 -- ^ the yaml file in which the siteHeader are fixec
@@ -84,6 +85,7 @@ data SiteLayout = SiteLayout
       bakedDir :: Path Abs Dir
     , masterTemplateFile :: Path Rel File
     , doNotPublish :: Text 
+    -- todo probably not used
     , blogAuthorToSuppress :: [Text]
     }
     deriving (Show, Read, Ord, Eq, Generic, Zeros)
@@ -91,10 +93,10 @@ instance ToJSON SiteLayout
 instance FromJSON SiteLayout
 
 
-sourceDirTestDocs :: Path Abs Dir
-sourceDirTestDocs = makeAbsDir "/home/frank/Workspace11/daino/docs/"
+sourceDirTestDocs :: Path Rel Dir
+sourceDirTestDocs = makeRelDir "docs/"
 
-sourceDirTestSite :: Path Abs Dir
+sourceDirTestSite :: Path Rel Dir
 sourceDirTestSite = sourceDirTestDocs </> (makeRelDir "site")
 -- ^ the dir with the source for the test site
 
@@ -124,7 +126,7 @@ templatesDir layout = themeDir layout `addFileName` templatesDirName
 
 blankAuthorName :: [Text] -> Text -> Text 
 -- suppress/oppress author name, if the author name is the same as one in the first arg (AUF, Andrew U..) then set it to empty else copy 
--- idea is to avoid to have each page say the obvious "author XX"
+-- goal is to avoid to have each page say the obvious "author XX"
 blankAuthorName names current = 
     if current `elem` names 
         then zero 

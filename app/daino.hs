@@ -26,17 +26,17 @@ import UniformBase
 -- ( Text, NoticeLevel(NoticeLevel0), unlinesT )  
 import Data.Version
 
-programName, progTitle :: Text
-programName = "daino" :: Text
-progTitle = "constructing a static site generator" :: Text
-progVersion = "0.1.5.1":: Text
+-- programName, progTitle :: Text
+-- programName = "daino" :: Text
+-- progTitle = "constructing a static site generator" :: Text
+progVersion = "0.1.5.2":: Text
 
 -- the process is centered on the current working dir
 
 main :: IO ()
 main =
     startProg
-        (unwords' [programName, progTitle, progVersion])
+        (unwords' [progName, progTitle, progVersion])
         ( do
             flags :: PubFlags <-
                 parseArgs2input
@@ -50,8 +50,8 @@ main =
                         -- , "\n -o old"
                         , "\n -t test (use data in package, continue)"
                         , "\n -T test (use data in package, fresh start)"
-                        , "\n -q quick (not producing the pdfs, which is slowing down)"
-                        , "\n -w start to watch the files for changes and rebake (implies -s"
+                        , "\n -q quick (not producing the pdfs, which is slow down)"
+                        , "\n -w start to watch the files for changes and rebake (implies -s)"
                         , "\n -s start local server (port is fixed in siteHeader)"
                         -- , "\n -u upload to external server (not yet implemented"
                         ]

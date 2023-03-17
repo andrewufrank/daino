@@ -62,11 +62,11 @@ cmdArgs  =
     -- <*> switch (long "old" <> short 'o' <> help "include old material")
     <*> switch
           (long "test" <> short 't' <> help
-            "use test data in layout (site/dough), continue test, start server on port set"
+            "use test data (site/dough), continue test, start server on port set"
           )
     <*> switch
           (long "testComplete" <> short 'T' <> help
-            "use test data in layout (site/dough), complete test, start server on port set"
+            "use test data (site/dough), complete test, start server on port set"
           )
     <*> switch
           (long "quick" <> short 'q' <> help

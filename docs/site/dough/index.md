@@ -26,4 +26,4 @@ Under the banner image a ribbon gives links to the top level subdirectorie^[List
 
 At the bottom of each page the name of the `html` file shown, which is typically the same file name as the name of the `md` file from which the `html` is produced (the `html` is in the `baked`, the `md` in the `dough` directory).
 
-The pages under `Blog` give explain the optioins to structure a site and show examples for different case of web pages and how they can be expressed in markdown. They are all written in the [Pandoc markup language](https://pandoc.org/MANUAL.html#pandocs-markdown) and include hints how it can be used in conjunction with `daino`, the Static Site Generator (SSG).
+The pages under `ReadMe` explains the use of `daino` to produce a web site and `Blog` gives examples and introduces optioins to structure a site. They are all written in the [Pandoc markup language](https://pandoc.org/MANUAL.html#pandocs-markdown) and include hints how it can be used in conjunction with `daino`, the Static Site Generator (SSG).

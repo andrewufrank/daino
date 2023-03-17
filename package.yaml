@@ -22,6 +22,9 @@ spec-version: 0.30.0 # the hpack version minimally required
 extra-source-files:
   - changelog.md
   - README.md
+  # - settings3.yaml
+  - docs/site/dough
+
 # language: Haskell2010 is default
 
 # ghc-options: 
@@ -105,12 +108,12 @@ executables:   # file names wiwth lowercase to avoid forcing Main
     # - uniform-webserver
     # - uniform-convenience
   
-  dainocheck:  # breaks on first error and indicates where this is. fix and retry!
-    main: dainoCheck.hs
-    source-dirs: app
-    dependencies:
-      - daino
-      # - dir-traverse
+  # dainocheck:  # breaks on first error and indicates where this is. fix and retry!
+  #   main: dainoCheck.hs
+  #   source-dirs: app
+  #   dependencies:
+  #     - daino
+  #     # - dir-traverse
 
   # dainoPrepareTest:  #wohl nicht notwendig, verwende die von daino gebauten werte
   #   main: prepareTest.hs
