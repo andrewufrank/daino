@@ -21,7 +21,7 @@
               orginals are found in dire doughDir and go to bakeDir
 -}
 
-module ShakeBake.StartSSGprocess (ssgProcess) where
+module ShakeBake.Startdainoprocess (dainoProcess) where
 
 import ShakeBake.ReadSettingFile (readSettings)
 import ShakeBake.Shake2 (shakeAll)
@@ -32,8 +32,8 @@ import Foundational.CmdLineFlags
 
 import UniformBase
 
-ssgProcess :: NoticeLevel -> PubFlags -> ErrIO ()
-ssgProcess debug flags = do
+dainoProcess :: NoticeLevel -> PubFlags -> ErrIO ()
+dainoProcess debug flags = do
     currDir :: Path Abs Dir  <- currentDir 
     let settfn = if (testFlag flags)   
             then   sourceDirTestSite </> settingsFileName 
@@ -47,7 +47,7 @@ ssgProcess debug flags = do
 -- when started to convert the tests the CWD is not 
 -- the same then when starting in a directory to convert
 
-    putIOwords ["ssgProcess", "currDir"
+    putIOwords ["dainoProcess", "currDir"
         , showT currDir, "\nwill beomce doughP", showT doughP
         ]
     setCurrentDir doughP
@@ -67,8 +67,8 @@ ssgProcess debug flags = do
 
 -- return the dir as set before
     setCurrentDir currDir
-    putIOwords ["ssgProcess", "again currDir as before", showT currDir, "\nwas doughP", showT doughP] 
-    putIOwords ["ssgProcess done"]
+    putIOwords ["dainoProcess", "again currDir as before", showT currDir, "\nwas doughP", showT doughP] 
+    putIOwords ["dainoProcess done"]
     return ()
 
 -- settingsFileName :: Path Rel File
@@ -97,7 +97,7 @@ ssgProcess debug flags = do
     -- when (uploadFlag flags) $ do
     --     (_,_) <- runStateT
     --         (ftpUploadDirsRecurse testWithLastTime (bakedDir layout2)
-    --             (if testFlag flags then makeAbsDir "/ssg.gerastree.at/"
+    --             (if testFlag flags then makeAbsDir "/daino.gerastree.at/"
     --                         else makeAbsDir "/frank.gerastree.at/")
     --         )
     --             ftp0

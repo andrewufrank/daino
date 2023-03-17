@@ -31,7 +31,7 @@ import Data.Default.Class ( Default(def) ) -- to define a default class for site
 import Uniform.Json ( FromJSON, ToJSON )
 
 progName :: Text
-progName = "SSG"  
+progName = "daino"  
 
 settingsFileName :: Path Rel File
 -- ^ the yaml file in which the siteHeader are fixec
@@ -92,7 +92,7 @@ instance FromJSON SiteLayout
 
 
 sourceDirTestDocs :: Path Abs Dir
-sourceDirTestDocs = makeAbsDir "/home/frank/Workspace11/ssg/docs/"
+sourceDirTestDocs = makeAbsDir "/home/frank/Workspace11/daino/docs/"
 
 sourceDirTestSite :: Path Abs Dir
 sourceDirTestSite = sourceDirTestDocs </> (makeRelDir "site")

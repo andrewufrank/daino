@@ -64,10 +64,10 @@ beforeContent
 abstract 
 contentHtml 
 afterContent 
-ssgversion
+dainoversion
 today
 Filenames 
 filename3  -- the current filename producing the page
 include_after  
-ssgversion
+dainoversion
 -}

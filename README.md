@@ -1,7 +1,7 @@
 # Static Site Generator
 A static site generator from pandoc and other available packages on Hackage (e.g. shake, twitch, scotty), influenced by Chris Penner's [slick](https://github.com/ChrisPenner/slick#readme). Newer, and seemingly simpler is `Ema` ^[`https://github.com/srid/ema` by  Sridhar Ratnakumar] but the documentation does not detail its features neither how it is built. 
 
-SSG uses files to manage data to permit version management with git. Page appearances are directed with YAML and internally data is structured with JSON. Unlike other Site Generators, for each page a PDF file is produced to guarantee well formated prints. 
+daino uses files to manage data to permit version management with git. Page appearances are directed with YAML and internally data is structured with JSON. Unlike other Site Generators, for each page a PDF file is produced to guarantee well formated prints. 
 
 Index pages are automatically formated, but minimal content must be provided initially.
 
@@ -10,17 +10,17 @@ The code includes an example site in the `docs/site` directory. It contains a fi
 
 The special directory `resources` is used to keep style (`csl`) and biliography (`bib`) files. In blogs, they are referenced with relative path, but including `resources/...`. For the style, the default `resources/chicago-fullnote-bibliography-bb.csl` is set if nothing else given.
 
-in the `docs` directgory is the separated `theme` directory, which determines the apparence of the site. There must be a link to the theme directory in the dough directory (TODO remove the needs).
+in the `docs` directory is the separated `theme` directory, which determines the apparance of the site. There must be a link to the theme directory in the dough directory (TODO remove the needs).
 
-Starting with `-t` for `test` selects the settingsfile in the example test site. 
+Starting with `daino -t` for `test` selects the settingsfile in the example test site. 
 
 # Test site
-Test with the included example site (in the `docs/site` directory) and the provided `theme` can be extended to include all troublesome cases. The tests are executed with `-t` switch (e.g. `cabal run ssgbake -- -t`). A html server (scotty) is started; the result can be viewed in the broswer at `localhost:3000` (the port can be selected in the `settings` file. 
+Test with the included example site (in the `docs/site` directory) and the provided `theme` can be extended to include all troublesome cases. The tests are executed with `-t` switch (e.g. `cabal run daino -- -t` or easier `cabal instal daino && daino -t). A html server (scotty) is started; the result can be viewed in the broswer at `localhost:3000` (the port can be selected in the `settings` file. 
 
 Alternatively, the resulting site can be tested in the browser with 
 - SimpleServer (must be installed from Hackage with `cabal install` - not yet on 8.10 with base 4.14) with `simpleserver -p <portnumber>` or 
 - `python3 -m http.server <portnumber>`
-        running in `ssg/docs/site/baked`.
+        running in `daino/docs/site/baked`.
 
 ## Defaults
 The markdonw file for each page included in the site must  contain in the yaml header values for title, author, date etc. Missing values are replaced with defaults, which are stored in the same format in a file.  
@@ -36,8 +36,8 @@ To produce html page, a panrep file must be produced, which then ask for a docre
 From each markdown page a `.pdf` file is produced. The conversion/transformation progresses in **Waves** and code is kept in modules which each cater for a wave.
 
 ### Organising Shake:
-- main: ssgbake (from app/ssgBake.hs)
-- StartSSGprocess
+- main: daino (from app/daino.hs)
+- Startdainoprocess
     missing upload automatically TODO 
 - shakeAll from Shake2.hs
 - convertFiles
@@ -107,12 +107,12 @@ The tests are indexed by the transformation AtoB
 
 run hpack to make sure cabal file is updated
 With 
-    *cabal build* in the ssg directory 
+    *cabal build* in the daino directory 
     *cabal run ssbbake -- -t* to run on test data 
     *cabal install* to make it usable in other directories
 
     uses 
-    - ssg.cabal
+    - daino.cabal
     - *cabal.project*, updated to use the uBase as moved to Hackage
 
     check with *ghcup tui* which version is installed - currently 8.10.4 (ghcup -h)
@@ -122,8 +122,8 @@ With
         - uniform-strings
         - uniform-pandoc (only debug output)
 ## test with testsite
-- move to ssg
-- cabal run ssgbake -- -t (this can be repeated)
+- move to daino
+- cabal run daino -- -t (this can be repeated)
 - cd docs/site/baked
 - python3 -m http.server 3000 (once after reboot)
 - in browser: localhost:3000
@@ -133,7 +133,7 @@ With
 - there must be a file settingsN.yaml in the folder with the dough 
 (except of the test homepage, where the settings3.yaml is in the outer dir *site* and not in *site/dough*)
 - in LayoutFlags.hs is the current name as "settings3"
-- ssgbake 
+- daino 
 
 # protection
 

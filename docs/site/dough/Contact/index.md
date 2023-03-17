@@ -12,12 +12,12 @@ visibility: public
 
 Research Group xx  
 break lines with two blanks (space) at end of line   
-Acity  
+ACity  
 ExampleCountry  
 
-+12 334 51234v00   
++12 334 51234 00   
  
-ssg@gerastree.at
+daino@gerastree.at
 
  
 

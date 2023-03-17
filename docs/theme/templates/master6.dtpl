@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="/resources/templates/static/w3c.css" type="text/css">
     <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins"> -->
             $-- getting other fonts?
-    <link rel="stylesheet" href="/resources/templates/static/ssg_ext_w3c.css" type="text/css">
+    <link rel="stylesheet" href="/resources/templates/static/daino_ext_w3c.css" type="text/css">
     $for(author)$
     <meta name="author" content="$author$" />  $-- if author is AOS then blanked - TODO
     $endfor$
@@ -152,8 +152,8 @@ $-- <title>$page-title$$if(page-title-postfix)$--$page-title-postfix$$endif$itle
 <!-- footer -->
 <div class="w3-grey w3-container w3-tiny" style="margin-top:24px;padding-right:58px"> $-- removed w3-padding-32
     <p class="w3-left">  <!--  not including data, but version -->
-        <a>Produced with SGG $ssgversion$ from $filename3$ ($visibility$, $version$) with $storage.masterTemplateFile$.</a>  
-        <a href="http://frank.gerastree.at/Journals/SSGdesign/index.html">Rationale for page layout design</a>
+        <a>Produced with SGG $dainoversion$ from $filename3$ ($visibility$, $version$) with $storage.masterTemplateFile$.</a>  
+        <a href="http://frank.gerastree.at/Journals/dainodesign/index.html">Rationale for page layout design</a>
     
     <div class="w3-right">
         <a></a>Powered by</a>

@@ -57,7 +57,7 @@ expectedResBlog3 = 0 :: Int
 
 -- testing_readMarkdown2pandoc :: FilePath -> IO ()
 -- -- | test to produce pandoc - step0 in   Md2.doc 
--- testing_readMarkdown2pandoc f1  = test1FileIO "ssg" (toFilePath $  blogDir </> makeRelFile (  f1 <> ".md") ) (readMarkdownFile2docrep (def::NoticeLevel) (toFilePath doughPL)) 
+-- testing_readMarkdown2pandoc f1  = test1FileIO "daino" (toFilePath $  blogDir </> makeRelFile (  f1 <> ".md") ) (readMarkdownFile2docrep (def::NoticeLevel) (toFilePath doughPL)) 
 
 -- -- test_index_readMarkdown2pandoc = testing_readMarkdown2pandoc "index"   
 -- test_blog1_readMarkdown2pandoc = testing_readMarkdown2pandoc   "01blog1"
@@ -75,7 +75,7 @@ blogDir = doughPL </> (makeRelDir "Blog")
 
 -- testing_md2pandoc :: FilePath -> IO ()
 -- -- | op 1 in Md2doc.hs
--- testing_md2pandoc f1 = test1FileIO "ssg"  (f1<> ".md") (f1 <> "_pandoc" )  (readMarkdown2) 
+-- testing_md2pandoc f1 = test1FileIO "daino"  (f1<> ".md") (f1 <> "_pandoc" )  (readMarkdown2) 
 --   where 
 --       fn1 :: Path Abs File 
 --       fn1 = doughPL </> (makeRelFile f1)
@@ -86,7 +86,7 @@ blogDir = doughPL </> (makeRelDir "Blog")
 
 -- testing_md2dr1 :: FilePath -> IO ()
 -- -- | op 1 in Md2doc.hs
--- testing_md2dr1 f1 = test1File "ssg"  (f1<> "_pandoc") (f1 <> "_dr1" )  (pandoc2docrep NoticeLevel1 doughPL bakedPL fn1 )
+-- testing_md2dr1 f1 = test1File "daino"  (f1<> "_pandoc") (f1 <> "_dr1" )  (pandoc2docrep NoticeLevel1 doughPL bakedPL fn1 )
 --   where 
 --       fn1 :: Path Abs File 
 --       fn1 = bakedPL </> (makeRelFile f1)
@@ -98,7 +98,7 @@ blogDir = doughPL </> (makeRelDir "Blog")
 testing_dr12dr3 :: FilePath -> IO ()
 -- | op 3 in Md2doc.hs 
 -- testing conversion from dr1 to dr3 
-testing_dr12dr3 f1  = test1FileIO "ssg" (f1<> "_dr1") (f1 <> "_dr3" ) (addRefs NoticeLevel0   )
+testing_dr12dr3 f1  = test1FileIO "daino" (f1<> "_dr1") (f1 <> "_dr3" ) (addRefs NoticeLevel0   )
 
 
 -- test_index_dr1_dr3 = testing_dr12dr3  "index"  
@@ -110,11 +110,11 @@ testing_dr12dr3 f1  = test1FileIO "ssg" (f1<> "_dr1") (f1 <> "_dr3" ) (addRefs N
 -- | testing dr3 to docrep (check stepwise same result)
 -- this is the op in Bake.hs
 -- should be the same as dr3
--- testing_md2docrep f1= test1FileIO "ssg" (f1<> ".md") (f1 <> "T.docrep" ) (md2docrep NoticeLevel0 layoutDefaults fn .  MarkdownText) 
+-- testing_md2docrep f1= test1FileIO "daino" (f1<> ".md") (f1 <> "T.docrep" ) (md2docrep NoticeLevel0 layoutDefaults fn .  MarkdownText) 
 --   where 
 --       fn :: Path Abs File 
 --       fn = doughPL </> (makeRelFile f1)
-    --   blogRoot = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/dough/Blog"
+    --   blogRoot = makeAbsDir "/home/frank/Workspace11/daino/docs/site/dough/Blog"
       -- TODO needs somewhere fix to build to website root
 -- test_index_dm2docrep = testing_md2docrep "index"
 -- test_blog1_dm2docrep = testing_md2docrep "01blog1"

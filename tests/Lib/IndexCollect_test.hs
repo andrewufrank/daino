@@ -25,10 +25,10 @@ import Uniform.Json
 test_exampleTrue = assertEqual 0 0
 
 -- read a docrec 
---"/home/frank/Workspace11/ssg/docs/site/baked/Blog/blog1.docrep" 
--- copy file manulally into .ssg
+--"/home/frank/Workspace11/daino/docs/site/baked/Blog/blog1.docrep" 
+-- copy file manulally into .daino
 
-testing_getMeta f =   test1File "ssg"  
+testing_getMeta f =   test1File "daino"  
     (f <> "T.docrep") (f <> "_meta") op   
          -- dr1 <- read8 inputFn docrepFileType
 op :: Docrep -> MetaPage 
@@ -38,11 +38,11 @@ test_getMeta_blog1 = testing_getMeta "01blog1"
 test_getMeta_index = testing_getMeta "index"
 
 
-testing_initializeIx f1 = test1File "ssg"  
+testing_initializeIx f1 = test1File "daino"  
     (f1 <> "_meta" ) (f1 <> "_ix" ) (initializeIndex )
 test_initializeIx_index = testing_initializeIx "index"
 
--- testing_complete f1 =  test1FileIO "ssg"   
+-- testing_complete f1 =  test1FileIO "daino"   
 --     (f1 <> "_ix" )(f1 <> "_ixComp")
 --         (completeIndex NoticeLevel0 doughPL bakedPL)
 

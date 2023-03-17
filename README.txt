@@ -3,11 +3,11 @@
 A static site generator from pandoc and other available packages on
 Hackage (e.g. shake, twitch, scotty), influenced by Chris Penner's
 [slick](https://github.com/ChrisPenner/slick#readme)(todo: look at
-[Ema](https://github.com/srid/ema) by Sridhar Ratnakumar). SSG uses
+[Ema](https://github.com/srid/ema) by Sridhar Ratnakumar). daino uses
 files to manage data to permit version management with git. Page
 appearances are directed with YAML and internally data is structured
 with JSON. Unlike other Site Generators, for each page a PDF file is
-produced to gurantee well formated prints. Index pages are automatically
+produced to guarantee well formatted printouts. Index pages are automatically
 formated, but minimal content must be provided initially. \# Layout The
 code includes an example site in the `docs/site` directory. It contains
 a file `settingsNN.yaml` which describes the layout of the site. A
@@ -22,13 +22,13 @@ the dough directory (TODO remove the needs) Starting with `-t` for
 Test with the included example site (in the `docs/site` directory) and
 the provided `theme` can be extended to include all troublesome cases.
 The tests are executed with `-t` switch
-(e.g. `cabal run ssgbake -- -t`). A html server (scotty) is started; the
-result can be viewed in the broswer at `localhost:3000` (the port can be
+(e.g. `cabal run daino -- -t`). A html server (scotty) is started; the
+result can be viewed in the browser at `localhost:3000` (the port can be
 selected in the `settings` file. Alternatively, the resulting site can
 be tested in the browser with - SimpleServer (must be installed from
 Hackage with `cabal install` - not yet on 8.10 with base 4.14) with
 `simpleserver -p <portnumber>` or -
-`python3 -m http.server <portnumber>` running in `ssg/docs/site/baked`.
+`python3 -m http.server <portnumber>` running in `daino/docs/site/baked`.
 
 ## Defaults
 
@@ -58,8 +58,8 @@ code is kept in modules which each cater for a wave.
 
 ### Organising Shake:
 
--   main: ssgbake (from app/ssgBake.hs)
--   StartSSGprocess missing upload automatically TODO
+-   main: daino (from app/daino.hs)
+-   Startdainoprocess missing upload automatically TODO
 -   shakeAll from Shake2.hs
 -   convertFiles
 
@@ -136,10 +136,10 @@ The tests are indexed by the transformation AtoB
 
 ## Compile
 
-With *cabal build* in the ssg directory *cabal install*
+With *cabal build* in the daino directory *cabal install*
 
     uses 
-    - ssg.cabal
+    - daino.cabal
     - *cabal.project*, updated to use the uBase as moved to Hackage
 
     check with *ghcup tui* which version is installed - currently 8.10.4 (ghcup -h)
@@ -150,8 +150,8 @@ With *cabal build* in the ssg directory *cabal install*
 
 ## test with testsite
 
--   move to ssg
--   cabal run ssgbake -- -t
+-   move to daino
+-   cabal run daino -- -t
 -   cd docs/site/baked
 -   python3 -m http.server 3000
 -   localhost:3000
@@ -160,12 +160,12 @@ With *cabal build* in the ssg directory *cabal install*
 
 -   there must be a file settingsN.yaml
 -   in LayoutFlags.hs is the current name as "settings3"
--   ssgbake
+-   daino
 
 ## ftp to hosted server 
 
 to transfer the baked code to a hosted server use ncftp (apt install ncftp in debian, documentation [https://www.ncftp.com/ncftp/doc/ncftpput.html])
 
-> cd /home/frank/Workspace11/ssg/doc/site/baked 
-> ncftpput -R -z -u "gerastre" -p "PASSWORD" gerastree.at /ssg.gerastree.at/ .
+> cd /home/frank/Workspace11/daino/doc/site/baked 
+> ncftpput -R -z -u "gerastre" -p "PASSWORD" gerastree.at /daino.gerastree.at/ .
 

@@ -40,5 +40,5 @@ The bibliography style^[Typically a `csl` file.] and the style for reference anc
 <!-- not clear where styleBiber numeric comes from . -->
 
 <!-- The references are in "resources/BibTexLatex.bib".
-changed to /home/frank/Workspace11/ssg/docs/site/dough/resources/BibTexExample.bib -->
+changed to /home/frank/Workspace11/daino/docs/site/dough/resources/BibTexExample.bib -->
 

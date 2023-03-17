@@ -10,10 +10,10 @@
 
 ---------------------------------------------------------------------
 --
--- Module      : all the filetype used for SSG
+-- Module      : all the filetype used for daino
 ----------------------------------------------------------------------
 
-{- | SSG uses sequences of transformations between data structures (types)
+{- | daino uses sequences of transformations between data structures (types)
  MD -> Docrep -> Panrep -> TexSnip -> Tex -> PDF
                  Pandrep -> HTML
  Each result is written as a typed file with a specific extension

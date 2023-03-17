@@ -137,7 +137,7 @@ $-- instructions are
     </section>
 
     <p class=tiny>  <!-- bottom tiny section  -->
-    Produced with SGG $ssgversion$ from $filename3$ with master5.dtpl.
+    Produced with daino $dainoversion$ from $filename3$ with master5.dtpl.
     </p>
 
   </body>

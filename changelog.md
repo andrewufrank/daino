@@ -11,7 +11,7 @@ a static site generator
 ## 0.0.4.1
     clean read yaml and check, needs default values
 ## 0.0.4.2 
-    recovering from 2000, rebuild Docrep, restricted use of JSON to docrep processing, moved the uniform-modules for blog inside SSG
+    recovering from 2000, rebuild Docrep, restricted use of JSON to docrep processing, moved the uniform-modules for blog inside daino/ssg
 # 0.0.4.3 
     clean up, then build test 
 # 0.0.4.4

@@ -28,7 +28,7 @@ import Data.Default.Class ( Default(..) )
 import UniformBase ( Text, Zeros(zero) ) -- to define a default class for pub flags 
 
 progName :: Text
-progName = "SSG"  
+progName = "daino"  
 
 
 

@@ -58,7 +58,7 @@ checkOneMD debug  fnin  =
     
     ( do
         when (informAll debug) $ putIOwords ["checkOneMD fnin", showPretty fnin]
-        -- same setup as StartSSGprocess 
+        -- same setup as Startdainoprocess 
         currDir :: Path Abs Dir  <- currentDir 
         let settfn =  currDir </> settingsFileName
 
@@ -70,7 +70,7 @@ checkOneMD debug  fnin  =
         -- pd <- readMarkdown2 mdfile
         
         let doughP = doughDir (siteLayout sett3)
-        -- let doughP = makeAbsDir "/home/frank/Workspace11/ssg/docs/site/dough/"
+        -- let doughP = makeAbsDir "/home/frank/Workspace11/daino/docs/site/dough/"
                 -- is not used 
         mdfile <- read8 fnin markdownFileType 
         pd <- readMarkdown2 mdfile

@@ -1,22 +1,22 @@
 cradle:
   cabal:
     - path: "./src"
-      component: "lib:ssg"
+      component: "lib:daino"
 
-    - path: "./app/ssgBake.hs"
-      component: "ssg:exe:ssgbake"
+    - path: "./app/daino.hs"
+      component: "daino:exe:daino"
 
-    - path: "./app/Paths_ssg.hs"
-      component: "ssg:exe:ssgbake"
+    - path: "./app/Paths_daino.hs"
+      component: "daino:exe:daino"
 
-    - path: "./app/ssgCheck.hs"
-      component: "ssg:exe:ssgcheck"
+    - path: "./app/dainoCheck.hs"
+      component: "daino:exe:dainocheck"
 
-    - path: "./app/Paths_ssg.hs"
-      component: "ssg:exe:ssgcheck"
+    - path: "./app/Paths_daino.hs"
+      component: "daino:exe:dainocheck"
 
     - path: "./tests"
-      component: "ssg:test:ssgTest"
+      component: "daino:test:dainoTest"
 
     - path: "../u2to/uniform-cmdLineArgs/src"
       component: "lib:uniform-cmdLineArgs"

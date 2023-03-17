@@ -13,7 +13,7 @@ This file should show how to use the header levels in a blog. It also demonstrat
 This example is experimental and different from other `md` files. It uses `h1` for the title and `h2` of the sections, corresponding to `##` (and so forth). 
 
 ### HTML output
-There are two conventions in the Pandoc community, depending on how the source material is initially written. Some start with the title and go to `#` for the sections, other used `#` for the title and go to `##` for the sections. Given that SSG assumes that there is a `yml` header, including the title and abstract (which is useful to list the blogs in directories), the suggested standard would be the first and not as shown here. 
+There are two conventions in the Pandoc community, depending on how the source material is initially written. Some start with the title and go to `#` for the sections, other used `#` for the title and go to `##` for the sections. Given that daino assumes that there is a `yml` header, including the title and abstract (which is useful to list the blogs in directories), the suggested standard would be the first and not as shown here. 
 
 The decision is influencing the presentation^[The different header levels introduce different amounts of vertical space for separation] and for the output as pdf.
 
@@ -56,8 +56,8 @@ The titles are not numbered. This could be changed - TODO
 
 <!-- statt einer relativen `resources/DSC08138.JPG` referenz. Problem in latex.
 
-die absolute "/home/frank/Workspace11/ssg/docs/site/dough/Blog/SubBlog/resources/DSC08138.JPG" funktioniert. 
-der file ist "/home/frank/Workspace11/ssg/docs/site/baked/Blog/SubBlog" in warum die relative nicht?
+die absolute "/home/frank/Workspace11/daino/docs/site/dough/Blog/SubBlog/resources/DSC08138.JPG" funktioniert. 
+der file ist "/home/frank/Workspace11/daino/docs/site/baked/Blog/SubBlog" in warum die relative nicht?
 
   An example post sorted at last
   and an image -->

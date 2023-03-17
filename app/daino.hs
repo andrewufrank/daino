@@ -1,6 +1,6 @@
 -------------------------------------------------------------------
 --
--- Module      :   ssgBake
+-- Module      :   daino
 ----------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
@@ -20,14 +20,14 @@ import ShakeBake.CmdLineArgs ( parseArgs2input )
 import Foundational.CmdLineFlags ( PubFlags )
 -- import Foundational.SettingsPage (sourceDirTestSite )  
 
-import ShakeBake.StartSSGprocess ( ssgProcess )  
+import ShakeBake.Startdainoprocess ( dainoProcess )  
 -- import Uniform.StartApp ( startProgWithTitle )  
 import UniformBase 
 -- ( Text, NoticeLevel(NoticeLevel0), unlinesT )  
 import Data.Version
 
 programName, progTitle :: Text
-programName = "ssgBake" :: Text
+programName = "daino" :: Text
 progTitle = "constructing a static site generator" :: Text
 progVersion = "0.1.5.1":: Text
 
@@ -57,5 +57,5 @@ main =
                         ]
                     )
                     "list flags to include"
-            ssgProcess NoticeLevel2 flags
+            dainoProcess NoticeLevel2 flags
         )

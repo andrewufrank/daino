@@ -27,7 +27,7 @@ import Uniform.Json
 -- the test uses ixEntry1 and converts to ixEntry4
 -- ixEntry1 is produced in Doc2html
 
--- testing_indexEntry2MenuEntry f = test1FileIO "ssg"   
+-- testing_indexEntry2MenuEntry f = test1FileIO "daino"   
 --     (f <> "_ixEntry1") (f <>  "_ixEntry4") (convertIndexEntries NoticeLevel1)      
  
 -- test_indexEntry2MenuEntry_blog1 = testing_indexEntry2MenuEntry "01blog1"
@@ -36,7 +36,7 @@ import Uniform.Json
 -- test_indexEntry2MenuEntry_withRef = testing_indexEntry2MenuEntry "02withRef"
 
 
--- testing_MenuEntry2pandoc4 f = test2FileIO "ssg"    (  "ixEntry4_" <> f) (  "pandoc_" <> f) ("pandoc4_" <> f) mergeContent      
+-- testing_MenuEntry2pandoc4 f = test2FileIO "daino"    (  "ixEntry4_" <> f) (  "pandoc_" <> f) ("pandoc4_" <> f) mergeContent      
  
 -- test_MenuEntry2pandoc4_blog1 = testing_MenuEntry2pandoc4 "blog1"
 -- -- test_MenuEntry2pandoc4_index = testing_MenuEntry2pandoc4 "index"

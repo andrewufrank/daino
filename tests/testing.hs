@@ -25,12 +25,12 @@ import    {-@ HTF_TESTS @-}        Lib.Md2doc_test
 
 
 main :: IO ()
-main = mainTest  -- for a different function name (main is in ssgbake)
+main = mainTest  -- for a different function name (main is in daino)
 
 mainTest        -- with tests in other modules
   = do
     putStrLn "HTF ExampleTest.hs:\n"
-    -- runErrorVoid $ createDirIfMissing' "/home/frank/.SSG"
+    -- runErrorVoid $ createDirIfMissing' "/home/frank/.daino"
     -- is in siteHeader.yaml testDir  - must correspond
     p <- htfMain htf_importedTests
     putStrLn
@@ -46,7 +46,7 @@ mainTest        -- with tests in other modules
 -- import {-@ HTF_TESTS @-} ShakeStartTests
 -- -- must run first because it produces the test values used later
 -- -- uses def, not settings2.yaml
--- -- test dir must be ~/.SSG  -- the program name in foundation
+-- -- test dir must be ~/.daino  -- the program name in foundation
 
 -- ordinary tests (run without shakeStartTest)
 
@@ -68,10 +68,10 @@ mainTest        -- with tests in other modules
 -- import  {-@ HTF_TESTS @-}         Lib.IndexMake_test
 -- -- import    {-@ HTF_TESTS @-}       Lib.Templating_test  -- AG -> EG 
 -- -- import Uniform.Ftp 
--- -- import Lib.StartSSGprocess
+-- -- import Lib.Startdainoprocess
 -- -- -- --import {-@ HTF_TESTS @-} Lib.BibTex_test
 
---     ---- for ssgCheck
+--     ---- for dainoCheck
 -- import {-@ HTF_TESTS @-} Lib.CheckProcess_test  -- (res11)
 -- import Lib.CheckProcess        -- for direct calls 
 --
@@ -102,7 +102,7 @@ mainTest        -- with tests in other modules
 --     putStrLn "mainCheck"
 --     runErrorVoid  $ do
 --         -- sitefn :: FilePath 
---         let sitefn = "/home/frank/Workspace11/ssg/docs/site/dough/settings2" 
+--         let sitefn = "/home/frank/Workspace11/daino/docs/site/dough/settings2" 
 --         res <-  checkProcess True sitefn 
 --         putIOwords [s2t "res11", showT $ res] 
 --         return ()
@@ -128,4 +128,4 @@ mainTest        -- with tests in other modules
 -- lastUpload = read "2019-04-11 12:00:00 UTC" :: UTCTime
 -- test1 = testNewerModTime lastUpload 
 
--- main4 = runErrorVoid $ ssgProcess testFlags
+-- main4 = runErrorVoid $ dainoProcess testFlags

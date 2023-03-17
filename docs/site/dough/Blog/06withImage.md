@@ -17,7 +17,7 @@ visibility: public
 An arbitrary image can be inserted in the banner page, as an absolute (possibly relative) reference after the keyword `image:` in the header. The size of the image is scaled to the hight of the banner^[Images which are wide and not high work well, e.g. 1000 by 330 pixel work well.].
 
 
-The image is in /home/frank/Workspace11/ssg/docs/site/dough/Blog/resources/120-2026_IMG.JPG of which `/Blog/resources/120-2026_IMG.JPG` is the part **relative to the `web root`**^[The web root is the directory `dough`]. 
+The image is in /home/frank/Workspace11/daino/docs/site/dough/Blog/resources/120-2026_IMG.JPG of which `/Blog/resources/120-2026_IMG.JPG` is the part **relative to the `web root`**^[The web root is the directory `dough`]. 
 
 Attention: the file extension is case sensitiv; i.e. "JPG" and "jpg" are different!
 

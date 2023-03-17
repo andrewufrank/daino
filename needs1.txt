@@ -1,7 +1,7 @@
 Build profile: -w ghc-8.10.7 -O1
 In order, the following will be built (use -v for more details):
- - ssg-0.0.4.10 (lib) (file src/Wave/Docrep2panrep.hs changed)
- - ssg-0.0.4.10 (exe:ssgbake) (dependency rebuilt)
-Preprocessing library for ssg-0.0.4.10..
-Building library for ssg-0.0.4.10..
-[15 of 20] Compiling Wave.Docrep2panrep ( src/Wave/Docrep2panrep.hs, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/Wave/Docrep2panrep.o, /home/frank/Workspace11/ssg/dist-newstyle/build/x86_64-linux/ghc-8.10.7/ssg-0.0.4.10/build/Wave/Docrep2panrep.dyn_o )
+ - daino-0.0.4.10 (lib) (file src/Wave/Docrep2panrep.hs changed)
+ - daino-0.0.4.10 (exe:dainononobake) (dependency rebuilt)
+Preprocessing library for daino-0.0.4.10..
+Building library for dainonononono-0.0.4.10..
+[15 of 20] Compiling Wave.Docrep2panrep ( src/Wave/Docrep2panrep.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-8.10.7/daino-0.0.4.10/build/Wave/Docrep2panrep.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-8.10.7/daino-0.0.4.10/build/Wave/Docrep2panrep.dyn_o )

@@ -2,12 +2,12 @@
 # change to start a new site
 
 siteLayout:
-    themeDir:  /home/frank/Workspace11/ssg/docs/theme
-    doughDir: /home/frank/Workspace11/ssg/docs/site/dough
+    themeDir:  /home/frank/Workspace11/daino/docs/theme
+    doughDir: /home/frank/Workspace11/daino/docs/site/dough
     bakedDir: /home/frank/bakedTestSite
-    # bakedDir: /home/frank/Workspace11/ssg/docs/site/baked
-    reportFile: /home/frank/ssgReport.txt
-    testDir: /home/frank/.ssg 
+    # bakedDir: /home/frank/Workspace11/daino/docs/site/baked
+    reportFile: /home/frank/dainoReport.txt
+    testDir: /home/frank/.daino 
     # masterTemplateFile: master6.dtpl  #in themeDir
     masterTemplateFile: master7tufte.dtpl  #in themeDir
     # change is global for the site, not per page TODO?
@@ -54,7 +54,7 @@ menuitems:
         navtext: Blog
       - navlink : PublicationList/index.html
         navtext : Publications
-      # - navlink : SSGdesign/index.html
-      #   navtext : SSG Documentation  
+      # - navlink : dainodesign/index.html
+      #   navtext : daino Documentation  
 
 
