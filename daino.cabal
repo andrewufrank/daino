@@ -19,6 +19,7 @@ build-type:     Simple
 extra-source-files:
     changelog.md
     README.md
+    docs/site/dough
 
 source-repository head
   type: git
@@ -72,34 +73,6 @@ library
 
 executable daino
   main-is: daino.hs
-  other-modules:
-      Paths_daino
-  hs-source-dirs:
-      app
-  other-extensions:
-      OverloadedStrings
-  build-depends:
-      base >4.7 && <5
-    , daino
-    , data-default-class
-    , deepseq
-    , dir-traverse
-    , pandoc
-    , pandoc-sidenote
-    , uniform-cmdLineArgs
-    , uniform-http
-    , uniform-json >=0.1.5.1
-    , uniform-latex2pdf
-    , uniform-pandoc
-    , uniform-shake
-    , uniform-strings >=0.1.5.1
-    , uniform-watch
-    , uniform-webserver
-    , uniformBase >=0.1.5
-  default-language: Haskell2010
-
-executable dainocheck
-  main-is: dainoCheck.hs
   other-modules:
       Paths_daino
   hs-source-dirs:

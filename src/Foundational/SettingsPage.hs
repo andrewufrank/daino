@@ -93,10 +93,10 @@ instance ToJSON SiteLayout
 instance FromJSON SiteLayout
 
 
-sourceDirTestDocs :: Path Rel Dir
-sourceDirTestDocs = makeRelDir "docs/"
+sourceDirTestDocs :: Path Abs Dir
+sourceDirTestDocs = makeAbsDir "/home/frank/daino/docs/"
 
-sourceDirTestSite :: Path Rel Dir
+sourceDirTestSite :: Path Abs Dir
 sourceDirTestSite = sourceDirTestDocs </> (makeRelDir "site")
 -- ^ the dir with the source for the test site
 

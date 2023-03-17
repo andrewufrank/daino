@@ -36,7 +36,7 @@ dainoProcess :: NoticeLevel -> PubFlags -> ErrIO ()
 dainoProcess debug flags = do
     currDir :: Path Abs Dir  <- currentDir 
     let settfn = if (testFlag flags)   
-            then  currDir </> sourceDirTestSite </> settingsFileName 
+            then   sourceDirTestSite </> settingsFileName 
             else currDir </> settingsFileName
 
     sett3 <- readSettings debug settfn 

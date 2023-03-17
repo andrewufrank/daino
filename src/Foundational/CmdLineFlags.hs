@@ -27,8 +27,9 @@ module Foundational.CmdLineFlags
 import Data.Default.Class ( Default(..) )
 import UniformBase ( Text, Zeros(zero) ) -- to define a default class for pub flags 
 
-progName :: Text
+progName, progTitle :: Text
 progName = "daino"  
+progTitle = "constructing a static site generator" :: Text
 
 
 

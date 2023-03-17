@@ -17,7 +17,7 @@
 module Main where -- must have Main (main) or Main where
 
 import ShakeBake.CmdLineArgs ( parseArgs2input )  
-import Foundational.CmdLineFlags ( PubFlags )
+import Foundational.CmdLineFlags ( PubFlags, progName, progTitle  )
 -- import Foundational.SettingsPage (sourceDirTestSite )  
 
 import ShakeBake.StartDainoProcess ( dainoProcess )  
