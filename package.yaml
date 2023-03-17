@@ -94,6 +94,8 @@ dependencies:
     - deepseq
     - pandoc-sidenote
     - pandoc
+    - path
+    - path-io
 
 library:
   source-dirs: 

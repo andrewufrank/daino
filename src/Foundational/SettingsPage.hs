@@ -30,6 +30,7 @@ import UniformBase
 import Data.Default.Class ( Default(def) ) -- to define a default class for siteLayout 
 import Uniform.Json ( FromJSON, ToJSON )
 
+import Path (parent)
 progName, progTitle :: Text
 progName = "daino"  
 progTitle = "constructing a static site generator" :: Text
@@ -100,22 +101,23 @@ sourceDirTestSite :: Path Abs Dir
 sourceDirTestSite = sourceDirTestDocs </> (makeRelDir "site")
 -- ^ the dir with the source for the test site
 
-layoutDefaults :: SiteLayout
+layoutDefaults :: Path Abs Dir -> Path Abs Dir ->  SiteLayout
 -- used for finding the test cases
 -- must correspond to the settings3.yaml in source code repository
-layoutDefaults =
+-- fix this later for use in testing todo 
+layoutDefaults dough4test homeDir =
     SiteLayout
-        { doughDir = sourceDirTestSite </> makeRelDir "dough"
-        , bakedDir = sourceDirTestSite </> makeRelDir "baked"
-        ,  themeDir = sourceDirTestDocs </> makeRelDir "theme"
+        { doughDir = dough4test
+        , bakedDir = homeDir </> makeRelDir "bakedTestSite" :: Path Abs Dir
+        ,  themeDir = (parent (parent dough4test)) </> makeRelDir "theme"
  
         ,  masterTemplateFile = makeRelFile "master5.dtpl"
         , doNotPublish = "DNB"
         , blogAuthorToSuppress = []
         }
 
-instance Default SiteLayout where 
-        def = layoutDefaults
+-- instance Default SiteLayout where 
+--         def = layoutDefaults
 
 notDNB :: SiteLayout -> FilePath -> Bool 
 notDNB siteLayout = not . isInfixOf' (t2s $ doNotPublish siteLayout)

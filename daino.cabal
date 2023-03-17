@@ -59,6 +59,8 @@ library
     , dir-traverse
     , pandoc
     , pandoc-sidenote
+    , path
+    , path-io
     , uniform-cmdLineArgs
     , uniform-http
     , uniform-json >=0.1.5.1
@@ -87,6 +89,8 @@ executable daino
     , dir-traverse
     , pandoc
     , pandoc-sidenote
+    , path
+    , path-io
     , uniform-cmdLineArgs
     , uniform-http
     , uniform-json >=0.1.5.1

@@ -31,6 +31,7 @@ import Foundational.SettingsPage
 import Foundational.CmdLineFlags
 import Paths_daino  
 import UniformBase
+import Path.IO (getHomeDir)
 
 dainoProcess :: NoticeLevel -> PubFlags -> ErrIO ()
 dainoProcess debug flags = do
@@ -38,19 +39,25 @@ dainoProcess debug flags = do
     dough4test <- callIO $ getDataFileName "docs/site/dough"
     let dough4testAbsDir = makeAbsDir dough4test
     putIOwords ["dainoProcess docs site dough", showT dough4testAbsDir]
-    putIOwords ["dainoProcess test flags", showT (testFlag flags)]
 
-    let settfn = if (testFlag flags || testNewFlag flags)   
-            then  
-                    -- getDataFileName :: FilePath -> IO FilePath
-                    dough4testAbsDir </> settingsFileName 
-            else currDir </> settingsFileName
+    let useTestSite = (testFlag flags || testNewFlag flags)
+    putIOwords ["dainoProcess useTestSite", showT useTestSite]
+    let settdir = if useTestSite   
+            then dough4testAbsDir  
+            else currDir  
 
-    putIOwords ["dainoProcess 2 settfn", showT settfn]
-    sett3 <- readSettings debug settfn 
+    -- putIOwords ["dainoProcess 2 settfn", showT settfn]
+    sett2 <- readSettings debug (settdir </> settingsFileName) 
+
+    -- the settings in the test site cannot be used to run 
+    hmoeDir <- getHomeDir -- 
+    let sett4 = if useTestSite 
+                    then sett2 {siteLayout = 
+                            layoutDefaults dough4testAbsDir homeDir}
+                    else sett2
 
 -- set the currentWorkingDir CWD to doughDir
-    let doughP = doughDir (siteLayout sett3)
+    let doughP = doughDir (siteLayout sett4)
 -- it should be allways be the same, independent of start 
 -- when started to convert the tests the CWD is not 
 -- the same then when starting in a directory to convert
@@ -61,17 +68,20 @@ dainoProcess debug flags = do
     setCurrentDir doughP
 
     if watchFlag flags -- implies server
-        then mainWatch debug sett3 flags 
+        then mainWatch debug sett4 flags 
         else do
             when (testNewFlag flags) $ do
-                let bakedP = bakedDir (siteLayout sett3)
+                let bakedP = bakedDir (siteLayout sett4)
                 deleteDirRecursive bakedP 
-            shakeAll debug sett3 flags ""
+            shakeAll debug sett4 flags ""
             -- the last is the filename that caused the shake call
             when (serverFlag flags) $ do 
-                runScotty (localhostPort sett3) (bakedDir (siteLayout sett3)) (makeRelFile "index.html") 
+                runScotty (localhostPort sett4) 
+                    (bakedDir (siteLayout sett4)) 
+                    (makeRelFile "index.html") 
                     -- was landingPageName
-                putIOwords ["server started on ", showT (localhostPort sett3)]
+                putIOwords ["server started on "
+                            , showT (localhostPort sett4)]
 
 -- return the dir as set before
     setCurrentDir currDir
