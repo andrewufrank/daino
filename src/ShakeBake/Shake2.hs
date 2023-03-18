@@ -55,7 +55,7 @@ module ShakeBake.Shake2 where
 import           Uniform.Shake
 
 import Foundational.SettingsPage
-    ( SiteLayout(doughDir, bakedDir, doNotPublish),
+    ( SiteLayout(doughDir, bakedDir, themeDir),
       Settings(siteLayout) )
 import Foundational.CmdLineFlags
       
@@ -86,7 +86,7 @@ shakeArgs2 bakedP = do
         shake
             shakeOptions
                 { shakeFiles = toFilePath bakedP
-                , shakeVerbosity = Verbose-- Loud
+                , shakeVerbosity = Info -- Verbose-- Loud
                 , shakeLint = Just LintBasic
                 }
     -- putIOwords ["shakeArgs2", "done"]
@@ -95,6 +95,10 @@ shakeArgs2 bakedP = do
 shakeAll :: NoticeLevel -> Settings -> PubFlags -> FilePath -> ErrIO ()
 -- ^ calls shake in the IO monade. this is in the ErrIO
 shakeAll debug sett3 flags causedby = do
+    let layout = siteLayout sett3 
+        doughP = doughDir layout -- the regular dough
+        bakedP = bakedDir layout
+        themeP = themeDir layout
     putIOwords
         [ "\n\n===================================== shakeAll start"
         , "\n flags"
@@ -103,14 +107,13 @@ shakeAll debug sett3 flags causedby = do
         , s2t causedby
         , "."
         , "\ndebug:", showT debug
+        , "\ndough", showT doughP 
+        , "\nbaked", showT bakedP 
+        , "\ntheme", showT themeP 
+
         , "\n======================================="
         ]
-    let layout = siteLayout sett3 
-        doughP = doughDir layout -- the regular dough
-        bakedP = bakedDir layout
             
-    putIOwords [showT "\nwill produce bakedP", showT bakedP]
-
     callIO $ shakeMD debug sett3 flags doughP bakedP
 
 
@@ -148,8 +151,8 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         -- the original start needs in baked (from the files in dough)
 
             -- do the images first to be findable by latex processor
-        imgs <- getNeeds debug layout doughP bakedP "jpg" "jpg"
-        imgs2 <- getNeeds debug layout doughP bakedP "JPG" "JPG"
+        imgs <- getNeeds debug   doughP bakedP "jpg" "jpg"
+        imgs2 <- getNeeds debug   doughP bakedP "JPG" "JPG"
         needP imgs
         needP imgs2
 
@@ -160,20 +163,20 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         htmls <- getNeedsMD debug flags doughP bakedP "md" "html"
         needP htmls
 
-        csss <- getNeeds debug layout doughP bakedP "css" "css"
+        csss <- getNeeds debug   doughP bakedP "css" "css"
         -- cssStatic <- getNeeds debug themeP bakedP "css" "css"
         needP csss
         -- needP cssStatic
 
         -- fonts, takes only the woff
-        woffs <- getNeeds debug layout doughP bakedP "woff" "woff"
+        woffs <- getNeeds debug   doughP bakedP "woff" "woff"
         needP woffs
-        publist <- getNeeds debug layout doughP bakedP "html" "html"
+        publist <- getNeeds debug   doughP bakedP "html" "html"
         needP publist
         -- for the pdfs which are already given in dough
-        pdfs2 <- getNeeds debug layout doughP bakedP "pdf" "pdf"
+        pdfs2 <- getNeeds debug   doughP bakedP "pdf" "pdf"
         needP pdfs2
-        bibs <- getNeeds debug layout doughP bakedP "bib" "bib"
+        bibs <- getNeeds debug   doughP bakedP "bib" "bib"
         needP bibs
 
 
@@ -268,13 +271,13 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
 
     (toFilePath bakedP <> "**/*.bib")
         %> \out -> copyFileToBaked debug doughP bakedP out
-    -- the fonts
+    -- the fonts in a compressed format 
     (toFilePath bakedP <> "**/*.woff")
         %> \out -> copyFileToBaked debug doughP bakedP out
 
 getNeeds ::
     NoticeLevel 
-    -> Settings -- ^ the site layout etc
+    -- -> Settings -- ^ the site layout etc
     -> Path Abs Dir  -- ^ source dir
     -> Path Abs Dir  -- ^ target dir
     -> Text  -- ^ extension source
@@ -284,7 +287,7 @@ getNeeds ::
   from source with extension ext
   does not include directory DNB (do not bake)
 -}
-getNeeds debug layout sourceP targetP extSource extTarget = do
+getNeeds debug  sourceP targetP extSource extTarget = do
     let sameExt = extSource == extTarget
     when (inform debug) $
         putIOwords
@@ -296,9 +299,9 @@ getNeeds debug layout sourceP targetP extSource extTarget = do
             , showT sameExt
             ]
 
-    filesWithSource :: [Path Rel File] <-
-        getFilesToBake
-            (doNotPublish  (siteLayout layout)) -- exclude files containing
+    filesWithSource :: [Path Rel File] <- getDirectoryFilesP
+        -- getFilesToBake
+            -- (doNotPublish  (siteLayout layout)) -- exclude files containing
             sourceP
             ["**/*." <> t2s extSource]
     -- subdirs
@@ -351,9 +354,9 @@ getNeedsMD debug flags sourceP targetP extSource extTarget = do
             , showT sameExt
             ]
 
-    filesWithSource :: [Path Rel File] <-
-        getFilesToBake
-            "DNB"  -- exclude files containing
+    filesWithSource :: [Path Rel File] <- getDirectoryFilesP
+        -- getFilesToBake
+            -- "DNB"  -- exclude files containing
             sourceP
             ["**/*." <> t2s extSource]
     files2 <- runErr2action $ mapM (filterNeeds debug flags sourceP) filesWithSource

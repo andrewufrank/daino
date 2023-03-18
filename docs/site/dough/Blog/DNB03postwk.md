@@ -5,8 +5,8 @@ date: Jan. 4, 2019
 keywords: test
 publish: draft
 title: 03postwk title postwk with image
-version: publish
-visibility: private
+version: draft
+visibility: private 
 ---
 03postwk: text without a header level mark
 

@@ -11,7 +11,7 @@ siteLayout:
     # masterTemplateFile: master6.dtpl  #in themeDir
     masterTemplateFile: master7tufte.dtpl  #in themeDir
     # change is global for the site, not per page TODO?
-    doNotPublish: "DNB"
+    # doNotPublish: "DNB"
     # todo seems not to work. but entry here is required
     blogAuthorToSuppress: 
       - "AOS"

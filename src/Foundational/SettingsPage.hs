@@ -23,7 +23,6 @@
 module Foundational.SettingsPage
     (module Foundational.SettingsPage
     , def 
-    , settingsFileName
     ) where
 
 import UniformBase
@@ -85,14 +84,14 @@ data SiteLayout = SiteLayout
     , -- | the webroot, the dir with all the produced files
       bakedDir :: Path Abs Dir
     , masterTemplateFile :: Path Rel File
-    , doNotPublish :: Text 
+    -- , doNotPublish :: Text 
     -- todo probably not used
     , blogAuthorToSuppress :: [Text]
     }
     deriving (Show, Read, Ord, Eq, Generic, Zeros)
 instance ToJSON SiteLayout
 instance FromJSON SiteLayout
-
+ 
 
 sourceDirTestDocs :: Path Abs Dir
 sourceDirTestDocs = makeAbsDir "/home/frank/daino/docs/"
@@ -111,16 +110,16 @@ layoutDefaults dough4test homeDir =
         , bakedDir = homeDir </> makeRelDir "bakedTestSite" :: Path Abs Dir
         ,  themeDir = (parent (parent dough4test)) </> makeRelDir "theme"
  
-        ,  masterTemplateFile = makeRelFile "master5.dtpl"
-        , doNotPublish = "DNB"
+        ,  masterTemplateFile = makeRelFile "master7tufte.dtpl"
+        -- , doNotPublish = "DNB"
         , blogAuthorToSuppress = []
         }
 
 -- instance Default SiteLayout where 
 --         def = layoutDefaults
 
-notDNB :: SiteLayout -> FilePath -> Bool 
-notDNB siteLayout = not . isInfixOf' (t2s $ doNotPublish siteLayout)
+-- notDNB :: SiteLayout -> FilePath -> Bool 
+-- notDNB siteLayout = not . isInfixOf' (t2s $ doNotPublish siteLayout)
 
 templatesDirName = makeRelDir "templates"
 templatesDir :: SiteLayout -> Path Abs Dir

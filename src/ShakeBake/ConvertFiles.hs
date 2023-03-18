@@ -68,7 +68,7 @@ convertAny debug sourceP targetP flags layout out anyopName = do
     let fromfilePath = sourceP </> makeRelativeP targetP outP
     let fromfilePathExt = replaceExtension' (s2t . unExtension $ sourceExtA) fromfilePath 
 
-    when (inform debug) $putIOwords 
+    when (inform debug) $ putIOwords 
         ["\nconvertAny 2", anyopName
         , "extension", (s2t . unExtension $ sourceExtA)
         ,  "\n fromfilePath", showT fromfilePath

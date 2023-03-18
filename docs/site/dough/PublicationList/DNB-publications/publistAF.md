@@ -13,7 +13,8 @@ bibliographyGroup: authorAF
 style: "resources/chicago-fullnote-bibliography-bb.csl"
 bibliography: "resources/BibTexLatex.bib"
 
-
+version: draft
+visibility: private 
 ---
 
 An example publication list for AF  -- but not the relative "resources/BibTexLatex.bib"

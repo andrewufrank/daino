@@ -62,8 +62,11 @@ dainoProcess debug flags = do
 -- when started to convert the tests the CWD is not 
 -- the same then when starting in a directory to convert
 
-    putIOwords ["dainoProcess", "currDir"
-        , showT currDir, "\nwill beomce doughP", showT doughP
+    putIOwords ["\n dainoProcess"
+        , "currDir is doughP", showT currDir
+        ]
+    putIOwords ["\ndainoProcess starts baking with"
+        , "siteLayout" , showT (siteLayout sett4) 
         ]
     setCurrentDir doughP
 

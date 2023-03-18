@@ -1,12 +1,12 @@
 ---
-abstract: Index for the publication directory
+abstract: Index for the DNB publication directory
 author: AOS
 date: Jan. 4, 2019
 indexSort: filename
 keywords: test
 title: Index for publication list 
-version: publish
-visibility: public
+version: draft
+visibility: private 
 ---
 An index page for testing publication list. 
 

@@ -17,8 +17,8 @@ import Uniform.Pandoc
 -- import Foundational.Filetypes4sites  
 -- import Wave.Md2doc 
 import Foundational.MetaPage 
-import Control.Exception
-import Control.DeepSeq
+-- import Control.Exception
+-- import Control.DeepSeq
 import Data.Char
 
 checkProcess :: NoticeLevel -> Path Abs File-> ErrIO ()
@@ -40,7 +40,7 @@ checkProcess debug sitefn = do
     
     when (inform debug) $ putIOwords ["checkProcess 2", "mds", showT . take 10 $ mds]
 
-    let mds1 = filter (notDNB (siteLayout sett3)) mds
+    let mds1 = mds -- filter (notDNB (siteLayout sett3)) mds
     when (inform debug) $ putIOwords ["checkProcess 2", "mds1", showT . take 10 $ mds1]
     let mds2 = map makeAbsFile mds1
     -- let hpname = blogAuthorToSuppress.storag sett3
@@ -57,7 +57,7 @@ checkOneMD:: NoticeLevel ->  Path Abs File -> ErrIO ()
 checkOneMD debug  fnin  =
     
     ( do
-        when (informAll debug) $ putIOwords ["checkOneMD fnin", showPretty fnin]
+        when (inform debug) $ putIOwords ["checkOneMD fnin", showPretty fnin]
         -- same setup as Startdainoprocess 
         currDir :: Path Abs Dir  <- currentDir 
         let settfn =  currDir </> settingsFileName

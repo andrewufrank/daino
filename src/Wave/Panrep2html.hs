@@ -67,7 +67,7 @@ panrep2html debug  sett3 (Panrep m1 p1) = do
     -- let mfn = templatesDir layout </> mf
     let masterfn = templatesDir (siteLayout sett3) </> mf
     let h = dyHeaderShift m1
-    when (informAll debug) $
+    when (inform debug) $
         putIOwords ["\n\t---------------------------panrep2html"
                 , "shiftHeaderLevel"
                 , showT h]    
@@ -94,15 +94,15 @@ panrep2vals debug sett3 (Panrep m1 p1) = do
 
     when (inform debug) $ putIOwords ["panrep2vals", "m1", showPretty m1]
     when (inform debug) $ putIOwords ["panrep2vals", "sett3", showPretty sett3]
-    when (inform debug) $putIOwords ["panrep2vals", "menu4", showPretty menu4]
-    when (inform debug) $putIOwords ["panrep2vals", "p2", showPretty p2]
+    when (inform debug) $ putIOwords ["panrep2vals", "menu4", showPretty menu4]
+    when (inform debug) $ putIOwords ["panrep2vals", "p2", showPretty p2]
 
     let vals = [toJSON sett3, toJSON m1, toJSON menu4, toJSON p2]
     -- m1 is what is from the yaml meta from the file
     -- menu4 is menu collected 
     -- order matters left preference?
 
-    when (inform debug) $putIOwords ["panrep2vals", "vals", showPretty vals]
+    when (inform debug) $ putIOwords ["panrep2vals", "vals", showPretty vals]
     return vals
 
 panrep2html2 :: NoticeLevel -- ^ 
