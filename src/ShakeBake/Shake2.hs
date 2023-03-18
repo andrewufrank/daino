@@ -86,7 +86,9 @@ shakeArgs2 bakedP = do
         shake
             shakeOptions
                 { shakeFiles = toFilePath bakedP
-                , shakeVerbosity = Info -- Verbose-- Loud
+                , shakeVerbosity = Info -- Verbose -- Loud
+                        -- verbose gives a single line for each file processed
+                        -- iinfo gives nothing in normal process 
                 , shakeLint = Just LintBasic
                 }
     -- putIOwords ["shakeArgs2", "done"]
