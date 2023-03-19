@@ -96,6 +96,7 @@ dependencies:
     - pandoc
     - path
     - path-io
+    - unix
 
 library:
   source-dirs: 

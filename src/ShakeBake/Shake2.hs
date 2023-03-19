@@ -140,16 +140,17 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
     -- the special filenames which are necessary
     -- because the file types are not automatically
     -- copied
+    -- todo remove doughP and bakedP
 
     when (inform debug) $ putIOwords
                                 [ "shakeMD dirs\n"
                                     , "\tbakedP\n"
                                 , showT bakedP
                                 ]
-    let siteDirs = siteLayout layout 
-        doughP = doughDir siteDirs -- the regular dough
-        bakedP = bakedDir siteDirs
-        themeP = themeDir siteDirs
+    -- let siteDirs = siteLayout layout 
+        -- doughP = doughDir siteDirs -- the regular dough
+        -- bakedP = bakedDir siteDirs
+        -- themeP = themeDir siteDirs
 
 
 

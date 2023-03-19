@@ -31,7 +31,7 @@ import UniformBase
 import Wave.Md2doc
     ( includeBakeTest3docrep, readMarkdownFile2docrep ) 
 -- import ShakeBake.Bake (readMarkdownFile2docrep)
-import Foundational.SettingsPage (  SiteLayout )
+import Foundational.SettingsPage (  SiteLayout, resourcesName, templatesName )
 
 
 
@@ -74,10 +74,8 @@ getDirContent2dirs_files debug pubf layout doughP   indexpageFn = do
 
     dirs1 :: [Path Abs Dir] <- getDirectoryDirs' pageFn
     let dirs2 = dirs1 -- filter ( (notDNB (layout)).   getNakedDir) dirs1
-    let dirs3 = filter ( not . (isPrefixOf' "resources"
-         ) .   getNakedDir) dirs2
-    let dirs4 = filter ( not . (isPrefixOf' "templates"
-         ) .   getNakedDir) dirs3
+    let dirs3 = filter ( not . (isPrefixOf' resourcesName) .  getNakedDir) dirs2
+    let dirs4 = filter ( not . (isPrefixOf'  templatesName) . getNakedDir) dirs3
     let dirs5 = filter ( not . (isPrefixOf' "."
          ) .   getNakedDir) dirs4
     -- TODO may need extension (change to list of excluded)

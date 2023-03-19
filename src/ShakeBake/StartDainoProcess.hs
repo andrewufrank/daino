@@ -31,7 +31,8 @@ import Foundational.SettingsPage
 import Foundational.CmdLineFlags
 import Paths_daino  
 import UniformBase
-import Path.IO (getHomeDir)
+import Path.IO (getHomeDir, createDirLink, getSymlinkTarget, removeDirLink)
+-- import System.Posix.Files (readSymbolicLink,createSymbolicLink)
 
 dainoProcess :: NoticeLevel -> PubFlags -> ErrIO ()
 dainoProcess debug flags = do
@@ -53,8 +54,35 @@ dainoProcess debug flags = do
             sett2 <- readSettings debug (currDir </> settingsFileName) 
             return sett2
 
+-- put a link to theme into dough/resources
+    let themeDir1 = themeDir (siteLayout sett4) :: Path Abs Dir
+    let doughP = doughDir (siteLayout sett4) :: Path Abs Dir
+    let link1 =  doughP </> (makeRelDir resourcesName) </> (makeRelDir themeName) :: Path Abs Dir
+    let target1 = themeDir1  :: Path Abs Dir
+    putIOwords ["dainoProcess 3 check simlink \n    target   ",  showT target1
+                                            , "\n    linked to", showT link1]
+    linkExists <- doesDirExist' link1
+    targetOK <- if linkExists 
+        then do
+            targetNow <- getSymlinkTarget link1
+            putIOwords ["dainoProcess 5 current \n    target   ",  showT targetNow]
+            if (makeAbsDir targetNow) == target1 then return True
+                else do 
+                    callIO $ removeDirLink link1
+                    putIOwords ["dainoProcess remove previous link"]
+
+                    return False
+
+        else do
+            return False 
+
+    unless targetOK $ do 
+            putIOwords ["dainoProcess 4 create simlink \n    target   ",  showT target1
+                                            , "\n    linked to", showT link1]
+            callIO $ createDirLink  ( target1) ( link1)
+
+
 -- set the currentWorkingDir CWD to doughDir
-    let doughP = doughDir (siteLayout sett4)
 
     putIOwords ["\n dainoProcess"
         , "currDir is doughP", showT currDir

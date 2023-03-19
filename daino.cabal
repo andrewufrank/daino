@@ -71,6 +71,7 @@ library
     , uniform-watch
     , uniform-webserver
     , uniformBase >=0.1.5
+    , unix
   default-language: Haskell2010
 
 executable daino
@@ -101,4 +102,5 @@ executable daino
     , uniform-watch
     , uniform-webserver
     , uniformBase >=0.1.5
+    , unix
   default-language: Haskell2010

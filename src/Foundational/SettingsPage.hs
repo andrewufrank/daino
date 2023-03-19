@@ -121,9 +121,12 @@ layoutDefaults dough4test homeDir =
 -- notDNB :: SiteLayout -> FilePath -> Bool 
 -- notDNB siteLayout = not . isInfixOf' (t2s $ doNotPublish siteLayout)
 
-templatesDirName = makeRelDir "templates"
+resourcesName =  "resources"
+templatesName = "templates"
+themeName = "theme"
+
 templatesDir :: SiteLayout -> Path Abs Dir
-templatesDir layout = themeDir layout `addFileName` templatesDirName
+templatesDir layout = themeDir layout `addFileName` (makeRelDir templatesName)
 
 blankAuthorName :: [Text] -> Text -> Text 
 -- suppress/oppress author name, if the author name is the same as one in the first arg (AUF, Andrew U..) then set it to empty else copy 
@@ -132,7 +135,6 @@ blankAuthorName names current =
     if current `elem` names 
         then zero 
         else current 
-
 
 
 

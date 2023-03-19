@@ -33,4 +33,7 @@ References are always `absolute` with respect to the root^[starting with a "/"] 
 <!-- todo - what happens with an directory without an index file? -->
 
 ## Theme is separated from content
-The instructions for presentation, the so called `theme` is in a separate directory (here `daino/docs/site/theme).
+The instructions for presentation, the so called `theme` is in a separate directory (here `daino/docs/site/theme). It is linked automatically into the baked site. 
+
+## The baked site is self-contained
+The files in the `baked` directory includes everything a web server needs to access and is relocatable. It can be copied to become the web root of a server.
