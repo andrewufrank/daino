@@ -32,13 +32,13 @@
     
     $-- two w3c related stylesheets before the tufte one  
 
-    <!-- <link rel="stylesheet" href="/resources/templates/static/w3c.css" type="text/css">   -->
-    <!-- <link rel="stylesheet" href="/resources/templates/static/daino_ext_w3c.css" type="text/css">   -->
+    <!-- <link rel="stylesheet" href="/resources/theme/templates/static/w3c.css" type="text/css">   -->
+    <!-- <link rel="stylesheet" href="/resources/theme/templates/static/daino_ext_w3c.css" type="text/css">   -->
 
-    <link rel="stylesheet" href="/resources/templates/static/tufte.css"/>  
-    <link rel="stylesheet" href="/resources/templates/static/tufte-extra.css"/>   
-    <link rel="stylesheet" href="/resources/templates/static/pandoc.css"/>  
-    <link rel="stylesheet" href="/resources/templates/static/tufte-additions.css"/>  
+    <link rel="stylesheet" href="/resources/theme/templates/static/tufte.css"/>  
+    <link rel="stylesheet" href="/resources/theme/templates/static/tufte-extra.css"/>   
+    <link rel="stylesheet" href="/resources/theme/templates/static/pandoc.css"/>  
+    <link rel="stylesheet" href="/resources/theme/templates/static/tufte-additions.css"/>  
 
     $-- the tufte fonts are included from tufte.css
 

@@ -3,6 +3,7 @@
 
 siteLayout:
     themeDir:  /home/frank/Workspace11/daino/docs/theme
+    -- used to place a link to theme in dough/resources
     doughDir: /home/frank/Workspace11/daino/docs/site/dough
     bakedDir: /home/frank/bakedTestSite
     # bakedDir: /home/frank/Workspace11/daino/docs/site/baked
@@ -40,7 +41,7 @@ siteHeader :
     sitename : siteName3
     byline : siteByLine3 
     # banner: /resources/templates/img/symmetricGeras2.jpg  
-    banner: /resources/templates/img/DSC04809.JPG
+    banner: /resources/theme/templates/img/DSC04809.JPG
     bannerCaption: "Ruhiger Sommer im Garten in Geras"
     # keywords ??
 

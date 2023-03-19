@@ -85,7 +85,7 @@ shakeArgs2 bakedP = do
     res <-
         shake
             shakeOptions
-                { shakeFiles = toFilePath bakedP
+                { shakeFiles = toFilePath bakedP  -- wgy should the shake files to into baked?
                 , shakeVerbosity = Info -- Verbose -- Loud
                         -- verbose gives a single line for each file processed
                         -- iinfo gives nothing in normal process 
@@ -118,6 +118,7 @@ shakeAll debug sett3 flags causedby = do
             
     callIO $ shakeMD debug sett3 flags doughP bakedP
 
+-- todo remove shakeMD and pass only layout
 
 shakeMD ::
     NoticeLevel ->
@@ -145,12 +146,32 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
                                     , "\tbakedP\n"
                                 , showT bakedP
                                 ]
+    let siteDirs = siteLayout layout 
+        doughP = doughDir siteDirs -- the regular dough
+        bakedP = bakedDir siteDirs
+        themeP = themeDir siteDirs
+
+
+
     want ["allMarkdownConversion"]
 
     phony "allMarkdownConversion" $ do
         -- these are functions to construct the desired results
         -- which then produce them
         -- the original start needs in baked (from the files in dough)
+
+        -- put a link to the themplates folder into dough/resources
+        -- otherwise confusion with copying the files from two places
+
+        -- from the theme folder copy woff, css and jpg/JPG 
+        -- woffTheme <- getNeeds debug themeP bakedP "woff" "woff"
+        -- needP woffTheme
+        -- imgsTheme <- getNeeds debug   themeP bakedP "jpg" "jpg"
+        -- imgs2Theme <- getNeeds debug   themeP bakedP "JPG" "JPG"
+        -- needP imgsTheme
+        -- needP imgs2Theme
+        -- cssTheme <- getNeeds debug themeP bakedP "css" "css"
+        -- needP cssTheme
 
             -- do the images first to be findable by latex processor
         imgs <- getNeeds debug   doughP bakedP "jpg" "jpg"
@@ -166,13 +187,13 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         needP htmls
 
         csss <- getNeeds debug   doughP bakedP "css" "css"
-        -- cssStatic <- getNeeds debug themeP bakedP "css" "css"
         needP csss
-        -- needP cssStatic
 
         -- fonts, takes only the woff
+        -- from the link to the template folder
         woffs <- getNeeds debug   doughP bakedP "woff" "woff"
         needP woffs
+
         publist <- getNeeds debug   doughP bakedP "html" "html"
         needP publist
         -- for the pdfs which are already given in dough

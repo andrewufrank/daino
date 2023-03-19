@@ -35,25 +35,29 @@ import Path.IO (getHomeDir)
 
 dainoProcess :: NoticeLevel -> PubFlags -> ErrIO ()
 dainoProcess debug flags = do
+
+    -- use current dir as dough or for test dough from testsite
     currDir :: Path Abs Dir  <- currentDir 
     dough4test <- callIO $ getDataFileName "docs/site/dough"
+    -- is set in cabal extra-files
     let dough4testAbsDir = makeAbsDir dough4test
-    putIOwords ["dainoProcess docs site dough", showT dough4testAbsDir]
+
+    putIOwords ["dainoProcess 0 docs site dough", showT dough4testAbsDir]
 
     let useTestSite = (testFlag flags || testNewFlag flags)
-    putIOwords ["dainoProcess useTestSite", showT useTestSite]
+    putIOwords ["dainoProcess 1 useTestSite", showT useTestSite]
     let settdir = if useTestSite   
             then dough4testAbsDir  
             else currDir  
 
-    -- putIOwords ["dainoProcess 2 settfn", showT settfn]
+    putIOwords ["dainoProcess 2 settfn", showT settdir]
     sett2 <- readSettings debug (settdir </> settingsFileName) 
 
     -- the settings in the test site cannot be used to run 
-    hmoeDir <- getHomeDir -- 
+    homeDir4 <- getHomeDir -- 
     let sett4 = if useTestSite 
                     then sett2 {siteLayout = 
-                            layoutDefaults dough4testAbsDir homeDir}
+                            layoutDefaults dough4testAbsDir homeDir4}
                     else sett2
 
 -- set the currentWorkingDir CWD to doughDir
