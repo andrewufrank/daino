@@ -260,7 +260,7 @@ shakeMD debug layout flags doughP bakedP = shakeArgs2 bakedP $ do
         convertAny debug bakedP bakedP flags layout out  "convPanrep2texsnip"
 
     (toFilePath bakedP <> "**/*.panrep") %> \out -> -- insert pdfFIles1
-        convertAny debug bakedP bakedP flags layout out  "convDocrep2panrep"
+        do convertAny debug bakedP bakedP flags layout out  "convDocrep2panrep"
 
     (toFilePath bakedP <> "**/*.docrep") %> \out -> -- insert pdfFIles1  -- here start with doughP
         do

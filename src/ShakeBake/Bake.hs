@@ -85,12 +85,14 @@ bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
     let layout = siteLayout sett3
     (p3, needsFound) <- docrep2panrep debug flags layout dr1
             -- completes index and should process reps 
+            -- what to do with needs?
+    -- needP needsFound 
 
     write8 resfn2 panrepFileType p3 -- content is html style
     when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOneDocrep2panrep done produced resf2n", showT resfn2]
-    return []
+    return needsFound
 
 
 bakeOnePanrep2html :: BakeOp -- PANREP -> HTML  -- TODO

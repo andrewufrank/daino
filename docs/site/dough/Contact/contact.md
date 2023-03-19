@@ -13,5 +13,5 @@ visibility: public
  
 # How to reach us
 
-Take bus at main station or a taxi to Church Place. 
+Take bus at main station or a taxi to Church Place. Fees are typically around $12.
 

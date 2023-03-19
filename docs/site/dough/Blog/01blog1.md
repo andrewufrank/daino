@@ -1,5 +1,5 @@
 ---
-title: The "01blog1" blog title 
+title: The "01blog1" blog title CHANGED 
 abstract: An example blog title and abstract 
     note how to add a second line in the abstract
     and multiple levels of titles. 

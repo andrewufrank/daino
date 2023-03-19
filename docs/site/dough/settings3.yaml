@@ -49,6 +49,8 @@ menuitems:
     menuNav:
      # navlink must not start with /
      # and should reference an index.html file (not .md)
+      - navlink: ReadMe/index.html
+        navtext: ReadMe
       - navlink: Contact/index.html
         navtext: Contact
       - navlink: Blog/index.html
