@@ -35,36 +35,26 @@ import Path.IO (getHomeDir)
 
 dainoProcess :: NoticeLevel -> PubFlags -> ErrIO ()
 dainoProcess debug flags = do
-
-    -- use current dir as dough or for test dough from testsite
-    currDir :: Path Abs Dir  <- currentDir 
-    dough4test <- callIO $ getDataFileName "docs/site/dough"
-    -- is set in cabal extra-files
-    let dough4testAbsDir = makeAbsDir dough4test
-
-    putIOwords ["dainoProcess 0 docs site dough", showT dough4testAbsDir]
-
     let useTestSite = (testFlag flags || testNewFlag flags)
     putIOwords ["dainoProcess 1 useTestSite", showT useTestSite]
-    let settdir = if useTestSite   
-            then dough4testAbsDir  
-            else currDir  
+    currDir :: Path Abs Dir  <- currentDir 
 
-    putIOwords ["dainoProcess 2 settfn", showT settdir]
-    sett2 <- readSettings debug (settdir </> settingsFileName) 
+    sett4 <- if useTestSite 
+        then do
+            dough4test <- callIO $ getDataFileName "docs/site/dough" 
+            let dough4testAbsDir = makeAbsDir dough4test
+            putIOwords ["dainoProcess 2test settingsFile",  showT (dough4testAbsDir </> settingsFileName)]
 
-    -- the settings in the test site cannot be used to run 
-    homeDir4 <- getHomeDir -- 
-    let sett4 = if useTestSite 
-                    then sett2 {siteLayout = 
-                            layoutDefaults dough4testAbsDir homeDir4}
-                    else sett2
+            sett2 <- readSettings debug (dough4testAbsDir </> settingsFileName)
+            homeDir4 <- getHomeDir
+            return sett2 {siteLayout = layoutDefaults dough4testAbsDir homeDir4}
+
+        else do
+            sett2 <- readSettings debug (currDir </> settingsFileName) 
+            return sett2
 
 -- set the currentWorkingDir CWD to doughDir
     let doughP = doughDir (siteLayout sett4)
--- it should be allways be the same, independent of start 
--- when started to convert the tests the CWD is not 
--- the same then when starting in a directory to convert
 
     putIOwords ["\n dainoProcess"
         , "currDir is doughP", showT currDir

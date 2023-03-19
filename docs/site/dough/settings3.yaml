@@ -3,7 +3,7 @@
 
 siteLayout:
     themeDir:  /home/frank/Workspace11/daino/docs/theme
-    -- used to place a link to theme in dough/resources
+    # used to place a link to theme in dough/resources
     doughDir: /home/frank/Workspace11/daino/docs/site/dough
     bakedDir: /home/frank/bakedTestSite
     # bakedDir: /home/frank/Workspace11/daino/docs/site/baked
