@@ -8,7 +8,7 @@ packages:
 --    ../uBase/uniform-strings/*.cabal
 --   ../uBase/uniform-error/*.cabal
 --   ../uBase/uniform-time/*.cabal
---  ../uBase/uniform-fileio/*.cabal 
+  ../uBase/uniform-fileio/*.cabal 
 
 --    ../u2to/uniform-convenience
 

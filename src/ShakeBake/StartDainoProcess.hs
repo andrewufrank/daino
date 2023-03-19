@@ -31,7 +31,7 @@ import Foundational.SettingsPage
 import Foundational.CmdLineFlags
 import Paths_daino  
 import UniformBase
-import Path.IO (getHomeDir, createDirLink, getSymlinkTarget, removeDirLink)
+-- import Path.IO (getHomeDir, createDirLink, getSymlinkTarget, removeDirLink)
 -- import System.Posix.Files (readSymbolicLink,createSymbolicLink)
 
 dainoProcess :: NoticeLevel -> PubFlags -> ErrIO ()
@@ -68,7 +68,7 @@ dainoProcess debug flags = do
             putIOwords ["dainoProcess 5 current \n    target   ",  showT targetNow]
             if (makeAbsDir targetNow) == target1 then return True
                 else do 
-                    callIO $ removeDirLink link1
+                    removeDirLink link1
                     putIOwords ["dainoProcess remove previous link"]
 
                     return False
@@ -79,7 +79,7 @@ dainoProcess debug flags = do
     unless targetOK $ do 
             putIOwords ["dainoProcess 4 create simlink \n    target   ",  showT target1
                                             , "\n    linked to", showT link1]
-            callIO $ createDirLink  ( target1) ( link1)
+            createDirLink  ( target1) ( link1)
 
 
 -- set the currentWorkingDir CWD to doughDir
