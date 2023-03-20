@@ -1,6 +1,6 @@
 ---
-title: Contacts as an example
-abstract: Contacts page example
+title: Contacts as an example page
+abstract: Just an example
 author: AOS
 # date: Jan. 4, 2019
 keywords: addresses
