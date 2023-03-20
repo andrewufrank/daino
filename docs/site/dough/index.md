@@ -1,5 +1,5 @@
 ---
-title: Landing page for "Example homepage"
+title: Landing page for "Example Homepage"
 abstract: "file: index.md in `dough` directory."
 author: Author of Settings
 date: 2010-01-29
@@ -8,22 +8,34 @@ keywords: homepage
 version: publish
 visibility: public
 ---
-This is the `index page` at the root of the site. This page is opened by a browser by default for the URL of the site; it is often called `landing page`. 
 
-The site is organized in a tree of directories, which contain all the markdown files (extension `md`, the `dough`) which the generator converts to HTML files (extension `html`, the baked pages)^[Each `md` file produces exactly one `html` file, with the same directory structure]. The source directory can include other files (e.g. images, html) which a browser can render, typically referenced from an `md` page. 
+#  Daino: A Static Site Generator 
+<!-- copy of the ReadMe.md file shown in github -->
 
-Every directory and subdirectory must include a descriptive `index.md` file which is automatically completed with the list of subdirectories and files in this directory.
+A static site generator designed by an academic to allow: 
 
-The landing page in the root directory of the site, shows as any other `index.md` in any subdirectory:
+- web pages written as (Pandoc) markdown (with YAML header for title and `bibtex` references, etc.),
+- page layout inspired by Tufte,
+- publication list for download copies from `bibtex` database,
+- offer printable `pdf` files for all content,
+- web site using multiple languages,
+- content and appearances (theme) separated,
+- a single `yaml` file for setup, and 
+- a self-contained result which can be hosted on any web server.
 
-- a  brief description of the site, resp. the subdirectory^[produced by the site author as markdown text in the file], and
-- an automatically produced list of the subdirectories and pages (i.e. `md` files) in the directory as clickable (navigable) links. 
+## Software reuse:
+Daino uses  `pandoc` and other available packages on `Hackage` (e.g. shake, twitch, scotty)^[It was influenced by Chris Penner's [slick](https://github.com/ChrisPenner/slick#readme), newer, and seemingly simpler is [`Ema`](`https://github.com/srid/ema`) by  Sridhar Ratnakumar, but the documentation did not detail its features neither how it is built.] 
 
-It shows the default images in the banner^[the file listed in the `settings` page as `banner`, unless the `index.md` file lists another image], the site name and the site byline). 
-Under the banner image a ribbon gives links to the top level subdirectorie^[Listed in the `menuitems` entry  in the `settings` page] and a link to the top level index. This ribbon is added to each page. 
+Relies on `git` for version management.
 
-<!-- todo add a return button -->
+## Example site
+The code includes an example site in the `docs/site` directory. [Watch it!](daino.gerastree.at). 
 
-At the bottom of each page the name of the `html` file shown, which is typically the same file name as the name of the `md` file from which the `html` is produced (the `html` is in the `baked`, the `md` in the `dough` directory).
+If `daino` is installed from `git clone git@github.com:andrewufrank/daino.git` and installed with `cabal install` or `stack install`^[Compilation and linking brings in a large number of packages, e.g. pandoc, and may take long; on a typically AMD computer 30..60 Minutes, on a ARM64 (e.g. RaspberryPi4) twice as long for the initial installation.] the test site is included in the `site/docs/dough` directory and can be run locally with `daino -qTs`, edited and rendered in a browser as `localhost:3000`.
 
-The pages under `ReadMe` explains the use of `daino` to produce a web site and `Blog` gives examples and introduces optioins to structure a site. They are all written in the [Pandoc markup language](https://pandoc.org/MANUAL.html#pandocs-markdown) and include hints how it can be used in conjunction with `daino`, the Static Site Generator (SSG).
+## Running your own site
+Copying the folder `site/docs/douch` to a suitable directory and edit the `settinsNN.yaml` file found there is enough to start your own site with running `daini -qs` in this directory.  
+
+# More information: 
+
+The following pages explain the rationale for "yet another static site generator" and show with examples how it can be used. 
