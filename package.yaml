@@ -22,8 +22,8 @@ spec-version: 0.30.0 # the hpack version minimally required
 extra-source-files:
   - changelog.md
   - README.md
-  # - settings3.yaml
-  - docs/site/dough
+  - docs/site/dough/settings3.yaml
+  # - docs/site/dough  # not possible, only files which can be copied
 
 # language: Haskell2010 is default
 

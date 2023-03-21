@@ -42,17 +42,27 @@ dainoProcess debug flags = do
 
     sett4 <- if useTestSite 
         then do
-            dough4test <- callIO $ getDataFileName "docs/site/dough" 
-            let dough4testAbsDir = makeAbsDir dough4test
-            putIOwords ["dainoProcess 2test settingsFile",  showT (dough4testAbsDir </> settingsFileName)]
+            sett4test <- callIO $ getDataFileName "docs/site/dough/settings3.yaml"  -- no error if not existing
+            putIOwords ["dainoProcess 2test settingsFile",  showT sett4test]
 
-            sett2 <- readSettings debug (dough4testAbsDir </> settingsFileName)
+            let sett4testP = makeAbsFile sett4test
+            -- existSett <- doesFileExist' (sett4testP) 
+            -- let dough4testAbsDir = makeAbsDir dough4test
+            -- putIOwords ["dainoProcess 2test settingsFile",  showT (dough4testAbsDir </> settingsFileName)]
+
+            sett2 <- readSettings debug sett4testP
+        -- check if dough is present (not available if build from hackage)
+            let doughPtest = currDir </> (makeRelDir "docs/site/dough")
+            doughExist <- doesDirExist' doughPtest 
+            unless doughExist $
+                    errorT ["dainoProcess 2", "error dough not present", "must install on copy, test site data not available when installed from Hackage"]
+
             homeDir4 <- getHomeDir
-            return sett2 {siteLayout = layoutDefaults dough4testAbsDir homeDir4}
+            return sett2 {siteLayout = layoutDefaults doughPtest homeDir4}
 
         else do
-            sett2 <- readSettings debug (currDir </> settingsFileName) 
-            return sett2
+            readSettings debug (currDir </> settingsFileName) 
+
 
 -- put a link to theme into dough/resources
     let themeDir1 = themeDir (siteLayout sett4) :: Path Abs Dir

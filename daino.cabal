@@ -19,7 +19,7 @@ build-type:     Simple
 extra-source-files:
     changelog.md
     README.md
-    docs/site/dough
+    docs/site/dough/settings3.yaml
 
 source-repository head
   type: git
