@@ -1,5 +1,5 @@
 ---
-title: "ReadMe" list principles in the design of `daino`  
+title: "This ReadMe list principles in the design of `daino`"  
 abstract: "Index to the principles"
 author: AOS
 date: Jan. 4, 2019

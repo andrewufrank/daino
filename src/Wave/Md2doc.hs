@@ -39,6 +39,7 @@ readMarkdownFile2docrep  :: NoticeLevel -> Path Abs Dir ->  Path Abs File ->  Er
 readMarkdownFile2docrep debug doughP fnin = do
     when (inform debug) $ putIOwords 
         ["readMarkdownFile2docrep fnin", showPretty fnin]
+        -- place to find PandocParseError
 
     mdfile <- read8 fnin markdownFileType 
     pd <- readMarkdown2 mdfile
