@@ -86,7 +86,7 @@ shakeArgs2 bakedP = do
         shake
             shakeOptions
                 { shakeFiles = toFilePath bakedP  -- wgy should the shake files to into baked?
-                , shakeVerbosity = Info -- Verbose -- Loud
+                , shakeVerbosity = Verbose -- Info -- Loud
                         -- verbose gives a single line for each file processed
                         -- iinfo gives nothing in normal process 
                 , shakeLint = Just LintBasic
