@@ -18,7 +18,7 @@ Design of `daino` was guided by some principles which are explained here:
 The list gives first the subdirectories and then the files. The order for each of the two groups is determined by the value given for `indexSort`. Possible sort orders are:
 
 - `filename` 
-<!-- todo filename, but actually is title -->
+todo filename, but actually is title
 - `date` or `reversedate`
 
 For each directory and file it gives 
