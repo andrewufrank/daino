@@ -1,6 +1,6 @@
 ---
-title: "This ReadMe list principles in the design of `daino`"  
-abstract: "Index to the principles"
+title: Daino 
+abstract: "This ReadMe lists the principles which guided the design of `daino`" 
 author: AOS
 date: Jan. 4, 2019
 indexPage: true
@@ -28,5 +28,30 @@ For each directory and file it gives
 - the date (from the `date` keyword)
 - the author if it is not listed as a surpressed author in the `settings` file. -->
 
+<!-- zuerst: umlautConversion -->
 
+<!--
+scrartcl vermeiden leerseiten. Kapitel muss nicht rechts beginnen-->
+<!--
+pandoc --pdf-engine=lualatex -F pandoc-crossref --citeproc -o part2.pdf 1*.md part2.yaml -V mainfont="Liberation Serif" --toc --number-sections
+
+
+0*.md gibt ersten teil
+1*.md gibt den zweiten
+
+add later --filter pandoc-crossref before citeproc
+# to set label @ to ref label -->
+
+
+
+<!-- process with bookletimposer 2x1
+bookletimposer -a test.pdf
+
+lp -d Kyocera_FS-1030D -o landscape -o sides=two-sided-short-edge test-conv.pdf
+ACHTUNG: braucht page 1, flip on short-edge and Landscape!!
+nicht mit FS1100 in pressgasse -->
+
+<!-- --metadata date="`date +%D`"
+oder -M date="`date "+%B%e, %Y"`"
+https://github.com/jgm/pandoc/issüs/2865 -->
 

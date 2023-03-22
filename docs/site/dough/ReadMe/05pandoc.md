@@ -21,3 +21,6 @@ Pandoc is equally used to convert the markdown sources to latex and then to a PD
 
 Pandoc would allow three dozens of [input formats](https://pandoc.org/MANUAL.html). At the moment, page sources must be written in the Pandoc markdown language, but essentially any other input Pandoc can read could be used (e.g. `latex`).
 
+## `Shake` controls the conversion
+
+Shake is a improve `make` producing a desired set of files from sources and rules. It is driven by the correspondence between the `md` files which must be converted to `html` and draws in additional files as necessary. 

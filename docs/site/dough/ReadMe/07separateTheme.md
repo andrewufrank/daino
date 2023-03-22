@@ -1,5 +1,5 @@
 ---
-title: Separate conent and presentation (aka `theme`)
+title: Separate content and presentation (aka `theme`)
 abstract: The content of the web pages should be indpendent of the presentation.
 author: AOS
 date: 2020-06-18
