@@ -5,6 +5,8 @@ author: AOS
 date: 2020-06-18
 keywords: SSG
 language: en_US
+bibliography: resources/BibTexLatex.bib
+
 # todo how are the languages parsed. can there be a default
 # publish: true
 version: publish
@@ -14,7 +16,7 @@ visibility: public
 
 # Principle: The structure of the site and the structure of its stored representation should correspond
 
-A web site is presented as pages of hyper-text with links between the pages. This logical structure is represented as files   and the whole site is collected under a root directory. 
+A web site is presented as pages of hyper-text with links between the pages[@berners2001semantic]. This logical structure is represented as files   and the whole site is collected under a root directory. 
 
 The mapping between rendered web pages and the files representing them is crucial in the design:
 
