@@ -6,6 +6,7 @@ date: 2020-06-18
 keywords: SSG
 language: en_US
 bibliography: resources/BibTexLatex.bib
+reference-section-title: Reference
 
 # todo how are the languages parsed. can there be a default
 # publish: true
