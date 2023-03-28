@@ -1,15 +1,4 @@
 
-# Some commonly used options have been documented as comments in this file.
-# For advanced use and comprehensive documentation of the format, please see:
-# https://docs.haskellstack.org/en/stable/yaml_configuration/
-
-# Resolver to choose a 'specific' stackage snapshot or a compiler version.
-# A snapshot resolver dictates the compiler version and the set of packages
-# to be used for project dependencies. For example:
-#
-# resolver: lts-18.28
-# for ghc 8.10.7
-# resolver: lts-19.16 # for ghc 9.0.2 newest lts
 resolver: lts-20.11 # for ghc 9.2.5
 # resolver: nightly-2015-09-21
 # resolver: ghc-7.10.2
@@ -39,25 +28,25 @@ packages:
 #
 extra-deps:
 
-- ../uBase_singleGit/uniformBase
-- ../uBase_singleGit/uniform-algebras
-- ../uBase_singleGit/uniform-error
-- ../uBase_singleGit/uniform-fileio
-- ../uBase_singleGit/uniform-strings
-- ../uBase_singleGit/uniform-time
+# - ../uBase_singleGit/uniformBase
+# - ../uBase_singleGit/uniform-algebras
+# - ../uBase_singleGit/uniform-error
+# - ../uBase_singleGit/uniform-fileio
+# - ../uBase_singleGit/uniform-strings
+# - ../uBase_singleGit/uniform-time
 
-- ../u4blog/uniform-http
-- ../u4blog/uniform-json  # braucht version 0.0.6.1 for lts-19.16
-- ../u4blog/uniform-latex2pdf
-- ../u4blog/uniform-pandoc
-- ../u4blog/uniform-shake
-- ../u4blog/uniform-watch
-- ../u4blog/uniform-webserver
+# - ../u4blog/uniform-http
+# - ../u4blog/uniform-json  # braucht version 0.0.6.1 for lts-19.16
+# - ../u4blog/uniform-latex2pdf
+# - ../u4blog/uniform-pandoc
+# - ../u4blog/uniform-shake
+# - ../u4blog/uniform-watch
+# - ../u4blog/uniform-webserver
 
-- ../u2to/uniform-cmdLineArgs
-- ../u2to/uniform-convenience
+# - ../u2to/uniform-cmdLineArgs
+# - ../u2to/uniform-convenience
 
--  ../fromOthersInstalled/twitch 
+# -  ../fromOthersInstalled/twitch 
 
 # for 9.0.2
 - dir-traverse-0.2.3.0
