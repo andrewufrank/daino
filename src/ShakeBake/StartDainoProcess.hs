@@ -42,8 +42,16 @@ dainoProcess debug flags = do
 
     sett4 <- if useTestSite 
         then do
+            changelog <- callIO $ getDataFileName "changelog.md"  -- no error if not existing
+            putIOwords ["dainoProcess 2test changelog",  showT changelog]
+            changelog2 :: Text <- readFile2 changelog 
+            putIOwords ["dainoProcess 2 content changelog", showT changelog2]
+
             sett4test <- callIO $ getDataFileName "docs/site/dough/settings3.yaml"  -- no error if not existing
             putIOwords ["dainoProcess 2test settingsFile",  showT sett4test]
+            sett4 :: Text <- readFile2 sett4test 
+            putIOwords ["dainoProcess 2test settingsFile",  showT sett4]
+            errorT ["stop"]
 
             let sett4testP = makeAbsFile sett4test
             -- existSett <- doesFileExist' (sett4testP) 
