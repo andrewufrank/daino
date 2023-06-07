@@ -92,9 +92,9 @@ texsnip2tex  debug doughP bakedP snip1 latexDtpl = do
 
     let webroot = doughP  -- use the images befor they are copied
         -- snip1 = unTexSnip p 
-    when (inform debug) $ putIOwords ["\n texsnip2tex dyIndexEntry"
+    when (informAll debug) $ putIOwords ["\n texsnip2tex dyIndexEntry"
         , showT (dyIndexEntry yam)]
-    when (inform debug) $ putIOwords ["\n texsnip2tex latexparam"
+    when (informAll debug) $ putIOwords ["\n texsnip2tex latexparam"
         , showT latexparam]
     -- snips :: [Text] <- if "book" == dyBook yam 
     --     then  collectSnips4index debug bakedP (dyIndexEntry yam)
@@ -102,13 +102,16 @@ texsnip2tex  debug doughP bakedP snip1 latexDtpl = do
     -- let snips2 = concat' [snip1 , concat' snips ]
     -- -- let snips2 =  concat' .  map unTexSnip $ [p] :: Text
     -- res2 <- tex2latex debug webroot latexparam snips2
-    latexparam4 <- if "book" == dyBook yam 
+    latexparam4 <- if "booklet" == dyBook yam 
         then do 
             let latexparam2 = latexparam{latIndex=dyIndexEntry yam}
             latexparam3 <- completeIndexWithContent debug bakedP latexparam2
             return latexparam3
         else return latexparam
-     
+
+    when (informAll debug) $ putIOwords ["\n texsnip2tex latexparam4 completed with content"
+        , showT latexparam4]
+
 
     res2 <- tex2latex debug webroot latexparam4 latexDtpl 
     when (inform debug) $ putIOwords ["texsnip2tex unprocessed texsnip ", showT res2]

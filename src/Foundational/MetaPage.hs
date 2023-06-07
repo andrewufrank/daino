@@ -71,7 +71,7 @@ data MetaPage = MetaPage
             --set default always, suppressed when not needed
     , dyContentFiles :: [Text] -- the list of md files to include 
     , dyNoCite :: Maybe Text
-    , dyBook :: Text -- "book" to produce collection pdf
+    , dyBook :: Text -- "booklet" to produce collection pdf
     , dyVersion ::  Text -- should be "publish"
     , dyVisibility ::  Text -- should be "public"
     -- , dyIndexPage :: Bool
@@ -173,6 +173,7 @@ pandoc2MetaPage sett3 filename  pd =  meta6
             , dyContentFiles = maybeToList  . getAtKey meta2 $ "content"
             -- TODO make reading a list
             , dyBook = fromMaybe "" $ getAtKey meta2 "book"
+            --  to indicate to collect all lower files in a single pdf 
             , dyVersion = fromJustN "version" $ getAtKey meta2 "version"  -- no default here, must be present 
             , dyVisibility = fromMaybe "public" $ getAtKey meta2 "visibility"   
             -- public is default, private must be set
