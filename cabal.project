@@ -1,0 +1,32 @@
+ 
+packages: 
+-- test1
+    ./daino.cabal
+
+--    ../uBase/uniformBase/*.cabal  
+--    ../uBase/uniform-algebras/*.cabal
+--    ../uBase/uniform-strings/*.cabal
+--   ../uBase/uniform-error/*.cabal
+--   ../uBase/uniform-time/*.cabal
+--  ../uBase/uniform-fileio/*.cabal 
+
+--    ../u2to/uniform-convenience
+
+--    ../u4blog/uniform-json/*.cabal
+--    ../u4blog/uniform-webserver/*.cabal
+--    ../u4blog/uniform-watch/*.cabal
+    ../u4blog/uniform-latex2pdf/*.cabal
+--    ../u4blog/uniform-shake/*.cabal
+--    ../u4blog/uniform-pandoc/*.cabal
+--    ../u4blog/uniform-http/*.cabal
+--    ../u2to/uniform-convenience/*.cabal
+--    ../u2to/uniform-startapp/*.cabal
+--    ../u4blog/uniform-cmdLineArgs/*.cabal
+
+--    ../fromOthersInstalled/twitch
+
+--        ../replaceUmlaut
+
+-- Disregard all upper bounds when dependency solving
+-- allow-newer: all 
+-- fails because  zlib <4.16

@@ -1,0 +1,38 @@
+
+   from https://gist.github.com/mightybyte/6c469c125eb50e0c2ebf4ae26b5adfff
+   
+    ApplicativeDo
+    AutoDeriveTypeable -- Automatic derivation of Typeable
+    BangPatterns
+    Cpp
+    DeriveDataTypeable
+    DeriveFoldable
+    DeriveFunctor
+    DeriveGeneric
+    DeriveLift
+    DeriveTraversable
+    EmptyDataDecls
+    ExistentialQuantification
+    ExplicitForAll
+    FlexibleContexts
+    FlexibleInstances
+    ForeignFunctionInterface
+    GeneralizedNewtypeDeriving
+    JavaScriptFFI
+    KindSignatures
+    LambdaCase
+    MagicHash
+    MonomorphismRestriction
+    MultiParamTypeClasses
+    OverloadedLists
+    OverloadedStrings
+    PackageImports
+    PartialTypeSignatures
+    RankNTypes
+    RecordWildCards -- This one is somewhat controversial
+    ScopedTypeVariables
+    StandaloneDeriving
+    TupleSections
+    TypeApplications
+    UnboxedTuples
+    ViewPatterns

@@ -1,0 +1,158 @@
+
+name: daino
+version: 0.1.5.3.1
+license:      GPL
+license-file: LICENSE
+github:       andrewufrank/u4blog.git/daino
+maintainer:   Andrew U. Frank <frank@geoinfo.tuwien.ac.at>
+author:       Andrew Frank
+copyright:    2021 Andrew U. Frank
+synopsis: daino is a static site generator (SSG) using shake and pandoc
+category: Development Web
+description: | 
+  A static site generator using Pandoc and other available packages on Hackage (e.g. shake, twitch, scotty), influenced by Chris Penner's [slick](https://github.com/ChrisPenner/slick#readme). It uses text files (in Markdown codes) to manage data and relies on   version management with git. Page appearances are directed with YAML headers. For each page a PDF file is produced to allow regular print output. Index pages for navigation between pages are automatically created.
+
+
+# installation needed:
+#     texlive-luatex
+# then run at least once the texstudio with lualatex as compiler
+
+
+# run with hpack before cabal build
+
+
+spec-version: 0.30.0 # the hpack version minimally required 
+extra-source-files:
+  - changelog.md
+  - README.md
+  # - docs/site/dough/settings3.yaml does not work 
+  # - docs/site/dough  # not possible, only files which can be copied
+
+# language: Haskell2010 is default
+
+# ghc-options: 
+#     -Wall
+#     -fno-warn-unused-binds 
+#     -fno-warn-deprecations 
+#     -fno-warn-unused-do-bind 
+#     -fno-warn-unused-imports
+#     -fno-warn-missing-signatures
+#     -fno-warn-orphans
+#     -fno-warn-type-defaults 
+#     -fno-warn-unused-matches 
+#     -fno-warn-warnings-deprecations   
+#     -fno-warn-missing-methods 
+#     -fno-warn-missing-home-modules
+#     -fno-warn-duplicate-exports 
+other-extensions:  # besides the automatically Haskell2010
+# has no effect...
+    # - DeriveGeneric
+    # - FlexibleContexts 
+    # - FlexibleInstances 
+    # - MultiParamTypeClasses 
+    - OverloadedStrings
+    # - ScopedTypeVariables 
+    # - GeneralizedNewtypeDeriving 
+    # - RecordWildCards 
+    
+    #  -XDeriveGeneric
+    # -XFlexibleContexts
+    # -XFlexibleInstances
+    # -XMultiParamTypeClasses
+    # -XOverloadedStrings
+    # -XScopedTypeVariables
+    # -XGeneralizedNewtypeDeriving
+    # -XRecordWildCards
+  # do not always include: 
+  # -XConstraintKinds
+    # -XDeriveAnyClass
+      # -XDoAndIfThenElse
+    # -XDuplicateRecordFields
+    # -XTypeFamilies
+    # -XUndecidableInstances  
+
+dependencies: 
+    - base  > 4.7 && < 5
+    - uniformBase  >=0.1.5.1
+    - uniform-json  >=0.1.5.2 
+          # needs fixing the version in the stack.yaml
+    -  uniform-shake # >= 0.0.1.2
+    - uniform-http
+    # - uniform-convenience # from u2to
+    # - uniform-startapp # from u2to - replace with startProg in uniform-error 
+    - uniform-cmdLineArgs >= 0.1.5.1 # now from u4blog, was from u2to
+    - uniform-watch  
+    - uniform-webserver  # - shake
+    - uniform-pandoc >=0.1.5.2  
+    - uniform-latex2pdf >= 0.1.5.2  # >=0.0.1.1
+    - uniform-strings >= 0.1.5.1
+    # - uniform-fileio
+    # - pandoc-types  # needed? 
+    # -- - uniform-ftp
+    # - aeson 
+    # - optparse-applicative -- does not allow value in cmdlineargs
+    - data-default-class
+    # for default values, move down 
+    - dir-traverse # for checkprocess
+    - deepseq
+    - pandoc-sidenote
+    - pandoc
+    - path
+    - path-io
+    - unix
+    - filepath
+    - ReplaceUmlaut
+    # - system-filepath 
+    # - directory
+library:
+  source-dirs: 
+      - src 
+
+executables:   # file names wiwth lowercase to avoid forcing Main
+  daino:
+    main: daino.hs
+    source-dirs: app
+    dependencies: 
+    - daino
+    # - uniform-webserver
+    # - uniform-convenience
+  
+  # dainocheck:  # breaks on first error and indicates where this is. fix and retry!
+  #   main: dainoCheck.hs
+  #   source-dirs: app
+  #   dependencies:
+  #     - daino
+  #     # - dir-traverse
+
+  # dainoPrepareTest:  #wohl nicht notwendig, verwende die von daino gebauten werte
+  #   main: prepareTest.hs
+  #   source-dirs: app
+  #   other-modules:
+  #     - Lib.CmdLineArgs
+  #     -  Foundational.Foundation
+  #     -  Foundational.MetaPage
+  #     -  ShakeBake.ReadSettingFile
+  #     -  Foundational.Filetypes4sites
+  #   dependencies:
+  #       daino
+
+ 
+# tests:
+#   dainoTest:
+#     main: testing.hs
+#     source-dirs: tests
+
+#     ghc-options: 
+#       -threaded 
+#       -rtsopts 
+#       -with-rtsopts=-N    
+#     dependencies:
+#       - HTF
+#       - quickcheck-text
+#       # - uniform-strings
+#       # - uniform-http
+#       - uniformBase
+#       - uniform-convenience
+#       - daino
+#       # - shake  # from error
+    

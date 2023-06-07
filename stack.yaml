@@ -1,32 +1,113 @@
-flags: {}
-extra-package-dbs: []
-packages:
-- '.'
-- ../uniform/uniform-strings
-- ../uniform/uniform-algebras
-- ../uniform/uniform-convenience
-- ../uniform/uniform-cmdLineArgs
-- ../uniform/uniform-fileio
-- ../uniform/uniform-time
-- ../uniform/uniform-error
-- ../uniform/uniform-json
-- ../uniform/uniform-pandoc
-- ../uniform/uniform-shake
-- ../uniform/uniform-watch
-- ../uniform/uniform-webserver
-- ../fromOthers/bibtex
-- ../fromOthers/path
-- ../fromOthers/path-io
-- ../fromOthers/pretty-show
-# - ../fromOthers/shake-path
 
+resolver: lts-20.11 # for ghc 9.2.5
+# resolver: nightly-2015-09-21
+# resolver: ghc-7.10.2
+#
+# The location of a snapshot can be provided as a file or url. Stack assumes
+# a snapshot provided as a file might change, whereas a url resource does not.
+#
+# resolver: ./custom-snapshot.yaml
+# resolver: https://example.com/snapshots/2018-01-01.yaml
+# resolver:
+  # url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/17/5.yaml
+
+# User packages to be built.
+# Various formats can be used as shown in the example below.
+#
+# packages:
+# - some-directory
+# - https://example.com/foo/bar/baz-0.0.2.tar.gz
+#   subdirs:
+#   - auto-update
+#   - wai
+packages:
+- .
+# Dependency packages to be pulled from upstream that are not in the resolver.
+# These entries can reference officially published versions as well as
+# forks / in-progress versions pinned to a git hash. For example:
+#
 extra-deps:
+
+- uniformBase-0.1.5.1
+- uniform-algebras-0.1.5.1
+- uniform-error-0.1.5.1
+# - uniform-fileio-0.1.5.1
+- ../uBase/uniform-fileio
+- uniform-strings-0.1.5.1
+- uniform-time-0.1.5.1
+
+# - uniform-cmdLineArgs-0.1.5.1
+- ../u4blog/uniform-cmdLineArgs
+- uniform-http-0.1.5.1
+- ../u4blog/uniform-json 
+- ../u4blog/uniform-pandoc 
+- ../u4blog/uniform-latex2pdf
+- uniform-shake-0.1.5.1
+- uniform-watch-0.1.5.1
+- uniform-webserver-0.1.5.1
+# - ../uBase_singleGit/uniformBase
+# - ../uBase_singleGit/uniform-algebras
+# - ../uBase_singleGit/uniform-error
+# - ../uBase_singleGit/uniform-fileio
+# - ../uBase_singleGit/uniform-strings
+# - ../uBase_singleGit/uniform-time
+
+# - ../u4blog/uniform-http
+# - ../u4blog/uniform-json  # braucht version 0.0.6.1 for lts-19.16
+# - ../u4blog/uniform-latex2pdf
+# - ../u4blog/uniform-pandoc
+# - ../u4blog/uniform-shake
+# - ../u4blog/uniform-watch
+# - ../u4blog/uniform-webserver
+
+# - ../u2to/uniform-cmdLineArgs
+# - ../u2to/uniform-convenience
+
+# -  ../fromOthersInstalled/twitch 
+
+# for 9.0.2
+- dir-traverse-0.2.3.0
+# @sha256:adcc128f201ff95131b15ffe41365dc99c50dc3fa3a910f021521dc734013bfa,2137
+- pandoc-sidenote-0.22.1.0
+# @sha256:44a4e9db8dcbd93fdc8b1a6e038b4d6402cace3b5f1bd3532ebd7e4e3ed0f2a2,1732
 - test-invariant-0.4.5.0
+# @sha256:d1aa6b61e0057a4065eeff3286208e947a0b44c6a2186210399f5e5e7fb0d0dd,1902
 - twitch-0.1.7.2
-- yaml-union-0.0.3
-- shake-ext-3.1.0.0
-# - shake-path-0.0.0.1
-# - scholdoc-types-0.1.3.1
-# - spawn-0.3
-# - fsutils-0.1.2
-resolver: lts-13.12  # 26 seems to have a problem with pandoc
+# @sha256:146a887da4d2d21e489ff823a6058add40c1f9c5ee8e0d00356b497092c9c624,2988
+- snap-core-1.0.5.1
+# @sha256:e08cc33b5ad34e8ccfa1436bfd19ac037ce15564d5652a21aaf71a8fd5959da9,9469
+- readable-0.3.1
+# @sha256:ea550740bbee9ae46c6bbf1c5e5185818a1d37509b855c640b0a7f2dfba6dc37,1121
+- ReplaceUmlaut-0.1.5.3
+#  @sha256:b55b9aeabcca961d2c7ed2b54ddd20ae4ff30169edddb0b606f4f9924ab2af69,2744
+
+
+# - ../uniformWorking/uniformSources/uniform-strings
+# - ../uniformWorking/uniformSources/uniform-algebras
+# # - ../uniformWorking/uniformSources/uniform-convenience
+# - ../uniformWorking/uniformSources/uniform-error
+# - ../uniformWorking/uniformSources/uniform-time
+# - ../uniformWorking/uniformSources/uniform-fileio
+# # - ../uniformWorking/uniformSources/uniform-http
+# - ../uniformWorking/uniformSources/uniform-json
+# # - ../uniformWorking/uniformSources/uniform-pandoc
+# # - ../fromOthersInstalled/bibtex  # has a fix compared to hackage, see cabal
+# - ../uniformWorking/uniformSources/uniform-cmdLineArgs
+# - test-invariant-0.4.5.0   
+# # - twitch-0.1.7.2
+# - dir-traverse-0.2.3.0@sha256:adcc128f201ff95131b15ffe41365dc99c50dc3fa3a910f021521dc734013bfa,2137
+# - pandoc-sidenote-0.22.1.0@sha256:44a4e9db8dcbd93fdc8b1a6e038b4d6402cace3b5f1bd3532ebd7e4e3ed0f2a2,1732
+# - aeson-2.0.3.0
+# - twitch-0.1.7.2@sha256:146a887da4d2d21e489ff823a6058add40c1f9c5ee8e0d00356b497092c9c624,2988
+# - OneTuple-0.3.1@sha256:a848c096c9d29e82ffdd30a9998aa2931cbccb3a1bc137539d80f6174d31603e,2262
+# - attoparsec-0.14.4@sha256:79584bdada8b730cb5138fca8c35c76fbef75fc1d1e01e6b1d815a5ee9843191,5810
+# - generically-0.1@sha256:16d54a08bcdf708395c2200a28ffcba55e90479dc96ed617dbb94f0411f7a7af,1024
+# - hashable-1.4.0.2@sha256:0cddd0229d1aac305ea0404409c0bbfab81f075817bd74b8b2929eff58333e55,5005
+# - semialign-1.2.0.1@sha256:2ab22ab4f7e67028a745e549ae49f1ddecbd83e62d7e6ecce4ab0685410da536,2836
+# - text-short-0.1.5@sha256:962c6228555debdc46f758d0317dea16e5240d01419b42966674b08a5c3d8fa6,3498
+# - time-compat-1.9.6.1@sha256:42d8f2e08e965e1718917d54ad69e1d06bd4b87d66c41dc7410f59313dba4ed1,5033
+
+
+ghc-options:
+  "$everything": -haddock
+  "$everything": -Wno-deprecations
