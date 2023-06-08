@@ -61,7 +61,13 @@ completeIndex debug pubf sett4 doughP indexSortField ix1 = do
     -- sort entries 
 
     when (inform debug) $ putIOwords ["completeIndex", "\n dirs", showT dirs, "\n files", showT files]
-    let ix2 = ix1{dirEntries = dirs1, fileEntries = files1}
+    -- recurse for dirs 
+    dirs2 <- mapM (completeIndex debug pubf sett4 doughP indexSortField) dirs1
+
+
+    when (informAll debug) $ putIOwords ["completeIndex recursion", "\n dirs2", showT dirs2]    
+
+    let ix2 = ix1{dirEntries = dirs2, fileEntries = files1}
     when (inform debug) $ putIOwords ["completeIndex", "x2", showT ix2]
     return ix2
 
