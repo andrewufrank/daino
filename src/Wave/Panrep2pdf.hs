@@ -111,13 +111,13 @@ texsnip2tex  debug doughP bakedP snip1 latexDtpl = do
     when (informAll debug) $ putIOwords ["\n texsnip2tex latexparam6 completed with content previously found"
         , showT latexparam6]
 
-    res2 <- tex2latex debug webroot latexparam6 latexDtpl 
-    when (inform debug) $ putIOwords ["texsnip2tex produced tex", showT res2]
+    latexparam7 <- tex2latex debug webroot latexparam6 latexDtpl 
+    when (inform debug) $ putIOwords ["texsnip2tex latexparam7 produced tex", showT latexparam7]
    
     -- tex file must be full, ordinary latex content
 
     when (inform debug) $ putIOwords ["\n texsnip2tex done"]
-    return . Latex $ res2
+    return . Latex $ latexparam7
 
 completeIndexWithContent2nd :: NoticeLevel -> Path Abs Dir -> LatexParam -> ErrIO LatexParam
 -- | complete a file and a dir  
@@ -129,8 +129,8 @@ completeIndexWithContent2nd debug bakedP latexparam2 = do
         fileixs = fileEntries latix2 
 
     dirixs7 :: [IndexEntry] <- mapM (completeOneIx2nd  debug bakedP) dirixs
-    fileixs2 :: [IndexEntry] <- mapM (completeOneIx2nd  debug bakedP) fileixs
-    let latix7 = latix2{dirEntries = dirixs7, fileEntries = fileixs2}
+    fileixs7 :: [IndexEntry] <- mapM (completeOneIx2nd  debug bakedP) fileixs
+    let latix7 = latix2{dirEntries = dirixs7, fileEntries = fileixs7}
     return $ latexparam2{latIndex =   latix7}
 
 -- completeIndexWithContent :: NoticeLevel -> Path Abs Dir -> LatexParam -> ErrIO LatexParam
