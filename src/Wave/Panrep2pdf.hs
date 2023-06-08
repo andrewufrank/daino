@@ -96,10 +96,10 @@ texsnip2tex  debug doughP bakedP snip1 latexDtpl = do
         , showT (dyIndexEntry yam)]
     when (informAll debug) $ putIOwords ["\n texsnip2tex latexparam"
         , showT latexparam]
-    latexparam4 <- if "booklet" == latBook  latexparam
+    latexparam6 <- if "booklet" == latBook  latexparam
         then do 
             let latexparam2 = latexparam{latIndex=dyIndexEntry yam}
-            latexparam3 <- completeIndexWithContent debug bakedP latexparam2
+            latexparam3 <- completeIndexWithContent2nd debug bakedP latexparam2
             return latexparam3
         else if "bookbig" == latBook  latexparam
         then do 
@@ -108,15 +108,11 @@ texsnip2tex  debug doughP bakedP snip1 latexDtpl = do
             return latexparam5
         else return latexparam  
 
-    when (informAll debug) $ putIOwords ["\n texsnip2tex latexparam4 completed with content"
-        , showT latexparam4]
+    when (informAll debug) $ putIOwords ["\n texsnip2tex latexparam6 completed with content previously found"
+        , showT latexparam6]
 
-    when (informAll debug) $ putIOwords ["\n texsnip2tex latexparam4 completed with content"
-        , showT latexparam4]
-
-
-    res2 <- tex2latex debug webroot latexparam4 latexDtpl 
-    when (inform debug) $ putIOwords ["texsnip2tex unprocessed texsnip ", showT res2]
+    res2 <- tex2latex debug webroot latexparam6 latexDtpl 
+    when (inform debug) $ putIOwords ["texsnip2tex produced tex", showT res2]
    
     -- tex file must be full, ordinary latex content
 
@@ -124,51 +120,47 @@ texsnip2tex  debug doughP bakedP snip1 latexDtpl = do
     return . Latex $ res2
 
 completeIndexWithContent2nd :: NoticeLevel -> Path Abs Dir -> LatexParam -> ErrIO LatexParam
--- | complete a dir of a dir of files 
---      the dir must not contain files, only other dirs
+-- | complete a file and a dir  
+--      works for both 1st and 2nd 
 completeIndexWithContent2nd debug bakedP latexparam2 = do 
     let 
         latix2 = latIndex latexparam2 
         dirixs = dirEntries latix2 
+        fileixs = fileEntries latix2 
+
     dirixs7 :: [IndexEntry] <- mapM (completeOneIx2nd  debug bakedP) dirixs
-    let latix7 = latix2{dirEntries = dirixs7}
+    fileixs2 :: [IndexEntry] <- mapM (completeOneIx2nd  debug bakedP) fileixs
+    let latix7 = latix2{dirEntries = dirixs7, fileEntries = fileixs2}
     return $ latexparam2{latIndex =   latix7}
 
-completeIndexWithContent :: NoticeLevel -> Path Abs Dir -> LatexParam -> ErrIO LatexParam
-completeIndexWithContent debug bakedP latexparam2 = do 
-    let 
-        latix2 = latIndex latexparam2 
-        fileixs = fileEntries latix2 
-    fileixs2 <- mapM (completeOneIx debug bakedP)  fileixs
+-- completeIndexWithContent :: NoticeLevel -> Path Abs Dir -> LatexParam -> ErrIO LatexParam
+-- completeIndexWithContent debug bakedP latexparam2 = do 
+--     let 
+--         latix2 = latIndex latexparam2 
+--         fileixs = fileEntries latix2 
+--     fileixs2 <- mapM (completeOneIx_Snip debug bakedP)  fileixs
     
-    let latix3 = latix2{fileEntries = fileixs2}
-    return $ latexparam2{latIndex = latix3}
+--     let latix3 = latix2{fileEntries = fileixs2}
+--     return $ latexparam2{latIndex = latix3}
 
 completeOneIx2nd :: NoticeLevel -> Path Abs Dir -> IndexEntry -> ErrIO IndexEntry
 --     -- get the snips for one dir entry 
 completeOneIx2nd debug bakedP ix = do 
     when (inform debug) $ putIOwords ["\n completeOneIx2nd start", showT ix]
 
-    let fileixs = dirEntries ix 
-    dirs <- mapM (completeOneIx debug bakedP)  fileixs
+    let fileixs = fileEntries ix 
+    let dirixs = dirEntries ix 
+    fileixs2 <- mapM (contentIx_Snip debug bakedP)  fileixs
+    dirixs2 <- mapM (contentIx_Snip debug bakedP)  dirixs
 
-    let ix4 = ix{dirEntries = dirs}
+    let ix4 = ix{fileEntries = fileixs2, dirEntries = dirixs2}
     return ix4
---     let
---         ln = makeRelFile . link $ ix 
---         lnfp = bakedP </> ln :: Path Abs File 
 
---     texsnip1 :: TexSnip <-   read8 lnfp texSnipFileType 
---     -- let res = unlines' [zero, titsnip, "", abssnip, "", unTexSnip texsnip1]
---     let ix2 = ix{content =  unTexSnip texsnip1}
---     when (inform debug) $ putIOwords ["\n completeOneIx2nd end", showT ix2]
---     return ix2
-
-completeOneIx :: NoticeLevel -> Path Abs Dir -> IndexEntry -> ErrIO IndexEntry
-    -- get the snip for one index entry 
+contentIx_Snip :: NoticeLevel -> Path Abs Dir -> IndexEntry -> ErrIO IndexEntry
+    -- get the snip for one index entry (dir or file)
     -- only the content (abstract and title collected before) 
-completeOneIx debug bakedP ix = do 
-    when (inform debug) $ putIOwords ["\n completeOneIx start", showT ix]
+contentIx_Snip debug bakedP ix = do 
+    when (inform debug) $ putIOwords ["\n contentIx_Snip start", showT ix]
     let
         ln = makeRelFile . link $ ix 
         lnfp = bakedP </> ln :: Path Abs File 
@@ -176,7 +168,7 @@ completeOneIx debug bakedP ix = do
     texsnip1 :: TexSnip <-   read8 lnfp texSnipFileType 
     -- let res = unlines' [zero, titsnip, "", abssnip, "", unTexSnip texsnip1]
     let ix2 = ix{content =  unTexSnip texsnip1}
-    when (inform debug) $ putIOwords ["\n completeOneIx end", showT ix2]
+    when (inform debug) $ putIOwords ["\n contentIx_Snip end", showT ix2]
     return ix2
 
 
