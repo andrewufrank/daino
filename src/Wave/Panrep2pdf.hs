@@ -92,21 +92,17 @@ texsnip2tex  debug doughP bakedP snip1 latexDtpl = do
 
     let webroot = doughP  -- use the images befor they are copied
         -- snip1 = unTexSnip p 
-    when (informAll debug) $ putIOwords ["\n texsnip2tex dyIndexEntry"
+    when (inform debug) $ putIOwords ["\n texsnip2tex dyIndexEntry"
         , showT (dyIndexEntry yam)]
-    when (informAll debug) $ putIOwords ["\n texsnip2tex latexparam"
+    when (inform debug) $ putIOwords ["\n texsnip2tex latexparam"
         , showT latexparam]
-    latexparam6 <- if "booklet" == latBook  latexparam
+    latexparam6 <- if ("booklet" == latBook  latexparam) 
+                            || "bookbig" == latBook  latexparam
         then do 
             let latexparam2 = latexparam{latIndex=dyIndexEntry yam}
             latexparam3 <- completeIndexWithContent2nd debug bakedP latexparam2
             return latexparam3
-        else if "bookbig" == latBook  latexparam
-        then do 
-            let latexparam4 = latexparam{latIndex=dyIndexEntry yam}
-            latexparam5 <- completeIndexWithContent2nd debug bakedP latexparam4
-            return latexparam5
-        else return latexparam  
+        else  return latexparam  
 
     when (informAll debug) $ putIOwords ["\n texsnip2tex latexparam6 completed with content previously found"
         , showT latexparam6]
@@ -131,17 +127,13 @@ completeIndexWithContent2nd debug bakedP latexparam2 = do
     dirixs7 :: [IndexEntry] <- mapM (completeOneIx2nd  debug bakedP) dirixs
     fileixs7 :: [IndexEntry] <- mapM (completeOneIx2nd  debug bakedP) fileixs
     let latix7 = latix2{dirEntries = dirixs7, fileEntries = fileixs7}
-    return $ latexparam2{latIndex =   latix7}
 
--- completeIndexWithContent :: NoticeLevel -> Path Abs Dir -> LatexParam -> ErrIO LatexParam
--- completeIndexWithContent debug bakedP latexparam2 = do 
---     let 
---         latix2 = latIndex latexparam2 
---         fileixs = fileEntries latix2 
---     fileixs2 <- mapM (completeOneIx_Snip debug bakedP)  fileixs
-    
---     let latix3 = latix2{fileEntries = fileixs2}
---     return $ latexparam2{latIndex = latix3}
+    latix8 <- contentIx_Snip debug bakedP latix7
+
+    when (inform debug) $ putIOwords ["\n completeIndexWithContent2nd end latix8", showT latix8]
+    return $ latexparam2{latIndex =   latix8}
+
+
 
 completeOneIx2nd :: NoticeLevel -> Path Abs Dir -> IndexEntry -> ErrIO IndexEntry
 --     -- get the snips for one dir entry 
@@ -154,7 +146,9 @@ completeOneIx2nd debug bakedP ix = do
     dirixs2 <- mapM (contentIx_Snip debug bakedP)  dirixs
 
     let ix4 = ix{fileEntries = fileixs2, dirEntries = dirixs2}
-    return ix4
+    ix5 <- contentIx_Snip debug bakedP ix4
+    
+    return ix5
 
 contentIx_Snip :: NoticeLevel -> Path Abs Dir -> IndexEntry -> ErrIO IndexEntry
     -- get the snip for one index entry (dir or file)
@@ -168,7 +162,7 @@ contentIx_Snip debug bakedP ix = do
     texsnip1 :: TexSnip <-   read8 lnfp texSnipFileType 
     -- let res = unlines' [zero, titsnip, "", abssnip, "", unTexSnip texsnip1]
     let ix2 = ix{content =  unTexSnip texsnip1}
-    when (inform debug) $ putIOwords ["\n contentIx_Snip end", showT ix2]
+    when (informAll debug) $ putIOwords ["\n contentIx_Snip end", showT ix2]
     return ix2
 
 
