@@ -104,7 +104,7 @@ texsnip2tex  debug doughP bakedP snip1 latexDtpl = do
             return latexparam3
         else  return latexparam  
 
-    when (informAll debug) $ putIOwords ["\n texsnip2tex latexparam6 completed with content previously found"
+    when (inform debug) $ putIOwords ["\n texsnip2tex latexparam6 completed with content previously found"
         , showT latexparam6]
 
     latexparam7 <- tex2latex debug webroot latexparam6 latexDtpl 
@@ -162,7 +162,7 @@ contentIx_Snip debug bakedP ix = do
     texsnip1 :: TexSnip <-   read8 lnfp texSnipFileType 
     -- let res = unlines' [zero, titsnip, "", abssnip, "", unTexSnip texsnip1]
     let ix2 = ix{content =  unTexSnip texsnip1}
-    when (informAll debug) $ putIOwords ["\n contentIx_Snip end", showT ix2]
+    when (inform debug) $ putIOwords ["\n contentIx_Snip end", showT ix2]
     return ix2
 
 

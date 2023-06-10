@@ -1,27 +1,31 @@
- 
+index-state: 2023-06-05T00:16:01Z 
+-- obtained with cabal -v --installed list base
+
 packages: 
 -- test1
     ./daino.cabal
+
+-- the open local packages have updates compared to the state in hackage
 
 --    ../uBase/uniformBase/*.cabal  
 --    ../uBase/uniform-algebras/*.cabal
 --    ../uBase/uniform-strings/*.cabal
 --   ../uBase/uniform-error/*.cabal
 --   ../uBase/uniform-time/*.cabal
---  ../uBase/uniform-fileio/*.cabal 
+  ../uBase/uniform-fileio/*.cabal 
 
 --    ../u2to/uniform-convenience
 
---    ../u4blog/uniform-json/*.cabal
+    ../u4blog/uniform-json/*.cabal
 --    ../u4blog/uniform-webserver/*.cabal
 --    ../u4blog/uniform-watch/*.cabal
     ../u4blog/uniform-latex2pdf/*.cabal
 --    ../u4blog/uniform-shake/*.cabal
---    ../u4blog/uniform-pandoc/*.cabal
+    ../u4blog/uniform-pandoc/*.cabal
 --    ../u4blog/uniform-http/*.cabal
 --    ../u2to/uniform-convenience/*.cabal
 --    ../u2to/uniform-startapp/*.cabal
---    ../u4blog/uniform-cmdLineArgs/*.cabal
+    ../u4blog/uniform-cmdLineArgs/*.cabal
 
 --    ../fromOthersInstalled/twitch
 
