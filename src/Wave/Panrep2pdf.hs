@@ -64,8 +64,8 @@ texsnip2tex :: NoticeLevel ->  Path Abs Dir -> Path Abs Dir -> TexSnip ->  Path 
 texsnip2tex  debug doughP bakedP snip1 latexDtpl = do
     when (inform debug) $ putIOwords ["\n texsnip2tex start"]
     let yam = snipyam snip1 
-    when (inform debug) $ putIOwords ["\n texsnip2tex for link", showT (dyFn yam)]
-    let latexparam = LatexParam 
+    when (informAll debug) $ putIOwords ["\n texsnip2tex for link", showT (dyFn yam), showT (dyBook yam)]
+    let latexparam = LatexParam   -- defined in uniform.latex
             { latTitle = dyTitle yam 
             , latAuthor = dyAuthor yam
             , latAbstract = dyAbstract yam
@@ -82,7 +82,9 @@ texsnip2tex  debug doughP bakedP snip1 latexDtpl = do
             , latStyle    = dyStyleBiber (snipyam  snip1)
                 --  maybe "authoryear" id $ dyStyleBiber yam
             , latReferences = maybe "" (shownice ) $ dyReferences yam
-            , latBook = dyBook yam
+            -- , latBook = dyBook yam
+            , latBookBig = if dyBook yam == "bookbig" then "bookbig" else zero
+            , latBooklet = if dyBook yam == "booklet" then "booklet" else zero  -- must be undefined or zero for the unused values
             , latIndex = zero -- the collected index 
             , latContent = unTexSnip snip1 -- the content of this file
             -- , latTheme = dy 
@@ -96,15 +98,15 @@ texsnip2tex  debug doughP bakedP snip1 latexDtpl = do
         , showT (dyIndexEntry yam)]
     when (inform debug) $ putIOwords ["\n texsnip2tex latexparam"
         , showT latexparam]
-    latexparam6 <- if ("booklet" == latBook  latexparam) 
-                            || "bookbig" == latBook  latexparam
+    latexparam6 <- if ( "bookbig" == latBookBig  latexparam) 
+                            ||   ("booklet" == latBooklet  latexparam)
         then do 
             let latexparam2 = latexparam{latIndex=dyIndexEntry yam}
             latexparam3 <- completeIndexWithContent2nd debug bakedP latexparam2
             return latexparam3
         else  return latexparam  
 
-    when (inform debug) $ putIOwords ["\n texsnip2tex latexparam6 completed with content previously found"
+    when (informAll debug) $ putIOwords ["\n texsnip2tex latexparam6 completed with content previously found"
         , showT latexparam6]
 
     latexparam7 <- tex2latex debug webroot latexparam6 latexDtpl 

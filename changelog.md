@@ -61,5 +61,6 @@ used versions 9.0.2
  - uniform-latex2pdf-0.0.1.2 (lib) (requires build)
  - uniform-http-0.0.2.8 (lib) (requires build)
 
- 0.1.5.3.1
+0.1.5.3.1
     replaced abstract in latex for book with mdframed 
+0.1.5.3.2  booklet and bookbig (ghc 9.2.7 with freeze)
