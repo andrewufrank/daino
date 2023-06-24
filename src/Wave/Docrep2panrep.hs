@@ -51,7 +51,7 @@ import Data.Maybe (fromMaybe)
 
 import Lib.IndexMake ( convertIndexEntries, MenuEntry )
 import Lib.IndexCollect ( completeIndex )
-import Lib.Templating ( putValinMaster )
+-- import Lib.Templating ( putValinMaster )
 
 ------------------------------------------------docrep -> panrep
 

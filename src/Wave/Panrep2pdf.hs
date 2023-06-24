@@ -64,7 +64,7 @@ texsnip2tex :: NoticeLevel ->  Path Abs Dir -> Path Abs Dir -> TexSnip ->  Path 
 texsnip2tex  debug doughP bakedP snip1 latexDtpl = do
     when (inform debug) $ putIOwords ["\n texsnip2tex start"]
     let yam = snipyam snip1 
-    when (informAll debug) $ putIOwords ["\n texsnip2tex for link", showT (dyFn yam), showT (dyBook yam)]
+    when (inform debug) $ putIOwords ["\n texsnip2tex for link", showT (dyFn yam), showT (dyBook yam)]
     let latexparam = LatexParam   -- defined in uniform.latex
             { latTitle = dyTitle yam 
             , latAuthor = dyAuthor yam
@@ -106,7 +106,7 @@ texsnip2tex  debug doughP bakedP snip1 latexDtpl = do
             return latexparam3
         else  return latexparam  
 
-    when (informAll debug) $ putIOwords ["\n texsnip2tex latexparam6 completed with content previously found"
+    when (inform debug) $ putIOwords ["\n texsnip2tex latexparam6 completed with content previously found"
         , showT latexparam6]
 
     latexparam7 <- tex2latex debug webroot latexparam6 latexDtpl 
