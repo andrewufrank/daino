@@ -65,3 +65,6 @@ used versions 9.0.2
     replaced abstract in latex for book with mdframed 
 0.1.5.3.2  booklet and bookbig (ghc 9.2.7 with freeze)
 0.1.5.3.3  added latex support 
+
+0.1.5.6.2 using the uniform-pandoc 0.1.5.6 
+    simplification 
