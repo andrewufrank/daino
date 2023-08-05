@@ -10,7 +10,7 @@
 - ignore: {name: "Redundant return"}
 - ignore: {name: "Redundant bracket"}
 #           produced by htfpp
-#- ignore: {name: "Unused LANGUAGE pragma"}
+- ignore: {name: "Unused LANGUAGE pragma"}
 - ignore: {name: "Use camelCase"}
 #- ignore: {name: "Use fewer imports"}
 - ignore: {name: "Eta reduce"}

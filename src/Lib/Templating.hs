@@ -16,23 +16,23 @@ module Lib.Templating where -- (openMain, htf_thisModuelsTests)
 import Uniform.Http -- ( HTMLout(HTMLout) )
 
 import Uniform.Json ( Value, ErrIO )
-import Uniform.PandocHTMLwriter ( applyTemplate4 )
+-- import Uniform.PandocHTMLwriter ( applyTemplate4 )
 import UniformBase
 
-putValinMaster :: NoticeLevel -> [Value] -> Path Abs File -> ErrIO HTMLout
-{- ^ get the master html template and put the val into it
- takes the master filename from val
- not clear what intended
- for now: use the master TODO
--}
-putValinMaster debug vals masterfn = do
-    when (inform debug) $ putIOwords ["putValinMaster", "masterfn", showT masterfn]
+-- putValinMaster :: NoticeLevel -> [Value] -> Path Abs File -> ErrIO HTMLout
+-- {- ^ get the master html template and put the val into it
+--  takes the master filename from val
+--  not clear what intended
+--  for now: use the master TODO
+-- -}
+-- putValinMaster debug vals masterfn = do
+--     when (inform debug) $ putIOwords ["putValinMaster", "masterfn", showT masterfn]
 
-    template2 :: Text <- readFile2 (toFilePath masterfn)
+--     template2 :: Text <- readFile2 (toFilePath masterfn)
 
-    -- templatapplyTemplate3 debug masterfn vals -- inTemplate.html
-    html2 <- applyTemplate4 (inform debug) template2 vals  
-    return . HTMLout $ html2
+--     -- templatapplyTemplate3 debug masterfn vals -- inTemplate.html
+--     html2 <- applyTemplate4 (inform debug) template2 vals  
+--     return . HTMLout $ html2
 
 {- list of variables potentially used by Master5.dtpl:
 css - name of stylesheet

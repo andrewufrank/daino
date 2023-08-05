@@ -45,69 +45,69 @@ checkProcess debug sitefn = do
     let mds2 = map makeAbsFile mds1
     -- let hpname = blogAuthorToSuppress.storag sett3
 
-    mapM_ (checkOneMD debug ) mds2 
+    -- mapM_ (checkOneMD debug ) mds2 
 
     when (inform debug) $ putIOwords ["checkProcess", "end"]
     return ()
 
 
 
-checkOneMD:: NoticeLevel ->  Path Abs File -> ErrIO ()
--- check one md file (only the yaml head) for necessary values 
-checkOneMD debug  fnin  =
+-- checkOneMD:: NoticeLevel ->  Path Abs File -> ErrIO ()
+-- -- check one md file (only the yaml head) for necessary values 
+-- checkOneMD debug  fnin  =
     
-    ( do
-        when (inform debug) $ putIOwords ["checkOneMD fnin", showPretty fnin]
-        -- same setup as Startdainoprocess 
-        currDir :: Path Abs Dir  <- currentDir 
-        let settfn =  currDir </> settingsFileName
+--     ( do
+--         when (inform debug) $ putIOwords ["checkOneMD fnin", showPretty fnin]
+--         -- same setup as Startdainoprocess 
+--         currDir :: Path Abs Dir  <- currentDir 
+--         let settfn =  currDir </> settingsFileName
 
-        sett3 <- readSettings debug settfn 
+--         sett3 <- readSettings debug settfn 
 
-        -- (Docrep y1 _) <- readMarkdownFile2docrep debug doughP fnin
-        -- copied from md2doc.hs
-        -- mdfile <- read8 fnin markdownFileType 
-        -- pd <- readMarkdown2 mdfile
+--         -- (Docrep y1 _) <- readMarkdownFile2docrep debug doughP fnin
+--         -- copied from md2doc.hs
+--         -- mdfile <- read8 fnin markdownFileType 
+--         -- pd <- readMarkdown2 mdfile
         
-        -- let doughP = doughDir (siteLayout sett3)
-        -- let doughP = makeAbsDir "/home/frank/Workspace11/daino/docs/site/dough/"
-                -- is not used 
-        mdfile <- read8 fnin markdownFileType 
-        pd <- readMarkdown2 mdfile
+--         -- let doughP = doughDir (siteLayout sett3)
+--         -- let doughP = makeAbsDir "/home/frank/Workspace11/daino/docs/site/dough/"
+--                 -- is not used 
+--         mdfile <- read8 fnin markdownFileType 
+--         pd <- readMarkdown2 mdfile
 
-        when (inform debug) $ putIOwords ["checkOneMD 1"]
-        y1 <- check_readMeta debug sett3 fnin  pd 
+--         when (inform debug) $ putIOwords ["checkOneMD 1"]
+--         y1 <- check_readMeta debug sett3 fnin  pd 
 
-        when (inform debug) $ putIOwords ["checkOneMD 2", "metapage", showPretty  y1]
+--         when (inform debug) $ putIOwords ["checkOneMD 2", "metapage", showPretty  y1]
 
-        when (inform debug) $ putIOwords ["checkOneMD", "done"]
-        return ()
-    )
-    `catchError` (\e -> do
-        putIOwords ["checkOneMD", "discovered error in file", showT fnin]
-        -- putIOwords ["the yaml head is read as:", showPretty y1]
-        putIOwords ["the error msg is:", e ] -- showT (e :: SomeException)]
-        return () 
-        )
+--         when (inform debug) $ putIOwords ["checkOneMD", "done"]
+--         return ()
+--     )
+--     `catchError` (\e -> do
+--         putIOwords ["checkOneMD", "discovered error in file", showT fnin]
+--         -- putIOwords ["the yaml head is read as:", showPretty y1]
+--         putIOwords ["the error msg is:", e ] -- showT (e :: SomeException)]
+--         return () 
+--         )
 
-check_readMeta:: NoticeLevel -> Settings ->  Path Abs File -> Pandoc -> ErrIO  MetaPage
-check_readMeta debug sett3 fnin  pd = 
-    (do 
-        when (inform debug) $ putIOwords ["check_readMeta 1"]
+-- check_readMeta:: NoticeLevel -> Settings ->  Path Abs File -> Pandoc -> ErrIO  MetaPage
+-- check_readMeta debug sett3 fnin  pd = 
+--     (do 
+--         when (inform debug) $ putIOwords ["check_readMeta 1"]
 
-        let meta6 = pandoc2MetaPage sett3 fnin  pd
-        when (inform debug) $ putIOwords ["check_readMeta 2", "metapage", showPretty  meta6]    
+--         let meta6 = pandoc2MetaPage sett3 fnin  pd
+--         when (inform debug) $ putIOwords ["check_readMeta 2", "metapage", showPretty  meta6]    
 
-        -- let y2 = meta6
-        -- return y2
-        let ll = sum .  map ord . show $ meta6
-        -- y2 <- liftIO $ do 
-            -- putStr .   show $ ll  
-            -- let y3 =   deepseq ll y1
-        -- output is necessary to force evaluation - deepseq seems not to do it
-        putIOwords [showT  ll]
-        return meta6
-      )
+--         -- let y2 = meta6
+--         -- return y2
+--         let ll = sum .  map ord . show $ meta6
+--         -- y2 <- liftIO $ do 
+--             -- putStr .   show $ ll  
+--             -- let y3 =   deepseq ll y1
+--         -- output is necessary to force evaluation - deepseq seems not to do it
+--         putIOwords [showT  ll]
+--         return meta6
+--       )
 
 -- catch error is never reached. problem is in pure code (pandoc2meta)
 -- discovered when output is forced 

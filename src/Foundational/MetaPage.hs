@@ -128,113 +128,113 @@ instance ToJSON MetaPage where
 instance FromJSON MetaPage where
     parseJSON = genericParseJSON docyamlOptions
 
-pandoc2MetaPage::  Settings ->  Path Abs File  -> Pandoc -> MetaPage
--- removed most default values, left only for image and caption, keywords
-pandoc2MetaPage sett3 filename  pd =  meta6
-  where
+-- pandoc2MetaPage::  Settings ->  Path Abs File  -> Pandoc -> MetaPage
+-- -- removed most default values, left only for image and caption, keywords
+-- pandoc2MetaPage sett3 filename  pd =  meta6
+--   where
 
-    layout = siteLayout sett3
-    doughP = doughDir layout
-    defAuthor = defaultAuthor layout 
-    -- defBiblio = defaultBibliography layout  
+--     layout = siteLayout sett3
+--     doughP = doughDir layout
+--     defAuthor = defaultAuthor layout 
+--     -- defBiblio = defaultBibliography layout  
 
-    meta2 = flattenMeta . getMeta $ pd
-    relfn = makeRelativeP doughP filename
-    -- fromJustN means give error if not present!
-    meta4 =
-        MetaPage
-            { dyFn = toFilePath filename
-            , dyLink = toFilePath relfn
-            , dyLang = fromMaybe "en_US" $ getAtKey meta2 "language"
-            , dyTitle = fromJustN "title" $ getAtKey meta2 "title"
-            -- , dyAbstract = fromJustN "abstract" $ getAtKey meta2 "abstract"
-            , dyAbstract = fromMaybe "" $ getAtKey meta2 "abstract" 
-                    -- allow empty abstract
-            -- , dyAuthor = fromJustN "author" $ getAtKey meta2 "author"
-            , dyAuthor = fromMaybe defAuthor $ getAtKey meta2 "author"
-            -- allow empty author ??
-            , dyDate = getAtKey meta2 "date"
-            , dyBibliography = getAtKey meta2 "bibliography"
-            -- not defaulted, value used is the one read into pandoc
-            -- , dyBibliography = Just $ fromMaybe defBiblio $ getAtKey meta2 "bibliography"
-            -- used as signal for processing biblio
-            -- perhaps not the best idea? 
-            , dyImage = fromMaybe "" $ getAtKey meta2 "image"
-            , dyImageCaption = fromMaybe "" $ getAtKey meta2 "caption"
-            , dyKeywords = fromMaybe "" $ getAtKey meta2 "keywords"
-            -- , dyKeywords = fromJustN "keywords" $ getAtKey meta2 "keywords"
-            , dyStyle = Just $ fromMaybe "resources/chicago-fullnote-bibliography-bb.csl" $ getAtKey meta2 "style"
-            , dyStyleBiber = fromMaybe "authoryear" $ getAtKey meta2 "styleBiber"
-            , dyNoCite = getAtKey meta2 "nocite"
-            , dyReferences = getAtKey meta2 "references"
-            , dyReference_section_title= fromMaybe "References" $ getAtKey meta2 "reference-section-title"
-            -- default should be set depending on the language 
-            -- default does not work, needs to be put into yaml 
-            , dyContentFiles = maybeToList  . getAtKey meta2 $ "content"
-            -- TODO make reading a list
-            , dyBook = fromMaybe "" $ getAtKey meta2 "book"
-            --  to indicate to collect all lower files in a single pdf 
-            , dyVersion = fromJustN "version" $ getAtKey meta2 "version"  -- no default here, must be present 
-            , dyVisibility = fromMaybe "public" $ getAtKey meta2 "visibility"   
-            -- public is default, private must be set
-            -- but not default for publish! 
-            --   dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
-            , dyIndexSort = getAtKey meta2 "indexSort"
-            , dyIndexEntry =   zero
-            , dyHeaderShift = parseHeaderShift $ getAtKey  meta2 $ "headerShift"
-                                        -- value 1 is correct
-            , dyDoNotReplace = maybe [] words' $ getAtKey meta2 $ "doNotReplace"
-            -- , dyDoNotReplace = maybe [] (\t -> fromJustNote "sdfwer" $ splitOnflip  "," t) $ getAtKey meta2 $ "doNotReplace"
-            }
+--     meta2 = flattenMeta . getMeta $ pd
+--     relfn = makeRelativeP doughP filename
+--     -- fromJustN means give error if not present!
+--     meta4 =
+--         MetaPage
+--             { dyFn = toFilePath filename
+--             , dyLink = toFilePath relfn
+--             , dyLang = fromMaybe "en_US" $ getAtKey meta2 "language"
+--             , dyTitle = fromJustN "title" $ getAtKey meta2 "title"
+--             -- , dyAbstract = fromJustN "abstract" $ getAtKey meta2 "abstract"
+--             , dyAbstract = fromMaybe "" $ getAtKey meta2 "abstract" 
+--                     -- allow empty abstract
+--             -- , dyAuthor = fromJustN "author" $ getAtKey meta2 "author"
+--             , dyAuthor = fromMaybe defAuthor $ getAtKey meta2 "author"
+--             -- allow empty author ??
+--             , dyDate = getAtKey meta2 "date"
+--             , dyBibliography = getAtKey meta2 "bibliography"
+--             -- not defaulted, value used is the one read into pandoc
+--             -- , dyBibliography = Just $ fromMaybe defBiblio $ getAtKey meta2 "bibliography"
+--             -- used as signal for processing biblio
+--             -- perhaps not the best idea? 
+--             , dyImage = fromMaybe "" $ getAtKey meta2 "image"
+--             , dyImageCaption = fromMaybe "" $ getAtKey meta2 "caption"
+--             , dyKeywords = fromMaybe "" $ getAtKey meta2 "keywords"
+--             -- , dyKeywords = fromJustN "keywords" $ getAtKey meta2 "keywords"
+--             , dyStyle = Just $ fromMaybe "resources/chicago-fullnote-bibliography-bb.csl" $ getAtKey meta2 "style"
+--             , dyStyleBiber = fromMaybe "authoryear" $ getAtKey meta2 "styleBiber"
+--             , dyNoCite = getAtKey meta2 "nocite"
+--             , dyReferences = getAtKey meta2 "references"
+--             , dyReference_section_title= fromMaybe "References" $ getAtKey meta2 "reference-section-title"
+--             -- default should be set depending on the language 
+--             -- default does not work, needs to be put into yaml 
+--             , dyContentFiles = maybeToList  . getAtKey meta2 $ "content"
+--             -- TODO make reading a list
+--             , dyBook = fromMaybe "" $ getAtKey meta2 "book"
+--             --  to indicate to collect all lower files in a single pdf 
+--             , dyVersion = fromJustN "version" $ getAtKey meta2 "version"  -- no default here, must be present 
+--             , dyVisibility = fromMaybe "public" $ getAtKey meta2 "visibility"   
+--             -- public is default, private must be set
+--             -- but not default for publish! 
+--             --   dyIndexPage = fromMaybe False $ getAtKey meta2 "indexPage"
+--             , dyIndexSort = getAtKey meta2 "indexSort"
+--             , dyIndexEntry =   zero
+--             , dyHeaderShift = parseHeaderShift $ getAtKey  meta2 $ "headerShift"
+--                                         -- value 1 is correct
+--             , dyDoNotReplace = maybe [] words' $ getAtKey meta2 $ "doNotReplace"
+--             -- , dyDoNotReplace = maybe [] (\t -> fromJustNote "sdfwer" $ splitOnflip  "," t) $ getAtKey meta2 $ "doNotReplace"
+--             }
 
-    -- splitOnflip sep inp = splitOn' inp sep 
+--     -- splitOnflip sep inp = splitOn' inp sep 
 
-    ix1 =  initializeIndex meta4
-    -- meta5 = meta4   -- {dyAuthor=blankAuthorName hpnames (dyAuthor meta4) }
-    meta6 = meta4{dyIndexEntry = ix1} 
+--     ix1 =  initializeIndex meta4
+--     -- meta5 = meta4   -- {dyAuthor=blankAuthorName hpnames (dyAuthor meta4) }
+--     meta6 = meta4{dyIndexEntry = ix1} 
 
-    fromJustN :: Text -> Maybe a -> a 
-    fromJustN a = fromJustNoteT ["fromJust Nothing pandoc2MetaPage\n", showT filename, "\n", a]
+--     fromJustN :: Text -> Maybe a -> a 
+--     fromJustN a = fromJustNoteT ["fromJust Nothing pandoc2MetaPage\n", showT filename, "\n", a]
 
-    parseHeaderShift :: Maybe Text -> Int 
-    parseHeaderShift Nothing = 1   -- this is the default
-    parseHeaderShift (Just "zero") = 0 
-    parseHeaderShift (Just "one") = 1 
-    parseHeaderShift (Just "0") = 0 
-    parseHeaderShift (Just "1") = 1 
-    parseHeaderShift (Just a) = errorT ["parseHeaderShift", "unexpected Value", a, "!"] 
+--     parseHeaderShift :: Maybe Text -> Int 
+--     parseHeaderShift Nothing = 1   -- this is the default
+--     parseHeaderShift (Just "zero") = 0 
+--     parseHeaderShift (Just "one") = 1 
+--     parseHeaderShift (Just "0") = 0 
+--     parseHeaderShift (Just "1") = 1 
+--     parseHeaderShift (Just a) = errorT ["parseHeaderShift", "unexpected Value", a, "!"] 
 
-    -- fromJust Nothing = errorT ["fromJust Nothing pandoc2MetaPage", showT filename]
-    -- fromJust (Just a) = a
+--     -- fromJust Nothing = errorT ["fromJust Nothing pandoc2MetaPage", showT filename]
+--     -- fromJust (Just a) = a
  
 
-initializeIndex :: MetaPage -> IndexEntry
--- initialize the index with the values from the metapage yaml
-initializeIndex MetaPage{..} = ix1
-  where
-    ix1 =
-        zero
-            { ixfn = dyFn  
-            , title = dyTitle
-            , link = dyLink 
-            , abstract = dyAbstract
-            , author = dyAuthor
-            , date = fromMaybe (showT year2000) dyDate
-            , content = zero
-            -- , publish = dyVersion
-            , dirEntries = zero
-            , fileEntries = zero
-            , headerShift = dyHeaderShift
-            }
+-- initializeIndex :: MetaPage -> IndexEntry
+-- -- initialize the index with the values from the metapage yaml
+-- initializeIndex MetaPage{..} = ix1
+--   where
+--     ix1 =
+--         zero
+--             { ixfn = dyFn  
+--             , title = dyTitle
+--             , link = dyLink 
+--             , abstract = dyAbstract
+--             , author = dyAuthor
+--             , date = fromMaybe (showT year2000) dyDate
+--             , content = zero
+--             -- , publish = dyVersion
+--             , dirEntries = zero
+--             , fileEntries = zero
+--             , headerShift = dyHeaderShift
+--             }
 
-isIndexPage :: Path Abs File -> Bool 
-isIndexPage filename =  getNakedFileName filename == "index"
+-- isIndexPage :: Path Abs File -> Bool 
+-- isIndexPage filename =  getNakedFileName filename == "index"
 
-convertLink2html ix = s2t . -- s2t . toFilePath $ 
-          setExtension (unExtension extHTML)   $ link ix
+-- convertLink2html ix = s2t . -- s2t . toFilePath $ 
+--           setExtension (unExtension extHTML)   $ link ix
 
-convertLink2pdf ix =  s2t . -- s2t . toFilePath $ 
-          setExtension (unExtension extPDF)   $ link ix
+-- convertLink2pdf ix =  s2t . -- s2t . toFilePath $ 
+--           setExtension (unExtension extPDF)   $ link ix
 
 
 -- extHTML :: Extension

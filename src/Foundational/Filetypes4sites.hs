@@ -32,6 +32,10 @@ import Foundational.MetaPage ( MetaPage, extPDF )
 --------------------------------------------typed file Docrep
 
 {- | representation of a document
+all the data is in the meta part
+
+rename to metarep later
+drop rest
  the yam part contains the json formated yaml metadata
  which is extensible
  Attention the Pandoc is Pandoc (Meta (Map Text MetaValue) [Block]
@@ -43,11 +47,12 @@ import Foundational.MetaPage ( MetaPage, extPDF )
  - Where would this be required? 
  - probably for the index construction? 
 -}
-data Docrep = Docrep {meta1 :: MetaPage, pan1 :: Pandoc} -- a json value
-    deriving (Show, Read, Eq, Generic, Zeros)
+type Docrep = Meta 
+-- {meta1 :: MetaPage, pan1 :: Pandoc} -- a json value
+    -- deriving (Show, Read, Eq, Generic, Zeros)
 
-instance FromJSON Docrep
-instance ToJSON Docrep
+-- instance FromJSON Docrep
+-- instance ToJSON Docrep
 
 extDocrep :: Extension
 extDocrep = Extension "docrep"
@@ -76,15 +81,16 @@ panrepFileType :: TypedFile5 Text Panrep
 panrepFileType =
     TypedFile5{tpext5 = extPanrep} :: TypedFile5 Text Panrep
 
-data Panrep = Panrep {panyam :: MetaPage, panpan :: Pandoc}
-    deriving (Eq, Show, Read)
+-- data Panrep = Panrep {panyam :: MetaPage, panpan :: Pandoc}
+--     deriving (Eq, Show, Read)
 
-instance Zeros Panrep where zero = Panrep zero zero
+type Panrep = Meta 
+-- instance Zeros Panrep where zero = Panrep zero zero
 
-instance TypedFiles7 Text Panrep where
-    -- handling Pandoc and read them into PandocText
-    wrap7 = readNote "wrap7 for pandoc 223d" . t2s
-    unwrap7 = showT
+-- instance TypedFiles7 Text Panrep where
+--     -- handling Pandoc and read them into PandocText
+--     wrap7 = readNote "wrap7 for pandoc 223d" . t2s
+--     unwrap7 = showT
 
 --- variant 1 panrep 
 extPanrep1 :: Extension
@@ -113,13 +119,16 @@ extTexSnip = Extension "texsnip"
 a tex snip is a piece of latex code, but not a full compilable
 latex which results in a pdf
 -}
-data TexSnip = TexSnip {snipyam :: MetaPage, unTexSnip :: Text}
+-- data TexSnip = TexSnip {snipyam :: MetaPage, unTexSnip :: Text}
+--     deriving (Show, Read, Eq)
+newtype TexSnip = TexSnip Text
     deriving (Show, Read, Eq)
 
--- unTexSnip (TexSnip a) = a   --needed for other ops
+unTexSnip :: TexSnip -> Text
+unTexSnip (TexSnip a) = a   --needed for other ops
 
-instance Zeros TexSnip where
-    zero = TexSnip zero zero
+-- instance Zeros TexSnip where
+--     zero = TexSnip zero zero
 
 texSnipFileType :: TypedFile5 Text TexSnip
 texSnipFileType =
