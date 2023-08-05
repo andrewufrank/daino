@@ -59,8 +59,8 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
     -- let layout = siteLayout sett3
     -- let doughP = doughDir layout
     -- let hpname = blogAuthorToSuppress . siteLayout $ sett3
-    dr3 <- readMarkdownFile2docrep debug sett3  inputFn 
-    dr4 <- addRefs debug dr3
+    dr4 <- readMarkdownFile2docrep debug sett3  inputFn 
+    -- dr4 <- addRefs debug dr3
 
     write8 resfn2 docrepFileType dr4
 
@@ -93,7 +93,7 @@ bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
     when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOneDocrep2panrep done produced resf2n", showT resfn2]
-    return needsFound
+    return  needsFound
 
 
 bakeOnePanrep2html :: BakeOp -- PANREP -> HTML  -- TODO

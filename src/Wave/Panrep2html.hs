@@ -43,7 +43,7 @@ import Foundational.MetaPage
 import GHC.Generics (Generic)
 
 import Uniform.Json ( ToJSON(toJSON), Value, ErrIO )
-import Uniform.Pandoc ( writeHtml5String2 )
+import Uniform.Pandoc  
 import Uniform.Latex 
 -- import qualified Text.Pandoc.Shared as P
 import Uniform.Http ( HTMLout ) 

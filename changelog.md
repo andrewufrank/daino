@@ -68,3 +68,4 @@ used versions 9.0.2
 
 0.1.5.6.2 using the uniform-pandoc 0.1.5.6 
     simplification 
+    docrep and panrep contain only meta

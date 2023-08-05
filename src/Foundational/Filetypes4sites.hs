@@ -64,11 +64,11 @@ docrepFileType :: TypedFile5 Text Docrep
 docrepFileType =
     TypedFile5{tpext5 = extDocrep} :: TypedFile5 Text Docrep
 
-instance TypedFiles7 Text Docrep where
-    wrap7 = readNote ("Docrep wrap7 sfasdwe") . t2s
-    --    wrap7 a = readNote (show a) . t2s $ a
+-- instance TypedFiles7 Text Docrep where
+    -- wrap7 = readNote ("Docrep wrap7 sfasdwe") . t2s
+    -- --    wrap7 a = readNote (show a) . t2s $ a
 
-    unwrap7 = showT
+    -- unwrap7 = showT
 
 -------------------- fileType Panrep ----------
 
@@ -121,11 +121,11 @@ latex which results in a pdf
 -}
 -- data TexSnip = TexSnip {snipyam :: MetaPage, unTexSnip :: Text}
 --     deriving (Show, Read, Eq)
-newtype TexSnip = TexSnip Text
-    deriving (Show, Read, Eq)
+type TexSnip = Meta
+    -- deriving (Show, Read, Eq)
 
-unTexSnip :: TexSnip -> Text
-unTexSnip (TexSnip a) = a   --needed for other ops
+-- unTexSnip :: TexSnip -> Text
+-- unTexSnip (TexSnip a) = a   --needed for other ops
 
 -- instance Zeros TexSnip where
 --     zero = TexSnip zero zero

@@ -5,8 +5,12 @@
 {-# LANGUAGE OverloadedStrings #-}
 -- {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-{-# OPTIONS_GHC -Wall #-}
-
+{-# OPTIONS_GHC -Wall -fno-warn-orphans
+            -fno-warn-missing-signatures
+            -fno-warn-missing-methods
+            -fno-warn-duplicate-exports
+            -fno-warn-unused-imports
+            -fno-warn-unused-matches #-}
 module Lib.CheckProcess where
 
 import UniformBase
@@ -40,12 +44,12 @@ checkProcess debug sitefn = do
     
     when (inform debug) $ putIOwords ["checkProcess 2", "mds", showT . take 10 $ mds]
 
-    let mds1 = mds -- filter (notDNB (siteLayout sett3)) mds
-    when (inform debug) $ putIOwords ["checkProcess 2", "mds1", showT . take 10 $ mds1]
-    let mds2 = map makeAbsFile mds1
-    -- let hpname = blogAuthorToSuppress.storag sett3
+    -- let mds1 = mds -- filter (notDNB (siteLayout sett3)) mds
+    -- when (inform debug) $ putIOwords ["checkProcess 2", "mds1", showT . take 10 $ mds1]
+    -- let mds2 = map makeAbsFile mds1
+    -- -- let hpname = blogAuthorToSuppress.storag sett3
 
-    -- mapM_ (checkOneMD debug ) mds2 
+    -- -- mapM_ (checkOneMD debug ) mds2 
 
     when (inform debug) $ putIOwords ["checkProcess", "end"]
     return ()

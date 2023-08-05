@@ -36,7 +36,8 @@ import Uniform.MetaStuff
 import Uniform.TemplatesStuff
 import Uniform.TemplatesStuff (Template)
 import UniformBase
-
+import qualified  Data.Map  as M
+import Text.DocTemplates as DocTemplates ( Doc )
 import Uniform.Latex
 import Uniform.WritePDF
 import Paths_daino (version)
@@ -45,13 +46,15 @@ import Paths_daino (version)
 
 panrep2texsnip :: NoticeLevel -> Panrep -> ErrIO TexSnip
 panrep2texsnip debug meta3 = do
-    res  :: _ <- meta2xx writeTexSnip2 meta3
+    putIOwords ["meta2hres tHtml \n"] --, showT res, "\n--"]
+    return meta3
+
+ 
     -- when (inform debug) $ putIOwords ["\n panrep2texsnip start"]
     -- res1 <- writeTexSnip2 p
     -- when (inform debug) $ putIOwords ["\n panrep2texsnip res1", showT res1]
     -- let res = (TexSnip y res1)
     -- when (inform debug) $ putIOwords ["\n panrep2texsnip done"]
-    return $ res
 
 
 -- text2absFile :: Path Abs Dir -> Text -> Path Abs File 
@@ -69,10 +72,14 @@ texsnip2tex  debug doughP bakedP snip1 latexDtpl = do
     when (inform debug) $ putIOwords ["\n texsnip2tex start"]
 
 -- fromMd: 
+    let meta2 = addMetaFieldT "documentclass" "article" snip1
+    t  :: M.Map Text Text <- meta2xx   writeTexSnip2 meta2
+    putIOwords ["texsnip2tex~meta2hres tHtml \n", showT t, "\n--"]
+
     templL :: Template Text <- compileDefaultTempalteLatex
         -- templL :: Template Text  <-compileDefaultTempalteLatex
         -- -- renderTemplate :: (TemplateTarget a, ToContext a b) => Template a -> b -> Doc a
-    let restpl = renderTemplate templL snip1 -- :: Doc Text
+    let restpl = renderTemplate templL t -- :: Doc Text
     let resH = render (Just 50) restpl :: Text  -- line length, can be Nothing
         -- let restplL = renderTemplate templL ctLatex :: Doc Text
         -- let resL = render (Just 50) restplL  :: Text  -- line length, can be Nothing    -- todo 

@@ -14,8 +14,15 @@
 {-# LANGUAGE OverloadedStrings #-}
 -- {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-{-# OPTIONS_GHC -Wall #-}
+-- {-# OPTIONS_GHC -Wall #-}
+{-# OPTIONS_GHC -Wall -fno-warn-orphans
+            -fno-warn-missing-signatures
+            -fno-warn-missing-methods
+            -fno-warn-duplicate-exports
+            -fno-warn-unused-imports
+            -fno-warn-unused-matches #-}
 
+            
 module Lib.IndexCollect where
 
 -- import Uniform.Json  

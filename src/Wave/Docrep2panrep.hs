@@ -67,7 +67,7 @@ docrep2panrep debug pubf sett4 meta5 = do
                 -- , "\ny1: ", showT y1
                 -- , "\np1: ", showT p1
                 ]
-    -- let pr = Panrep
+--     -- let pr = Panrep
     --             { panyam = y1
     --             , panpan = p1
     --             }
@@ -78,9 +78,10 @@ docrep2panrep debug pubf sett4 meta5 = do
     
     --     panrep2 = Panrep y2 p1
 
-    when (inform debug) $ putIOwords ["docrep2panrep"
-                , "hpname", showT hpname
-                , "\nauthorReduced", authorReduced]
+    -- when (inform debug) $ putIOwords ["docrep2panrep"
+    --             -- , "hpname", showT hpname
+    --             -- , "\nauthorReduced", authorReduced
+    --             ]
 
     -- if isIndexPage (makeAbsFile . dyFn . panyam $ panrep2 )
     --     then do
@@ -101,6 +102,7 @@ docrep2panrep debug pubf sett4 meta5 = do
 
     --         return (panrep2{panyam = m2}, needs)
     --     else
-    return (panrep2, [])
+    -- return (panrep2, [])
+    return (meta5, [])
 
 

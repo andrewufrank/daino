@@ -101,6 +101,8 @@ dependencies:
     - path-io
     - unix
     - filepath
+    - containers
+    - doctemplates
     - ReplaceUmlaut
     # - system-filepath 
     # - directory
@@ -109,7 +111,7 @@ library:
       - src 
 
 executables:   # file names wiwth lowercase to avoid forcing Main
-  daino:
+  daino62:
     main: daino.hs
     source-dirs: app
     dependencies: 
