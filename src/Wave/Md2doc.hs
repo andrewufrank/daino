@@ -44,6 +44,7 @@ import Uniform.Pandoc
 -- import Foundational.MetaPage (MetaPage(dyDoNotReplace))
 -- import Lib.FileHandling (readErlaubt)
 import Uniform.Shake ( Path2nd(makeRelativeP) ) 
+-- import Uniform.Json (ToJSON(toJSON))
 readMarkdownFile2docrep  :: NoticeLevel -> Settings ->  Path Abs File ->  ErrIO Docrep 
 -- read a markdown file and convert to docrep
 readMarkdownFile2docrep debug sett3 fnin = do
@@ -68,6 +69,12 @@ yamlValues sett3 fn =
         , ("title", "Title MISSING")
         , ("abstract", "Abstract MISSING")
         , ("data", showT year2000)
+        , ("lang", "en")  -- todo conversion? 
+        , ("latLanguage", "english") -- for babel
+        , ("sitename", s2t . sitename . siteHeader $ sett3)
+        , ("sitebyline", byline . siteHeader $ sett3)
+        , ("sitebanner",  s2t . banner . siteHeader $ sett3)
+        , ("sitebannerCaption", bannerCaption . siteHeader $ sett3)
         , ("style", "resources/chicago-fullnote-bibliography-bb.csl")
         , ("styleBiber","authoryear")
         -- , ("dyDainoieVersion","daino v 0.1.5.6.2")
@@ -75,6 +82,10 @@ yamlValues sett3 fn =
         , ("visibility", "public") -- 
         -- no default for publish, must be set in YAML 
         , ("headerShift","1")
+        , ("settingsAuthor", settingsAuthor sett3 )
+        -- , ("page-title", "PageTitleEx")  not yet used
+        -- , ("page-title-postfix", "PageTitle-PostfixEx")
+        , ("dainoversion","0.1.5.6.2") -- todo set automatically
         ]
     where 
         layout = siteLayout sett3
@@ -82,6 +93,8 @@ yamlValues sett3 fn =
         -- defAuthor = defaultAuthor layout 
         -- defBiblio = defaultBibliography layout  
         relfn = makeRelativeP doughP fn
+        -- sett3json = toJSON sett3 
+
 --  used from the yaml, original names left (no dy~)                    
 --             , title = dyTitle
 --             , abstract = dyAbstract

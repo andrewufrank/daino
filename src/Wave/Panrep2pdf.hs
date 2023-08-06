@@ -84,6 +84,7 @@ texsnip2tex  debug doughP bakedP snip1 latexDtpl = do
     let resH = render (Just 50) restpl :: Text  -- line length, can be Nothing
         -- let restplL = renderTemplate templL ctLatex :: Doc Text
         -- let resL = render (Just 50) restplL  :: Text  -- line length, can be Nothing    -- todo 
+    putIOwords ["texsnip2tex~meta2hres resHl \n",  resH, "\n--"]
     return . Latex $ resH 
 
 --     let yam = snipyam snip1 

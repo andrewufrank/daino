@@ -75,7 +75,8 @@ panrep2html debug  sett3 meta4 = do
 
     htmlTempl  <- compileTemplateFile2 masterfn
     hres <- meta2hres htmlTempl meta4
-    putIOwords ["panrep2html meta2hres done"]
+    putIOwords ["panrep2html meta2hres done"
+        , "hres", showT hres]
     -- bakeOnePanrep2html will write to disk
     return hres 
 
