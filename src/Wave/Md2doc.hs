@@ -15,7 +15,11 @@
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE UndecidableInstances  #-}
-{-# OPTIONS_GHC -Wall #-}
+{-# OPTIONS_GHC -Wall -fno-warn-orphans 
+            -fno-warn-missing-signatures
+            -fno-warn-missing-methods 
+             #-}
+            -- -fno-warn-unused-matches
 
 module Wave.Md2doc (
     module Wave.Md2doc,
@@ -23,10 +27,11 @@ module Wave.Md2doc (
 ) where
 
 import UniformBase
+  
 
 import Foundational.SettingsPage  
 -- import Foundational.MetaPage
-import Uniform.MetaStuff ( md2Meta, getValue4meta,setValue2meta)
+-- import Uniform.MetaStuff ( md2Meta, getValue4meta,setValue2meta)
 import Foundational.Filetypes4sites 
 -- ( Docrep(Docrep), meta1)
 import Foundational.CmdLineFlags
@@ -38,7 +43,7 @@ import Uniform.Pandoc
 -- import Lib.OneMDfile
 -- import Foundational.MetaPage (MetaPage(dyDoNotReplace))
 -- import Lib.FileHandling (readErlaubt)
-
+import Uniform.Shake ( Path2nd(makeRelativeP) ) 
 readMarkdownFile2docrep  :: NoticeLevel -> Settings ->  Path Abs File ->  ErrIO Docrep 
 -- read a markdown file and convert to docrep
 readMarkdownFile2docrep debug sett3 fnin = do
@@ -47,11 +52,48 @@ readMarkdownFile2docrep debug sett3 fnin = do
         -- place to find PandocParseError
 
     mdfile <- read8 fnin markdownFileType 
-    pd <- readMarkdown2 mdfile
-    context <- md2Meta fnin mdfile
+    -- todo -- add umlaut test foer german
+    (Pandoc m1 p1) <- md2Meta_Readmd fnin mdfile 
+    let m2 = addListOfDefaults (yamlValues sett3 fnin) m1
+    meta3 <- md2Meta_Process (Pandoc m2 p1)
 
-    return context
-    
+    return meta3
+
+yamlValues :: Settings -> Path Abs File ->  [(Text,Text)]
+-- values to go into metadata 
+-- includes the defaults (were values with dy~ prefix)
+yamlValues sett3 fn = 
+        [("fn", s2t $ toFilePath fn)
+        ,("link", s2t $ toFilePath relfn)
+        , ("title", "Title MISSING")
+        , ("abstract", "Abstract MISSING")
+        , ("data", showT year2000)
+        , ("style", "resources/chicago-fullnote-bibliography-bb.csl")
+        , ("styleBiber","authoryear")
+        -- , ("dyDainoieVersion","daino v 0.1.5.6.2")
+        -- set later when filling tempalte
+        , ("visibility", "public") -- 
+        -- no default for publish, must be set in YAML 
+        , ("headerShift","1")
+        ]
+    where 
+        layout = siteLayout sett3
+        doughP = doughDir layout
+        -- defAuthor = defaultAuthor layout 
+        -- defBiblio = defaultBibliography layout  
+        relfn = makeRelativeP doughP fn
+--  used from the yaml, original names left (no dy~)                    
+--             , title = dyTitle
+--             , abstract = dyAbstract
+--             , author = dyAuthor
+--             , date = fromMaybe (showT year2000) dyDate
+--             , content = zero
+--             -- , publish = dyVersion
+--             , dirEntries = zero
+--             , fileEntries = zero
+--             , headerShift = dyHeaderShift
+
+ ---------------------OLD 
     -- could perhaps "need" all ix as files? these are done in docrep2panrep
 
     -- -- let doc1 = pandoc2docrep doughP fnin  pd
@@ -154,6 +196,8 @@ filterNeeds debug pubf sett4 fn =  do
         putIOwords ["filterNeeds2", "\nMeta", showT (meta1 d1) ]
 
     let t = includeBakeTest3docrep pubf (meta1 d1)
+    when (inform debug) $ 
+        putIOwords ["filterNeeds3 ", "\n t", showT t ]
     return $ if t then Just fn else Nothing
 
 meta1 :: a -> a

@@ -29,6 +29,33 @@ import Foundational.CmdLineFlags
 import Uniform.Pandoc
 
 import Uniform.Shake
+    ( ErrIO,
+      Text,
+      when,
+      toFilePath,
+      errorT,
+      runErr,
+      inform,
+      makeAbsFile,
+      unExtension,
+      s2t,
+      putIOwords,
+      showT,
+      MonadIO(..),
+      Path,
+      Abs,
+      Dir,
+      File,
+      Rel,
+      NoticeLevel,
+      FileOps(doesFileExist'),
+      Filenames3((</>), FileResultT),
+      need,
+      copyFileChangedP,
+      replaceExtension',
+      runErr2action,
+      Action,
+      Path2nd(makeRelativeP) )
 -- import UniformBase
 
 

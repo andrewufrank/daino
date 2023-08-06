@@ -214,17 +214,7 @@ instance FromJSON MetaPage where
 --   where
 --     ix1 =
 --         zero
---             { ixfn = dyFn  
---             , title = dyTitle
---             , link = dyLink 
---             , abstract = dyAbstract
---             , author = dyAuthor
---             , date = fromMaybe (showT year2000) dyDate
---             , content = zero
---             -- , publish = dyVersion
---             , dirEntries = zero
---             , fileEntries = zero
---             , headerShift = dyHeaderShift
+-- 
 --             }
 
 -- isIndexPage :: Path Abs File -> Bool 

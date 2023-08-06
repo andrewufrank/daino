@@ -64,7 +64,19 @@ import Lib.Templating
 -- added here the transformations to tufte sidenotes (from pandoc-sidenotes)
 panrep2html :: NoticeLevel -> Settings -> Panrep -> ErrIO HTMLout
 panrep2html debug  sett3 meta4 = do
-    hres <- meta2hres meta4
+    let mf = masterTemplateFile $ siteLayout sett3
+    -- let mfn = templatesDir layout </> mf
+    let masterfn = templatesDir (siteLayout sett3) </> mf
+    -- let h = "0" -- maybe 0 $ M.lookup headerShift . unMeta $ meta4
+    -- when (inform debug) $
+    --     putIOwords ["\n\t---------------------------panrep2html"
+    --             , "shiftHeaderLevel"
+    --             , showT h] 
+
+    htmlTempl  <- compileTemplateFile2 masterfn
+    hres <- meta2hres htmlTempl meta4
+    putIOwords ["panrep2html meta2hres done"]
+    -- bakeOnePanrep2html will write to disk
     return hres 
 
 --     let mf = masterTemplateFile $ siteLayout sett3
