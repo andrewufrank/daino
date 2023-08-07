@@ -30,20 +30,20 @@ extra-source-files:
 
 # language: Haskell2010 is default
 
-# ghc-options: 
-#     -Wall
-#     -fno-warn-unused-binds 
-#     -fno-warn-deprecations 
-#     -fno-warn-unused-do-bind 
-#     -fno-warn-unused-imports
-#     -fno-warn-missing-signatures
-#     -fno-warn-orphans
-#     -fno-warn-type-defaults 
-#     -fno-warn-unused-matches 
-#     -fno-warn-warnings-deprecations   
-#     -fno-warn-missing-methods 
-#     -fno-warn-missing-home-modules
-#     -fno-warn-duplicate-exports 
+ghc-options: 
+    -Wall
+    -fno-warn-unused-binds 
+    -fno-warn-deprecations 
+    -fno-warn-unused-do-bind 
+    -fno-warn-unused-imports
+    -fno-warn-missing-signatures
+    -fno-warn-orphans
+    -fno-warn-type-defaults 
+    -fno-warn-unused-matches 
+    -fno-warn-warnings-deprecations   
+    -fno-warn-missing-methods 
+    -fno-warn-missing-home-modules
+    -fno-warn-duplicate-exports 
 other-extensions:  # besides the automatically Haskell2010
 # has no effect...
     # - DeriveGeneric

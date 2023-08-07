@@ -111,10 +111,10 @@ layoutDefaults :: Path Abs Dir -> Path Abs Dir ->  SiteLayout
 -- used for finding the test cases
 -- must correspond to the settings3.yaml in source code repository
 -- fix this later for use in testing todo 
-layoutDefaults dough4test homeDir =
+layoutDefaults dough4test homeDir1 =
     zero -- SiteLayout
         { doughDir = dough4test
-        , bakedDir = homeDir </> makeRelDir "bakedTestSite" :: Path Abs Dir
+        , bakedDir = homeDir1 </> makeRelDir "bakedTestSite" :: Path Abs Dir
         ,  themeDir = (parent (parent dough4test)) </> makeRelDir "theme"
  
         ,  masterTemplateFile = makeRelFile "master7tufte.dtpl"

@@ -117,7 +117,7 @@ shakeAll debug sett3 flags causedby = do
         , "\n======================================="
         ]
             
-    callIO $ shakeMD debug sett3 flags doughP bakedP
+    callIO $ shakeMD NoticeLevel2 sett3 flags doughP bakedP
 
 -- todo remove shakeMD and pass only layout
 
