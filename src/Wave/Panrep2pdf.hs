@@ -33,8 +33,8 @@ import Foundational.MetaPage
 import GHC.Generics (Generic)
 import Uniform.Pandoc ( writeTexSnip2 )
 import Uniform.MetaStuff
-import Uniform.TemplatesStuff
-import Uniform.TemplatesStuff (Template)
+import Uniform.TemplateStuff
+import Uniform.TemplateStuff (Template)
 import UniformBase
 import qualified  Data.Map  as M
 import Text.DocTemplates as DocTemplates ( Doc )

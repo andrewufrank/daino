@@ -51,49 +51,60 @@ readMarkdownFile2docrep debug sett3 fnin = do
     when (inform debug) $ putIOwords 
         ["readMarkdownFile2docrep fnin", showPretty fnin]
         -- place to find PandocParseError
+    p1 <- readMd2pandoc fnin
+    -- check for german and process umlaut, 
+    -- repeat readMd2pandoc if changed 
 
-    mdfile <- read8 fnin markdownFileType 
-    -- todo -- add umlaut test foer german
-    (Pandoc m1 p1) <- md2Meta_Readmd fnin mdfile 
-    let m2 = addListOfDefaults (yamlValues sett3 fnin) m1
-    meta3 <- md2Meta_Process (Pandoc m2 p1)
+    -- default values only what is used for citeproc and ??
+    -- rest can go into settings 
 
-    return meta3
+    let defs1 = [("Bibliography", "resources/BibTexLatex.bib")] 
+            -- "resources/webbiblio.bib")
+    let p2 = addListOfDefaults defs1 p1
+    m1 <- md2Meta_Process p2
 
-yamlValues :: Settings -> Path Abs File ->  [(Text,Text)]
--- values to go into metadata 
--- includes the defaults (were values with dy~ prefix)
-yamlValues sett3 fn = 
-        [("fn", s2t $ toFilePath fn)
-        ,("link", s2t $ toFilePath relfn)
-        , ("title", "Title MISSING")
-        , ("abstract", "Abstract MISSING")
-        , ("data", showT year2000)
-        , ("lang", "en")  -- todo conversion? 
-        , ("latLanguage", "english") -- for babel
-        , ("sitename", s2t . sitename . siteHeader $ sett3)
-        , ("sitebyline", byline . siteHeader $ sett3)
-        , ("sitebanner",  s2t . banner . siteHeader $ sett3)
-        , ("sitebannerCaption", bannerCaption . siteHeader $ sett3)
-        , ("style", "resources/chicago-fullnote-bibliography-bb.csl")
-        , ("styleBiber","authoryear")
-        -- , ("dyDainoieVersion","daino v 0.1.5.6.2")
-        -- set later when filling tempalte
-        , ("visibility", "public") -- 
-        -- no default for publish, must be set in YAML 
-        , ("headerShift","1")
-        , ("settingsAuthor", settingsAuthor sett3 )
-        -- , ("page-title", "PageTitleEx")  not yet used
-        -- , ("page-title-postfix", "PageTitle-PostfixEx")
-        , ("dainoversion","0.1.5.6.2") -- todo set automatically
-        ]
-    where 
-        layout = siteLayout sett3
-        doughP = doughDir layout
-        -- defAuthor = defaultAuthor layout 
-        -- defBiblio = defaultBibliography layout  
-        relfn = makeRelativeP doughP fn
-        -- sett3json = toJSON sett3 
+    -- mdfile <- read8 fnin markdownFileType 
+    -- -- todo -- add umlaut test foer german
+    -- (Pandoc m1 p1) <- md2Meta_Readmd fnin mdfile 
+    -- let m2 = addListOfDefaults (yamlValues sett3 fnin) m1
+    -- meta3 <- md2Meta_Process (Pandoc m2 p1)
+
+    return m1
+
+-- yamlValues :: Settings -> Path Abs File ->  [(Text,Text)]
+-- -- values to go into metadata 
+-- -- includes the defaults (were values with dy~ prefix)
+-- yamlValues sett3 fn = 
+--         [("fn", s2t $ toFilePath fn)
+--         ,("link", s2t $ toFilePath relfn)
+--         , ("title", "Title MISSING")
+--         , ("abstract", "Abstract MISSING")
+--         , ("data", showT year2000)
+--         , ("lang", "en")  -- todo conversion? 
+--         , ("latLanguage", "english") -- for babel
+--         , ("sitename", s2t . sitename . siteHeader $ sett3)
+--         , ("sitebyline", byline . siteHeader $ sett3)
+--         , ("sitebanner",  s2t . banner . siteHeader $ sett3)
+--         , ("sitebannerCaption", bannerCaption . siteHeader $ sett3)
+--         , ("style", "resources/chicago-fullnote-bibliography-bb.csl")
+--         , ("styleBiber","authoryear")
+--         -- , ("dyDainoieVersion","daino v 0.1.5.6.2")
+--         -- set later when filling tempalte
+--         , ("visibility", "public") -- 
+--         -- no default for publish, must be set in YAML 
+--         , ("headerShift","1")
+--         , ("settingsAuthor", settingsAuthor sett3 )
+--         -- , ("page-title", "PageTitleEx")  not yet used
+--         -- , ("page-title-postfix", "PageTitle-PostfixEx")
+--         , ("dainoversion","0.1.5.6.2") -- todo set automatically
+--         ]
+--     where 
+--         layout = siteLayout sett3
+--         doughP = doughDir layout
+--         -- defAuthor = defaultAuthor layout 
+--         -- defBiblio = defaultBibliography layout  
+--         relfn = makeRelativeP doughP fn
+--         -- sett3json = toJSON sett3 
 
 --  used from the yaml, original names left (no dy~)                    
 --             , title = dyTitle
