@@ -1,6 +1,6 @@
 
 name: daino
-version: 0.1.5.6.2
+version: 0.1.5.6.3
 license:      GPL
 license-file: LICENSE
 github:       andrewufrank/u4blog.git/daino
@@ -83,7 +83,7 @@ dependencies:
     - uniform-cmdLineArgs >= 0.1.5.1 # now from u4blog, was from u2to
     - uniform-watch  
     - uniform-webserver  # - shake
-    - uniform-pandoc >=0.1.6.2  
+    - uniform-pandoc >=0.1.6.3  
     - uniform-latex2pdf >= 0.1.5.7
     - uniform-strings >= 0.1.5.1
     # - uniform-fileio
