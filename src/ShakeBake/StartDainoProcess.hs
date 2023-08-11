@@ -42,6 +42,8 @@ import Path.IO (resolveDir, getHomeDir)
 
 dainoProcess :: NoticeLevel -> PubFlags -> ErrIO ()
 dainoProcess debug1 flags = do
+    let debug1 = NoticeLevel2
+    putIOwords ["dainoProcess 0 debug flags", showT debug1, showT flags]
     let useTestSite = (testFlag flags || testNewFlag flags)
     putIOwords ["dainoProcess 1 useTestSite", showT useTestSite]
     currDir :: Path Abs Dir  <- currentDir 
@@ -73,7 +75,7 @@ dainoProcess debug1 flags = do
             else 
                 errorT ["dainoProcess 5 location not valid",  showT $ locationDir flags]
                  
-    when (inform debug) $ putIOwords ["dainoProcess 5 dir of settings file",  showT sett4dir]
+    when (informAll debug) $ putIOwords ["dainoProcess 5 dir of settings file",  showT sett4dir]
     let sett4file = sett4dir </> relSettingsFile 
     when (inform debug) $ putIOwords ["dainoProcess 5  settings file",  showT sett4file]
  

@@ -48,7 +48,7 @@ data Settings = Settings
     , settingsAuthor :: Text 
     , settingsDate :: Text -- should be UTC 
     , siteHeader :: SiteHeader 
-    , menuitems :: [MenuItem]
+    , menuitems :: MenuItems
     -- , today :: Text
     } deriving (Show, Read, Ord, Eq, Generic, Zeros)
 

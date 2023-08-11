@@ -32,5 +32,6 @@ readSettings debug settingsfilename =
                 , showPretty settingsfilename
                 ]
         sett3 :: Settings <- readYaml2rec settingsfilename 
+        when (inform debug) $ putIOwords ["settings read", showT sett3]
         return sett3 
 
