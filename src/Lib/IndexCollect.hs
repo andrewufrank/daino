@@ -36,7 +36,7 @@ import Foundational.CmdLineFlags ( PubFlags )
 import UniformBase
 
 import Wave.Md2doc
-    ( includeBakeTest3docrep, readMarkdownFile2docrep ) 
+    -- ( includeBakeTest3docrep, readMarkdownFile2docrep ) 
 -- import ShakeBake.Bake (readMarkdownFile2docrep)
 import Foundational.SettingsPage  
 import Data.List (sortOn)

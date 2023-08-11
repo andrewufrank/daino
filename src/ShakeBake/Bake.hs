@@ -36,7 +36,9 @@ import Uniform.Http
 
 import Wave.Panrep2html  
 import UniformBase
--- import Foundational.SettingsPage (SiteLayout(texTemplateFile))
+-- import Foundational.Filetypes4sites
+-- import Foundational.SettingsPage 
+-- (SiteLayout(texTemplateFile))
 
 type BakeOp =
     NoticeLevel ->

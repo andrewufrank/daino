@@ -41,13 +41,17 @@ import Text.DocTemplates as DocTemplates ( Doc )
 import Uniform.Latex
 import Uniform.WritePDF
 import Paths_daino (version)
+import Foundational.SettingsPage 
 
 -- ------------------------------------ panrep2texsnip
 
 panrep2texsnip :: NoticeLevel -> Panrep -> ErrIO TexSnip
-panrep2texsnip debug meta3 = do
+panrep2texsnip debug metaplus3 = do
     putIOwords ["panrep2texsnip \n"] --, showT res, "\n--"]
-    return meta3
+    lat1 <- meta2xx writeTexSnip2 (metap metaplus3)
+    let metaplus5 = metaplus3{metaLatex = lat1}
+
+    return metaplus5
 
  
     -- when (inform debug) $ putIOwords ["\n panrep2texsnip start"]
@@ -60,7 +64,7 @@ panrep2texsnip debug meta3 = do
 -- text2absFile :: Path Abs Dir -> Text -> Path Abs File 
 -- text2absFile doughP t = doughP </> makeRelFile (t2s t)
 
-texsnip2tex :: NoticeLevel ->  Path Abs Dir -> Path Abs Dir -> TexSnip ->  Path Abs File -> ErrIO Latex
+texsnip2tex :: NoticeLevel ->  Path Abs Dir -> Path Abs Dir -> DainoMetaPlus ->  Path Abs File -> ErrIO Latex
 -- the (lead) snip which comes from the md which gives the name to the resulting tex and pdf 
 -- and ist metadata are included (taken from the snip)
 -- it may include other filenames, the snips of these
@@ -68,19 +72,19 @@ texsnip2tex :: NoticeLevel ->  Path Abs Dir -> Path Abs Dir -> TexSnip ->  Path 
 
 -- currently only one snip, 
 -- currently the biblio and references seem not to work with the new citeproc stuff (which takes the info from the )
-texsnip2tex  debug doughP bakedP snip1 latexDtpl = do
+texsnip2tex  debug doughP bakedP metaplus4 latexDtpl = do
     when (inform debug) $ putIOwords ["\n texsnip2tex start"]
 
 -- fromMd: 
-    let meta2 = addMetaFieldT "documentclass" "article" snip1
-    t  :: M.Map Text Text <- meta2xx   writeTexSnip2 meta2
-    putIOwords ["texsnip2tex~meta2hres tHtml \n", showT t, "\n--"]
+    -- let meta2 = addMetaFieldT "documentclass" "article" snip1
+    -- t  :: M.Map Text Text <- meta2xx   writeTexSnip2 meta2
+    -- putIOwords ["texsnip2tex~meta2hres tHtml \n", showT t, "\n--"]
 
     templL :: Template Text <- compileTemplateFile2 latexDtpl
     -- templL :: Template Text <- compileDefaultTempalteLatex
         -- templL :: Template Text  <-compileDefaultTempalteLatex
         -- -- renderTemplate :: (TemplateTarget a, ToContext a b) => Template a -> b -> Doc a
-    let restpl = renderTemplate templL t -- :: Doc Text
+    let restpl = renderTemplate templL (toJSON metaplus4) -- :: Doc Text
     let resH = render (Just 50) restpl :: Text  -- line length, can be Nothing
         -- let restplL = renderTemplate templL ctLatex :: Doc Text
         -- let resL = render (Just 50) restplL  :: Text  -- line length, can be Nothing    -- todo 

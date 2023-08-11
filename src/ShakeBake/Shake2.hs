@@ -385,15 +385,15 @@ getNeedsMD debug flags sett4 sourceP targetP extSource extTarget = do
              (doNotBake  (siteLayout sett4))   -- exclude files containing
             sourceP
             ["**/*." <> t2s extSource]
-    files2 <- runErr2action $ mapM (filterNeeds debug flags sett4 ) filesWithSource
+    -- files2 <- runErr2action $ mapM (filterNeeds debug flags sett4 ) filesWithSource
     -- subdirs
-    let filesWithTarget =
-            if sameExt
-                then [targetP </> c | c <- filesWithSource]
-                else
-                    map
-                        (replaceExtension' extTarget . (targetP </>))
-                            (catMaybes files2) :: [Path Abs File]
+    -- let filesWithTarget =
+    --         if sameExt
+    --             then [targetP </> c | c <- filesWithSource]
+    --             else
+    --                 map
+    --                     (replaceExtension' extTarget . (targetP </>))
+    --                         (catMaybes files2) :: [Path Abs File]
     when (inform debug) $ do
         putIOwords
             [ "===================\ngetNeeds -  source files 1"
@@ -402,11 +402,11 @@ getNeedsMD debug flags sett4 sourceP targetP extSource extTarget = do
             , "files\n"
             , showT filesWithSource
             ]
-        putIOwords
-            [ "\nbakePDF -  target files 2"
-            , "for ext"
-            , extTarget
-            , "files\n"
-            , showT filesWithTarget
-            ]
-    return filesWithTarget
+        -- putIOwords
+        --     [ "\nbakePDF -  target files 2"
+        --     , "for ext"
+        --     , extTarget
+        --     , "files\n"
+        --     , showT filesWithTarget
+        --     ]
+    return [] -- filesWithTarget

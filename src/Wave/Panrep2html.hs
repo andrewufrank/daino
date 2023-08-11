@@ -46,7 +46,7 @@ import Uniform.Json ( ToJSON(toJSON), Value, ErrIO )
 import Uniform.Pandoc  
 import Uniform.Latex 
 -- import qualified Text.Pandoc.Shared as P
-import Uniform.Http ( HTMLout ) 
+import Uniform.Http ( HTMLout (HTMLout) ) 
 import UniformBase
 
 import Data.Maybe (fromMaybe)
@@ -63,7 +63,7 @@ import Lib.Templating
 -- siteHeader (sett3, above sett3) is the content of the settingsN.yml file
 -- added here the transformations to tufte sidenotes (from pandoc-sidenotes)
 panrep2html :: NoticeLevel -> Settings -> Panrep -> ErrIO HTMLout
-panrep2html debug  sett3 meta4 = do
+panrep2html debug  sett3 metaplus4 = do
     let mf = masterTemplateFile $ siteLayout sett3
     -- let mfn = templatesDir layout </> mf
     let masterfn = templatesDir (siteLayout sett3) </> mf
@@ -74,11 +74,42 @@ panrep2html debug  sett3 meta4 = do
     --             , showT h] 
 
     htmlTempl  <- compileTemplateFile2 masterfn
-    hres <- meta2hres htmlTempl meta4
-    putIOwords ["panrep2html meta2hres done"
-        , "hres", showT hres]
+
+    htm1 <- meta2xx writeHtml5String2 (metap metaplus4)
+    let metaplus5 = metaplus4{metaHtml = htm1}
+-- copied
+    -- htpl2 <- compileTemplateFile2 metaplusHtml -- fnminilatex
+    let hpl1 = renderTemplate htmlTempl (toJSON metaplus5)  -- :: Doc Text
+    -- putIOwords ["tpl1 \n", showT tpl1]
+    let ht1 = render (Just 50) hpl1  -- line length, can be Nothing
+    -- putIOwords ["res1 \n", res1]
+    -- write8   fnPlusres htmloutFileType (HTMLout ht1)
+
+
+
+-- 
+    -- hres <- meta2hres htmlTempl metaplus4
+    putIOwords ["panrep2html render html done"
+        , "hres", showT ht1]
     -- bakeOnePanrep2html will write to disk
-    return hres 
+    return . HTMLout $ ht1
+--     55
+--     - fill the three meta fields for the output
+-- completeMetaPlus :: MetaPlus -> ErrIO MetaPlus 
+-- completeMetaPlus metapl1 = do 
+--     md1 <- meta2xx writeToMarkdown  (metap metapl1)
+--     htm1 <- meta2xx writeHtml5String2 (metap metapl1)
+--     lat1 <- meta2xx writeTexSnip2 (metap metapl1)
+--     -- uses biblatex
+--     let metap2 = metapl1  { metaMarkdown = md1
+--                     , metaHtml = htm1
+--                     , metaLatex = lat1}
+--     -- putIOwords ["completeMetaPlus \n", showT metap2]
+--     return metap2 
+     
+
+-- 44
+
 
 --     let mf = masterTemplateFile $ siteLayout sett3
 --     -- let mfn = templatesDir layout </> mf

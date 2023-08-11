@@ -23,11 +23,14 @@
 module Foundational.SettingsPage
     (module Foundational.SettingsPage
     , def 
+    , toJSON, fromJSON
     ) where
 
 import UniformBase
 import Data.Default.Class ( Default(def) ) -- to define a default class for siteLayout 
-import Uniform.Json ( FromJSON, ToJSON )
+import Uniform.Json ( FromJSON, ToJSON (toJSON), fromJSON )
+import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..))
+import qualified Data.Map as M
 
 import Path (parent)
 progName, progTitle :: Text
@@ -45,36 +48,62 @@ data Settings = Settings
     , settingsAuthor :: Text 
     , settingsDate :: Text -- should be UTC 
     , siteHeader :: SiteHeader 
-    , menuitems :: MenuItems
+    , menuitems :: [MenuItem]
     -- , today :: Text
     } deriving (Show, Read, Ord, Eq, Generic, Zeros)
+
+data DainoMetaPlus = DainoMetaPlus 
+                { metap :: Meta    -- ^ the pandoc meta 
+                , sett :: Settings -- ^ the data from the settingsfile
+                , extra :: DainoValues -- ^ other values to go into template
+                , metaMarkdown :: M.Map Text Text 
+                , metaHtml ::  M.Map Text Text
+                , metaLatex ::  M.Map Text Text
+                }
+    deriving (Eq, Ord, Show, Read, Generic) -- Zeros, ToJSON, FromJSON)
+instance ToJSON DainoMetaPlus
+instance FromJSON DainoMetaPlus
+instance Zeros DainoMetaPlus where 
+        zero = DainoMetaPlus zero zero zero zero zero zero
 
 instance ToJSON Settings
 instance FromJSON Settings
 
-data SiteHeader = SiteHeader 
-    { sitename :: FilePath 
-    , byline :: Text 
-    , banner :: FilePath 
-    , bannerCaption :: Text 
-    } deriving (Show, Read, Ord, Eq, Generic, Zeros)
-instance ToJSON SiteHeader
-instance FromJSON SiteHeader
+-- the extraValues will eventually go into settings
+data DainoValues = DainoValues 
+                        { mdFile:: Text
+                        -- , extraBakedDir :: Text
+                        }
+    deriving (Eq, Ord, Show, Read, Generic)
+    
+instance ToJSON DainoValues 
+instance FromJSON DainoValues 
 
-newtype MenuItems = MenuItems {menuNav:: [MenuItem]
-                            -- , menuB:: Text
-                            } deriving (Show, Read, Ord, Eq, Generic, Zeros)
-instance ToJSON MenuItems 
-instance FromJSON MenuItems 
+instance Zeros DainoValues where zero = DainoValues zero  
 
-data MenuItem = MenuItem  
-    { navlink :: FilePath 
-    , navtext :: Text
-    -- , navpdf :: Text  -- for the link to the pdf 
-    -- not a good idead to put here
-    } deriving (Show, Read, Ord, Eq, Generic, Zeros)
-instance ToJSON MenuItem
-instance FromJSON MenuItem
+-- data SiteHeader = SiteHeader 
+--     { sitename :: FilePath 
+--     , byline :: Text 
+--     , banner :: FilePath 
+--     , bannerCaption :: Text 
+--     } deriving (Show, Read, Ord, Eq, Generic, Zeros)
+-- instance ToJSON SiteHeader
+-- instance FromJSON SiteHeader
+
+-- newtype MenuItems = MenuItems {menuNav:: [MenuItem]
+--                             -- , menuB:: Text
+--                             } deriving (Show, Read, Ord, Eq, Generic, Zeros)
+-- instance ToJSON MenuItems 
+-- instance FromJSON MenuItems 
+
+-- data MenuItem = MenuItem  
+--     { navlink :: FilePath 
+--     , navtext :: Text
+--     -- , navpdf :: Text  -- for the link to the pdf 
+--     -- not a good idead to put here
+--     } deriving (Show, Read, Ord, Eq, Generic, Zeros)
+-- instance ToJSON MenuItem
+-- instance FromJSON MenuItem
 
 data SiteLayout = SiteLayout
     { -- | the place of the  theme files (includes templates)

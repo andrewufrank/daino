@@ -59,9 +59,11 @@ import Lib.IndexCollect -- ( completeIndex )
 --  completes the index (if indexpage else nothing done)
 
 --  the refs are processed before in md2docrep
+-- not yet producing index 
+
 
 docrep2panrep :: NoticeLevel -> PubFlags -> Settings -> Docrep -> ErrIO (Panrep, [FilePath])
-docrep2panrep debug pubf sett4 meta5 = do
+docrep2panrep debug pubf sett4 metaplus5 = do
     when (inform debug) $
         putIOwords ["\n\ty1,p1-------------------------docrep2panrep"
                 -- , "\ny1: ", showT y1
@@ -103,6 +105,6 @@ docrep2panrep debug pubf sett4 meta5 = do
     --         return (panrep2{panyam = m2}, needs)
     --     else
     -- return (panrep2, [])
-    return (meta5, [])
+    return (metaplus5, [])
 
 

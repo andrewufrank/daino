@@ -1,0 +1,34 @@
+cradle:
+  cabal:
+    - path: "./src"
+      component: "lib:daino"
+
+    - path: "./app/daino.hs"
+      component: "daino:exe:daino62"
+
+    - path: "./app/Paths_daino.hs"
+      component: "daino:exe:daino62"
+
+    - path: "../u4blog/uniform-cmdLineArgs/src"
+      component: "lib:uniform-cmdLineArgs"
+
+    - path: "../u4blog/uniform-json/src"
+      component: "lib:uniform-json"
+
+    - path: "../u4blog/uniform-json/tests"
+      component: "uniform-json:test:json-test"
+
+    - path: "../u4blog/uniform-latex2pdf/src"
+      component: "lib:uniform-latex2pdf"
+
+    - path: "../u4blog/uniform-pandoc/src"
+      component: "lib:uniform-pandoc"
+
+    - path: "../u4blog/uniform-pandoc/tests"
+      component: "uniform-pandoc:test:pandoctest"
+
+    - path: "../uBase/uniform-fileio/./"
+      component: "lib:uniform-fileio"
+
+    - path: "../uBase/uniform-fileio/tests"
+      component: "uniform-fileio:test:fileio-test"

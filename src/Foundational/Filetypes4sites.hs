@@ -26,6 +26,7 @@ import Uniform.Json (FromJSON, ToJSON, Value)
 import Uniform.Pandoc  
 import UniformBase
 import Foundational.MetaPage ( MetaPage, extPDF )
+import Foundational.SettingsPage ( DainoMetaPlus )
 -- import Wave.Md2doc (pandoc2docrep)
 
 
@@ -47,7 +48,7 @@ drop rest
  - Where would this be required? 
  - probably for the index construction? 
 -}
-type Docrep = Meta 
+type Docrep = DainoMetaPlus 
 -- {meta1 :: MetaPage, pan1 :: Pandoc} -- a json value
     -- deriving (Show, Read, Eq, Generic, Zeros)
 
@@ -84,7 +85,7 @@ panrepFileType =
 -- data Panrep = Panrep {panyam :: MetaPage, panpan :: Pandoc}
 --     deriving (Eq, Show, Read)
 
-type Panrep = Meta 
+type Panrep = DainoMetaPlus 
 -- instance Zeros Panrep where zero = Panrep zero zero
 
 -- instance TypedFiles7 Text Panrep where
@@ -92,23 +93,23 @@ type Panrep = Meta
 --     wrap7 = readNote "wrap7 for pandoc 223d" . t2s
 --     unwrap7 = showT
 
---- variant 1 panrep 
-extPanrep1 :: Extension
-extPanrep1 = Extension "panrep1"
+-- --- variant 1 panrep 
+-- extPanrep1 :: Extension
+-- extPanrep1 = Extension "panrep1"
 
-panrep1FileType :: TypedFile5 Text Panrep1
-panrep1FileType =
-    TypedFile5{tpext5 = extPanrep1} :: TypedFile5 Text Panrep1
+-- panrep1FileType :: TypedFile5 Text Panrep1
+-- panrep1FileType =
+--     TypedFile5{tpext5 = extPanrep1} :: TypedFile5 Text Panrep1
 
-newtype Panrep1 = Panrep1 {unPanrep1 :: Panrep}
--- data Panrep = Panrep {panyam :: MetaPage, panpan :: Pandoc}
-    deriving (Eq, Show, Read)
+-- newtype Panrep1 = Panrep1 {unPanrep1 :: Panrep}
+-- -- data Panrep = Panrep {panyam :: MetaPage, panpan :: Pandoc}
+--     deriving (Eq, Show, Read)
 
--- instance Zeros Panrep where zero = Panrep zero zero
+-- -- instance Zeros Panrep where zero = Panrep zero zero
 
-instance TypedFiles7 Text Panrep1 where
-    wrap7 = readNote "wrap7 for pandocrep1" . t2s
-    unwrap7 = showT
+-- instance TypedFiles7 Text Panrep1 where
+--     wrap7 = readNote "wrap7 for pandocrep1" . t2s
+--     unwrap7 = showT
 --------------------  TexSnip
 
 extTexSnip :: UniformBase.Extension
@@ -121,7 +122,7 @@ latex which results in a pdf
 -}
 -- data TexSnip = TexSnip {snipyam :: MetaPage, unTexSnip :: Text}
 --     deriving (Show, Read, Eq)
-type TexSnip = Meta
+type TexSnip = DainoMetaPlus
     -- deriving (Show, Read, Eq)
 
 -- unTexSnip :: TexSnip -> Text
