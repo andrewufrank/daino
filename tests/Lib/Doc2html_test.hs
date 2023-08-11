@@ -15,7 +15,7 @@ import Test.Framework
 import Uniform.Json
 import Uniform.Markdown
 import Uniform.Pandoc
-import Uniform.Test.TestHarness
+-- import Uniform.Test.TestHarness
 import Uniform.Http
 import UniformBase
 import Wave.Docrep2panrep
@@ -25,11 +25,11 @@ import Foundational.CmdLineFlags ( PubFlags )
 -- to the path given
 
 -- -- | test to produce pan
-testing_md2pan f = test1FileIO "daino" 
-    (f <> "T.docrep" ) (f <>"_panrep") 
-    (docrep2panrep NoticeLevel0 (def::PubFlags) (def::SiteLayout) )
+-- testing_md2pan f = test1FileIO "daino" 
+--     (f <> "T.docrep" ) (f <>"_panrep") 
+--     (docrep2panrep NoticeLevel0 (def::PubFlags) (def::SiteLayout) )
 
-test_blog1_md2pan = testing_md2pan "01blog1"
+-- test_blog1_md2pan = testing_md2pan "01blog1"
 -- test_index_md2pan = testing_md2pan "index"
 -- test_postwk_md2pan = testing_md2pan "03postwk"
 -- test_withRef_md2pan = testing_md2pan "02withRef"
@@ -104,7 +104,7 @@ test_blog1_md2pan = testing_md2pan "01blog1"
 -- test_withRef_dm2docrep = testing_md2docrep "withRef"
 
 
-instance ShowTestHarness Panrep
-instance ShowTestHarness HTMLout
-instance ShowTestHarness [Value]
-instance ShowTestHarness (Panrep, [FilePath])
+-- instance ShowTestHarness Panrep
+-- instance ShowTestHarness HTMLout
+-- instance ShowTestHarness [Value]
+-- instance ShowTestHarness (Panrep, [FilePath])

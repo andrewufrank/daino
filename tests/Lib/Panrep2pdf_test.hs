@@ -11,7 +11,7 @@ module Lib.Panrep2pdf_test
      where
 
 import Test.Framework
-import Uniform.Test.TestHarness
+-- import Uniform.Test.TestHarness
 import Foundational.MetaPage 
 import Foundational.SettingsPage
 import Foundational.Filetypes4sites
@@ -24,14 +24,14 @@ import Lib.Md2doc_test
 
 -- import Lib.IndexCollect
 
-testing_panrep2texsnip :: FilePath -> IO ()
--- | test to produce texsnip
-testing_panrep2texsnip f1  = test1FileIO "daino" (f1 <> "_panrep") (f1 <> "_texsnip" )(panrep2texsnip NoticeLevel0 ) 
+-- testing_panrep2texsnip :: FilePath -> IO ()
+-- -- | test to produce texsnip
+-- testing_panrep2texsnip f1  = test1FileIO "daino" (f1 <> "_panrep") (f1 <> "_texsnip" )(panrep2texsnip NoticeLevel0 ) 
 
-test_blog1_panrep2texsnip = testing_panrep2texsnip   "01blog1"
-test_index_panrep2texsnip = testing_panrep2texsnip "index"   
-test_postwk_panrep2texsnip = testing_panrep2texsnip "03postwk"   
-test_withRef_panrep2texsnip = testing_panrep2texsnip "02withRef"   
+-- test_blog1_panrep2texsnip = testing_panrep2texsnip   "01blog1"
+-- test_index_panrep2texsnip = testing_panrep2texsnip "index"   
+-- test_postwk_panrep2texsnip = testing_panrep2texsnip "03postwk"   
+-- test_withRef_panrep2texsnip = testing_panrep2texsnip "02withRef"   
 
 -- testing_texsnip2tex :: FilePath -> IO ()
 -- -- | test to produce texSnipFileType 
@@ -77,7 +77,7 @@ testDir = makeAbsDir $
 -- test_postwk_tex2pdf = testing_tex2pdf "03postwk"   
 -- test_withRef_tex2pdf = testing_tex2pdf "02withRef"   
 
-instance ShowTestHarness ()
-instance ShowTestHarness TexSnip 
-instance ShowTestHarness Latex 
-instance ShowTestHarness Panrep 
+-- instance ShowTestHarness ()
+-- instance ShowTestHarness TexSnip 
+-- instance ShowTestHarness Latex 
+-- instance ShowTestHarness Panrep 

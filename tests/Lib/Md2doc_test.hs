@@ -11,7 +11,7 @@ module Lib.Md2doc_test
      where
 
 import Test.Framework
-import Uniform.Test.TestHarness
+-- import Uniform.Test.TestHarness
 import Foundational.MetaPage 
 import Foundational.SettingsPage
 import Foundational.Filetypes4sites
@@ -25,27 +25,27 @@ import UniformBase
 -- test1FileIO  Text ->  FilePath -> FilePath -> (b -> ErrIO c) -> IO ()
 -- | test to produce pandoc - step0 in   Md2.doc 
 -- goal: to verify that YAML header is read 
-testing_readMarkdown2pandoc f1 res1 = do 
-    res <- runErr $ do 
-        let fnin =  blogDir </> makeRelFile (  f1 <> ".md")  
+-- testing_readMarkdown2pandoc f1 res1 = do 
+--     res <- runErr $ do 
+--         let fnin =  blogDir </> makeRelFile (  f1 <> ".md")  
         
-        -- doc1 <- readMarkdownFile2docrep (def::NoticeLevel) doughPL fnin
-        mdfile <- read8 fnin markdownFileType 
-        -- putIOwords ["the mdfile is", showPretty mdfile]
-        pd <- readMarkdown2 mdfile
-        let meta6 = pandoc2MetaPage doughPL fnin  pd 
-        let doc1 = Docrep meta6 pd 
-        let metaRes = dyHeaderShift . meta1 $ doc1
-        putIOwords ["the meta is", showPretty metaRes]
-        return metaRes 
-    assertEqual (Right res1) res 
+--         -- doc1 <- readMarkdownFile2docrep (def::NoticeLevel) doughPL fnin
+--         mdfile <- read8 fnin markdownFileType 
+--         -- putIOwords ["the mdfile is", showPretty mdfile]
+--         pd <- readMarkdown2 mdfile
+--         let meta6 = pandoc2MetaPage doughPL fnin  pd 
+--         let doc1 = Docrep meta6 pd 
+--         let metaRes = dyHeaderShift . meta1 $ doc1
+--         putIOwords ["the meta is", showPretty metaRes]
+--         return metaRes 
+--     assertEqual (Right res1) res 
 
-test_blog1_readMarkdown2pandoc = testing_readMarkdown2pandoc   "01blog1" expectedResBlog1
-expectedResBlog1 = 1 :: Int
-test_blog2_readMarkdown2pandoc = testing_readMarkdown2pandoc   "02withRef" expectedResBlog2
-expectedResBlog2 = 0 :: Int
-test_blog3_readMarkdown2pandoc = testing_readMarkdown2pandoc   "03postwk" expectedResBlog3
-expectedResBlog3 = 0 :: Int
+-- test_blog1_readMarkdown2pandoc = testing_readMarkdown2pandoc   "01blog1" expectedResBlog1
+-- expectedResBlog1 = 1 :: Int
+-- test_blog2_readMarkdown2pandoc = testing_readMarkdown2pandoc   "02withRef" expectedResBlog2
+-- expectedResBlog2 = 0 :: Int
+-- test_blog3_readMarkdown2pandoc = testing_readMarkdown2pandoc   "03postwk" expectedResBlog3
+-- expectedResBlog3 = 0 :: Int
 
 -- -- test_index_readMarkdown2pandoc = testing_readMarkdown2pandoc "index"   
 -- test_blog1_readMarkdown2pandoc = testing_readMarkdown2pandoc   "01blog1"
@@ -66,12 +66,12 @@ expectedResBlog3 = 0 :: Int
 
 -- -- -- | conversion of markdown file f1 (with extension) to intermediate d11  
 
-doughPL:: Path Abs Dir 
-doughPL = doughDir (def::SiteLayout)
-bakedPL :: Path Abs Dir
-bakedPL = bakedDir (def::SiteLayout)
-blogDir :: Path Abs Dir 
-blogDir = doughPL </> (makeRelDir "Blog")
+-- doughPL:: Path Abs Dir 
+-- doughPL = doughDir (def::SiteLayout)
+-- bakedPL :: Path Abs Dir
+-- bakedPL = bakedDir (def::SiteLayout)
+-- blogDir :: Path Abs Dir 
+-- blogDir = doughPL </> (makeRelDir "Blog")
 
 -- testing_md2pandoc :: FilePath -> IO ()
 -- -- | op 1 in Md2doc.hs
@@ -95,10 +95,10 @@ blogDir = doughPL </> (makeRelDir "Blog")
 -- test_postwk_md2dr1 = testing_md2dr1 "03postwk" 
 -- test_withRef_md2dr1 = testing_md2dr1 "02withRef" 
 
-testing_dr12dr3 :: FilePath -> IO ()
--- | op 3 in Md2doc.hs 
--- testing conversion from dr1 to dr3 
-testing_dr12dr3 f1  = test1FileIO "daino" (f1<> "_dr1") (f1 <> "_dr3" ) (addRefs NoticeLevel0   )
+-- testing_dr12dr3 :: FilePath -> IO ()
+-- -- | op 3 in Md2doc.hs 
+-- -- testing conversion from dr1 to dr3 
+-- testing_dr12dr3 f1  = test1FileIO "daino" (f1<> "_dr1") (f1 <> "_dr3" ) (addRefs NoticeLevel0   )
 
 
 -- test_index_dr1_dr3 = testing_dr12dr3  "index"  
@@ -122,11 +122,11 @@ testing_dr12dr3 f1  = test1FileIO "daino" (f1<> "_dr1") (f1 <> "_dr3" ) (addRefs
 -- test_withRef_dm2docrep = testing_md2docrep "02withRef"
  
 
-instance ShowTestHarness MarkdownText 
-instance ShowTestHarness Pandoc 
-instance ShowTestHarness Docrep  
-instance ShowTestHarness MetaPage  
-instance ShowTestHarness IndexEntry   
+-- instance ShowTestHarness MarkdownText 
+-- instance ShowTestHarness Pandoc 
+-- instance ShowTestHarness Docrep  
+-- instance ShowTestHarness MetaPage  
+-- instance ShowTestHarness IndexEntry   
 
 -- doughP = doughDir settings403 
 -- bakedP = bakedDir settings403

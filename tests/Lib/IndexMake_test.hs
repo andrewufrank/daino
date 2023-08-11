@@ -11,7 +11,7 @@
 module Lib.IndexMake_test where
 
 import Test.Framework
-import Uniform.Test.TestHarness
+-- import Uniform.Test.TestHarness
 import Lib.Md2doc_test  -- to have siteHeader (i.e. layout)
  
 import Foundational.Filetypes4sites
@@ -49,5 +49,5 @@ test_BlankAuthor_notAUF = assertEqual a2 (blankAuthorName  ["AUF", "Andrew U. Fr
     
 -- instance ShowTestHarness Docrep
 -- instance ShowTestHarness MetaPage
-instance ShowTestHarness MenuEntry 
-
+-- instance ShowTestHarness MenuEntry 
+-- 

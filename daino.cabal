@@ -111,3 +111,48 @@ executable daino6
     , uniformBase >=0.1.5.1
     , unix
   default-language: Haskell2010
+
+test-suite dainoTest
+  type: exitcode-stdio-1.0
+  main-is: testing.hs
+  other-modules:
+      Lib.Doc2html_test
+      Lib.Example_test
+      Lib.IndexCollect_test
+      Lib.IndexMake_test
+      Lib.Md2doc_test
+      Lib.Panrep2pdf_test
+      Lib.ReadSettingFile_test
+      Lib.Template_test
+      Paths_daino
+  hs-source-dirs:
+      tests
+  other-extensions:
+      OverloadedStrings
+  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-unused-imports -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      HTF
+    , ReplaceUmlaut
+    , base >4.7 && <5
+    , containers
+    , daino
+    , data-default-class
+    , deepseq
+    , dir-traverse
+    , doctemplates
+    , filepath
+    , path
+    , path-io
+    , quickcheck-text
+    , uniform-cmdLineArgs >=0.1.5.1
+    , uniform-http
+    , uniform-json >=0.1.5.2
+    , uniform-latex2pdf >=0.1.5.7
+    , uniform-pandoc >=0.1.6.3
+    , uniform-shake
+    , uniform-strings >=0.1.5.1
+    , uniform-watch
+    , uniform-webserver
+    , uniformBase
+    , unix
+  default-language: Haskell2010

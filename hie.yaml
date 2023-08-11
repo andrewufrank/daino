@@ -4,10 +4,13 @@ cradle:
       component: "lib:daino"
 
     - path: "./app/daino.hs"
-      component: "daino:exe:daino62"
+      component: "daino:exe:daino6"
 
     - path: "./app/Paths_daino.hs"
-      component: "daino:exe:daino62"
+      component: "daino:exe:daino6"
+
+    - path: "./tests"
+      component: "daino:test:dainoTest"
 
     - path: "../u4blog/uniform-cmdLineArgs/src"
       component: "lib:uniform-cmdLineArgs"
