@@ -29,14 +29,14 @@ module Wave.Md2doc (
 ) where
 
 import UniformBase
-import Uniform.MetaPlus hiding (Settings(..), ExtraValues(..)) 
+import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..)) 
 
 import Foundational.SettingsPage  
 -- import Foundational.MetaPage
 -- import Uniform.MetaStuff ( md2Meta, getValue4meta,setValue2meta)
 import Foundational.Filetypes4sites 
 -- ( Docrep(Docrep), meta1)
--- import Foundational.CmdLineFlags
+import Foundational.CmdLineFlags
 --     ( PubFlags(draftFlag, privateFlag) )
 import Uniform.Pandoc
 --     (pandocProcessCites, markdownFileType, readMarkdown2 )
@@ -59,8 +59,19 @@ readMarkdownFile2docrep debug sett3 fnin = do
 
     -- default values only what is used for citeproc and ??
     -- rest can go into settings 
+    -- these are copied from previous values (OLD below)
 
-    let defs1 = [("Bibliography", "resources/BibTexLatex.bib")] 
+    let defs1 = [("Bibliography", "resources/BibTexLatex.bib")
+                , ("version", "publish")  -- todo should probably not be default
+                ,  ("visibility", "public") 
+                 , ("title", "Title MISSING")
+                , ("abstract", "Abstract MISSING")
+                , ("data", showT year2000)
+                , ("lang", "en")  -- todo conversion? 
+                , ("latLanguage", "english") -- for babel - todo 
+                , ("styleBiber","authoryear")
+                , ("headerShift","1")
+                ] 
             -- "resources/webbiblio.bib")
     let p2 = addListOfDefaults defs1 p1
     m1 <- md2Meta_Process p2
@@ -224,36 +235,36 @@ setMetaPlus sett3 fnin m1 =  zero { metap = m1
 
 --             return (Docrep y1 p2)
 
--- filterNeeds :: NoticeLevel -> PubFlags -> Settings -> Path Rel File -> ErrIO(Maybe (Path Rel File))
--- -- ^ for md check the flags
+filterNeeds :: NoticeLevel -> PubFlags -> Settings -> Path Rel File -> ErrIO(Maybe (Path Rel File))
+-- ^ for md check the flags
 
--- filterNeeds debug pubf sett4 fn =  do 
---     when (inform debug) $ 
---         putIOwords ["filterNeeds", "\nPubFlags", showT pubf ]
---     let doughP = doughDir . siteLayout $ sett4
---     d1 <- readMarkdownFile2docrep debug sett4  (doughP </> fn) 
---     when (inform debug) $ 
---         putIOwords ["filterNeeds2", "\nMeta", showT (meta1 d1) ]
+filterNeeds debug pubf sett4 fn =  do 
+    when (inform debug) $ 
+        putIOwords ["filterNeeds", "\nPubFlags", showT pubf ]
+    let doughP = doughDir . siteLayout $ sett4
+    d1 <- readMarkdownFile2docrep debug sett4  (doughP </> fn) 
+    when (inform debug) $ 
+        putIOwords ["filterNeeds2", "\nMeta", showT (meta1 d1) ]
 
---     let t = includeBakeTest3docrep pubf (meta1 d1)
---     when (inform debug) $ 
---         putIOwords ["filterNeeds3 ", "\n t", showT t ]
---     return $ if t then Just fn else Nothing
+    let t = includeBakeTest3docrep pubf (meta1 . metap $ d1)
+    when (inform debug) $ 
+        putIOwords ["filterNeeds3 ", "\n t", showT t ]
+    return $ if t then Just fn else Nothing
 
--- meta1 :: a -> a
--- meta1 = id
+meta1 :: a -> a
+meta1 = id
 
--- -- includeBakeTest3docrep :: PubFlags -> MetaPage -> Bool 
+-- includeBakeTest3docrep :: PubFlags -> MetaPage -> Bool 
 
--- -- ^ decide whether this is to be included in the bake 
+-- ^ decide whether this is to be included in the bake 
 
--- includeBakeTest3docrep :: PubFlags -> Meta -> Bool
--- includeBakeTest3docrep pubf met2 = 
---         (draftFlag pubf || vers1 ==   "publish") 
---         -- should be less than eq
---             && (privateFlag pubf || vis1 ==  "public")
---     where
---         -- draftF = draftFlag pubf 
---         vers1 = getValue4meta met2 "version" 
---         vis1 = getValue4meta met2 "visibility" 
+includeBakeTest3docrep :: PubFlags -> Meta -> Bool
+includeBakeTest3docrep pubf met2 = 
+        (draftFlag pubf || vers1 ==   "publish") 
+        -- should be less than eq
+            && (privateFlag pubf || vis1 ==  "public")
+    where
+        -- draftF = draftFlag pubf 
+        vers1 = getValue4meta met2 "version" 
+        vis1 = getValue4meta met2 "visibility" 
 
