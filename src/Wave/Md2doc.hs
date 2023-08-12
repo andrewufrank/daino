@@ -28,6 +28,8 @@ module Wave.Md2doc (
     -- MarkdownText (..),
 ) where
 
+import Paths_daino (version)
+
 import UniformBase
 import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..)) 
 
@@ -50,10 +52,15 @@ import Uniform.Pandoc
 readMarkdownFile2docrep  :: NoticeLevel -> Settings ->  Path Abs File ->  ErrIO Docrep 
 -- read a markdown file and convert to docrep
 readMarkdownFile2docrep debug sett3 fnin = do
-    when (inform debug) $ putIOwords 
+    -- when (inform debug) $ 
+    putIOwords 
         ["readMarkdownFile2docrep fnin", showPretty fnin]
         -- place to find PandocParseError
     p1 <- readMd2pandoc fnin
+
+    putIOwords 
+        ["readMarkdownFile2docrep p1", showPretty p1]
+        
     -- check for german and process umlaut, 
     -- repeat readMd2pandoc if changed 
 
@@ -83,13 +90,16 @@ readMarkdownFile2docrep debug sett3 fnin = do
     -- let m2 = addListOfDefaults (yamlValues sett3 fnin) m1
     -- meta3 <- md2Meta_Process (Pandoc m2 p1)
 
+    putIOwords 
+        ["readMarkdownFile2docrep end mp1", showPretty mp1]
     return mp1
 
 setMetaPlus :: Settings -> Path Abs File -> Meta -> DainoMetaPlus 
 -- to move the start values into the MetaPlus 
 setMetaPlus sett3 fnin m1 =  zero { metap = m1
                    , sett = sett3
-                   , extra = zero{mdFile = s2t . toFilePath $ fnin}
+                   , extra = zero{mdFile = s2t . toFilePath $ fnin
+                                , dainoVersion = showT version}
                 --    , metaMarkdown = resBody
                 --    , metaHtml = resBodyhtml
                 --    , metaLatex = zero 

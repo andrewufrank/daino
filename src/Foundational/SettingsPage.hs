@@ -72,6 +72,7 @@ instance FromJSON Settings
 -- the extraValues will eventually go into settings
 data DainoValues = DainoValues 
                         { mdFile:: Text
+                        , dainoVersion :: Text 
                         -- , extraBakedDir :: Text
                         }
     deriving (Eq, Ord, Show, Read, Generic)
@@ -79,7 +80,7 @@ data DainoValues = DainoValues
 instance ToJSON DainoValues 
 instance FromJSON DainoValues 
 
-instance Zeros DainoValues where zero = DainoValues zero  
+instance Zeros DainoValues where zero = DainoValues zero  zero
 
 -- data SiteHeader = SiteHeader 
 --     { sitename :: FilePath 

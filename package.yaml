@@ -111,7 +111,7 @@ library:
       - src 
 
 executables:   # file names wiwth lowercase to avoid forcing Main
-  daino6:
+  daino3:
     main: daino.hs
     source-dirs: app
     dependencies: 
@@ -140,7 +140,7 @@ executables:   # file names wiwth lowercase to avoid forcing Main
 
  
 tests:
-  dainoTest:
+  dainoTest3:
     main: testing.hs
     source-dirs: tests
 

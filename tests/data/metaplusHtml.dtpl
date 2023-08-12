@@ -1,0 +1,68 @@
+
+    $-- a template to test if values are set from template 
+
+    These are all the values for htmlTufte81.dtpl
+
+lang            $metaHtml.lang$
+settingsAuthor  $sett.settingsAuthor$
+date            $metaHtml.date$
+keywords        $for(keywords)$$metaHtml.keywords$$endfor$
+image           $metaHtml.image$
+imageCaption    $metaHtml.imageCaption$
+siteBanner      $sett.siteHeader.banner$
+siteBannerCaption   $sett.siteHeader.bannerCaption$
+sitename        $sett.siteHeader.name$
+sitebyline      $sett.siteHeader.byline$
+menuitems       $for(sett.menuitems.menuNav)$ 
+                    $sett.menuitems.menuNav.navlink$
+                    $sett.menuitems.menuNav.navtext$
+                    $endfor$
+title           $metaHtml.title$
+subtitle        $metaHtml.subtitle$ 
+author          $metaHtml.author$
+table of contents   $metaHtml.table-of-contents$
+abstract        $metaHtml.abstract$
+linkpdf         $linkpdf3$
+date            $metaHtml.date$
+content         $metaHtml.body$
+menufiles       $for(menu2files)$
+                    $menu2files.link2$
+                    $menu2files.title$
+                    $menu2files.abstract$
+                    $menu2files.pdf2$
+                    $menu2files.author2$
+                    $menu2files.date2$
+                $endfor$
+
+menu2subdir     $for(menu2subdir)$ 
+                    $menu2subdir.link$
+                    $menu2subdir.title$ 
+                    $menu2subdir.abstract$ 
+                $endfor$
+
+dainoversion    $extra.dainoVersion$
+visibility      $metaHtml.visibility$
+version         $metaHtml.version$
+
+-- not in thmlTufte
+
+latLanguage     $metaHtml.latLanguage$
+styleBiber      $metaHtml.styleBiber$
+mdFile          $extra.mdFile$
+localhostPort   $sett.localhostPort$
+settingsDate    $sett.settingsDate$
+siteLayout      $sett.siteLayout.bakedDir$
+blogAuthorToSuppress 
+                $for(sett.siteLayout.blogAuthorToSuppress)$
+                        $sett.siteLayout.blogAuthorToSuppress$
+                $endfor$
+
+masterTemplateFile  $sett.siteLayout.masterTemplateFile$
+texTemplateFile     $sett.siteLayout.texTemplateFile$
+themeDir            $sett.siteLayout.themeDir$
+
+Bibliography        $metap.Bibliography.c$
+                    
+headerShitft        $metap.headerShift$
+
+-- other settings similar
