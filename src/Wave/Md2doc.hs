@@ -58,8 +58,8 @@ readMarkdownFile2docrep debug sett3 fnin = do
         -- place to find PandocParseError
     p1 <- readMd2pandoc fnin
 
-    putIOwords 
-        ["readMarkdownFile2docrep p1", showPretty p1]
+    when (inform debug) $ 
+        putIOwords ["readMarkdownFile2docrep p1", showPretty p1]
         
     -- check for german and process umlaut, 
     -- repeat readMd2pandoc if changed 
@@ -90,7 +90,8 @@ readMarkdownFile2docrep debug sett3 fnin = do
     -- let m2 = addListOfDefaults (yamlValues sett3 fnin) m1
     -- meta3 <- md2Meta_Process (Pandoc m2 p1)
 
-    putIOwords 
+    when (inform debug) $ 
+        putIOwords 
         ["readMarkdownFile2docrep end mp1", showPretty mp1]
     return mp1
 

@@ -42,7 +42,7 @@ import Foundational.MetaPage
 import GHC.Generics (Generic)
 
 import Uniform.Json ( ToJSON(toJSON), Value, ErrIO )
-import Uniform.Pandoc ( writeHtml5String2 )
+import Uniform.Pandoc  
 import Uniform.Latex
 import Uniform.Http --- out ( HTMLout )
 import UniformBase
@@ -73,17 +73,20 @@ docrep2panrep debug pubf sett4 metaplus5 = do
     --             { panyam = y1
     --             , panpan = p1
     --             }
-    -- let layout = siteLayout sett4 
-    --     hpname = blogAuthorToSuppress layout
-    --     authorReduced = blankAuthorName hpname (dyAuthor y1)
-    --     y2 = y1{dyAuthor = authorReduced}
-    
-    --     panrep2 = Panrep y2 p1
+    let layout = siteLayout . sett $ metaplus5
+        meta = metap  metaplus5
+        hpname = blogAuthorToSuppress layout
+        defaut = defaultAuthor layout
+        aut1 = getTextFromYaml6 defaut "author" meta
+        authorRed1 = blankAuthorName hpname aut1
+        metaplus6 = metaplus5{extra= (extra metaplus5){authorReduced = authorRed1}}
+        -- panrep2 = Panrep y2 p1
 
-    -- when (inform debug) $ putIOwords ["docrep2panrep"
-    --             -- , "hpname", showT hpname
-    --             -- , "\nauthorReduced", authorReduced
-    --             ]
+    when (inform debug) $ putIOwords ["docrep2panrep"
+            , showT (extra metaplus6)
+                -- , "hpname", showT hpname
+                -- , "\nauthorReduced", authorReduced
+                ]
 
     -- if isIndexPage (makeAbsFile . dyFn . panyam $ panrep2 )
     --     then do
@@ -105,6 +108,6 @@ docrep2panrep debug pubf sett4 metaplus5 = do
     --         return (panrep2{panyam = m2}, needs)
     --     else
     -- return (panrep2, [])
-    return (metaplus5, [])
+    return (metaplus6, [])
 
 

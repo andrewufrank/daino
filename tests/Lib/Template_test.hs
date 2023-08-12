@@ -20,6 +20,7 @@ import Foundational.SettingsPage
 import Foundational.CmdLineFlags
 import Foundational.MetaPage
 import Wave.Md2doc
+import Wave.Docrep2panrep
 import ShakeBake.ReadSettingFile
 import Lib.Templating
 import Lib.IndexCollect
@@ -42,27 +43,33 @@ htmlTest = makeAbsFile "/home/frank/Workspace11/daino/tests/data/metaplusHtml.dt
 
 test_templatehtml = do 
     res1 <- runErr $ do 
-        let debug = NoticeLevel2
+        let debug = NoticeLevel0
         sett3 <- readSettings debug settFn 
-        metaplus4 <- readMarkdownFile2docrep debug sett3 fnin
-        -- putIOwords ["ttesting_templatehtml metaplus4 \n", showT metaplus4]
+        metaplus1 <- readMarkdownFile2docrep debug sett3 fnin
+        when (inform debug) $ 
+            putIOwords ["ttesting_templatehtml metaplus1 \n"
+            , showT metaplus1]
 
-        -- docrep2panrep does currenty nothing
+        -- docrep2panrep does suppress author 
+        (metaplus2, needs) <- docrep2panrep debug testFlags sett3 metaplus1
         -- from panrep2htm
         htmlTempl  <- compileTemplateFile2 htmlTest
 
-        htm1 <- meta2xx writeHtml5String2 (metap metaplus4)
-        let metaplus5 = metaplus4{metaHtml = htm1}
+        htm1 <- meta2xx writeHtml5String2 (metap metaplus2)
+        let metaplus5 = metaplus2{metaHtml = htm1}
 
-        putIOwords ["testing_templatehtml metaplus5 \n"
+        when (inform debug) $ 
+            putIOwords ["testing_templatehtml metaplus5 \n"
                     -- , showPretty . toJSON $ metaplus5
                     , showPretty  metaplus5
                     ]
 
         let hpl1 = renderTemplate htmlTempl (toJSON metaplus5)  -- :: Doc Text
-        -- putIOwords ["testing_templatehtmltpl1 \n", showT tpl1]
+        when (inform debug) $
+            putIOwords ["testing_templatehtml hpl1 \n", showT hpl1]
         let ht1 = render (Just 50) hpl1  -- line length, can be Nothing
-        putIOwords ["testing_templatehtml ht1 \n", ht1]
+        when (inform debug) $
+            putIOwords ["testing_templatehtml ht1 \n", ht1]
 
         return ht1
 

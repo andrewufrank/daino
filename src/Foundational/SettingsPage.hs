@@ -73,6 +73,7 @@ instance FromJSON Settings
 data DainoValues = DainoValues 
                         { mdFile:: Text
                         , dainoVersion :: Text 
+                        , authorReduced :: Text
                         -- , extraBakedDir :: Text
                         }
     deriving (Eq, Ord, Show, Read, Generic)
@@ -128,7 +129,7 @@ example1 = DainoMetaPlus {
     metaHtml = fromList [("Bibliography","resources/BibTexLatex.bib"),("abstract","ix-Abstract <em>of</em> Book"),("bibliography","resources/BibTexLatex.bib"),("body","<h1 id=\"ix-hl1-title\">ix-hl1 Title</h1>\n<p>ix-Introductory text for book.</p>"),("book","booklet"),("data","2000-01-01 00:00:00 UTC"),("date","2023-03-31"),("headerShift","1"),("keywords","exampleKeyword exampleKeyword2"),("lang","en"),("latLanguage","english"),("styleBiber","authoryear"),("title","ix-Title of Book"),("version","publish"),("visibility","public")], metaLatex = fromList []}
 -}
 
-instance Zeros DainoValues where zero = DainoValues zero  zero
+instance Zeros DainoValues where zero = DainoValues zero  zero zero
 
 -- data SiteHeader = SiteHeader 
 --     { sitename :: FilePath 
@@ -225,7 +226,4 @@ blankAuthorName names current =
     if current `elem` names 
         then zero 
         else current 
-
-
-
 
