@@ -43,14 +43,14 @@ import GHC.Generics (Generic)
 
 import Uniform.Json ( ToJSON(toJSON), Value, ErrIO )
 import Uniform.Pandoc  
-import Uniform.Latex
-import Uniform.Http --- out ( HTMLout )
+import Uniform.Latex()
+import Uniform.Http () --- out ( HTMLout )
 import UniformBase
 
 import Data.Maybe (fromMaybe)
 
 -- import Lib.IndexMake ( convertIndexEntries, MenuEntry )
-import Lib.IndexCollect -- ( completeIndex )
+import Lib.IndexCollect ( completeIndex ) 
 -- import Lib.Templating ( putValinMaster )
 
 ------------------------------------------------docrep -> panrep
@@ -73,12 +73,12 @@ docrep2panrep debug pubf sett4x metaplus5 = do
     --             { panyam = y1  -- meta
     --             , panpan = p1
     --             }
-    let sett4 = sett metaplus 
+    let sett4 = sett metaplus5 
         layout = siteLayout sett4
         meta5 = metap  metaplus5 -- ~ panyam 
         hpname = blogAuthorToSuppress layout
         defaut = defaultAuthor layout
-        aut1 = getTextFromYaml6 defaut "author" meta
+        aut1 = getTextFromYaml6 defaut "author" meta5
         extra5 = extra metaplus5
         extra6 = extra5{authorReduced = blankAuthorName hpname aut1}
 
@@ -90,17 +90,17 @@ docrep2panrep debug pubf sett4x metaplus5 = do
                 -- , "\nauthorReduced", authorReduced
                 ]
 
-    if isIndexPage (makeAbsFile . mdFile $ extra6)
+    if isIndexPage (makeAbsFile . t2s .mdFile $ extra6)
         then do 
             let ix1 = zero{ixfn= t2s $ mdFile extra6}
                 doughP = doughDir layout 
-                ixSort = getTextFromYaml6 "filename" "IndexSort" meta 
+                ixSort = getTextFromYaml6 "filename" "IndexSort" meta5
 
-            ix2 <- completeIndex debug pubf sett4 doughP ixSort ix1
+            ix2 <- completeIndex debug pubf sett4 doughP (Just ixSort) ix1
 
             let extra7 = extra6{indexEntry = ix2}
-
-            let needs :: [FilePath] = map ixfn ixs 
+                ixs = dirEntries  ix2 ++ fileEntries ix2
+                needs :: [FilePath] = map ixfn ixs 
 
             when (inform debug) $
                 putIOwords ["\n extra7------------------------docrep2panrep end if"

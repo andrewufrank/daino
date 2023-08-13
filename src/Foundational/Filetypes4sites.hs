@@ -25,7 +25,7 @@ module Foundational.Filetypes4sites (
 import Uniform.Json (FromJSON, ToJSON, Value)
 import Uniform.Pandoc  
 import UniformBase
-import Foundational.MetaPage ( MetaPage, extPDF )
+import Foundational.MetaPage  
 import Foundational.SettingsPage ( DainoMetaPlus )
 -- import Wave.Md2doc (pandoc2docrep)
 

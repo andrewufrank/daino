@@ -43,50 +43,50 @@ import Uniform.HTMLout (extHTML)
 -- the fields in the yaml header of each md file 
 -- maybe values can be empty
 
-data MetaPage = MetaPage
-    { -- | the original dough fn
-      dyFn :: FilePath
-    , -- | the relative filename
-      -- relative to the browser origin
-      -- set in ? initializeIndex
-      dyLink :: FilePath
-     -- | the fields of miniblog
-    , dyLang :: Text -- DocLanguage not used yet 
-    , dyTitle :: Text  -- must be set 
-    , dyAbstract :: Text -- must be set 
-    , dyAuthor :: Text  -- default ?
-    , -- | this is maybe a string,
-      --  should be utctime
-      dyDate :: Maybe Text -- must be set 
-    , dyKeywords :: Text -- should be [Text] 
-    , dyImage ::  Text  -- empty if nothing given
-    , dyImageCaption :: Text 
-    , dyBibliography :: Maybe Text
-    -- a bibliography is trigger to process
-    , dyStyle :: Maybe Text
-    , dyStyleBiber :: Text
-    , dyReferences :: Maybe Value --  [Reference]
-    -- when references are given in markdown text
-    , dyReference_section_title :: Text 
-            --set default always, suppressed when not needed
-    , dyContentFiles :: [Text] -- the list of md files to include 
-    , dyNoCite :: Maybe Text
-    , dyBook :: Text -- "booklet" to produce collection pdf
-    , dyVersion ::  Text -- should be "publish"
-    , dyVisibility ::  Text -- should be "public"
-    -- , dyIndexPage :: Bool
-    , dyIndexSort :: Maybe Text
-    , dyIndexEntry :: IndexEntry
-    -- , dyDirEntries   :: [IndexEntry]  -- reduce to one for indexEntry
-    -- , dyFileEntries  :: [IndexEntry]
-    -- is defined later, necessary here?
-    , dyDoNotReplace:: [Text]
-    , dyHeaderShift :: Int -- pandoc seems not to parse int in the yaml, mark, values    'zero' or 'one' 
-    -- shift the header level, such that one # is hl2,
-    -- because hl1 is title
-    }
-    deriving (Show, Eq, Generic, Zeros, Read) -- ord missing for references
-instance Zeros Integer where zero = 0
+-- data MetaPage = MetaPage
+--     { -- | the original dough fn
+--       dyFn :: FilePath
+--     , -- | the relative filename
+--       -- relative to the browser origin
+--       -- set in ? initializeIndex
+--       dyLink :: FilePath
+--      -- | the fields of miniblog
+--     , dyLang :: Text -- DocLanguage not used yet 
+--     , dyTitle :: Text  -- must be set 
+--     , dyAbstract :: Text -- must be set 
+--     , dyAuthor :: Text  -- default ?
+--     , -- | this is maybe a string,
+--       --  should be utctime
+--       dyDate :: Maybe Text -- must be set 
+--     , dyKeywords :: Text -- should be [Text] 
+--     , dyImage ::  Text  -- empty if nothing given
+--     , dyImageCaption :: Text 
+--     , dyBibliography :: Maybe Text
+--     -- a bibliography is trigger to process
+--     , dyStyle :: Maybe Text
+--     , dyStyleBiber :: Text
+--     , dyReferences :: Maybe Value --  [Reference]
+--     -- when references are given in markdown text
+--     , dyReference_section_title :: Text 
+--             --set default always, suppressed when not needed
+--     , dyContentFiles :: [Text] -- the list of md files to include 
+--     , dyNoCite :: Maybe Text
+--     , dyBook :: Text -- "booklet" to produce collection pdf
+--     , dyVersion ::  Text -- should be "publish"
+--     , dyVisibility ::  Text -- should be "public"
+--     -- , dyIndexPage :: Bool
+--     , dyIndexSort :: Maybe Text
+--     , dyIndexEntry :: IndexEntry
+--     -- , dyDirEntries   :: [IndexEntry]  -- reduce to one for indexEntry
+--     -- , dyFileEntries  :: [IndexEntry]
+--     -- is defined later, necessary here?
+--     , dyDoNotReplace:: [Text]
+--     , dyHeaderShift :: Int -- pandoc seems not to parse int in the yaml, mark, values    'zero' or 'one' 
+--     -- shift the header level, such that one # is hl2,
+--     -- because hl1 is title
+--     }
+--     deriving (Show, Eq, Generic, Zeros, Read) -- ord missing for references
+-- instance Zeros Integer where zero = 0
 
 -- instance Default MetaPage where
 --     -- how is this used - defaults are set in pandoc2MetaPage
@@ -116,17 +116,17 @@ instance Zeros Integer where zero = 0
 --             , dyHeaderShift = zero 
 --             }
 
-docyamlOptions :: Options
-docyamlOptions =
-    defaultOptions
-        { fieldLabelModifier = t2s . toLowerStart . s2t . drop 2
-        }
+-- docyamlOptions :: Options
+-- docyamlOptions =
+--     defaultOptions
+--         { fieldLabelModifier = t2s . toLowerStart . s2t . drop 2
+--         }
 
-instance ToJSON MetaPage where
-    toJSON = genericToJSON docyamlOptions
+-- instance ToJSON MetaPage where
+--     toJSON = genericToJSON docyamlOptions
 
-instance FromJSON MetaPage where
-    parseJSON = genericParseJSON docyamlOptions
+-- instance FromJSON MetaPage where
+--     parseJSON = genericParseJSON docyamlOptions
 
 -- pandoc2MetaPage::  Settings ->  Path Abs File  -> Pandoc -> MetaPage
 -- -- removed most default values, left only for image and caption, keywords
@@ -217,8 +217,8 @@ instance FromJSON MetaPage where
 -- 
 --             }
 
--- isIndexPage :: Path Abs File -> Bool 
--- isIndexPage filename =  getNakedFileName filename == "index"
+isIndexPage :: Path Abs File -> Bool 
+isIndexPage filename =  getNakedFileName filename == "index"
 
 -- convertLink2html ix = s2t . -- s2t . toFilePath $ 
 --           setExtension (unExtension extHTML)   $ link ix

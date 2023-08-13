@@ -152,13 +152,13 @@ getFile2index debug pubf sett4   fnin =
         -- -- could perhaps "need" all ix as files?
 
         -- let (Docrep y1 _) = pandoc2docrep doughP fnin pd
-        (Docrep y1 _) <- readMarkdownFile2docrep debug sett4  fnin 
+        metaplus_y1 <- readMarkdownFile2docrep debug sett4  fnin 
         -- needs the indexentry initialized
         -- does include the DNB files, bombs with ff ligature
-        let incl = includeBakeTest3docrep pubf y1
+        let incl = includeBakeTest3docrep pubf (metap metaplus_y1)
         
         if incl then do
-            let ix1 :: IndexEntry2 =  dyIndexEntry y1
+            let ix1 :: IndexEntry2 =  indexEntry . extra $ metaplus_y1 -- dyIndexEntry y1
             when (inform debug) $ putIOwords ["getFile2index ix1", showPretty ix1]
             return . Just $ ix1
                         
