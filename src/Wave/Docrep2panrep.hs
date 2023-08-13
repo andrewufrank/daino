@@ -63,35 +63,61 @@ import Lib.IndexCollect -- ( completeIndex )
 
 
 docrep2panrep :: NoticeLevel -> PubFlags -> Settings -> Docrep -> ErrIO (Panrep, [FilePath])
-docrep2panrep debug pubf sett4 metaplus5 = do
+docrep2panrep debug pubf sett4x metaplus5 = do
     when (inform debug) $
         putIOwords ["\n\ty1,p1-------------------------docrep2panrep"
                 -- , "\ny1: ", showT y1
                 -- , "\np1: ", showT p1
                 ]
 --     -- let pr = Panrep
-    --             { panyam = y1
+    --             { panyam = y1  -- meta
     --             , panpan = p1
     --             }
-    let layout = siteLayout . sett $ metaplus5
-        meta = metap  metaplus5
+    let sett4 = sett metaplus 
+        layout = siteLayout sett4
+        meta5 = metap  metaplus5 -- ~ panyam 
         hpname = blogAuthorToSuppress layout
         defaut = defaultAuthor layout
         aut1 = getTextFromYaml6 defaut "author" meta
-        authorRed1 = blankAuthorName hpname aut1
-        metaplus6 = metaplus5{extra= (extra metaplus5){authorReduced = authorRed1}}
+        extra5 = extra metaplus5
+        extra6 = extra5{authorReduced = blankAuthorName hpname aut1}
+
         -- panrep2 = Panrep y2 p1
 
     when (inform debug) $ putIOwords ["docrep2panrep"
-            , showT (extra metaplus6)
+            , showT extra6
                 -- , "hpname", showT hpname
                 -- , "\nauthorReduced", authorReduced
                 ]
 
+    if isIndexPage (makeAbsFile . mdFile $ extra6)
+        then do 
+            let ix1 = zero{ixfn= t2s $ mdFile extra6}
+                doughP = doughDir layout 
+                ixSort = getTextFromYaml6 "filename" "IndexSort" meta 
+
+            ix2 <- completeIndex debug pubf sett4 doughP ixSort ix1
+
+            let extra7 = extra6{indexEntry = ix2}
+
+            let needs :: [FilePath] = map ixfn ixs 
+
+            when (inform debug) $
+                putIOwords ["\n extra7------------------------docrep2panrep end if"
+                , showPretty extra7
+                , "needs", showT needs]
+
+            return (metaplus5{extra=extra7}, needs)
+        else
+            return (metaplus5{extra=extra6}, [])
+-- return (metaplus6, [])
+
+
+-- old 
     -- if isIndexPage (makeAbsFile . dyFn . panyam $ panrep2 )
     --     then do
     -- -- if dyIndexPage . panyam $ pr
-    --         let m1 = panyam panrep2
+    --         let m1 = panyam panrep2  -- meta
     --         let ix1 =dyIndexEntry  m1
     --         -- let bakedP = bakedDir layout
     --         let doughP = doughDir layout
@@ -99,15 +125,3 @@ docrep2panrep debug pubf sett4 metaplus5 = do
     --         -- todo put ix2 into pr
     --         let m2 = m1{dyIndexEntry = ix2}
     --         let ixs = dirEntries  ix2 ++ fileEntries ix2
-    --         let needs :: [FilePath] = map ixfn ixs 
-    --         when (inform debug) $
-    --             putIOwords ["\n\tm2------------------------docrep2panrep end if"
-    --             , showT m2
-    --             , "needs", showT needs]
-
-    --         return (panrep2{panyam = m2}, needs)
-    --     else
-    -- return (panrep2, [])
-    return (metaplus6, [])
-
-

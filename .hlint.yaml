@@ -42,6 +42,7 @@
 - ignore: {name: "Use empty"}
 - ignore: {name: "Multi Cradle: No prefixes matched"}
 - ignore: {name: "Use newtype instead of data"}
+- ignore: {name: "Avoid reverse"}
 
 
 # Specify additional command line arguments

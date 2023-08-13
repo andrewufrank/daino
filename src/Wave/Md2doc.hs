@@ -42,7 +42,7 @@ import Foundational.CmdLineFlags
 --     ( PubFlags(draftFlag, privateFlag) )
 import Uniform.Pandoc
 --     (pandocProcessCites, markdownFileType, readMarkdown2 )
--- import Uniform.Latex
+import Uniform.Latex
 -- import Lib.FileHandling
 -- import Lib.OneMDfile
 -- import Foundational.MetaPage (MetaPage(dyDoNotReplace))
@@ -78,6 +78,7 @@ readMarkdownFile2docrep debug sett3 fnin = do
                 , ("latLanguage", "english") -- for babel - todo 
                 , ("styleBiber","authoryear")
                 , ("headerShift","1")
+                -- , ("indexPagg", False) detect from name 'index.md'
                 ] 
             -- "resources/webbiblio.bib")
     let p2 = addListOfDefaults defs1 p1
@@ -100,7 +101,10 @@ setMetaPlus :: Settings -> Path Abs File -> Meta -> DainoMetaPlus
 setMetaPlus sett3 fnin m1 =  zero { metap = m1
                    , sett = sett3
                    , extra = zero{mdFile = s2t . toFilePath $ fnin
-                                , dainoVersion = showT version}
+                                , dainoVersion = showT version
+                                , latLanguage = latexLangConversion 
+                                    (getTextFromYaml6 "lang" "en-US" m1)
+                                     }
                 --    , metaMarkdown = resBody
                 --    , metaHtml = resBodyhtml
                 --    , metaLatex = zero 

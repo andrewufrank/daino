@@ -31,6 +31,7 @@ import Data.Default.Class ( Default(def) ) -- to define a default class for site
 import Uniform.Json ( FromJSON, ToJSON (toJSON), fromJSON )
 import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..))
 import qualified Data.Map as M
+import Uniform.Latex
 
 import Path (parent)
 progName, progTitle :: Text
@@ -71,15 +72,46 @@ instance FromJSON Settings
 
 -- the extraValues will eventually go into settings
 data DainoValues = DainoValues 
-                        { mdFile:: Text
+                        { mdFile:: Text -- abs file path 
+                        , indexEntry :: IndexEntry2 
                         , dainoVersion :: Text 
+                        , latLanguage :: Text 
                         , authorReduced :: Text
                         -- , extraBakedDir :: Text
                         }
     deriving (Eq, Ord, Show, Read, Generic)
-    
+
+
+instance Zeros DainoValues where 
+    zero = DainoValues zero  zero zero  zero zero   
 instance ToJSON DainoValues 
 instance FromJSON DainoValues 
+
+-- this was defined in uniform-latex 
+-- there renamed to indexEntryRenamed 
+
+data IndexEntry2 = IndexEntry2 
+    { -- | the abs file path
+      ixfn :: FilePath -- Path Abs File
+    , -- | the link for this page (relative to web root)}
+      link :: FilePath -- Path Rel File
+    , title :: Text
+    , abstract :: Text
+    , author :: Text
+    , date :: Text
+    , content :: Text   -- in latex style, only filled bevore use
+    -- , publish :: Maybe Text
+    -- , indexPage :: Bool
+    , dirEntries :: [IndexEntry2] -- def []
+    , fileEntries :: [IndexEntry2] -- def []
+    , headerShift :: Int   
+    } deriving (Show, Read, Eq, Ord, Generic, Zeros)
+    --  IndexTitleSubdirs | IndexTitleFiles 
+
+-- instance Zeros IndexEntry2 where zero = IndexEntry2 zero zero zero zero zero zero zero zero zero
+
+instance ToJSON IndexEntry2
+instance FromJSON IndexEntry2
 
 {-
 example1 :: MetaPlus 
@@ -129,7 +161,6 @@ example1 = DainoMetaPlus {
     metaHtml = fromList [("Bibliography","resources/BibTexLatex.bib"),("abstract","ix-Abstract <em>of</em> Book"),("bibliography","resources/BibTexLatex.bib"),("body","<h1 id=\"ix-hl1-title\">ix-hl1 Title</h1>\n<p>ix-Introductory text for book.</p>"),("book","booklet"),("data","2000-01-01 00:00:00 UTC"),("date","2023-03-31"),("headerShift","1"),("keywords","exampleKeyword exampleKeyword2"),("lang","en"),("latLanguage","english"),("styleBiber","authoryear"),("title","ix-Title of Book"),("version","publish"),("visibility","public")], metaLatex = fromList []}
 -}
 
-instance Zeros DainoValues where zero = DainoValues zero  zero zero
 
 -- data SiteHeader = SiteHeader 
 --     { sitename :: FilePath 
