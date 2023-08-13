@@ -48,7 +48,7 @@ test_templatehtml = do
         metaplus1 <- readMarkdownFile2docrep debug sett3 fnin
         when (inform debug) $ 
             putIOwords ["ttesting_templatehtml metaplus1 \n"
-            , showT metaplus1]
+            , showPretty metaplus1]
 
         -- docrep2panrep does suppress author 
         (metaplus2, needs) <- docrep2panrep debug testFlags sett3 metaplus1
