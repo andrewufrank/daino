@@ -25,6 +25,7 @@ import Data.Hash
 fnmd1 = makeAbsFile "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
 resdocrep = makeAbsFile"/home/frank/tests/panrep1"
 
+
 test_toPanrep = do 
     res1 <- runErr $ do 
         metaplus5 <- setup_md2metaplus fnmd1 

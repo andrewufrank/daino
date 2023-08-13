@@ -63,7 +63,8 @@ import Lib.Templating
 -- siteHeader (sett3, above sett3) is the content of the settingsN.yml file
 -- added here the transformations to tufte sidenotes (from pandoc-sidenotes)
 panrep2html :: NoticeLevel -> Settings -> Panrep -> ErrIO HTMLout
-panrep2html debug  sett3 metaplus4 = do
+panrep2html debug  sett3x metaplus4 = do
+    let sett3 = sett metaplus4
     let mf = masterTemplateFile $ siteLayout sett3
     -- let mfn = templatesDir layout </> mf
     let masterfn = templatesDir (siteLayout sett3) </> mf
