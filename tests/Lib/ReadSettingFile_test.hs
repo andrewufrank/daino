@@ -92,7 +92,7 @@ programName = "daino"
 -- as long as path and prettyprint do not parse 
 -- produce error 
 
-settings1 = zero :: Settings 
+-- settings1 = zero :: Settings 
     -- Right (Settings {siteLayout = SiteLayout {themeDir = Path Abs Dir /home/frank/Workspace11/daino/docs/theme/, doughDir = Path Abs Dir /home/frank/Workspace11/daino/docs/site/dough/, bakedDir = Path Abs Dir /home/frank/Workspace11/daino/docs/site/baked/, masterTemplateFile = Path Rel File master5.dtpl}, localhostPort = 3000, settingsAuthor = "Author of Settings", settingsDate = "2019-01-01", siteHeader = SiteHeader {sitename = "siteNameExample", byline = "siteByLineExample", banner = "/templates/img/symmetricGeras2.jpg"}, menu = [MenuItem {navlink = "/Blog/index.html", navtext = "Blog"},MenuItem {navlink = "/PublicationList/index.html", navtext = "Publications"},MenuItem {navlink = "/dainodesign/index.html", navtext = "daino Documentation"}]})
 
 -- instance ShowTestHarness (Path Abs File)

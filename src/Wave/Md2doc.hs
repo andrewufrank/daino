@@ -100,9 +100,10 @@ setMetaPlus :: Settings -> Path Abs File -> Meta -> DainoMetaPlus
 -- to move the start values into the MetaPlus 
 setMetaPlus sett3 fnin m1 =  zero { metap = m1
                    , sett = sett3
-                   , extra = zero{mdFile = s2t . toFilePath $ fnin
-                                , dainoVersion = showT version
-                                , latLanguage = latexLangConversion 
+                   , extra = zero{
+                        mdFile = s2t . toFilePath $ fnin
+                        , dainoVersion = showT version
+                        , latLanguage = latexLangConversion 
                                     (getTextFromYaml6 "lang" "en-US" m1)
                                      }
                 --    , metaMarkdown = resBody

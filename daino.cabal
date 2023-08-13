@@ -116,7 +116,8 @@ test-suite dainoTest3
   type: exitcode-stdio-1.0
   main-is: testing.hs
   other-modules:
-      Lib.Doc2html_test
+      Lib.Docrep2panrep_test
+      Lib.Example_test
       Lib.IndexCollect_test
       Lib.IndexMake_test
       Lib.Md2doc_test
@@ -136,6 +137,7 @@ test-suite dainoTest3
     , containers
     , daino
     , data-default-class
+    , data-hash
     , deepseq
     , dir-traverse
     , doctemplates

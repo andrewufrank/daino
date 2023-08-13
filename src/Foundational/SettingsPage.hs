@@ -73,6 +73,7 @@ instance FromJSON Settings
 -- the extraValues will eventually go into settings
 data DainoValues = DainoValues 
                         { mdFile:: Text -- abs file path 
+                        -- , mdRelPath :: Text -- rel file path
                         , indexEntry :: IndexEntry2 
                         , dainoVersion :: Text 
                         , latLanguage :: Text 

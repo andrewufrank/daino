@@ -18,9 +18,32 @@ import Foundational.Filetypes4sites
 import Wave.Md2doc
 import Uniform.Markdown
 import Uniform.Pandoc
--- import Uniform.Json
+-- import Uniform.MetaPlus
 import UniformBase
 -- import Lib.IndexCollect
+import ShakeBake.ReadSettingFile
+import Data.Hash
+setup_md2metaplus fn = do 
+        let debug = NoticeLevel0
+        sett3 <- readSettings debug settFn 
+        metaplus1 <- readMarkdownFile2docrep debug sett3 fn
+        return metaplus1
+
+
+settFn = makeAbsFile "/home/frank/Workspace11/daino/settings3.yaml"
+fnmd = makeAbsFile "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
+resdocrep = makeAbsFile"/home/frank/tests/docrep1"
+
+test_md2docrep = do 
+    res1 <- runErr $ do 
+        dr <- setup_md2metaplus fnmd 
+        write8 resdocrep docrepFileType dr
+        let hash1 = show . hash . show $  dr :: String
+        return hash1
+
+    assertEqual (Right "Hash {asWord64 = 4522297612839144805}") 
+        res1
+
 
 -- test1FileIO  Text ->  FilePath -> FilePath -> (b -> ErrIO c) -> IO ()
 -- | test to produce pandoc - step0 in   Md2.doc 

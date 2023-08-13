@@ -12,9 +12,10 @@ module Main where      -- must have Main (main) or Main where
 
 import     Test.Framework
 
-import    {-@ HTF_TESTS @-}        Lib.Template_test
+import    {-@ HTF_TESTS @-}        Lib.Md2doc_test
+import    {-@ HTF_TESTS @-}        Lib.Docrep2panrep_test
+-- import    {-@ HTF_TESTS @-}        Lib.Template_test
 -- import    {-@ HTF_TESTS @-}        Lib.ReadSettingFile_test
--- import    {-@ HTF_TESTS @-}        Lib.Md2doc_test
 
 -- import    {-@ HTF_TESTS @-}        Lib.IndexCollect_test
 -- -- --                 -- braucht md2doc zuerst

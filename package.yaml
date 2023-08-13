@@ -156,5 +156,6 @@ tests:
       - uniformBase
       # - uniform-convenience
       - daino
+      - data-hash
       # - shake  # from error
     

@@ -44,6 +44,7 @@ import GHC.Generics (Generic)
 import Uniform.Json ( ToJSON(toJSON), Value, ErrIO )
 import Uniform.Pandoc  
 import Uniform.Latex()
+import Uniform.Shake
 import Uniform.Http () --- out ( HTMLout )
 import UniformBase
 
@@ -65,8 +66,9 @@ import Lib.IndexCollect ( completeIndex )
 docrep2panrep :: NoticeLevel -> PubFlags -> Settings -> Docrep -> ErrIO (Panrep, [FilePath])
 docrep2panrep debug pubf sett4x metaplus5 = do
     when (inform debug) $
-        putIOwords ["\n\ty1,p1-------------------------docrep2panrep"
-                -- , "\ny1: ", showT y1
+        putIOwords 
+            ["-------------------------docrep2panrep"
+             , "metaplus: \n", showPretty metaplus5
                 -- , "\np1: ", showT p1
                 ]
 --     -- let pr = Panrep
@@ -92,7 +94,11 @@ docrep2panrep debug pubf sett4x metaplus5 = do
 
     if isIndexPage (makeAbsFile . t2s .mdFile $ extra6)
         then do 
-            let ix1 = zero{ixfn= t2s $ mdFile extra6}
+            let mdfn = makeAbsFile . t2s $ mdFile extra6 
+                relfn = makeRelativeP doughP mdfn
+                ix1 = zero{ixfn= toFilePath mdfn
+                           , link = toFilePath relfn 
+                            }
                 doughP = doughDir layout 
                 ixSort = getTextFromYaml6 "filename" "IndexSort" meta5
 

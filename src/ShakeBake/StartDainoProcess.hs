@@ -42,7 +42,7 @@ import Path.IO (resolveDir, getHomeDir)
 
 dainoProcess :: NoticeLevel -> PubFlags -> ErrIO ()
 dainoProcess debug1 flags = do
-    let debug1 = NoticeLevel2
+    -- let debug1 = NoticeLevel2
     putIOwords ["dainoProcess 0 debug flags", showT debug1, showT flags]
     let useTestSite = (testFlag flags || testNewFlag flags)
     putIOwords ["dainoProcess 1 useTestSite", showT useTestSite]

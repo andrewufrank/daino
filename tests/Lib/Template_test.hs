@@ -31,10 +31,10 @@ import Uniform.Json
 import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..))
 import Lib.Templating
 import UniformBase
-
+import Lib.Md2doc_test
 -- test_exampleTrue = assertEqual 0 0
 
-settFn = makeAbsFile "/home/frank/Workspace11/daino/settings3.yaml"
+-- settFn = makeAbsFile "/home/frank/Workspace11/daino/settings3.yaml"
 fnin = makeAbsFile "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
 htmlTest = makeAbsFile "/home/frank/Workspace11/daino/tests/data/metaplusHtml.dtpl"
 -- "/home/frank/Workspace11/u4blog/uniform-pandoc/resources/metaplusHtml.dtpl"
