@@ -30,60 +30,31 @@ test_toPanrep = do
     res1 <- runErr $ do 
         metaplus5 <- setup_md2metaplus fnmd1 
 
-        pr <- docrep2panrep NoticeLevel2 def zero metaplus5
-        putIOwords ["test_toPanrep pr \n", showPretty pr]
+        pr <- docrep2panrep NoticeLevel0 def zero metaplus5
+        -- putIOwords ["test_toPanrep pr \n", showPretty pr]
         let hash1 = show . hash . show $  pr :: String
         return hash1
 
-    assertEqual (Right "Hash {asWord64 = 1964609469859751127}") 
+    assertEqual (Right "Hash {asWord64 = 14153968531146367287}") 
         res1
 
 
 extra7 = DainoValues ------------------------docrep2panrep end if DainoValues
   { mdFile = "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
+  , mdRelPath = "ReadMe/index.md"
   , indexEntry =
       IndexEntry2
-        { ixfn = "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
-        , link = "ReadMe/index.md"
-        , title = ""
-        , abstract = ""
-        , author = ""
-        , date = ""
-        , content = ""
-        , dirEntries = []
+        { dirEntries = []
         , fileEntries =
-            [ IndexEntry2
-                { ixfn = ""
-                , link = ""
-                , title = ""
-                , abstract = ""
-                , author = ""
-                , date = ""
-                , content = ""
-                , dirEntries = []
-                , fileEntries = []
-                , headerShift = 0
-                }
-            , IndexEntry2
-                { ixfn = ""
-                , link = ""
-                , title = ""
-                , abstract = ""
-                , author = ""
-                , date = ""
-                , content = ""
-                , dirEntries = []
-                , fileEntries = []
-                , headerShift = 0
-                }
+            [ "/home/frank/Workspace11/dainoSite/ReadMe/03tree.md"
+            , "/home/frank/Workspace11/dainoSite/ReadMe/02alltxt.md"
             ]
-        , headerShift = 0
         }
   , dainoVersion =
       "Version {versionBranch = [0,1,5,6,3], versionTags = []}"
   , latLanguage = "english"
   , authorReduced = ""
-  }  
+  } 
 
 
 -- not working ok, because the file names are not corresponding

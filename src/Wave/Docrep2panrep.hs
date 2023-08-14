@@ -26,7 +26,7 @@
             -fno-warn-unused-imports
             -fno-warn-unused-matches #-}
 
- 
+
 module Wave.Docrep2panrep (
     module Wave.Docrep2panrep,
 ) where
@@ -34,7 +34,7 @@ module Wave.Docrep2panrep (
 import Foundational.Filetypes4sites
     -- ( Docrep(Docrep), Panrep(Panrep, panyam) )
 import Foundational.SettingsPage
- 
+
 import Foundational.CmdLineFlags ( PubFlags )
 
 import Foundational.MetaPage
@@ -42,7 +42,7 @@ import Foundational.MetaPage
 import GHC.Generics (Generic)
 
 import Uniform.Json ( ToJSON(toJSON), Value, ErrIO )
-import Uniform.Pandoc  
+import Uniform.Pandoc
 import Uniform.Latex()
 import Uniform.Shake
 import Uniform.Http () --- out ( HTMLout )
@@ -51,7 +51,7 @@ import UniformBase
 import Data.Maybe (fromMaybe)
 
 -- import Lib.IndexMake ( convertIndexEntries, MenuEntry )
-import Lib.IndexCollect ( collectIndex ) 
+import Lib.IndexCollect ( collectIndex )
 -- import Lib.Templating ( putValinMaster )
 
 ------------------------------------------------docrep -> panrep
@@ -66,7 +66,7 @@ import Lib.IndexCollect ( collectIndex )
 docrep2panrep :: NoticeLevel -> PubFlags -> Settings -> Docrep -> ErrIO (Panrep, [FilePath])
 docrep2panrep debug pubf sett4x metaplus5 = do
     when (inform debug) $
-        putIOwords 
+        putIOwords
             ["-------------------------docrep2panrep"
              , "metaplus: \n", showPretty metaplus5
                 -- , "\np1: ", showT p1
@@ -75,13 +75,16 @@ docrep2panrep debug pubf sett4x metaplus5 = do
     --             { panyam = y1  -- meta
     --             , panpan = p1
     --             }
-    let sett4 = sett metaplus5 
+    let sett4 = sett metaplus5
         layout = siteLayout sett4
         meta5 = metap  metaplus5 -- ~ panyam 
+        extra5 = extra metaplus5
         hpname = blogAuthorToSuppress layout
+        mdFile5 = makeAbsFile $ mdFile extra5
+        mdFileDir =   makeAbsDir $ getParentDir mdFile5 :: Path Abs Dir
+        doughP = doughDir layout
         defaut = defaultAuthor layout
         aut1 = getTextFromYaml6 defaut "author" meta5
-        extra5 = extra metaplus5
         extra6 = extra5{authorReduced = blankAuthorName hpname aut1}
 
         -- panrep2 = Panrep y2 p1
@@ -92,29 +95,29 @@ docrep2panrep debug pubf sett4x metaplus5 = do
                 -- , "\nauthorReduced", authorReduced
                 ]
 
-    if isIndexPage (makeAbsFile . t2s .mdFile $ extra6)
-        then do 
-            let mdfn = makeAbsFile . t2s $ mdFile extra6 
-                relfn = makeRelativeP doughP mdfn
-                ix1 = zero{ixfn= toFilePath mdfn
-                           , link = toFilePath relfn 
-                            }
-                doughP = doughDir layout 
-                ixSort = getTextFromYaml6 "filename" "IndexSort" meta5
+    if isIndexPage mdFile5
+        then do
+            -- let mdfn =  mdFile extra6 
+            --     relfn = makeRelativeP doughP mdfn
+            --     -- ix1 = zero{ixfn= toFilePath mdfn
+            --     --            , link = toFilePath relfn 
+            --     --             }
+            --     doughP = doughDir layout 
+            --     ixSort = getTextFromYaml6 "filename" "IndexSort" meta5
 
-            when (inform debug) $
-                putIOwords ["\n ix1------------------------docrep2panrep before collectIndex"
-                , showPretty ix1 ]
+            -- when (inform debug) $
+            --     putIOwords ["\n ix1------------------------docrep2panrep before collectIndex"
+            --     , showPretty ix1 ]
 
-            ix2 <- collectIndex debug pubf sett4 doughP (Just ixSort) ix1
+            ix2 <- collectIndex debug pubf sett4 doughP mdFileDir
 
             when (inform debug) $
                 putIOwords ["\n ix2------------------------docrep2panrep after collectIndex"
                 , showPretty ix2 ]
 
             let extra7 = extra6{indexEntry = ix2}
-                ixs = dirEntries  ix2 ++ fileEntries ix2
-                needs :: [FilePath] = map ixfn ixs 
+                ixs =  (dirEntries  ix2) ++ (fileEntries ix2)
+                needs :: [FilePath] =  ixs
 
             when (inform debug) $
                 putIOwords ["\n extra7------------------------docrep2panrep end if"

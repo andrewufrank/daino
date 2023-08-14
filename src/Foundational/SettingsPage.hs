@@ -72,9 +72,10 @@ instance FromJSON Settings
 
 -- the extraValues will eventually go into settings
 data DainoValues = DainoValues 
-                        { mdFile:: Text -- abs file path 
-                        -- , mdRelPath :: Text -- rel file path
+                        { mdFile:: FilePath -- Path Abs File -- abs file path 
+                        , mdRelPath :: FilePath -- Path Rel File  -- rel file path
                         , indexEntry :: IndexEntry2 
+                                -- only the dirs and files path
                         , dainoVersion :: Text 
                         , latLanguage :: Text 
                         , authorReduced :: Text
@@ -84,7 +85,7 @@ data DainoValues = DainoValues
 
 
 instance Zeros DainoValues where 
-    zero = DainoValues zero  zero zero  zero zero   
+    zero = DainoValues zero  zero zero  zero zero  zero 
 instance ToJSON DainoValues 
 instance FromJSON DainoValues 
 
@@ -93,23 +94,24 @@ instance FromJSON DainoValues
 
 data IndexEntry2 = IndexEntry2 
     { -- | the abs file path
-      ixfn :: FilePath -- Path Abs File
-    , -- | the link for this page (relative to web root)}
-      link :: FilePath -- Path Rel File
-    , title :: Text
-    , abstract :: Text
-    , author :: Text
-    , date :: Text
-    , content :: Text   -- in latex style, only filled bevore use
-    -- , publish :: Maybe Text
-    -- , indexPage :: Bool
-    , dirEntries :: [IndexEntry2] -- def []
-    , fileEntries :: [IndexEntry2] -- def []
-    , headerShift :: Int   
-    } deriving (Show, Read, Eq, Ord, Generic, Zeros)
+    --   ixfn :: FilePath -- Path Abs File
+    -- , -- | the link for this page (relative to web root)}
+    --   link :: FilePath -- Path Rel File
+    -- , title :: Text
+    -- , abstract :: Text
+    -- , author :: Text
+    -- , date :: Text
+    -- , content :: Text   -- in latex style, only filled bevore use
+    -- -- , publish :: Maybe Text
+    -- -- , indexPage :: Bool
+    dirEntries :: [FilePath] -- [Path Abs Dir] -- [IndexEntry2] -- def []
+    , fileEntries :: [FilePath] -- [Path Abs File] -- [IndexEntry2] -- def []
+    -- , headerShift :: Int   
+    } deriving (Show, Read, Eq, Ord, Generic)
     --  IndexTitleSubdirs | IndexTitleFiles 
 
--- instance Zeros IndexEntry2 where zero = IndexEntry2 zero zero zero zero zero zero zero zero zero
+instance Zeros IndexEntry2 where zero = IndexEntry2 [] []
+-- zero zero zero zero zero zero zero
 
 instance ToJSON IndexEntry2
 instance FromJSON IndexEntry2

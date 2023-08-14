@@ -47,7 +47,7 @@ import Uniform.Latex
 -- import Lib.OneMDfile
 -- import Foundational.MetaPage (MetaPage(dyDoNotReplace))
 -- import Lib.FileHandling (readErlaubt)
--- import Uniform.Shake ( Path2nd(makeRelativeP) ) 
+import Uniform.Shake ( Path2nd(makeRelativeP) ) 
 -- import Uniform.Json (ToJSON(toJSON))
 readMarkdownFile2docrep  :: NoticeLevel -> Settings ->  Path Abs File ->  ErrIO Docrep 
 -- read a markdown file and convert to docrep
@@ -84,7 +84,7 @@ readMarkdownFile2docrep debug sett3 fnin = do
             -- "resources/webbiblio.bib")
     let p2 = addListOfDefaults defs1 p1
     m1 <- md2Meta_Process p2
-    let mp1 = setMetaPlus sett3 fnin m1
+    let mp1 = setMetaPlusInitialize sett3 fnin m1
 
     -- mdfile <- read8 fnin markdownFileType 
     -- -- todo -- add umlaut test foer german
@@ -97,20 +97,22 @@ readMarkdownFile2docrep debug sett3 fnin = do
         ["readMarkdownFile2docrep end mp1", showPretty mp1]
     return mp1
 
-setMetaPlus :: Settings -> Path Abs File -> Meta -> DainoMetaPlus 
+setMetaPlusInitialize :: Settings -> Path Abs File -> Meta -> DainoMetaPlus 
 -- to move the start values into the MetaPlus 
-setMetaPlus sett3 fnin m1 =  zero { metap = m1
-                   , sett = sett3
-                   , extra = zero{
-                        mdFile = s2t . toFilePath $ fnin
-                        , dainoVersion = showT version
-                        , latLanguage = latexLangConversion 
-                                    (getTextFromYaml6 "lang" "en-US" m1)
-                                     }
-                --    , metaMarkdown = resBody
-                --    , metaHtml = resBodyhtml
-                --    , metaLatex = zero 
-                   } 
+setMetaPlusInitialize sett3 fnin m1 =  zero { metap = m1
+                                , sett = sett3
+                                , extra = x1}
+    where 
+        doughP = doughDir . siteLayout $ sett3
+        lang = getTextFromYaml6 "lang" "en-US" m1 :: Text
+        x1 = zero   { mdFile = toFilePath fnin
+                    , mdRelPath =toFilePath $  makeRelativeP doughP fnin
+                    , dainoVersion = showT version
+                    , latLanguage = latexLangConversion lang }
+        --    , metaMarkdown = resBody
+        --    , metaHtml = resBodyhtml
+        --    , metaLatex = zero 
+             
 
 ------------------OLD -----------------------
 

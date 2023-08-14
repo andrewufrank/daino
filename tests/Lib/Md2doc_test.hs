@@ -41,7 +41,7 @@ test_md2docrep = do
         let hash1 = show . hash . show $  dr :: String
         return hash1
 
-    assertEqual (Right "Hash {asWord64 = 4522297612839144805}") 
+    assertEqual (Right "Hash {asWord64 = 12422158080958583279}") 
         res1
 
 
