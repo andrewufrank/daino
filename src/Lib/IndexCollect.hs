@@ -53,12 +53,9 @@ completeIndex debug pubf sett4 doughP indexSortField ix1 = do
     let fn = doughP </> (link ix1) :: Path Abs File
     -- changed to search in dough (but no extension yet)
 
-    when (inform debug) $   -- to have indication where error is if pandoc error 
+    when (inform debug) $  
         putIOwords
-            [ "completeIndex"
-            , "fn"
-            , showT fn
-            ]
+            [ "completeIndex", "fn", showT fn]
     -- unless (isIndexPage fn) $ errorT ["completeIndex should only be called for indexPage True"]
 
     (dirs, files) <- getDirContent2dirs_files debug pubf sett4 doughP  fn

@@ -102,7 +102,15 @@ docrep2panrep debug pubf sett4x metaplus5 = do
                 doughP = doughDir layout 
                 ixSort = getTextFromYaml6 "filename" "IndexSort" meta5
 
+            when (inform debug) $
+                putIOwords ["\n ix1------------------------docrep2panrep before completeIndex"
+                , showPretty ix1 ]
+
             ix2 <- completeIndex debug pubf sett4 doughP (Just ixSort) ix1
+
+            when (inform debug) $
+                putIOwords ["\n ix2------------------------docrep2panrep after completeIndex"
+                , showPretty ix2 ]
 
             let extra7 = extra6{indexEntry = ix2}
                 ixs = dirEntries  ix2 ++ fileEntries ix2

@@ -38,6 +38,54 @@ test_toPanrep = do
     assertEqual (Right "Hash {asWord64 = 1964609469859751127}") 
         res1
 
+
+extra7 = DainoValues ------------------------docrep2panrep end if DainoValues
+  { mdFile = "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
+  , indexEntry =
+      IndexEntry2
+        { ixfn = "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
+        , link = "ReadMe/index.md"
+        , title = ""
+        , abstract = ""
+        , author = ""
+        , date = ""
+        , content = ""
+        , dirEntries = []
+        , fileEntries =
+            [ IndexEntry2
+                { ixfn = ""
+                , link = ""
+                , title = ""
+                , abstract = ""
+                , author = ""
+                , date = ""
+                , content = ""
+                , dirEntries = []
+                , fileEntries = []
+                , headerShift = 0
+                }
+            , IndexEntry2
+                { ixfn = ""
+                , link = ""
+                , title = ""
+                , abstract = ""
+                , author = ""
+                , date = ""
+                , content = ""
+                , dirEntries = []
+                , fileEntries = []
+                , headerShift = 0
+                }
+            ]
+        , headerShift = 0
+        }
+  , dainoVersion =
+      "Version {versionBranch = [0,1,5,6,3], versionTags = []}"
+  , latLanguage = "english"
+  , authorReduced = ""
+  }  
+
+
 -- not working ok, because the file names are not corresponding
 -- to the path given
 

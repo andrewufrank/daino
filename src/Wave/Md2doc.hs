@@ -52,6 +52,7 @@ import Uniform.Latex
 readMarkdownFile2docrep  :: NoticeLevel -> Settings ->  Path Abs File ->  ErrIO Docrep 
 -- read a markdown file and convert to docrep
 readMarkdownFile2docrep debug sett3 fnin = do
+    let debug = NoticeLevel0
     -- when (inform debug) $ 
     putIOwords 
         ["readMarkdownFile2docrep fnin", showPretty fnin]

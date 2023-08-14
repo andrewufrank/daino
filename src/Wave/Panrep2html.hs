@@ -98,6 +98,7 @@ panrep2html debug  sett3x metaplus4 = do
 --     - fill the three meta fields for the output
 -- completeMetaPlus :: MetaPlus -> ErrIO MetaPlus 
 -- completeMetaPlus metapl1 = do 
+    
 --     md1 <- meta2xx writeToMarkdown  (metap metapl1)
 --     htm1 <- meta2xx writeHtml5String2 (metap metapl1)
 --     lat1 <- meta2xx writeTexSnip2 (metap metapl1)
