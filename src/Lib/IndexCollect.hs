@@ -1,15 +1,17 @@
 ----------------------------------------------------------------------
 --
--- Module      :   create an index for a directory
+-- Module      :   collect the files for the index for a directory
 ---- | create an index for a directory
 --  in two steps: 
---  IndexCollect collect all the date
---  with call to completeIndex
---  and
---  indexmake: convert collected data for printing (convertIndexEntries)
---  .
---  the data is stored in a file separately and managed by Shake
---  operates on metapage (or less? )
+--  IndexCollect collect all files and dirs in the directory
+-- where the index file is 
+    -- old 
+    --  with call to collectIndex
+    --  and
+    --  indexmake: convert collected data for printing (convertIndexEntries)
+    --  .
+    --  the data is stored in a file separately and managed by Shake
+    --  operates on metapage (or less? )
 ----------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
 -- {-# LANGUAGE RecordWildCards #-}
@@ -43,20 +45,20 @@ import Data.List (sortOn)
 
 
 
-completeIndex :: NoticeLevel -> PubFlags -> Settings -> Path Abs Dir -> Maybe Text ->   IndexEntry2 -> ErrIO IndexEntry2
+collectIndex :: NoticeLevel -> PubFlags -> Settings -> Path Abs Dir -> Maybe Text ->   IndexEntry2 -> ErrIO IndexEntry2
 {- ^ the top call to form the index data into the MetaPage
 later only the format for output must be fixed
 -}
-completeIndex debug pubf sett4 doughP indexSortField ix1 = do
-    when (inform debug) $ putIOwords ["completeIndex", "start", showPretty ix1]
+collectIndex debug pubf sett4 doughP indexSortField ix1 = do
+    when (inform debug) $ putIOwords ["collectIndex", "start", showPretty ix1]
 
     let fn = doughP </> (link ix1) :: Path Abs File
     -- changed to search in dough (but no extension yet)
 
     when (inform debug) $  
         putIOwords
-            [ "completeIndex", "fn", showT fn]
-    -- unless (isIndexPage fn) $ errorT ["completeIndex should only be called for indexPage True"]
+            [ "collectIndex", "fn", showT fn]
+    -- unless (isIndexPage fn) $ errorT ["collectIndex should only be called for indexPage True"]
 
     (dirs, files) <- getDirContent2dirs_files debug pubf sett4 doughP  fn
     let
@@ -64,15 +66,15 @@ completeIndex debug pubf sett4 doughP indexSortField ix1 = do
         files1 = sortField files
     -- sort entries 
 
-    when (inform debug) $ putIOwords ["completeIndex", "\n dirs", showT dirs, "\n files", showT files]
+    when (inform debug) $ putIOwords ["collectIndex", "\n dirs", showT dirs, "\n files", showT files]
     -- recurse for dirs 
-    dirs2 <- mapM (completeIndex debug pubf sett4 doughP indexSortField) dirs1
+    dirs2 <- mapM (collectIndex debug pubf sett4 doughP indexSortField) dirs1
 
 
-    when (inform debug) $ putIOwords ["completeIndex recursion", "\n dirs2", showT dirs2]    
+    when (inform debug) $ putIOwords ["collectIndex recursion", "\n dirs2", showT dirs2]    
 
     let ix2 = ix1{dirEntries = dirs2, fileEntries = files1}
-    when (inform debug) $ putIOwords ["completeIndex", "x2", showT ix2]
+    when (inform debug) $ putIOwords ["collectIndex", "x2", showT ix2]
     return ix2
 
   where 

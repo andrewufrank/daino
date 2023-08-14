@@ -52,7 +52,7 @@ import UniformBase
 import Data.Maybe (fromMaybe)
 
 -- import Lib.IndexMake ( convertIndexEntries, MenuEntry )
--- import Lib.IndexCollect ( completeIndex )
+-- import Lib.IndexCollect ( collectIIndex )
 import Lib.Templating  
 -- import Text.Pandoc.SideNote ( usingSideNotes )
 

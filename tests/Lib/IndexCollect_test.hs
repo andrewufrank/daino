@@ -44,7 +44,7 @@ test_exampleTrue = assertEqual 0 0
 
 -- testing_complete f1 =  test1FileIO "daino"   
 --     (f1 <> "_ix" )(f1 <> "_ixComp")
---         (completeIndex NoticeLevel0 doughPL bakedPL)
+--         (collectIIndex NoticeLevel0 doughPL bakedPL)
 
--- test_completeIndex = testing_complete "index"
+-- test_collectIIndex = testing_complete "index"
  

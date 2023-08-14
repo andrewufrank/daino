@@ -130,7 +130,7 @@ texsnip2tex  debug doughP bakedP metaplus4 latexDtpl = do
 --                             ||   ("booklet" == latBooklet  latexparam)
 --         then do 
 --             let latexparam2 = latexparam{latIndex=dyIndexEntry yam}
---             latexparam3 <- completeIndexWithContent2nd debug bakedP latexparam2
+--             latexparam3 <- collectIIndexWithContent2nd debug bakedP latexparam2
 --             return latexparam3
 --         else  return latexparam  
 
@@ -145,10 +145,10 @@ texsnip2tex  debug doughP bakedP metaplus4 latexDtpl = do
 --     when (inform debug) $ putIOwords ["\n texsnip2tex done"]
 --     return . Latex $ latexparam7
 
--- completeIndexWithContent2nd :: NoticeLevel -> Path Abs Dir -> LatexParam -> ErrIO LatexParam
+-- collectIIndexWithContent2nd :: NoticeLevel -> Path Abs Dir -> LatexParam -> ErrIO LatexParam
 -- -- | complete a file and a dir  
 -- --      works for both 1st and 2nd 
--- completeIndexWithContent2nd debug bakedP latexparam2 = do 
+-- collectIIndexWithContent2nd debug bakedP latexparam2 = do 
 --     let 
 --         latix2 = latIndex latexparam2 
 --         dirixs = dirEntries latix2 
@@ -160,7 +160,7 @@ texsnip2tex  debug doughP bakedP metaplus4 latexDtpl = do
 
 --     latix8 <- contentIx_Snip debug bakedP latix7
 
---     when (inform debug) $ putIOwords ["\n completeIndexWithContent2nd end latix8", showT latix8]
+--     when (inform debug) $ putIOwords ["\n collectIIndexWithContent2nd end latix8", showT latix8]
 --     return $ latexparam2{latIndex =   latix8}
 
 

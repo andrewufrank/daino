@@ -51,7 +51,7 @@ import UniformBase
 import Data.Maybe (fromMaybe)
 
 -- import Lib.IndexMake ( convertIndexEntries, MenuEntry )
-import Lib.IndexCollect ( completeIndex ) 
+import Lib.IndexCollect ( collectIndex ) 
 -- import Lib.Templating ( putValinMaster )
 
 ------------------------------------------------docrep -> panrep
@@ -103,13 +103,13 @@ docrep2panrep debug pubf sett4x metaplus5 = do
                 ixSort = getTextFromYaml6 "filename" "IndexSort" meta5
 
             when (inform debug) $
-                putIOwords ["\n ix1------------------------docrep2panrep before completeIndex"
+                putIOwords ["\n ix1------------------------docrep2panrep before collectIndex"
                 , showPretty ix1 ]
 
-            ix2 <- completeIndex debug pubf sett4 doughP (Just ixSort) ix1
+            ix2 <- collectIndex debug pubf sett4 doughP (Just ixSort) ix1
 
             when (inform debug) $
-                putIOwords ["\n ix2------------------------docrep2panrep after completeIndex"
+                putIOwords ["\n ix2------------------------docrep2panrep after collectIndex"
                 , showPretty ix2 ]
 
             let extra7 = extra6{indexEntry = ix2}
@@ -135,7 +135,7 @@ docrep2panrep debug pubf sett4x metaplus5 = do
     --         let ix1 =dyIndexEntry  m1
     --         -- let bakedP = bakedDir layout
     --         let doughP = doughDir layout
-    --         ix2 <- completeIndex debug pubf sett4 doughP (dyIndexSort . panyam $ panrep2) ix1
+    --         ix2 <- collectIndex debug pubf sett4 doughP (dyIndexSort . panyam $ panrep2) ix1
     --         -- todo put ix2 into pr
     --         let m2 = m1{dyIndexEntry = ix2}
     --         let ixs = dirEntries  ix2 ++ fileEntries ix2
