@@ -82,8 +82,8 @@ panrep2html debug  sett3x metaplus4 = do
 
 -- 
     -- hres <- meta2hres htmlTempl metaplus4
-    putIOwords ["panrep2html render html done"
-        , "hres", showT ht1]
+    when (inform debug) $ putIOwords ["panrep2html render html done"
+        , "hres", ht1]
     -- bakeOnePanrep2html will write to disk
     return . HTMLout $ ht1
 --     55

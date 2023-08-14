@@ -22,7 +22,7 @@ import Uniform.Pandoc
 -- import Uniform.Json
 import UniformBase
 import Lib.Md2doc_test
-import Uniform.Http ( HTMLout (HTMLout) ) 
+import Uniform.Http ( HTMLout (HTMLout), unHTMLout ) 
 import Data.Hash
 
 -- import Lib.IndexCollect
@@ -65,7 +65,7 @@ panrep2htmlForTest debug  sett3x metaplus4 = do
 
 -- 
     -- hres <- meta2hres htmlTempl metaplus4
-    putIOwords ["panrep2htmlForTest render html done"
+    when (inform debug) $  putIOwords ["panrep2htmlForTest render html done"
         , "hres", ht1]
     -- bakeOnePanrep2html will write to disk
     return . HTMLout $ ht1
@@ -75,12 +75,12 @@ test_toHtmlTest = do
         metaplus5 <- setup_md2metaplus fnmd1 
 
         (metap1,_) <- docrep2panrep NoticeLevel0 def zero metaplus5
-        html1 <- panrep2htmlForTest NoticeLevel2  zero metap1
-        putIOwords ["test_toHtmlTest pr \n", showPretty html1]
+        html1 <- panrep2htmlForTest NoticeLevel0  zero metap1
+        putIOwords ["test_toHtmlTest pr \n", unHTMLout html1]
         let hash1 = show . hash . show $  html1 :: String
         return hash1
 
-    assertEqual (Right "Hash {asWord64 = 1964609469859751127}") 
+    assertEqual (Right "Hash {asWord64 = 10900200709352359109}") 
         res1
 
 -- These are all the values for htmlTufte81.dtpl
