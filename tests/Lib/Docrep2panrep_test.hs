@@ -29,12 +29,13 @@ test_toPanrep = do
     res1 <- runErr $ do 
         metaplus5 <- setup_md2metaplus fnmd1 
 
-        pr <- docrep2panrep NoticeLevel0 def zero metaplus5
-        -- putIOwords ["test_toPanrep pr \n", showPretty pr]
+        pr@(m1,n1) <- docrep2panrep NoticeLevel0 def zero metaplus5
+        putIOwords ["test_toPanrep pr \n", showPretty  $ m1]
+        putIOwords ["test_toPanrep extra \n", showPretty . extra $ m1]
         let hash1 = show . hash . show $  pr :: String
         return hash1
 
-    assertEqual (Right "Hash {asWord64 = 14153968531146367287}") 
+    assertEqual (Right "Hash {asWord64 = 18143424181543710254}") 
         res1
 
 

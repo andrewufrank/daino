@@ -57,6 +57,16 @@ blogAuthorToSuppress
                         $sett.siteLayout.blogAuthorToSuppress$
                 $endfor$
 
+indexEntryDirectories 
+    $for(extra.indexEntry.dirEntries)$
+            $extra.indexEntry.dirEntries$
+    $endfor$
+    
+indexEntryFiles 
+    $for(extra.indexEntry.fileEntries)$
+            $extra.indexEntry.fileEntries$
+    $endfor$
+                        
 masterTemplateFile  $sett.siteLayout.masterTemplateFile$
 texTemplateFile     $sett.siteLayout.texTemplateFile$
 themeDir            $sett.siteLayout.themeDir$
