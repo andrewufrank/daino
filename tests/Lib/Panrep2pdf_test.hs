@@ -12,7 +12,7 @@ module Lib.Panrep2pdf_test
 
 import Test.Framework
 -- import Uniform.Test.TestHarness
-import Foundational.MetaPage 
+
 import Foundational.SettingsPage
 import Foundational.Filetypes4sites
 import Wave.Md2doc

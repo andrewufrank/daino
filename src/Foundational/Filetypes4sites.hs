@@ -25,7 +25,7 @@ module Foundational.Filetypes4sites (
 import Uniform.Json (FromJSON, ToJSON, Value)
 import Uniform.Pandoc  
 import UniformBase
-import Foundational.MetaPage  
+
 import Foundational.SettingsPage ( DainoMetaPlus )
 -- import Wave.Md2doc (pandoc2docrep)
 
@@ -34,32 +34,14 @@ import Foundational.SettingsPage ( DainoMetaPlus )
 
 {- | representation of a document
 all the data is in the meta part
-
-rename to metarep later
-drop rest
- the yam part contains the json formated yaml metadata
- which is extensible
- Attention the Pandoc is Pandoc (Meta (Map Text MetaValue) [Block]
- means that title etc is duplicated in the Meta part.
- I keep the pandoc structure (Pandoc Meta [Block] - Text.Pandoc.Definition
- because it is possible to convert the Meta from Pandoc to JSON
- with flattenMeta (in PandocImports)
- but I do not see an easy way to convert back
- - Where would this be required? 
- - probably for the index construction? 
 -}
 type Docrep = DainoMetaPlus 
--- {meta1 :: MetaPage, pan1 :: Pandoc} -- a json value
-    -- deriving (Show, Read, Eq, Generic, Zeros)
 
--- instance FromJSON Docrep
--- instance ToJSON Docrep
 
 extDocrep :: Extension
 extDocrep = Extension "docrep"
 
--- instance NiceStrings Docrep where
---   shownice = showNice . unDocrep
+
 
 docrepFileType :: TypedFile5 Text Docrep
 docrepFileType =
@@ -76,60 +58,24 @@ docrepFileType =
 extPanrep :: Extension
 extPanrep = Extension "panrep"
 
--- | a file containing what pandoc internally works on
--- plus the complete set of the metadata
+-- | a file containing the metadata
 panrepFileType :: TypedFile5 Text Panrep
 panrepFileType =
     TypedFile5{tpext5 = extPanrep} :: TypedFile5 Text Panrep
 
--- data Panrep = Panrep {panyam :: MetaPage, panpan :: Pandoc}
---     deriving (Eq, Show, Read)
+
 
 type Panrep = DainoMetaPlus 
--- instance Zeros Panrep where zero = Panrep zero zero
 
--- instance TypedFiles7 Text Panrep where
---     -- handling Pandoc and read them into PandocText
---     wrap7 = readNote "wrap7 for pandoc 223d" . t2s
---     unwrap7 = showT
-
--- --- variant 1 panrep 
--- extPanrep1 :: Extension
--- extPanrep1 = Extension "panrep1"
-
--- panrep1FileType :: TypedFile5 Text Panrep1
--- panrep1FileType =
---     TypedFile5{tpext5 = extPanrep1} :: TypedFile5 Text Panrep1
-
--- newtype Panrep1 = Panrep1 {unPanrep1 :: Panrep}
--- -- data Panrep = Panrep {panyam :: MetaPage, panpan :: Pandoc}
---     deriving (Eq, Show, Read)
-
--- -- instance Zeros Panrep where zero = Panrep zero zero
-
--- instance TypedFiles7 Text Panrep1 where
---     wrap7 = readNote "wrap7 for pandocrep1" . t2s
---     unwrap7 = showT
 --------------------  TexSnip
 
 extTexSnip :: UniformBase.Extension
 extTexSnip = Extension "texsnip"
 
 {- | a wrapper around TexSnip
- snipyam is not used
-a tex snip is a piece of latex code, but not a full compilable
-latex which results in a pdf
+ 
 -}
--- data TexSnip = TexSnip {snipyam :: MetaPage, unTexSnip :: Text}
---     deriving (Show, Read, Eq)
 type TexSnip = DainoMetaPlus
-    -- deriving (Show, Read, Eq)
-
--- unTexSnip :: TexSnip -> Text
--- unTexSnip (TexSnip a) = a   --needed for other ops
-
--- instance Zeros TexSnip where
---     zero = TexSnip zero zero
 
 texSnipFileType :: TypedFile5 Text TexSnip
 texSnipFileType =
@@ -163,6 +109,10 @@ instance Zeros Latex where
 
 ---------------------------------------------- PDF
 -- extension in metapage
+
+
+extPDF :: Extension
+extPDF = Extension "pdf"
 
 pdfFileType :: TypedFile5 Text PDFfile
 pdfFileType = TypedFile5{tpext5 = extPDF} :: TypedFile5 Text PDFfile

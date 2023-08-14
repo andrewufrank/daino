@@ -116,78 +116,11 @@ instance Zeros IndexEntry2 where zero = IndexEntry2 [] []
 instance ToJSON IndexEntry2
 instance FromJSON IndexEntry2
 
-{-
-example1 :: MetaPlus 
-example1 = DainoMetaPlus {
-    metap = 
-        Meta {unMeta = fromList [(
-            "Bibliography",MetaString "resources/BibTexLatex.bib"),(
-            "abstract",MetaInlines [Str "ix-Abstract",Space,Emph [Str "of"],Space,Str "Book"]),(
-            "bibliography",MetaInlines [Str "resources/BibTexLatex.bib"]),("body",MetaBlocks [Header 1 ("ix-hl1-title",[],[]) [Str "ix-hl1",Space,Str "Title"],Para [Str "ix-Introductory",Space,Str "text",Space,Str "for",Space,Str "book."]]),("book",MetaInlines [Str "booklet"]),(
-            "data",MetaString "2000-01-01 00:00:00 UTC"),("
-            date",MetaInlines [Str "2023-03-31"]),(
-            "headerShift",MetaString "1"),(
-            "keywords",MetaInlines [Str "exampleKeyword",Space,Str "exampleKeyword2"]),(
-            "lang",MetaString "en"),(
-            "latLanguage",MetaString "english"),("styleBiber",MetaString "authoryear"),(
-            "title",MetaInlines [Str "ix-Title",Space,Str "of",Space,Str "Book"]),(
-            "version",MetaInlines [Str "publish"]),(
-            "visibility",MetaString "public")]}, 
-    
-    sett = Settings {
-        siteLayout = SiteLayout {
-            themeDir = Path Abs Dir /home/frank/Workspace11/dainoTheme/, 
-            doughDir = Path Abs Dir /home/frank/Workspace11/dainoSite/, 
-            bakedDir = Path Abs Dir /home/frank/bakedTestSite/, 
-            masterTemplateFile = Path Rel File htmlTufte81.dtpl, 
-            texTemplateFile = Path Rel File latexTufte81.dtpl, 
-            doNotBake = "DNB", 
-            blogAuthorToSuppress = ["AOS","AUF","Author of Settings"], 
-            defaultAuthor = "AOS", 
-            replaceErlaubtFile = Path Abs File /home/frank/Workspace11/
-            replaceUmlaut/nichtUmlaute.txt}, localhostPort = 3000, 
-            settingsAuthor = "Author of Settings", settingsDate = "2019-01-01", 
-            siteHeader = SiteHeader {sitename = "siteName3", 
-            byline = "siteByLine3", 
-            banner = "/resources/theme/templates/img/DSC04809.JPG", 
-            bannerCaption = "Ruhiger Sommer im Garten in Geras"}, 
-            menuitems = MenuItems {menuNav = [
-                MenuItem {navlink = "ReadMe/index.html", navtext = "ReadMe"},
-                MenuItem {navlink = "SSGdesign/index.html", navtext = "Rationale"},
-                MenuItem {navlink = "Contact/index.html", navtext = "Contact"},
-                MenuItem {navlink = "Blog/index.html", navtext = "Blog"},
-                MenuItem {navlink = "PublicationList/index.html", navtext = "Publications"}]}}, 
-    extra = DainoValues {
-        mdFile = "/home/frank/Workspace11/dainoSite/ReadMe/index.md", 
-        dainoVersion = "Version {versionBranch = [0,1,5,6,3], versionTags = []}"}, 
-    metaMarkdown = fromList [], 
-    metaHtml = fromList [("Bibliography","resources/BibTexLatex.bib"),("abstract","ix-Abstract <em>of</em> Book"),("bibliography","resources/BibTexLatex.bib"),("body","<h1 id=\"ix-hl1-title\">ix-hl1 Title</h1>\n<p>ix-Introductory text for book.</p>"),("book","booklet"),("data","2000-01-01 00:00:00 UTC"),("date","2023-03-31"),("headerShift","1"),("keywords","exampleKeyword exampleKeyword2"),("lang","en"),("latLanguage","english"),("styleBiber","authoryear"),("title","ix-Title of Book"),("version","publish"),("visibility","public")], metaLatex = fromList []}
--}
+isIndexPage :: Path Abs File -> Bool 
+isIndexPage filename =  getNakedFileName filename == "index"
 
 
--- data SiteHeader = SiteHeader 
---     { sitename :: FilePath 
---     , byline :: Text 
---     , banner :: FilePath 
---     , bannerCaption :: Text 
---     } deriving (Show, Read, Ord, Eq, Generic, Zeros)
--- instance ToJSON SiteHeader
--- instance FromJSON SiteHeader
 
--- newtype MenuItems = MenuItems {menuNav:: [MenuItem]
---                             -- , menuB:: Text
---                             } deriving (Show, Read, Ord, Eq, Generic, Zeros)
--- instance ToJSON MenuItems 
--- instance FromJSON MenuItems 
-
--- data MenuItem = MenuItem  
---     { navlink :: FilePath 
---     , navtext :: Text
---     -- , navpdf :: Text  -- for the link to the pdf 
---     -- not a good idead to put here
---     } deriving (Show, Read, Ord, Eq, Generic, Zeros)
--- instance ToJSON MenuItem
--- instance FromJSON MenuItem
 
 data SiteLayout = SiteLayout
     { -- | the place of the  theme files (includes templates)

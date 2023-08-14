@@ -30,12 +30,9 @@ library
   exposed-modules:
       Foundational.CmdLineFlags
       Foundational.Filetypes4sites
-      Foundational.MetaPage
       Foundational.SettingsPage
-      Lib.CheckProcess
       Lib.IndexCollect
       Lib.IndexMake
-      Lib.Templating
       ShakeBake.Bake
       ShakeBake.CmdLineArgs
       ShakeBake.ConvertFiles

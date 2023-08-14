@@ -29,7 +29,6 @@ module Wave.Panrep2pdf (
 ) where
 
 import Foundational.Filetypes4sites
-import Foundational.MetaPage
 import GHC.Generics (Generic)
 import Uniform.Pandoc ( writeTexSnip2 )
 import Uniform.MetaStuff

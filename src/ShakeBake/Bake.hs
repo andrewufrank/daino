@@ -28,17 +28,11 @@ import Wave.Docrep2panrep
 import Wave.Md2doc  
 import Wave.Panrep2pdf
 
-
--- import Uniform2.Markdown  
--- import Uniform.Pandoc
--- import Uniform2.ProcessPDF  
 import Uniform.Http
 
 import Wave.Panrep2html  
 import UniformBase
--- import Foundational.Filetypes4sites
--- import Foundational.SettingsPage 
--- (SiteLayout(texTemplateFile))
+
 
 type BakeOp =
     NoticeLevel ->

@@ -15,8 +15,6 @@ import Test.Framework
 import Lib.Md2doc_test  -- to have siteHeader (i.e. layout)
  
 import Foundational.Filetypes4sites
-import Foundational.MetaPage
-import Lib.Templating
 import Lib.IndexMake
 import UniformBase
 import Uniform.Pandoc

@@ -8,7 +8,6 @@ module Lib.Docrep2panrep_test where
 
 import Foundational.Filetypes4sites
 import Foundational.SettingsPage
-import Foundational.MetaPage
 import Lib.IndexCollect
 import Lib.Md2doc_test
 import Test.Framework

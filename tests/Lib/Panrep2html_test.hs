@@ -12,7 +12,7 @@ module Lib.Panrep2html_test
 
 import Test.Framework
 -- import Uniform.Test.TestHarness
-import Foundational.MetaPage 
+
 import Foundational.SettingsPage
 import Foundational.Filetypes4sites
 import Wave.Md2doc
@@ -82,6 +82,73 @@ test_toHtmlTest = do
 
     assertEqual (Right "Hash {asWord64 = 1964609469859751127}") 
         res1
+
+-- These are all the values for htmlTufte81.dtpl
+
+-- lang            en
+-- settingsAuthor  Author of Settings
+-- date            2023-03-31
+-- keywords        
+-- image           
+-- imageCaption    
+-- siteBanner      /resources/theme/templates/img/DSC04809.JPG
+-- siteBannerCaption   Ruhiger Sommer im Garten in Geras
+-- sitename        
+-- sitebyline      siteByLine3
+-- menuitems        
+--                     ReadMe/index.html
+--                     ReadMe
+                     
+--                     SSGdesign/index.html
+--                     Rationale
+                     
+--                     Contact/index.html
+--                     Contact
+                     
+--                     Blog/index.html
+--                     Blog
+                     
+--                     PublicationList/index.html
+--                     Publications
+                    
+-- title           ix-Title of Book
+-- subtitle         
+-- author          
+-- table of contents   
+-- abstract        ix-Abstract <em>of</em> Book
+-- linkpdf         
+-- date            2023-03-31
+-- content         <h1 id="ix-hl1-title">ix-hl1 Title</h1>
+-- <p>ix-Introductory text for book.</p>
+-- menufiles       
+-- menu2subdir     
+
+-- dainoversion    Version {versionBranch = [0,1,5,6,3], versionTags = []}
+-- visibility      public
+-- version         publish
+
+-- -- not in thmlTufte
+
+-- latLanguage     english
+-- styleBiber      authoryear
+-- mdFile          /home/frank/Workspace11/dainoSite/ReadMe/index.md
+-- localhostPort   3000
+-- settingsDate    2019-01-01
+-- siteLayout      /home/frank/bakedTestSite/
+-- blogAuthorToSuppress 
+--                                         AOS
+--                                         AUF
+--                                         Author of Settings
+                
+-- masterTemplateFile  htmlTufte81.dtpl
+-- texTemplateFile     latexTufte81.dtpl
+-- themeDir            /home/frank/Workspace11/dainoTheme/
+
+-- Bibliography        resources/BibTexLatex.bib
+                    
+-- headerShitft        true
+
+-- -- other settings similar
 
 -- testing_panrep2texsnip :: FilePath -> IO ()
 -- -- | test to produce texsnip

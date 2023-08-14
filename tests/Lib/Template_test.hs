@@ -18,18 +18,15 @@ import Foundational.SettingsPage
     -- ( SiteLayout(doughDir, bakedDir, themeDir),
     --   Settings(siteLayout) )
 import Foundational.CmdLineFlags
-import Foundational.MetaPage
 import Wave.Md2doc
 import Wave.Docrep2panrep
 import ShakeBake.ReadSettingFile
-import Lib.Templating
 import Lib.IndexCollect
 import Uniform.Pandoc
 -- import Data.Aeson
 import Uniform.Json
 -- import Uniform.Test.TestHarness
 import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..))
-import Lib.Templating
 import UniformBase
 import Lib.Md2doc_test
 -- test_exampleTrue = assertEqual 0 0

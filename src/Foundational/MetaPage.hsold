@@ -217,8 +217,6 @@ import Uniform.HTMLout (extHTML)
 -- 
 --             }
 
-isIndexPage :: Path Abs File -> Bool 
-isIndexPage filename =  getNakedFileName filename == "index"
 
 -- convertLink2html ix = s2t . -- s2t . toFilePath $ 
 --           setExtension (unExtension extHTML)   $ link ix
@@ -230,9 +228,6 @@ isIndexPage filename =  getNakedFileName filename == "index"
 -- extHTML :: Extension
 -- extHTML = Extension "html"
 
-
-extPDF :: Extension
-extPDF = Extension "pdf"
 
 -- addFileMetaPage :: Path Abs Dir -> Path Abs Dir -> Path Abs File -> MetaPage
 -- addFileMetaPage doughP bakedP fn =

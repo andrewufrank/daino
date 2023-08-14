@@ -23,7 +23,6 @@
 module Lib.IndexMake (module Lib.IndexMake) where
 
 -- import           Foundational.Filetypes4sites
-import           Foundational.MetaPage
 import Uniform.Json ( FromJSON, ToJSON, ErrIO ) 
 import Uniform.Latex 
 import           UniformBase

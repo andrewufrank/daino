@@ -37,7 +37,6 @@ import Foundational.SettingsPage
 
 import Foundational.CmdLineFlags ( PubFlags )
 
-import Foundational.MetaPage
 
 import GHC.Generics (Generic)
 
@@ -97,18 +96,6 @@ docrep2panrep debug pubf sett4x metaplus5 = do
 
     if isIndexPage mdFile5
         then do
-            -- let mdfn =  mdFile extra6 
-            --     relfn = makeRelativeP doughP mdfn
-            --     -- ix1 = zero{ixfn= toFilePath mdfn
-            --     --            , link = toFilePath relfn 
-            --     --             }
-            --     doughP = doughDir layout 
-            --     ixSort = getTextFromYaml6 "filename" "IndexSort" meta5
-
-            -- when (inform debug) $
-            --     putIOwords ["\n ix1------------------------docrep2panrep before collectIndex"
-            --     , showPretty ix1 ]
-
             ix2 <- collectIndex debug pubf sett4 doughP mdFileDir
 
             when (inform debug) $
@@ -127,18 +114,3 @@ docrep2panrep debug pubf sett4x metaplus5 = do
             return (metaplus5{extra=extra7}, needs)
         else
             return (metaplus5{extra=extra6}, [])
--- return (metaplus6, [])
-
-
--- old 
-    -- if isIndexPage (makeAbsFile . dyFn . panyam $ panrep2 )
-    --     then do
-    -- -- if dyIndexPage . panyam $ pr
-    --         let m1 = panyam panrep2  -- meta
-    --         let ix1 =dyIndexEntry  m1
-    --         -- let bakedP = bakedDir layout
-    --         let doughP = doughDir layout
-    --         ix2 <- collectIndex debug pubf sett4 doughP (dyIndexSort . panyam $ panrep2) ix1
-    --         -- todo put ix2 into pr
-    --         let m2 = m1{dyIndexEntry = ix2}
-    --         let ixs = dirEntries  ix2 ++ fileEntries ix2

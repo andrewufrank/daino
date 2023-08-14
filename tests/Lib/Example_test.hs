@@ -13,7 +13,6 @@ import Test.Framework
 -- import UniformBase
 -- import Uniform.Test.TestHarness
 
-import Lib.Templating
 
 -- import Data.Text
 

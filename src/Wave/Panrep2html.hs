@@ -35,11 +35,8 @@ module Wave.Panrep2html (
 import Foundational.Filetypes4sites  
 import Foundational.SettingsPage
     -- ( Settings(siteLayout), SiteLayout(blogAuthorToSuppress) )
-import Foundational.MetaPage
-    -- ( convertLink2html,
-    --   convertLink2pdf,
-    --   IndexEntry,
-    --   MetaPage(dyIndexEntry, dyIndexSort) )
+
+
 import GHC.Generics (Generic)
 
 import Uniform.Json ( ToJSON(toJSON), Value, ErrIO )
@@ -50,12 +47,7 @@ import Uniform.Http ( HTMLout (HTMLout) )
 import UniformBase
 
 import Data.Maybe (fromMaybe)
-
--- import Lib.IndexMake ( convertIndexEntries, MenuEntry )
--- import Lib.IndexCollect ( collectIIndex )
-import Lib.Templating  
--- import Text.Pandoc.SideNote ( usingSideNotes )
-
+ 
 
 -- ------------------------------------ panrep2html
 -- panrep2html :: Panrep -> ErrIO HTMLout
