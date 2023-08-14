@@ -11,7 +11,7 @@ image           $metaHtml.image$
 imageCaption    $metaHtml.imageCaption$
 siteBanner      $sett.siteHeader.banner$
 siteBannerCaption   $sett.siteHeader.bannerCaption$
-sitename        $sett.siteHeader.name$
+sitename        $sett.siteHeader.sitename$
 sitebyline      $sett.siteHeader.byline$
 menuitems       $for(sett.menuitems.menuNav)$ 
                     $sett.menuitems.menuNav.navlink$
@@ -61,7 +61,7 @@ indexEntryDirectories
     $for(extra.indexEntry.dirEntries)$
             $extra.indexEntry.dirEntries$
     $endfor$
-    
+
 indexEntryFiles 
     $for(extra.indexEntry.fileEntries)$
             $extra.indexEntry.fileEntries$
