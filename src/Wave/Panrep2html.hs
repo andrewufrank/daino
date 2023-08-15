@@ -50,6 +50,7 @@ import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..))
 import Data.Maybe (fromMaybe)
 import qualified Data.Map as M
 import Wave.Docrep2panrep
+import System.FilePath (replaceExtension)
 
 -- ------------------------------------ panrep2html
 -- panrep2html :: Panrep -> ErrIO HTMLout
@@ -72,81 +73,100 @@ panrep2html debug   metaplus4 = do
 
     -- htm1 <- meta2xx writeHtml5String2 (metap metaplus4)
 
-    --if this is an index fuke it has files and dirs 
+    --if this is an index file it has files and dirs 
     putIOwords ["panrep2html", "extra4", showPretty extra4]
     
-    let files = fileEntries  $ extra4 
-        dirs = dirEntries  $ extra4 
+    let files = fileEntries  $ extra4 :: [IndexEntry2]
+        dirs = dirEntries  $ extra4 :: [IndexEntry2]
 
     -- calculate needs 
     let 
-        bakedP = toFilePath . bakedDir . siteLayout $ sett3
-        ds = map (addDir bakedP ) . map addIndex $ map link $ dirs  :: [FilePath]
-        fs =   map link files :: [FilePath]
+        bakedP =   bakedDir . siteLayout $ sett3
+        bakedFP = toFilePath bakedP
+        needs = map (flip replaceExtension "panrep") . map (addDir bakedFP ) .  map link $ (dirs ++ files) 
+                     :: [FilePath] 
 
-    putIOwords ["panrep2html", "\n\tds ", showPretty ds, "\n\tfs", showPretty fs ]
+    putIOwords ["panrep2html", "\n\tneeds ", showPretty needs ]
 
-    let needs = ds ++ fs 
 
-    let dirs2 = map makeAbsFile ds
-        files2 = map makeAbsFile fs
-    panDirs <- mapM (get4panrepsDir debug) dirs2 
-    panfiles <- mapM (get4panrepsFile debug) files2 
+    -- let dirs2 = map makeAbsFile ds
+    --     files2 = map makeAbsFile fs
+    -- panDirs <- mapM (get4panrepsDir debug) dirs2 
+    -- panfiles <- mapM (get4panrepsFile debug) files2 
 
-    let valsDirs =  mapMaybe (getVals debug) panDirs :: [IndexEntry2]
-    let valsFiles =  mapMaybe (getVals debug) panDirs :: [IndexEntry2]
+    valsDirs :: [Maybe IndexEntry2]<- mapM (getVals2 debug bakedP) dirs 
+    valsFiles :: [Maybe IndexEntry2] <- mapM (getVals2 debug bakedP) files  
 
     putIOwords ["panrep2html", "valsDirs", showPretty valsDirs]
     putIOwords ["panrep2html", "valsFiles", showPretty valsFiles]
 
     
 
-    -- let extra5 = extra4{fileEntries = valsFiles
-    --                     , dirEntries = valsDirs}
-    -- let metaplus5 = metaplus4{extra = extra5} 
+    let extra5 = extra4{fileEntries = catMaybes valsFiles
+                        , dirEntries = catMaybes valsDirs}
+    let metaplus5 = metaplus4{extra = extra5} 
 -- copied
-    -- -- htpl2 <- compileTemplateFile2 metaplusHtml -- fnminilatex
-    -- let hpl1 = renderTemplate htmlTempl (toJSON metaplus5)  -- :: Doc Text
-    -- -- putIOwords ["tpl1 \n", showT tpl1]
-    -- let ht1 = render (Just 50) hpl1  -- line length, can be Nothing
-    -- -- putIOwords ["res1 \n", res1]
-    -- -- write8   fnPlusres htmloutFileType (HTMLout ht1)
-    let ht1 = zero 
+    -- htpl2 <- compileTemplateFile2 metaplusHtml -- fnminilatex
+    let hpl1 = renderTemplate htmlTempl (toJSON metaplus5)  -- :: Doc Text
+    -- putIOwords ["tpl1 \n", showT tpl1]
+    let ht1 = render (Just 50) hpl1  -- line length, can be Nothing
+    -- putIOwords ["res1 \n", res1]
+    -- write8   fnPlusres htmloutFileType (HTMLout ht1)
 
 
 -- 
     -- hres <- meta2hres htmlTempl metaplus4
-    when (inform debug) $ putIOwords ["panrep2html render html done"
-        -- , "hres", ht1
+    when (informAll debug) $ putIOwords ["panrep2html render html done"
+        , "hres", ht1
         ]
     -- bakeOnePanrep2html will write to disk
     return (HTMLout ht1, needs)
 
-get4panrepsDir :: NoticeLevel -> IndexEntry2 -> ErrIO Panrep  
--- read the panreps for the directories 
-get4panrepsDir debug Path Abs File  = do 
-    let fn = makeRelFile "index.md" 
-        dir2 = makeAbsDir $ ixfn dirEntry
-        ixFn = addFileName dir2  fn :: Path Abs File
-    read8 ixFn panrepFileType
+getVals2 :: NoticeLevel -> Path Abs Dir -> IndexEntry2 
+                -> ErrIO (Maybe IndexEntry2)
+-- get the panrep and fill the vals 
+getVals2 debug bakedP ix2 = do
+    let fn = makeAbsFile $ addDir (toFilePath bakedP) (link ix2)  :: Path Abs File
+    pan1 <- read8 fn panrepFileType
 
-get4panrepsFile :: NoticeLevel -> IndexEntry2 -> ErrIO Panrep  
--- read the panreps for the directories 
-get4panrepsFile debug dirEntry = do 
-    let fn2 = makeAbsFile $ ixfn dirEntry
-    -- read8 fn2 panrepFileType  todo 
-    return zero
-
-getVals :: NoticeLevel -> Panrep -> Maybe IndexEntry2 
-getVals debug pan1 = if incl then Just $ 
-        zero{ abstract = lookup7 "abstract" m
-            , author = lookup7 "author" m
-            , date = lookup7 "date" m
+    let m = metaHtml pan1
+        res = ix2{ abstract = lookup7 "abstract" m
+                -- , author = lookup7 "author" m
+                ,     date = lookup7 "date" m
             -- todo complete 
-            } else Nothing
-    where 
-            m = metaHtml pan1 
-            incl = True 
+                }
+    return $ if incl then Just res else Nothing 
+
+  where
+        
+        
+        incl = True -- TODO 
+
+-- get4panrepsDir :: NoticeLevel -> IndexEntry2 -> ErrIO Panrep  
+-- -- read the panreps for the directories 
+-- get4panrepsDir debug fn = do 
+--     let fn = makeRelFile "index.md" 
+--         dir2 = makeAbsDir $ ixfn dirEntry
+--         ixFn = addFileName dir2  fn :: Path Abs File
+--     read8 ixFn panrepFileType
+
+-- get4panrepsFile :: NoticeLevel -> IndexEntry2 -> ErrIO Panrep  
+-- -- read the panreps for the directories 
+-- get4panrepsFile debug dirEntry = do 
+--     let fn2 = makeAbsFile $ ixfn dirEntry
+--     -- read8 fn2 panrepFileType  todo 
+--     return zero
+
+-- getVals :: NoticeLevel -> Panrep -> Maybe IndexEntry2 
+-- getVals debug pan1 = if incl then Just $ 
+--         zero{ abstract = lookup7 "abstract" m
+--             , author = lookup7 "author" m
+--             , date = lookup7 "date" m
+--             -- todo complete 
+--             } else Nothing
+--     where 
+--             m = metaHtml pan1 
+--             incl = True 
 
 lookup7 :: Text -> M.Map Text Text ->  Text
 lookup7 k m = fromJustNoteT ["lookup7 in panrep2html", k, showT m] 

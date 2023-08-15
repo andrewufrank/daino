@@ -67,10 +67,13 @@ collectIndex debug pubf sett4 doughP fn dv1 = do
 
 initializeIx2dir :: Path Abs Dir -> Path Abs Dir -> IndexEntry2 
 -- the dough path to make the path relative
-initializeIx2dir doughP fp = zero{ixfn = toFilePath fp
+-- set the index file, not the directory itself 
+initializeIx2dir doughP fp = zero{ixfn = toFilePath fp2
                     , link = toFilePath relfp}
         where 
-            relfp =  makeRelativeP doughP fp  
+            fp2 = addFileName fp (makeRelFile "index.md")
+            relfp =  makeRelativeP doughP fp2  
+
 initializeIx2file :: Path Abs Dir -> Path Abs File -> IndexEntry2 
 -- the dough path to make the path relative
 initializeIx2file doughP fp = zero{ixfn = toFilePath fp

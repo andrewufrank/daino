@@ -110,7 +110,7 @@ docrep2panrep debug pubf sett4x metaplus5 = do
                 , showPretty extra7 ]
 
             let
-                ds  =  map addIndex  $ map ixfn (dirEntries  extra7) :: [FilePath]
+                ds  =  map ixfn (dirEntries  extra7) :: [FilePath]
                 fs =   map ixfn (fileEntries extra7) :: [FilePath]
 
                 -- ixs =  map addIndex (dirEntries  extra7) ++ (fileEntries extra7)

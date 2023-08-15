@@ -58,13 +58,14 @@ blogAuthorToSuppress
                 $endfor$
 
 indexEntryDirectories 
-    $for(extra.indexEntry.dirEntries)$
-            $extra.indexEntry.dirEntries$
+    $for(extra.dirEntries)$
+            $extra.dirEntries$
     $endfor$
 
 indexEntryFiles 
-    $for(extra.indexEntry.fileEntries)$
-            $extra.indexEntry.fileEntries$
+    $for(extra.fileEntries)$
+            $extra.fileEntries.ixfn$
+            $extra.fileEntries.abstract$
     $endfor$
                         
 masterTemplateFile  $sett.siteLayout.masterTemplateFile$
