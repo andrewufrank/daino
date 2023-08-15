@@ -35,25 +35,40 @@ test_toPanrep = do
         let hash1 = show . hash . show $  pr :: String
         return hash1
 
-    assertEqual (Right "Hash {asWord64 = 18143424181543710254}") 
+    assertEqual (Right "Hash {asWord64 = 13387489375694972454}") 
         res1
 
 
-extra7 = DainoValues ------------------------docrep2panrep end if DainoValues
+extra7 =  DainoValues
   { mdFile = "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
   , mdRelPath = "ReadMe/index.md"
-  , indexEntry =
-      IndexEntry2
-        { dirEntries = []
-        , fileEntries =
-            [ "/home/frank/Workspace11/dainoSite/ReadMe/03tree.md"
-            , "/home/frank/Workspace11/dainoSite/ReadMe/02alltxt.md"
-            ]
-        }
+  , dirEntries = []
+  , fileEntries =
+      [ IndexEntry2
+          { ixfn = "/home/frank/Workspace11/dainoSite/ReadMe/03tree.md"
+          , link = ""
+          , title = ""
+          , abstract = ""
+          , author = ""
+          , date = ""
+          , content = ""
+          , publish = Nothing
+          , headerShift = 0
+          }
+      , IndexEntry2
+          { ixfn = "/home/frank/Workspace11/dainoSite/ReadMe/02alltxt.md"
+          , link = ""
+          , title = ""
+          , abstract = ""
+          , author = ""
+          , date = ""
+          , content = ""
+          , publish = Nothing
+          , headerShift = 0
+          }
+      ]
   , dainoVersion =
       "Version {versionBranch = [0,1,5,6,3], versionTags = []}"
   , latLanguage = "english"
   , authorReduced = ""
-  } 
-
-
+  }

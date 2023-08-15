@@ -108,7 +108,7 @@ bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
     -- let mf = masterTemplateFile layout
     -- let masterfn = templatesDir layout </> mf
 
-    p <- panrep2html debug  sett3 dr1
+    p <- panrep2html debug  dr1
 
     write8 resfn2 htmloutFileType p -- content is html style
     when (inform debug) $

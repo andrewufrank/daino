@@ -8,7 +8,7 @@
         -- panrep -> html 
 ---------------------------------------------------------------------
 {-# LANGUAGE ConstraintKinds #-}
--- {-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DoAndIfThenElse #-}
 {-# LANGUAGE DuplicateRecordFields #-}
@@ -41,12 +41,14 @@ import GHC.Generics (Generic)
 
 import Uniform.Json ( ToJSON(toJSON), Value, ErrIO )
 import Uniform.Pandoc  
-import Uniform.Latex 
+-- import Uniform.Latex 
 -- import qualified Text.Pandoc.Shared as P
 import Uniform.Http ( HTMLout (HTMLout) ) 
 import UniformBase
+import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..))
 
 import Data.Maybe (fromMaybe)
+import qualified Data.Map as M
  
 
 -- ------------------------------------ panrep2html
@@ -54,22 +56,25 @@ import Data.Maybe (fromMaybe)
 -- implements the bake
 -- siteHeader (sett3, above sett3) is the content of the settingsN.yml file
 -- added here the transformations to tufte sidenotes (from pandoc-sidenotes)
-panrep2html :: NoticeLevel -> Settings -> Panrep -> ErrIO HTMLout
-panrep2html debug  sett3x metaplus4 = do
-    let sett3 = sett metaplus4
-    let mf = masterTemplateFile $ siteLayout sett3
-    -- let mfn = templatesDir layout </> mf
-    let masterfn = templatesDir (siteLayout sett3) </> mf
-    -- let h = "0" -- maybe 0 $ M.lookup headerShift . unMeta $ meta4
-    -- when (inform debug) $
-    --     putIOwords ["\n\t---------------------------panrep2html"
-    --             , "shiftHeaderLevel"
-    --             , showT h] 
 
+panrep2html :: NoticeLevel -> Panrep -> ErrIO HTMLout
+panrep2html debug   metaplus4 = do
+    let sett3 = sett metaplus4
+        extra4 = extra metaplus4
+        mf = masterTemplateFile $ siteLayout sett3
+        masterfn = templatesDir (siteLayout sett3) </> mf
     htmlTempl  <- compileTemplateFile2 masterfn
 
-    htm1 <- meta2xx writeHtml5String2 (metap metaplus4)
-    let metaplus5 = metaplus4{metaHtml = htm1}
+    -- htm1 <- meta2xx writeHtml5String2 (metap metaplus4)
+
+    --if this is an inexe it has files and dirs 
+    let files = fileEntries  $ extra4 
+        dirs = dirEntries  $ extra4 
+    panDirs <- mapM (get4panrepsDir debug) dirs 
+
+    let valsDirs =  mapMaybe (getVals debug) panDirs :: [IxRec]
+
+    let metaplus5 = metaplus4 
 -- copied
     -- htpl2 <- compileTemplateFile2 metaplusHtml -- fnminilatex
     let hpl1 = renderTemplate htmlTempl (toJSON metaplus5)  -- :: Doc Text
@@ -86,23 +91,37 @@ panrep2html debug  sett3x metaplus4 = do
         , "hres", ht1]
     -- bakeOnePanrep2html will write to disk
     return . HTMLout $ ht1
---     55
---     - fill the three meta fields for the output
--- completeMetaPlus :: MetaPlus -> ErrIO MetaPlus 
--- completeMetaPlus metapl1 = do 
-    
---     md1 <- meta2xx writeToMarkdown  (metap metapl1)
---     htm1 <- meta2xx writeHtml5String2 (metap metapl1)
---     lat1 <- meta2xx writeTexSnip2 (metap metapl1)
---     -- uses biblatex
---     let metap2 = metapl1  { metaMarkdown = md1
---                     , metaHtml = htm1
---                     , metaLatex = lat1}
---     -- putIOwords ["completeMetaPlus \n", showT metap2]
---     return metap2 
-     
 
--- 44
+get4panrepsDir :: NoticeLevel -> IndexEntry2 -> ErrIO Panrep  
+get4panrepsDir debug dirEntry = do 
+    let fn = makeRelFile "index.md" 
+        dir2 = makeAbsDir $ ixfn dirEntry
+        ixFn = addFileName dir2  fn :: Path Abs File
+    read8 ixFn panrepFileType
+
+getVals :: NoticeLevel -> DainoMetaPlus -> Maybe IxRec 
+getVals debug pan1 = if incl then Just $ zero{
+            ixAbstract = lookup7 "abstract" m
+            , ixAuthor = lookup7 "author" m
+            , ixDate = lookup7 "date" m
+            
+            } else Nothing
+    where 
+            m = metaHtml pan1 
+            incl = True 
+
+lookup7 :: Text -> M.Map Text Text ->  Text
+lookup7 k m = fromJustNoteT ["lookup7 in panrep2html", k, showT m] 
+            . M.lookup k $ m
+
+data IxRec = IxRec {ixTitle :: Text
+                    , ixAbstract :: Text
+                    , ixDate :: Text 
+                    , ixAuthor :: Text 
+                    , ixSortOrder :: Text
+                    , ixVersion :: Text
+                    }
+    deriving (Show, Read, Ord, Eq, Generic, Zeros)
 
 
 --     let mf = masterTemplateFile $ siteLayout sett3

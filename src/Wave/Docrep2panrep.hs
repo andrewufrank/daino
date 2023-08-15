@@ -52,6 +52,7 @@ import Data.Maybe (fromMaybe)
 -- import Lib.IndexMake ( convertIndexEntries, MenuEntry )
 import Lib.IndexCollect ( collectIndex )
 -- import Lib.Templating ( putValinMaster )
+import qualified Data.Map as M
 
 ------------------------------------------------docrep -> panrep
 
@@ -59,8 +60,8 @@ import Lib.IndexCollect ( collectIndex )
 --  completes the index (if indexpage else nothing done)
 
 --  the refs are processed before in md2docrep
--- not yet producing index 
-
+--  convert meta to html and latex versions
+--  collect the index file and dirs 
 
 docrep2panrep :: NoticeLevel -> PubFlags -> Settings -> Docrep -> ErrIO (Panrep, [FilePath])
 docrep2panrep debug pubf sett4x metaplus5 = do
@@ -86,6 +87,12 @@ docrep2panrep debug pubf sett4x metaplus5 = do
         aut1 = getTextFromYaml6 defaut "author" meta5
         extra6 = extra5{authorReduced = blankAuthorName hpname aut1}
 
+    htm1 <- meta2xx writeHtml5String2 meta5
+    tex1  :: M.Map Text Text <- meta2xx   writeTexSnip2 meta5
+
+    let metaplus6 = metaplus5{metaHtml = htm1
+                     ,metaLatex = tex1
+                     , extra = extra6 }
         -- panrep2 = Panrep y2 p1
 
     when (inform debug) $ putIOwords ["docrep2panrep"
@@ -96,21 +103,21 @@ docrep2panrep debug pubf sett4x metaplus5 = do
 
     if isIndexPage mdFile5
         then do
-            ix2 <- collectIndex debug pubf sett4 doughP mdFileDir
+            extra7 <- collectIndex debug pubf sett4 doughP mdFileDir extra6
 
             when (inform debug) $
                 putIOwords ["\n ix2------------------------docrep2panrep after collectIndex"
-                , showPretty ix2 ]
+                , showPretty extra7 ]
 
-            let extra7 = extra6{indexEntry = ix2}
-                ixs =  (dirEntries  ix2) ++ (fileEntries ix2)
-                needs :: [FilePath] =  ixs
+            let  
+                ixs =  (dirEntries  extra7) ++ (fileEntries extra7)
+                needs :: [FilePath] =  map ixfn ixs
 
             when (inform debug) $
                 putIOwords ["\n extra7------------------------docrep2panrep end if"
                 , showPretty extra7
                 , "needs", showT needs]
 
-            return (metaplus5{extra=extra7}, needs)
+            return (metaplus6{extra=extra7}, needs)
         else
-            return (metaplus5{extra=extra6}, [])
+            return (metaplus6 , [])

@@ -43,12 +43,12 @@ import Data.List (sortOn)
 
 
 
-collectIndex :: NoticeLevel -> PubFlags -> Settings -> Path Abs Dir ->   Path Abs Dir -> ErrIO IndexEntry2
+collectIndex :: NoticeLevel -> PubFlags -> Settings -> Path Abs Dir ->   Path Abs Dir -> DainoValues -> ErrIO DainoValues
 {- ^ the top call to collect the index data into the MetaPage
 -- files and dirs 
 -- starts with dir of index
 -}
-collectIndex debug pubf sett4 doughP  fn = do
+collectIndex debug pubf sett4 doughP fn dv1 = do
     when (inform debug) $ putIOwords ["collectIndex", "start", showPretty fn]
 
 
@@ -56,10 +56,14 @@ collectIndex debug pubf sett4 doughP  fn = do
  
     when (inform debug) $ putIOwords ["collectIndex", "\n dirs", showT dirs, "\n files", showT files]
 
-    let ix2 = zero{dirEntries = map toFilePath  dirs
-                    , fileEntries = map toFilePath files}
-    when (inform debug) $ putIOwords ["collectIndex", "x2", showT ix2]
-    return ix2
+    let dv2 = dv1{dirEntries = map initializeIx2  dirs
+                    , fileEntries = map initializeIx2 files}
+
+    when (inform debug) $ putIOwords ["collectIndex", "dv2", showT dv2]
+    return dv2
+
+initializeIx2 :: Path Abs a -> IndexEntry2 
+initializeIx2 fp = zero{ixfn = toFilePath fp}
 
 {-  old
 get the contents of a directory, separated into dirs and files

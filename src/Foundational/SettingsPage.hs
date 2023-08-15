@@ -74,18 +74,19 @@ instance FromJSON Settings
 data DainoValues = DainoValues 
                         { mdFile:: FilePath -- Path Abs File -- abs file path 
                         , mdRelPath :: FilePath -- Path Rel File  -- rel file path
-                        , indexEntry :: IndexEntry2 
+                        , dirEntries :: [IndexEntry2] 
+                        , fileEntries :: [IndexEntry2] 
                                 -- only the dirs and files path
                         , dainoVersion :: Text 
                         , latLanguage :: Text 
                         , authorReduced :: Text
                         -- , extraBakedDir :: Text
                         }
-    deriving (Eq, Ord, Show, Read, Generic)
+    deriving (Eq, Ord, Show, Read, Generic, Zeros)
 
 
-instance Zeros DainoValues where 
-    zero = DainoValues zero  zero zero  zero zero  zero 
+-- instance Zeros DainoValues where 
+--     zero = DainoValues zero  zero zero  zero zero  zero zero
 instance ToJSON DainoValues 
 instance FromJSON DainoValues 
 
@@ -94,23 +95,23 @@ instance FromJSON DainoValues
 
 data IndexEntry2 = IndexEntry2 
     { -- | the abs file path
-    --   ixfn :: FilePath -- Path Abs File
-    -- , -- | the link for this page (relative to web root)}
-    --   link :: FilePath -- Path Rel File
-    -- , title :: Text
-    -- , abstract :: Text
-    -- , author :: Text
-    -- , date :: Text
-    -- , content :: Text   -- in latex style, only filled bevore use
-    -- -- , publish :: Maybe Text
-    -- -- , indexPage :: Bool
-    dirEntries :: [FilePath] -- [Path Abs Dir] -- [IndexEntry2] -- def []
-    , fileEntries :: [FilePath] -- [Path Abs File] -- [IndexEntry2] -- def []
-    -- , headerShift :: Int   
-    } deriving (Show, Read, Eq, Ord, Generic)
+      ixfn :: FilePath -- Path Abs File
+    , -- | the link for this page (relative to web root)}
+      link :: FilePath -- Path Rel File
+    , title :: Text
+    , abstract :: Text
+    , author :: Text
+    , date :: Text
+    , content :: Text   -- in latex style, only filled bevore use
+    , publish :: Maybe Text
+    -- , indexPage :: Bool
+    -- , dirEntries :: [FilePath] -- [Path Abs Dir] -- [IndexEntry2] -- def []
+    -- , fileEntries :: [FilePath] -- [Path Abs File] -- [IndexEntry2] -- def []
+    , headerShift :: Int   
+    } deriving (Show, Read, Eq, Ord, Generic, Zeros)
     --  IndexTitleSubdirs | IndexTitleFiles 
 
-instance Zeros IndexEntry2 where zero = IndexEntry2 [] []
+-- instance Zeros IndexEntry2 where zero = IndexEntry2 [] []
 -- zero zero zero zero zero zero zero
 
 instance ToJSON IndexEntry2

@@ -37,8 +37,8 @@ fnmd1 = makeAbsFile "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
 reshtml = makeAbsFile"/home/frank/tests/html1"
 testTemplate = makeAbsFile "/home/frank/Workspace11/daino/tests/data/metaplusHtml.dtpl"
 
-panrep2htmlForTest :: NoticeLevel -> Settings -> Panrep -> ErrIO HTMLout
-panrep2htmlForTest debug  sett3x metaplus4 = do
+panrep2htmlForTest :: NoticeLevel ->  Panrep -> ErrIO HTMLout
+panrep2htmlForTest debug   metaplus4 = do
     let sett3 = sett metaplus4
     let mf = testTemplate
     -- let mfn = templatesDir layout </> mf
@@ -75,7 +75,7 @@ test_toHtmlTest = do
         metaplus5 <- setup_md2metaplus fnmd1 
 
         (metap1,_) <- docrep2panrep NoticeLevel0 def zero metaplus5
-        html1 <- panrep2htmlForTest NoticeLevel0  zero metap1
+        html1 <- panrep2htmlForTest NoticeLevel0  metap1
         putIOwords ["test_toHtmlTest pr \n", unHTMLout html1]
         let hash1 = show . hash . show $  html1 :: String
         return hash1
