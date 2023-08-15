@@ -185,7 +185,8 @@ templatesName = "templates"
 themeName = "theme"
 
 templatesDir :: SiteLayout -> Path Abs Dir
-templatesDir layout = themeDir layout `addFileName` (makeRelDir templatesName)
+templatesDir layout = themeDir layout 
+            `addFileName` (makeRelDir templatesName)
 
 blankAuthorName :: [Text] -> Text -> Text 
 -- suppress/oppress author name, if the author name is the same as one in the first arg (AUF, Andrew U..) then set it to empty else copy 

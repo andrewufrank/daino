@@ -110,7 +110,7 @@ docrep2panrep debug pubf sett4x metaplus5 = do
                 , showPretty extra7 ]
 
             let  
-                ixs =  (dirEntries  extra7) ++ (fileEntries extra7)
+                ixs =  addIndex (dirEntries  extra7) ++ (fileEntries extra7)
                 needs :: [FilePath] =  map ixfn ixs
 
             when (inform debug) $
@@ -121,3 +121,8 @@ docrep2panrep debug pubf sett4x metaplus5 = do
             return (metaplus6{extra=extra7}, needs)
         else
             return (metaplus6 , [])
+
+addIndex :: Path Abs Dir -> Path Abs File 
+addIndex dir1 = 
+    where 
+        let fn = makeRelFile "index.md"         

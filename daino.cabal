@@ -113,6 +113,7 @@ test-suite dainoTest3
   type: exitcode-stdio-1.0
   main-is: testing.hs
   other-modules:
+      Lib.DainoTest_test
       Lib.Docrep2panrep_test
       Lib.Example_test
       Lib.IndexCollect_test

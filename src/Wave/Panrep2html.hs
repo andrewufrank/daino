@@ -64,23 +64,33 @@ panrep2html debug   metaplus4 = do
         mf = masterTemplateFile $ siteLayout sett3
         masterfn = templatesDir (siteLayout sett3) </> mf
 
-    putIOwords ["panrep2html", "siteLayout sett3", showT $ siteLayout sett3]
-    putIOwords ["panrep2html", "masterfn", showT mf]
+    putIOwords ["\npanrep2html", "siteLayout sett3", showPretty $ siteLayout sett3]
+    putIOwords ["panrep2html", "mf", showPretty mf]
+    putIOwords ["panrep2html", "masterfn", showPretty masterfn]
 
     htmlTempl  <- compileTemplateFile2 masterfn
 
     -- htm1 <- meta2xx writeHtml5String2 (metap metaplus4)
 
-    --if this is an inexe it has files and dirs 
+    --if this is an index fuke it has files and dirs 
+    putIOwords ["panrep2html", "extra4", showPretty extra4]
+    
     let files = fileEntries  $ extra4 
         dirs = dirEntries  $ extra4 
     panDirs <- mapM (get4panrepsDir debug) dirs 
+    panfiles <- mapM (get4panrepsFile debug) files 
 
-    let valsDirs =  mapMaybe (getVals debug) panDirs :: [IxRec]
+    let valsDirs =  mapMaybe (getVals debug) panDirs :: [IndexEntry2]
+    let valsFiles =  mapMaybe (getVals debug) panDirs :: [IndexEntry2]
 
-    putIOwords ["panrep2html", "valsDirs", showT valsDirs]
+    putIOwords ["panrep2html", "valsDirs", showPretty valsDirs]
+    putIOwords ["panrep2html", "valsFiles", showPretty valsFiles]
 
-    let metaplus5 = metaplus4 
+    
+
+    let extra5 = extra4{fileEntries = valsFiles
+                        , dirEntries = valsDirs}
+    let metaplus5 = metaplus4{extra = extra5} 
 -- copied
     -- htpl2 <- compileTemplateFile2 metaplusHtml -- fnminilatex
     let hpl1 = renderTemplate htmlTempl (toJSON metaplus5)  -- :: Doc Text
@@ -94,7 +104,8 @@ panrep2html debug   metaplus4 = do
 -- 
     -- hres <- meta2hres htmlTempl metaplus4
     when (inform debug) $ putIOwords ["panrep2html render html done"
-        , "hres", ht1]
+        -- , "hres", ht1
+        ]
     -- bakeOnePanrep2html will write to disk
     return . HTMLout $ ht1
 
@@ -106,12 +117,19 @@ get4panrepsDir debug dirEntry = do
         ixFn = addFileName dir2  fn :: Path Abs File
     read8 ixFn panrepFileType
 
-getVals :: NoticeLevel -> Panrep -> Maybe IxRec 
+get4panrepsFile :: NoticeLevel -> IndexEntry2 -> ErrIO Panrep  
+-- read the panreps for the directories 
+get4panrepsFile debug dirEntry = do 
+    let fn2 = makeAbsFile $ ixfn dirEntry
+    -- read8 fn2 panrepFileType  todo 
+    return zero
+
+getVals :: NoticeLevel -> Panrep -> Maybe IndexEntry2 
 getVals debug pan1 = if incl then Just $ 
-        zero{ ixAbstract = lookup7 "abstract" m
-            , ixAuthor = lookup7 "author" m
-            , ixDate = lookup7 "date" m
-            
+        zero{ abstract = lookup7 "abstract" m
+            , author = lookup7 "author" m
+            , date = lookup7 "date" m
+            -- todo complete 
             } else Nothing
     where 
             m = metaHtml pan1 
@@ -121,14 +139,14 @@ lookup7 :: Text -> M.Map Text Text ->  Text
 lookup7 k m = fromJustNoteT ["lookup7 in panrep2html", k, showT m] 
             . M.lookup k $ m
 
-data IxRec = IxRec {ixTitle :: Text
-                    , ixAbstract :: Text
-                    , ixDate :: Text 
-                    , ixAuthor :: Text 
-                    , ixSortOrder :: Text
-                    , ixVersion :: Text
-                    }
-    deriving (Show, Read, Ord, Eq, Generic, Zeros)
+-- data IxRec = IxRec {ixTitle :: Text
+--                     , ixAbstract :: Text
+--                     , ixDate :: Text 
+--                     , ixAuthor :: Text 
+--                     , ixSortOrder :: Text
+--                     , ixVersion :: Text
+--                     }
+--     deriving (Show, Read, Ord, Eq, Generic, Zeros)
 
 
 --     let mf = masterTemplateFile $ siteLayout sett3
