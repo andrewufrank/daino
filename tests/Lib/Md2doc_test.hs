@@ -30,8 +30,8 @@ setup_md2metaplus fn = do
         return metaplus1
 
 
-settFn = makeAbsFile "/home/frank/Workspace11/daino/settings3.yaml"
-fnmd = makeAbsFile "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
+settFn = makeAbsFile "/home/frank/Workspace11/daino/settingsTest.yaml"
+fnmd = makeAbsFile "/home/frank/Workspace11/daino/tests/data/ReadMe/index.md"
 resdocrep = makeAbsFile"/home/frank/tests/docrep1"
 
 test_md2docrep = do 
@@ -41,7 +41,7 @@ test_md2docrep = do
         let hash1 = show . hash . show $  dr :: String
         return hash1
 
-    assertEqual (Right "Hash {asWord64 = 12422158080958583279}") 
+    assertEqual (Right "Hash {asWord64 = 1877019767519520890}") 
         res1
 
 

@@ -21,7 +21,7 @@ import Wave.Docrep2panrep
 import Foundational.CmdLineFlags ( PubFlags )
 import Data.Hash
 
-fnmd1 = makeAbsFile "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
+fnmd1 = makeAbsFile "/home/frank/Workspace11/daino/tests/data/ReadMe/index.md"
 resdocrep = makeAbsFile"/home/frank/tests/panrep1"
 
 
@@ -35,17 +35,19 @@ test_toPanrep = do
         let hash1 = show . hash . show $  pr :: String
         return hash1
 
-    assertEqual (Right "Hash {asWord64 = 13387489375694972454}") 
+    assertEqual (Right "Hash {asWord64 = 9343417045308588098}") 
         res1
 
 
 extra7 =  DainoValues
-  { mdFile = "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
+ { mdFile =
+      "/home/frank/Workspace11/daino/tests/data/ReadMe/index.md"
   , mdRelPath = "ReadMe/index.md"
   , dirEntries = []
   , fileEntries =
       [ IndexEntry2
-          { ixfn = "/home/frank/Workspace11/dainoSite/ReadMe/03tree.md"
+          { ixfn =
+              "/home/frank/Workspace11/daino/tests/data/ReadMe/03tree.md"
           , link = ""
           , title = ""
           , abstract = ""
@@ -56,7 +58,8 @@ extra7 =  DainoValues
           , headerShift = 0
           }
       , IndexEntry2
-          { ixfn = "/home/frank/Workspace11/dainoSite/ReadMe/02alltxt.md"
+          { ixfn =
+              "/home/frank/Workspace11/daino/tests/data/ReadMe/02alltxt.md"
           , link = ""
           , title = ""
           , abstract = ""

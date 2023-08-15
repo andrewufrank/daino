@@ -43,7 +43,8 @@ import Data.List (sortOn)
 
 
 
-collectIndex :: NoticeLevel -> PubFlags -> Settings -> Path Abs Dir ->   Path Abs Dir -> DainoValues -> ErrIO DainoValues
+collectIndex :: NoticeLevel -> PubFlags -> Settings -> Path Abs Dir 
+        ->   Path Abs Dir -> DainoValues -> ErrIO DainoValues
 {- ^ the top call to collect the index data into the MetaPage
 -- files and dirs 
 -- starts with dir of index
@@ -54,7 +55,8 @@ collectIndex debug pubf sett4 doughP fn dv1 = do
 
     (dirs, files) <- getDirContent2dirs_files debug pubf sett4 doughP  fn
  
-    when (inform debug) $ putIOwords ["collectIndex", "\n dirs", showT dirs, "\n files", showT files]
+    when (inform debug) $ putIOwords ["collectIndex", "\n dirs"
+                    , showT dirs, "\n files", showT files]
 
     let dv2 = dv1{dirEntries = map initializeIx2  dirs
                     , fileEntries = map initializeIx2 files}
@@ -70,7 +72,9 @@ get the contents of a directory, separated into dirs and files
  the directory is given by the index dir file
  
 -}
-getDirContent2dirs_files :: NoticeLevel -> PubFlags -> Settings -> Path Abs Dir ->  Path Abs Dir -> ErrIO ([Path Abs Dir], [Path Abs File])
+getDirContent2dirs_files :: NoticeLevel -> PubFlags -> Settings 
+        -> Path Abs Dir ->  Path Abs Dir 
+        -> ErrIO ([Path Abs Dir], [Path Abs File])
 -- get the dirs and files, exclude based on filename
 getDirContent2dirs_files debug pubf sett4 doughP   indexDir = do
     when (inform debug) $ putIOwords ["getDirContent2dirs_files for", showPretty indexDir]

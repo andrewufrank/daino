@@ -63,6 +63,10 @@ panrep2html debug   metaplus4 = do
         extra4 = extra metaplus4
         mf = masterTemplateFile $ siteLayout sett3
         masterfn = templatesDir (siteLayout sett3) </> mf
+
+    putIOwords ["panrep2html", "siteLayout sett3", showT $ siteLayout sett3]
+    putIOwords ["panrep2html", "masterfn", showT mf]
+
     htmlTempl  <- compileTemplateFile2 masterfn
 
     -- htm1 <- meta2xx writeHtml5String2 (metap metaplus4)
@@ -73,6 +77,8 @@ panrep2html debug   metaplus4 = do
     panDirs <- mapM (get4panrepsDir debug) dirs 
 
     let valsDirs =  mapMaybe (getVals debug) panDirs :: [IxRec]
+
+    putIOwords ["panrep2html", "valsDirs", showT valsDirs]
 
     let metaplus5 = metaplus4 
 -- copied
@@ -93,15 +99,16 @@ panrep2html debug   metaplus4 = do
     return . HTMLout $ ht1
 
 get4panrepsDir :: NoticeLevel -> IndexEntry2 -> ErrIO Panrep  
+-- read the panreps for the directories 
 get4panrepsDir debug dirEntry = do 
     let fn = makeRelFile "index.md" 
         dir2 = makeAbsDir $ ixfn dirEntry
         ixFn = addFileName dir2  fn :: Path Abs File
     read8 ixFn panrepFileType
 
-getVals :: NoticeLevel -> DainoMetaPlus -> Maybe IxRec 
-getVals debug pan1 = if incl then Just $ zero{
-            ixAbstract = lookup7 "abstract" m
+getVals :: NoticeLevel -> Panrep -> Maybe IxRec 
+getVals debug pan1 = if incl then Just $ 
+        zero{ ixAbstract = lookup7 "abstract" m
             , ixAuthor = lookup7 "author" m
             , ixDate = lookup7 "date" m
             

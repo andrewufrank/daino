@@ -24,8 +24,23 @@ import UniformBase
 import Lib.Md2doc_test
 import Uniform.Http ( HTMLout (HTMLout), unHTMLout ) 
 import Data.Hash
+import Wave.Panrep2html
 
 -- import Lib.IndexCollect
+
+test_toHtmlout = do 
+    res1 <- runErr $ do 
+        metaplus5 <- setup_md2metaplus fnmd1 
+
+        (metap1,_) <- docrep2panrep NoticeLevel0 def zero metaplus5
+        html1 <- panrep2html NoticeLevel0  metap1
+        putIOwords ["test_toHtmlTest pr \n", unHTMLout html1]
+        let hash1 = show . hash . show $  html1 :: String
+        return hash1
+
+    assertEqual (Right "Hash {asWord64 = 10016791119448399165}") 
+        res1
+
 
 testDir = makeAbsDir $
                 ("/home/frank" :: FilePath)
@@ -33,7 +48,7 @@ testDir = makeAbsDir $
                     -- must correspond to what testharness is using
                     -- does not
 
-fnmd1 = makeAbsFile "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
+fnmd1 = makeAbsFile "/home/frank/Workspace11/daino/tests/data/ReadMe/index.md"
 reshtml = makeAbsFile"/home/frank/tests/html1"
 testTemplate = makeAbsFile "/home/frank/Workspace11/daino/tests/data/metaplusHtml.dtpl"
 
@@ -76,11 +91,11 @@ test_toHtmlTest = do
 
         (metap1,_) <- docrep2panrep NoticeLevel0 def zero metaplus5
         html1 <- panrep2htmlForTest NoticeLevel0  metap1
-        putIOwords ["test_toHtmlTest pr \n", unHTMLout html1]
+        -- putIOwords ["test_toHtmlTest pr \n", unHTMLout html1]
         let hash1 = show . hash . show $  html1 :: String
         return hash1
 
-    assertEqual (Right "Hash {asWord64 = 8819198736048803205}") 
+    assertEqual (Right "Hash {asWord64 = 10016791119448399165}") 
         res1
 
 -- These are all the values for htmlTufte81.dtpl
