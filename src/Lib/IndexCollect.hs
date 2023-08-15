@@ -37,6 +37,7 @@ import Foundational.SettingsPage
 import UniformBase
 
 import Wave.Md2doc
+import Uniform.Shake
 
 import Foundational.SettingsPage  
 import Data.List (sortOn)
@@ -57,15 +58,25 @@ collectIndex debug pubf sett4 doughP fn dv1 = do
  
     when (inform debug) $ putIOwords ["collectIndex", "\n dirs"
                     , showT dirs, "\n files", showT files]
-
-    let dv2 = dv1{dirEntries = map initializeIx2  dirs
-                    , fileEntries = map initializeIx2 files}
+    
+    let dv2 = dv1{dirEntries = map (initializeIx2dir doughP) dirs
+                    , fileEntries = map (initializeIx2file doughP) files}
 
     when (inform debug) $ putIOwords ["collectIndex", "dv2", showT dv2]
     return dv2
 
-initializeIx2 :: Path Abs a -> IndexEntry2 
-initializeIx2 fp = zero{ixfn = toFilePath fp}
+initializeIx2dir :: Path Abs Dir -> Path Abs Dir -> IndexEntry2 
+-- the dough path to make the path relative
+initializeIx2dir doughP fp = zero{ixfn = toFilePath fp
+                    , link = toFilePath relfp}
+        where 
+            relfp =  makeRelativeP doughP fp  
+initializeIx2file :: Path Abs Dir -> Path Abs File -> IndexEntry2 
+-- the dough path to make the path relative
+initializeIx2file doughP fp = zero{ixfn = toFilePath fp
+                    , link = toFilePath relfp}
+        where 
+            relfp =  makeRelativeP doughP fp  
 
 {-  old
 get the contents of a directory, separated into dirs and files

@@ -117,7 +117,7 @@ shakeAll debug sett3 flags causedby = do
         , "\n======================================="
         ]
             
-    callIO $ shakeMD NoticeLevel2 sett3 flags doughP bakedP
+    callIO $ shakeMD debug sett3 flags doughP bakedP
 
 -- todo remove shakeMD and pass only layout
 
@@ -396,7 +396,7 @@ getNeedsMD debug flags sett4 sourceP targetP extSource extTarget = do
                     map
                         (replaceExtension' extTarget . (targetP </>))
                             (catMaybes files2) :: [Path Abs File]
-    when (inform debug) $ do
+    when (informAll debug) $ do
         putIOwords
             [ "===================\ngetNeeds -  source files 1"
             , "for ext"

@@ -108,13 +108,13 @@ bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
     -- let mf = masterTemplateFile layout
     -- let masterfn = templatesDir layout </> mf
 
-    p <- panrep2html debug  dr1
+    (p, needs) <- panrep2html debug  dr1
 
-    write8 resfn2 htmloutFileType p -- content is html style
+    write8 resfn2 htmloutFileType ( p) -- content is html style
     when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOnePanrep2html done fn", showT resfn2]
-    return []
+    return needs
 
 
 bakeOnePanrep2texsnip :: BakeOp --  PANREP -> TEXSNIP

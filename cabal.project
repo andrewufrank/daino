@@ -23,7 +23,7 @@ packages:
 --    ../u4blog/uniform-webserver/*.cabal
 --    ../u4blog/uniform-watch/*.cabal
     ../u4blog/uniform-latex2pdf/*.cabal
---    ../u4blog/uniform-shake/*.cabal
+    ../u4blog/uniform-shake/*.cabal
     ../u4blog/uniform-pandoc/*.cabal
 --    ../u4blog/uniform-http/*.cabal
 --    ../u2to/uniform-convenience/*.cabal

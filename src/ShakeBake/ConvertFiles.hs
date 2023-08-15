@@ -35,7 +35,7 @@ import Uniform.Shake
       toFilePath,
       errorT,
       runErr,
-      inform,
+      inform, informAll,
       makeAbsFile,
       unExtension,
       s2t,
@@ -55,7 +55,7 @@ import Uniform.Shake
       replaceExtension',
       runErr2action,
       Action,
-      Path2nd(makeRelativeP) )
+      Path2nd(makeRelativeP), informAll )
 -- import UniformBase
 
 
@@ -140,6 +140,10 @@ convertAny debug sourceP targetP flags layout out anyopName = do
                 ,  "\n\t file out", showT out
                 ]
             needsFound <- runErr2action $ anyop debug flags fromfilePathExt layout outP
+            when (informAll debug) $ putIOwords 
+                ["\nconvertAny runErr2Action", anyopName
+                ,  "\n\t needs found", showT needsFound
+                ]            
             need needsFound
     when (inform debug) $ putIOwords ["convertAny end for", anyopName]
     return ()

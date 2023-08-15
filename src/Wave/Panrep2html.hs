@@ -49,7 +49,7 @@ import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..))
 
 import Data.Maybe (fromMaybe)
 import qualified Data.Map as M
- 
+import Wave.Docrep2panrep
 
 -- ------------------------------------ panrep2html
 -- panrep2html :: Panrep -> ErrIO HTMLout
@@ -57,7 +57,7 @@ import qualified Data.Map as M
 -- siteHeader (sett3, above sett3) is the content of the settingsN.yml file
 -- added here the transformations to tufte sidenotes (from pandoc-sidenotes)
 
-panrep2html :: NoticeLevel -> Panrep -> ErrIO HTMLout
+panrep2html :: NoticeLevel -> Panrep -> ErrIO (HTMLout, [FilePath])
 panrep2html debug   metaplus4 = do
     let sett3 = sett metaplus4
         extra4 = extra metaplus4
@@ -77,8 +77,21 @@ panrep2html debug   metaplus4 = do
     
     let files = fileEntries  $ extra4 
         dirs = dirEntries  $ extra4 
-    panDirs <- mapM (get4panrepsDir debug) dirs 
-    panfiles <- mapM (get4panrepsFile debug) files 
+
+    -- calculate needs 
+    let 
+        bakedP = toFilePath . bakedDir . siteLayout $ sett3
+        ds = map (addDir bakedP ) . map addIndex $ map link $ dirs  :: [FilePath]
+        fs =   map link files :: [FilePath]
+
+    putIOwords ["panrep2html", "\n\tds ", showPretty ds, "\n\tfs", showPretty fs ]
+
+    let needs = ds ++ fs 
+
+    let dirs2 = map makeAbsFile ds
+        files2 = map makeAbsFile fs
+    panDirs <- mapM (get4panrepsDir debug) dirs2 
+    panfiles <- mapM (get4panrepsFile debug) files2 
 
     let valsDirs =  mapMaybe (getVals debug) panDirs :: [IndexEntry2]
     let valsFiles =  mapMaybe (getVals debug) panDirs :: [IndexEntry2]
@@ -88,17 +101,17 @@ panrep2html debug   metaplus4 = do
 
     
 
-    let extra5 = extra4{fileEntries = valsFiles
-                        , dirEntries = valsDirs}
-    let metaplus5 = metaplus4{extra = extra5} 
+    -- let extra5 = extra4{fileEntries = valsFiles
+    --                     , dirEntries = valsDirs}
+    -- let metaplus5 = metaplus4{extra = extra5} 
 -- copied
-    -- htpl2 <- compileTemplateFile2 metaplusHtml -- fnminilatex
-    let hpl1 = renderTemplate htmlTempl (toJSON metaplus5)  -- :: Doc Text
-    -- putIOwords ["tpl1 \n", showT tpl1]
-    let ht1 = render (Just 50) hpl1  -- line length, can be Nothing
-    -- putIOwords ["res1 \n", res1]
-    -- write8   fnPlusres htmloutFileType (HTMLout ht1)
-
+    -- -- htpl2 <- compileTemplateFile2 metaplusHtml -- fnminilatex
+    -- let hpl1 = renderTemplate htmlTempl (toJSON metaplus5)  -- :: Doc Text
+    -- -- putIOwords ["tpl1 \n", showT tpl1]
+    -- let ht1 = render (Just 50) hpl1  -- line length, can be Nothing
+    -- -- putIOwords ["res1 \n", res1]
+    -- -- write8   fnPlusres htmloutFileType (HTMLout ht1)
+    let ht1 = zero 
 
 
 -- 
@@ -107,11 +120,11 @@ panrep2html debug   metaplus4 = do
         -- , "hres", ht1
         ]
     -- bakeOnePanrep2html will write to disk
-    return . HTMLout $ ht1
+    return (HTMLout ht1, needs)
 
 get4panrepsDir :: NoticeLevel -> IndexEntry2 -> ErrIO Panrep  
 -- read the panreps for the directories 
-get4panrepsDir debug dirEntry = do 
+get4panrepsDir debug Path Abs File  = do 
     let fn = makeRelFile "index.md" 
         dir2 = makeAbsDir $ ixfn dirEntry
         ixFn = addFileName dir2  fn :: Path Abs File

@@ -33,7 +33,7 @@ test_toHtmlout = do
         metaplus5 <- setup_md2metaplus fnmd1 
 
         (metap1,_) <- docrep2panrep NoticeLevel0 def zero metaplus5
-        html1 <- panrep2html NoticeLevel0  metap1
+        (html1, _) <- panrep2html NoticeLevel0  metap1
         putIOwords ["test_toHtmlTest pr \n", unHTMLout html1]
         let hash1 = show . hash . show $  html1 :: String
         return hash1

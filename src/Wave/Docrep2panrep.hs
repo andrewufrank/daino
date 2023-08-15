@@ -109,9 +109,12 @@ docrep2panrep debug pubf sett4x metaplus5 = do
                 putIOwords ["\n ix2------------------------docrep2panrep after collectIndex"
                 , showPretty extra7 ]
 
-            let  
-                ixs =  addIndex (dirEntries  extra7) ++ (fileEntries extra7)
-                needs :: [FilePath] =  map ixfn ixs
+            let
+                ds  =  map addIndex  $ map ixfn (dirEntries  extra7) :: [FilePath]
+                fs =   map ixfn (fileEntries extra7) :: [FilePath]
+
+                -- ixs =  map addIndex (dirEntries  extra7) ++ (fileEntries extra7)
+                needs :: [FilePath] =  (ds ++ fs)
 
             when (inform debug) $
                 putIOwords ["\n extra7------------------------docrep2panrep end if"
@@ -122,7 +125,8 @@ docrep2panrep debug pubf sett4x metaplus5 = do
         else
             return (metaplus6 , [])
 
-addIndex :: Path Abs Dir -> Path Abs File 
-addIndex dir1 = 
-    where 
-        let fn = makeRelFile "index.md"         
+addIndex :: FilePath -> FilePath 
+addIndex dir1 = toFilePath $ addFileName dir2  fn
+    where
+       fn = makeRelFile "index.md"
+       dir2 = makeAbsDir dir1 
