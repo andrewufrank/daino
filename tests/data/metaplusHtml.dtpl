@@ -6,7 +6,8 @@
 lang            $metaHtml.lang$
 settingsAuthor  $sett.settingsAuthor$
 date            $metaHtml.date$
-keywords        $for(keywords)$$metaHtml.keywords$$endfor$
+keywords        $for(metaHtml.keywords)$$metaHtml.keywords$$endfor$
+page-title  missing todo 
 image           $metaHtml.image$
 imageCaption    $metaHtml.imageCaption$
 siteBanner      $sett.siteHeader.banner$
@@ -23,7 +24,7 @@ author          $metaHtml.author$
 table of contents   $metaHtml.table-of-contents$
 abstract        $metaHtml.abstract$
 linkpdf         $linkpdf3$
-date            $metaHtml.date$
+date   $--          $metaHtml.date$
 content         $metaHtml.body$
 menufiles       $for(menu2files)$
                     $menu2files.link2$
