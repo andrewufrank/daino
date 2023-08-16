@@ -38,6 +38,7 @@ settingsDainoSite = makeAbsFile "/home/frank/Workspace11/dainoSite/settings3.yam
 fnmd = makeAbsFile "/home/frank/Workspace11/daino/tests/data/ReadMe/index.md"
 resdocrep = makeAbsFile"/home/frank/tests/docrep1"
 
+-- test md2docrep with local settings and local file 
 test_md2docrep = do 
     res1 <- runErr $ do 
         dr <- setup_md2metaplus settingsLocal fnmd 
