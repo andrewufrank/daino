@@ -64,8 +64,17 @@ indexEntryDirectories
 
 indexEntryFiles 
     $for(extra.fileEntries)$
-            $extra.fileEntries.ixfn$
-            $extra.fileEntries.abstract$
+    ----
+            ixfn        $extra.fileEntries.ixfn$
+            link        $extra.fileEntries.link$
+            title       $extra.fileEntries.title$
+            abstract    $extra.fileEntries.abstract$
+            author      $extra.fileEntries.author$
+            date        $extra.fileEntries.date$ 
+            content     $extra.fileEntries.content$ 
+            visibility  $extra.fileEntries.visibility$ 
+            version     $extra.fileEntries.version$ 
+            sortOrder   $extra.fileEntries.sortOrder$ 
     $endfor$
                         
 masterTemplateFile  $sett.siteLayout.masterTemplateFile$

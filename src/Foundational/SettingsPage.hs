@@ -103,7 +103,9 @@ data IndexEntry2 = IndexEntry2
     , author :: Text
     , date :: Text
     , content :: Text   -- in latex style, only filled bevore use
-    , publish :: Maybe Text
+    , visibility ::   Text
+    , version ::   Text 
+    , sortOrder :: Text
     -- , indexPage :: Bool
     -- , dirEntries :: [FilePath] -- [Path Abs Dir] -- [IndexEntry2] -- def []
     -- , fileEntries :: [FilePath] -- [Path Abs File] -- [IndexEntry2] -- def []

@@ -69,7 +69,9 @@ readMarkdownFile2docrep debug sett3 fnin = do
                 , ("latLanguage", "english") -- for babel - todo 
                 , ("styleBiber","authoryear")
                 , ("headerShift","1")
-                -- , ("indexPagg", False) detect from name 'index.md'
+                , ("author", settingsAuthor sett3)
+                , ("sortOrder", "filename")
+                -- , ("indexPage", False) detect from name 'index.md'
                 ] 
             -- "resources/webbiblio.bib")
     let p2 = addListOfDefaults defs1 p1
@@ -92,7 +94,7 @@ setMetaPlusInitialize sett3 fnin m1 =  zero { metap = m1
         lang = getTextFromYaml6 "lang" "en-US" m1 :: Text
         x1 = zero   { mdFile = toFilePath fnin
                     , mdRelPath =toFilePath $  makeRelativeP doughP fnin
-                    , dainoVersion = showT version
+                    , dainoVersion = showT Paths_daino.version
                     , latLanguage = latexLangConversion lang }
              
 
@@ -121,12 +123,16 @@ meta1 = id
 -- ^ decide whether this is to be included in the bake 
 
 includeBakeTest3docrep :: PubFlags -> Meta -> Bool
-includeBakeTest3docrep pubf met2 = 
-        (draftFlag pubf || vers1 ==   "publish") 
-        -- should be less than eq
-            && (privateFlag pubf || vis1 ==  "public")
+includeBakeTest3docrep pubf met2 = includeBakeTest3 pubf vers1 vis1
     where
         -- draftF = draftFlag pubf 
         vers1 = getValue4meta met2 "version" 
         vis1 = getValue4meta met2 "visibility" 
+
+includeBakeTest3  :: PubFlags -> Text -> Text -> Bool
+includeBakeTest3  pubf vers1 vis1 = 
+        (draftFlag pubf || vers1 ==   "publish") 
+        -- should be less than eq
+            && (privateFlag pubf || vis1 ==  "public")
+
 

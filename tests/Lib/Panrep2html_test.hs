@@ -38,7 +38,7 @@ test_toHtmlout = do
         let hash1 = show . hash . show $  html1 :: String
         return hash1
 
-    assertEqual (Right "Hash {asWord64 = 10016791119448399165}") 
+    assertEqual (Right "Hash {asWord64 = 13693558256154316012}") 
         res1
 
 
@@ -95,7 +95,7 @@ test_toHtmlTest = do
         let hash1 = show . hash . show $  html1 :: String
         return hash1
 
-    assertEqual (Right "Hash {asWord64 = 10016791119448399165}") 
+    assertEqual (Right "Hash {asWord64 = 8302496440483182473}") 
         res1
 
 -- These are all the values for htmlTufte81.dtpl

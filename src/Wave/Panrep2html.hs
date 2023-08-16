@@ -50,6 +50,7 @@ import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..))
 import Data.Maybe (fromMaybe)
 import qualified Data.Map as M
 import Wave.Docrep2panrep
+import Wave.Md2doc
 import System.FilePath (replaceExtension)
 
 -- ------------------------------------ panrep2html
@@ -130,43 +131,25 @@ getVals2 debug bakedP ix2 = do
     pan1 <- read8 fn panrepFileType
 
     let m = metaHtml pan1
-        res = ix2{ abstract = lookup7 "abstract" m
-                -- , author = lookup7 "author" m
-                ,     date = lookup7 "date" m
-            -- todo complete 
-                }
-    return $ if incl then Just res else Nothing 
+        ix3 = ix2   { abstract = lookup7 "abstract" m
+                    , title = lookup7 "title" m 
+                    -- , author = lookup7 "author" m -- todo suppressed?
+                    ,     date = lookup7 "date" m
+                    -- , sortOrder = lookup7 "sortOrder" m
+                    , version = lookup7 "version" m 
+                    , visibility = lookup7 "visibility" m
+                -- todo complete 
+                    }
+    return $ if includeBakeTest3 def -- bring down 
+                            (version ix3) (visibility ix3) 
+                then Just ix3 else Nothing 
 
-  where
+  
         
         
-        incl = True -- TODO 
+        -- incl = includeBakeTest3 (def:PubFlags) bring down 
+                            -- (version ix3) (visibility ix3)
 
--- get4panrepsDir :: NoticeLevel -> IndexEntry2 -> ErrIO Panrep  
--- -- read the panreps for the directories 
--- get4panrepsDir debug fn = do 
---     let fn = makeRelFile "index.md" 
---         dir2 = makeAbsDir $ ixfn dirEntry
---         ixFn = addFileName dir2  fn :: Path Abs File
---     read8 ixFn panrepFileType
-
--- get4panrepsFile :: NoticeLevel -> IndexEntry2 -> ErrIO Panrep  
--- -- read the panreps for the directories 
--- get4panrepsFile debug dirEntry = do 
---     let fn2 = makeAbsFile $ ixfn dirEntry
---     -- read8 fn2 panrepFileType  todo 
---     return zero
-
--- getVals :: NoticeLevel -> Panrep -> Maybe IndexEntry2 
--- getVals debug pan1 = if incl then Just $ 
---         zero{ abstract = lookup7 "abstract" m
---             , author = lookup7 "author" m
---             , date = lookup7 "date" m
---             -- todo complete 
---             } else Nothing
---     where 
---             m = metaHtml pan1 
---             incl = True 
 
 lookup7 :: Text -> M.Map Text Text ->  Text
 lookup7 k m = fromJustNoteT ["lookup7 in panrep2html", k, showT m] 

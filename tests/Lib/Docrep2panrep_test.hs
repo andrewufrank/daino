@@ -39,39 +39,39 @@ test_toPanrep = do
         res1
 
 
-extra7 =  DainoValues
- { mdFile =
-      "/home/frank/Workspace11/daino/tests/data/ReadMe/index.md"
-  , mdRelPath = "ReadMe/index.md"
-  , dirEntries = []
-  , fileEntries =
-      [ IndexEntry2
-          { ixfn =
-              "/home/frank/Workspace11/daino/tests/data/ReadMe/03tree.md"
-          , link = ""
-          , title = ""
-          , abstract = ""
-          , author = ""
-          , date = ""
-          , content = ""
-          , publish = Nothing
-          , headerShift = 0
-          }
-      , IndexEntry2
-          { ixfn =
-              "/home/frank/Workspace11/daino/tests/data/ReadMe/02alltxt.md"
-          , link = ""
-          , title = ""
-          , abstract = ""
-          , author = ""
-          , date = ""
-          , content = ""
-          , publish = Nothing
-          , headerShift = 0
-          }
-      ]
-  , dainoVersion =
-      "Version {versionBranch = [0,1,5,6,3], versionTags = []}"
-  , latLanguage = "english"
-  , authorReduced = ""
-  }
+-- extra7 =  DainoValues
+--  { mdFile =
+--       "/home/frank/Workspace11/daino/tests/data/ReadMe/index.md"
+--   , mdRelPath = "ReadMe/index.md"
+--   , dirEntries = []
+--   , fileEntries =
+--       [ IndexEntry2
+--           { ixfn =
+--               "/home/frank/Workspace11/daino/tests/data/ReadMe/03tree.md"
+--           , link = ""
+--           , title = ""
+--           , abstract = ""
+--           , author = ""
+--           , date = ""
+--           , content = ""
+--           , publish = Nothing
+--           , headerShift = 0
+--           }
+--       , IndexEntry2
+--           { ixfn =
+--               "/home/frank/Workspace11/daino/tests/data/ReadMe/02alltxt.md"
+--           , link = ""
+--           , title = ""
+--           , abstract = ""
+--           , author = ""
+--           , date = ""
+--           , content = ""
+--           , publish = Nothing
+--           , headerShift = 0
+--           }
+--       ]
+--   , dainoVersion =
+--       "Version {versionBranch = [0,1,5,6,3], versionTags = []}"
+--   , latLanguage = "english"
+--   , authorReduced = ""
+--   }
