@@ -26,19 +26,20 @@ abstract        $metaHtml.abstract$
 linkpdf         $linkpdf3$
 date   $--          $metaHtml.date$
 content         $metaHtml.body$
-menufiles       $for(menu2files)$
-                    $menu2files.link2$
-                    $menu2files.title$
-                    $menu2files.abstract$
-                    $menu2files.pdf2$
-                    $menu2files.author2$
-                    $menu2files.date2$
+menu2files       $for(extra.fileEntries)$
+                    $extra.fileEntries.ixfn$
+                    $extra.fileEntries.link$
+                    $extra.fileEntries.title$
+                    $extra.fileEntries.abstract$
+                    $extra.fileEntries.pdf2$
+                    $extra.fileEntries.author$
+                    $extra.fileEntries.date$
                 $endfor$
 
-menu2subdir     $for(menu2subdir)$ 
-                    $menu2subdir.link$
-                    $menu2subdir.title$ 
-                    $menu2subdir.abstract$ 
+menu2subdir     $for(extra.dirEntries)$ 
+                    $extra.dirEntries.link$
+                    $extra.dirEntries.title$ 
+                    $extra.dirEntries.abstract$ 
                 $endfor$
 
 dainoversion    $extra.dainoVersion$

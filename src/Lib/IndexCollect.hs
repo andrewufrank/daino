@@ -72,15 +72,14 @@ initializeIx2dir doughP fp = zero{ixfn = toFilePath fp2
                     , link = toFilePath relfp}
         where 
             fp2 = addFileName fp (makeRelFile "index.md")
-            relfp =  makeRelativeP doughP fp2  
+            relfp =  removeExtension . makeRelativeP doughP $ fp2  
 
 initializeIx2file :: Path Abs Dir -> Path Abs File -> IndexEntry2 
 -- the dough path to make the path relative
 initializeIx2file doughP fp = zero{ixfn = toFilePath fp
                     , link = toFilePath relfp}
         where 
-            relfp =  makeRelativeP doughP fp  
-
+            relfp =  removeExtension . makeRelativeP doughP $ fp  
 {-  old
 get the contents of a directory, separated into dirs and files
  the directory is given by the index dir file

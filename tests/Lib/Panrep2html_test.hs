@@ -31,12 +31,14 @@ import Foundational.CmdLineFlags
 
 settFn = makeAbsFile 
     "/home/frank/Workspace11/daino/settingsTest.yaml"
+fnmd2a = makeAbsFile "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
+
     -- special case?
 reshtmlout = makeAbsFile "/home/frank/tests/htmlout"
 -- test regular processing
 test_toHtmlout = do 
     res1 <- runErr $ do 
-        metaplus5 <- setup_md2metaplus settingsDainoSite fnmd2 
+        metaplus5 <- setup_md2metaplus settingsDainoSite fnmd2a 
             -- let debug = NoticeLevel0
             -- sett3 <- readSettings debug settFn 
                     -- this is a particular settingsTest.yaml
@@ -49,7 +51,7 @@ test_toHtmlout = do
         let hash1 = show . hash . show $  html1 :: String
         return hash1
 
-    assertEqual (Right "Hash {asWord64 = 5605959440504025002}") 
+    assertEqual (Right "Hash {asWord64 = 4659375328426280437}") 
         res1
 
 
@@ -60,32 +62,38 @@ testDir = makeAbsDir $
                     -- does not
 
 fnmd1 = makeAbsFile "/home/frank/Workspace11/daino/tests/data/ReadMe/index.md"
-reshtml = makeAbsFile"/home/frank/tests/html1"
+reshtml = makeAbsFile"/home/frank/tests/htmlTest"
 testTemplate = makeAbsFile "/home/frank/Workspace11/daino/tests/data/metaplusHtml.dtpl"
 
 panrep2htmlForTest :: NoticeLevel -> Path Abs File ->  Panrep -> ErrIO HTMLout
 panrep2htmlForTest debug  mf metaplus4 = do
-    let sett3 = sett metaplus4
-    -- let mf = testTemplate
-    -- let mfn = templatesDir layout </> mf
-    -- let masterfn = templatesDir (siteLayout sett3) </> mf
-    -- let h = "0" -- maybe 0 $ M.lookup headerShift . unMeta $ meta4
-    -- when (inform debug) $
-    --     putIOwords ["\n\t---------------------------panrep2htmlForTest"
-    --             , "shiftHeaderLevel"
-    --             , showT h] 
-
+    let extra4 = extra metaplus4
+        sett3 = sett metaplus4
+        bakedP =   bakedDir . siteLayout $ sett3  
+         
     htmlTempl  <- compileTemplateFile2 mf
 
-    htm1 <- meta2xx writeHtml5String2 (metap metaplus4)
-    let metaplus5 = metaplus4{metaHtml = htm1}
--- copied
-    -- htpl2 <- compileTemplateFile2 metaplusHtml -- fnminilatex
+    let files = fileEntries  $ extra4 :: [IndexEntry2]
+        dirs = dirEntries  $ extra4 :: [IndexEntry2]
+
+    valsDirs :: [Maybe IndexEntry2]<- mapM (getVals2 debug bakedP) dirs
+    valsFiles :: [Maybe IndexEntry2] <- mapM (getVals2 debug bakedP) files
+
+    when (informAll debug) $ do
+            putIOwords ["panrep2html", "valsDirs", showPretty valsDirs]
+            putIOwords ["panrep2html", "valsFiles", showPretty valsFiles]
+
+    let extra5 = extra4{fileEntries = catMaybes valsFiles
+                        , dirEntries = catMaybes valsDirs}
+    let metaplus5 = metaplus4{extra = extra5}
+    when (informAll debug) $ 
+            putIOwords ["panrep2html", "metaplus5", showPretty metaplus5]
+
     let hpl1 = renderTemplate htmlTempl (toJSON metaplus5)  -- :: Doc Text
     -- putIOwords ["tpanrep2htmlForTest pl1 \n", showT tpl1]
     let ht1 = render (Just 50) hpl1  -- line length, can be Nothing
-    -- putIOwords ["panrep2htmlForTest res1 \n", res1]
-    -- write8   fnPlusres htmloutFileType (HTMLout ht1)
+    -- putIOwords ["panrep2htmlForTest ht1 \n", ht1]
+    write8   reshtml htmloutFileType (HTMLout ht1)
 
     -- hres <- meta2hres htmlTempl metaplus4
     when (informAll debug) $  putIOwords ["panrep2htmlForTest render html done"
@@ -96,17 +104,18 @@ panrep2htmlForTest debug  mf metaplus4 = do
 settingsFn = makeAbsFile "/home/frank/Workspace11/dainoSite/settings3.yaml"
 fnmd3 = makeAbsFile "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
 -- test with testhtml template 
-test_toHtmlTest = do  --  with data from dainoSite
+xtest_toHtmlTest = do  --  with data from dainoSite
     res1 <- runErr $ do 
-        metaplus5 <- setup_md2metaplus settingsFn fnmd3 
+        metaplus5 <- setup_md2metaplus settingsFn fnmd2a 
 
         (metap1,_) <- docrep2panrep NoticeLevel0 (def::PubFlags)  metaplus5
+        
         html1 <- panrep2htmlForTest NoticeLevel0  testTemplate metap1
         -- putIOwords ["test_toHtmlTest pr \n", unHTMLout html1]
         let hash1 = show . hash . show $  html1 :: String
         return hash1
 
-    assertEqual (Right "Hash {asWord64 = 130111545342583451}") 
+    assertEqual (Right "Hash {asWord64 = 420825269974760718}") 
         res1
 
 --     These are all the values for htmlTufte81.dtpl

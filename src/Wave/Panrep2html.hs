@@ -26,6 +26,7 @@
             -fno-warn-unused-imports
             -fno-warn-unused-matches #-}
 
+default (Integer, Double, Text)
 
 module Wave.Panrep2html (
     module Wave.Panrep2html,
@@ -104,7 +105,7 @@ panrep2html debug   metaplus4 = do
     valsDirs :: [Maybe IndexEntry2]<- mapM (getVals2 debug bakedP) dirs
     valsFiles :: [Maybe IndexEntry2] <- mapM (getVals2 debug bakedP) files
 
-    when (inform debug) $ do
+    when (informAll debug) $ do
             putIOwords ["panrep2html", "valsDirs", showPretty valsDirs]
             putIOwords ["panrep2html", "valsFiles", showPretty valsFiles]
 
@@ -113,6 +114,7 @@ panrep2html debug   metaplus4 = do
     let extra5 = extra4{fileEntries = catMaybes valsFiles
                         , dirEntries = catMaybes valsDirs}
     let metaplus5 = metaplus4{extra = extra5}
+    putIOwords ["panrep2html", "extra5", showPretty extra5]
     when (inform debug) $ 
             putIOwords ["panrep2html", "metaplus5", showPretty metaplus5]
 
@@ -150,8 +152,8 @@ getVals2 debug bakedP ix2 = do
                     , visibility = lookup7 "visibility" m
                 -- todo complete 
                     }
-    return $ if includeBakeTest3 def -- bring down 
-                            (version ix3) (visibility ix3)
+    return $ if True -- includeBakeTest3 def -- bring down 
+                            -- (version ix3) (visibility ix3)
                 then Just ix3 else Nothing
 
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- the master page `htmlTufte63.dtpl`  
 
- template used latexTufte63.dtpl v_1
+ template used latexTufte63.dtpl v_2   for tufte
  for use with Uniform.MetaPlus from u4blog v 0.1.6.3
  and daino v 0.1.5.6.3
 
@@ -33,17 +33,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="index"/>
     <meta name="robots" content="follow"/>
-    <meta name="copyright" content="$settingsAuthor$"/>   
+    <meta name="copyright" content="$sett.settingsAuthor$"/>   
     
     $-- two w3c related stylesheets before the tufte one  
 
-    <!-- <link rel="stylesheet" href="/resources/theme/templates/static/w3c.css" type="text/css">   -->
-    <!-- <link rel="stylesheet" href="/resources/theme/templates/static/daino_ext_w3c.css" type="text/css">   -->
+     $--  <link rel="stylesheet" href="/resources/theme/templates/static/w3c.css" type="text/css">   
+     $--  <link rel="stylesheet" href="/resources/theme/templates/static/daino_ext_w3c.css" type="text/css">   
 
+    $-- 
     <link rel="stylesheet" href="/resources/theme/templates/static/tufte.css"/>  
-    <link rel="stylesheet" href="/resources/theme/templates/static/tufte-extra.css"/>   
-    <link rel="stylesheet" href="/resources/theme/templates/static/pandoc.css"/>  
-    <link rel="stylesheet" href="/resources/theme/templates/static/tufte-additions.css"/>  
+     $-- 
+     <link rel="stylesheet" href="/resources/theme/templates/static/tufte-extra.css"/>   
+     $-- 
+     <link rel="stylesheet" href="/resources/theme/templates/static/pandoc.css"/>  
+     $-- 
+     <link rel="stylesheet" href="/resources/theme/templates/static/tufte-additions.css"/>  
 
     $-- the tufte fonts are included from tufte.css
 
@@ -87,15 +91,15 @@
     $if(metaHtml.image)$   $-- image in md yaml 
         <img class="centerImage" src=$metaHtml.image$  style="object-fit: contain; max-height: 400px; height: auto; width: auto; "  
             alt="$metaHtml.imageCaption$">  $-- the image put into index.md
-    $else$        $-- no image in head 
-        <img class="" src=$metaHtml.sitebanner$ style="object-fit: contain;"
-            alt="$metaHtml.sitebannerCaption$">  $-- the image put in the settings.yml
+    $else$      $--   no image in head 
+        <img class="" src=$sett.siteHeader.banner$ style="object-fit: contain;"
+            alt="$sett.siteHeader.bannerCaption$">  $-- the image put in the settings.yml
 
     <div class="bottomleft w3-text-light-grey";  $--  w3-padding-large w3-text-light-grey
         display: flex;
         align-items:flex-start;>
         <h1 class="w3-hide-medium w3-hide-small w3-xxxlarge">$sett.siteHeader.sitename$</h1>
-        <h2 class="w3-hide-large" style="white-space:nowrap">$sett.siteHeader.sitename$</h5>
+        <h2  class="w3-hide-large" style="white-space:nowrap">$sett.siteHeader.sitename$</h2>
         <h3 class="w3-hide-medium w3-hide-small">$sett.siteHeader.byline$</h3> 
                 $-- byline is not shown on small screens
                 $-- could be p.byline see pandoc.css
@@ -148,7 +152,7 @@
             $if(metaHtml.abstract)$
                 <p>
                     <a>$metaHtml.abstract$</a>
-                    <a href=/$linkpdf3$>  (pdf)</a>
+                    <a href=/$extra.fileEntries.link$.pdf>  (pdf)</a>
                 </p>
             $endif$
             $if(metaHtml.date)$ 
@@ -172,25 +176,25 @@
     <section> 
         <!-- menu section  -->
         <ul class="w3-ul w3-hoverable">
-                $for(menu2files)$ 
+                $for(extra.fileEntries)$ 
                     <li>     <!-- list item menu2files:  -->
-                    <a href=/$menu2files.link2$><em>$menu2files.title2$ </em></a>
-                    $if(menu2files.abstract2)$<br>$menu2files.abstract2$
-                    <a href=/$menu2files.pdf2$>  (pdf)</a>
+                    <a href=/$extra.fileEntries.link$.html><em>$extra.fileEntries.title$ </em></a>
+                    $if(extra.fileEntries.abstract)$<br>$extra.fileEntries.abstract$
+                    <a href=/$extra.fileEntries.link$.pdf>  (pdf)</a>
                     $endif$		     
-                    <span class="af-tiny">$menu2files.author2$ $menu2files.date2$ 
+                    <span class="af-tiny">$extra.fileEntries.author$ $extra.fileEntries.date$ 
                         </span>
                     </li>
                 $endfor$ 
         </ul>
                  
-        $if(menu2subdir)$ 
+        $if(extra.dirEntries)$ 
         <p>Directories with more related texts:</p>
         <ul class="w3-ul w3-hoverable">
-                    $for(menu2subdir)$ 
+                    $for(extra.dirEntries)$ 
                     <li> 
-                        <a href=/$menu2subdir.link2$><em>$menu2subdir.title2$</em></a>
-                    $if(menu2subdir.abstract2)$<br>$menu2subdir.abstract2$$endif$		
+                        <a href=/$extra.dirEntries.link$.html><em>$extra.dirEntries.title$</em></a>
+                    $if(extra.dirEntries.abstract)$<br>$extra.dirEntries.abstract$$endif$		
                         
                     </li>
                     $endfor$
@@ -203,7 +207,7 @@
 <!-- footer -->
 <div class=" w3-container af-tiny light-background" style="margin-top:24px;padding-right:58px ">  
     <div class="w3-left">  <!--  not including data, but version -->
-        <a>Produced with `daino` $extra.dainoversion$ from $link$ ($metHtml.visibility$, $metHtml.version$) with $sett.siteLayout.masterTemplateFile$.</a>  
+        <a>Produced with `daino` $extra.dainoversion$ from $extra.mdFile$ ($metaHtml.visibility$, $metaHtml.version$) with $sett.siteLayout.masterTemplateFile$.</a>  
     </div>
     <div class="w3-right">
         <a><Rationale: consult</a>
