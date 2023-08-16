@@ -48,7 +48,7 @@ test_templatehtml = do
             , showPretty metaplus1]
 
         -- docrep2panrep does suppress author 
-        (metaplus2, needs) <- docrep2panrep debug testFlags sett3 metaplus1
+        (metaplus2, needs) <- docrep2panrep debug testFlags  metaplus1
         -- from panrep2htm
         htmlTempl  <- compileTemplateFile2 htmlTest
 

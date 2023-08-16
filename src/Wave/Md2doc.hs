@@ -41,6 +41,7 @@ import Uniform.Latex
 import Uniform.Shake ( Path2nd(makeRelativeP) ) 
 readMarkdownFile2docrep  :: NoticeLevel -> Settings ->  Path Abs File ->  ErrIO Docrep 
 -- read a markdown file and convert to docrep
+-- reads setting file!
 readMarkdownFile2docrep debug sett3 fnin = do
     let debug = NoticeLevel0
     -- when (inform debug) $ 

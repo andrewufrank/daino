@@ -80,7 +80,7 @@ bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
     dr1 <- read8 inputFn docrepFileType
 
     -- let layout = siteLayout sett3
-    (p3, needsFound) <- docrep2panrep debug flags sett3 dr1
+    (p3, needsFound) <- docrep2panrep debug flags  dr1
             -- completes index and should process reps 
             -- what to do with needs?
     -- needP needsFound 

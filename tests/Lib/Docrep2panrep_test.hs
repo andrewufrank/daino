@@ -18,18 +18,19 @@ import Uniform.Pandoc
 import Uniform.Http
 import UniformBase
 import Wave.Docrep2panrep
-import Foundational.CmdLineFlags ( PubFlags )
+import Foundational.CmdLineFlags ( PubFlags (PubFlags) )
 import Data.Hash
 
 fnmd1 = makeAbsFile "/home/frank/Workspace11/daino/tests/data/ReadMe/index.md"
-resdocrep = makeAbsFile"/home/frank/tests/panrep1"
+resdocrep = makeAbsFile "/home/frank/tests/panrep1"
 
-
+-- settingsDainoSite = makeAbsFile "/home/frank/Workspace11/dainoSite/settings3.yaml"
+-- test regular docrep2panre 
 test_toPanrep = do 
     res1 <- runErr $ do 
-        metaplus5 <- setup_md2metaplus fnmd1 
+        metaplus5 <- setup_md2metaplus settingsDainoSite fnmd1 
 
-        pr@(m1,n1) <- docrep2panrep NoticeLevel0 def zero metaplus5
+        pr@(m1,n1) <- docrep2panrep NoticeLevel0 (def::PubFlags) metaplus5
         putIOwords ["test_toPanrep pr \n", showPretty  $ m1]
         putIOwords ["test_toPanrep extra \n", showPretty . extra $ m1]
         let hash1 = show . hash . show $  pr :: String

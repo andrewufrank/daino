@@ -25,14 +25,21 @@ import Lib.Md2doc_test
 import Uniform.Http ( HTMLout (HTMLout), unHTMLout ) 
 import Data.Hash
 import Wave.Panrep2html
-
+import Foundational.CmdLineFlags
 -- import Lib.IndexCollect
 
+settFn = makeAbsFile 
+    "/home/frank/Workspace11/daino/settingsTest.yaml"
+    -- special case?
 test_toHtmlout = do 
     res1 <- runErr $ do 
-        metaplus5 <- setup_md2metaplus fnmd1 
-
-        (metap1,_) <- docrep2panrep NoticeLevel0 def zero metaplus5
+        metaplus5 <- setup_md2metaplus settingsDainoSite fnmd1 
+            -- let debug = NoticeLevel0
+            -- sett3 <- readSettings debug settFn 
+                    -- this is a particular settingsTest.yaml
+            -- metaplus1 <- readMarkdownFile2docrep debug sett3 fn
+        (metap1,_) <- docrep2panrep NoticeLevel0 
+                        (def::PubFlags)  metaplus5
         (html1, _) <- panrep2html NoticeLevel0  metap1
         putIOwords ["test_toHtmlTest pr \n", unHTMLout html1]
         let hash1 = show . hash . show $  html1 :: String
@@ -76,20 +83,19 @@ panrep2htmlForTest debug   metaplus4 = do
     -- putIOwords ["panrep2htmlForTest res1 \n", res1]
     -- write8   fnPlusres htmloutFileType (HTMLout ht1)
 
-
-
--- 
     -- hres <- meta2hres htmlTempl metaplus4
     when (inform debug) $  putIOwords ["panrep2htmlForTest render html done"
         , "hres", ht1]
     -- bakeOnePanrep2html will write to disk
     return . HTMLout $ ht1
 
-test_toHtmlTest = do 
+settingsFn = makeAbsFile "/home/frank/Workspace11/dainoSite/settings3.yaml"
+fnmd3 = makeAbsFile "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
+test_toHtmlTest = do  --  with data from dainoSite
     res1 <- runErr $ do 
-        metaplus5 <- setup_md2metaplus fnmd1 
+        metaplus5 <- setup_md2metaplus settingsFn fnmd3 
 
-        (metap1,_) <- docrep2panrep NoticeLevel0 def zero metaplus5
+        (metap1,_) <- docrep2panrep NoticeLevel0 def  metaplus5
         html1 <- panrep2htmlForTest NoticeLevel0  metap1
         -- putIOwords ["test_toHtmlTest pr \n", unHTMLout html1]
         let hash1 = show . hash . show $  html1 :: String
@@ -98,17 +104,18 @@ test_toHtmlTest = do
     assertEqual (Right "Hash {asWord64 = 8302496440483182473}") 
         res1
 
--- These are all the values for htmlTufte81.dtpl
+--     These are all the values for htmlTufte81.dtpl
 
 -- lang            en
 -- settingsAuthor  Author of Settings
 -- date            2023-03-31
--- keywords        
+-- keywords        exampleKeyword exampleKeyword2
+-- page-title  missing todo 
 -- image           
 -- imageCaption    
 -- siteBanner      /resources/theme/templates/img/DSC04809.JPG
 -- siteBannerCaption   Ruhiger Sommer im Garten in Geras
--- sitename        
+-- sitename        siteName3
 -- sitebyline      siteByLine3
 -- menuitems        
 --                     ReadMe/index.html
@@ -126,13 +133,13 @@ test_toHtmlTest = do
 --                     PublicationList/index.html
 --                     Publications
                     
--- title           ix-Title of Book
+-- title           ix-Title of Book <q>ReadMe/index.md</q>
 -- subtitle         
--- author          
+-- author          Author of Settings
 -- table of contents   
--- abstract        ix-Abstract <em>of</em> Book
+-- abstract        ix-Abstract <em>of</em> Book should have 02alltext and 03tree
 -- linkpdf         
--- date            2023-03-31
+-- date   
 -- content         <h1 id="ix-hl1-title">ix-hl1 Title</h1>
 -- <p>ix-Introductory text for book.</p>
 -- menufiles       
@@ -146,7 +153,7 @@ test_toHtmlTest = do
 
 -- latLanguage     english
 -- styleBiber      authoryear
--- mdFile          /home/frank/Workspace11/dainoSite/ReadMe/index.md
+-- mdFile          /home/frank/Workspace11/daino/tests/data/ReadMe/index.md
 -- localhostPort   3000
 -- settingsDate    2019-01-01
 -- siteLayout      /home/frank/bakedTestSite/
@@ -155,66 +162,36 @@ test_toHtmlTest = do
 --                                         AUF
 --                                         Author of Settings
                 
--- masterTemplateFile  htmlTufte81.dtpl
+-- indexEntryDirectories 
+    
+-- indexEntryFiles 
+--         ----
+--             ixfn        /home/frank/Workspace11/daino/tests/data/ReadMe/03tree.md
+--             link        ReadMe/03tree.md
+--             title       03title with ref
+--             abstract    03abstract: The web pages are structured as a tree.
+--             author      
+--             date        2023-03-31 
+--             content      
+--             visibility  public 
+--             version     publish 
+--             sortOrder    
+--         ----
+--             ixfn        /home/frank/Workspace11/daino/tests/data/ReadMe/02alltxt.md
+--             link        ReadMe/02alltxt.md
+--             title       title02 missing
+--             abstract    abstract02 missing
+--             author      
+--             date        2023-03-31 
+--             content      
+--             visibility  public 
+--             version     publish 
+--             sortOrder    
+                            
+-- masterTemplateFile  metaplusHtml.dtpl
 -- texTemplateFile     latexTufte81.dtpl
--- themeDir            /home/frank/Workspace11/dainoTheme/
+-- themeDir            /home/frank/Workspace11/daino/resources/
 
 -- Bibliography        resources/BibTexLatex.bib
                     
 -- headerShitft        true
-
--- -- other settings similar
-
--- testing_panrep2texsnip :: FilePath -> IO ()
--- -- | test to produce texsnip
--- testing_panrep2texsnip f1  = test1FileIO "daino" (f1 <> "_panrep") (f1 <> "_texsnip" )(panrep2texsnip NoticeLevel0 ) 
-
--- test_blog1_panrep2texsnip = testing_panrep2texsnip   "01blog1"
--- test_index_panrep2texsnip = testing_panrep2texsnip "index"   
--- test_postwk_panrep2texsnip = testing_panrep2texsnip "03postwk"   
--- test_withRef_panrep2texsnip = testing_panrep2texsnip "02withRef"   
-
--- testing_texsnip2tex :: FilePath -> IO ()
--- -- | test to produce texSnipFileType 
--- testing_texsnip2tex f1  = test1FileIO "daino"  
---     (f1 <> "_texsnip" )(f1 <> "_tex" ) 
---     (\filein -> do
---                 lat1 <- texsnip2tex NoticeLevel0 filein
---                 write8 (testDir </> makeRelFile (f1 <> ".tex")) texFileType lat1
---                 return lat1                
---                 ) 
-
-
-                    
--- test_blog1_texsnip2tex = testing_texsnip2tex   "01blog1"
--- test_index_texsnip2tex = testing_texsnip2tex "index"   
--- test_postwk_texsnip2tex = testing_texsnip2tex "03postwk"   
--- test_withRef_texsnip2tex = testing_texsnip2tex "02withRef"   
-
-
--- testing_tex2pdf :: FilePath -> IO ()
--- -- | test to produce pdf
--- -- difficult: 
--- -- pdf process is on files (not text)
--- -- requires current dir 
--- testing_tex2pdf f1  = test1FileIO "daino"  
---     (f1 <> "_tex") (f1 <> "_pdfResult" <> f1) (do 
---               \(d::Text) ->
---                   do 
---                     (tex2pdf NoticeLevel0  
---                         ( (testDir   </> makeRelFile ( f1 <> ".tex")))
---                         ( (testDir   </> makeRelFile ( f1 <> ".pdf"))))
---                     let res = "pdfwritten" :: Text 
---                     return res      
---                     -- return ("pdfwritten" :: Text)
---             )
-
--- test_blog1_tex2pdf = testing_tex2pdf   "01blog1"
--- test_index_tex2pdf = testing_tex2pdf "index"   
--- test_postwk_tex2pdf = testing_tex2pdf "03postwk"   
--- test_withRef_tex2pdf = testing_tex2pdf "02withRef"   
-
--- instance ShowTestHarness ()
--- instance ShowTestHarness TexSnip 
--- instance ShowTestHarness Latex 
--- instance ShowTestHarness Panrep 

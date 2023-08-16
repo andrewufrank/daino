@@ -52,7 +52,8 @@ dainoProcess debug1 flags = do
     sett4dir <- if useTestSite 
         then do
             when (inform debug) $ putIOwords ["dainoProcess 2test useTestSite"]
-            return $ (Path.parent currDir) </> makeRelDir "dainoSite"  
+            return $   makeAbsDir "/home/frank/Workspace11/dainoSite"  
+            -- return $ (Path.parent currDir) </> makeRelDir "dainoSite"  
   
         else if (P.isAbsolute (locationDir flags)) 
             then do 

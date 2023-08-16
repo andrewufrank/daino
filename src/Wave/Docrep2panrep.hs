@@ -63,8 +63,8 @@ import qualified Data.Map as M
 --  convert meta to html and latex versions
 --  collect the index file and dirs 
 
-docrep2panrep :: NoticeLevel -> PubFlags -> Settings -> Docrep -> ErrIO (Panrep, [FilePath])
-docrep2panrep debug pubf sett4x metaplus5 = do
+docrep2panrep :: NoticeLevel -> PubFlags -> Docrep -> ErrIO (Panrep, [FilePath])
+docrep2panrep debug pubf metaplus5 = do
     when (inform debug) $
         putIOwords
             ["-------------------------docrep2panrep"
