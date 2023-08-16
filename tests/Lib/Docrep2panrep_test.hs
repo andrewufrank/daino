@@ -23,7 +23,8 @@ import Data.Hash
 
 -- fnmd1 = makeAbsFile "/home/frank/Workspace11/daino/tests/data/ReadMe/index.md"
 fnmd2 = makeAbsFile "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
-resdocrep = makeAbsFile "/home/frank/tests/panrep1"
+resdocrep = makeAbsFile "/home/frank/tests/docrep1"
+respanrep = makeAbsFile "/home/frank/tests/panrep1"
 
 -- settingsDainoSite = makeAbsFile "/home/frank/Workspace11/dainoSite/settings3.yaml"
 -- test regular docrep2panrep with files from dainoSite
@@ -34,6 +35,7 @@ test_toPanrep = do
         pr@(m1,n1) <- docrep2panrep NoticeLevel0 (def::PubFlags) metaplus5
         putIOwords ["test_toPanrep pr \n", showPretty  $ m1]
         putIOwords ["test_toPanrep extra \n", showPretty . extra $ m1]
+        write8 respanrep panrepFileType  m1
         let hash1 = show . hash . show $  pr :: String
         return hash1
 

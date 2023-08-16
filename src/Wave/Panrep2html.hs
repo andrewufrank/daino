@@ -66,17 +66,19 @@ panrep2html debug   metaplus4 = do
         mf = masterTemplateFile $ siteLayout sett3
         masterfn = templatesDir (siteLayout sett3) </> mf
 
-    putIOwords ["\npanrep2html", "siteLayout sett3"
-            , showPretty $ siteLayout sett3]
-    putIOwords ["panrep2html", "mf", showPretty mf]
-    putIOwords ["panrep2html", "masterfn", showPretty masterfn]
+    when (inform debug) $ do
+            putIOwords ["\npanrep2html", "siteLayout sett3"
+                , showPretty $ siteLayout sett3]
+            putIOwords ["panrep2html", "mf", showPretty mf]
+            putIOwords ["panrep2html", "masterfn", showPretty masterfn]
 
     htmlTempl  <- compileTemplateFile2 masterfn
 
     -- htm1 <- meta2xx writeHtml5String2 (metap metaplus4)
 
     --if this is an index file it has files and dirs 
-    putIOwords ["panrep2html", "extra4", showPretty extra4]
+    when (inform debug) $ 
+            putIOwords ["panrep2html", "extra4", showPretty extra4]
 
     let files = fileEntries  $ extra4 :: [IndexEntry2]
         dirs = dirEntries  $ extra4 :: [IndexEntry2]
@@ -90,7 +92,8 @@ panrep2html debug   metaplus4 = do
                 .  map link $ (dirs ++ files)
                      :: [FilePath]
 
-    putIOwords ["panrep2html", "\n\tneeds ", showPretty needs ]
+    when (inform debug) $ 
+            putIOwords ["panrep2html", "\n\tneeds ", showPretty needs ]
 
 
     -- let dirs2 = map makeAbsFile ds
@@ -101,15 +104,17 @@ panrep2html debug   metaplus4 = do
     valsDirs :: [Maybe IndexEntry2]<- mapM (getVals2 debug bakedP) dirs
     valsFiles :: [Maybe IndexEntry2] <- mapM (getVals2 debug bakedP) files
 
-    putIOwords ["panrep2html", "valsDirs", showPretty valsDirs]
-    putIOwords ["panrep2html", "valsFiles", showPretty valsFiles]
+    when (inform debug) $ do
+            putIOwords ["panrep2html", "valsDirs", showPretty valsDirs]
+            putIOwords ["panrep2html", "valsFiles", showPretty valsFiles]
 
 
 
     let extra5 = extra4{fileEntries = catMaybes valsFiles
                         , dirEntries = catMaybes valsDirs}
     let metaplus5 = metaplus4{extra = extra5}
-    putIOwords ["panrep2html", "metaplus5", showPretty metaplus5]
+    when (inform debug) $ 
+            putIOwords ["panrep2html", "metaplus5", showPretty metaplus5]
 
 -- copied
     -- htpl2 <- compileTemplateFile2 metaplusHtml -- fnminilatex
@@ -122,8 +127,8 @@ panrep2html debug   metaplus4 = do
 
 -- 
     -- hres <- meta2hres htmlTempl metaplus4
-    when (informAll debug) $ putIOwords ["panrep2html render html done"
-        , "hres", showPretty ht1
+    when (inform debug) $ putIOwords ["panrep2html render html done"
+        , "hres",  ht1
         ]
     -- bakeOnePanrep2html will write to disk
     return (HTMLout ht1, needs)

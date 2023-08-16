@@ -1,7 +1,7 @@
 
     $-- a template to test if values are set from template 
 
-    These are all the values for htmlTufte81.dtpl
+    These are all the values for htmlTufte63 v1 .dtpl
 
 lang            $metaHtml.lang$
 settingsAuthor  $sett.settingsAuthor$

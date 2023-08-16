@@ -22,7 +22,8 @@ import Uniform.Pandoc
 -- import Uniform.Json
 import UniformBase
 import Lib.Md2doc_test
-import Uniform.Http ( HTMLout (HTMLout), unHTMLout ) 
+import Lib.Docrep2panrep_test
+import Uniform.Http ( HTMLout (HTMLout), unHTMLout, htmloutFileType ) 
 import Data.Hash
 import Wave.Panrep2html
 import Foundational.CmdLineFlags
@@ -31,9 +32,11 @@ import Foundational.CmdLineFlags
 settFn = makeAbsFile 
     "/home/frank/Workspace11/daino/settingsTest.yaml"
     -- special case?
+reshtmlout = makeAbsFile "/home/frank/tests/htmlout"
+-- test regular processing
 test_toHtmlout = do 
     res1 <- runErr $ do 
-        metaplus5 <- setup_md2metaplus settingsDainoSite fnmd1 
+        metaplus5 <- setup_md2metaplus settingsDainoSite fnmd2 
             -- let debug = NoticeLevel0
             -- sett3 <- readSettings debug settFn 
                     -- this is a particular settingsTest.yaml
@@ -41,11 +44,12 @@ test_toHtmlout = do
         (metap1,_) <- docrep2panrep NoticeLevel0 
                         (def::PubFlags)  metaplus5
         (html1, _) <- panrep2html NoticeLevel0  metap1
-        putIOwords ["test_toHtmlTest pr \n", unHTMLout html1]
+        -- putIOwords ["test_toHtmlTest pr \n", unHTMLout html1]
+        write8 reshtmlout htmloutFileType html1
         let hash1 = show . hash . show $  html1 :: String
         return hash1
 
-    assertEqual (Right "Hash {asWord64 = 13693558256154316012}") 
+    assertEqual (Right "Hash {asWord64 = 5605959440504025002}") 
         res1
 
 
@@ -59,10 +63,10 @@ fnmd1 = makeAbsFile "/home/frank/Workspace11/daino/tests/data/ReadMe/index.md"
 reshtml = makeAbsFile"/home/frank/tests/html1"
 testTemplate = makeAbsFile "/home/frank/Workspace11/daino/tests/data/metaplusHtml.dtpl"
 
-panrep2htmlForTest :: NoticeLevel ->  Panrep -> ErrIO HTMLout
-panrep2htmlForTest debug   metaplus4 = do
+panrep2htmlForTest :: NoticeLevel -> Path Abs File ->  Panrep -> ErrIO HTMLout
+panrep2htmlForTest debug  mf metaplus4 = do
     let sett3 = sett metaplus4
-    let mf = testTemplate
+    -- let mf = testTemplate
     -- let mfn = templatesDir layout </> mf
     -- let masterfn = templatesDir (siteLayout sett3) </> mf
     -- let h = "0" -- maybe 0 $ M.lookup headerShift . unMeta $ meta4
@@ -84,24 +88,25 @@ panrep2htmlForTest debug   metaplus4 = do
     -- write8   fnPlusres htmloutFileType (HTMLout ht1)
 
     -- hres <- meta2hres htmlTempl metaplus4
-    when (inform debug) $  putIOwords ["panrep2htmlForTest render html done"
+    when (informAll debug) $  putIOwords ["panrep2htmlForTest render html done"
         , "hres", ht1]
     -- bakeOnePanrep2html will write to disk
     return . HTMLout $ ht1
 
 settingsFn = makeAbsFile "/home/frank/Workspace11/dainoSite/settings3.yaml"
 fnmd3 = makeAbsFile "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
+-- test with testhtml template 
 test_toHtmlTest = do  --  with data from dainoSite
     res1 <- runErr $ do 
         metaplus5 <- setup_md2metaplus settingsFn fnmd3 
 
-        (metap1,_) <- docrep2panrep NoticeLevel0 def  metaplus5
-        html1 <- panrep2htmlForTest NoticeLevel0  metap1
+        (metap1,_) <- docrep2panrep NoticeLevel0 (def::PubFlags)  metaplus5
+        html1 <- panrep2htmlForTest NoticeLevel0  testTemplate metap1
         -- putIOwords ["test_toHtmlTest pr \n", unHTMLout html1]
         let hash1 = show . hash . show $  html1 :: String
         return hash1
 
-    assertEqual (Right "Hash {asWord64 = 8302496440483182473}") 
+    assertEqual (Right "Hash {asWord64 = 130111545342583451}") 
         res1
 
 --     These are all the values for htmlTufte81.dtpl
