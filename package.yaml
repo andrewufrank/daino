@@ -140,8 +140,26 @@ executables:   # file names wiwth lowercase to avoid forcing Main
 
  
 tests:
-  dainoTest3:
+  testn:
     main: testing.hs
+    source-dirs: tests
+
+    ghc-options: 
+      -threaded 
+      -rtsopts 
+      -with-rtsopts=-N    
+    dependencies:
+      - HTF
+      - quickcheck-text
+      # - uniform-strings
+      # - uniform-http
+      - uniformBase
+      # - uniform-convenience
+      - daino
+      - data-hash
+      # - shake  # from error
+  testr:
+    main: testRun.hs
     source-dirs: tests
 
     ghc-options: 
