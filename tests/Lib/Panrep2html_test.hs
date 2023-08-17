@@ -45,9 +45,10 @@ test_toHtmlout = do
             -- metaplus1 <- readMarkdownFile2docrep debug sett3 fn
         (metap1,_) <- docrep2panrep NoticeLevel0 
                         (def::PubFlags)  metaplus5
-        (html1, _) <- panrep2html NoticeLevel0  metap1
+        (html1, _, tt1) <- panrep2html NoticeLevel0  metap1
         -- putIOwords ["test_toHtmlTest pr \n", unHTMLout html1]
         write8 reshtmlout htmloutFileType html1
+        write8 reshtmlout ttFileType tt1
         let hash1 = show . hash . show $  html1 :: String
         return hash1
 
@@ -65,58 +66,58 @@ fnmd1 = makeAbsFile "/home/frank/Workspace11/daino/tests/data/ReadMe/index.md"
 reshtml = makeAbsFile"/home/frank/tests/htmlTest"
 testTemplate = makeAbsFile "/home/frank/Workspace11/daino/tests/data/metaplusHtml.dtpl"
 
-panrep2htmlForTest :: NoticeLevel -> Path Abs File ->  Panrep -> ErrIO HTMLout
-panrep2htmlForTest debug  mf metaplus4 = do
-    let extra4 = extra metaplus4
-        sett3 = sett metaplus4
-        bakedP =   bakedDir . siteLayout $ sett3  
+-- panrep2htmlForTest :: NoticeLevel -> Path Abs File ->  Panrep -> ErrIO HTMLout
+-- panrep2htmlForTest debug  mf metaplus4 = do
+--     let extra4 = extra metaplus4
+--         sett3 = sett metaplus4
+--         bakedP =   bakedDir . siteLayout $ sett3  
          
-    htmlTempl  <- compileTemplateFile2 mf
+--     htmlTempl  <- compileTemplateFile2 mf
 
-    let files = fileEntries  $ extra4 :: [IndexEntry2]
-        dirs = dirEntries  $ extra4 :: [IndexEntry2]
+--     let files = fileEntries  $ extra4 :: [IndexEntry2]
+--         dirs = dirEntries  $ extra4 :: [IndexEntry2]
 
-    valsDirs :: [Maybe IndexEntry2]<- mapM (getVals2 debug bakedP) dirs
-    valsFiles :: [Maybe IndexEntry2] <- mapM (getVals2 debug bakedP) files
+--     valsDirs :: [Maybe IndexEntry2]<- mapM (getVals2 debug bakedP) dirs
+--     valsFiles :: [Maybe IndexEntry2] <- mapM (getVals2 debug bakedP) files
 
-    when (informAll debug) $ do
-            putIOwords ["panrep2html", "valsDirs", showPretty valsDirs]
-            putIOwords ["panrep2html", "valsFiles", showPretty valsFiles]
+--     when (informAll debug) $ do
+--             putIOwords ["panrep2html", "valsDirs", showPretty valsDirs]
+--             putIOwords ["panrep2html", "valsFiles", showPretty valsFiles]
 
-    let extra5 = extra4{fileEntries = catMaybes valsFiles
-                        , dirEntries = catMaybes valsDirs}
-    let metaplus5 = metaplus4{extra = extra5}
-    when (informAll debug) $ 
-            putIOwords ["panrep2html", "metaplus5", showPretty metaplus5]
+--     let extra5 = extra4{fileEntries = catMaybes valsFiles
+--                         , dirEntries = catMaybes valsDirs}
+--     let metaplus5 = metaplus4{extra = extra5}
+--     when (informAll debug) $ 
+--             putIOwords ["panrep2html", "metaplus5", showPretty metaplus5]
 
-    let hpl1 = renderTemplate htmlTempl (toJSON metaplus5)  -- :: Doc Text
-    -- putIOwords ["tpanrep2htmlForTest pl1 \n", showT tpl1]
-    let ht1 = render (Just 50) hpl1  -- line length, can be Nothing
-    -- putIOwords ["panrep2htmlForTest ht1 \n", ht1]
-    write8   reshtml htmloutFileType (HTMLout ht1)
+--     let hpl1 = renderTemplate htmlTempl (toJSON metaplus5)  -- :: Doc Text
+--     -- putIOwords ["tpanrep2htmlForTest pl1 \n", showT tpl1]
+--     let ht1 = render (Just 50) hpl1  -- line length, can be Nothing
+--     -- putIOwords ["panrep2htmlForTest ht1 \n", ht1]
+--     write8   reshtml htmloutFileType (HTMLout ht1)
 
-    -- hres <- meta2hres htmlTempl metaplus4
-    when (informAll debug) $  putIOwords ["panrep2htmlForTest render html done"
-        , "hres", ht1]
-    -- bakeOnePanrep2html will write to disk
-    return . HTMLout $ ht1
+--     -- hres <- meta2hres htmlTempl metaplus4
+--     when (informAll debug) $  putIOwords ["panrep2htmlForTest render html done"
+--         , "hres", ht1]
+--     -- bakeOnePanrep2html will write to disk
+--     return . HTMLout $ ht1
 
-settingsFn = makeAbsFile "/home/frank/Workspace11/dainoSite/settings3.yaml"
-fnmd3 = makeAbsFile "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
--- test with testhtml template 
-xtest_toHtmlTest = do  --  with data from dainoSite
-    res1 <- runErr $ do 
-        metaplus5 <- setup_md2metaplus settingsFn fnmd2a 
+-- settingsFn = makeAbsFile "/home/frank/Workspace11/dainoSite/settings3.yaml"
+-- fnmd3 = makeAbsFile "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
+-- -- test with testhtml template 
+-- xtest_toHtmlTest = do  --  with data from dainoSite
+--     res1 <- runErr $ do 
+--         metaplus5 <- setup_md2metaplus settingsFn fnmd2a 
 
-        (metap1,_) <- docrep2panrep NoticeLevel0 (def::PubFlags)  metaplus5
+--         (metap1,_) <- docrep2panrep NoticeLevel0 (def::PubFlags)  metaplus5
         
-        html1 <- panrep2htmlForTest NoticeLevel0  testTemplate metap1
-        -- putIOwords ["test_toHtmlTest pr \n", unHTMLout html1]
-        let hash1 = show . hash . show $  html1 :: String
-        return hash1
+--         html1 <- panrep2htmlForTest NoticeLevel0  testTemplate metap1
+--         -- putIOwords ["test_toHtmlTest pr \n", unHTMLout html1]
+--         let hash1 = show . hash . show $  html1 :: String
+--         return hash1
 
-    assertEqual (Right "Hash {asWord64 = 420825269974760718}") 
-        res1
+--     assertEqual (Right "Hash {asWord64 = 420825269974760718}") 
+--         res1
 
 --     These are all the values for htmlTufte81.dtpl
 

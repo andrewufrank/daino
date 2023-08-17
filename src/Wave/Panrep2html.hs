@@ -26,7 +26,6 @@
             -fno-warn-unused-imports
             -fno-warn-unused-matches #-}
 
-default (Integer, Double, Text)
 
 module Wave.Panrep2html (
     module Wave.Panrep2html,
@@ -54,13 +53,18 @@ import Wave.Docrep2panrep
 import Wave.Md2doc
 import System.FilePath (replaceExtension)
 
+default (Integer, Double, Text)
+
+testTemplateFn = makeAbsFile "/home/frank/Workspace11/daino/tests/data/metaplusHtml.dtpl"
 -- ------------------------------------ panrep2html
 -- panrep2html :: Panrep -> ErrIO HTMLout
 -- implements the bake
 -- siteHeader (sett3, above sett3) is the content of the settingsN.yml file
 -- added here the transformations to tufte sidenotes (from pandoc-sidenotes)
+-- compiles the test template and fills 
+-- returns the result to be written by bake.hs
 
-panrep2html :: NoticeLevel -> Panrep -> ErrIO (HTMLout, [FilePath])
+panrep2html :: NoticeLevel -> Panrep -> ErrIO (HTMLout, [FilePath], Text)
 panrep2html debug   metaplus4 = do
     let sett3 = sett metaplus4
         extra4 = extra metaplus4
@@ -74,6 +78,7 @@ panrep2html debug   metaplus4 = do
             putIOwords ["panrep2html", "masterfn", showPretty masterfn]
 
     htmlTempl  <- compileTemplateFile2 masterfn
+    testTempl  <- compileTemplateFile2 testTemplateFn
 
     -- htm1 <- meta2xx writeHtml5String2 (metap metaplus4)
 
@@ -126,14 +131,22 @@ panrep2html debug   metaplus4 = do
     -- putIOwords ["panrep2html ht1 \n", res1]
     -- write8   fnPlusres htmloutFileType (HTMLout ht1)
 
+    let ttpl1 = renderTemplate testTempl (toJSON metaplus5)  -- :: Doc Text
+    -- putIOwords ["tpl1 \n", showT tpl1]
+    let tt1 = render (Just 50) ttpl1  -- line length, can be Nothing
+
 
 -- 
     -- hres <- meta2hres htmlTempl metaplus4
     when (inform debug) $ putIOwords ["panrep2html render html done"
-        , "hres",  ht1
+        , "ht1",  ht1
         ]
+    when (informAll debug) $ putIOwords ["panrep2html render testTemplate done"
+        , "tt1",  tt1
+        ]
+    
     -- bakeOnePanrep2html will write to disk
-    return (HTMLout ht1, needs)
+    return (HTMLout ht1, needs, tt1)
 
 getVals2 :: NoticeLevel -> Path Abs Dir -> IndexEntry2
                 -> ErrIO (Maybe IndexEntry2)

@@ -32,6 +32,7 @@ import Uniform.Http
 
 import Wave.Panrep2html  
 import UniformBase
+-- import Lib.Template_test (test_templatehtml)
 
 
 type BakeOp =
@@ -108,9 +109,11 @@ bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
     -- let mf = masterTemplateFile layout
     -- let masterfn = templatesDir layout </> mf
 
-    (p, needs) <- panrep2html debug  dr1
+    (p, needs, test_templatehtml) <- panrep2html debug  dr1
 
     write8 resfn2 htmloutFileType ( p) -- content is html style
+    write8 resfn2 ttFileType test_templatehtml
+    -- write the test for filling the template always 
     when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOnePanrep2html done fn", showT resfn2]

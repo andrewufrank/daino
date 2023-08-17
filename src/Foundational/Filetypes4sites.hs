@@ -67,6 +67,23 @@ panrepFileType =
 
 type Panrep = DainoMetaPlus 
 
+-------------------- fileType  TT TemplateTest ----------
+
+extTT :: Extension
+extTT = Extension "tt"
+
+-- | a file containing the metadata
+ttFileType :: TypedFile5 Text TT
+ttFileType =
+    TypedFile5{tpext5 = extTT} :: TypedFile5 Text TT
+
+instance TypedFiles7 Text Text where
+    wrap7 = id -- readNote ("TT wrap7 sfasdwe") . t2s
+    --    wrap7 a = readNote (show a) . t2s $ a
+
+    unwrap7 = id
+
+type TT = Text  
 --------------------  TexSnip
 
 extTexSnip :: UniformBase.Extension
