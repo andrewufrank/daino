@@ -27,19 +27,21 @@ linkpdf         $linkpdf3$
 date   $--          $metaHtml.date$
 content         $metaHtml.body$
 menu2files       $for(extra.fileEntries)$
-                    $extra.fileEntries.ixfn$
-                    $extra.fileEntries.link$
-                    $extra.fileEntries.title$
-                    $extra.fileEntries.abstract$
-                    $extra.fileEntries.pdf2$
-                    $extra.fileEntries.author$
-                    $extra.fileEntries.date$
+
+    ixfn            $extra.fileEntries.ixfn$
+    link            $extra.fileEntries.link$
+    title           $extra.fileEntries.title$
+    abstract        $extra.fileEntries.abstract$
+    pdf2            $extra.fileEntries.pdf2$
+    author          $extra.fileEntries.author$
+    date            $extra.fileEntries.date$
                 $endfor$
 
 menu2subdir     $for(extra.dirEntries)$ 
-                    $extra.dirEntries.link$
-                    $extra.dirEntries.title$ 
-                    $extra.dirEntries.abstract$ 
+
+    link            $extra.dirEntries.link$
+    title           $extra.dirEntries.title$ 
+    abstract        $extra.dirEntries.abstract$ 
                 $endfor$
 
 dainoversion    $extra.dainoVersion$
