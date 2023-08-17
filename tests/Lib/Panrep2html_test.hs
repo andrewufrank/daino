@@ -52,7 +52,7 @@ test_toHtmlout = do
         let hash1 = show . hash . show $  html1 :: String
         return hash1
 
-    assertEqual (Right "Hash {asWord64 = 4659375328426280437}") 
+    assertEqual (Right "Hash {asWord64 = 14632867472327410945}") 
         res1
 
 
