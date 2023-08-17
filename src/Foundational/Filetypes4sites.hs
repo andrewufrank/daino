@@ -47,11 +47,11 @@ docrepFileType :: TypedFile5 Text Docrep
 docrepFileType =
     TypedFile5{tpext5 = extDocrep} :: TypedFile5 Text Docrep
 
--- instance TypedFiles7 Text Docrep where
-    -- wrap7 = readNote ("Docrep wrap7 sfasdwe") . t2s
-    -- --    wrap7 a = readNote (show a) . t2s $ a
+instance TypedFiles7 Text Docrep where
+    wrap7 = readNote ("Docrep wrap7 sfasdwe") . t2s
+    --    wrap7 a = readNote (show a) . t2s $ a
 
-    -- unwrap7 = showT
+    unwrap7 = showT
 
 -------------------- fileType Panrep ----------
 
@@ -78,7 +78,7 @@ ttFileType =
     TypedFile5{tpext5 = extTT} :: TypedFile5 Text TT
 
 instance TypedFiles7 Text Text where
-    wrap7 = id -- readNote ("TT wrap7 sfasdwe") . t2s
+    wrap7 = id -- readNote ("TT wrap7 sdwwe") . t2s
     --    wrap7 a = readNote (show a) . t2s $ a
 
     unwrap7 = id
@@ -98,12 +98,12 @@ texSnipFileType :: TypedFile5 Text TexSnip
 texSnipFileType =
     TypedFile5{tpext5 = extTexSnip} :: TypedFile5 Text TexSnip
 
-instance TypedFiles7 Text TexSnip where
+-- instance TypedFiles7 Text TexSnip where
     -- handling TexSnip and read them into TexSnipText
     -- the file on disk is readable for texstudio
 
-    wrap7 = readNote "wrap7 for TexSnip dwe11d" . t2s
-    unwrap7 = showT
+    -- wrap7 = readNote "wrap7 for TexSnip dwe11d" . t2s
+    -- unwrap7 = showT
 
 ----------------  Tex
 

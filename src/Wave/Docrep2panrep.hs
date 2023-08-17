@@ -85,7 +85,10 @@ docrep2panrep debug pubf metaplus5 = do
         doughP = doughDir layout
         defaut = defaultAuthor layout
         aut1 = getTextFromYaml6 defaut "author" meta5
-        extra6 = extra5{authorReduced = blankAuthorName hpname aut1}
+        bookval = getTextFromYaml6  "" "book"   meta5 
+        extra6 = extra5{authorReduced = blankAuthorName hpname aut1
+                        ,booklet = "booklet" == bookval
+                        ,bookBig= "bookBig" == bookval}
 
     htm1 <- meta2xx writeHtml5String2 meta5
     tex1  :: M.Map Text Text <- meta2xx   writeTexSnip2 meta5
@@ -130,3 +133,5 @@ addIndex dir1 = toFilePath $ addFileName dir2  fn
     where
        fn = makeRelFile "index.md"
        dir2 = makeAbsDir dir1 
+
+ 

@@ -81,6 +81,10 @@ data DainoValues = DainoValues
                         , latLanguage :: Text 
                         , authorReduced :: Text
                         -- , extraBakedDir :: Text
+                        , bookBig :: Bool -- values, because the template system limitation
+                        , booklet :: Bool
+                        , bookprint :: Bool  -- include the empty pages for print version
+                        , webroot :: Text  -- the webroot
                         }
     deriving (Eq, Ord, Show, Read, Generic, Zeros)
 
@@ -107,7 +111,7 @@ data IndexEntry2 = IndexEntry2
     , version ::   Text 
     , sortOrder :: Text
     , pdf :: Text
-    -- , indexPage :: Bool
+     -- , indexPage :: Bool
     -- , dirEntries :: [FilePath] -- [Path Abs Dir] -- [IndexEntry2] -- def []
     -- , fileEntries :: [FilePath] -- [Path Abs File] -- [IndexEntry2] -- def []
     , headerShift :: Int   

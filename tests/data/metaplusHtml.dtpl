@@ -90,10 +90,11 @@ Bibliography        $metap.Bibliography.c$
 headerShitft        $metap.headerShift$
 
 -- for tufte latex
-bookBig
-booklet 
+book                $metaHtml.book$
+bookBig             $extra.bookBig$
+booklet             $extra.booklet$
 bookprint
-bakedDir
+bakedDir~webroot    $extra.webroot$
 
 
--- other settings similar
+-- end list of values extractable from template

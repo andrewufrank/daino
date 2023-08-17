@@ -136,9 +136,12 @@ texsnip2tex  debug metaplus4 = do
     valsDirs :: [Maybe IndexEntry2]<- mapM (getVals2latex debug bakedP) dirs
     valsFiles :: [Maybe IndexEntry2] <- mapM (getVals2latex debug bakedP) files
 
-    when (informAll debug) $ do
-            putIOwords ["texsnip2tex", "valsDirs", showPretty valsDirs]
-            putIOwords ["texsnip2tex", "valsFiles", showPretty valsFiles]
+    putIOwords ["texsnip2tex 1"  ]
+
+    when (inform debug) $ do
+            putIOwords ["texsnip2tex", "valsDirs", showT valsDirs]
+            -- putIOwords ["texsnip2tex", "valsFiles", showT valsFiles]
+    putIOwords ["texsnip2tex 2"  ]
 
     let extra5 = extra4{fileEntries = catMaybes valsFiles
                         , dirEntries = catMaybes valsDirs}
@@ -169,19 +172,25 @@ getVals2latex :: NoticeLevel -> Path Abs Dir -> IndexEntry2
                 -> ErrIO (Maybe IndexEntry2)
 -- get the panrep and fill the vals 
 getVals2latex debug bakedP ix2 = do
+    putIOwords ["getVals2latex start"]
     let fn = makeAbsFile $ addDir (toFilePath bakedP) (link ix2)  :: Path Abs File
+    putIOwords ["getVals2latex fn", showT fn ]
     pan1 <- read8 fn panrepFileType
+    putIOwords ["getVals2latex pan1", showT pan1 ]
 
     let m = metaLatex pan1  -- select latex code 
-        ix3 = ix2   { abstract = lookup7 "abstract" m
-                    , title = lookup7 "title" m
-                    -- , author = lookup7 "author" m -- todo suppressed?
-                    ,     date = lookup7 "date" m
-                    -- , sortOrder = lookup7 "sortOrder" m
+    
+        ix3 = ix2   { abstract = lookup7withDef ""  "abstract" m
+                    , title = lookup7withDef "TITLE MISSING" "title" m
+                    , author = lookup7withDef "" "author" m -- todo suppressed?
+                    , date = lookup7 "date" m
+                    , sortOrder = lookup7withDef "filename" "sortOrder" m
                     , version = lookup7 "version" m
                     , visibility = lookup7 "visibility" m
-                -- todo complete 
                     }
+
+    putIOwords ["getVals2latex end"]
+    
     return $ if True -- includeBakeTest3 def -- bring down 
                             -- (version ix3) (visibility ix3)
                 then Just ix3 else Nothing

@@ -42,8 +42,10 @@ test_toLatex = do
         (metap1,_) <- docrep2panrep NoticeLevel0 
                         (def::PubFlags)  metaplus5
         texsnip <- panrep2texsnip debug metap1
-        (lat1, _, tt1) <- texsnip2tex NoticeLevel0  texsnip
-        -- putIOwords ["test_toHtmlTest pr \n", unHTMLout html1]
+        putIOwords ["test_toLatex setup texsnip done"]
+
+        (lat1, _, tt1) <- texsnip2tex NoticeLevel1  texsnip
+        putIOwords ["test_toHtmlTest pr \n", tt1]
         write8 resLatex texFileType lat1
         write8 resLatex ttFileType tt1
         let hash1 = show . hash . show $  lat1 :: String

@@ -77,7 +77,8 @@ initializeIx2dir doughP fp = zero{ixfn = toFilePath fp2
 initializeIx2file :: Path Abs Dir -> Path Abs File -> IndexEntry2 
 -- the dough path to make the path relative
 initializeIx2file doughP fp = zero{ixfn = toFilePath fp
-                    , link = toFilePath relfp}
+                    , link = toFilePath relfp
+                    }
         where 
             relfp =  removeExtension . makeRelativeP doughP $ fp  
 {-  old

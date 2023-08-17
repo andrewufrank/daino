@@ -83,7 +83,7 @@ panrep2html debug   metaplus4 = do
     -- htm1 <- meta2xx writeHtml5String2 (metap metaplus4)
 
     --if this is an index file it has files and dirs 
-    when (inform debug) $ 
+    when (inform debug) $
             putIOwords ["panrep2html", "extra4", showPretty extra4]
 
     let files = fileEntries  $ extra4 :: [IndexEntry2]
@@ -94,11 +94,11 @@ panrep2html debug   metaplus4 = do
         bakedP =   bakedDir . siteLayout $ sett3
         bakedFP = toFilePath bakedP
         needs = map (`replaceExtension` "panrep")
-                . map (addDir bakedFP ) 
+                . map (addDir bakedFP )
                 .  map link $ (dirs ++ files)
                      :: [FilePath]
 
-    when (inform debug) $ 
+    when (inform debug) $
             putIOwords ["panrep2html", "\n\tneeds ", showPretty needs ]
 
     valsDirs :: [Maybe IndexEntry2]<- mapM (getVals2 debug bakedP) dirs
@@ -112,7 +112,7 @@ panrep2html debug   metaplus4 = do
                         , dirEntries = catMaybes valsDirs}
     let metaplus5 = metaplus4{extra = extra5}
     putIOwords ["panrep2html", "extra5", showPretty extra5]
-    when (inform debug) $ 
+    when (inform debug) $
             putIOwords ["panrep2html", "metaplus5", showPretty metaplus5]
 
     let hpl1 = renderTemplate targetTempl (toJSON metaplus5)  -- :: Doc Text
@@ -127,7 +127,7 @@ panrep2html debug   metaplus4 = do
     when (informAll debug) $ putIOwords ["panrep2html render testTemplate done"
         , "tt1",  tt1
         ]
-    
+
     -- bakeOnePanrep2html will write to disk
     return (HTMLout ht1, needs, tt1)
 
@@ -162,3 +162,8 @@ getVals2 debug bakedP ix2 = do
 lookup7 :: Text -> M.Map Text Text ->  Text
 lookup7 k m = fromJustNoteT ["lookup7 in panrep2html", k, showT m]
             . M.lookup k $ m
+
+lookup7withDef  :: Text -> Text -> M.Map Text Text -> Text
+--get the Metavalue (with  default)
+lookup7withDef def1 key m =  fromMaybe def1 $ M.lookup key m
+  
