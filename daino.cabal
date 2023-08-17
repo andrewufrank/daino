@@ -109,7 +109,7 @@ executable daino3
     , unix
   default-language: Haskell2010
 
-test-suite testn
+test-suite testall
   type: exitcode-stdio-1.0
   main-is: testing.hs
   other-modules:
@@ -157,7 +157,7 @@ test-suite testn
     , unix
   default-language: Haskell2010
 
-test-suite testr
+test-suite testrun
   type: exitcode-stdio-1.0
   main-is: testRun.hs
   other-modules:

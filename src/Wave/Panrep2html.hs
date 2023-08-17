@@ -49,8 +49,8 @@ import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..))
 
 import Data.Maybe (fromMaybe)
 import qualified Data.Map as M
-import Wave.Docrep2panrep
-import Wave.Md2doc
+-- import Wave.Docrep2panrep
+-- import Wave.Md2doc
 import System.FilePath (replaceExtension)
 
 default (Integer, Double, Text)
@@ -77,7 +77,7 @@ panrep2html debug   metaplus4 = do
             putIOwords ["panrep2html", "mf", showPretty mf]
             putIOwords ["panrep2html", "masterfn", showPretty masterfn]
 
-    htmlTempl  <- compileTemplateFile2 masterfn
+    targetTempl  <- compileTemplateFile2 masterfn
     testTempl  <- compileTemplateFile2 testTemplateFn
 
     -- htm1 <- meta2xx writeHtml5String2 (metap metaplus4)
@@ -101,20 +101,12 @@ panrep2html debug   metaplus4 = do
     when (inform debug) $ 
             putIOwords ["panrep2html", "\n\tneeds ", showPretty needs ]
 
-
-    -- let dirs2 = map makeAbsFile ds
-    --     files2 = map makeAbsFile fs
-    -- panDirs <- mapM (get4panrepsDir debug) dirs2 
-    -- panfiles <- mapM (get4panrepsFile debug) files2 
-
     valsDirs :: [Maybe IndexEntry2]<- mapM (getVals2 debug bakedP) dirs
     valsFiles :: [Maybe IndexEntry2] <- mapM (getVals2 debug bakedP) files
 
     when (informAll debug) $ do
             putIOwords ["panrep2html", "valsDirs", showPretty valsDirs]
             putIOwords ["panrep2html", "valsFiles", showPretty valsFiles]
-
-
 
     let extra5 = extra4{fileEntries = catMaybes valsFiles
                         , dirEntries = catMaybes valsDirs}
@@ -123,21 +115,12 @@ panrep2html debug   metaplus4 = do
     when (inform debug) $ 
             putIOwords ["panrep2html", "metaplus5", showPretty metaplus5]
 
--- copied
-    -- htpl2 <- compileTemplateFile2 metaplusHtml -- fnminilatex
-    let hpl1 = renderTemplate htmlTempl (toJSON metaplus5)  -- :: Doc Text
-    -- putIOwords ["tpl1 \n", showT tpl1]
+    let hpl1 = renderTemplate targetTempl (toJSON metaplus5)  -- :: Doc Text
     let ht1 = render (Just 50) hpl1  -- line length, can be Nothing
-    -- putIOwords ["panrep2html ht1 \n", res1]
-    -- write8   fnPlusres htmloutFileType (HTMLout ht1)
 
     let ttpl1 = renderTemplate testTempl (toJSON metaplus5)  -- :: Doc Text
-    -- putIOwords ["tpl1 \n", showT tpl1]
     let tt1 = render (Just 50) ttpl1  -- line length, can be Nothing
 
-
--- 
-    -- hres <- meta2hres htmlTempl metaplus4
     when (inform debug) $ putIOwords ["panrep2html render html done"
         , "ht1",  ht1
         ]

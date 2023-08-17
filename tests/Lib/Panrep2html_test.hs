@@ -33,7 +33,7 @@ settFn = makeAbsFile
     "/home/frank/Workspace11/daino/settingsTest.yaml"
 fnmd2a = makeAbsFile "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
 
-    -- special case?
+ 
 reshtmlout = makeAbsFile "/home/frank/tests/htmlout"
 -- test regular processing
 test_toHtmlout = do 

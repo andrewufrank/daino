@@ -155,15 +155,18 @@ bakeOneTexsnip2tex debug flags inputFn sett3 resfn2 = do
 
     snip1 <- read8 inputFn texSnipFileType
 
-    let layout = siteLayout sett3
-    let doughP = doughDir layout
-        bakedP = bakedDir layout 
+    -- let layout = siteLayout sett3
+    -- let doughP = doughDir layout
+    --     bakedP = bakedDir layout 
 
+    (tex1, needs, test_templatehtml) <- texsnip2tex debug  snip1
 
-    tex1 <- texsnip2tex NoticeLevel0 doughP bakedP snip1 
-        ((templatesDir layout) </> (texTemplateFile layout))
+    -- tex1 <- texsnip2tex NoticeLevel0 doughP bakedP snip1 
+        -- ((templatesDir layout) </> (texTemplateFile layout))
     -- let tex1 = tex2latex2 zero [snip1]
     write8 resfn2 texFileType tex1 -- content is html style
+    write8 resfn2 ttFileType test_templatehtml
+
     when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOneFile2tex done fn", showT resfn2]

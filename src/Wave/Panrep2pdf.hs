@@ -29,18 +29,36 @@ module Wave.Panrep2pdf (
 ) where
 
 import Foundational.Filetypes4sites
-import GHC.Generics (Generic)
+-- import GHC.Generics (Generic)
 import Uniform.Pandoc ( writeTexSnip2 )
 import Uniform.MetaStuff
-import Uniform.TemplateStuff
-import Uniform.TemplateStuff (Template)
-import UniformBase
-import qualified  Data.Map  as M
-import Text.DocTemplates as DocTemplates ( Doc )
-import Uniform.Latex
+-- import Uniform.TemplateStuff
+-- import Uniform.TemplateStuff (Template)
+-- import UniformBase
+-- import qualified  Data.Map  as M
+-- import Text.DocTemplates as DocTemplates ( Doc )
+-- import Uniform.Latex
 import Uniform.WritePDF
-import Paths_daino (version)
-import Foundational.SettingsPage 
+-- import Paths_daino (version)
+-- import Foundational.SettingsPage 
+import GHC.Generics (Generic)
+
+import Uniform.Json ( ToJSON(toJSON), Value, ErrIO )
+import Uniform.Pandoc
+-- import Uniform.Latex 
+-- import qualified Text.Pandoc.Shared as P
+import Uniform.Http ( HTMLout (HTMLout) )
+import UniformBase
+import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..))
+
+import Data.Maybe (fromMaybe)
+import qualified Data.Map as M
+-- import Wave.Docrep2panrep
+-- import Wave.Md2doc
+import System.FilePath (replaceExtension)
+import Foundational.SettingsPage
+import Wave.Panrep2html 
+default (Integer, Double, Text)
 
 -- ------------------------------------ panrep2texsnip
 
@@ -63,7 +81,9 @@ panrep2texsnip debug metaplus3 = do
 -- text2absFile :: Path Abs Dir -> Text -> Path Abs File 
 -- text2absFile doughP t = doughP </> makeRelFile (t2s t)
 
-texsnip2tex :: NoticeLevel ->  Path Abs Dir -> Path Abs Dir -> DainoMetaPlus ->  Path Abs File -> ErrIO Latex
+texsnip2tex ::  NoticeLevel -> TexSnip -> ErrIO (Latex, [FilePath], Text)
+
+-- NoticeLevel ->  Path Abs Dir -> Path Abs Dir -> DainoMetaPlus ->  Path Abs File -> ErrIO Latex
 -- the (lead) snip which comes from the md which gives the name to the resulting tex and pdf 
 -- and ist metadata are included (taken from the snip)
 -- it may include other filenames, the snips of these
@@ -71,25 +91,121 @@ texsnip2tex :: NoticeLevel ->  Path Abs Dir -> Path Abs Dir -> DainoMetaPlus -> 
 
 -- currently only one snip, 
 -- currently the biblio and references seem not to work with the new citeproc stuff (which takes the info from the )
-texsnip2tex  debug doughP bakedP metaplus4 latexDtpl = do
+texsnip2tex  debug metaplus4 = do 
+-- debug doughP bakedP metaplus4 latexDtpl = do
     when (inform debug) $ putIOwords ["\n texsnip2tex start"]
 
--- fromMd: 
+    let sett3 = sett metaplus4
+        extra4 = extra metaplus4
+        -- mf = masterTemplateFile $ siteLayout sett3
+        mf = texTemplateFile $ siteLayout sett3 -- change to latex template
+        masterfn = templatesDir (siteLayout sett3) </> mf
+
+    when (inform debug) $ do
+            putIOwords ["\ntexsnip2tex", "siteLayout sett3"
+                , showPretty $ siteLayout sett3]
+            putIOwords ["texsnip2tex", "mf", showPretty mf]
+            putIOwords ["texsnip2tex", "masterfn", showPretty masterfn]
+
+    targetTempl  <- compileTemplateFile2 masterfn
+    testTempl  <- compileTemplateFile2 testTemplateFn
+
+    -- htm1 <- meta2xx writeHtml5String2 (metap metaplus4)
+
+    --if this is an index file it has files and dirs 
+    when (inform debug) $ 
+            putIOwords ["texsnip2tex", "extra4", showPretty extra4]
+
+    let files = fileEntries  $ extra4 :: [IndexEntry2]
+        dirs = dirEntries  $ extra4 :: [IndexEntry2]
+
+    -- calculate needs 
+    let
+        bakedP =   bakedDir . siteLayout $ sett3
+        bakedFP = toFilePath bakedP
+        needs = map (`replaceExtension` "texsnip")  -- change extension
+                            -- eventually will be panrep again
+                            -- after removing the texsnip wave 
+                . map (addDir bakedFP ) 
+                .  map link $ (dirs ++ files)
+                     :: [FilePath]
+
+    when (inform debug) $ 
+            putIOwords ["texsnip2tex", "\n\tneeds ", showPretty needs ]
+
+    valsDirs :: [Maybe IndexEntry2]<- mapM (getVals2latex debug bakedP) dirs
+    valsFiles :: [Maybe IndexEntry2] <- mapM (getVals2latex debug bakedP) files
+
+    when (informAll debug) $ do
+            putIOwords ["texsnip2tex", "valsDirs", showPretty valsDirs]
+            putIOwords ["texsnip2tex", "valsFiles", showPretty valsFiles]
+
+    let extra5 = extra4{fileEntries = catMaybes valsFiles
+                        , dirEntries = catMaybes valsDirs}
+                        -- uses the same record selectors as html
+                        -- but started with an empty slate?
+    let metaplus5 = metaplus4{extra = extra5}
+    putIOwords ["texsnip2tex", "extra5", showPretty extra5]
+    when (inform debug) $ 
+            putIOwords ["texsnip2tex", "metaplus5", showPretty metaplus5]
+
+    let hpl1 = renderTemplate targetTempl (toJSON metaplus5)  -- :: Doc Text
+    let ht1 = render (Just 50) hpl1  -- line length, can be Nothing
+
+    let ttpl1 = renderTemplate testTempl (toJSON metaplus5)  -- :: Doc Text
+    let tt1 = render (Just 50) ttpl1  -- line length, can be Nothing
+
+    when (inform debug) $ putIOwords ["texsnip2tex render html done"
+        , "ht1",  ht1
+        ]
+    when (informAll debug) $ putIOwords ["texsnip2tex render testTemplate done"
+        , "tt1",  tt1
+        ]
+    
+    -- bakeOnetexsnip2tex will write to disk
+    return (Latex ht1, needs, tt1)
+
+getVals2latex :: NoticeLevel -> Path Abs Dir -> IndexEntry2
+                -> ErrIO (Maybe IndexEntry2)
+-- get the panrep and fill the vals 
+getVals2latex debug bakedP ix2 = do
+    let fn = makeAbsFile $ addDir (toFilePath bakedP) (link ix2)  :: Path Abs File
+    pan1 <- read8 fn panrepFileType
+
+    let m = metaLatex pan1  -- select latex code 
+        ix3 = ix2   { abstract = lookup7 "abstract" m
+                    , title = lookup7 "title" m
+                    -- , author = lookup7 "author" m -- todo suppressed?
+                    ,     date = lookup7 "date" m
+                    -- , sortOrder = lookup7 "sortOrder" m
+                    , version = lookup7 "version" m
+                    , visibility = lookup7 "visibility" m
+                -- todo complete 
+                    }
+    return $ if True -- includeBakeTest3 def -- bring down 
+                            -- (version ix3) (visibility ix3)
+                then Just ix3 else Nothing
+
+
+
+
+-- old fromMd: 
     -- let meta2 = addMetaFieldT "documentclass" "article" snip1
     -- t  :: M.Map Text Text <- meta2xx   writeTexSnip2 meta2
     -- putIOwords ["texsnip2tex~meta2hres tHtml \n", showT t, "\n--"]
 
-    templL :: Template Text <- compileTemplateFile2 latexDtpl
-    -- templL :: Template Text <- compileDefaultTempalteLatex
-        -- templL :: Template Text  <-compileDefaultTempalteLatex
-        -- -- renderTemplate :: (TemplateTarget a, ToContext a b) => Template a -> b -> Doc a
-    let restpl = renderTemplate templL (toJSON metaplus4) -- :: Doc Text
-    let resH = render (Just 50) restpl :: Text  -- line length, can be Nothing
-        -- let restplL = renderTemplate templL ctLatex :: Doc Text
-        -- let resL = render (Just 50) restplL  :: Text  -- line length, can be Nothing    -- todo 
-    putIOwords ["texsnip2tex~meta2hres resHl \n",  resH, "\n--"]
-    return . Latex $ resH 
+    -- templL :: Template Text <- compileTemplateFile2 latexDtpl
+    -- -- templL :: Template Text <- compileDefaultTempalteLatex
+    --     -- templL :: Template Text  <-compileDefaultTempalteLatex
+    --     -- -- renderTemplate :: (TemplateTarget a, ToContext a b) => Template a -> b -> Doc a
+    -- let restpl = renderTemplate templL (toJSON metaplus4) -- :: Doc Text
+    -- let resH = render (Just 50) restpl :: Text  -- line length, can be Nothing
+    --     -- let restplL = renderTemplate templL ctLatex :: Doc Text
+    --     -- let resL = render (Just 50) restplL  :: Text  -- line length, can be Nothing    -- todo 
+    -- putIOwords ["texsnip2tex~meta2hres resHl \n",  resH, "\n--"]
+    -- return . Latex $ resH 
 
+-- very old 
 --     let yam = snipyam snip1 
 --     when (inform debug) $ putIOwords ["\n texsnip2tex for link", showT (dyFn yam), showT (dyBook yam)]
 --     let latexparam = LatexParam   -- defined in uniform.latex
