@@ -112,7 +112,7 @@ bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
     (p, needs, test_templatehtml) <- panrep2html debug  dr1
 
     write8 resfn2 htmloutFileType ( p) -- content is html style
-    write8 resfn2 ttFileType test_templatehtml
+    write8 resfn2 tthFileType test_templatehtml
     -- write the test for filling the template always 
     when (inform debug) $
         putIOwords
@@ -165,7 +165,7 @@ bakeOneTexsnip2tex debug flags inputFn sett3 resfn2 = do
         -- ((templatesDir layout) </> (texTemplateFile layout))
     -- let tex1 = tex2latex2 zero [snip1]
     write8 resfn2 texFileType tex1 -- content is html style
-    write8 resfn2 ttFileType test_templatehtml
+    write8 resfn2 ttlFileType test_templatehtml
 
     when (inform debug) $
         putIOwords

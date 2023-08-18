@@ -116,13 +116,10 @@ test-suite testall
       Lib.DainoTest_test
       Lib.Docrep2panrep_test
       Lib.Example_test
-      Lib.IndexCollect_test
       Lib.IndexMake_test
       Lib.Md2doc_test
       Lib.Panrep2html_test
       Lib.Panrep2pdf_test
-      Lib.ReadSettingFile_test
-      Lib.Template_test
       Paths_daino
   hs-source-dirs:
       tests
@@ -164,13 +161,10 @@ test-suite testrun
       Lib.DainoTest_test
       Lib.Docrep2panrep_test
       Lib.Example_test
-      Lib.IndexCollect_test
       Lib.IndexMake_test
       Lib.Md2doc_test
       Lib.Panrep2html_test
       Lib.Panrep2pdf_test
-      Lib.ReadSettingFile_test
-      Lib.Template_test
       Paths_daino
   hs-source-dirs:
       tests

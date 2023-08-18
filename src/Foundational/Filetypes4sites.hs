@@ -67,23 +67,40 @@ panrepFileType =
 
 type Panrep = DainoMetaPlus 
 
--------------------- fileType  TT TemplateTest ----------
+-------------------- fileType  TTh TemplateTest for html output----------
 
-extTT :: Extension
-extTT = Extension "tt"
+extTTH :: Extension
+extTTH = Extension "tth"
 
--- | a file containing the metadata
-ttFileType :: TypedFile5 Text TT
-ttFileType =
-    TypedFile5{tpext5 = extTT} :: TypedFile5 Text TT
+-- | a file containing the metadata for html output
+tthFileType :: TypedFile5 Text TTH
+tthFileType =
+    TypedFile5{tpext5 = extTTH} :: TypedFile5 Text TTH
 
 instance TypedFiles7 Text Text where
-    wrap7 = id -- readNote ("TT wrap7 sdwwe") . t2s
+    wrap7 = id -- readNote ("TTH wrap7 sdwwe") . t2s
     --    wrap7 a = readNote (show a) . t2s $ a
 
     unwrap7 = id
 
-type TT = Text  
+type TTH = Text  
+------------------- fileType  TTL TemplateTest ----------
+
+extTTL :: Extension
+extTTL = Extension "ttl"
+
+-- | a file containing the metadata
+ttlFileType :: TypedFile5 Text TTL
+ttlFileType =
+    TypedFile5{tpext5 = extTTL} :: TypedFile5 Text TTL
+
+-- instance TypedFiles7 Text Text where
+--     wrap7 = id -- readNote ("TTL wrap7 sdwwe") . t2s
+--     --    wrap7 a = readNote (show a) . t2s $ a
+
+--     unwrap7 = id
+
+type TTL = Text  
 --------------------  TexSnip
 
 extTexSnip :: UniformBase.Extension

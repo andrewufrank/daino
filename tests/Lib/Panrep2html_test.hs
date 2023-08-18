@@ -48,7 +48,7 @@ test_toHtmlout = do
         (html1, _, tt1) <- panrep2html NoticeLevel0  metap1
         -- putIOwords ["test_toHtmlTest pr \n", unHTMLout html1]
         write8 reshtmlout htmloutFileType html1
-        write8 reshtmlout ttFileType tt1
+        write8 reshtmlout tthFileType tt1
         let hash1 = show . hash . show $  html1 :: String
         return hash1
 

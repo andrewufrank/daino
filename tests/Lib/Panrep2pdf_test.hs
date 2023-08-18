@@ -47,7 +47,7 @@ test_toLatex = do
         (lat1, _, tt1) <- texsnip2tex NoticeLevel1  texsnip
         putIOwords ["test_toHtmlTest pr \n", tt1]
         write8 resLatex texFileType lat1
-        write8 resLatex ttFileType tt1
+        write8 resLatex ttlFileType tt1
         let hash1 = show . hash . show $  lat1 :: String
         return hash1
 
