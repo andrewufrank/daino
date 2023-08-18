@@ -85,7 +85,7 @@ masterTemplateFile  $sett.siteLayout.masterTemplateFile$
 texTemplateFile     $sett.siteLayout.texTemplateFile$
 themeDir            $sett.siteLayout.themeDir$
 
-Bibliography        $metap.Bibliography$  
+Bibliography        $metap.Bibliography.c$  
                     
 headerShitft        $metap.headerShift$
 

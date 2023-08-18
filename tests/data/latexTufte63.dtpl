@@ -108,7 +108,8 @@ $--     natbib=true,
 
 
 
-$if(metap.Bibliography)$\addbibresource{$metap.Bibliography$}$endif$
+$if(metap.Bibliography.c)$\addbibresource{$extra.webroot$$metap.Bibliography.c$}$endif$
+$-- needs full ref (with .bib extension)
 $if(references)$\addbibresource{local.bib}$endif$
 
 \makeindex
