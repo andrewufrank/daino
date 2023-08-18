@@ -1,0 +1,308 @@
+$-- template to produce a latex file with the tufte style fixed notes-in-notes
+% template used latexTufte63.dtpl v1 
+% file in Workspace11/daino/tests/data
+
+% requires removed limiation on subsubpara in tufte-common.def 
+ 
+\documentclass[a4paper,openany,nobib] %openright to force parts and chapter to start right
+        $if(bookBig)$ {tufte-book}  %testbook $latBookBig$
+        $elseif(booklet)$ {tufte-book}  %testbooklet $latBooklet$
+        $else$ {tufte-handout}  
+        $endif$
+% produced with latext8tufte v1
+
+$-- not used: 
+%testhandout $bookBig$ testzwei $booklet$
+% $book$  % should be true for bookbig and booklet
+
+\titleclass{\subsubsection}{straight}
+\titleformat{\subsubsection}%
+  [hang]% shape
+  {\normalfont\large\itshape}% format applied to label+text
+  {\thesubsubsection}% label
+  {1em}% horizontal separation between label and title body
+  {}% before the title body
+  []% after the title body
+  
+\usepackage{fontspec}
+\usepackage{csquotes}  $-- required for babel 
+\usepackage[$metaLatex.latLanguage$]{babel}
+$-- \renewcaptionname{ngerman}{\bibname}{Literatur}   %Bibliography
+$-- \renewcaptionname{$latLanguage$}{\bibname}{$latBiblioTitle$}   %Bibliography
+$-- automatical adaption
+
+\usepackage{microtype} 
+\renewcommand{\allcapsspacing}[1]{\textls[200]{#1}}% 
+\renewcommand{\smallcapsspacing}[1]{\textls[50]{#1}}%
+\renewcommand{\textsc}[1]{\smallcapsspacing{\textsmallcaps{#1}}}
+
+$-- copied from tufte-common.def, change ## to # 
+% \renewcommand{\allcapsspacing}[1]{\textls[200]{##1}}%
+%  \renewcommand{\smallcapsspacing}[1]{\textls[50]{##1}}%
+  \renewcommand{\allcaps}[1]{\allcapsspacing{\MakeTextUppercase{#1}}}%
+  \renewcommand{\smallcaps}[1]{\smallcapsspacing{\scshape\MakeTextLowercase{#1}}}%
+%  \renewcommand{\textsc}[1]{\smallcapsspacing{\textsmallcaps{##1}}}%
+$--setc
+$-- \usepackage{bookmark}
+
+$-- numbering thru all of the book
+$-- \counterwithin{chapter}{part}
+$-- \counterwithin{section}{chapter}
+$-- \renewcommand{\thepart}{\arabic{part}}
+$-- \setcounter{secnumdepth}{\subsubsectionnumdepth} % numbering for subsubsections
+
+
+\usepackage{graphicx}
+$--          \setkeys{Gin}{width=.75\linewidth,keepaspectratio}
+    \setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+\graphicspath{{$latBakedDir$}}
+
+\usepackage{longtable}
+\usepackage{booktabs}
+
+\makeatletter       % the code to avoid footnote-in-footnotes from citations
+\renewcommand\@footnotetext[2][0pt]{%
+  \marginpar{%
+    \hbox{}\vspace*{#1}%
+    \def\baselinestretch {\setspace@singlespace}%
+    \reset@font\footnotesize%
+    \@tufte@margin@par% use parindent and parskip settings for marginal text
+    \vspace*{-1\baselineskip}\noindent%
+    \protected@edef\@currentlabel{%
+       \csname p@footnote\endcsname\@thefnmark%
+    }%
+    \color@begingroup%
+       \@makefntext{%
+         \toggletrue{blx@footnote}%
+         \ignorespaces #2%
+       }%
+    \color@endgroup%
+  }%
+}%
+
+\makeatother
+
+\usepackage{fancyvrb}   % to define Verbatim environment 
+%\VerbatimFootnotes      % allow footnotes inside 
+                        % creates missing fancyvrb.sty
+
+\usepackage{makeidx}
+\usepackage[backend=biber,
+     style=authoryear,
+     autocite=footnote,
+$--     natbib=true,
+     hyperref=true,
+     ]{biblatex}
+
+\makeatother
+
+% to add the chapter and part in the header
+% seems to produced problems
+\fancypagestyle{mystyle}{%
+	\fancyhf{}%
+	\renewcommand{\chaptermark}[1]{\markboth{##1}{}}%
+	\renewcommand{\sectionmark}[1]{\markleft{##1}{}}%
+	\fancyhead[L]{\thepage\quad\smallcaps{\newlinetospace{\leftmark}}}% 
+	\fancyhead[R]{\smallcaps{\newlinetospace{\rightmark}}\quad\thepage}%
+}
+
+
+
+$if(bibliography)$\addbibresource{$bibliography$}$endif$
+$if(references)$\addbibresource{local.bib}$endif$
+
+\makeindex
+
+\setcounter{tocdepth}{4}  %to make several levels in table of content, works
+
+\providecommand{\tightlist}{%
+\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+$-- \usepackage[colorlinks]{hyperref}
+\usepackage{xcolor}
+\hypersetup{
+    colorlinks,
+    linkcolor={red!50!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+\urlstyle{same}% uses the style from where it is used
+
+$-- content descriptionm
+\title{$metaLatex.title$}
+\author{$metaLatex.author$}
+\date{$mHtml.date$}  $-- no date??
+\publisher{Gerastree editions}
+\usepackage[]{mdframed}
+
+% -- -- --- ----------  ----             ----        ---------------
+\begin{document}
+% \pagestyle{mystyle} % to use mystyle 
+
+%\frontmatter  %not defined in tufte-latex?
+
+$if(bookprint)$ % bookprint line 71
+    % r.1 blank page
+    \blankpage
+    % v.2 epigraphs
+    \openepigraph{SomeText}
+                {AF%, {\itshape My Works}
+    }
+    \vfill
+    \newpage\thispagestyle{empty}
+$endif$
+
+$if(references)$ % references in md file
+  \usepackage{filecontents}
+  \begin{filecontents}{\local.bib}$references$
+  \end{filecontents}
+$endif$
+
+$if(bookprint)$ % bookprint line 88
+    % r.3 full title page
+    \maketitle
+
+    % v.4 copyright page
+    \newpage
+    \begin{fullwidth}
+    ~\vfill
+    \thispagestyle{empty}
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{\baselineskip}
+    Copyright \copyright\ \the\year\ \thanklessauthor
+
+    \par\smallcaps{Published by \thanklesspublisher}
+
+    \par\smallcaps{daino.gerastree.at}
+
+    \par Licensed under the Apache License, Version 2.0\index{license}
+
+    \par\textit{First printing, \monthyear}
+    \end{fullwidth}
+$endif$
+
+%\listoffigures
+
+%\listoftables
+
+$if(bookprint)$ % bookprint line 115
+    % r.7 dedication
+    \cleardoublepage
+    ~\vfill
+    \begin{doublespace}
+    \noindent\fontsize{18}{22}\selectfont\itshape
+    \nohyphenation
+    Dedicated to my friends.
+    \end{doublespace}
+    \vfill
+    \vfill
+    % r.9 introduction
+    \cleardoublepage
+$else$ 
+    %\begin{titlepage}
+        %\centering
+        %\includegraphics[width=0.15\textwidth]{example-image-1x1}\par\vspace{1cm}
+        %{\textsc{$title$}  }
+        %\vspace{1cm}
+        %\Large \textsc{$title$} 
+        \vspace{1.5cm}
+        {\huge\bfseries{$metaLatex.title$} \par}
+        \vspace{1cm}
+        $if(latAuthor)${\Large\itshape $metaLatex.author$ \par}$endif$
+        %\vfill
+        %supervised by\par
+        %Dr.~Mark \textsc{Brown}
+        %\vfill
+
+        $if(metaLatex.abstract)$  % lat abstract
+            \begin{mdframed}\sloppy
+            \medskip
+            $metaLatex.abstract$
+            \medskip
+            \end{mdframed}
+        $endif$
+
+        % Bottom of the page
+        {\large \today\par}
+    %\end{titlepage}
+$endif$
+
+% testest -- begingroup
+$if(bookBig)$
+    \clearpage
+    \tableofcontents
+$elseif(booklet)$
+    \begingroup
+    \let\clearpage\relax
+    \tableofcontents
+    \endgroup
+$else$
+    \begingroup
+    \let\clearpage\relax
+    \tableofcontents
+    \vspace{2cm}
+    \endgroup
+$endif$
+
+% testest -- begingroup
+
+$-- \tableofcontents  add page break if requred
+
+$if(bookBig)$
+    \newpage         % -- testtest bookbig newpage -- 
+$elseif(booklet)$
+    %\newpage    % -- testtest booklet newpage 
+    \vspace{2cm}
+$endif$
+
+% testtestContentanfang--------
+%\mainmatter
+$metaLatex.body$
+
+%testtestContentende--------
+
+$for(extra.fileEntries)$   % booklet level of collections
+    \chapter{$it.title$}
+    \begin{mdframed}\sloppy\medskip
+    $it.abstract$\end{mdframed}
+    $it.content$
+$endfor$
+
+
+$for(extra.dirEntries)$   % bookbig level of collections
+    \part{$extra.dirEntries.title$}
+    \begin{mdframed}\sloppy\medskip
+    $extra.dirEntries.abstract$\end{mdframed}
+    $extra.dirEntries.content$
+
+
+    $for(extra.dirEntries.fileEntries)$   % -- the files in the parts in bookbig
+        \chapter{$extra.dirEntries.fileEntries.title$}
+        \begin{mdframed}\sloppy\medskip
+        $extra.dirEntries.fileEntries.abstract$\end{mdframed}
+        $extra.dirEntries.fileEntries.content$
+    $endfor$
+
+$endfor$
+
+%\backmatter
+% ====================== endcontentTestTest
+
+$-- \printbibliography
+%\bibliography{$bibliography$} 
+$-- bracuht noch references case
+%\bibliographystyle{plainnat}
+
+\printbibliography
+\printindex
+
+\vspace*{\fill}
+\scriptsize Produced with `daino' ($dainoVersion$) from \url{$link$} with latexTufte81.dtpl 
+
+\scriptsize arguments bookBig: $bookBig$ booklet: $booklet$ 
+$-- book: $book$ 
+
+
+% ===================== enddocument testtest
+
+\end{document}

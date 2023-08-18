@@ -160,7 +160,7 @@ tests:
       # - shake  # from error
   testrun:
     main: testRun.hs
-    source-dirs: tests
+    source-dirs: tests4run
 
     ghc-options: 
       -threaded 
