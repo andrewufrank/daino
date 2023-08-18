@@ -45,7 +45,7 @@ test_toHtmlout = do
             -- metaplus1 <- readMarkdownFile2docrep debug sett3 fn
         (metap1,_) <- docrep2panrep NoticeLevel0 
                         (def::PubFlags)  metaplus5
-        (html1, _, tt1) <- panrep2html NoticeLevel0  metap1
+        (html1, _, tt1) <- panrep2html NoticeLevel0 def metap1
         -- putIOwords ["test_toHtmlTest pr \n", unHTMLout html1]
         write8 reshtmlout htmloutFileType html1
         write8 reshtmlout tthFileType tt1

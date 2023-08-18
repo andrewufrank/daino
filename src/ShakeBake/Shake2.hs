@@ -113,6 +113,7 @@ shakeAll debug sett3 flags causedby = do
         , "\ndough", showT doughP 
         , "\nbaked", showT bakedP 
         , "\ntheme", showT themeP 
+        , "\ndebug", showT debug 
 
         , "\n======================================="
         ]
@@ -147,6 +148,7 @@ shakeMD debug sett4 flags doughP bakedP = shakeArgs2 bakedP $ do
                                 [ "shakeMD dirs\n"
                                     , "\tbakedP\n"
                                 , showT bakedP
+                                , "\ndebug", showT debug
                                 ]
     -- let siteDirs = siteLayout sett4 
         -- doughP = doughDir siteDirs -- the regular dough
@@ -322,6 +324,7 @@ getNeeds debug  sett4 sourceP targetP extSource extTarget = do
             , extSource
             , "sameExt"
             , showT sameExt
+            , "\ndebug", showT debug
             ]
 
     filesWithSource :: [Path Rel File] <- -- getDirectoryFilesP
@@ -338,7 +341,7 @@ getNeeds debug  sett4 sourceP targetP extSource extTarget = do
                         (replaceExtension' extTarget . (targetP </>))
                          filesWithSource  
                                 :: [Path Abs File]
-    when (inform debug) $ do
+    when (informAll debug) $ do
         putIOwords
             [ "===================\ngetNeeds -  source files 1"
             , "for ext"
@@ -369,15 +372,17 @@ getNeedsMD ::
   does not include directory DNB (do not bake)
 -}
 getNeedsMD debug flags sett4 sourceP targetP extSource extTarget = do
+    let debug = NoticeLevel0   -- avoid_output_fromHere_down
     let sameExt = extSource == extTarget
     when (inform debug) $
         putIOwords
-            [ "===================\ngetNeeds extSource"
+            [ "===================\ngetNeedsMD extSource"
             , extSource
             , "extTarget"
             , extSource
             , "sameExt"
             , showT sameExt
+            , "\ndebug", showT debug
             ]
 
     filesWithSource :: [Path Rel File] <- -- getDirectoryFilesP
@@ -385,27 +390,31 @@ getNeedsMD debug flags sett4 sourceP targetP extSource extTarget = do
              (doNotBake  (siteLayout sett4))   -- exclude files containing
             sourceP
             ["**/*." <> t2s extSource]
-    files2 <- runErr2action $ mapM (filterNeeds debug flags sett4 ) filesWithSource
-
+    files2 :: [Maybe (Path Abs File)] <- runErr2action 
+                $ mapM (filterNeeds debug flags sett4 ) filesWithSource
+    let files3 = map (makeRelativeP sourceP) $   catMaybes files2 :: [Path Rel File]
     -- subdirs
     
     let filesWithTarget =
             if sameExt
-                then [targetP </> c | c <- filesWithSource]
+                then [targetP </> c | c <- files3] :: [Path Abs File]
+                            -- was filesWithSource
                 else
+                    map (replaceDirectoryP sourceP targetP) $  
                     map
-                        (replaceExtension' extTarget . (targetP </>))
+                        (replaceExtension' extTarget )
                             (catMaybes files2) :: [Path Abs File]
+    -- when (inform debug) $ do
+    --     putIOwords
+    --         [ "===================\ngetNeeds -  source files 1 not filtered"
+    --         , "for ext"
+    --         , extSource
+    --         , "files\n"
+    --         , showT filesWithSource
+    --         ]
     when (informAll debug) $ do
         putIOwords
-            [ "===================\ngetNeeds -  source files 1"
-            , "for ext"
-            , extSource
-            , "files\n"
-            , showT filesWithSource
-            ]
-        putIOwords
-            [ "\nbakePDF -  target files 2"
+            [ "===================\ngetNeeds bakePDF -  target files 2 filtered"
             , "for ext"
             , extTarget
             , "files\n"

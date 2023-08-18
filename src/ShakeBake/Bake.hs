@@ -85,13 +85,17 @@ bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
             -- completes index and should process reps 
             -- what to do with needs?
     -- needP needsFound 
+    let needsFound2 = map makeAbsFile needsFound :: [Path Abs File]
+    needsChecked :: [Maybe (Path Abs File)] <- mapM (filterNeeds2 debug flags sett3) needsFound2 
+    let needsChecked2 = catMaybes needsChecked
 
     write8 resfn2 panrepFileType p3 -- content is html style
     when (inform debug) $
         putIOwords
-            ["\n-----------------", "bakeOneDocrep2panrep done produced resf2n", showT resfn2]
-    return  needsFound
-
+            ["\n-----------------", "bakeOneDocrep2panrep done produced resf2n", showT resfn2
+                , "\n needsChecked", showT needsChecked2]
+    return  . map toFilePath $  needsChecked2
+        -- these needs were not tested for version >= publish
 
 bakeOnePanrep2html :: BakeOp -- PANREP -> HTML  -- TODO
 bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
@@ -109,7 +113,7 @@ bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
     -- let mf = masterTemplateFile layout
     -- let masterfn = templatesDir layout </> mf
 
-    (p, needs, test_templatehtml) <- panrep2html debug  dr1
+    (p, needsFound, test_templatehtml) <- panrep2html debug  flags dr1
 
     write8 resfn2 htmloutFileType ( p) -- content is html style
     write8 resfn2 tthFileType test_templatehtml
@@ -117,7 +121,7 @@ bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
     when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOnePanrep2html done fn", showT resfn2]
-    return needs
+    return needsFound
 
 
 bakeOnePanrep2texsnip :: BakeOp --  PANREP -> TEXSNIP

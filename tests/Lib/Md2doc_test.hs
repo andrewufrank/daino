@@ -24,7 +24,7 @@ import UniformBase
 import ShakeBake.ReadSettingFile
 import Data.Hash
 setup_md2metaplus settingsFn fn = do 
-        let debug = NoticeLevel0
+        let debug = NoticeLevel0   -- avoid_output_fromHere_down
         sett3 <- readSettings debug settingsFn 
         metaplus1 <- readMarkdownFile2docrep debug sett3 fn
         return metaplus1

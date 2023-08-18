@@ -76,7 +76,7 @@ dainoProcess debug1 flags = do
             else 
                 errorT ["dainoProcess 5 location not valid",  showT $ locationDir flags]
                  
-    when (informAll debug) $ putIOwords ["dainoProcess 5 dir of settings file",  showT sett4dir]
+    when (inform debug) $ putIOwords ["dainoProcess 5 dir of settings file",  showT sett4dir]
     let sett4file = sett4dir </> relSettingsFile 
     when (inform debug) $ putIOwords ["dainoProcess 5  settings file",  showT sett4file]
  

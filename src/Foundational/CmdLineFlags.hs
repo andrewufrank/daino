@@ -60,7 +60,7 @@ testFlags =
     zero
         { privateFlag = False -- not including draft
         , draftFlag = False
-        , verboseFlag = True
+        , verboseFlag = False  -- sets NoticeLevel1
         }
 
 

@@ -30,6 +30,6 @@ test_DainoTest = do
         dainoProcess NoticeLevel0 testFlags
             {testFlag = True 
             , testNewFlag = True -- T 
-            -- , quickFlag = True   -- q 
+            , quickFlag = True   -- q 
             }
     assertEqual (Right zero) res1

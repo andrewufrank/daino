@@ -65,6 +65,7 @@ import qualified Data.Map as M
 
 docrep2panrep :: NoticeLevel -> PubFlags -> Docrep -> ErrIO (Panrep, [FilePath])
 docrep2panrep debug pubf metaplus5 = do
+    let debug = NoticeLevel0   -- avoid_output_fromHere_down
     when (inform debug) $
         putIOwords
             ["-------------------------docrep2panrep"
@@ -126,7 +127,7 @@ docrep2panrep debug pubf metaplus5 = do
                 , showPretty extra7
                 , "needs", showT needs]
 
-            return (metaplus6{extra=extra7}, needs)
+            return (metaplus6{extra=extra7}, needs )
         else
             return (metaplus6 , [])
 

@@ -43,9 +43,9 @@ readMarkdownFile2docrep  :: NoticeLevel -> Settings ->  Path Abs File ->  ErrIO 
 -- read a markdown file and convert to docrep
 -- reads setting file!
 readMarkdownFile2docrep debug sett3 fnin = do
-    let debug = NoticeLevel0
+    let debug = NoticeLevel0   -- avoid_output_fromHere_down
     -- when (inform debug) $ 
-    putIOwords 
+    when (inform debug) $ putIOwords 
         ["readMarkdownFile2docrep fnin", showPretty fnin]
         -- place to find PandocParseError
     p1 <- readMd2pandoc fnin
@@ -102,21 +102,34 @@ setMetaPlusInitialize sett3 fnin m1 =  zero { metap = m1
              
 
 
-filterNeeds :: NoticeLevel -> PubFlags -> Settings -> Path Rel File -> ErrIO(Maybe (Path Rel File))
+filterNeeds :: NoticeLevel -> PubFlags -> Settings -> Path Rel File -> ErrIO(Maybe (Path Abs File))
 -- ^ for md check the flags
 
 filterNeeds debug pubf sett4 fn =  do 
+    let debug = NoticeLevel0   -- avoid_output_fromHere_down
     when (inform debug) $ 
         putIOwords ["filterNeeds", "\nPubFlags", showT pubf ]
-    let doughP = doughDir . siteLayout $ sett4
-    d1 <- readMarkdownFile2docrep debug sett4  (doughP </> fn) 
+    let doughP = doughDir . siteLayout $ sett4 :: Path Abs Dir 
+    let fn2 = doughP </> fn :: Path Abs File 
+    filterNeeds2 debug pubf sett4 fn2 
+ 
+
+filterNeeds2 :: NoticeLevel -> PubFlags -> Settings -> Path Abs File -> ErrIO(Maybe (Path Abs File))
+
+filterNeeds2 debug pubf sett4 fn2 =  do 
+    let debug = NoticeLevel0   -- avoid_output_fromHere_down
+    when (inform debug) $ 
+        putIOwords ["filterNeeds2", "\nPubFlags", showT pubf ]
+    
+    d1 <- readMarkdownFile2docrep debug sett4  fn2 
     when (inform debug) $ 
         putIOwords ["filterNeeds2", "\nMeta", showT (meta1 d1) ]
 
     let t = includeBakeTest3docrep pubf (meta1 . metap $ d1)
     when (inform debug) $ 
         putIOwords ["filterNeeds3 ", "\n t", showT t ]
-    return $ if t then Just fn else Nothing
+    return $ if t then Just fn2 else Nothing
+
 
 meta1 :: a -> a
 meta1 = id

@@ -35,7 +35,7 @@ module Wave.Panrep2html (
 import Foundational.Filetypes4sites
 import Foundational.SettingsPage
     -- ( Settings(siteLayout), SiteLayout(blogAuthorToSuppress) )
-
+import Foundational.CmdLineFlags
 
 import GHC.Generics (Generic)
 
@@ -46,7 +46,7 @@ import Uniform.Pandoc
 import Uniform.Http ( HTMLout (HTMLout) )
 import UniformBase
 import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..))
-
+import Wave.Md2doc 
 import Data.Maybe (fromMaybe)
 import qualified Data.Map as M
 -- import Wave.Docrep2panrep
@@ -65,8 +65,9 @@ testTemplateFn = makeAbsFile "/home/frank/Workspace11/daino/tests/data/metaplusH
 -- compiles the test template and fills 
 -- returns the result to be written by bake.hs
 
-panrep2html :: NoticeLevel -> Panrep -> ErrIO (HTMLout, [FilePath], Text)
-panrep2html debug   metaplus4 = do
+panrep2html :: NoticeLevel -> PubFlags -> Panrep -> ErrIO (HTMLout, [FilePath], Text)
+panrep2html debug pubFlags  metaplus4 = do
+    let debug = NoticeLevel0   -- avoid_output_fromHere_down
     let sett3 = sett metaplus4
         extra4 = extra metaplus4
         mf = masterTemplateFile $ siteLayout sett3
@@ -90,29 +91,35 @@ panrep2html debug   metaplus4 = do
     let files = fileEntries  $ extra4 :: [IndexEntry2]
         dirs = dirEntries  $ extra4 :: [IndexEntry2]
 
-    -- calculate needs 
-    let
-        bakedP =   bakedDir . siteLayout $ sett3
-        bakedFP = toFilePath bakedP
-        needs = map (`replaceExtension` "panrep")
-                . map (addDir bakedFP )
-                .  map link $ (dirs ++ files)
-                     :: [FilePath]
+    let bakedP =   bakedDir . siteLayout $ sett3
+ 
+    valsDirs :: [Maybe IndexEntry2]<- mapM 
+                    (getVals2 debug pubFlags bakedP) dirs
+    valsFiles :: [Maybe IndexEntry2] <- mapM 
+                    (getVals2 debug pubFlags bakedP) files
 
-    when (inform debug) $
-            putIOwords ["panrep2html", "\n\tneeds ", showPretty needs ]
-
-    valsDirs :: [Maybe IndexEntry2]<- mapM (getVals2 debug bakedP) dirs
-    valsFiles :: [Maybe IndexEntry2] <- mapM (getVals2 debug bakedP) files
-
-    when (informAll debug) $ do
+    when (inform debug) $ do
             putIOwords ["panrep2html", "valsDirs", showPretty valsDirs]
             putIOwords ["panrep2html", "valsFiles", showPretty valsFiles]
 
     let extra5 = extra4{fileEntries = catMaybes valsFiles
                         , dirEntries = catMaybes valsDirs}
     let metaplus5 = metaplus4{extra = extra5}
-    putIOwords ["panrep2html", "extra5", showPretty extra5]
+
+   -- calculate needs 
+    let
+        -- bakedP =   bakedDir . siteLayout $ sett3
+        bakedFP = toFilePath bakedP
+        allixs =  catMaybes $ valsFiles ++ valsDirs :: [IndexEntry2]
+        needs = map (`replaceExtension` "panrep")
+                . map (addDir bakedFP )
+                .  map link $ allixs
+                     :: [FilePath]
+
+    when ((informAll debug) && (needs /= []) )$
+            putIOwords ["panrep2html", "\n\tneeds ", showPretty needs ]
+
+    when (inform debug) $ putIOwords ["panrep2html", "extra5", showPretty extra5]
     when (inform debug) $
             putIOwords ["panrep2html", "metaplus5", showPretty metaplus5]
 
@@ -125,17 +132,17 @@ panrep2html debug   metaplus4 = do
     when (inform debug) $ putIOwords ["panrep2html render html done"
         , "ht1",  ht1
         ]
-    when (informAll debug) $ putIOwords ["panrep2html render testTemplate done"
+    when (inform debug) $ putIOwords ["panrep2html render testTemplate done"
         , "tt1",  tt1
         ]
 
     -- bakeOnePanrep2html will write to disk
     return (HTMLout ht1, needs, tt1)
 
-getVals2 :: NoticeLevel -> Path Abs Dir -> IndexEntry2
+getVals2 :: NoticeLevel -> PubFlags -> Path Abs Dir -> IndexEntry2
                 -> ErrIO (Maybe IndexEntry2)
 -- get the panrep and fill the vals 
-getVals2 debug bakedP ix2 = do
+getVals2 debug pubFlags bakedP ix2 = do
     let fn = makeAbsFile $ addDir (toFilePath bakedP) (link ix2)  :: Path Abs File
         pdf = replaceExtension2 ".pdf" fn 
     pan1 <- read8 fn panrepFileType
@@ -151,8 +158,7 @@ getVals2 debug bakedP ix2 = do
                     , pdf1 = s2t $ toFilePath pdf 
                 -- todo complete 
                     }
-    return $ if True -- includeBakeTest3 def -- bring down 
-                            -- (version ix3) (visibility ix3)
+    return $ if includeBakeTest3 pubFlags (version ix3) (visibility ix3)
                 then Just ix3 else Nothing
 
 

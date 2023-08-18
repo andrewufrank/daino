@@ -35,7 +35,7 @@ import Uniform.Shake
       toFilePath,
       errorT,
       runErr,
-      inform, informAll,
+      inform, informAll, NoticeLevel(..),
       makeAbsFile,
       unExtension,
       s2t,
@@ -80,6 +80,8 @@ convertAny ::
     Action ()
 -- produce any (either copy available in baked or produce with anyop)
 convertAny debug sourceP targetP flags layout out anyopName = do
+    let debug = NoticeLevel0   -- avoid_output_fromHere_down
+
     when (inform debug) $ 
         putIOwords ["-----------------", "convertAny for", anyopName]
     let outP = makeAbsFile out :: Path Abs File
@@ -140,10 +142,12 @@ convertAny debug sourceP targetP flags layout out anyopName = do
                 ,  "\n\t file out", showT out
                 ]
             needsFound <- runErr2action $ anyop debug flags fromfilePathExt layout outP
-            when (informAll debug) $ putIOwords 
+            when ((informAll debug) && needsFound /= []) $ putIOwords 
                 ["\nconvertAny runErr2Action", anyopName
                 ,  "\n\t needs found", showT needsFound
-                ]            
+                ] 
+                -- add here a generic tester 
+                -- remove the tests from other places            
             need needsFound
     when (inform debug) $ putIOwords ["convertAny end for", anyopName]
     return ()

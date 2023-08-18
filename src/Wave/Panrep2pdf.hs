@@ -136,19 +136,19 @@ texsnip2tex  debug metaplus4 = do
     valsDirs :: [Maybe IndexEntry2]<- mapM (getVals2latex debug bakedP) dirs
     valsFiles :: [Maybe IndexEntry2] <- mapM (getVals2latex debug bakedP) files
 
-    putIOwords ["texsnip2tex 1"  ]
+    when (inform debug) $ putIOwords ["texsnip2tex 1"  ]
 
     when (inform debug) $ do
             putIOwords ["texsnip2tex", "valsDirs", showT valsDirs]
             -- putIOwords ["texsnip2tex", "valsFiles", showT valsFiles]
-    putIOwords ["texsnip2tex 2"  ]
+    when (inform debug) $ putIOwords ["texsnip2tex 2"  ]
 
     let extra5 = extra4{fileEntries = catMaybes valsFiles
                         , dirEntries = catMaybes valsDirs}
                         -- uses the same record selectors as html
                         -- but started with an empty slate?
     let metaplus5 = metaplus4{extra = extra5}
-    putIOwords ["texsnip2tex", "extra5", showPretty extra5]
+    when (inform debug) $ putIOwords ["texsnip2tex", "extra5", showPretty extra5]
     when (inform debug) $ 
             putIOwords ["texsnip2tex", "metaplus5", showPretty metaplus5]
 
@@ -161,7 +161,7 @@ texsnip2tex  debug metaplus4 = do
     when (inform debug) $ putIOwords ["texsnip2tex render html done"
         , "ht1",  ht1
         ]
-    when (informAll debug) $ putIOwords ["texsnip2tex render testTemplate done"
+    when (inform debug) $ putIOwords ["texsnip2tex render testTemplate done"
         , "tt1",  tt1
         ]
     
@@ -174,9 +174,9 @@ getVals2latex :: NoticeLevel -> Path Abs Dir -> IndexEntry2
 getVals2latex debug bakedP ix2 = do
     putIOwords ["getVals2latex start"]
     let fn = makeAbsFile $ addDir (toFilePath bakedP) (link ix2)  :: Path Abs File
-    putIOwords ["getVals2latex fn", showT fn ]
+    when (inform debug) $ putIOwords ["getVals2latex fn", showT fn ]
     pan1 <- read8 fn panrepFileType
-    putIOwords ["getVals2latex pan1", showT pan1 ]
+    when (inform debug) $ putIOwords ["getVals2latex pan1", showT pan1 ]
 
     let m = metaLatex pan1  -- select latex code 
     
@@ -189,7 +189,7 @@ getVals2latex debug bakedP ix2 = do
                     , visibility = lookup7 "visibility" m
                     }
 
-    putIOwords ["getVals2latex end"]
+    when (inform debug) $ putIOwords ["getVals2latex end"]
     
     return $ if True -- includeBakeTest3 def -- bring down 
                             -- (version ix3) (visibility ix3)
