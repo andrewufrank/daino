@@ -85,6 +85,7 @@ data DainoValues = DainoValues
                         , booklet :: Bool
                         , bookprint :: Bool  -- include the empty pages for print version
                         , webroot :: Text  -- the webroot
+                        , pdf2 :: FilePath
                         }
     deriving (Eq, Ord, Show, Read, Generic, Zeros)
 
@@ -110,7 +111,7 @@ data IndexEntry2 = IndexEntry2
     , visibility ::   Text
     , version ::   Text 
     , sortOrder :: Text
-    , pdf :: Text
+    , pdf1 :: Text
      -- , indexPage :: Bool
     -- , dirEntries :: [FilePath] -- [Path Abs Dir] -- [IndexEntry2] -- def []
     -- , fileEntries :: [FilePath] -- [Path Abs File] -- [IndexEntry2] -- def []

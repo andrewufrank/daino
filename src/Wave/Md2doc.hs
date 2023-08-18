@@ -38,7 +38,7 @@ import Foundational.Filetypes4sites
 import Foundational.CmdLineFlags
 import Uniform.Pandoc
 import Uniform.Latex
-import Uniform.Shake ( Path2nd(makeRelativeP) ) 
+import Uniform.Shake  
 readMarkdownFile2docrep  :: NoticeLevel -> Settings ->  Path Abs File ->  ErrIO Docrep 
 -- read a markdown file and convert to docrep
 -- reads setting file!
@@ -92,11 +92,13 @@ setMetaPlusInitialize sett3 fnin m1 =  zero { metap = m1
                                 , extra = x1}
     where 
         doughP = doughDir . siteLayout $ sett3
+        relFn = makeRelativeP doughP fnin
         lang = getTextFromYaml6 "lang" "en-US" m1 :: Text
         x1 = zero   { mdFile = toFilePath fnin
-                    , mdRelPath =toFilePath $  makeRelativeP doughP fnin
+                    , mdRelPath =toFilePath $  relFn
                     , dainoVersion = showT Paths_daino.version
-                    , latLanguage = latexLangConversion lang }
+                    , latLanguage = latexLangConversion lang 
+                    , pdf2 = toFilePath $ replaceExtension2 ".pdf" relFn }
              
 
 

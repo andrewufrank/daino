@@ -79,6 +79,7 @@ indexEntryFiles
             visibility  $extra.fileEntries.visibility$ 
             version     $extra.fileEntries.version$ 
             sortOrder   $extra.fileEntries.sortOrder$ 
+            pdf1         $extra.fileEntries.pdf1$ 
     $endfor$
                         
 masterTemplateFile  $sett.siteLayout.masterTemplateFile$
@@ -91,6 +92,7 @@ headerShitft        $metap.headerShift$
 
 -- for tufte latex
 book                $metaHtml.book$
+pdf2                 $extra.pdf2$ $-- the pdf file name
 bookBig             $extra.bookBig$
 booklet             $extra.booklet$
 bookprint

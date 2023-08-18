@@ -52,6 +52,7 @@ import qualified Data.Map as M
 -- import Wave.Docrep2panrep
 -- import Wave.Md2doc
 import System.FilePath (replaceExtension)
+import Uniform.Shake  
 
 default (Integer, Double, Text)
 
@@ -136,6 +137,7 @@ getVals2 :: NoticeLevel -> Path Abs Dir -> IndexEntry2
 -- get the panrep and fill the vals 
 getVals2 debug bakedP ix2 = do
     let fn = makeAbsFile $ addDir (toFilePath bakedP) (link ix2)  :: Path Abs File
+        pdf = replaceExtension2 ".pdf" fn 
     pan1 <- read8 fn panrepFileType
 
     let m = metaHtml pan1
@@ -146,6 +148,7 @@ getVals2 debug bakedP ix2 = do
                     -- , sortOrder = lookup7 "sortOrder" m
                     , version = lookup7 "version" m
                     , visibility = lookup7 "visibility" m
+                    , pdf1 = s2t $ toFilePath pdf 
                 -- todo complete 
                     }
     return $ if True -- includeBakeTest3 def -- bring down 

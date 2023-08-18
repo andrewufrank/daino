@@ -89,7 +89,8 @@ docrep2panrep debug pubf metaplus5 = do
         extra6 = extra5{authorReduced = blankAuthorName hpname aut1
                         ,booklet = "booklet" == bookval
                         ,bookBig= "bookBig" == bookval
-                        ,webroot = s2t $ toFilePath doughP}
+                        ,webroot = s2t $ toFilePath doughP
+                        }
 
     htm1 <- meta2xx writeHtml5String2 meta5
     tex1  :: M.Map Text Text <- meta2xx   writeTexSnip2 meta5
