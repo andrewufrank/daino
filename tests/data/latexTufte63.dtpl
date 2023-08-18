@@ -26,7 +26,7 @@ $-- not used:
   
 \usepackage{fontspec}
 \usepackage{csquotes}  $-- required for babel 
-\usepackage[$metaHtml.latLanguage$]{babel}
+\usepackage[$metaLatex.latLanguage$]{babel}
 $-- \renewcaptionname{ngerman}{\bibname}{Literatur}   %Bibliography
 $-- \renewcaptionname{$latLanguage$}{\bibname}{$latBiblioTitle$}   %Bibliography
 $-- automatical adaption
@@ -129,8 +129,8 @@ $-- \usepackage[colorlinks]{hyperref}
 \urlstyle{same}% uses the style from where it is used
 
 $-- content descriptionm
-\title{$metaHtml.title$}
-\author{$metaHtml.author$}
+\title{$metaLatex.title$}
+\author{$metaLatex.author$}
 \date{$mHtml.date$}  $-- no date??
 \publisher{Gerastree editions}
 \usepackage[]{mdframed}
@@ -206,18 +206,18 @@ $else$
         %\vspace{1cm}
         %\Large \textsc{$title$} 
         \vspace{1.5cm}
-        {\huge\bfseries{$metaHtml.title$} \par}
+        {\huge\bfseries{$metaLatex.title$} \par}
         \vspace{1cm}
-        $if(latAuthor)${\Large\itshape $metaHtml.author$ \par}$endif$
+        $if(latAuthor)${\Large\itshape $metaLatex.author$ \par}$endif$
         %\vfill
         %supervised by\par
         %Dr.~Mark \textsc{Brown}
         %\vfill
 
-        $if(metaHtml.abstract)$  % lat abstract
+        $if(metaLatex.abstract)$  % lat abstract
             \begin{mdframed}\sloppy
             \medskip
-            $metaHtml.abstract$
+            $metaLatex.abstract$
             \medskip
             \end{mdframed}
         $endif$
@@ -257,7 +257,7 @@ $endif$
 
 % testtestContentanfang--------
 %\mainmatter
-$metaHtml.body$
+$metaLatex.body$
 
 %testtestContentende--------
 
