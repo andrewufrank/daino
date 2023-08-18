@@ -27,6 +27,7 @@ import Data.Hash
 -- settFn = makeAbsFile 
 --     "/home/frank/Workspace11/daino/settingsTest.yaml"
 fnmd2a = makeAbsFile "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
+fnmd3 = makeAbsFile "/home/frank/Workspace11/dainoSite/ReadMe/03tree.md"
 resLatex = makeAbsFile"/home/frank/tests/latexTest"
 
 
@@ -34,7 +35,7 @@ resLatex = makeAbsFile"/home/frank/tests/latexTest"
 test_toLatex = do 
     let debug = NoticeLevel0 
     res1 <- runErr $ do 
-        metaplus5 <- setup_md2metaplus settingsDainoSite fnmd2a 
+        metaplus5 <- setup_md2metaplus settingsDainoSite fnmd3 
             -- let debug = NoticeLevel0
             -- sett3 <- readSettings debug settFn 
                     -- this is a particular settingsTest.yaml

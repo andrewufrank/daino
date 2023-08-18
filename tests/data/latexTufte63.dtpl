@@ -108,7 +108,7 @@ $--     natbib=true,
 
 
 
-$if(bibliography)$\addbibresource{$bibliography$}$endif$
+$if(metap.Bibliography)$\addbibresource{$metap.Bibliography$}$endif$
 $if(references)$\addbibresource{local.bib}$endif$
 
 \makeindex
