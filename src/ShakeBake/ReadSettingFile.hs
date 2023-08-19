@@ -25,8 +25,7 @@ readSettings :: NoticeLevel -> Path Abs File -> ErrIO  Settings
 -}
 readSettings debug settingsfilename =
     do
-        when (inform debug) $
-            putIOwords
+        putInform debug
                 [ "readSettings"
                 , "file"
                 , showPretty settingsfilename

@@ -101,11 +101,10 @@ texsnip2tex  debug metaplus4 = do
         mf = texTemplateFile $ siteLayout sett3 -- change to latex template
         masterfn = templatesDir (siteLayout sett3) </> mf
 
-    when (inform debug) $ do
-            putIOwords ["\ntexsnip2tex", "siteLayout sett3"
+    putInform debug ["\ntexsnip2tex", "siteLayout sett3"
                 , showPretty $ siteLayout sett3]
-            putIOwords ["texsnip2tex", "mf", showPretty mf]
-            putIOwords ["texsnip2tex", "masterfn", showPretty masterfn]
+    putInform debug ["texsnip2tex", "mf", showPretty mf]
+    putInform debug ["texsnip2tex", "masterfn", showPretty masterfn]
 
     targetTempl  <- compileTemplateFile2 masterfn
     testTempl  <- compileTemplateFile2 testTemplateFn
@@ -113,8 +112,7 @@ texsnip2tex  debug metaplus4 = do
     -- htm1 <- meta2xx writeHtml5String2 (metap metaplus4)
 
     --if this is an index file it has files and dirs 
-    when (inform debug) $ 
-            putIOwords ["texsnip2tex", "extra4", showPretty extra4]
+    putInform debug ["texsnip2tex", "extra4", showPretty extra4]
 
     let files = fileEntries  $ extra4 :: [IndexEntry2]
         dirs = dirEntries  $ extra4 :: [IndexEntry2]
@@ -130,16 +128,14 @@ texsnip2tex  debug metaplus4 = do
                 .  map link $ (dirs ++ files)
                      :: [FilePath]
 
-    when (inform debug) $ 
-            putIOwords ["texsnip2tex", "\n\tneeds ", showPretty needs ]
+    putInform debug ["texsnip2tex", "\n\tneeds ", showPretty needs ]
 
     valsDirs :: [Maybe IndexEntry2]<- mapM (getVals2latex debug bakedP) dirs
     valsFiles :: [Maybe IndexEntry2] <- mapM (getVals2latex debug bakedP) files
 
     putInform debug ["texsnip2tex 1"  ]
 
-    when (inform debug) $ do
-            putIOwords ["texsnip2tex", "valsDirs", showT valsDirs]
+    putInform debug["texsnip2tex", "valsDirs", showT valsDirs]
             -- putIOwords ["texsnip2tex", "valsFiles", showT valsFiles]
     putInform debug ["texsnip2tex 2"  ]
 
@@ -158,12 +154,8 @@ texsnip2tex  debug metaplus4 = do
     let ttpl1 = renderTemplate testTempl (toJSON metaplus5)  -- :: Doc Text
     let tt1 = render (Just 50) ttpl1  -- line length, can be Nothing
 
-    putInform debug ["texsnip2tex render html done"
-        , "ht1",  ht1
-        ]
-    putInform debug ["texsnip2tex render testTemplate done"
-        , "tt1",  tt1
-        ]
+    putInform debug ["texsnip2tex render html done", "ht1",  ht1 ]
+    putInform debug ["texsnip2tex render testTemplate done", "tt1", tt1 ]
     
     -- bakeOnetexsnip2tex will write to disk
     return (Latex ht1, needs, tt1)

@@ -73,11 +73,10 @@ panrep2html debug pubFlags  metaplus4 = do
         mf = masterTemplateFile $ siteLayout sett3
         masterfn = templatesDir (siteLayout sett3) </> mf
 
-    when (inform debug) $ do
-            putIOwords ["\npanrep2html", "siteLayout sett3"
+    putInform debug["\npanrep2html", "siteLayout sett3"
                 , showPretty $ siteLayout sett3]
-            putIOwords ["panrep2html", "mf", showPretty mf]
-            putIOwords ["panrep2html", "masterfn", showPretty masterfn]
+    putInform debug ["panrep2html", "mf", showPretty mf]
+    putInform debug ["panrep2html", "masterfn", showPretty masterfn]
 
     targetTempl  <- compileTemplateFile2 masterfn
     testTempl  <- compileTemplateFile2 testTemplateFn
@@ -85,8 +84,7 @@ panrep2html debug pubFlags  metaplus4 = do
     -- htm1 <- meta2xx writeHtml5String2 (metap metaplus4)
 
     --if this is an index file it has files and dirs 
-    when (inform debug) $
-            putIOwords ["panrep2html", "extra4", showPretty extra4]
+    putInform debug ["panrep2html", "extra4", showPretty extra4]
 
     let files = fileEntries  $ extra4 :: [IndexEntry2]
         dirs = dirEntries  $ extra4 :: [IndexEntry2]
@@ -98,9 +96,8 @@ panrep2html debug pubFlags  metaplus4 = do
     valsFiles :: [Maybe IndexEntry2] <- mapM 
                     (getVals2 debug pubFlags bakedP) files
 
-    when (inform debug) $ do
-            putIOwords ["panrep2html", "valsDirs", showPretty valsDirs]
-            putIOwords ["panrep2html", "valsFiles", showPretty valsFiles]
+    putInform debug["panrep2html", "valsDirs", showPretty valsDirs]
+    putInform debug ["panrep2html", "valsFiles", showPretty valsFiles]
 
     let extra5 = extra4{fileEntries = catMaybes valsFiles
                         , dirEntries = catMaybes valsDirs}
@@ -120,8 +117,7 @@ panrep2html debug pubFlags  metaplus4 = do
             putIOwords ["panrep2html", "\n\tneeds ", showPretty needs ]
 
     putInform debug ["panrep2html", "extra5", showPretty extra5]
-    when (inform debug) $
-            putIOwords ["panrep2html", "metaplus5", showPretty metaplus5]
+    putInform debug ["panrep2html", "metaplus5", showPretty metaplus5]
 
     let hpl1 = renderTemplate targetTempl (toJSON metaplus5)  -- :: Doc Text
     let ht1 = render (Just 50) hpl1  -- line length, can be Nothing

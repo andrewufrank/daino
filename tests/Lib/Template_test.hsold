@@ -62,11 +62,9 @@ test_templatehtml = do
                     ]
 
         let hpl1 = renderTemplate htmlTempl (toJSON metaplus5)  -- :: Doc Text
-        when (inform debug) $
-            putIOwords ["testing_templatehtml hpl1 \n", showT hpl1]
+        putInform debug ["testing_templatehtml hpl1 \n", showT hpl1]
         let ht1 = render (Just 50) hpl1  -- line length, can be Nothing
-        when (inform debug) $
-            putIOwords ["testing_templatehtml ht1 \n", ht1]
+        putInform debug ["testing_templatehtml ht1 \n", ht1]
 
         return ht1
 
