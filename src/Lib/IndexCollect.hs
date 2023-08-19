@@ -32,7 +32,7 @@ import Uniform.Pandoc ( extMD )
 import Uniform.Latex()
 import Foundational.Filetypes4sites  
  
-import Foundational.CmdLineFlags ( PubFlags )
+import Foundational.CmdLineFlags 
 import Foundational.SettingsPage
 import UniformBase
 
@@ -55,31 +55,52 @@ collectIndex debug pubf sett4 doughP fn dv1 = do
 
 
     (dirs, files) <- getDirContent2dirs_files debug pubf sett4 doughP  fn
- 
+        -- ([Path Abs Dir], [Path Abs Files])
     putInform debug ["collectIndex", "\n dirs"
                     , showT dirs, "\n files", showT files]
-    
-    let dv2 = dv1{dirEntries = map (initializeIx2dir doughP) dirs
-                    , fileEntries = map (initializeIx2file doughP) files}
+    let    mdfs = mdFiles pubf :: [Path Rel File]
+    let dirs2 = catMaybes (map (check2publishDirs doughP mdfs) dirs)
+    let files2 = catMaybes (map (check2publishFiles doughP mdfs) files)
+        -- map ((\fp -> addFileName fp (makeRelFile "index"))  . 
+                --   removeExtension . makeRelativeP doughP)   dirs 
+                        -- :: [Path Rel File]
+    let dv2 = dv1{dirEntries = map (initializeIx2dir (mdFiles pubf) doughP) dirs2
+                    , fileEntries = map (initializeIx2file (mdFiles pubf) doughP) files2}
 
     putInform debug ["collectIndex", "dv2", showT dv2]
     return dv2
 
-initializeIx2dir :: Path Abs Dir -> Path Abs Dir -> IndexEntry2 
+-- check2publishDirs :: Path Abs File -> Maybe [Path Abs File]
+-- a directory is published if the index file is set to publish 
+check2publishDirs :: Path Abs Dir -> [Path Rel File] -> Path Abs Dir -> Maybe (Path Abs Dir) 
+check2publishDirs dough mdfs ds = if t then Just ds else Nothing 
+        where t = check2publish dough mdfs ((addFileName ds) (makeRelFile "index"))  
+check2publishFiles dough mdfs fs = if check2publish dough mdfs fs 
+                                        then Just fs 
+                                        else Nothing 
+
+check2publish :: Path Abs Dir -> [Path Rel File] -> Path Abs File -> Bool
+check2publish doughP mdfs fs = t
+    where   t = fs2 `elem` mdfs
+            fs2 = makeRelativeP doughP . removeExtension $ fs
+
+initializeIx2dir :: [Path Rel File] -> Path Abs Dir -> Path Abs Dir -> IndexEntry2 
 -- the dough path to make the path relative
 -- set the index file, not the directory itself 
-initializeIx2dir doughP fp = zero{ixfn = toFilePath fp2
+initializeIx2dir mdfs doughP fp = zero{ixfn =  toFilePath fp
                     , link = toFilePath relfp}
         where 
-            fp2 = addFileName fp (makeRelFile "index.md")
-            relfp =  removeExtension . makeRelativeP doughP $ fp2  
+            -- fp3 = filter (\fn -> elem fn mdfs) $ map toFilePath fp2
+            -- fp2 = addFileName fp (makeRelFile "index") :: [Path Rel File]
+            relfp =   makeRelativeP doughP  fp  
 
-initializeIx2file :: Path Abs Dir -> Path Abs File -> IndexEntry2 
+initializeIx2file :: [Path Rel File] -> Path Abs Dir -> Path Abs File -> IndexEntry2 
 -- the dough path to make the path relative
-initializeIx2file doughP fp = zero{ixfn = toFilePath fp
+initializeIx2file mdfs doughP fp = zero{ixfn = toFilePath fp
                     , link = toFilePath relfp
                     }
         where 
+            -- fp = filter (\fn -> elem fn mdfs) relfp
             relfp =  removeExtension . makeRelativeP doughP $ fp  
 {-  old
 get the contents of a directory, separated into dirs and files
@@ -90,6 +111,7 @@ getDirContent2dirs_files :: NoticeLevel -> PubFlags -> Settings
         -> Path Abs Dir ->  Path Abs Dir 
         -> ErrIO ([Path Abs Dir], [Path Abs File])
 -- get the dirs and files, exclude based on filename
+-- but not checked for inclusion 
 getDirContent2dirs_files debug pubf sett4 doughP   indexDir = do
     putInform debug ["getDirContent2dirs_files for", showPretty indexDir]
     -- let pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir

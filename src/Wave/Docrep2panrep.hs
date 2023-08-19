@@ -116,20 +116,21 @@ docrep2panrep debug pubf metaplus5 = do
                 , showPretty extra7 ]
 
             let
-                ds  =  map ixfn (dirEntries  extra7) :: [FilePath]
+                ds  =  map (addFileName (  "index.docrep" :: FilePath ) )
+                       $  map ixfn (dirEntries  extra7) :: [FilePath]
                 fs =   map ixfn (fileEntries extra7) :: [FilePath]
 
                 -- ixs =  map addIndex (dirEntries  extra7) ++ (fileEntries extra7)
                 needs :: [FilePath] =  (ds ++ fs)
 
-            when (inform debug) $
+            when (informAll debug) $
                 putIOwords ["\n extra7------------------------docrep2panrep end if"
                 , showPretty extra7
-                , "needs", showT needs]
+                , "needs ds", showT ds, "fs", showT fs]  
 
             return (metaplus6{extra=extra7}, needs )
         else
-            return (metaplus6 , [])
+            return (metaplus6 , [])    
 
 addIndex :: FilePath -> FilePath 
 addIndex dir1 = toFilePath $ addFileName dir2  fn

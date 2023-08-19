@@ -157,14 +157,16 @@ collectMd2include sett4 flags = do
     fs1 :: [FilePath] <- callIO $ 
             getDirectoryFilesIO (toFilePath doughP)
                 ["**/*." <> "md"]
+
+        -- only files, not directories
     putIOwords ["collectMd2include fs1", showPretty fs1]
     let exclude = t2s (doNotBake  (siteLayout sett4)) 
         fs2 = filter (not . (isInfixOf' exclude)  ) fs1
     putIOwords ["collectMd2include fs2", showPretty fs2]
     fs3 <-  mapM (filterNeeds NoticeLevel0 flags sett4 ) $
                     map makeRelFile fs2
-    let fs4 = map (makeRelativeP doughP) $   catMaybes fs3 :: [Path Rel File]
-    putIOwords ["collectMd2include fs4", showPretty fs4]
+    let fs4 = map (removeExtension  . makeRelativeP doughP) $   catMaybes fs3 :: [Path Rel File]
+    putIOwords ["collectMd2include fs4", showT fs4]
 
     -- let fs5 = map (replaceDirectoryP doughP bakedP) $  
     --             map (replaceExtension' "html" ) fs4
@@ -173,6 +175,6 @@ collectMd2include sett4 flags = do
     --          (doNotBake  (siteLayout sett4))   -- exclude files containing
     --         (doughDir . siteLayout $ sett4)
     -- let fs9 = map (makeRelFile) fs4 :: [Path Rel File]
-    putIOwords ["collectMd2include fs4", showPretty fs3]
+    -- putIOwords ["collectMd2include fs4", showPretty fs3]
     
     return flags{mdFiles = fs4} 
