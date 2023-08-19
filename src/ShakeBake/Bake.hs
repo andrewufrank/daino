@@ -73,6 +73,7 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
 bakeOneDocrep2panrep :: BakeOp --  DOCREP -> PANREP
 --   add index  
 bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
+    let debug = NoticeLevel2
     when (inform debug) $    putIOwords
         [ "-----------------"
         , "bakeOneDocrep2panrep 1 inputFn"
@@ -90,7 +91,7 @@ bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
     -- needsChecked :: [Maybe (Path Abs File)] <- mapM (filterNeeds2 debug flags sett3) needsFound2 
     -- let needsChecked2 = catMaybes needsChecked
 
-    -- write8 resfn2 panrepFileType p3 -- content is html style
+    write8 resfn2 panrepFileType p3 -- content is html style
     putInform debug 
             ["\n-----------------", "bakeOneDocrep2panrep done produced resf2n", showT resfn2
                 , "\n needsFound", showT needsFound]
