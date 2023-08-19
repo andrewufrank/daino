@@ -43,15 +43,14 @@ readMarkdownFile2docrep  :: NoticeLevel -> Settings ->  Path Abs File ->  ErrIO 
 -- read a markdown file and convert to docrep
 -- reads setting file!
 readMarkdownFile2docrep debug sett3 fnin = do
-    let debug = NoticeLevel0   -- avoid_output_fromHere_down
+    -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
     -- when (inform debug) $ 
     when (inform debug) $ putIOwords 
         ["readMarkdownFile2docrep fnin", showPretty fnin]
         -- place to find PandocParseError
     p1 <- readMd2pandoc fnin
 
-    when (inform debug) $ 
-        putIOwords ["readMarkdownFile2docrep p1", showPretty p1]
+    putInform debug ["readMarkdownFile2docrep p1", showPretty p1]
         
     -- check for german and process umlaut, 
     -- repeat readMd2pandoc if changed 
@@ -80,8 +79,7 @@ readMarkdownFile2docrep debug sett3 fnin = do
     let mp1 = setMetaPlusInitialize sett3 fnin m1
 
 
-    when (inform debug) $ 
-        putIOwords 
+    putInform debug 
         ["readMarkdownFile2docrep end mp1", showPretty mp1]
     return mp1
 
@@ -106,9 +104,8 @@ filterNeeds :: NoticeLevel -> PubFlags -> Settings -> Path Rel File -> ErrIO(May
 -- ^ for md check the flags
 
 filterNeeds debug pubf sett4 fn =  do 
-    let debug = NoticeLevel0   -- avoid_output_fromHere_down
-    when (inform debug) $ 
-        putIOwords ["filterNeeds", "\nPubFlags", showT pubf ]
+    -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
+    putInform debug ["filterNeeds", "\nPubFlags", showT pubf ]
     let doughP = doughDir . siteLayout $ sett4 :: Path Abs Dir 
     let fn2 = doughP </> fn :: Path Abs File 
     filterNeeds2 debug pubf sett4 fn2 
@@ -117,17 +114,16 @@ filterNeeds debug pubf sett4 fn =  do
 filterNeeds2 :: NoticeLevel -> PubFlags -> Settings -> Path Abs File -> ErrIO(Maybe (Path Abs File))
 
 filterNeeds2 debug pubf sett4 fn2 =  do 
-    let debug = NoticeLevel0   -- avoid_output_fromHere_down
-    when (inform debug) $ 
-        putIOwords ["filterNeeds2", "\nPubFlags", showT pubf ]
+    -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
+    -- when (inform debug) $ 
+        -- putIOwords ["filterNeeds2", "\nPubFlags", showT pubf ]
+    putInform debug ["filterNeeds2", "\nPubFlags", showT pubf ]
     
     d1 <- readMarkdownFile2docrep debug sett4  fn2 
-    when (inform debug) $ 
-        putIOwords ["filterNeeds2", "\nMeta", showT (meta1 d1) ]
+    putInform debug ["filterNeeds2", "\nMeta", showT (meta1 d1) ]
 
     let t = includeBakeTest3docrep pubf (meta1 . metap $ d1)
-    when (inform debug) $ 
-        putIOwords ["filterNeeds3 ", "\n t", showT t ]
+    putInform debug ["filterNeeds3 ", "\n t", showT t ]
     return $ if t then Just fn2 else Nothing
 
 
@@ -151,4 +147,9 @@ includeBakeTest3  pubf vers1 vis1 =
         -- should be less than eq
             && (privateFlag pubf || vis1 ==  "public")
 
+
+putInform :: NoticeLevel -> [Text] -> ErrIO () 
+-- produce output if debug > NoticeLevel0 
+putInform debug texts = when (inform debug) $ 
+        putIOwords texts
 
