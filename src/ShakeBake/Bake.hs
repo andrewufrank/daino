@@ -94,7 +94,7 @@ bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
         putIOwords
             ["\n-----------------", "bakeOneDocrep2panrep done produced resf2n", showT resfn2
                 , "\n needsChecked", showT needsChecked2]
-    return [] -- . map toFilePath $  needsChecked2
+    return . map toFilePath $  needsChecked2
         -- these needs were not tested for version >= publish
 
 bakeOnePanrep2html :: BakeOp -- PANREP -> HTML  -- TODO

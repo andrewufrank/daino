@@ -42,6 +42,22 @@ settingsFileName :: Path Rel File
 -- ^ the yaml file in which the siteHeader are fixec
 settingsFileName = makeRelFile "settings3" -- the yaml file
 
+-- | description for each md file 
+-- todo include the flags 
+data DainoMetaPlus = DainoMetaPlus 
+        { metap :: Meta    -- ^ the pandoc meta, the file text content
+        , sett :: Settings -- ^ the data from the settingsfile
+        , extra :: DainoValues -- ^ other values to go into template
+        , metaMarkdown :: M.Map Text Text -- todo not used
+        , metaHtml ::  M.Map Text Text
+        , metaLatex ::  M.Map Text Text
+        }
+    deriving (Eq, Ord, Show, Read, Generic) -- Zeros, ToJSON, FromJSON)
+instance ToJSON DainoMetaPlus
+instance FromJSON DainoMetaPlus
+instance Zeros DainoMetaPlus where 
+        zero = DainoMetaPlus zero zero zero zero zero zero
+        
 -- | the siteHeader file with all fields 
 data Settings = Settings
     { siteLayout :: SiteLayout 
@@ -53,19 +69,7 @@ data Settings = Settings
     -- , today :: Text
     } deriving (Show, Read, Ord, Eq, Generic, Zeros)
 
-data DainoMetaPlus = DainoMetaPlus 
-                { metap :: Meta    -- ^ the pandoc meta 
-                , sett :: Settings -- ^ the data from the settingsfile
-                , extra :: DainoValues -- ^ other values to go into template
-                , metaMarkdown :: M.Map Text Text 
-                , metaHtml ::  M.Map Text Text
-                , metaLatex ::  M.Map Text Text
-                }
-    deriving (Eq, Ord, Show, Read, Generic) -- Zeros, ToJSON, FromJSON)
-instance ToJSON DainoMetaPlus
-instance FromJSON DainoMetaPlus
-instance Zeros DainoMetaPlus where 
-        zero = DainoMetaPlus zero zero zero zero zero zero
+
 
 instance ToJSON Settings
 instance FromJSON Settings
@@ -101,7 +105,8 @@ instance FromJSON DainoValues
 data IndexEntry2 = IndexEntry2 
     { -- | the abs file path
       ixfn :: FilePath -- Path Abs File
-    , -- | the link for this page (relative to web root)}
+    , -- | the link for this page (relative to web root)
+    -- without an extensionm}
       link :: FilePath -- Path Rel File
     , title :: Text
     , abstract :: Text

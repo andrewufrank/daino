@@ -32,18 +32,20 @@ import Paths_daino (version)
 
 import UniformBase
 import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..)) 
-
+import Development.Shake 
 import Foundational.SettingsPage  
 import Foundational.Filetypes4sites 
 import Foundational.CmdLineFlags
 import Uniform.Pandoc
 import Uniform.Latex
 import Uniform.Shake  
+
+default (Text)
 readMarkdownFile2docrep  :: NoticeLevel -> Settings ->  Path Abs File ->  ErrIO Docrep 
 -- read a markdown file and convert to docrep
 -- reads setting file!
 readMarkdownFile2docrep debug sett3 fnin = do
-    -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
+    let debug = NoticeLevel0   -- avoid_output_fromHere_down
     -- when (inform debug) $ 
     putInform debug 
         ["readMarkdownFile2docrep fnin", showPretty fnin]
@@ -102,6 +104,7 @@ setMetaPlusInitialize sett3 fnin m1 =  zero { metap = m1
 
 filterNeeds :: NoticeLevel -> PubFlags -> Settings -> Path Rel File -> ErrIO(Maybe (Path Abs File))
 -- ^ for md check the flags
+-- md given as rel file, completes with dir from sitelayout
 
 filterNeeds debug pubf sett4 fn =  do 
     -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
@@ -112,23 +115,20 @@ filterNeeds debug pubf sett4 fn =  do
  
 
 filterNeeds2 :: NoticeLevel -> PubFlags -> Settings -> Path Abs File -> ErrIO(Maybe (Path Abs File))
-
+-- check if file should be included (version > privateFlag)
 filterNeeds2 debug pubf sett4 fn2 =  do 
-    -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
+    let debug = NoticeLevel2   -- avoid_output_fromHere_down
     -- when (inform debug) $ 
         -- putIOwords ["filterNeeds2", "\nPubFlags", showT pubf ]
     putInform debug ["filterNeeds2", "\nPubFlags", showT pubf ]
     
     d1 <- readMarkdownFile2docrep debug sett4  fn2 
-    putInform debug ["filterNeeds2", "\nMeta", showT (meta1 d1) ]
+    putInform debug ["filterNeeds2", "\nMeta", showT ( d1) ]
 
-    let t = includeBakeTest3docrep pubf (meta1 . metap $ d1)
+    let t = includeBakeTest3docrep pubf (metap $ d1)
     putInform debug ["filterNeeds3 ", "\n t", showT t ]
     return $ if t then Just fn2 else Nothing
 
-
-meta1 :: a -> a
-meta1 = id
 
 -- includeBakeTest3docrep :: PubFlags -> MetaPage -> Bool 
 
@@ -147,4 +147,32 @@ includeBakeTest3  pubf vers1 vis1 =
         -- should be less than eq
             && (privateFlag pubf || vis1 ==  "public")
 
+----------  collect the list of all md files to include in the flags
 
+collectMd2include :: Settings   -> PubFlags -> ErrIO PubFlags 
+collectMd2include sett4 flags = do 
+    let doughP = doughDir . siteLayout $ sett4
+        bakedP = bakedDir . siteLayout $ sett4
+        debug = NoticeLevel1
+    fs1 :: [FilePath] <- callIO $ 
+            getDirectoryFilesIO (toFilePath doughP)
+                ["**/*." <> "md"]
+    putIOwords ["collectMd2include fs1", showPretty fs1]
+    let exclude = t2s (doNotBake  (siteLayout sett4)) 
+        fs2 = filter (not . (isInfixOf' exclude)  ) fs1
+    putIOwords ["collectMd2include fs2", showPretty fs2]
+    fs3 <-  mapM (filterNeeds NoticeLevel0 flags sett4 ) $
+                    map makeRelFile fs2
+    let fs4 = map (makeRelativeP doughP) $   catMaybes fs3 :: [Path Rel File]
+    putIOwords ["collectMd2include fs4", showPretty fs4]
+
+    -- let fs5 = map (replaceDirectoryP doughP bakedP) $  
+    --             map (replaceExtension' "html" ) fs4
+
+    -- getFilesToBake
+    --          (doNotBake  (siteLayout sett4))   -- exclude files containing
+    --         (doughDir . siteLayout $ sett4)
+    -- let fs9 = map (makeRelFile) fs4 :: [Path Rel File]
+    putIOwords ["collectMd2include fs4", showPretty fs3]
+    
+    return flags{mdFiles = fs4} 

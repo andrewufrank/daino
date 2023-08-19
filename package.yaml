@@ -104,6 +104,7 @@ dependencies:
     - containers
     - doctemplates
     - ReplaceUmlaut
+    - shake
     # - system-filepath 
     # - directory
 library:

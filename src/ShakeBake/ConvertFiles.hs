@@ -82,7 +82,7 @@ convertAny ::
 convertAny debug sourceP targetP flags layout out anyopName = do
     let debug = NoticeLevel0   -- avoid_output_fromHere_down
 
-    putInform debug ["-----------------", "convertAny for", anyopName]
+    putInform NoticeLevel2 ["-----------------", anyopName, "convertAny for", s2t out]
     let outP = makeAbsFile out :: Path Abs File
     putInform debug ["\nconvertAny 1", "\n file out", showT out]
     let (anyop, sourceExtA) = case anyopName of 
@@ -148,7 +148,7 @@ convertAny debug sourceP targetP flags layout out anyopName = do
                 -- add here a generic tester 
                 -- remove the tests from other places            
             need needsFound
-    putInform debug ["convertAny end for", anyopName]
+    putInform NoticeLevel1 ["-----------------------convertAny end", anyopName, "for", s2t out]
     return ()
 
 {- | the generic copy for all the files

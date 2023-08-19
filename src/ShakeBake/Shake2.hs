@@ -117,10 +117,13 @@ shakeAll debug sett3 flags causedby = do
 
         , "\n======================================="
         ]
-            
-    callIO $ shakeMD debug sett3 flags doughP bakedP
+    flags2 <- collectMd2include sett3 flags 
+    putIOwords ["flags", showPretty flags2]        
+    callIO $ shakeMD debug sett3  flags2  doughP bakedP
 
 -- todo remove shakeMD and pass only layout
+
+type RelFiles = [Path Rel File]
 
 shakeMD ::
     NoticeLevel ->
@@ -138,24 +141,20 @@ shakeMD ::
  in IO
  TOP shake call
 -}
-shakeMD debug sett4 flags doughP bakedP = shakeArgs2 bakedP $ do
+shakeMD debug sett4 flags  doughP bakedP = shakeArgs2 bakedP $ do
     -- the special filenames which are necessary
     -- because the file types are not automatically
     -- copied
     -- todo remove doughP and bakedP
 
-    putInform debug
-                                [ "shakeMD dirs\n"
-                                    , "\tbakedP\n"
-                                , showT bakedP
-                                , "\ndebug", showT debug
-                                ]
+
+    putInform debug [ "shakeMD dirs\n"
+        , "\tbakedP\n", showT bakedP
+        , "\ndebug", showT debug]
     -- let siteDirs = siteLayout sett4 
         -- doughP = doughDir siteDirs -- the regular dough
         -- bakedP = bakedDir siteDirs
         -- themeP = themeDir siteDirs
-
-
 
     want ["allMarkdownConversion"]
 
@@ -182,16 +181,24 @@ shakeMD debug sett4 flags doughP bakedP = shakeArgs2 bakedP $ do
         imgs2 <- getNeeds debug sett4   doughP bakedP "JPG" "JPG"
         needP imgs
         needP imgs2
+        -- needPwithoutput imgs
+        -- needPwithoutput imgs2
 
+        -- htmls <- getNeedsMD debug flags sett4 doughP bakedP "md" "html"
+        let needsSpec =  map (bakedP </> ) $ -- (replaceDirectoryP doughP bakedP) $  
+                map (replaceExtension' "html" ) (mdFiles flags)
+        needPwithoutput needsSpec
+        putIOwords ["need mdFiles"]
+        -- let mdFiles = map (makeRelativeP bakedP )  htmls
+    
+        -- check against the list (quicker than reading files)
         unless (quickFlag flags) $ do 
             pdfs <- getNeedsMD debug flags sett4 doughP bakedP "md" "pdf"
-            needP pdfs
+            needPwithoutput pdfs
 
-        htmls <- getNeedsMD debug flags sett4 doughP bakedP "md" "html"
-        needP htmls
 
         csss <- getNeeds debug sett4   doughP bakedP "css" "css"
-        needP csss
+        needP csss  -- needPwithoutput csss
 
         -- fonts, takes only the woff
         -- from the link to the template folder
@@ -199,10 +206,10 @@ shakeMD debug sett4 flags doughP bakedP = shakeArgs2 bakedP $ do
         needP woffs
 
         publist <- getNeeds debug sett4   doughP bakedP "html" "html"
-        needP publist
+        needPwithoutput publist
         -- for the pdfs which are already given in dough
         pdfs2 <- getNeeds debug sett4   doughP bakedP "pdf" "pdf"
-        needP pdfs2
+        needPwithoutput pdfs2
         bibs <- getNeeds debug sett4   doughP bakedP "bib" "bib"
         needP bibs
 
@@ -302,6 +309,7 @@ shakeMD debug sett4 flags doughP bakedP = shakeArgs2 bakedP $ do
     (toFilePath bakedP <> "**/*.woff")
         %> \out -> copyFileToBaked debug doughP bakedP out
 
+
 getNeeds ::
     NoticeLevel 
     -> Settings -- ^ the site layout etc
@@ -393,7 +401,8 @@ getNeedsMD debug flags sett4 sourceP targetP extSource extTarget = do
     files2 :: [Maybe (Path Abs File)] <- runErr2action 
                 $ mapM (filterNeeds debug flags sett4 ) filesWithSource
     let files3 = map (makeRelativeP sourceP) $   catMaybes files2 :: [Path Rel File]
-    -- subdirs
+    -- this is the complete list of all included mds
+    -- use for all following checks 
     
     let filesWithTarget =
             if sameExt
@@ -412,7 +421,7 @@ getNeedsMD debug flags sett4 sourceP targetP extSource extTarget = do
     --         , "files\n"
     --         , showT filesWithSource
     --         ]
-    when (informAll debug) $ do
+    when ((inform debug) && (filesWithTarget /= [])) $ do
         putIOwords
             [ "===================\ngetNeeds bakePDF -  target files 2 filtered"
             , "for ext"
@@ -421,3 +430,7 @@ getNeedsMD debug flags sett4 sourceP targetP extSource extTarget = do
             , showT filesWithTarget
             ]
     return filesWithTarget
+
+needPwithoutput files = do 
+        putInform NoticeLevel2 ["\nneeds set", showT files]
+        needP files 

@@ -129,6 +129,7 @@ parseArgs2input   t1 t2 = do
                          , locationDir = locationDirArg args1
                          -- perhaps wrong, could be site/dough?
                         -- ,  uploadFlag = uploadSwitch args1
+                        , mdFiles = zero 
                          }
 
 --   let flags2 = if testFlag flags1
