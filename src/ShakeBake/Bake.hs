@@ -85,7 +85,7 @@ bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
             -- completes index and should process reps 
             -- what to do with needs?
     -- needP needsFound 
-    let needsFound2 = map makeAbsFile needsFound :: [Path Abs File]
+    let needsFound2 =  map makeAbsFile needsFound :: [Path Abs File]
     needsChecked :: [Maybe (Path Abs File)] <- mapM (filterNeeds2 debug flags sett3) needsFound2 
     let needsChecked2 = catMaybes needsChecked
 
@@ -94,7 +94,7 @@ bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
         putIOwords
             ["\n-----------------", "bakeOneDocrep2panrep done produced resf2n", showT resfn2
                 , "\n needsChecked", showT needsChecked2]
-    return  . map toFilePath $  needsChecked2
+    return [] -- . map toFilePath $  needsChecked2
         -- these needs were not tested for version >= publish
 
 bakeOnePanrep2html :: BakeOp -- PANREP -> HTML  -- TODO
@@ -121,7 +121,7 @@ bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
     when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOnePanrep2html done fn", showT resfn2]
-    return needsFound
+    return [] -- needsFound
 
 
 bakeOnePanrep2texsnip :: BakeOp --  PANREP -> TEXSNIP
