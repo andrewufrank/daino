@@ -107,7 +107,7 @@ filterNeeds :: NoticeLevel -> PubFlags -> Settings -> Path Rel File -> ErrIO(May
 -- md given as rel file, completes with dir from sitelayout
 
 filterNeeds debug pubf sett4 fn =  do 
-    -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
+    let debug = NoticeLevel2   -- avoid_output_fromHere_down
     putInform debug ["filterNeeds", "\nPubFlags", showT pubf ]
     let doughP = doughDir . siteLayout $ sett4 :: Path Abs Dir 
     let fn2 = doughP </> fn :: Path Abs File 
@@ -117,10 +117,10 @@ filterNeeds debug pubf sett4 fn =  do
 filterNeeds2 :: NoticeLevel -> PubFlags -> Settings -> Path Abs File -> ErrIO(Maybe (Path Abs File))
 -- check if file should be included (version > privateFlag)
 filterNeeds2 debug pubf sett4 fn2 =  do 
-    let debug = NoticeLevel2   -- avoid_output_fromHere_down
+    let debug = NoticeLevel0   -- avoid_output_fromHere_down
     -- when (inform debug) $ 
         -- putIOwords ["filterNeeds2", "\nPubFlags", showT pubf ]
-    putInform debug ["filterNeeds2", "\nPubFlags", showT pubf ]
+    putInform NoticeLevel1 ["filterNeeds2", "\nPubFlags", showT pubf ]
     
     d1 <- readMarkdownFile2docrep debug sett4  fn2 
     putInform debug ["filterNeeds2", "\nMeta", showT ( d1) ]

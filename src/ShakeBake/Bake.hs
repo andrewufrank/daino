@@ -29,9 +29,10 @@ import Wave.Md2doc
 import Wave.Panrep2pdf
 
 import Uniform.Http
-
+import Uniform.Shake
 import Wave.Panrep2html  
 import UniformBase
+-- import ShakeBake.Shake2 (needPwithoutput)
 -- import Lib.Template_test (test_templatehtml)
 
 
@@ -84,17 +85,16 @@ bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
     (p3, needsFound) <- docrep2panrep debug flags  dr1
             -- completes index and should process reps 
             -- what to do with needs?
-    -- needP needsFound 
-    let needsFound2 =  map makeAbsFile needsFound :: [Path Abs File]
-    needsChecked :: [Maybe (Path Abs File)] <- mapM (filterNeeds2 debug flags sett3) needsFound2 
-    let needsChecked2 = catMaybes needsChecked
+    -- needP  needsFound 
+    -- let needsFound2 =  map makeAbsFile needsFound :: [Path Abs File]
+    -- needsChecked :: [Maybe (Path Abs File)] <- mapM (filterNeeds2 debug flags sett3) needsFound2 
+    -- let needsChecked2 = catMaybes needsChecked
 
-    write8 resfn2 panrepFileType p3 -- content is html style
-    when (inform debug) $
-        putIOwords
+    -- write8 resfn2 panrepFileType p3 -- content is html style
+    putInform debug 
             ["\n-----------------", "bakeOneDocrep2panrep done produced resf2n", showT resfn2
-                , "\n needsChecked", showT needsChecked2]
-    return . map toFilePath $  needsChecked2
+                , "\n needsFound", showT needsFound]
+    return   needsFound
         -- these needs were not tested for version >= publish
 
 bakeOnePanrep2html :: BakeOp -- PANREP -> HTML  -- TODO
