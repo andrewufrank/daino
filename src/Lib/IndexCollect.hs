@@ -51,18 +51,18 @@ collectIndex :: NoticeLevel -> PubFlags -> Settings -> Path Abs Dir
 -- starts with dir of index
 -}
 collectIndex debug pubf sett4 doughP fn dv1 = do
-    when (inform debug) $ putIOwords ["collectIndex", "start", showPretty fn]
+    putInform debug ["collectIndex", "start", showPretty fn]
 
 
     (dirs, files) <- getDirContent2dirs_files debug pubf sett4 doughP  fn
  
-    when (inform debug) $ putIOwords ["collectIndex", "\n dirs"
+    putInform debug ["collectIndex", "\n dirs"
                     , showT dirs, "\n files", showT files]
     
     let dv2 = dv1{dirEntries = map (initializeIx2dir doughP) dirs
                     , fileEntries = map (initializeIx2file doughP) files}
 
-    when (inform debug) $ putIOwords ["collectIndex", "dv2", showT dv2]
+    putInform debug ["collectIndex", "dv2", showT dv2]
     return dv2
 
 initializeIx2dir :: Path Abs Dir -> Path Abs Dir -> IndexEntry2 
@@ -91,10 +91,10 @@ getDirContent2dirs_files :: NoticeLevel -> PubFlags -> Settings
         -> ErrIO ([Path Abs Dir], [Path Abs File])
 -- get the dirs and files, exclude based on filename
 getDirContent2dirs_files debug pubf sett4 doughP   indexDir = do
-    when (inform debug) $ putIOwords ["getDirContent2dirs_files for", showPretty indexDir]
+    putInform debug ["getDirContent2dirs_files for", showPretty indexDir]
     -- let pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir
     -- -- get the dir in which the index file is embedded
-    -- when (inform debug) $ putIOwords ["getDirContent2dirs_files pageFn", showPretty pageFn]
+    -- putInform debug ["getDirContent2dirs_files pageFn", showPretty pageFn]
 
     dirs1 :: [Path Abs Dir] <- getDirectoryDirs' indexDir
     let dirs2 =  filter (not . isInfixOf' (doNotBake (siteLayout sett4)). s2t . getNakedDir) dirs1
@@ -104,22 +104,22 @@ getDirContent2dirs_files debug pubf sett4 doughP   indexDir = do
     -- TODO may need extension (change to list of excluded)
     -- build from constants in foundation
 
-    when (inform debug) $ putIOwords ["\ngetDirContent2dirs_files dirs4", showPretty dirs5]
+    putInform debug ["\ngetDirContent2dirs_files dirs4", showPretty dirs5]
     let ixdirs = dirs5
 
     files1 :: [Path Abs File] <- getDirContentFiles indexDir
 
-    when (inform debug) $ putIOwords ["getDirContent2dirs_files files1", showPretty files1]
+    putInform debug ["getDirContent2dirs_files files1", showPretty files1]
  
     let files2 =
             filter (("index" /=) . getNakedFileName) -- should not exclude all index pages but has only this one in this dir?
                 . filter (hasExtension extMD)  
                 . filter (not . isInfixOf' (doNotBake (siteLayout sett4)) . s2t. toFilePath)
                 $ files1
-    when (inform debug) $ putIOwords ["getDirContent2dirs files2", showPretty files2]
+    putInform debug ["getDirContent2dirs files2", showPretty files2]
     let ixfiles = files2
 
-    when (inform debug) $ putIOwords ["getDirContent2dirs xfiles", showPretty ixfiles, "\n ixdirs", showPretty ixdirs]
+    putInform debug ["getDirContent2dirs xfiles", showPretty ixfiles, "\n ixdirs", showPretty ixdirs]
 
     return ( ixdirs,  ixfiles)
 

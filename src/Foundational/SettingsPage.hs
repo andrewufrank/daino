@@ -204,3 +204,9 @@ blankAuthorName names current =
         then zero 
         else current 
 
+
+putInform :: MonadIO m => NoticeLevel -> [Text] -> m () 
+-- produce output if debug > NoticeLevel0 
+putInform debug texts = when (inform debug) $ 
+        putIOwords texts
+

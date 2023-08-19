@@ -119,7 +119,7 @@ panrep2html debug pubFlags  metaplus4 = do
     when ((informAll debug) && (needs /= []) )$
             putIOwords ["panrep2html", "\n\tneeds ", showPretty needs ]
 
-    when (inform debug) $ putIOwords ["panrep2html", "extra5", showPretty extra5]
+    putInform debug ["panrep2html", "extra5", showPretty extra5]
     when (inform debug) $
             putIOwords ["panrep2html", "metaplus5", showPretty metaplus5]
 
@@ -129,10 +129,10 @@ panrep2html debug pubFlags  metaplus4 = do
     let ttpl1 = renderTemplate testTempl (toJSON metaplus5)  -- :: Doc Text
     let tt1 = render (Just 50) ttpl1  -- line length, can be Nothing
 
-    when (inform debug) $ putIOwords ["panrep2html render html done"
+    putInform debug ["panrep2html render html done"
         , "ht1",  ht1
         ]
-    when (inform debug) $ putIOwords ["panrep2html render testTemplate done"
+    putInform debug ["panrep2html render testTemplate done"
         , "tt1",  tt1
         ]
 

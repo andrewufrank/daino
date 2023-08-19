@@ -82,10 +82,9 @@ convertAny ::
 convertAny debug sourceP targetP flags layout out anyopName = do
     let debug = NoticeLevel0   -- avoid_output_fromHere_down
 
-    when (inform debug) $ 
-        putIOwords ["-----------------", "convertAny for", anyopName]
+    putInform debug ["-----------------", "convertAny for", anyopName]
     let outP = makeAbsFile out :: Path Abs File
-    when (inform debug) $ putIOwords ["\nconvertAny 1", "\n file out", showT out]
+    putInform debug ["\nconvertAny 1", "\n file out", showT out]
     let (anyop, sourceExtA) = case anyopName of 
             "convMD2docrep" -> (bakeOneMD2docrep, extMD)
             "convDocrep2panrep" -> (bakeOneDocrep2panrep, extDocrep)
@@ -98,7 +97,7 @@ convertAny debug sourceP targetP flags layout out anyopName = do
     let fromfilePath = sourceP </> makeRelativeP targetP outP
     let fromfilePathExt = replaceExtension' (s2t . unExtension $ sourceExtA) fromfilePath 
 
-    when (inform debug) $ putIOwords 
+    putInform debug 
         ["\nconvertAny 2", anyopName
         , "extension", (s2t . unExtension $ sourceExtA)
         ,  "\n fromfilePath", showT fromfilePath
@@ -129,14 +128,14 @@ convertAny debug sourceP targetP flags layout out anyopName = do
                          ,   "\n\tfromfilePath ", showT fromfilePath, "added NEED automatically"
                          ,  "\n\t  file out", showT out]
         else do
-            when (inform debug) $ putIOwords 
+            putInform debug 
                 ["\nconvertAny call", anyopName
                 ,  "\n\t fromfilePathExt"
                     ,  " cause NEED for" ,showT fromfilePathExt  
                 ,  "\n\t file out", showT out
                 ] 
             need [toFilePath fromfilePathExt]    
-            when (inform debug) $ putIOwords 
+            putInform debug 
                 ["\nconvertAny runErr2Action", anyopName
                 ,  "\n\t fromfilePathExt",  " caused NEED which was then probably satisfied for ", showT fromfilePathExt   
                 ,  "\n\t file out", showT out
@@ -149,7 +148,7 @@ convertAny debug sourceP targetP flags layout out anyopName = do
                 -- add here a generic tester 
                 -- remove the tests from other places            
             need needsFound
-    when (inform debug) $ putIOwords ["convertAny end for", anyopName]
+    putInform debug ["convertAny end for", anyopName]
     return ()
 
 {- | the generic copy for all the files

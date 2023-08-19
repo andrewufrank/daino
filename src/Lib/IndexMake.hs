@@ -40,10 +40,10 @@ import Data.List (sortOn)
 
 -- convertIndexEntries debug hpAuthor indexSortField  ixe1 =
 --   do
---     when (inform debug) $ putIOwords ["convertIndexEntries", "start ixe1", showT ixe1
+--     putInform debug ["convertIndexEntries", "start ixe1", showT ixe1
 --         , "\n\thpAuthor", showT hpAuthor]
 --     let fn = makeAbsFile $ ixfn ixe1
---     when (inform debug) $ putIOwords ["convertIndexEntries", "fn", showT fn]
+--     putInform debug ["convertIndexEntries", "fn", showT fn]
 --     menu4 <- if isIndexPage fn
 --         then do
 --             let fils = fileEntries ixe1  
@@ -54,7 +54,7 @@ import Data.List (sortOn)
 --             -- to avoid the changes in testing leading to failures
 --             today1 :: UTCTime <- getCurrentTimeUTC
 --             let menu3 = menu1 -- {today3 = showT today1}
---             when (inform debug) $ putIOwords ["convertIndexEntries", "menu3", showT menu3]
+--             putInform debug ["convertIndexEntries", "menu3", showT menu3]
 --             return menu3
 --         else return zero
 --     return menu4

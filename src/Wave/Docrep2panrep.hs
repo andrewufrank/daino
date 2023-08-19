@@ -101,7 +101,7 @@ docrep2panrep debug pubf metaplus5 = do
                      , extra = extra6 }
         -- panrep2 = Panrep y2 p1
 
-    when (inform debug) $ putIOwords ["docrep2panrep"
+    putInform debug ["docrep2panrep"
             , showT extra6
                 -- , "hpname", showT hpname
                 -- , "\nauthorReduced", authorReduced

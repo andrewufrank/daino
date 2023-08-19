@@ -45,7 +45,7 @@ readMarkdownFile2docrep  :: NoticeLevel -> Settings ->  Path Abs File ->  ErrIO 
 readMarkdownFile2docrep debug sett3 fnin = do
     -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
     -- when (inform debug) $ 
-    when (inform debug) $ putIOwords 
+    putInform debug 
         ["readMarkdownFile2docrep fnin", showPretty fnin]
         -- place to find PandocParseError
     p1 <- readMd2pandoc fnin
@@ -147,9 +147,4 @@ includeBakeTest3  pubf vers1 vis1 =
         -- should be less than eq
             && (privateFlag pubf || vis1 ==  "public")
 
-
-putInform :: NoticeLevel -> [Text] -> ErrIO () 
--- produce output if debug > NoticeLevel0 
-putInform debug texts = when (inform debug) $ 
-        putIOwords texts
 

@@ -144,7 +144,7 @@ shakeMD debug sett4 flags doughP bakedP = shakeArgs2 bakedP $ do
     -- copied
     -- todo remove doughP and bakedP
 
-    when (inform debug) $ putIOwords
+    putInform debug
                                 [ "shakeMD dirs\n"
                                     , "\tbakedP\n"
                                 , showT bakedP
@@ -212,12 +212,12 @@ shakeMD debug sett4 flags doughP bakedP = shakeArgs2 bakedP $ do
             -- else calls the conversion from md
 
         do
-            when (inform debug) $ putIOwords ["rule **/*.html", showT out]
+            putInform debug ["rule **/*.html", showT out]
 
             let outP = makeAbsFile out :: Path Abs File
             let fromfile = doughP </> makeRelativeP bakedP outP
             fileExists <- io2bool $ doesFileExist' fromfile
-            when (inform debug) $ putIOwords ["rule **/*.html - fileExist:", showT fileExists]
+            putInform debug ["rule **/*.html - fileExist:", showT fileExists]
             
             if fileExists 
                 then copyFileToBaked debug doughP bakedP out
@@ -229,14 +229,14 @@ shakeMD debug sett4 flags doughP bakedP = shakeArgs2 bakedP $ do
             -- imgs2 <- getNeeds debug sett4 doughP bakedP "JPG" "JPG"
             -- needP imgs
             -- needP imgs2
-            -- when (inform debug) $ putIOwords ["rule **/*.html", showT out]
+            -- putInform debug ["rule **/*.html", showT out]
   
                     convertAny debug bakedP bakedP flags sett4 out  "convPanrep2html"
 
 
     (toFilePath bakedP <> "**/*.pdf") %> \out -> -- insert pdfFIles1
         do
-            when (inform debug) $ putIOwords ["rule **/*.pdf", showT out]
+            putInform debug ["rule **/*.pdf", showT out]
             -- imgs <- getNeeds debug sett4 doughP bakedP "jpg" "jpg"
             -- imgs2 <- getNeeds debug sett4 doughP bakedP "JPG" "JPG"
             -- needP imgs
@@ -244,12 +244,12 @@ shakeMD debug sett4 flags doughP bakedP = shakeArgs2 bakedP $ do
             -- why is this here necessary: failed on testSort.pdf?
             -- was ein jpg will ?
             -- TODO improve error from lualatex
-            -- when (inform debug) $ putIOwords ["rule **/*.pdf need", showT imgs, showT imgs2]
+            -- putInform debug ["rule **/*.pdf need", showT imgs, showT imgs2]
 
             let outP = makeAbsFile out :: Path Abs File
             let fromfile = doughP </> makeRelativeP bakedP outP
             fileExists <- io2bool $ doesFileExist' fromfile
-            when (inform debug) $ putIOwords ["fileExist:", showT fileExists]
+            putInform debug ["fileExist:", showT fileExists]
             
             if fileExists 
                 then copyFileToBaked debug doughP bakedP out
@@ -271,8 +271,8 @@ shakeMD debug sett4 flags doughP bakedP = shakeArgs2 bakedP $ do
             -- needP bibs
             -- csls <- getNeeds debug sett4 doughP bakedP "csl" "csl"
             -- needP csls
-            -- when (inform debug) $ putIOwords ["rule **/*.docrep need", showT bibs]
-            -- when (inform debug) $ putIOwords ["rule **/*.docrep need", showT csls]
+            -- putInform debug ["rule **/*.docrep need", showT bibs]
+            -- putInform debug ["rule **/*.docrep need", showT csls]
 
             convertAny debug doughP bakedP flags sett4 out  "convMD2docrep"
             return ()

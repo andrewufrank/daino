@@ -71,11 +71,11 @@ panrep2texsnip debug metaplus3 = do
     return metaplus5
 
  
-    -- when (inform debug) $ putIOwords ["\n panrep2texsnip start"]
+    -- putInform debug ["\n panrep2texsnip start"]
     -- res1 <- writeTexSnip2 p
-    -- when (inform debug) $ putIOwords ["\n panrep2texsnip res1", showT res1]
+    -- putInform debug ["\n panrep2texsnip res1", showT res1]
     -- let res = (TexSnip y res1)
-    -- when (inform debug) $ putIOwords ["\n panrep2texsnip done"]
+    -- putInform debug ["\n panrep2texsnip done"]
 
 
 -- text2absFile :: Path Abs Dir -> Text -> Path Abs File 
@@ -93,7 +93,7 @@ texsnip2tex ::  NoticeLevel -> TexSnip -> ErrIO (Latex, [FilePath], Text)
 -- currently the biblio and references seem not to work with the new citeproc stuff (which takes the info from the )
 texsnip2tex  debug metaplus4 = do 
 -- debug doughP bakedP metaplus4 latexDtpl = do
-    when (inform debug) $ putIOwords ["\n texsnip2tex start"]
+    putInform debug ["\n texsnip2tex start"]
 
     let sett3 = sett metaplus4
         extra4 = extra metaplus4
@@ -136,19 +136,19 @@ texsnip2tex  debug metaplus4 = do
     valsDirs :: [Maybe IndexEntry2]<- mapM (getVals2latex debug bakedP) dirs
     valsFiles :: [Maybe IndexEntry2] <- mapM (getVals2latex debug bakedP) files
 
-    when (inform debug) $ putIOwords ["texsnip2tex 1"  ]
+    putInform debug ["texsnip2tex 1"  ]
 
     when (inform debug) $ do
             putIOwords ["texsnip2tex", "valsDirs", showT valsDirs]
             -- putIOwords ["texsnip2tex", "valsFiles", showT valsFiles]
-    when (inform debug) $ putIOwords ["texsnip2tex 2"  ]
+    putInform debug ["texsnip2tex 2"  ]
 
     let extra5 = extra4{fileEntries = catMaybes valsFiles
                         , dirEntries = catMaybes valsDirs}
                         -- uses the same record selectors as html
                         -- but started with an empty slate?
     let metaplus5 = metaplus4{extra = extra5}
-    when (inform debug) $ putIOwords ["texsnip2tex", "extra5", showPretty extra5]
+    putInform debug ["texsnip2tex", "extra5", showPretty extra5]
     when (inform debug) $ 
             putIOwords ["texsnip2tex", "metaplus5", showPretty metaplus5]
 
@@ -158,10 +158,10 @@ texsnip2tex  debug metaplus4 = do
     let ttpl1 = renderTemplate testTempl (toJSON metaplus5)  -- :: Doc Text
     let tt1 = render (Just 50) ttpl1  -- line length, can be Nothing
 
-    when (inform debug) $ putIOwords ["texsnip2tex render html done"
+    putInform debug ["texsnip2tex render html done"
         , "ht1",  ht1
         ]
-    when (inform debug) $ putIOwords ["texsnip2tex render testTemplate done"
+    putInform debug ["texsnip2tex render testTemplate done"
         , "tt1",  tt1
         ]
     
@@ -174,9 +174,9 @@ getVals2latex :: NoticeLevel -> Path Abs Dir -> IndexEntry2
 getVals2latex debug bakedP ix2 = do
     putIOwords ["getVals2latex start"]
     let fn = makeAbsFile $ addDir (toFilePath bakedP) (link ix2)  :: Path Abs File
-    when (inform debug) $ putIOwords ["getVals2latex fn", showT fn ]
+    putInform debug ["getVals2latex fn", showT fn ]
     pan1 <- read8 fn panrepFileType
-    when (inform debug) $ putIOwords ["getVals2latex pan1", showT pan1 ]
+    putInform debug ["getVals2latex pan1", showT pan1 ]
 
     let m = metaLatex pan1  -- select latex code 
     
@@ -189,7 +189,7 @@ getVals2latex debug bakedP ix2 = do
                     , visibility = lookup7 "visibility" m
                     }
 
-    when (inform debug) $ putIOwords ["getVals2latex end"]
+    putInform debug ["getVals2latex end"]
     
     return $ if True -- includeBakeTest3 def -- bring down 
                             -- (version ix3) (visibility ix3)
@@ -206,18 +206,18 @@ getVals2latex debug bakedP ix2 = do
 -- this is fnres - just the doughPath
 tex2pdf :: NoticeLevel -> Path Abs File ->  Path Abs File ->  Path Abs Dir ->  ErrIO ()
 tex2pdf debug fn fnres doughP  =  do
-    when (inform debug) $ putIOwords ["\n tex2pdf start for", showT fn]
+    putInform debug ["\n tex2pdf start for", showT fn]
 
     let refDir = -- makeAbsDir "/home/frank/bakedTestSite"
                     -- dough does not work either
                     -- must be local dir of file to process
             makeAbsDir . getParentDir . toFilePath $ fn :: Path Abs Dir
     -- refDir must be the place where biblio is place (or searched from - best ) - i.e. the root for dough 
-    when (inform debug) $ putIOwords ["\n tex2pdf refDir", showT refDir]
+    putInform debug ["\n tex2pdf refDir", showT refDir]
     texf <- read8 fn texFileType
-    when (inform debug) $ putIOwords ["\n tex2pdf texf content", showT texf]
+    putInform debug ["\n tex2pdf texf content", showT texf]
     writePDF2 debug  fn fnres refDir
     -- for debug put only the file unprocessed
     -- write8 fnres pdfFileType (PDFfile . unLatex $ texf)
-    when (inform debug) $ putIOwords ["\n tex2pdf done"]
+    putInform debug ["\n tex2pdf done"]
     return ()

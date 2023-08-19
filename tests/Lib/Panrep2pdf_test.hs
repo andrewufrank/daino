@@ -46,7 +46,7 @@ test_toLatex = do
         putIOwords ["test_toLatex setup texsnip done"]
 
         (lat1, _, tt1) <- texsnip2tex debug  texsnip
-        when (inform debug) $ putIOwords ["test_toHtmlTest pr \n", tt1]
+        putInform debug ["test_toHtmlTest pr \n", tt1]
         write8 resLatex texFileType lat1
         write8 resLatex ttlFileType tt1
         let hash1 = show . hash . show $  lat1 :: String
