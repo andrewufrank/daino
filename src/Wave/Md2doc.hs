@@ -98,7 +98,7 @@ setMetaPlusInitialize sett3 fnin m1 =  zero { metap = m1
                     , latLanguage = latexLangConversion lang 
                     , pdf2 = toFilePath $ replaceExtension2 ".pdf" relFn }
              
-
+-- filters cannot be moved to another file, circular imports!
 
 filterNeeds :: NoticeLevel -> PubFlags -> Settings -> Path Rel File -> ErrIO(Maybe (Path Abs File))
 -- ^ for md check the flags

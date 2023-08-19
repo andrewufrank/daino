@@ -316,8 +316,7 @@ getNeeds ::
 -}
 getNeeds debug  sett4 sourceP targetP extSource extTarget = do
     let sameExt = extSource == extTarget
-    when (inform debug) $
-        putIOwords
+    putInform debug 
             [ "===================\ngetNeeds extSource"
             , extSource
             , "extTarget"
@@ -341,15 +340,14 @@ getNeeds debug  sett4 sourceP targetP extSource extTarget = do
                         (replaceExtension' extTarget . (targetP </>))
                          filesWithSource  
                                 :: [Path Abs File]
-    when (informAll debug) $ do
-        putIOwords
+    putInform debug 
             [ "===================\ngetNeeds -  source files 1"
             , "for ext"
             , extSource
             , "files\n"
             , showT filesWithSource
             ]
-        putIOwords
+    putInform debug 
             [ "\nbakePDF -  target files 2"
             , "for ext"
             , extTarget
@@ -370,6 +368,7 @@ getNeedsMD ::
 {- ^ find the files which are needed (generic)
   from source with extension ext
   does not include directory DNB (do not bake)
+  does include a filter for version field in YAML header 
 -}
 getNeedsMD debug flags sett4 sourceP targetP extSource extTarget = do
     let debug = NoticeLevel0   -- avoid_output_fromHere_down
@@ -390,6 +389,7 @@ getNeedsMD debug flags sett4 sourceP targetP extSource extTarget = do
              (doNotBake  (siteLayout sett4))   -- exclude files containing
             sourceP
             ["**/*." <> t2s extSource]
+    -- filter for version < publish in YAML header 
     files2 :: [Maybe (Path Abs File)] <- runErr2action 
                 $ mapM (filterNeeds debug flags sett4 ) filesWithSource
     let files3 = map (makeRelativeP sourceP) $   catMaybes files2 :: [Path Rel File]
