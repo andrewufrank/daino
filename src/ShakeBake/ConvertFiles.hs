@@ -51,6 +51,7 @@ import Uniform.Shake
       FileOps(doesFileExist'),
       Filenames3((</>), FileResultT),
       need,
+      (<.>),
       copyFileChangedP,
       replaceExtension',
       runErr2action,
@@ -82,7 +83,7 @@ convertAny ::
 convertAny debug sourceP targetP flags layout out anyopName = do
     let debug = NoticeLevel0   -- avoid_output_fromHere_down
 
-    putInform NoticeLevel2 ["-----------------", anyopName, "convertAny for", s2t out]
+    putInform NoticeLevel1 ["-----------------", anyopName, "convertAny for", s2t out]
     let outP = makeAbsFile out :: Path Abs File
     putInform debug ["\nconvertAny 1", "\n file out", showT out]
     let (anyop, sourceExtA) = case anyopName of 
@@ -94,54 +95,55 @@ convertAny debug sourceP targetP flags layout out anyopName = do
             "convTexsnip2tex" -> (bakeOneTexsnip2tex, extTexSnip )
             _  -> errorT ["convertAny error unknown anyopName ", anyopName]
 
-    let fromfilePath = sourceP </> makeRelativeP targetP outP
-    let fromfilePathExt = replaceExtension' (s2t . unExtension $ sourceExtA) fromfilePath 
+    let from_filePath = sourceP </> makeRelativeP targetP outP :: Path Abs File
+        from_filePathExt = from_filePath <.> ( sourceExtA)
+    -- let from_filePathExt = replaceExtension' (s2t . unExtension $ sourceExtA) from_filePath 
 
     putInform debug 
         ["\nconvertAny 2", anyopName
         , "extension", (s2t . unExtension $ sourceExtA)
-        ,  "\n fromfilePath", showT fromfilePath
+        ,  "\n from_filePath", showT from_filePath
         , " was causing NEED"   
-        ,  "\n fromfilePathExt", showT fromfilePathExt   
+        ,  "\n from_filePathExt", showT from_filePathExt   
         ,  "\n file out", showT out
         ] 
 
     fileExists <-  if sourceP == targetP 
         then return False 
-        else io2bool $ doesFileExist' fromfilePath  --targetExt
+        else io2bool $ doesFileExist' from_filePath  --targetExt
 
     when (inform debug) $
         putIOwords
             [ "\nconvertAny - fromfile exist:"
             , showT fileExists
             -- , "\nfile"
-            -- , showT fromfilePath
+            -- , showT from_filePath
             ]
     if fileExists 
         -- gives recursion, if the file is produced in earlier run
         then do  -- copy file from source to target
-            copyFileChangedP fromfilePath outP
+            copyFileChangedP from_filePath outP
             when (inform debug) $
                 -- liftIO $
                     putIOwords
                         ["\n convertAny  copied"
-                         ,   "\n\tfromfilePath ", showT fromfilePath, "added NEED automatically"
+                         ,   "\n\tfrom_filePath ", showT from_filePath, "added NEED automatically"
                          ,  "\n\t  file out", showT out]
         else do
             putInform debug 
                 ["\nconvertAny call", anyopName
-                ,  "\n\t fromfilePathExt"
-                    ,  " cause NEED for" ,showT fromfilePathExt  
+                ,  "\n\t from_filePathExt"
+                    ,  " cause NEED for" ,showT from_filePathExt  
                 ,  "\n\t file out", showT out
                 ] 
-            need [toFilePath fromfilePathExt]    
+            need [toFilePath from_filePathExt]    
             putInform debug 
                 ["\nconvertAny runErr2Action", anyopName
-                ,  "\n\t fromfilePathExt",  " caused NEED which was then probably satisfied for ", showT fromfilePathExt   
+                ,  "\n\t from_filePathExt",  " caused NEED which was then probably satisfied for ", showT from_filePathExt   
                 ,  "\n\t file out", showT out
                 ]
-            needsFound <- runErr2action $ anyop debug flags fromfilePathExt layout outP
-            when ((informAll debug) && needsFound /= []) $ putIOwords 
+            needsFound <- runErr2action $ anyop debug flags from_filePathExt layout outP
+            when ((inform debug) && needsFound /= []) $ putIOwords 
                 ["\nconvertAny runErr2Action", anyopName
                 ,  "\n\t needs found", showT needsFound
                 ] 

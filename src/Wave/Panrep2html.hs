@@ -53,6 +53,7 @@ import qualified Data.Map as M
 -- import Wave.Md2doc
 import System.FilePath (replaceExtension)
 import Uniform.Shake  
+import Path (addFileExtension, addExtension)
 
 default (Integer, Double, Text)
 
@@ -108,13 +109,13 @@ panrep2html debug pubFlags  metaplus4 = do
         -- bakedP =   bakedDir . siteLayout $ sett3
         bakedFP = toFilePath bakedP
         allixs =  catMaybes $ valsFiles ++ valsDirs :: [IndexEntry2]
-        needs = map (`replaceExtension` "panrep")
+        needs = map (<.> "panrep") -- (`replaceExtension` "panrep")
                 . map (addDir bakedFP )
                 .  map link $ allixs
                      :: [FilePath]
 
-    when ((informAll debug) && (needs /= []) )$
-            putIOwords ["panrep2html", "\n\tneeds ", showPretty needs ]
+    when ((inform debug) && (needs /= []) )$
+            putIOwords ["panrep2html", "needs ", showT needs ]
 
     putInform debug ["panrep2html", "extra5", showPretty extra5]
     putInform debug ["panrep2html", "metaplus5", showPretty metaplus5]
@@ -139,7 +140,11 @@ getVals2 :: NoticeLevel -> PubFlags -> Path Abs Dir -> IndexEntry2
                 -> ErrIO (Maybe IndexEntry2)
 -- get the panrep and fill the vals 
 getVals2 debug pubFlags bakedP ix2 = do
-    let fn = makeAbsFile $ addDir (toFilePath bakedP) (link ix2)  :: Path Abs File
+    putInform debug ["GetVals2 ix2", showPretty ix2]    
+    let fn = makeAbsFile fnix2
+        fnix2 =  fnix3 <.> "panrep"  :: FilePath
+        fnix3 = addDir (toFilePath bakedP) fnix4 :: FilePath
+        fnix4 = (ixfn ix2) :: FilePath
         pdf = replaceExtension2 ".pdf" fn 
     pan1 <- read8 fn panrepFileType
 

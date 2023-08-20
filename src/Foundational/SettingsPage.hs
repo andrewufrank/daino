@@ -104,6 +104,7 @@ instance FromJSON DainoValues
 
 data IndexEntry2 = IndexEntry2 
     { -- | the rel file path, for dirs is dir/index, to be file
+            -- without extension
       ixfn :: FilePath -- Path Rel File
     , -- | the link for this page (relative to web root)
     -- without an extension or filename for dir}

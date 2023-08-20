@@ -118,8 +118,8 @@ docrep2panrep debug pubf metaplus5 = do
                 , showPretty extra7 ]
             -- attention the dir/index is one level deeper than the files
             let
-                -- ds  =  map (</> ("index.docrep" :: FilePath ) ) ds2
-                ds = map ((toFilePath bakedP) </>) . map (makeRelative (toFilePath doughP)) $ ds1
+                ds  =  map (<.> ("docrep" :: FilePath ) ) ds2
+                ds2 = map ((toFilePath bakedP) </>) . map (makeRelative (toFilePath doughP)) $ ds1
                             :: [FilePath]
                 ds1 =  map ixfn (dirEntries  extra7) :: [FilePath]
                 fs =   map ixfn (fileEntries extra7) :: [FilePath]
@@ -127,7 +127,7 @@ docrep2panrep debug pubf metaplus5 = do
                 -- ixs =  map addIndex (dirEntries  extra7) ++ (fileEntries extra7)
                 needs :: [FilePath] =   (ds ++ fs)
 
-            when (informAll debug) $
+            when (inform debug) $
                 putIOwords ["\n extra7------------------------docrep2panrep end if"
                 , showPretty extra7
                 , "needs ds with index.docrep", showT ds, "fs", showT fs]  

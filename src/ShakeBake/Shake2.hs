@@ -187,14 +187,14 @@ shakeMD debug sett4 flags  doughP bakedP = shakeArgs2 bakedP $ do
         -- htmls <- getNeedsMD debug flags sett4 doughP bakedP "md" "html"
         let needsSpec =  map (bakedP </> ) $ -- (replaceDirectoryP doughP bakedP) $  
                 map (replaceExtension' "html" ) (mdFiles flags)
-        needPwithoutput needsSpec
+        needPwithoutput "md" "html" needsSpec
         putIOwords ["need mdFiles"]
         -- let mdFiles = map (makeRelativeP bakedP )  htmls
     
         -- check against the list (quicker than reading files)
         unless (quickFlag flags) $ do 
             pdfs <- getNeedsMD debug flags sett4 doughP bakedP "md" "pdf"
-            needPwithoutput pdfs
+            needPwithoutput "md" "pdf" pdfs
 
 
         csss <- getNeeds debug sett4   doughP bakedP "css" "css"
@@ -206,10 +206,10 @@ shakeMD debug sett4 flags  doughP bakedP = shakeArgs2 bakedP $ do
         needP woffs
 
         publist <- getNeeds debug sett4   doughP bakedP "html" "html"
-        needPwithoutput publist
+        needP publist
         -- for the pdfs which are already given in dough
         pdfs2 <- getNeeds debug sett4   doughP bakedP "pdf" "pdf"
-        needPwithoutput pdfs2
+        needP pdfs2
         bibs <- getNeeds debug sett4   doughP bakedP "bib" "bib"
         needP bibs
 
@@ -431,6 +431,6 @@ getNeedsMD debug flags sett4 sourceP targetP extSource extTarget = do
             ]
     return filesWithTarget
 
-needPwithoutput files = do 
-        putInform NoticeLevel2 ["\nneeds set", showT files]
+needPwithoutput t1 t2 files = do 
+        putInform NoticeLevel1 ["\nneeds set", t1, t2, showT files]
         needP files 

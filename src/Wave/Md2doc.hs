@@ -107,7 +107,7 @@ filterNeeds :: NoticeLevel -> PubFlags -> Settings -> Path Rel File -> ErrIO(May
 -- md given as rel file, completes with dir from sitelayout
 
 filterNeeds debug pubf sett4 fn =  do 
-    let debug = NoticeLevel2   -- avoid_output_fromHere_down
+    -- let debug = NoticeLevel2   -- avoid_output_fromHere_down
     putInform debug ["filterNeeds", "\nPubFlags", showT pubf ]
     let doughP = doughDir . siteLayout $ sett4 :: Path Abs Dir 
     let fn2 = doughP </> fn :: Path Abs File 
@@ -120,7 +120,7 @@ filterNeeds2 debug pubf sett4 fn2 =  do
     let debug = NoticeLevel0   -- avoid_output_fromHere_down
     -- when (inform debug) $ 
         -- putIOwords ["filterNeeds2", "\nPubFlags", showT pubf ]
-    putInform NoticeLevel1 ["filterNeeds2", "\nPubFlags", showT pubf ]
+    putInform debug ["filterNeeds2", "\nPubFlags", showT pubf ]
     
     d1 <- readMarkdownFile2docrep debug sett4  fn2 
     putInform debug ["filterNeeds2", "\nMeta", showT ( d1) ]
@@ -153,20 +153,20 @@ collectMd2include :: Settings   -> PubFlags -> ErrIO PubFlags
 collectMd2include sett4 flags = do 
     let doughP = doughDir . siteLayout $ sett4
         -- bakedP = bakedDir . siteLayout $ sett4
-        -- debug = NoticeLevel1
+        -- debug = debug
     fs1 :: [FilePath] <- callIO $ 
             getDirectoryFilesIO (toFilePath doughP)
                 ["**/*." <> "md"]
 
         -- only files, not directories
-    putIOwords ["collectMd2include fs1", showPretty fs1]
+    putInform NoticeLevel0 ["collectMd2include fs1", showPretty fs1]
     let exclude = t2s (doNotBake  (siteLayout sett4)) 
         fs2 = filter (not . (isInfixOf' exclude)  ) fs1
-    putIOwords ["collectMd2include fs2", showPretty fs2]
+    putInform NoticeLevel0 ["collectMd2include fs2", showPretty fs2]
     fs3 <-  mapM (filterNeeds NoticeLevel0 flags sett4 ) $
                     map makeRelFile fs2
     let fs4 = map (removeExtension  . makeRelativeP doughP) $   catMaybes fs3 :: [Path Rel File]
-    putIOwords ["collectMd2include fs4", showT fs4]
+    putInform NoticeLevel1 ["collectMd2include fs4", showT fs4]
 
     -- let fs5 = map (replaceDirectoryP doughP bakedP) $  
     --             map (replaceExtension' "html" ) fs4

@@ -97,7 +97,7 @@ initializeIx2dir mdfs doughP fp = zero{ixfn =   relfp2
 
 initializeIx2file :: [Path Rel File] -> Path Abs Dir -> Path Abs File -> IndexEntry2 
 -- the dough path to make the path relative
-initializeIx2file mdfs doughP fp = zero{ixfn = toFilePath relfp
+initializeIx2file mdfs doughP fp = zero{ixfn = toFilePath linkfp
                     , link = toFilePath linkfp
                     }
         where 
