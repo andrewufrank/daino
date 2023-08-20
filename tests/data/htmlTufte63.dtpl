@@ -98,12 +98,10 @@
     <div class="bottomleft w3-text-light-grey";  $--  w3-padding-large w3-text-light-grey
         display: flex;
         align-items:flex-start;>
-        <h1 class="w3-hide-medium w3-hide-small w3-xxxlarge">$sett.siteHeader.sitename$</h1>
-        <a href="/" class="w3-hide-large" style="white-space:nowrap; position: absolute">
-                    <h2>sitename</h2>
-                    </a>
-<h2  class="w3-hide-large" style="white-space:nowrap">$sett.siteHeader.sitename$</h2>
-        <h3 class="w3-hide-medium w3-hide-small">$sett.siteHeader.byline$</h3> 
+        <a href="/index.html"><h1 class="w3-hide-medium w3-hide-small w3-xxxlarge" style="color: white; position: relative; z-index: 1">$sett.siteHeader.sitename$</h1></a>
+        <a href="/index.html"><h2 class="w3-hide-large" style="color: white; position: relative; z-index: 1">
+                    sitename</h2></a>
+        <h3 class="w3-hide-medium w3-hide-small" style="color: white">$sett.siteHeader.byline$</h3> 
                 $-- byline is not shown on small screens
                 $-- could be p.byline see pandoc.css
       </div>
