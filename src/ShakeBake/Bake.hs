@@ -161,7 +161,7 @@ bakeOneTexsnip2tex debug flags inputFn sett3 resfn2 = do
     -- let doughP = doughDir layout
     --     bakedP = bakedDir layout 
 
-    (tex1, needs, test_templatehtml) <- texsnip2tex debug  snip1
+    (tex1, needs, test_templatehtml) <- texsnip2tex debug  flags snip1
 
     -- tex1 <- texsnip2tex NoticeLevel0 doughP bakedP snip1 
         -- ((templatesDir layout) </> (texTemplateFile layout))

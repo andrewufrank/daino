@@ -39,12 +39,16 @@ import Uniform.Json ( ToJSON(toJSON), Value, ErrIO )
 import Uniform.Pandoc
 import Uniform.Http ( HTMLout (HTMLout) )
 import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..))
+import Foundational.CmdLineFlags
 
 import Data.Maybe (fromMaybe)
 import qualified Data.Map as M
 import System.FilePath (replaceExtension)
 import Foundational.SettingsPage
 import Wave.Panrep2html 
+import Wave.Md2doc ( includeBakeTest3 ) 
+import Uniform.Shake  
+
 default (Integer, Double, Text)
 
 -- ------------------------------------ panrep2texsnip
@@ -68,7 +72,7 @@ panrep2texsnip debug metaplus3 = do
 -- text2absFile :: Path Abs Dir -> Text -> Path Abs File 
 -- text2absFile doughP t = doughP </> makeRelFile (t2s t)
 
-texsnip2tex ::  NoticeLevel -> TexSnip -> ErrIO (Latex, [FilePath], Text)
+-- texsnip2tex ::  NoticeLevel -> TexSnip -> ErrIO (Latex, [FilePath], Text)
 
 -- NoticeLevel ->  Path Abs Dir -> Path Abs Dir -> DainoMetaPlus ->  Path Abs File -> ErrIO Latex
 -- the (lead) snip which comes from the md which gives the name to the resulting tex and pdf 
@@ -78,7 +82,11 @@ texsnip2tex ::  NoticeLevel -> TexSnip -> ErrIO (Latex, [FilePath], Text)
 
 -- currently only one snip, 
 -- currently the biblio and references seem not to work with the new citeproc stuff (which takes the info from the )
-texsnip2tex  debug metaplus4 = do 
+texsnip2tex :: NoticeLevel
+    -> PubFlags
+    -> DainoMetaPlus
+    -> ExceptT Text IO (Latex, [FilePath], Text)
+texsnip2tex  debug pubFlags metaplus4 = do 
 -- debug doughP bakedP metaplus4 latexDtpl = do
     putInform debug ["\n texsnip2tex start"]
 
@@ -117,8 +125,10 @@ texsnip2tex  debug metaplus4 = do
 
     putInform debug ["texsnip2tex", "\n\tneeds ", showPretty needs ]
 
-    valsDirs :: [Maybe IndexEntry2]<- mapM (getVals2latex debug bakedP) dirs
-    valsFiles :: [Maybe IndexEntry2] <- mapM (getVals2latex debug bakedP) files
+    valsDirs :: [Maybe IndexEntry2]<- 
+            mapM (getVals2latex debug pubFlags bakedP) dirs
+    valsFiles :: [Maybe IndexEntry2] <- 
+            mapM (getVals2latex debug pubFlags bakedP) files
 
     putInform debug ["texsnip2tex 1"  ]
 
@@ -147,12 +157,20 @@ texsnip2tex  debug metaplus4 = do
     -- bakeOnetexsnip2tex will write to disk
     return (Latex ht1, needs, tt1)
 
-getVals2latex :: NoticeLevel -> Path Abs Dir -> IndexEntry2
-                -> ErrIO (Maybe IndexEntry2)
+-- getVals2latex :: NoticeLevel -> Path Abs Dir -> IndexEntry2
+                -- -> ErrIO (Maybe IndexEntry2)
 -- get the panrep and fill the vals 
-getVals2latex debug bakedP ix2 = do
-    putIOwords ["getVals2latex start"]
-    let fn = makeAbsFile $ addDir (toFilePath bakedP) (link ix2)  :: Path Abs File
+getVals2latex debug pubFlags bakedP ix2 = do
+    putInform debug ["GetVals2 latex ix2", showPretty ix2]
+    let 
+        fnix4 = (ixfn ix2) :: FilePath
+        fnix3 = addDir (toFilePath bakedP) fnix4 :: FilePath
+        fnix2 =  fnix3 <.> "panrep"  :: FilePath
+        fn = makeAbsFile fnix2
+        pdf = replaceExtension2 ".pdf" fn 
+        
+    -- let fn = makeAbsFile $ addDir (toFilePath bakedP) (link ix2)  :: Path Abs File
+
     putInform debug ["getVals2latex fn", showT fn ]
     pan1 <- read8 fn panrepFileType
     putInform debug ["getVals2latex pan1", showT pan1 ]
@@ -170,9 +188,8 @@ getVals2latex debug bakedP ix2 = do
 
     putInform debug ["getVals2latex end"]
     
-    return $ if True -- includeBakeTest3 def -- bring down 
-                            -- (version ix3) (visibility ix3)
-                then Just ix3 else Nothing
+    return $ if includeBakeTest3 pubFlags (version ix3) (visibility ix3)
+                then Just ix3 else errorT ["getVals2 in panrep2html not included", showT ix2 ]
 
 
 

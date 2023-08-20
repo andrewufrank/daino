@@ -36,24 +36,22 @@ import UniformBase
 import Foundational.Filetypes4sites
 import Foundational.SettingsPage
     -- ( Settings(siteLayout), SiteLayout(blogAuthorToSuppress) )
-import Foundational.CmdLineFlags
+import Foundational.CmdLineFlags ( PubFlags )
 
 import GHC.Generics (Generic)
 
 import Uniform.Json ( ToJSON(toJSON), Value, ErrIO )
 import Uniform.Pandoc
--- import Uniform.Latex 
--- import qualified Text.Pandoc.Shared as P
 import Uniform.Http ( HTMLout (HTMLout) )
 import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..))
-import Wave.Md2doc 
+import Wave.Md2doc ( includeBakeTest3 ) 
 import Data.Maybe (fromMaybe)
 import qualified Data.Map as M
 -- import Wave.Docrep2panrep
 -- import Wave.Md2doc
-import System.FilePath (replaceExtension)
+-- import System.FilePath (replaceExtension)
 import Uniform.Shake  
-import Path (addFileExtension, addExtension)
+-- import Path (addFileExtension, addExtension)
 
 default (Integer, Double, Text)
 
@@ -143,25 +141,28 @@ getVals2 :: NoticeLevel -> PubFlags -> Path Abs Dir -> IndexEntry2
                 -> ErrIO (Maybe IndexEntry2)
 -- get the panrep and fill the vals 
 getVals2 debug pubFlags bakedP ix2 = do
-    putInform debug ["GetVals2 ix2", showPretty ix2]    
-    let fn = makeAbsFile fnix2
-        fnix2 =  fnix3 <.> "panrep"  :: FilePath
+    putInform debug ["GetVals2 html ix2", showPretty ix2]    
+    let fnix4 = (ixfn ix2) :: FilePath
         fnix3 = addDir (toFilePath bakedP) fnix4 :: FilePath
-        fnix4 = (ixfn ix2) :: FilePath
+        fnix2 =  fnix3 <.> "panrep"  :: FilePath
+        fn = makeAbsFile fnix2
         pdf = replaceExtension2 ".pdf" fn 
+
+    putInform debug ["getVals2latex fn", showT fn ]
     pan1 <- read8 fn panrepFileType
+    putInform debug ["getVals2latex pan1", showT pan1 ]
 
     let m = metaHtml pan1
-        ix3 = ix2   { abstract = lookup7 "abstract" m
-                    , title = lookup7 "title" m
-                    -- , author = lookup7 "author" m -- todo suppressed?
-                    ,     date = lookup7 "date" m
-                    -- , sortOrder = lookup7 "sortOrder" m
+        ix3 = ix2   { abstract = lookup7withDef ""  "abstract" m
+                    , title = lookup7withDef "TITLE MISSING" "title" m
+                    , author = lookup7withDef "" "author" m -- todo suppressed?
+                    , date = lookup7 "date" m
+                    , sortOrder = lookup7withDef "filename" "sortOrder" m
                     , version = lookup7 "version" m
                     , visibility = lookup7 "visibility" m
                     , pdf1 = s2t $ toFilePath pdf 
-                -- todo complete 
                     }
+
     return $ if includeBakeTest3 pubFlags (version ix3) (visibility ix3)
                 then Just ix3 else errorT ["getVals2 in panrep2html not included", showT ix2 ]
 
