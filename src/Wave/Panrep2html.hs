@@ -111,10 +111,13 @@ panrep2html debug pubFlags  metaplus4 = do
         allixs =  catMaybes $ valsFiles ++ valsDirs :: [IndexEntry2]
         needs = map (<.> "panrep") -- (`replaceExtension` "panrep")
                 . map (addDir bakedFP )
-                .  map link $ allixs
+                .  map ixfn $ allixs
                      :: [FilePath]
-
-    when ((inform debug) && (needs /= []) )$
+    putInform NoticeLevel2 ["panrep2html allixs ixfn"
+                    , showT .map (<.> "panrep") . map (addDir bakedFP ) . map ixfn $ allixs]
+    putInform NoticeLevel2 ["panrep2html allixs link"
+                    , showT . map (addDir bakedFP ) . map (<.> "panrep") . map ixfn $ allixs]
+    when ((informAll debug) && (needs /= []) )$
             putIOwords ["panrep2html", "needs ", showT needs ]
 
     putInform debug ["panrep2html", "extra5", showPretty extra5]
@@ -160,8 +163,7 @@ getVals2 debug pubFlags bakedP ix2 = do
                 -- todo complete 
                     }
     return $ if includeBakeTest3 pubFlags (version ix3) (visibility ix3)
-                then Just ix3 else Nothing
-
+                then Just ix3 else errorT ["getVals2 in panrep2html not included", showT ix2 ]
 
 
 

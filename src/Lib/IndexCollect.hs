@@ -54,10 +54,11 @@ collectIndex debug pubf sett4 doughP fn dv1 = do
     putInform debug ["collectIndex", "start", showPretty fn]
 
 
-    (dirs, files) <- getDirContent2dirs_files debug pubf sett4 doughP  fn
-        -- ([Path Abs Dir], [Path Abs Files])
+    (dirs, files) :: ([Path Abs Dir], [Path Abs File]) <- getDirContent2dirs_files debug pubf sett4 doughP  fn
+
     putInform debug ["collectIndex", "\n dirs"
                     , showT dirs, "\n files", showT files]
+
     let    mdfs = mdFiles pubf :: [Path Rel File]
     let dirs2 = catMaybes (map (check2publishDirs doughP mdfs) dirs)
     let files2 = catMaybes (map (check2publishFiles doughP mdfs) files)
@@ -67,7 +68,12 @@ collectIndex debug pubf sett4 doughP fn dv1 = do
     let dv2 = dv1{dirEntries = map (initializeIx2dir (mdFiles pubf) doughP) dirs2
                     , fileEntries = map (initializeIx2file (mdFiles pubf) doughP) files2}
 
-    putInform debug ["collectIndex", "dv2", showT dv2]
+    putInform NoticeLevel2 ["collectIndex"
+        , "\ndv2 dirs ixfn", showT (map ixfn . dirEntries $ dv2)
+        , "\ndv2 dirs link", showT (map link . dirEntries $ dv2)
+        , "\ndv2 files ixfn", showT (map ixfn . fileEntries $ dv2)
+        , "\ndv2 files link", showT (map link . fileEntries $ dv2)
+        ]
     return dv2
 
 -- check2publishDirs :: Path Abs File -> Maybe [Path Abs File]

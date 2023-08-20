@@ -122,7 +122,7 @@ bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
     when (inform debug) $
         putIOwords
             ["\n-----------------", "bakeOnePanrep2html done fn", showT resfn2]
-    return [] -- needsFound
+    return  needsFound
 
 
 bakeOnePanrep2texsnip :: BakeOp --  PANREP -> TEXSNIP
