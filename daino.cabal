@@ -32,7 +32,6 @@ library
       Foundational.Filetypes4sites
       Foundational.SettingsPage
       Lib.IndexCollect
-      Lib.IndexMake
       ShakeBake.Bake
       ShakeBake.CmdLineArgs
       ShakeBake.ConvertFiles

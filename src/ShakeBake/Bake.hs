@@ -31,9 +31,6 @@ import Wave.Panrep2pdf
 import Uniform.Http
 import Uniform.Shake
 import Wave.Panrep2html  
-import UniformBase
--- import ShakeBake.Shake2 (needPwithoutput)
--- import Lib.Template_test (test_templatehtml)
 
 
 type BakeOp =
@@ -92,7 +89,7 @@ bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
     -- let needsChecked2 = catMaybes needsChecked
 
     write8 resfn2 panrepFileType p3 -- content is html style
-    putInform NoticeLevel2 
+    putInform debug 
             ["\n-----------------", "bakeOneDocrep2panrep done produced resf2n", showT resfn2
                 , "\n needsFound", showT needsFound]
     return   needsFound

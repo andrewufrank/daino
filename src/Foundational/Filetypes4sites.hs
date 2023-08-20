@@ -23,12 +23,8 @@ module Foundational.Filetypes4sites (
 ) where
 
 import Uniform.Json (FromJSON, ToJSON, Value)
-import Uniform.Pandoc  
 import UniformBase
-
 import Foundational.SettingsPage ( DainoMetaPlus )
--- import Wave.Md2doc (pandoc2docrep)
-
 
 --------------------------------------------typed file Docrep
 

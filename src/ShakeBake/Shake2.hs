@@ -53,15 +53,12 @@
 module ShakeBake.Shake2 where
 
 import           Uniform.Shake
-
 import Foundational.SettingsPage
     -- ( SiteLayout(doughDir, bakedDir, themeDir),
     --   Settings(siteLayout) )
 import Foundational.CmdLineFlags
-      
 import ShakeBake.ConvertFiles
     ( io2bool, convertAny, copyFileToBaked )
-
 import Wave.Md2doc 
 
 -- shakeDelete :: SiteLayout -> FilePath -> ErrIO ()
@@ -379,7 +376,7 @@ getNeedsMD ::
   does include a filter for version field in YAML header 
 -}
 getNeedsMD debug flags sett4 sourceP targetP extSource extTarget = do
-    let debug = NoticeLevel0   -- avoid_output_fromHere_down
+    -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
     let sameExt = extSource == extTarget
     when (inform debug) $
         putIOwords

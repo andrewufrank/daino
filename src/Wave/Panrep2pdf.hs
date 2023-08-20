@@ -28,33 +28,20 @@ module Wave.Panrep2pdf (
     module Wave.Panrep2pdf,
 ) where
 
+import UniformBase
 import Foundational.Filetypes4sites
--- import GHC.Generics (Generic)
 import Uniform.Pandoc ( writeTexSnip2 )
 import Uniform.MetaStuff
--- import Uniform.TemplateStuff
--- import Uniform.TemplateStuff (Template)
--- import UniformBase
--- import qualified  Data.Map  as M
--- import Text.DocTemplates as DocTemplates ( Doc )
--- import Uniform.Latex
 import Uniform.WritePDF
--- import Paths_daino (version)
--- import Foundational.SettingsPage 
 import GHC.Generics (Generic)
 
 import Uniform.Json ( ToJSON(toJSON), Value, ErrIO )
 import Uniform.Pandoc
--- import Uniform.Latex 
--- import qualified Text.Pandoc.Shared as P
 import Uniform.Http ( HTMLout (HTMLout) )
-import UniformBase
 import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..))
 
 import Data.Maybe (fromMaybe)
 import qualified Data.Map as M
--- import Wave.Docrep2panrep
--- import Wave.Md2doc
 import System.FilePath (replaceExtension)
 import Foundational.SettingsPage
 import Wave.Panrep2html 

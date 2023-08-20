@@ -30,17 +30,14 @@ module Lib.IndexCollect where
 -- import Uniform.Json  
 import Uniform.Pandoc ( extMD )
 import Uniform.Latex()
-import Foundational.Filetypes4sites  
  
 import Foundational.CmdLineFlags 
 import Foundational.SettingsPage
 import UniformBase
 
-import Wave.Md2doc
 import Uniform.Shake
 
-import Foundational.SettingsPage  
-import Data.List (sortOn)
+-- import Data.List (sortOn)
 
 
 
@@ -68,7 +65,7 @@ collectIndex debug pubf sett4 doughP fn dv1 = do
     let dv2 = dv1{dirEntries = map (initializeIx2dir (mdFiles pubf) doughP) dirs2
                     , fileEntries = map (initializeIx2file (mdFiles pubf) doughP) files2}
 
-    putInform NoticeLevel2 ["collectIndex"
+    putInform debug ["collectIndex"
         , "\ndv2 dirs ixfn", showT (map ixfn . dirEntries $ dv2)
         , "\ndv2 dirs link", showT (map link . dirEntries $ dv2)
         , "\ndv2 files ixfn", showT (map ixfn . fileEntries $ dv2)

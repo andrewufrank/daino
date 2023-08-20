@@ -32,6 +32,7 @@ module Wave.Panrep2html (
 ) where
 
 -- import Data.Default
+import UniformBase
 import Foundational.Filetypes4sites
 import Foundational.SettingsPage
     -- ( Settings(siteLayout), SiteLayout(blogAuthorToSuppress) )
@@ -44,7 +45,6 @@ import Uniform.Pandoc
 -- import Uniform.Latex 
 -- import qualified Text.Pandoc.Shared as P
 import Uniform.Http ( HTMLout (HTMLout) )
-import UniformBase
 import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..))
 import Wave.Md2doc 
 import Data.Maybe (fromMaybe)
@@ -68,7 +68,7 @@ testTemplateFn = makeAbsFile "/home/frank/Workspace11/daino/tests/data/metaplusH
 
 panrep2html :: NoticeLevel -> PubFlags -> Panrep -> ErrIO (HTMLout, [FilePath], Text)
 panrep2html debug pubFlags  metaplus4 = do
-    let debug = NoticeLevel0   -- avoid_output_fromHere_down
+    -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
     let sett3 = sett metaplus4
         extra4 = extra metaplus4
         mf = masterTemplateFile $ siteLayout sett3
@@ -113,11 +113,11 @@ panrep2html debug pubFlags  metaplus4 = do
                 . map (addDir bakedFP )
                 .  map ixfn $ allixs
                      :: [FilePath]
-    putInform NoticeLevel2 ["panrep2html allixs ixfn"
+    putInform debug ["panrep2html allixs ixfn"
                     , showT .map (<.> "panrep") . map (addDir bakedFP ) . map ixfn $ allixs]
-    putInform NoticeLevel2 ["panrep2html allixs link"
+    putInform debug ["panrep2html allixs link"
                     , showT . map (addDir bakedFP ) . map (<.> "panrep") . map ixfn $ allixs]
-    when ((informAll debug) && (needs /= []) )$
+    when ((inform debug) && (needs /= []) )$
             putIOwords ["panrep2html", "needs ", showT needs ]
 
     putInform debug ["panrep2html", "extra5", showPretty extra5]

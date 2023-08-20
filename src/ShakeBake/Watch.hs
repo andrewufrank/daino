@@ -13,10 +13,8 @@
 
 module ShakeBake.Watch where
 
--- import Lib.CmdLineArgs (PubFlags (..))
 import Foundational.SettingsPage
 import Foundational.CmdLineFlags
-
 import ShakeBake.Shake2 (shakeAll)
 import Uniform.Watch (
     Glob (..),

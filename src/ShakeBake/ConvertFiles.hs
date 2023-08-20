@@ -53,10 +53,10 @@ import Uniform.Shake
       need,
       (<.>),
       copyFileChangedP,
-      replaceExtension',
+    --   replaceExtension',
       runErr2action,
       Action,
-      Path2nd(makeRelativeP), informAll )
+      Path2nd(makeRelativeP) )
 -- import UniformBase
 
 
@@ -81,7 +81,7 @@ convertAny ::
     Action ()
 -- produce any (either copy available in baked or produce with anyop)
 convertAny debug sourceP targetP flags layout out anyopName = do
-    let debug = NoticeLevel0   -- avoid_output_fromHere_down
+    -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
 
     putInform NoticeLevel1 ["-----------------", anyopName, "convertAny for", s2t out]
     let outP = makeAbsFile out :: Path Abs File
@@ -130,20 +130,20 @@ convertAny debug sourceP targetP flags layout out anyopName = do
                          ,   "\n\tfrom_filePath ", showT from_filePath, "added NEED automatically"
                          ,  "\n\t  file out", showT out]
         else do
-            putInform NoticeLevel2 
+            putInform debug 
                 ["\nconvertAny call", anyopName
                 ,  "\n\t from_filePathExt"
                     ,  " cause NEED for" ,showT from_filePathExt  
                 ,  "\n\t file out", showT out
                 ] 
             need [toFilePath from_filePathExt]    
-            putInform NoticeLevel2 
+            putInform debug 
                 ["\nconvertAny runErr2Action", anyopName
                 ,  "\n\t from_filePathExt",  " caused NEED which was then probably satisfied for ", showT from_filePathExt   
                 ,  "\n\t file out", showT out
                 ]
             needsFound <- runErr2action $ anyop debug flags from_filePathExt layout outP
-            when ((informAll debug) && needsFound /= []) $ putIOwords 
+            when ((inform debug) && needsFound /= []) $ putIOwords 
                 ["\nconvertAny runErr2Action", anyopName
                 ,  "\n\t needs found", showT needsFound
                 ] 

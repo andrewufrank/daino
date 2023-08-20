@@ -31,6 +31,7 @@ module Wave.Docrep2panrep (
     module Wave.Docrep2panrep,
 ) where
 
+import UniformBase
 import Foundational.Filetypes4sites
     -- ( Docrep(Docrep), Panrep(Panrep, panyam) )
 import Foundational.SettingsPage
@@ -45,13 +46,9 @@ import Uniform.Pandoc
 import Uniform.Latex()
 import Uniform.Shake
 import Uniform.Http () --- out ( HTMLout )
-import UniformBase
 
 import Data.Maybe (fromMaybe)
-
--- import Lib.IndexMake ( convertIndexEntries, MenuEntry )
 import Lib.IndexCollect ( collectIndex )
--- import Lib.Templating ( putValinMaster )
 import qualified Data.Map as M
 import Development.Shake.FilePath (makeRelative)
 
@@ -66,7 +63,7 @@ import Development.Shake.FilePath (makeRelative)
 
 docrep2panrep :: NoticeLevel -> PubFlags -> Docrep -> ErrIO (Panrep, [FilePath])
 docrep2panrep debug pubf metaplus5 = do
-    let debug = NoticeLevel0   -- avoid_output_fromHere_down
+    -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
     when (inform debug) $
         putIOwords
             ["-------------------------docrep2panrep"
@@ -125,19 +122,19 @@ docrep2panrep debug pubf metaplus5 = do
                 fs =   map ixfn (fileEntries extra7) :: [FilePath]
                 ns0 = ds ++ fs 
                 -- ixs =  map addIndex (dirEntries  extra7) ++ (fileEntries extra7)
-                needs :: [FilePath] =   ds -- (ds ++ fs)
-            putIOwords ["\tds", showT ds]
-            putIOwords ["\tfs", showT fs]
+                needs :: [FilePath] =   ns
+            -- putIOwords ["\tds", showT ds]
+            -- putIOwords ["\tfs", showT fs]
 
-            putIOwords ["\tns", showT ns]
-            putIOwords ["\tns2", showT ns2]
-            putIOwords ["\tns0", showT ns0]
-            when (informAll debug) $
+            -- putIOwords ["\tns", showT ns]
+            -- putIOwords ["\tns2", showT ns2]
+            -- putIOwords ["\tns0", showT ns0]
+            when (inform debug) $
                 putIOwords ["\n extra7------------------------docrep2panrep end if"
                 -- , showPretty extra7
-                , "needs ns with index.docrep", showT ns ]  
+                , "needs ns with index.docrep", showT needs ]  
 
-            return (metaplus6{extra=extra7}, ns )
+            return (metaplus6{extra=extra7}, needs )
         else
             return (metaplus6 , [])    
 

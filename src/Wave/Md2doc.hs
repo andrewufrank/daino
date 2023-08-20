@@ -45,7 +45,7 @@ readMarkdownFile2docrep  :: NoticeLevel -> Settings ->  Path Abs File ->  ErrIO 
 -- read a markdown file and convert to docrep
 -- reads setting file!
 readMarkdownFile2docrep debug sett3 fnin = do
-    let debug = NoticeLevel0   -- avoid_output_fromHere_down
+    -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
     -- when (inform debug) $ 
     putInform debug 
         ["readMarkdownFile2docrep fnin", showPretty fnin]
@@ -117,7 +117,7 @@ filterNeeds debug pubf sett4 fn =  do
 filterNeeds2 :: NoticeLevel -> PubFlags -> Settings -> Path Abs File -> ErrIO(Maybe (Path Abs File))
 -- check if file should be included (version > privateFlag)
 filterNeeds2 debug pubf sett4 fn2 =  do 
-    let debug = NoticeLevel0   -- avoid_output_fromHere_down
+    -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
     -- when (inform debug) $ 
         -- putIOwords ["filterNeeds2", "\nPubFlags", showT pubf ]
     putInform debug ["filterNeeds2", "\nPubFlags", showT pubf ]

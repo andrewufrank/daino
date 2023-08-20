@@ -23,7 +23,7 @@
 module Foundational.CmdLineFlags
     (module Foundational.CmdLineFlags
     , def ) where
-import Uniform.Shake
+import Uniform.Shake ( Text, File, Path, Rel, Zeros(zero) )
 import Data.Default.Class ( Default(..) )
 import UniformBase ( Text, Zeros(zero) ) -- to define a default class for pub flags 
 
