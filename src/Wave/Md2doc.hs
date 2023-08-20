@@ -37,6 +37,11 @@ import Foundational.SettingsPage
 import Foundational.Filetypes4sites 
 import Foundational.CmdLineFlags
 import Uniform.Pandoc
+    ( addListOfDefaults,
+      getTextFromYaml6,
+      getValue4meta,
+      md2Meta_Process,
+      readMd2pandoc )
 import Uniform.Latex
 import Uniform.Shake  
 
@@ -76,6 +81,8 @@ readMarkdownFile2docrep debug sett3 fnin = do
                 -- , ("indexPage", False) detect from name 'index.md'
                 ] 
             -- "resources/webbiblio.bib")
+            -- check that defaults work? 
+            -- defaults are set in panrep2html (and 2latex??)
     let p2 = addListOfDefaults defs1 p1
     m1 <- md2Meta_Process p2
     let mp1 = setMetaPlusInitialize sett3 fnin m1

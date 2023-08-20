@@ -156,10 +156,10 @@ getVals2 debug pubFlags bakedP ix2 = do
         ix3 = ix2   { abstract = lookup7withDef ""  "abstract" m
                     , title = lookup7withDef "TITLE MISSING" "title" m
                     , author = lookup7withDef "" "author" m -- todo suppressed?
-                    , date = lookup7 "date" m
+                    , date = lookup7withDef "2000-01-01" "date" m
                     , sortOrder = lookup7withDef "filename" "sortOrder" m
-                    , version = lookup7 "version" m
-                    , visibility = lookup7 "visibility" m
+                    , version = lookup7withDef "draft" "version" m
+                    , visibility = lookup7withDef "private" "visibility" m
                     , pdf1 = s2t $ toFilePath pdf 
                     }
 

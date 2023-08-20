@@ -63,7 +63,8 @@ blogAuthorToSuppress
 
 indexEntryDirectories 
     $for(extra.dirEntries)$
-            $extra.dirEntries$
+        ixfn    $extra.dirEntries.ixfn$
+        link    $extra.dirEntries.link$
     $endfor$
 
 indexEntryFiles 

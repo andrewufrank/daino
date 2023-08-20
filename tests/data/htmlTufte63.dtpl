@@ -194,7 +194,7 @@
         <ul class="w3-ul w3-hoverable">
                     $for(extra.dirEntries)$ 
                     <li> 
-                        <a href=/$extra.dirEntries.link$.html><em>$extra.dirEntries.title$</em></a>
+                        <a href=/$extra.dirEntries.ixfn$.html><em>$extra.dirEntries.title$</em></a>
                     $if(extra.dirEntries.abstract)$<br>$extra.dirEntries.abstract$$endif$		
                         
                     </li>

@@ -29,7 +29,7 @@ test_DainoTest = do
     res1 <- runErr $ do 
         dainoProcess NoticeLevel0 testFlags
             {testFlag = True 
-            , testNewFlag = True -- T 
+            -- , testNewFlag = True -- T 
             , quickFlag = True   -- q 
             }
     assertEqual (Right zero) res1
