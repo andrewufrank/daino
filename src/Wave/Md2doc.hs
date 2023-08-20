@@ -152,8 +152,8 @@ includeBakeTest3  pubf vers1 vis1 =
 collectMd2include :: Settings   -> PubFlags -> ErrIO PubFlags 
 collectMd2include sett4 flags = do 
     let doughP = doughDir . siteLayout $ sett4
-        bakedP = bakedDir . siteLayout $ sett4
-        debug = NoticeLevel1
+        -- bakedP = bakedDir . siteLayout $ sett4
+        -- debug = NoticeLevel1
     fs1 :: [FilePath] <- callIO $ 
             getDirectoryFilesIO (toFilePath doughP)
                 ["**/*." <> "md"]

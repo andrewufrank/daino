@@ -87,21 +87,23 @@ check2publish doughP mdfs fs = t
 initializeIx2dir :: [Path Rel File] -> Path Abs Dir -> Path Abs Dir -> IndexEntry2 
 -- the dough path to make the path relative
 -- set the index file, not the directory itself 
-initializeIx2dir mdfs doughP fp = zero{ixfn =  toFilePath fp
+initializeIx2dir mdfs doughP fp = zero{ixfn =   relfp2
                     , link = toFilePath relfp}
         where 
             -- fp3 = filter (\fn -> elem fn mdfs) $ map toFilePath fp2
-            -- fp2 = addFileName fp (makeRelFile "index") :: [Path Rel File]
+            relfp2 = (toFilePath relfp) </> ("index" :: FilePath) :: FilePath 
+                -- addFileName fp (makeRelFile "index") :: [Path Rel File]
             relfp =   makeRelativeP doughP  fp  
 
 initializeIx2file :: [Path Rel File] -> Path Abs Dir -> Path Abs File -> IndexEntry2 
 -- the dough path to make the path relative
-initializeIx2file mdfs doughP fp = zero{ixfn = toFilePath fp
-                    , link = toFilePath relfp
+initializeIx2file mdfs doughP fp = zero{ixfn = toFilePath relfp
+                    , link = toFilePath linkfp
                     }
         where 
             -- fp = filter (\fn -> elem fn mdfs) relfp
-            relfp =  removeExtension . makeRelativeP doughP $ fp  
+            linkfp =  removeExtension relfp 
+            relfp = makeRelativeP doughP $ fp  
 {-  old
 get the contents of a directory, separated into dirs and files
  the directory is given by the index dir file

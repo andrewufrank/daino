@@ -53,6 +53,7 @@ import Data.Maybe (fromMaybe)
 import Lib.IndexCollect ( collectIndex )
 -- import Lib.Templating ( putValinMaster )
 import qualified Data.Map as M
+import Development.Shake.FilePath (makeRelative)
 
 ------------------------------------------------docrep -> panrep
 
@@ -84,6 +85,7 @@ docrep2panrep debug pubf metaplus5 = do
         mdFile5 = makeAbsFile $ mdFile extra5
         mdFileDir =   makeAbsDir $ getParentDir mdFile5 :: Path Abs Dir
         doughP = doughDir layout
+        bakedP = bakedDir layout
         defaut = defaultAuthor layout
         aut1 = getTextFromYaml6 defaut "author" meta5
         bookval = getTextFromYaml6  "" "book"   meta5 
@@ -114,28 +116,28 @@ docrep2panrep debug pubf metaplus5 = do
             when (inform debug) $
                 putIOwords ["\n ix2------------------------docrep2panrep after collectIndex"
                 , showPretty extra7 ]
-
+            -- attention the dir/index is one level deeper than the files
             let
-                ds  =  map (addFileName (  "index.docrep" :: FilePath ) )
-                       $  map ixfn (dirEntries  extra7) :: [FilePath]
+                -- ds  =  map (</> ("index.docrep" :: FilePath ) ) ds2
+                ds = map ((toFilePath bakedP) </>) . map (makeRelative (toFilePath doughP)) $ ds1
+                            :: [FilePath]
+                ds1 =  map ixfn (dirEntries  extra7) :: [FilePath]
                 fs =   map ixfn (fileEntries extra7) :: [FilePath]
 
                 -- ixs =  map addIndex (dirEntries  extra7) ++ (fileEntries extra7)
-                needs :: [FilePath] =  (ds ++ fs)
+                needs :: [FilePath] =   (ds ++ fs)
 
             when (informAll debug) $
                 putIOwords ["\n extra7------------------------docrep2panrep end if"
                 , showPretty extra7
-                , "needs ds", showT ds, "fs", showT fs]  
+                , "needs ds with index.docrep", showT ds, "fs", showT fs]  
 
             return (metaplus6{extra=extra7}, needs )
         else
             return (metaplus6 , [])    
 
-addIndex :: FilePath -> FilePath 
-addIndex dir1 = toFilePath $ addFileName dir2  fn
-    where
-       fn = makeRelFile "index.md"
-       dir2 = makeAbsDir dir1 
+-- addIndex :: FilePath -> FilePath 
+-- addIndex dir1 = dir1 </> "index.md"
+ 
 
  

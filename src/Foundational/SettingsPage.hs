@@ -103,10 +103,10 @@ instance FromJSON DainoValues
 -- there renamed to indexEntryRenamed 
 
 data IndexEntry2 = IndexEntry2 
-    { -- | the abs file path
-      ixfn :: FilePath -- Path Abs File
+    { -- | the rel file path, for dirs is dir/index, to be file
+      ixfn :: FilePath -- Path Rel File
     , -- | the link for this page (relative to web root)
-    -- without an extensionm}
+    -- without an extension or filename for dir}
       link :: FilePath -- Path Rel File
     , title :: Text
     , abstract :: Text
