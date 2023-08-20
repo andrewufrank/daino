@@ -92,7 +92,7 @@ bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
     -- let needsChecked2 = catMaybes needsChecked
 
     write8 resfn2 panrepFileType p3 -- content is html style
-    putInform debug 
+    putInform NoticeLevel2 
             ["\n-----------------", "bakeOneDocrep2panrep done produced resf2n", showT resfn2
                 , "\n needsFound", showT needsFound]
     return   needsFound

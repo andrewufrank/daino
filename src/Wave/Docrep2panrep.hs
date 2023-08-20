@@ -118,21 +118,26 @@ docrep2panrep debug pubf metaplus5 = do
                 , showPretty extra7 ]
             -- attention the dir/index is one level deeper than the files
             let
-                ds  =  map (<.> ("docrep" :: FilePath ) ) ds2
-                ds2 = map ((toFilePath bakedP) </>) . map (makeRelative (toFilePath doughP)) $ ds1
+                ns  =  map (<.> ("docrep" :: FilePath ) ) ns2
+                ns2 = map ((toFilePath bakedP) </>) . map (makeRelative (toFilePath doughP)) $ ns0
                             :: [FilePath]
-                ds1 =  map ixfn (dirEntries  extra7) :: [FilePath]
+                ds =  map ixfn (dirEntries  extra7) :: [FilePath]
                 fs =   map ixfn (fileEntries extra7) :: [FilePath]
-
+                ns0 = ds ++ fs 
                 -- ixs =  map addIndex (dirEntries  extra7) ++ (fileEntries extra7)
-                needs :: [FilePath] =   (ds ++ fs)
+                needs :: [FilePath] =   ds -- (ds ++ fs)
+            putIOwords ["\tds", showT ds]
+            putIOwords ["\tfs", showT fs]
 
-            when (inform debug) $
+            putIOwords ["\tns", showT ns]
+            putIOwords ["\tns2", showT ns2]
+            putIOwords ["\tns0", showT ns0]
+            when (informAll debug) $
                 putIOwords ["\n extra7------------------------docrep2panrep end if"
-                , showPretty extra7
-                , "needs ds with index.docrep", showT ds, "fs", showT fs]  
+                -- , showPretty extra7
+                , "needs ns with index.docrep", showT ns ]  
 
-            return (metaplus6{extra=extra7}, needs )
+            return (metaplus6{extra=extra7}, ns )
         else
             return (metaplus6 , [])    
 

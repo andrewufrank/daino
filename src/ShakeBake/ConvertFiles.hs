@@ -130,20 +130,20 @@ convertAny debug sourceP targetP flags layout out anyopName = do
                          ,   "\n\tfrom_filePath ", showT from_filePath, "added NEED automatically"
                          ,  "\n\t  file out", showT out]
         else do
-            putInform debug 
+            putInform NoticeLevel2 
                 ["\nconvertAny call", anyopName
                 ,  "\n\t from_filePathExt"
                     ,  " cause NEED for" ,showT from_filePathExt  
                 ,  "\n\t file out", showT out
                 ] 
             need [toFilePath from_filePathExt]    
-            putInform debug 
+            putInform NoticeLevel2 
                 ["\nconvertAny runErr2Action", anyopName
                 ,  "\n\t from_filePathExt",  " caused NEED which was then probably satisfied for ", showT from_filePathExt   
                 ,  "\n\t file out", showT out
                 ]
             needsFound <- runErr2action $ anyop debug flags from_filePathExt layout outP
-            when ((inform debug) && needsFound /= []) $ putIOwords 
+            when ((informAll debug) && needsFound /= []) $ putIOwords 
                 ["\nconvertAny runErr2Action", anyopName
                 ,  "\n\t needs found", showT needsFound
                 ] 
