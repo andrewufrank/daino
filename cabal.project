@@ -5,7 +5,6 @@
 tests: True
 
 packages: 
--- test1
     ./daino.cabal
 
 -- the open local packages have updates compared to the state in hackage
@@ -17,7 +16,6 @@ packages:
 --   ../uBase/uniform-time/*.cabal
   ../uBase/uniform-fileio/*.cabal 
 
---    ../u2to/uniform-convenience
 
     ../u4blog/uniform-json/*.cabal
 --    ../u4blog/uniform-webserver/*.cabal
@@ -26,7 +24,8 @@ packages:
     ../u4blog/uniform-shake/*.cabal
     ../u4blog/uniform-pandoc/*.cabal
 --    ../u4blog/uniform-http/*.cabal
---    ../u2to/uniform-convenience/*.cabal
+
+     ../u2to/uniform-convenience/*.cabal
 --    ../u2to/uniform-startapp/*.cabal
     ../u4blog/uniform-cmdLineArgs/*.cabal
 

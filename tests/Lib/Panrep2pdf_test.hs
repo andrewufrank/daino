@@ -45,7 +45,7 @@ test_toLatex = do
         texsnip <- panrep2texsnip debug metap1
         putIOwords ["test_toLatex setup texsnip done"]
 
-        (lat1, _, tt1) <- texsnip2tex debug  texsnip
+        (lat1, _, tt1) <- texsnip2tex debug def texsnip
         putInform debug ["test_toHtmlTest pr \n", tt1]
         write8 resLatex texFileType lat1
         write8 resLatex ttlFileType tt1

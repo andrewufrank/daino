@@ -15,7 +15,7 @@ import Test.Framework
 import Lib.Md2doc_test  -- to have siteHeader (i.e. layout)
  
 import Foundational.Filetypes4sites
-import Lib.IndexMake
+-- import Lib.IndexMake
 import UniformBase
 import Uniform.Pandoc
 -- import Wave.Doc2html

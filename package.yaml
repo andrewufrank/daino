@@ -86,27 +86,27 @@ dependencies:
     - uniform-pandoc >=0.1.6.3  
     - uniform-latex2pdf >= 0.1.5.7
     - uniform-strings >= 0.1.5.1
-    # - uniform-fileio
-    # - pandoc-types  # needed? 
-    # -- - uniform-ftp
-    # - aeson 
-    # - optparse-applicative -- does not allow value in cmdlineargs
-    - data-default-class
-    # for default values, move down 
-    - dir-traverse # for checkprocess
-    - deepseq
-    # - pandoc-sidenote
-    # - pandoc 
+    # # - uniform-fileio
+    # # - pandoc-types  # needed? 
+    # # -- - uniform-ftp
+    # # - aeson 
+    # # - optparse-applicative -- does not allow value in cmdlineargs
+    - data-default-class # for CmdLineFlags
+    # # for default values, move down 
+    # - dir-traverse # for checkprocess
+    # - deepseq
+    # # - pandoc-sidenote
+    # # - pandoc 
     - path
     - path-io
-    - unix
+    # - unix
     - filepath
     - containers
-    - doctemplates
-    - ReplaceUmlaut
+    # - doctemplates
+    # - ReplaceUmlaut
     - shake
-    # - system-filepath 
-    # - directory
+    # # - system-filepath 
+    # # - directory
 library:
   source-dirs: 
       - src 

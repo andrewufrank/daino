@@ -51,13 +51,9 @@ library
       OverloadedStrings
   ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-unused-imports -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports
   build-depends:
-      ReplaceUmlaut
-    , base >4.7 && <5
+      base >4.7 && <5
     , containers
     , data-default-class
-    , deepseq
-    , dir-traverse
-    , doctemplates
     , filepath
     , path
     , path-io
@@ -72,7 +68,6 @@ library
     , uniform-watch
     , uniform-webserver
     , uniformBase >=0.1.5.1
-    , unix
   default-language: Haskell2010
 
 executable daino3
@@ -85,14 +80,10 @@ executable daino3
       OverloadedStrings
   ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-unused-imports -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports
   build-depends:
-      ReplaceUmlaut
-    , base >4.7 && <5
+      base >4.7 && <5
     , containers
     , daino
     , data-default-class
-    , deepseq
-    , dir-traverse
-    , doctemplates
     , filepath
     , path
     , path-io
@@ -107,7 +98,6 @@ executable daino3
     , uniform-watch
     , uniform-webserver
     , uniformBase >=0.1.5.1
-    , unix
   default-language: Haskell2010
 
 test-suite testall
@@ -116,7 +106,6 @@ test-suite testall
   other-modules:
       Lib.Docrep2panrep_test
       Lib.Example_test
-      Lib.IndexMake_test
       Lib.Md2doc_test
       Lib.Panrep2html_test
       Lib.Panrep2pdf_test
@@ -128,15 +117,11 @@ test-suite testall
   ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-unused-imports -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       HTF
-    , ReplaceUmlaut
     , base >4.7 && <5
     , containers
     , daino
     , data-default-class
     , data-hash
-    , deepseq
-    , dir-traverse
-    , doctemplates
     , filepath
     , path
     , path-io
@@ -152,7 +137,6 @@ test-suite testall
     , uniform-watch
     , uniform-webserver
     , uniformBase
-    , unix
   default-language: Haskell2010
 
 test-suite testrun
@@ -168,15 +152,11 @@ test-suite testrun
   ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-unused-imports -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       HTF
-    , ReplaceUmlaut
     , base >4.7 && <5
     , containers
     , daino
     , data-default-class
     , data-hash
-    , deepseq
-    , dir-traverse
-    , doctemplates
     , filepath
     , path
     , path-io
@@ -192,5 +172,4 @@ test-suite testrun
     , uniform-watch
     , uniform-webserver
     , uniformBase
-    , unix
   default-language: Haskell2010

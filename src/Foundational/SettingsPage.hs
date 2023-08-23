@@ -27,13 +27,17 @@ module Foundational.SettingsPage
     ) where
 
 import UniformBase
-import Data.Default.Class ( Default(def) ) -- to define a default class for siteLayout 
 import Uniform.Json ( FromJSON, ToJSON (toJSON), fromJSON )
 import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..))
-import qualified Data.Map as M
 import Uniform.Latex
 
+import qualified Data.Map as M
+import Data.Default.Class ( Default(def) ) -- to define a default class for siteLayout 
 import Path (parent)
+
+
+
+
 progName, progTitle :: Text
 progName = "daino"  
 progTitle = "constructing a static site generator" :: Text
