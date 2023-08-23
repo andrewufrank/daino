@@ -114,6 +114,9 @@ shakeAll debug sett3 flags causedby = do
 
         , "\n======================================="
         ]
+
+    -- to cllect the list of all md files to publish
+    -- and pass it on     
     flags2 <- collectMd2include sett3 flags 
     putIOwords ["flags", showPretty flags2]        
     callIO $ shakeMD debug sett3  flags2  doughP bakedP

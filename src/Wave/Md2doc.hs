@@ -158,6 +158,7 @@ includeBakeTest3  pubf vers1 vis1 =
 
 collectMd2include :: Settings   -> PubFlags -> ErrIO PubFlags 
 collectMd2include sett4 flags = do 
+    putInform NoticeLevel0 ["collectMd2include start"]
     let doughP = doughDir . siteLayout $ sett4
         -- bakedP = bakedDir . siteLayout $ sett4
         -- debug = debug
@@ -166,14 +167,14 @@ collectMd2include sett4 flags = do
                 ["**/*." <> "md"]
 
         -- only files, not directories
-    putInform NoticeLevel0 ["collectMd2include fs1", showPretty fs1]
+    putInform NoticeLevel1 ["collectMd2include fs1", showPretty fs1]
     let exclude = t2s (doNotBake  (siteLayout sett4)) 
         fs2 = filter (not . (isInfixOf' exclude)  ) fs1
     putInform NoticeLevel0 ["collectMd2include fs2", showPretty fs2]
-    fs3 <-  mapM (filterNeeds NoticeLevel0 flags sett4 ) $
+    fs3 <-  mapM (filterNeeds NoticeLevel1 flags sett4 ) $
                     map makeRelFile fs2
     let fs4 = map (removeExtension  . makeRelativeP doughP) $   catMaybes fs3 :: [Path Rel File]
-    putInform NoticeLevel1 ["collectMd2include fs4", showT fs4]
+    putInform NoticeLevel1 ["collectMd2include the list of md files to include fs4\n", showT fs4]
 
     -- let fs5 = map (replaceDirectoryP doughP bakedP) $  
     --             map (replaceExtension' "html" ) fs4
