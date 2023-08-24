@@ -2,40 +2,12 @@
 --
 -- Module Shake2 :
 ----------------------------------------------------------------------
-{-  die struktur geht von den files aus, die man braucht und
-    diese rekonstruieren die directories wieder, wenn sie kreiert werden.
+{- the conversion starts with the root files to produce, 
+    i.e. only index.md 
+    This triggers the rule html -> panrep 
+    and panrep2html produces the needs for *.pdf, templates, jpg and bib
 
-    the start is with /getNeeds/ in phony:
-        - md produces pdf
-            - with convTex2pdf, calling
-            - write2pdf (runs lualatex)
-        - md produces html
-            - with convPanrep2html, calling
-            - bakeOneFile2panrep
-            - docrep2panrep
-
-    wird moeglicherweise ein filetyp (durch extension fixiert) aus zwei quellen produziert so muss dass in der regel fuer die generation
-        beruecksichtigt werden
-        (probleme html - entweder durch uebersestzen oder als resource eingestellt
-        (problem pfd - dito )
-        )
-
-        anders geloest: 
-        test ob file in dough existiert, dann kopiert
-
-    ausgeschlossene directories werden durch DNB  markiert
-    die files die in diesen gefunden werden, nicht zum umwandeln
-        anzumelden, indem deren namen nicht in "want" eingeschlossen
-        werden.
-
-    pdf werden aus tex erzeugt, die aus texsnip erzeugt werden.
-    jedes md ergibt ein texsnip
-    jedes texsnip gibt ein tex
-        die indexseiten, die grosse themen zusammenfassen
-        produzieren ein tex mit includes fuer die subseiten
-        und der preamble/post fuer e.g. biblio
-    jedes tex gibt ein pdf
-    das heisst: jedes md gibt ein pdf (auch eingestellte)
+    for now the css, dtpl, jpg etc. are still included
     -}
 ----------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
@@ -59,7 +31,7 @@ import Foundational.SettingsPage
 import Foundational.CmdLineFlags
 import ShakeBake.ConvertFiles
     ( io2bool, convertAny, copyFileToBaked )
-import Wave.Md2doc 
+-- import Wave.Md2doc 
 
 -- shakeDelete :: SiteLayout -> FilePath -> ErrIO ()
 -- {- ^ experimental - twich found delete of md
@@ -125,7 +97,7 @@ shakeAll debug sett3 flags causedby = do
     --             :: [FilePath]
         fs4 = ["index.html"]
         flags2 = flags{mdFiles = map makeRelFile fs4}
-    putIOwords ["flags", showPretty flags2]        
+    putIOwords ["flags", showT flags2]        
     callIO $ shakeMD NoticeLevel2 sett3  flags2  doughP bakedP
 
 -- todo remove shakeMD and pass only layout
@@ -169,59 +141,36 @@ shakeMD debug sett4 flags  doughP bakedP = shakeArgs2 bakedP $ do
     want ["allMarkdownConversion"]
 
     phony "allMarkdownConversion" $ do
+        -- let debug = NoticeLevel0
         -- these are functions to construct the desired results
-        -- which then produce them
-        -- the original start needs in baked (from the files in dough)
-
+    
         -- put a link to the themplates folder into dough/resources
         -- otherwise confusion with copying the files from two places
 
-        -- from the theme folder copy woff, css and jpg/JPG 
-        -- woffTheme <- getNeeds debug sett4 themeP bakedP "woff" "woff"
-        -- needP woffTheme
-        -- imgsTheme <- getNeeds debug sett4   themeP bakedP "jpg" "jpg"
-        -- imgs2Theme <- getNeeds debug sett4   themeP bakedP "JPG" "JPG"
-        -- needP imgsTheme
-        -- needP imgs2Theme
-        -- cssTheme <- getNeeds debug sett4 themeP bakedP "css" "css"
-        -- needP cssTheme
+        needPwithoutput "initial" "md" (mdFiles flags)
 
-            -- do the images first to be findable by latex processor
-        imgs <- getNeeds debug sett4   doughP bakedP "jpg" "jpg"
-        imgs2 <- getNeeds debug sett4   doughP bakedP "JPG" "JPG"
-        needP imgs
-        needP imgs2
-        -- needPwithoutput imgs
-        -- needPwithoutput imgs2
-
-        -- htmls <- getNeedsMD debug flags sett4 doughP bakedP "md" "html"
-        let needsSpec =  map (bakedP </> ) $ -- (replaceDirectoryP doughP bakedP) $  
-                map (replaceExtension' "html" ) (mdFiles flags)
-        needPwithoutput "md" "html" needsSpec
-        putIOwords ["need mdFiles"]
-        -- let mdFiles = map (makeRelativeP bakedP )  htmls
-    
-        -- check against the list (quicker than reading files)
-        unless (quickFlag flags) $ do 
-            pdfs <- getNeedsMD debug flags sett4 doughP bakedP "md" "pdf"
-            needPwithoutput "md" "pdf" pdfs
-
+        -- imgs <- getNeeds debug sett4   doughP bakedP "jpg" "jpg"
+        -- imgs2 <- getNeeds debug sett4   doughP bakedP "JPG" "JPG"
+        -- needP imgs
+        -- needP imgs2
+        -- -- needPwithoutput imgs
+        -- -- needPwithoutput imgs2
 
         csss <- getNeeds debug sett4   doughP bakedP "css" "css"
         needP csss  -- needPwithoutput csss
 
-        -- fonts, takes only the woff
-        -- from the link to the template folder
-        woffs <- getNeeds debug sett4   doughP bakedP "woff" "woff"
-        needP woffs
+        -- -- fonts, takes only the woff
+        -- -- from the link to the template folder
+        -- woffs <- getNeeds debug sett4   doughP bakedP "woff" "woff"
+        -- needP woffs
 
-        publist <- getNeeds debug sett4   doughP bakedP "html" "html"
-        needP publist
-        -- for the pdfs which are already given in dough
-        pdfs2 <- getNeeds debug sett4   doughP bakedP "pdf" "pdf"
-        needP pdfs2
-        bibs <- getNeeds debug sett4   doughP bakedP "bib" "bib"
-        needP bibs
+        -- publist <- getNeeds debug sett4   doughP bakedP "html" "html"
+        -- needP publist
+        -- -- for the pdfs which are already given in dough
+        -- pdfs2 <- getNeeds debug sett4   doughP bakedP "pdf" "pdf"
+        -- needP pdfs2
+        -- bibs <- getNeeds debug sett4   doughP bakedP "bib" "bib"
+        -- needP bibs
 
 
     (toFilePath bakedP <> "**/*.html") %> \out -> -- from Panrep
@@ -238,30 +187,13 @@ shakeMD debug sett4 flags  doughP bakedP = shakeArgs2 bakedP $ do
             
             if fileExists 
                 then copyFileToBaked debug doughP bakedP out
-                else 
-            -- csss <- getNeeds debug sett4 doughP bakedP "css" "css"
-            -- needP csss
-            -- -- csss seems not necessary
-            -- imgs <- getNeeds debug sett4 doughP bakedP "jpg" "jpg"
-            -- imgs2 <- getNeeds debug sett4 doughP bakedP "JPG" "JPG"
-            -- needP imgs
-            -- needP imgs2
-            -- putInform debug ["rule **/*.html", showT out]
-  
+                else   
                     convertAny debug bakedP bakedP flags sett4 out  "convPanrep2html"
 
 
     (toFilePath bakedP <> "**/*.pdf") %> \out -> -- insert pdfFIles1
         do
             putInform debug ["rule **/*.pdf", showT out]
-            -- imgs <- getNeeds debug sett4 doughP bakedP "jpg" "jpg"
-            -- imgs2 <- getNeeds debug sett4 doughP bakedP "JPG" "JPG"
-            -- needP imgs
-            -- needP imgs2
-            -- why is this here necessary: failed on testSort.pdf?
-            -- was ein jpg will ?
-            -- TODO improve error from lualatex
-            -- putInform debug ["rule **/*.pdf need", showT imgs, showT imgs2]
 
             let outP = makeAbsFile out :: Path Abs File
             let fromfile = doughP </> makeRelativeP bakedP outP
@@ -284,21 +216,11 @@ shakeMD debug sett4 flags  doughP bakedP = shakeArgs2 bakedP $ do
 
     (toFilePath bakedP <> "**/*.docrep") %> \out -> -- insert pdfFIles1  -- here start with doughP
         do
-            -- bibs <- getNeeds debug sett4 doughP bakedP "bib" "bib"
-            -- needP bibs
-            -- csls <- getNeeds debug sett4 doughP bakedP "csl" "csl"
-            -- needP csls
-            -- putInform debug ["rule **/*.docrep need", showT bibs]
-            -- putInform debug ["rule **/*.docrep need", showT csls]
-
             convertAny debug doughP bakedP flags sett4 out  "convMD2docrep"
             return ()
 
     -- rest are copies
 
-    -- (toFilePath bakedP <> "/*.md") -- is required because the convA2B - but this is fixed 
-    --     %> \out -> -- insert css -- no subdir
-            -- copyFileToBaked debug doughP bakedP out
     (toFilePath bakedP <> "/*.css")
         %> \out -> -- insert css -- no subdir
             copyFileToBaked debug doughP bakedP out
@@ -374,72 +296,72 @@ getNeeds debug  sett4 sourceP targetP extSource extTarget = do
             ]
     return filesWithTarget
 
-getNeedsMD ::
-    NoticeLevel 
-    -> PubFlags 
-    -> Settings   -- perhaps the next two can be
-    -> Path Abs Dir  -- ^ source dir
-    -> Path Abs Dir  -- ^ target dir
-    -> Text  -- ^ extension source
-    -> Text  -- ^ extension target
-    -> Action [Path Abs File]
-{- ^ find the files which are needed (generic)
-  from source with extension ext
-  does not include directory DNB (do not bake)
-  does include a filter for version field in YAML header 
--}
-getNeedsMD debug flags sett4 sourceP targetP extSource extTarget = do
-    -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
-    let sameExt = extSource == extTarget
-    when (inform debug) $
-        putIOwords
-            [ "===================\ngetNeedsMD extSource"
-            , extSource
-            , "extTarget"
-            , extSource
-            , "sameExt"
-            , showT sameExt
-            , "\ndebug", showT debug
-            ]
+-- getNeedsMD ::
+--     NoticeLevel 
+--     -> PubFlags 
+--     -> Settings   -- perhaps the next two can be
+--     -> Path Abs Dir  -- ^ source dir
+--     -> Path Abs Dir  -- ^ target dir
+--     -> Text  -- ^ extension source
+--     -> Text  -- ^ extension target
+--     -> Action [Path Abs File]
+-- {- ^ find the files which are needed (generic)
+--   from source with extension ext
+--   does not include directory DNB (do not bake)
+--   does include a filter for version field in YAML header 
+-- -}
+-- getNeedsMD debug flags sett4 sourceP targetP extSource extTarget = do
+--     -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
+--     let sameExt = extSource == extTarget
+--     when (inform debug) $
+--         putIOwords
+--             [ "===================\ngetNeedsMD extSource"
+--             , extSource
+--             , "extTarget"
+--             , extSource
+--             , "sameExt"
+--             , showT sameExt
+--             , "\ndebug", showT debug
+--             ]
 
-    filesWithSource :: [Path Rel File] <- -- getDirectoryFilesP
-        getFilesToBake
-             (doNotBake  (siteLayout sett4))   -- exclude files containing
-            sourceP
-            ["**/*." <> t2s extSource]
-    -- filter for version < publish in YAML header 
-    files2 :: [Maybe (Path Abs File)] <- runErr2action 
-                $ mapM (filterNeeds debug flags sett4 ) filesWithSource
-    let files3 = map (makeRelativeP sourceP) $   catMaybes files2 :: [Path Rel File]
-    -- this is the complete list of all included mds
-    -- use for all following checks 
+--     filesWithSource :: [Path Rel File] <- -- getDirectoryFilesP
+--         getFilesToBake
+--              (doNotBake  (siteLayout sett4))   -- exclude files containing
+--             sourceP
+--             ["**/*." <> t2s extSource]
+--     -- filter for version < publish in YAML header 
+--     files2 :: [Maybe (Path Abs File)] <- runErr2action 
+--                 $ mapM (filterNeeds debug flags sett4 ) filesWithSource
+--     let files3 = map (makeRelativeP sourceP) $   catMaybes files2 :: [Path Rel File]
+--     -- this is the complete list of all included mds
+--     -- use for all following checks 
     
-    let filesWithTarget =
-            if sameExt
-                then [targetP </> c | c <- files3] :: [Path Abs File]
-                            -- was filesWithSource
-                else
-                    map (replaceDirectoryP sourceP targetP) $  
-                    map
-                        (replaceExtension' extTarget )
-                            (catMaybes files2) :: [Path Abs File]
-    -- when (inform debug) $ do
-    --     putIOwords
-    --         [ "===================\ngetNeeds -  source files 1 not filtered"
-    --         , "for ext"
-    --         , extSource
-    --         , "files\n"
-    --         , showT filesWithSource
-    --         ]
-    when ((inform debug) && (filesWithTarget /= [])) $ do
-        putIOwords
-            [ "===================\ngetNeeds bakePDF -  target files 2 filtered"
-            , "for ext"
-            , extTarget
-            , "files\n"
-            , showT filesWithTarget
-            ]
-    return filesWithTarget
+--     let filesWithTarget =
+--             if sameExt
+--                 then [targetP </> c | c <- files3] :: [Path Abs File]
+--                             -- was filesWithSource
+--                 else
+--                     map (replaceDirectoryP sourceP targetP) $  
+--                     map
+--                         (replaceExtension' extTarget )
+--                             (catMaybes files2) :: [Path Abs File]
+--     -- when (inform debug) $ do
+--     --     putIOwords
+--     --         [ "===================\ngetNeeds -  source files 1 not filtered"
+--     --         , "for ext"
+--     --         , extSource
+--     --         , "files\n"
+--     --         , showT filesWithSource
+--     --         ]
+--     when ((inform debug) && (filesWithTarget /= [])) $ do
+--         putIOwords
+--             [ "===================\ngetNeeds bakePDF -  target files 2 filtered"
+--             , "for ext"
+--             , extTarget
+--             , "files\n"
+--             , showT filesWithTarget
+--             ]
+--     return filesWithTarget
 
 needPwithoutput t1 t2 files = do 
         putInform NoticeLevel1 ["\nneeds set", t1, t2, showT files]
