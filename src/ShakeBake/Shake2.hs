@@ -147,7 +147,7 @@ shakeMD debug sett4 flags  doughP bakedP = shakeArgs2 bakedP $ do
         -- put a link to the themplates folder into dough/resources
         -- otherwise confusion with copying the files from two places
 
-        needPwithoutput "initial" "md" (mdFiles flags)
+        needPwithoutput "initial" "md" (map (bakedP </>) $ mdFiles flags)
 
         -- imgs <- getNeeds debug sett4   doughP bakedP "jpg" "jpg"
         -- imgs2 <- getNeeds debug sett4   doughP bakedP "JPG" "JPG"

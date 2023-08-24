@@ -83,7 +83,7 @@ panrep2html debug pubFlags  metaplus4 = do
     -- htm1 <- meta2xx writeHtml5String2 (metap metaplus4)
 
     --if this is an index file it has files and dirs 
-    putInform debug ["panrep2html", "extra4", showPretty extra4]
+    -- putInform debug ["panrep2html", "extra4", showPretty extra4]
 
     let files = fileEntries  $ extra4 :: [IndexEntry2]
         dirs = dirEntries  $ extra4 :: [IndexEntry2]
@@ -118,8 +118,8 @@ panrep2html debug pubFlags  metaplus4 = do
     when ((inform debug) && (needs /= []) )$
             putIOwords ["panrep2html", "needs ", showT needs ]
 
-    putInform debug ["panrep2html", "extra5", showPretty extra5]
-    putInform debug ["panrep2html", "metaplus5", showPretty metaplus5]
+    -- putInform debug ["panrep2html", "extra5", showPretty extra5]
+    -- putInform debug ["panrep2html", "metaplus5", showPretty metaplus5]
 
     let hpl1 = renderTemplate targetTempl (toJSON metaplus5)  -- :: Doc Text
     let ht1 = render (Just 50) hpl1  -- line length, can be Nothing
@@ -127,12 +127,8 @@ panrep2html debug pubFlags  metaplus4 = do
     let ttpl1 = renderTemplate testTempl (toJSON metaplus5)  -- :: Doc Text
     let tt1 = render (Just 50) ttpl1  -- line length, can be Nothing
 
-    putInform debug ["panrep2html render html done"
-        , "ht1",  ht1
-        ]
-    putInform debug ["panrep2html render testTemplate done"
-        , "tt1",  tt1
-        ]
+    -- putInform debug ["panrep2html render html done", "ht1",  ht1 ]
+    -- putInform debug ["panrep2html render testTemplate done", "tt1",  tt1 ]
 
     -- bakeOnePanrep2html will write to disk
     return (HTMLout ht1, needs, tt1)

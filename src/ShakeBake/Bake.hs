@@ -49,12 +49,12 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
     when (inform debug) $    putIOwords
         [ "\n-----------------"
         , "bakeOneMD2docrep 1 fn", showT inputFn
-        , "\n resfn2", showT resfn2
+        -- , "\n resfn2", showT resfn2
         ]
     -- let layout = siteLayout sett3
     -- let doughP = doughDir layout
     -- let hpname = blogAuthorToSuppress . siteLayout $ sett3
-    dr4 <- readMarkdownFile2docrep debug sett3  inputFn 
+    dr4 <- readMarkdownFile2docrep NoticeLevel0 sett3  inputFn 
     -- dr4 <- addRefs debug dr3
 
     write8 resfn2 docrepFileType dr4
@@ -63,7 +63,7 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
         putIOwords
             [ "\n-----------------"
             , "bakeOneMD2docrep done resfn2"
-            , showT resfn2
+            -- , showT resfn2
             ]
     return []
 
