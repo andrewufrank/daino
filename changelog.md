@@ -71,3 +71,6 @@ used versions 9.0.2
     docrep and panrep contain only meta
     abandoned 
 0.1.5.6.3 using the uniform-pandoc 0.1.5.6.3
+
+0.1.6.1 using strict need, start with index.html 
+    and everthing follows

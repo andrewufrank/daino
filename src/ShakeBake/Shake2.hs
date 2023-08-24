@@ -117,11 +117,21 @@ shakeAll debug sett3 flags causedby = do
 
     -- to cllect the list of all md files to publish
     -- and pass it on     
-    flags2 <- collectMd2include sett3 flags 
+    -- flags2 <- collectMd2include sett3 flags 
+    let 
+        -- relBaked = makeRelDir "bakedTestSite"   -- TODO 
+    --             -- makeRelativeP doughP bakedP 
+    --     fs4 = map (addDirFP (toFilePath relBaked)  ) [ "index.html"]
+    --             :: [FilePath]
+        fs4 = ["index.html"]
+        flags2 = flags{mdFiles = map makeRelFile fs4}
     putIOwords ["flags", showPretty flags2]        
-    callIO $ shakeMD debug sett3  flags2  doughP bakedP
+    callIO $ shakeMD NoticeLevel2 sett3  flags2  doughP bakedP
 
 -- todo remove shakeMD and pass only layout
+
+addDirFP :: FilePath -> FilePath -> FilePath 
+addDirFP dir1 fn1 = dir1 </> fn1 
 
 type RelFiles = [Path Rel File]
 
