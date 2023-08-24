@@ -48,12 +48,12 @@ collectIndex :: NoticeLevel -> PubFlags -> Settings -> Path Abs Dir
 -- starts with dir of index
 -}
 collectIndex debug pubf sett4 doughP fn dv1 = do
-    putInform debug ["collectIndex", "start", showPretty fn]
+    putInform debug ["collectIndex 1", "start", showPretty fn]
 
 
-    (dirs, files) :: ([Path Abs Dir], [Path Abs File]) <- getDirContent2dirs_files debug pubf sett4 doughP  fn
+    (dirs, files) :: ([Path Abs Dir], [Path Abs File]) <- getDirContent2dirs_files NoticeLevel0 pubf sett4 doughP  fn
 
-    putInform debug ["collectIndex", "\n dirs"
+    putInform debug ["collectIndex 2", "\n dirs"
                     , showT dirs, "\n files", showT files]
 
     let    mdfs = mdFiles pubf :: [Path Rel File]
@@ -65,7 +65,7 @@ collectIndex debug pubf sett4 doughP fn dv1 = do
     let dv2 = dv1{dirEntries = map (initializeIx2dir (mdFiles pubf) doughP) dirs2
                     , fileEntries = map (initializeIx2file (mdFiles pubf) doughP) files2}
 
-    putInform debug ["collectIndex"
+    putInform debug ["collectIndex 3"
         , "\ndv2 dirs ixfn", showT (map ixfn . dirEntries $ dv2)
         , "\ndv2 dirs link", showT (map link . dirEntries $ dv2)
         , "\ndv2 files ixfn", showT (map ixfn . fileEntries $ dv2)
@@ -84,7 +84,7 @@ check2publishFiles dough mdfs fs = if check2publish dough mdfs fs
 
 check2publish :: Path Abs Dir -> [Path Rel File] -> Path Abs File -> Bool
 check2publish doughP mdfs fs = t
-    where   t = fs2 `elem` mdfs
+    where   t = True  -- TODO get old tests back -- fs2 `elem` mdfs
             fs2 = makeRelativeP doughP . removeExtension $ fs
 
 initializeIx2dir :: [Path Rel File] -> Path Abs Dir -> Path Abs Dir -> IndexEntry2 

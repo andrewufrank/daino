@@ -57,7 +57,12 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
     dr4 <- readMarkdownFile2docrep NoticeLevel0 sett3  inputFn 
     -- dr4 <- addRefs debug dr3
 
+-- todo split readMarkdownFile2docrep to return the need for the 
+-- biblio file 
+
     write8 resfn2 docrepFileType dr4
+
+
 
     when (inform debug) $
         putIOwords

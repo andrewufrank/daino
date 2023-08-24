@@ -132,7 +132,7 @@ convertAny debug sourceP targetP flags layout out anyopName = do
         else do
             putInform debug 
                 ["\nconvertAny call", anyopName
-                ,  "\n\t from_filePathExt"
+                -- ,  "\n\t from_filePathExt"
                     ,  " cause NEED for" ,showT from_filePathExt  
                         -- should be from doughP
                 ,  "\n\t file out", showT out

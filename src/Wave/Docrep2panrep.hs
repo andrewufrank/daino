@@ -66,8 +66,8 @@ docrep2panrep debug pubf metaplus5 = do
     -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
     when (inform debug) $
         putIOwords
-            ["-------------------------docrep2panrep"
-             , "metaplus: \n", showPretty metaplus5
+            ["-------------------------docrep2panrep 1"
+            --  , "metaplus: \n", showPretty metaplus5
                 -- , "\np1: ", showT p1
                 ]
 --     -- let pr = Panrep
@@ -100,7 +100,7 @@ docrep2panrep debug pubf metaplus5 = do
                      , extra = extra6 }
         -- panrep2 = Panrep y2 p1
 
-    putInform debug ["docrep2panrep"
+    putInform debug ["docrep2panrep 2"
             , showT extra6
                 -- , "hpname", showT hpname
                 -- , "\nauthorReduced", authorReduced
@@ -111,8 +111,9 @@ docrep2panrep debug pubf metaplus5 = do
             extra7 <- collectIndex debug pubf sett4 doughP mdFileDir extra6
 
             when (inform debug) $
-                putIOwords ["\n ix2------------------------docrep2panrep after collectIndex"
-                , showPretty extra7 ]
+                putIOwords ["\n ix2-2-----------------------docrep2panrep after collectIndex"
+                -- , showPretty extra7 
+                ]
             -- attention the dir/index is one level deeper than the files
             let
                 ns  =  map (<.> ("docrep" :: FilePath ) ) ns2
