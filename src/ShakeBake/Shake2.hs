@@ -26,23 +26,10 @@ module ShakeBake.Shake2 where
 
 import           Uniform.Shake
 import Foundational.SettingsPage
-    -- ( SiteLayout(doughDir, bakedDir, themeDir),
-    --   Settings(siteLayout) )
-import Foundational.CmdLineFlags
-import ShakeBake.ConvertFiles
-    ( io2bool, convertAny, copyFileToBaked )
--- import Wave.Md2doc 
 
--- shakeDelete :: SiteLayout -> FilePath -> ErrIO ()
--- {- ^ experimental - twich found delete of md
---  not yet used
--- -}
--- shakeDelete _ filepath =
---     putIOwords
---         [ "\n\n*******************************************"
---         , "experimental -- twich found  DELETED MD file "
---         , s2t filepath
---         ]
+import Foundational.CmdLineFlags
+
+
 
 shakeArgs2 :: Path b t -> Rules () -> IO ()
 
