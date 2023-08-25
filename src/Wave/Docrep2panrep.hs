@@ -48,7 +48,7 @@ import Uniform.Shake
 import Uniform.Http () --- out ( HTMLout )
 
 import Data.Maybe (fromMaybe)
-import Lib.IndexCollect ( collectIndex )
+import Lib.IndexCollect 
 import qualified Data.Map as M
 import Development.Shake.FilePath (makeRelative)
 
@@ -106,38 +106,39 @@ docrep2panrep debug pubf metaplus5 = do
     --             -- , "\nauthorReduced", authorReduced
     --             ]
 
-    if isIndexPage mdFile5
-        then do
-            extra7 <- collectIndex NoticeLevel0 pubf sett4 doughP mdFileDir extra6
+    -- if isIndexPage mdFile5
+    --     then do
+    --         extra7 <- collectIndex NoticeLevel0 pubf sett4 doughP mdFileDir extra6
 
-            -- when (inform debug) $
-            --     putIOwords ["\n ix2-2-----------------------docrep2panrep after collectIndex"
-            --     , showPretty extra7 
-            --     ]
-            -- attention the dir/index is one level deeper than the files
-            let
-                ns  =  map (<.> ("docrep" :: FilePath ) ) ns2
-                ns2 = map ((toFilePath bakedP) </>) . map (makeRelative (toFilePath doughP)) $ ns0
-                            :: [FilePath]
-                ds =  map ixfn (dirEntries  extra7) :: [FilePath]
-                fs =   map ixfn (fileEntries extra7) :: [FilePath]
-                ns0 = ds ++ fs 
-                -- ixs =  map addIndex (dirEntries  extra7) ++ (fileEntries extra7)
-                needs :: [FilePath] =   ns
-            -- putIOwords ["\tds", showT ds]
-            -- putIOwords ["\tfs", showT fs]
+    --         -- when (inform debug) $
+    --         --     putIOwords ["\n ix2-2-----------------------docrep2panrep after collectIndex"
+    --         --     , showPretty extra7 
+    --         --     ]
+    --         -- attention the dir/index is one level deeper than the files
+    --         let
+    --             ns  =  map (<.> ("docrep" :: FilePath ) ) ns2
+    --             ns2 = map ((toFilePath bakedP) </>) . map (makeRelative (toFilePath doughP)) $ ns0
+    --                         :: [FilePath]
+    --             ds =  map ixfn (dirEntries  extra7) :: [FilePath]
+    --             fs =   map ixfn (fileEntries extra7) :: [FilePath]
+    --             ns0 = ds ++ fs 
+    --             -- ixs =  map addIndex (dirEntries  extra7) ++ (fileEntries extra7)
+    --             needs :: [FilePath] =   ns
+    --         -- putIOwords ["\tds", showT ds]
+    --         -- putIOwords ["\tfs", showT fs]
 
-            -- putIOwords ["\tns", showT ns]
-            -- putIOwords ["\tns2", showT ns2]
-            -- putIOwords ["\tns0", showT ns0]
-            -- when (inform debug) $
-            --     putIOwords ["\n extra7------------------------docrep2panrep end if"
-            --     , showPretty extra7
-            --     , "needs ns with index.docrep", showT needs ]  
+    --         -- putIOwords ["\tns", showT ns]
+    --         -- putIOwords ["\tns2", showT ns2]
+    --         -- putIOwords ["\tns0", showT ns0]
+    --         -- when (inform debug) $
+    --         --     putIOwords ["\n extra7------------------------docrep2panrep end if"
+    --         --     , showPretty extra7
+    --         --     , "needs ns with index.docrep", showT needs ]  
 
-            return (metaplus6{extra=extra7}, needs )
-        else
-            return (metaplus6 , [])    
+    --         return (metaplus6{extra=extra7}, needs )
+    --     else
+    --         return (metaplus6 , [])    
+    return (metaplus6 , [])    
 
 -- addIndex :: FilePath -> FilePath 
 -- addIndex dir1 = dir1 </> "index.md"

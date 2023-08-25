@@ -156,33 +156,33 @@ includeBakeTest3  pubf vers1 vis1 =
 
 ----------  collect the list of all md files to include in the flags
 
-collectMd2include :: Settings   -> PubFlags -> ErrIO PubFlags 
-collectMd2include sett4 flags = do 
-    putInform NoticeLevel0 ["collectMd2include start"]
-    let doughP = doughDir . siteLayout $ sett4
-        -- bakedP = bakedDir . siteLayout $ sett4
-        -- debug = debug
-    fs1 :: [FilePath] <- callIO $ 
-            getDirectoryFilesIO (toFilePath doughP)
-                ["**/*." <> "md"]
+-- collectMd2include :: Settings   -> PubFlags -> ErrIO PubFlags 
+-- collectMd2include sett4 flags = do 
+--     putInform NoticeLevel0 ["collectMd2include start"]
+--     let doughP = doughDir . siteLayout $ sett4
+--         -- bakedP = bakedDir . siteLayout $ sett4
+--         -- debug = debug
+--     fs1 :: [FilePath] <- callIO $ 
+--             getDirectoryFilesIO (toFilePath doughP)
+--                 ["**/*." <> "md"]
 
-        -- only files, not directories
-    putInform NoticeLevel1 ["collectMd2include fs1", showPretty fs1]
-    let exclude = t2s (doNotBake  (siteLayout sett4)) 
-        fs2 = filter (not . (isInfixOf' exclude)  ) fs1
-    putInform NoticeLevel0 ["collectMd2include fs2", showPretty fs2]
-    fs3 <-  mapM (filterNeeds NoticeLevel1 flags sett4 ) $
-                    map makeRelFile fs2
-    let fs4 = map (removeExtension  . makeRelativeP doughP) $   catMaybes fs3 :: [Path Rel File]
-    putInform NoticeLevel1 ["collectMd2include the list of md files to include fs4\n", showT fs4]
+--         -- only files, not directories
+--     putInform NoticeLevel1 ["collectMd2include fs1", showPretty fs1]
+--     let exclude = t2s (doNotBake  (siteLayout sett4)) 
+--         fs2 = filter (not . (isInfixOf' exclude)  ) fs1
+--     putInform NoticeLevel0 ["collectMd2include fs2", showPretty fs2]
+--     fs3 <-  mapM (filterNeeds NoticeLevel1 flags sett4 ) $
+--                     map makeRelFile fs2
+--     let fs4 = map (removeExtension  . makeRelativeP doughP) $   catMaybes fs3 :: [Path Rel File]
+--     putInform NoticeLevel1 ["collectMd2include the list of md files to include fs4\n", showT fs4]
 
-    -- let fs5 = map (replaceDirectoryP doughP bakedP) $  
-    --             map (replaceExtension' "html" ) fs4
+--     -- let fs5 = map (replaceDirectoryP doughP bakedP) $  
+--     --             map (replaceExtension' "html" ) fs4
 
-    -- getFilesToBake
-    --          (doNotBake  (siteLayout sett4))   -- exclude files containing
-    --         (doughDir . siteLayout $ sett4)
-    -- let fs9 = map (makeRelFile) fs4 :: [Path Rel File]
-    -- putIOwords ["collectMd2include fs4", showPretty fs3]
+--     -- getFilesToBake
+--     --          (doNotBake  (siteLayout sett4))   -- exclude files containing
+--     --         (doughDir . siteLayout $ sett4)
+--     -- let fs9 = map (makeRelFile) fs4 :: [Path Rel File]
+--     -- putIOwords ["collectMd2include fs4", showPretty fs3]
     
-    return flags{mdFiles = fs4} 
+--     return flags{mdFiles = fs4} 

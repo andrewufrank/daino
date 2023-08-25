@@ -23,7 +23,7 @@
 module Foundational.CmdLineFlags
     (module Foundational.CmdLineFlags
     , def ) where
-import Uniform.Shake ( Text, File, Path, Rel, Zeros(zero) )
+import Uniform.Shake 
 import Data.Default.Class ( Default(..) )
 import UniformBase ( Text, Zeros(zero) ) -- to define a default class for pub flags 
 
@@ -48,7 +48,7 @@ data PubFlags = PubFlags
       , verboseFlag :: Bool
       , locationDir :: FilePath -- can be absolute or relative
                     -- the location given on the command line
-      , mdFiles :: [Path Rel File]
+      , mdFiles :: [Path Abs File]
         -- experiment to calculate the list of all md files to include
     }
     deriving (Show, Eq) -- no read for path

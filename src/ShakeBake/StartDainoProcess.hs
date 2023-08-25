@@ -98,7 +98,7 @@ dainoProcess debug1 flags = do
 
 
 
-    let link1 =  doughP </> (makeRelDir resourcesName) </> (makeRelDir themeName) :: Path Abs Dir
+    let link1 =  doughP `addDir` (makeRelDir resourcesName) `addDir` (makeRelDir themeName) :: Path Abs Dir
     let target1 = themeDir1  :: Path Abs Dir
     putInform debug ["dainoProcess 3 check simlink \n    target   ",  showT target1
                                             , "\n    linked to", showT link1]

@@ -169,7 +169,7 @@ sourceDirTestDocs :: Path Abs Dir
 sourceDirTestDocs = makeAbsDir "/home/frank/daino/docs/"
 
 sourceDirTestSite :: Path Abs Dir
-sourceDirTestSite = sourceDirTestDocs </> (makeRelDir "site")
+sourceDirTestSite = sourceDirTestDocs `addDir` (makeRelDir "site")
 -- ^ the dir with the source for the test site
 
 layoutDefaults :: Path Abs Dir -> Path Abs Dir ->  SiteLayout
@@ -179,8 +179,8 @@ layoutDefaults :: Path Abs Dir -> Path Abs Dir ->  SiteLayout
 layoutDefaults dough4test homeDir1 =
     zero -- SiteLayout
         { doughDir = dough4test
-        , bakedDir = homeDir1 </> makeRelDir "bakedTestSite" :: Path Abs Dir
-        ,  themeDir = (parent (parent dough4test)) </> makeRelDir "theme"
+        , bakedDir = homeDir1 `addDir` makeRelDir "bakedTestSite" :: Path Abs Dir
+        ,  themeDir = (parent (parent dough4test)) `addDir` makeRelDir "theme"
  
         ,  masterTemplateFile = makeRelFile "master7tufte.dtpl"
         , texTemplateFile = makeRelFile "resources/theme/templates/latex7.dtpl"
@@ -204,7 +204,7 @@ themeName = "theme"
 
 templatesDir :: SiteLayout -> Path Abs Dir
 templatesDir layout = themeDir layout 
-            `addFileName` (makeRelDir templatesName)
+            `addDir` (makeRelDir templatesName)
 
 blankAuthorName :: [Text] -> Text -> Text 
 -- suppress/oppress author name, if the author name is the same as one in the first arg (AUF, Andrew U..) then set it to empty else copy 

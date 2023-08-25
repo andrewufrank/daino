@@ -53,9 +53,9 @@ shakeAll :: NoticeLevel -> Settings -> PubFlags -> FilePath -> ErrIO ()
 -- ^ calls shake in the IO monade. this is in the ErrIO
 shakeAll debug sett3 flags causedby = do
     let layout = siteLayout sett3 
-        doughP = doughDir layout -- the regular dough
-        bakedP = bakedDir layout
-        themeP = themeDir layout
+        doughP = doughDir layout :: Path Abs Dir -- the regular dough
+        bakedP = bakedDir layout :: Path Abs Dir
+        themeP = themeDir layout :: Path Abs Dir
     putIOwords
         [ "\n\n===================================== shakeAll start"
         , "\n flags", showPretty flags
@@ -70,15 +70,19 @@ shakeAll debug sett3 flags causedby = do
 
     let 
         fs4 = ["index.html"]
-        fs4htmlTemplate =   ["/resources/theme/templates/static/tufte.css"
-                            , "/resources/theme/templates/static/tufte-extra.css"
-                            , "/resources/theme/templates/static/pandoc.css"
-                            , "/resources/theme/templates/static/tufte-additions.css"
-                            , "/resources/img/squared16.jpg" -- add rest 
-                            , "/resources/theme/templates/img/DSC04809.JPG"
+        fs4htmlTemplate =   ["resources/theme/templates/static/tufte.css"
+                            , "resources/theme/templates/static/tufte-extra.css"
+                            , "resources/theme/templates/static/pandoc.css"
+                            , "resources/theme/templates/static/tufte-additions.css"
+                            , "resources/img/squared16.jpg" -- add rest 
+                            , "resources/theme/templates/img/DSC04809.JPG"
                             -- banner . siteHeader $ sett3 
                             ]
-        flags2 = flags{mdFiles = map makeRelFile $ fs4 ++ fs4htmlTemplate}
+        flags2 = flags{mdFiles = 
+            concat [map (addFileName bakedP) $ map makeRelFile fs4
+                                    -- , map (bakedP </>) $ map makeRelFile fs4htmlTemplate
+                                    ]
+        }
     putIOwords ["mdFiles flags", showT $ mdFiles flags2]        
     callIO $ shakeMD NoticeLevel2 sett3  flags2   
 
@@ -118,7 +122,7 @@ shakeMD debug sett4 flags = do
         -- put a link to the themplates folder into dough/resources
         -- otherwise confusion with copying the files from two places
 
-        needPwithoutput "initial" "md" (map (bakedP </>) $ mdFiles flags)
+        needPwithoutput "initial" "md" ( mdFiles flags)
 
         -- imgs <- getNeeds debug sett4   doughP bakedP "jpg" "jpg"
         -- imgs2 <- getNeeds debug sett4   doughP bakedP "JPG" "JPG"
@@ -197,9 +201,9 @@ shakeMD debug sett4 flags = do
     (toFilePath bakedP <> "/*.css")
         %> \out -> -- insert css -- no subdir
             copyFileToBaked debug doughP bakedP out
-    (toFilePath bakedP <> "/*.csl")  -- not used with biber TODO 
-        %> \out -> -- insert css -- no subdir
-            copyFileToBaked debug doughP bakedP out
+    -- (toFilePath bakedP <> "/*.csl")  -- not used with biber TODO 
+    --     %> \out -> -- insert css -- no subdir
+    --         copyFileToBaked debug doughP bakedP out
 
     [toFilePath bakedP <> "/*.JPG", toFilePath bakedP <> "/*.jpg"]
     -- seems not to differentiate the JPG and jpg; copies whatever the original 
@@ -208,11 +212,11 @@ shakeMD debug sett4 flags = do
         -- no subdir (for now)
             copyFileToBaked debug doughP bakedP out
 
-    (toFilePath bakedP <> "**/*.bib")
-        %> \out -> copyFileToBaked debug doughP bakedP out
-    -- the fonts in a compressed format 
-    (toFilePath bakedP <> "**/*.woff")
-        %> \out -> copyFileToBaked debug doughP bakedP out
+    -- (toFilePath bakedP <> "**/*.bib")
+    --     %> \out -> copyFileToBaked debug doughP bakedP out
+    -- -- the fonts in a compressed format 
+    -- (toFilePath bakedP <> "**/*.woff")
+    --     %> \out -> copyFileToBaked debug doughP bakedP out
 
 
 -- getNeeds ::
@@ -367,6 +371,6 @@ copyFileToBaked debug doughP bakedP out = do
     let outP = makeAbsFile out :: Path Abs File
     when (inform debug) $ liftIO $ putIOwords ["\ncopyFileToBaked outP", showT outP]
     let fromfile = doughP </> makeRelativeP bakedP outP
-    putInform debug
-                ["\ncopyFileToBaked fromfile ", showT fromfile, "added NEED automatically"]
+    -- putInform debug
+    --             ["\ncopyFileToBaked fromfile ", showT fromfile, "added NEED automatically"]
     copyFileChangedP fromfile outP

@@ -41,37 +41,37 @@ import Uniform.Shake
 
 
 
-collectIndex :: NoticeLevel -> PubFlags -> Settings -> Path Abs Dir 
-        ->   Path Abs Dir -> DainoValues -> ErrIO DainoValues
-{- ^ the top call to collect the index data into the MetaPage
--- files and dirs 
--- starts with dir of index
--}
-collectIndex debug pubf sett4 doughP fn dv1 = do
-    putInform debug ["collectIndex 1", "start", showPretty fn]
+-- collectIndex :: NoticeLevel -> PubFlags -> Settings -> Path Abs Dir 
+--         ->   Path Abs Dir -> DainoValues -> ErrIO DainoValues
+-- {- ^ the top call to collect the index data into the MetaPage
+-- -- files and dirs 
+-- -- starts with dir of index
+-- -}
+-- collectIndex debug pubf sett4 doughP fn dv1 = do
+--     putInform debug ["collectIndex 1", "start", showPretty fn]
 
 
-    (dirs, files) :: ([Path Abs Dir], [Path Abs File]) <- getDirContent2dirs_files NoticeLevel0 pubf sett4 doughP  fn
+--     (dirs, files) :: ([Path Abs Dir], [Path Abs File]) <- getDirContent2dirs_files NoticeLevel0 pubf sett4 doughP  fn
 
-    putInform debug ["collectIndex 2", "\n dirs"
-                    , showT dirs, "\n files", showT files]
+--     putInform debug ["collectIndex 2", "\n dirs"
+--                     , showT dirs, "\n files", showT files]
 
-    let    mdfs = mdFiles pubf :: [Path Rel File]
-    let dirs2 = catMaybes (map (check2publishDirs doughP mdfs) dirs)
-    let files2 = catMaybes (map (check2publishFiles doughP mdfs) files)
-        -- map ((\fp -> addFileName fp (makeRelFile "index"))  . 
-                --   removeExtension . makeRelativeP doughP)   dirs 
-                        -- :: [Path Rel File]
-    let dv2 = dv1{dirEntries = map (initializeIx2dir (mdFiles pubf) doughP) dirs2
-                    , fileEntries = map (initializeIx2file (mdFiles pubf) doughP) files2}
+--     let    mdfs = mdFiles pubf :: [Path Rel File]
+--     let dirs2 = catMaybes (map (check2publishDirs doughP mdfs) dirs)
+--     let files2 = catMaybes (map (check2publishFiles doughP mdfs) files)
+--         -- map ((\fp -> addFileName fp (makeRelFile "index"))  . 
+--                 --   removeExtension . makeRelativeP doughP)   dirs 
+--                         -- :: [Path Rel File]
+--     let dv2 = dv1{dirEntries = map (initializeIx2dir (mdFiles pubf) doughP) dirs2
+--                     , fileEntries = map (initializeIx2file (mdFiles pubf) doughP) files2}
 
-    putInform debug ["collectIndex 3"
-        , "\ndv2 dirs ixfn", showT (map ixfn . dirEntries $ dv2)
-        , "\ndv2 dirs link", showT (map link . dirEntries $ dv2)
-        , "\ndv2 files ixfn", showT (map ixfn . fileEntries $ dv2)
-        , "\ndv2 files link", showT (map link . fileEntries $ dv2)
-        ]
-    return dv2
+--     putInform debug ["collectIndex 3"
+--         , "\ndv2 dirs ixfn", showT (map ixfn . dirEntries $ dv2)
+--         , "\ndv2 dirs link", showT (map link . dirEntries $ dv2)
+--         , "\ndv2 files ixfn", showT (map ixfn . fileEntries $ dv2)
+--         , "\ndv2 files link", showT (map link . fileEntries $ dv2)
+--         ]
+--     return dv2
 
 -- check2publishDirs :: Path Abs File -> Maybe [Path Abs File]
 -- a directory is published if the index file is set to publish 
