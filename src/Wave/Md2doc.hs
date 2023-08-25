@@ -71,7 +71,7 @@ readMarkdownFile2docrep debug sett3 fnin = do
                 ,  ("visibility", "public") 
                  , ("title", "Title MISSING")
                 , ("abstract", "Abstract MISSING")
-                , ("data", showT year2000)
+                , ("date", showT year2000)
                 , ("lang", "en")  -- todo conversion? 
                 , ("latLanguage", "english") -- for babel - todo 
                 , ("styleBiber","authoryear")
