@@ -36,6 +36,7 @@ import Foundational.SettingsPage
 import ShakeBake.Bake
  
 import ShakeBake.Shake2aux
+import Development.Shake (getDirectoryFilesIO)
 
 
 type RelFiles = [Path Rel File]
@@ -112,8 +113,11 @@ shakeMD debug sett4 flags = do
             let bakedFrom = replaceExtension'  "docrep" outP
             putInform debug ["rule **/*.panrep - bakedFrom", showT bakedFrom]
             need [toFilePath bakedFrom]
+
             fs2 <- getDirectoryFilesP bakedP ["*.docrep"]
             dr2 <- getDirectoryFilesP bakedP ["*/*.docrep"]
+            -- lint is triggered. perhaps should use the
+            -- non traced getDirectoryFilesIO?
             putIOwords ["rule **/*.panrep fs2", showT fs2]
             putIOwords ["rule **/*.panrep dr2", showT dr2]
 

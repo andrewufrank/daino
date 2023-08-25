@@ -46,10 +46,10 @@ import Uniform.Latex
 import Uniform.Shake  
 
 default (Text)
-readMarkdownFile2docrep  :: NoticeLevel -> Settings ->  Path Abs File ->  ErrIO Docrep 
+readMarkdownFile2docrep  :: NoticeLevel -> PubFlags -> Settings ->  Path Abs File ->  ErrIO Docrep 
 -- read a markdown file and convert to docrep
 -- reads setting file!
-readMarkdownFile2docrep debug sett3 fnin = do
+readMarkdownFile2docrep debug flags sett3 fnin = do
     -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
     -- when (inform debug) $ 
     putInform debug 
@@ -85,12 +85,14 @@ readMarkdownFile2docrep debug sett3 fnin = do
             -- defaults are set in panrep2html (and 2latex??)
     let p2 = addListOfDefaults defs1 p1
     m1 <- md2Meta_Process p2
+    -- process citeproc
     let mp1 = setMetaPlusInitialize sett3 fnin m1
-
+        incl = includeBakeTest3docrep flags (metap mp1) 
 
     putInform debug 
         ["readMarkdownFile2docrep end mp1", showPretty mp1]
-    return mp1
+    putInform NoticeLevel1 ["readMarkdownFile2docrep end include", showPretty incl]
+    return $ if incl then mp1 else zero 
 
 setMetaPlusInitialize :: Settings -> Path Abs File -> Meta -> DainoMetaPlus 
 -- to move the start values into the MetaPlus 
@@ -109,32 +111,32 @@ setMetaPlusInitialize sett3 fnin m1 =  zero { metap = m1
              
 -- filters cannot be moved to another file, circular imports!
 
-filterNeeds :: NoticeLevel -> PubFlags -> Settings -> Path Rel File -> ErrIO(Maybe (Path Abs File))
--- ^ for md check the flags
--- md given as rel file, completes with dir from sitelayout
+-- filterNeeds :: NoticeLevel -> PubFlags -> Settings -> Path Rel File -> ErrIO(Maybe (Path Abs File))
+-- -- ^ for md check the flags
+-- -- md given as rel file, completes with dir from sitelayout
 
-filterNeeds debug pubf sett4 fn =  do 
-    -- let debug = NoticeLevel2   -- avoid_output_fromHere_down
-    putInform debug ["filterNeeds", "\nPubFlags", showT pubf ]
-    let doughP = doughDir . siteLayout $ sett4 :: Path Abs Dir 
-    let fn2 = doughP </> fn :: Path Abs File 
-    filterNeeds2 debug pubf sett4 fn2 
+-- filterNeeds debug pubf sett4 fn =  do 
+--     -- let debug = NoticeLevel2   -- avoid_output_fromHere_down
+--     putInform debug ["filterNeeds", "\nPubFlags", showT pubf ]
+--     let doughP = doughDir . siteLayout $ sett4 :: Path Abs Dir 
+--     let fn2 = doughP </> fn :: Path Abs File 
+--     filterNeeds2 debug pubf sett4 fn2 
  
 
-filterNeeds2 :: NoticeLevel -> PubFlags -> Settings -> Path Abs File -> ErrIO(Maybe (Path Abs File))
--- check if file should be included (version > privateFlag)
-filterNeeds2 debug pubf sett4 fn2 =  do 
-    -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
-    -- when (inform debug) $ 
-        -- putIOwords ["filterNeeds2", "\nPubFlags", showT pubf ]
-    putInform debug ["filterNeeds2", "\nPubFlags", showT pubf ]
+-- filterNeeds2 :: NoticeLevel -> PubFlags -> Settings -> Path Abs File -> ErrIO(Maybe (Path Abs File))
+-- -- check if file should be included (version > privateFlag)
+-- filterNeeds2 debug pubf sett4 fn2 =  do 
+--     -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
+--     -- when (inform debug) $ 
+--         -- putIOwords ["filterNeeds2", "\nPubFlags", showT pubf ]
+--     putInform debug ["filterNeeds2", "\nPubFlags", showT pubf ]
     
-    d1 <- readMarkdownFile2docrep debug sett4  fn2 
-    putInform debug ["filterNeeds2", "\nMeta", showT ( d1) ]
+--     d1 <- readMarkdownFile2docrep debug sett4  fn2 
+--     putInform debug ["filterNeeds2", "\nMeta", showT ( d1) ]
 
-    let t = includeBakeTest3docrep pubf (metap $ d1)
-    putInform debug ["filterNeeds3 ", "\n t", showT t ]
-    return $ if t then Just fn2 else Nothing
+--     let t = includeBakeTest3docrep pubf (metap $ d1)
+--     putInform debug ["filterNeeds3 ", "\n t", showT t ]
+--     return $ if t then Just fn2 else Nothing
 
 
 -- includeBakeTest3docrep :: PubFlags -> MetaPage -> Bool 
