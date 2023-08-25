@@ -108,8 +108,8 @@ shakeMD debug sett4 flags = do
   shakeArgs2 bakedP $ do
 
     putInform debug [ "\nshakeMD dirs\n"
-        , "\tbakedP\n", showT bakedP
-        , "\n\tdoughP\n", showT doughP
+        , "\tbakedP", showT bakedP
+        , "\n\tdoughP", showT doughP
         , "\ndebug", showT debug]
    
 
@@ -150,21 +150,24 @@ shakeMD debug sett4 flags = do
 
     (toFilePath bakedP <> "**/*.html") %> \out -> -- from Panrep
     -- calls the copy html if a html exist in dough 
-            -- else calls the conversion from md
+            -- pushes a need for *.pandoc 
 
         do
             putInform debug ["rule **/*.html", showT out]
 
             let outP = makeAbsFile out :: Path Abs File
             let fromFile = doughP </> makeRelativeP bakedP outP
+                    -- try to see if the file exists in dough 
             fileExists <- io2bool $ doesFileExist' fromFile
             putInform debug ["rule **/*.html - fileExist:", showT fileExists]
             
             if fileExists 
                 then copyFileToBaked debug doughP bakedP out
                 else do 
+                        let bakedFrom = replaceExtension'  "panrep" outP
+                        putInform debug ["rule **/*.html - bakedFrom", showT bakedFrom]
                         needsFound :: [FilePath]<- runErr2action $ 
-                             getNeeds4html debug flags fromFile sett4 outP
+                             getNeeds4html debug flags bakedFrom sett4 outP
                         need needsFound
 
 
@@ -188,8 +191,8 @@ shakeMD debug sett4 flags = do
     -- (toFilePath bakedP <> "**/*.texsnip") %> \out -> -- insert pdfFIles1
     --     convertAny debug bakedP bakedP flags sett4 out  "convPanrep2texsnip"
 
-    -- (toFilePath bakedP <> "**/*.panrep") %> \out -> -- insert pdfFIles1
-    --     do convertAny debug bakedP bakedP flags sett4 out  "convDocrep2panrep"
+    (toFilePath bakedP <> "**/*.panrep") %> \out -> -- insert pdfFIles1
+        do convertAny debug bakedP bakedP flags sett4 out  "convDocrep2panrep"
 
     -- (toFilePath bakedP <> "**/*.docrep") %> \out -> -- insert pdfFIles1  -- here start with doughP
     --     do

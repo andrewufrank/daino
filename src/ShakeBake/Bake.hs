@@ -102,17 +102,17 @@ bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
 
 
 getNeeds4html :: BakeOp
-getNeeds4html debug flags inputFn sett3 resfn2 = do 
+getNeeds4html debug flags bakedFrom sett3 outP = do 
     when (inform debug) $    putIOwords
         [ "\n-----------------"
-        , "getNeeds4html 1 fn"
-        , showT inputFn
-        -- , "\n resfn2"
-        -- , showT resfn2
+        , "getNeeds4html 1"
+        , showT outP
+        , "\n bakedFrom"
+        , showT bakedFrom
         ]
     -- test for index todo 
 
-    return [toFilePath inputFn]
+    return [toFilePath bakedFrom]
 
 
 
