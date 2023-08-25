@@ -100,20 +100,20 @@ docrep2panrep debug pubf metaplus5 = do
                      , extra = extra6 }
         -- panrep2 = Panrep y2 p1
 
-    putInform debug ["docrep2panrep 2"
-            , showT extra6
-                -- , "hpname", showT hpname
-                -- , "\nauthorReduced", authorReduced
-                ]
+    -- putInform debug ["docrep2panrep 2"
+    --         , showT extra6
+    --             -- , "hpname", showT hpname
+    --             -- , "\nauthorReduced", authorReduced
+    --             ]
 
     if isIndexPage mdFile5
         then do
-            extra7 <- collectIndex debug pubf sett4 doughP mdFileDir extra6
+            extra7 <- collectIndex NoticeLevel0 pubf sett4 doughP mdFileDir extra6
 
-            when (inform debug) $
-                putIOwords ["\n ix2-2-----------------------docrep2panrep after collectIndex"
-                -- , showPretty extra7 
-                ]
+            -- when (inform debug) $
+            --     putIOwords ["\n ix2-2-----------------------docrep2panrep after collectIndex"
+            --     , showPretty extra7 
+            --     ]
             -- attention the dir/index is one level deeper than the files
             let
                 ns  =  map (<.> ("docrep" :: FilePath ) ) ns2
@@ -130,10 +130,10 @@ docrep2panrep debug pubf metaplus5 = do
             -- putIOwords ["\tns", showT ns]
             -- putIOwords ["\tns2", showT ns2]
             -- putIOwords ["\tns0", showT ns0]
-            when (inform debug) $
-                putIOwords ["\n extra7------------------------docrep2panrep end if"
-                -- , showPretty extra7
-                , "needs ns with index.docrep", showT needs ]  
+            -- when (inform debug) $
+            --     putIOwords ["\n extra7------------------------docrep2panrep end if"
+            --     , showPretty extra7
+            --     , "needs ns with index.docrep", showT needs ]  
 
             return (metaplus6{extra=extra7}, needs )
         else

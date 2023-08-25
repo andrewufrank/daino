@@ -55,7 +55,7 @@ shakeArgs2 bakedP = do
         shake
             shakeOptions
                 { shakeFiles = toFilePath bakedP  -- wgy should the shake files to into baked?
-                , shakeVerbosity = Info -- Verbose --  Loud
+                , shakeVerbosity = Verbose --  Loud Info -- 
                         -- verbose gives a single line for each file processed
                         --          plus info for copying
                         -- info gives nothing in normal process 
@@ -97,7 +97,7 @@ shakeAll debug sett3 flags causedby = do
     --             :: [FilePath]
         fs4 = ["index.html"]
         flags2 = flags{mdFiles = map makeRelFile fs4}
-    putIOwords ["flags", showT flags2]        
+    putIOwords ["mdFiles flags", showT $ mdFiles flags2]        
     callIO $ shakeMD NoticeLevel2 sett3  flags2  doughP bakedP
 
 -- todo remove shakeMD and pass only layout
@@ -130,7 +130,7 @@ shakeMD debug sett4 flags  doughP bakedP = shakeArgs2 bakedP $ do
     -- todo remove doughP and bakedP
 
 
-    putInform debug [ "shakeMD dirs\n"
+    putInform debug [ "\nshakeMD dirs\n"
         , "\tbakedP\n", showT bakedP
         , "\ndebug", showT debug]
     -- let siteDirs = siteLayout sett4 

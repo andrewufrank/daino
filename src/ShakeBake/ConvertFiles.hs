@@ -85,7 +85,7 @@ convertAny debug sourceP targetP flags layout out anyopName = do
 
     putInform NoticeLevel1 ["-----------------", anyopName, "convertAny for", s2t out]
     let outP = makeAbsFile out :: Path Abs File
-    putInform debug ["\nconvertAny 1", "\n file out", showT out]
+    putInform debug ["\nconvertAny 1", "file out", showT out]
     let (anyop, sourceExtA) = case anyopName of 
             "convMD2docrep" -> (bakeOneMD2docrep, extMD)
             "convDocrep2panrep" -> (bakeOneDocrep2panrep, extDocrep)
@@ -93,19 +93,19 @@ convertAny debug sourceP targetP flags layout out anyopName = do
             "convPanrep2html" -> (bakeOnePanrep2html, extPanrep )
             "convTex2pdf" -> (bakeOneTex2pdf, extTex )
             "convTexsnip2tex" -> (bakeOneTexsnip2tex, extTexSnip )
-            _  -> errorT ["convertAny error unknown anyopName ", anyopName]
+            _  -> errorT [anyopName, "convertAny error unknown anyopName "]
 
     let from_filePath = sourceP </> makeRelativeP targetP outP :: Path Abs File
         from_filePathExt = from_filePath <.> ( sourceExtA)
     -- let from_filePathExt = replaceExtension' (s2t . unExtension $ sourceExtA) from_filePath 
 
     putInform debug 
-        ["\nconvertAny 2", anyopName
+        ["\n", anyopeName, "convertAny 2" 
         , "extension", (s2t . unExtension $ sourceExtA)
         ,  "\n from_filePath", showT from_filePath
         , " was causing NEED"   
         ,  "\n from_filePathExt", showT from_filePathExt   
-        ,  "\n file out", showT out
+        -- ,  "\n file out", showT out
         ] 
 
     fileExists <-  if sourceP == targetP 
@@ -114,7 +114,7 @@ convertAny debug sourceP targetP flags layout out anyopName = do
 
     when (inform debug) $
         putIOwords
-            [ "\nconvertAny - fromfile exist:"
+            [ "\n", anyopName, "convertAny - fromfile exist:"
             , showT fileExists
             -- , "\nfile"
             -- , showT from_filePath
@@ -124,34 +124,36 @@ convertAny debug sourceP targetP flags layout out anyopName = do
         then do  -- copy file from source to target
             copyFileChangedP from_filePath outP
             when (inform debug) $
-                -- liftIO $
                     putIOwords
-                        ["\n convertAny  copied"
-                         ,   "\n\tfrom_filePath ", showT from_filePath, "added NEED automatically"
+                        ["\n", anyopName, "convertAny  copied"
+                        --  ,   "\n\tfrom_filePath "
+                         , showT from_filePath, "added NEED automatically"
                          ,  "\n\t  file out", showT out]
         else do
             putInform debug 
-                ["\nconvertAny call", anyopName
+                ["\n", anyopName, "convertAny call" 
                 -- ,  "\n\t from_filePathExt"
                     ,  " cause NEED for" ,showT from_filePathExt  
                         -- should be from doughP
                 ,  "\n\t file out", showT out
+                , "\n -----------------JUMP to Need"
                 ] 
+                -- this is the regular descent from html to panrep to ...
             need [toFilePath from_filePathExt]    
             putInform debug 
-                ["\nconvertAny runErr2Action", anyopName
-                ,  "\n\t from_filePathExt",  " caused NEED which was then probably satisfied for ", showT from_filePathExt   
+                ["\n -------------------RETURN from Need"
+                , "\n", anyopName, "convertAny runErr2Action" 
+                -- ,  "\n\t from_filePathExt"
+                ,  " caused NEED which was then probably satisfied for ", showT from_filePathExt   
                 ,  "\n\t file out", showT out
-                ]
+                ] -- these are additional files reequired before the rest of the action  (split required?)
             needsFound <- runErr2action $ anyop debug flags from_filePathExt layout outP
             when ((inform debug) && needsFound /= []) $ putIOwords 
-                ["\nconvertAny runErr2Action", anyopName
+                ["\n", anyopName, "convertAny runErr2Action"
                 ,  "\n\t needs found", showT needsFound
                 ] 
-                -- add here a generic tester 
-                -- remove the tests from other places            
             need needsFound
-    putInform NoticeLevel1 ["-----------------------convertAny end", anyopName, "for", s2t out]
+    putInform NoticeLevel1 ["-----------------------", anyopName, "convertAny end" , "for", s2t out]
     return ()
 
 {- | the generic copy for all the files

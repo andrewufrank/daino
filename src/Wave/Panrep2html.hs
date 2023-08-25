@@ -91,9 +91,9 @@ panrep2html debug pubFlags  metaplus4 = do
     let bakedP =   bakedDir . siteLayout $ sett3
  
     valsDirs :: [Maybe IndexEntry2]<- mapM 
-                    (getVals2 debug pubFlags bakedP) dirs
+                    (getVals2html debug pubFlags bakedP) dirs
     valsFiles :: [Maybe IndexEntry2] <- mapM 
-                    (getVals2 debug pubFlags bakedP) files
+                    (getVals2html debug pubFlags bakedP) files
 
     putInform debug["panrep2html", "valsDirs", showPretty valsDirs]
     putInform debug ["panrep2html", "valsFiles", showPretty valsFiles]
@@ -131,22 +131,22 @@ panrep2html debug pubFlags  metaplus4 = do
     -- putInform debug ["panrep2html render testTemplate done", "tt1",  tt1 ]
 
     -- bakeOnePanrep2html will write to disk
-    return (HTMLout ht1, needs, tt1)
+    return (HTMLout ht1, [], tt1) -- removed needs
 
-getVals2 :: NoticeLevel -> PubFlags -> Path Abs Dir -> IndexEntry2
+getVals2html :: NoticeLevel -> PubFlags -> Path Abs Dir -> IndexEntry2
                 -> ErrIO (Maybe IndexEntry2)
 -- get the panrep and fill the vals 
-getVals2 debug pubFlags bakedP ix2 = do
-    putInform debug ["GetVals2 html ix2", showPretty ix2]    
+getVals2html debug pubFlags bakedP ix2 = do
+    putInform debug ["getVals2html  ix2", showPretty ix2]    
     let fnix4 = (ixfn ix2) :: FilePath
         fnix3 = addDir (toFilePath bakedP) fnix4 :: FilePath
         fnix2 =  fnix3 <.> "panrep"  :: FilePath
         fn = makeAbsFile fnix2
         pdf = replaceExtension2 ".pdf" fn 
 
-    putInform debug ["getVals2latex fn", showT fn ]
+    putInform debug ["getVals2html fn", showT fn ]
     pan1 <- read8 fn panrepFileType
-    putInform debug ["getVals2latex pan1", showT pan1 ]
+    putInform debug ["getVals2html pan1", showT pan1 ]
 
     let m = metaHtml pan1
         ix3 = ix2   { abstract = lookup7withDef ""  "abstract" m
@@ -160,7 +160,7 @@ getVals2 debug pubFlags bakedP ix2 = do
                     }
 
     return $ if includeBakeTest3 pubFlags (version ix3) (visibility ix3)
-                then Just ix3 else errorT ["getVals2 in panrep2html not included", showT ix2 ]
+                then Just ix3 else errorT ["getVals2html in panrep2html not included", showT ix2 ]
 
 
 
