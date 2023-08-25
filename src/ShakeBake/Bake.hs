@@ -104,17 +104,41 @@ bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
 getNeeds4html :: BakeOp
 getNeeds4html debug flags bakedFrom sett3 outP = do 
     when (inform debug) $    putIOwords
-        [ "\n-----------------"
+        [ "\n-----"
         , "getNeeds4html 1"
         , showT outP
-        , "\n bakedFrom"
+        , "\n    bakedFrom"
         , showT bakedFrom
         ]
     -- test for index todo 
 
     return [toFilePath bakedFrom]
 
+getNeeds4pan :: BakeOp
+getNeeds4pan debug flags bakedFrom sett3 outP = do 
+    when (inform debug) $    putIOwords
+        [ "\n-----"
+        , "getNeeds4pan 1"
+        , showT outP
+        , "\n   bakedFrom"
+        , showT bakedFrom
+        ]
+    -- test for index todo 
 
+    return [toFilePath bakedFrom]
+
+getNeeds4doc :: BakeOp
+getNeeds4doc debug flags bakedFrom sett3 outP = do 
+    when (inform debug) $    putIOwords
+        [ "\n-----"
+        , "getNeeds4doc 1"
+        , showT outP
+        , "\n   bakedFrom"
+        , showT bakedFrom
+        ]
+    -- test for index todo 
+
+    return [toFilePath bakedFrom]
 
 bakeOnePanrep2html :: BakeOp -- PANREP -> HTML  -- TODO
 bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do

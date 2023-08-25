@@ -192,9 +192,33 @@ shakeMD debug sett4 flags = do
     --     convertAny debug bakedP bakedP flags sett4 out  "convPanrep2texsnip"
 
     (toFilePath bakedP <> "**/*.panrep") %> \out -> -- insert pdfFIles1
-        do convertAny debug bakedP bakedP flags sett4 out  "convDocrep2panrep"
+        do 
+            putInform debug ["rule **/*.panrep", showT out]
 
-    -- (toFilePath bakedP <> "**/*.docrep") %> \out -> -- insert pdfFIles1  -- here start with doughP
+            let outP = makeAbsFile out :: Path Abs File
+            
+            let bakedFrom = replaceExtension'  "docrep" outP
+            putInform debug ["rule **/*.html - bakedFrom", showT bakedFrom]
+            needsFound :: [FilePath]<- runErr2action $ 
+                    getNeeds4pan debug flags bakedFrom sett4 outP
+            need needsFound            
+            
+            
+            -- convertAny debug bakedP bakedP flags sett4 out  "convDocrep2panrep"
+
+    (toFilePath bakedP <> "**/*.docrep") %> \out -> -- insert pdfFIles1  -- here start with doughP
+        do 
+            putInform debug ["rule **/*.docrep", showT out]
+
+            let outP = makeAbsFile out :: Path Abs File
+            
+            let bakedFrom = replaceDirectoryP  bakedP doughP $  
+                                replaceExtension'  "md" outP
+            putInform debug ["rule **/*.html - bakedFrom", showT bakedFrom]
+            needsFound :: [FilePath]<- runErr2action $ 
+                    getNeeds4doc debug flags bakedFrom sett4 outP
+            need needsFound          
+    
     --     do
     --         convertAny debug doughP bakedP flags sett4 out  "convMD2docrep"
     --         return ()
