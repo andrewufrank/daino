@@ -56,10 +56,7 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
     -- let hpname = blogAuthorToSuppress . siteLayout $ sett3
     dr4 <- readMarkdownFile2docrep NoticeLevel0 sett3  inputFn 
     -- dr4 <- addRefs debug dr3
-
--- todo split readMarkdownFile2docrep to return the need for the 
--- biblio file 
-
+ 
     write8 resfn2 docrepFileType dr4
 
 
@@ -88,10 +85,7 @@ bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
     (p3, needsFound) <- docrep2panrep debug flags  dr1
             -- completes index and should process reps 
             -- what to do with needs?
-    -- needP  needsFound 
-    -- let needsFound2 =  map makeAbsFile needsFound :: [Path Abs File]
-    -- needsChecked :: [Maybe (Path Abs File)] <- mapM (filterNeeds2 debug flags sett3) needsFound2 
-    -- let needsChecked2 = catMaybes needsChecked
+
 
     write8 resfn2 panrepFileType p3 -- content is html style
     putInform debug 
@@ -110,7 +104,6 @@ getNeeds4html debug flags bakedFrom sett3 outP = do
         , "\n    bakedFrom"
         , showT bakedFrom
         ]
-    -- test for index todo 
 
     return [toFilePath bakedFrom]
 
@@ -123,7 +116,6 @@ getNeeds4pan debug flags bakedFrom sett3 outP = do
         , "\n   bakedFrom"
         , showT bakedFrom
         ]
-    -- test for index todo 
 
     return [toFilePath bakedFrom]
 
@@ -136,7 +128,6 @@ getNeeds4doc debug flags bakedFrom sett3 outP = do
         , "\n   bakedFrom"
         , showT bakedFrom
         ]
-    -- test for index todo 
 
     return [toFilePath bakedFrom]
 
@@ -150,11 +141,7 @@ bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
         , showT resfn2
         ]
     dr1 <- read8 inputFn panrepFileType
-    -- let layout = siteLayout sett3
-    -- this gives the siteLayout section of settingsN.yml file
-    -- let staticMenu = sett3
-    -- let mf = masterTemplateFile layout
-    -- let masterfn = templatesDir layout </> mf
+ 
 
     (p, needsFound, test_templatehtml) <- panrep2html debug  flags dr1
 
@@ -165,80 +152,3 @@ bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
         putIOwords
             ["\n-----------------", "bakeOnePanrep2html done fn", showT resfn2]
     return  needsFound
-
-
-bakeOnePanrep2texsnip :: BakeOp --  PANREP -> TEXSNIP
--- TODO
-bakeOnePanrep2texsnip debug flags inputFn sett3 resfn2 = do
-                -- debug flags inputFn layout resfn2 
-    when (inform debug) $    putIOwords
-        [ "\n-----------------"
-        , "bakeOnePanrep2texsnip 1 fn"
-        , showT inputFn
-        , "debug"
-        , showT debug
-        , "\n resfn2"
-        , showT resfn2
-        ]
-
-    dr1 <- read8 inputFn panrepFileType
-    snip1 <- panrep2texsnip debug dr1
-    write8 resfn2 texSnipFileType snip1 -- content is html style
-    when (inform debug) $
-        putIOwords
-            ["\n-----------------", "bakeOneFile2html done fn", showT resfn2]
-    return []
-
-bakeOneTexsnip2tex :: BakeOp -- TEXSNIP -> TEX
-bakeOneTexsnip2tex debug flags inputFn sett3 resfn2 = do
-    when (inform debug) $   putIOwords
-        [ "\n-----------------"
-        , "bakeOneFile2tex 1 fn"
-        , showT inputFn
-        , "\n resfn2"
-        , showT resfn2
-        ]
-
-
-    snip1 <- read8 inputFn texSnipFileType
-
-    -- let layout = siteLayout sett3
-    -- let doughP = doughDir layout
-    --     bakedP = bakedDir layout 
-
-    (tex1, needs, test_templatehtml) <- texsnip2tex debug  flags snip1
-
-    -- tex1 <- texsnip2tex NoticeLevel0 doughP bakedP snip1 
-        -- ((templatesDir layout) </> (texTemplateFile layout))
-    -- let tex1 = tex2latex2 zero [snip1]
-    write8 resfn2 texFileType tex1 -- content is html style
-    write8 resfn2 ttlFileType test_templatehtml
-
-    when (inform debug) $
-        putIOwords
-            ["\n-----------------", "bakeOneFile2tex done fn", showT resfn2]
-    return []
-
-bakeOneTex2pdf :: BakeOp
-bakeOneTex2pdf debug flags inputFn sett3 resfn2 = do
-    when (inform debug) $    putIOwords
-        [ "\n-----------------"
-        , "bakeOneTex2pdf 1 fn:"
-        , showT inputFn
-        , "\n\t debug:"
-        , showT debug
-        , "\n\t resfn2:"
-        , showT resfn2
-        ]
-
-    -- let refDir =
-            -- makeAbsDir . getParentDir . toFilePath $ inputFn :: Path Abs Dir
-    -- dr1 <- read8 inputFn docrepFileType
-    let layout = siteLayout sett3
-    let doughP = doughDir layout
-
-    tex2pdf debug  inputFn resfn2 doughP -- content is html style
-    when (inform debug) $
-        putIOwords
-            ["\n-----------------", "bakeOneTex2pdf done fn", showT resfn2]
-    return []
