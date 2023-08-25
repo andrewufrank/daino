@@ -24,7 +24,7 @@
 module ShakeBake.StartDainoProcess (dainoProcess) where
 
 import ShakeBake.ReadSettingFile (readSettings)
-import ShakeBake.Shake2 (shakeAll)
+import ShakeBake.Shake2start (shakeAll)
 import ShakeBake.Watch (mainWatch)
 import Uniform.WebServer (runScotty)
 import Foundational.SettingsPage

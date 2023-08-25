@@ -26,11 +26,12 @@ import Foundational.Filetypes4sites
 
 import Wave.Docrep2panrep 
 import Wave.Md2doc  
-import Wave.Panrep2pdf
+-- import Wave.Panrep2pdf
 
 import Uniform.Http
 import Uniform.Shake
 import Wave.Panrep2html  
+-- import Development.Shake (getDirectoryContents)
 
 
 type BakeOp =
@@ -45,14 +46,13 @@ type BakeOp =
 getNeeds4html :: BakeOp
 getNeeds4html debug flags bakedFrom sett3 outP = do 
     when (inform debug) $    putIOwords
-        [ "\n-----"
-        , "getNeeds4html 1"
-        , showT outP
-        , "\n    bakedFrom"
-        , showT bakedFrom
+        [ "\n-----getNeeds4html 1", showT outP
+        , "\n    bakedFrom panrep", showT bakedFrom
         ]
+    dr1 <- read8 bakedFrom panrepFileType
+    needsFound <- panrep1html debug flags dr1
 
-    return [toFilePath bakedFrom]
+    return needsFound
 
 
 bakeOnePanrep2html :: BakeOp -- PANREP -> HTML  -- TODO
@@ -77,17 +77,14 @@ bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
             ["\n-----------------", "bakeOnePanrep2html done fn", showT resfn2]
     return  needsFound
 
-getNeeds4pan :: BakeOp
-getNeeds4pan debug flags bakedFrom sett3 outP = do 
-    when (inform debug) $    putIOwords
-        [ "\n-----"
-        , "getNeeds4pan 1"
-        , showT outP
-        , "\n   bakedFrom"
-        , showT bakedFrom
-        ]
+-- getNeeds4pan :: BakeOp
+-- getNeeds4pan debug flags bakedFrom sett3 outP = do 
+--     when (inform debug) $    putIOwords
+--         [ "\n-----getNeeds4pan 1", showT outP
+--         , "\n   bakedFrom docrep ", showT bakedFrom
+--         ]
 
-    return [toFilePath bakedFrom]
+--     return [toFilePath bakedFrom]
 
 bakeOneDocrep2panrep :: BakeOp --  DOCREP -> PANREP
 --   add index  
@@ -125,7 +122,7 @@ getNeeds4doc debug flags bakedFrom sett3 outP = do
         ]
 
     return [toFilePath bakedFrom]
-    
+
 bakeOneMD2docrep :: BakeOp --    MD -> DOCREP
 -- process the md to pandoc format (parser)
 -- and add the refs 

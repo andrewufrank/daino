@@ -15,7 +15,7 @@ module ShakeBake.Watch where
 
 import Foundational.SettingsPage
 import Foundational.CmdLineFlags
-import ShakeBake.Shake2 (shakeAll)
+import ShakeBake.Shake2start (shakeAll)
 import Uniform.Watch (
     Glob (..),
     WatchOpType,
