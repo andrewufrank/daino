@@ -100,6 +100,22 @@ bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
     return   needsFound
         -- these needs were not tested for version >= publish
 
+
+getNeeds4html :: BakeOp
+getNeeds4html debug flags inputFn sett3 resfn2 = do 
+    when (inform debug) $    putIOwords
+        [ "\n-----------------"
+        , "getNeeds4html 1 fn"
+        , showT inputFn
+        -- , "\n resfn2"
+        -- , showT resfn2
+        ]
+    -- test for index todo 
+
+    return [toFilePath inputFn]
+
+
+
 bakeOnePanrep2html :: BakeOp -- PANREP -> HTML  -- TODO
 bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
     when (inform debug) $    putIOwords

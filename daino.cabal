@@ -34,7 +34,6 @@ library
       Lib.IndexCollect
       ShakeBake.Bake
       ShakeBake.CmdLineArgs
-      ShakeBake.ConvertFiles
       ShakeBake.ReadSettingFile
       ShakeBake.Shake2
       ShakeBake.StartDainoProcess

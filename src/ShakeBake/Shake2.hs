@@ -16,6 +16,8 @@
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE TypeFamilies          #-}
+{-# LANGUAGE TypeOperators #-}
+
 {-# OPTIONS_GHC -Wall -fno-warn-orphans
             -fno-warn-missing-signatures
             -fno-warn-missing-methods
@@ -158,7 +160,7 @@ shakeMD debug sett4 flags = do
                 then copyFileToBaked debug doughP bakedP out
                 else do 
                         needsFound :: [FilePath]<- runErr2action $ 
-                             bakeOnePanrep2html debug flags fromFile sett4 outP
+                             getNeeds4html debug flags fromFile sett4 outP
                         need needsFound
 
 
@@ -176,19 +178,19 @@ shakeMD debug sett4 flags = do
     --             else             
     --                 convertAny debug bakedP bakedP flags sett4 out  "convTex2pdf"
 
-    (toFilePath bakedP <> "**/*.tex") %> \out -> -- insert pdfFIles1
-        convertAny debug bakedP bakedP flags sett4 out  "convTexsnip2tex"
+    -- (toFilePath bakedP <> "**/*.tex") %> \out -> -- insert pdfFIles1
+    --     convertAny debug bakedP bakedP flags sett4 out  "convTexsnip2tex"
 
-    (toFilePath bakedP <> "**/*.texsnip") %> \out -> -- insert pdfFIles1
-        convertAny debug bakedP bakedP flags sett4 out  "convPanrep2texsnip"
+    -- (toFilePath bakedP <> "**/*.texsnip") %> \out -> -- insert pdfFIles1
+    --     convertAny debug bakedP bakedP flags sett4 out  "convPanrep2texsnip"
 
-    (toFilePath bakedP <> "**/*.panrep") %> \out -> -- insert pdfFIles1
-        do convertAny debug bakedP bakedP flags sett4 out  "convDocrep2panrep"
+    -- (toFilePath bakedP <> "**/*.panrep") %> \out -> -- insert pdfFIles1
+    --     do convertAny debug bakedP bakedP flags sett4 out  "convDocrep2panrep"
 
-    (toFilePath bakedP <> "**/*.docrep") %> \out -> -- insert pdfFIles1  -- here start with doughP
-        do
-            convertAny debug doughP bakedP flags sett4 out  "convMD2docrep"
-            return ()
+    -- (toFilePath bakedP <> "**/*.docrep") %> \out -> -- insert pdfFIles1  -- here start with doughP
+    --     do
+    --         convertAny debug doughP bakedP flags sett4 out  "convMD2docrep"
+    --         return ()
 
     -- rest are copies
 
@@ -367,4 +369,4 @@ copyFileToBaked debug doughP bakedP out = do
     let fromfile = doughP </> makeRelativeP bakedP outP
     putInform debug
                 ["\ncopyFileToBaked fromfile ", showT fromfile, "added NEED automatically"]
-    copyFileChangedP fromfile o
+    copyFileChangedP fromfile outP
