@@ -163,12 +163,19 @@ shakeMD debug sett4 flags = do
             
             if fileExists 
                 then copyFileToBaked debug doughP bakedP out
-                else do 
+                else 
+                    do 
                         let bakedFrom = replaceExtension'  "panrep" outP
                         putInform debug ["rule **/*.html - bakedFrom", showT bakedFrom]
                         needsFound :: [FilePath]<- runErr2action $ 
                              getNeeds4html debug flags bakedFrom sett4 outP
                         need needsFound
+                        putInform debug ["rule **/*.html continued", showT out]
+
+                        needs2 <- runErr2action $ bakeOnePanrep2html debug flags bakedFrom sett4 outP 
+                        putInform debug ["rule **/*.html - needs2", showT needs2]
+                        return ()            
+
 
 
     -- (toFilePath bakedP <> "**/*.pdf") %> \out -> -- insert pdfFIles1
@@ -202,7 +209,11 @@ shakeMD debug sett4 flags = do
             needsFound :: [FilePath]<- runErr2action $ 
                     getNeeds4pan debug flags bakedFrom sett4 outP
             need needsFound            
-            
+            putInform debug ["rule **/*.panrep continued", showT out]
+
+            needs2 <- runErr2action $ bakeOneDocrep2panrep debug flags bakedFrom sett4 outP 
+            putInform debug ["rule **/*.panrep - needs2", showT needs2]
+            return ()            
             
             -- convertAny debug bakedP bakedP flags sett4 out  "convDocrep2panrep"
 
@@ -215,10 +226,15 @@ shakeMD debug sett4 flags = do
             let bakedFrom = replaceDirectoryP  bakedP doughP $  
                                 replaceExtension'  "md" outP
             putInform debug ["rule **/*.html - bakedFrom", showT bakedFrom]
-            needsFound :: [FilePath]<- runErr2action $ 
+            needsFound :: [FilePath]<- runErr2action $ do 
                     getNeeds4doc debug flags bakedFrom sett4 outP
-            need needsFound          
-    
+            need needsFound  
+            putInform debug ["rule **/*.docrep continued", showT out]
+
+            needs2 <- runErr2action $ bakeOneMD2docrep debug flags bakedFrom sett4 outP 
+            putInform debug ["rule **/*.html - needs2", showT needs2]
+            return ()
+    -- 
     --     do
     --         convertAny debug doughP bakedP flags sett4 out  "convMD2docrep"
     --         return ()

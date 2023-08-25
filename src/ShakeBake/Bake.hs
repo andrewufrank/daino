@@ -68,7 +68,7 @@ bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
         putIOwords
             [ "\n-----------------"
             , "bakeOneMD2docrep done resfn2"
-            -- , showT resfn2
+            , showT resfn2
             ]
     return []
 
