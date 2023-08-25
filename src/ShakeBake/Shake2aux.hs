@@ -25,8 +25,8 @@ module ShakeBake.Shake2aux where
 
 import           Uniform.Shake
 import Foundational.SettingsPage
-import Foundational.CmdLineFlags
-import ShakeBake.Bake
+-- import Foundational.CmdLineFlags
+-- import ShakeBake.Bake
 
 shakeArgs2 :: Path b t -> Rules () -> IO ()
 {- | set the options for shake

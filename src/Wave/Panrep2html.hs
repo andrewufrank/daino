@@ -57,52 +57,83 @@ default (Integer, Double, Text)
 
 testTemplateFn = makeAbsFile "/home/frank/Workspace11/daino/tests/data/metaplusHtml.dtpl"
 
-panrep1html :: NoticeLevel -> PubFlags -> Panrep -> ErrIO [FilePath]
+panrep0html :: NoticeLevel -> PubFlags -> Panrep -> ErrIO [FilePath]
 -- ^ calculate the needs 
 
-panrep1html debug pubFlags  metaplus4 = do
+panrep0html debug pubFlags  metaplus4 = do
     -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
     let sett3 = sett metaplus4
         extra4 = extra metaplus4
-        mf = masterTemplateFile $ siteLayout sett3
-        masterfn = templatesDir (siteLayout sett3) </> mf
+        bakeP =  bakedDir . siteLayout $ sett3 :: Path Abs Dir
+        -- mf = masterTemplateFile $ siteLayout sett3
+        -- masterfn = templatesDir (siteLayout sett3) </> mf
 
     --if this is an index file it has files and dirs 
     -- putInform debug ["panrep1html", "extra4", showPretty extra4]
 
     let files = fileEntries  $ extra4 :: [IndexEntry2]
         dirs = dirEntries  $ extra4 :: [IndexEntry2]
+    putInform debug["panrep0html", "ixfn files", showT $ map ixfn files]
+    putInform debug ["panrep0html", "ixfn dirs", showT $ map ixfn dirs]
 
-    let bakedP =   bakedDir . siteLayout $ sett3
+    let fs = map (replaceExtension' "panrep" ) . map makeRelFile $ map ixfn (files ++ dirs) :: [Path Rel File]
+    let fs2needs = map (addFileName bakeP) $  fs
+                        :: [Path Abs File] 
+    putInform debug ["panrep0html", "fs2needs", showT fs2needs]
+    return . map toFilePath $ fs2needs
+
+
+
+
+
+-- panrep1html :: NoticeLevel -> PubFlags -> Panrep -> ErrIO [FilePath]
+-- -- ^ calculate the needs 
+
+-- panrep1html debug pubFlags  metaplus4 = do
+--     -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
+--     let sett3 = sett metaplus4
+--         extra4 = extra metaplus4
+--         -- mf = masterTemplateFile $ siteLayout sett3
+--         -- masterfn = templatesDir (siteLayout sett3) </> mf
+
+--     --if this is an index file it has files and dirs 
+--     -- putInform debug ["panrep1html", "extra4", showPretty extra4]
+
+--     let files = fileEntries  $ extra4 :: [IndexEntry2]
+--         dirs = dirEntries  $ extra4 :: [IndexEntry2]
+--     putInform debug["panrep1html", "ixfn files", showT $ map ixfn files]
+--     putInform debug ["panrep1html", "ixfn dirs", showT $ map ixfn dirs]
+
+--     let bakedP =   bakedDir . siteLayout $ sett3
  
-    valsDirs :: [Maybe IndexEntry2]<- mapM 
-                    (getVals2html debug pubFlags bakedP) dirs
-    valsFiles :: [Maybe IndexEntry2] <- mapM 
-                    (getVals2html debug pubFlags bakedP) files
+--     valsDirs :: [Maybe IndexEntry2]<- mapM 
+--                     (getVals2html debug pubFlags bakedP) dirs
+--     valsFiles :: [Maybe IndexEntry2] <- mapM 
+--                     (getVals2html debug pubFlags bakedP) files
 
-    putInform debug["panrep1html", "valsDirs", showPretty valsDirs]
-    putInform debug ["panrep1html", "valsFiles", showPretty valsFiles]
+--     putInform debug["panrep1html", "valsDirs", showPretty valsDirs]
+--     putInform debug ["panrep1html", "valsFiles", showPretty valsFiles]
 
-    -- let extra5 = extra4{fileEntries = catMaybes valsFiles
-    --                     , dirEntries = catMaybes valsDirs}
-    -- let metaplus5 = metaplus4{extra = extra5}
+--     -- let extra5 = extra4{fileEntries = catMaybes valsFiles
+--     --                     , dirEntries = catMaybes valsDirs}
+--     -- let metaplus5 = metaplus4{extra = extra5}
 
-   -- calculate needs 
-    let
-        -- bakedP =   bakedDir . siteLayout $ sett3
-        bakedFP = toFilePath bakedP
-        allixs =  catMaybes $ valsFiles ++ valsDirs :: [IndexEntry2]
-        needs = map (<.> "panrep") -- (`replaceExtension` "panrep")
-                . map (addDir bakedFP )
-                .  map ixfn $ allixs
-                     :: [FilePath]
-    putInform debug ["panrep1html allixs ixfn"
-                    , showT .map (<.> "panrep") . map (addDir bakedFP ) . map ixfn $ allixs]
-    putInform debug ["panrep1html allixs link"
-                    , showT . map (addDir bakedFP ) . map (<.> "panrep") . map ixfn $ allixs]
-    when ((inform debug) && (needs /= []) )$
-            putIOwords ["panrep1html", "needs ", showT needs ]
-    return needs
+--    -- calculate needs 
+--     let
+--         -- bakedP =   bakedDir . siteLayout $ sett3
+--         bakedFP = toFilePath bakedP
+--         allixs =  catMaybes $ valsFiles ++ valsDirs :: [IndexEntry2]
+--         needs = map (<.> "panrep") -- (`replaceExtension` "panrep")
+--                 . map (addDir bakedFP )
+--                 .  map ixfn $ allixs
+--                      :: [FilePath]
+--     putInform debug ["panrep1html allixs ixfn"
+--                     , showT .map (<.> "panrep") . map (addDir bakedFP ) . map ixfn $ allixs]
+--     putInform debug ["panrep1html allixs link"
+--                     , showT . map (addDir bakedFP ) . map (<.> "panrep") . map ixfn $ allixs]
+--     when ((inform debug) && (needs /= []) )$
+--             putIOwords ["panrep1html", "needs ", showT needs ]
+--     return needs
 
 
 -- ------------------------------------ panrep2html

@@ -36,7 +36,7 @@ import Foundational.SettingsPage
 import ShakeBake.Bake
  
 import ShakeBake.Shake2aux
-import Development.Shake (getDirectoryFilesIO)
+-- import Development.Shake (getDirectoryFilesIO)
 
 
 type RelFiles = [Path Rel File]
@@ -97,11 +97,11 @@ shakeMD debug sett4 flags = do
                         needsFound :: [FilePath]<- runErr2action $ 
                              getNeeds4html debug flags bakedFrom sett4 outP
                         need needsFound
-
+                        
                         putInform debug ["\nrule **/*.html continued", showT out]
 
                         needs2 <- runErr2action $ bakeOnePanrep2html debug flags bakedFrom sett4 outP 
-                        putInform debug ["rule **/*.html - needs2", showT needs2]
+                        putInform debug ["rule **/*.html end - needs2", showT needs2]
                         return ()            
 
     (toFilePath bakedP <> "**/*.panrep") %> \out -> -- insert pdfFIles1
@@ -112,22 +112,30 @@ shakeMD debug sett4 flags = do
             
             let bakedFrom = replaceExtension'  "docrep" outP
             putInform debug ["rule **/*.panrep - bakedFrom", showT bakedFrom]
-            need [toFilePath bakedFrom]
+            needP [bakedFrom]
 
-            fs2 <- getDirectoryFilesP bakedP ["*.docrep"]
-            dr2 <- getDirectoryFilesP bakedP ["*/*.docrep"]
+            putInform debug ["rule **/*.panrep continued 1", showT out]
+
+            fs2 <- getDirectoryFilesP bakedP ["*.md"]
+            dr2 <- getDirectoryFilesP bakedP ["*/index.md"]
             -- lint is triggered. perhaps should use the
             -- non traced getDirectoryFilesIO?
             putIOwords ["rule **/*.panrep fs2", showT fs2]
             putIOwords ["rule **/*.panrep dr2", showT dr2]
 
-            -- needsFound :: [FilePath]<- runErr2action $ 
-            --         getNeeds4pan debug flags bakedFrom sett4 outP
-            -- need needsFound            
-            putInform debug ["rule **/*.panrep continued", showT out]
+            -- needs for the docrep
+            let needsmd = map (replaceExtension' "md") (fs2 ++ dr2)
+            putIOwords ["rule **/*.panrep needsmd", showT needsmd]
+            needP needsmd
+                      
+            putInform debug ["rule **/*.panrep continued 2", showT out]
 
             needs2 <- runErr2action $ bakeOneDocrep2panrep debug flags bakedFrom sett4 outP 
-            putInform debug ["rule **/*.panrep - needs2", showT needs2]
+            putInform debug ["rule **/*.panrep end - needs2", showT needs2]
+            need needs2 
+            putInform debug ["rule **/*.panrep continued 3 end", showT out]
+
+            -- missed the write panrep?
             return ()            
             
     (toFilePath bakedP <> "**/*.docrep") %> \out -> -- insert pdfFIles1  -- here start with doughP
@@ -135,17 +143,16 @@ shakeMD debug sett4 flags = do
             putInform debug ["rule **/*.docrep", showT out]
 
             let outP = makeAbsFile out :: Path Abs File
-            
             let bakedFrom = replaceDirectoryP  bakedP doughP $  
                                 replaceExtension'  "md" outP
-            putInform debug ["rule **/*.html - bakedFrom", showT bakedFrom]
+            putInform debug ["rule **/*.docrep - bakedFrom", showT bakedFrom]
             needsFound :: [FilePath]<- runErr2action $ do 
                     getNeeds4doc debug flags bakedFrom sett4 outP
             need needsFound  
             putInform debug ["rule **/*.docrep continued", showT out]
 
             needs2 <- runErr2action $ bakeOneMD2docrep debug flags bakedFrom sett4 outP 
-            putInform debug ["rule **/*.html - needs2", showT needs2]
+            putInform debug ["rule **/*.docrep end - needs2", showT needs2]
             return ()
     
 

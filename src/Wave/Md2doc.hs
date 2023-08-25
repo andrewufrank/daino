@@ -32,7 +32,7 @@ import Paths_daino (version)
 
 import UniformBase
 import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..)) 
-import Development.Shake 
+-- import Development.Shake 
 import Foundational.SettingsPage  
 import Foundational.Filetypes4sites 
 import Foundational.CmdLineFlags

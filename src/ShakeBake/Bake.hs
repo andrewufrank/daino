@@ -50,7 +50,7 @@ getNeeds4html debug flags bakedFrom sett3 outP = do
         , "\n    bakedFrom panrep", showT bakedFrom
         ]
     dr1 <- read8 bakedFrom panrepFileType
-    needsFound <- panrep1html debug flags dr1
+    needsFound <- panrep0html debug flags dr1
 
     return needsFound
 
@@ -105,7 +105,7 @@ bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
 
 
     write8 resfn2 panrepFileType p3 -- content is html style
-    putInform debug 
+    putInform NoticeLevel1 
             ["\n-----------------", "bakeOneDocrep2panrep done produced resf2n", showT resfn2
                 , "\n needsFound", showT needsFound]
     return   needsFound
