@@ -91,28 +91,27 @@ shakeMD debug sett4 flags = do
             
             if fileExists 
               then copyFileToBaked debug doughP bakedP out
-              else 
-                do 
-                        let bakedFrom = replaceExtension'  "panrep" outP
-                        putInform debug ["rule **/*.html - bakedFrom", showT bakedFrom]
-                        need [toFilePath bakedFrom]
+              else do
+                let bakedFrom = replaceExtension'  "panrep" outP
+                putInform debug ["rule **/*.html - bakedFrom", showT bakedFrom]
+                need [toFilePath bakedFrom]
 
-                        putInform debug ["\nrule **/*.html continued 1" , showT out]
+                putInform debug ["\nrule **/*.html continued 1" , showT out]
 
-                        needsFound :: [FilePath]<- runErr2action $ do
-                            --  getNeeds4html debug flags bakedFrom sett4 outP
-                            dr1 <- read8 bakedFrom panrepFileType
-                            needsFound1 <- panrep0html debug flags dr1
-                            return needsFound1
-                        need needsFound
-  
-                        putInform debug ["\nrule **/*.html continued 3", showT out]
+                needsFound :: [FilePath]<- runErr2action $ do
+                    --  getNeeds4html debug flags bakedFrom sett4 outP
+                    dr1 <- read8 bakedFrom panrepFileType
+                    needsFound1 <- panrep0html debug flags dr1
+                    return needsFound1
+                need needsFound
 
-                        needs2 <- runErr2action $ bakeOnePanrep2html debug flags bakedFrom sett4 outP 
-                        putInform debug ["rule **/*.html - needs2", showT needs2]
-                        putInform debug ["\nrule **/*.html end continued 4", showT out]
+                putInform debug ["\nrule **/*.html continued 3", showT out]
 
-                        return ()            
+                needs2 <- runErr2action $ bakeOnePanrep2html debug flags bakedFrom sett4 outP 
+                putInform debug ["rule **/*.html - needs2", showT needs2]
+                putInform debug ["\nrule **/*.html end continued 4", showT out]
+
+                return ()            
 
     (toFilePath bakedP <> "**/*.panrep") %> \out -> -- insert pdfFIles1
         do 

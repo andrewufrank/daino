@@ -76,7 +76,7 @@ panrep0html debug pubFlags  metaplus4 = do
     putInform debug["panrep0html", "ixfn files", showT $ map ixfn files]
     putInform debug ["panrep0html", "ixfn dirs", showT $ map ixfn dirs]
 
-    let fs = map (replaceExtension' "panrep" ) . map makeRelFile $ map ixfn (files ++ dirs) :: [Path Rel File]
+    let fs = map (replaceExtension' "html" ) . map makeRelFile $ map ixfn (files ++ dirs) :: [Path Rel File]
     let fs2needs = map (addFileName bakeP) $  fs
                         :: [Path Abs File] 
     putInform debug ["panrep0html", "fs2needs", showT fs2needs]

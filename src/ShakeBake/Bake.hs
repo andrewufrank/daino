@@ -43,17 +43,7 @@ type BakeOp =
     Path Abs File ->
     ErrIO [FilePath] -- additional needs found 
 
--- getNeeds4html :: BakeOp
--- getNeeds4html debug flags bakedFrom sett3 outP = do 
---     when (inform debug) $    putIOwords
---         [ "\n-----getNeeds4html 1", showT outP
---         , "\n    bakedFrom panrep", showT bakedFrom
---         ]
---     dr1 <- read8 bakedFrom panrepFileType
---     needsFound <- panrep0html debug flags dr1
-
---     return needsFound
-
+ 
 
 bakeOnePanrep2html :: BakeOp -- PANREP -> HTML  -- TODO
 bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
