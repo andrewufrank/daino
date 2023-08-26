@@ -41,6 +41,9 @@ import ShakeBake.Shake2aux
 -- import Development.Shake (getDirectoryFilesIO)
 import Wave.Panrep2html  
 
+import ShakeBake.Shake2html
+import ShakeBake.Shake2panrep
+import ShakeBake.Shake2docrep
 
 type RelFiles = [Path Rel File]
 
@@ -76,116 +79,10 @@ shakeMD debug sett4 flags = do
 
         needPwithoutput "initial" "md" ( mdFiles flags)
 
-    (toFilePath bakedP <> "**/*.html") %> \out -> -- from Panrep
-    -- calls the copy html if a html exist in dough 
-            -- pushes a need for *.pandoc 
+    shake2html debug flags sett4 bakedP       
+    shake2panrep debug flags sett4 bakedP       
+    shake2docrep debug flags sett4 bakedP       
 
-        do
-            putInform debug ["rule **/*.html", showT out]
-
-            let outP = makeAbsFile out :: Path Abs File
-            let fromFile = doughP </> makeRelativeP bakedP outP
-                    -- try to see if the file exists in dough 
-            fileExists <- io2bool $ doesFileExist' fromFile
-            putInform debug ["rule **/*.html - fileExist:", showT fileExists]
-            
-            if fileExists 
-              then copyFileToBaked debug doughP bakedP out
-              else do
-                let bakedFrom = replaceExtension'  "panrep" outP
-                putInform debug ["rule **/*.html - bakedFrom", showT bakedFrom]
-                need [toFilePath bakedFrom]
-
-                putInform debug ["\nrule **/*.html continued 1" , showT out]
-
-                needsFound :: [Path Abs File]<- runErr2action $ do
-                    dr1 <- read8 bakedFrom panrepFileType
-                    let needsFound1 = map (addFileName bakedP . replaceExtension' "html") . getIndexFiles4meta $ dr1 
-                    putInform debug ["\nrule **/*.html needsFound1" 
-                            , showT needsFound1]
-                    return needsFound1
-                needP needsFound
-
-                putInform debug ["\nrule **/*.html continued 3", showT out]
-
-                needs2 <- runErr2action $ bakeOnePanrep2html debug flags bakedFrom sett4 outP 
-                putInform debug ["rule **/*.html - needs2", showT needs2]
-                putInform debug ["\nrule **/*.html end continued 4", showT out]
-
-                return ()            
-
-    (toFilePath bakedP <> "**/*.panrep") %> \out -> -- insert pdfFIles1
-        do 
-            putInform debug ["rule **/*.panrep", showT out]
-
-            let outP = makeAbsFile out :: Path Abs File
-            
-            let bakedFrom = replaceExtension'  "docrep" outP
-
-            putInform debug ["rule **/*.panrep - bakedFrom", showT bakedFrom]
-            needP [bakedFrom]
-
-            putInform debug ["rule **/*.panrep continued 1", showT out]
-        
-            let thisDir1 =  getParentDir outP ::FilePath
-            
-            putInform debug ["rule **/*.panrep - thisDir1", showT thisDir1]
-
-            unless ("/home/frank/bakedTestSite" == thisDir1) $ do 
-                -- the case of the webroot is dealt with already  
-                -- during initialization
-                let thisDir2 = makeAbsDir $ getParentDir outP :: Path Abs Dir
-                    thisDir = replaceDirectoryP bakedP doughP  thisDir2
-                putInform debug ["rule **/*.panrep - thisDir2", showT thisDir2]
-                putInform debug ["rule **/*.panrep - thisDir", showT thisDir]
-
-                fs2 :: [Path Rel File] <- getDirectoryFilesP thisDir ["*.md"]
-                dr2 :: [Path Rel File]  <- getDirectoryFilesP thisDir ["index.md"]
-                let dr3 = dr2 
-                -- filter (not . (isInfixOf' 
-                        -- (t2s $ doNotBake (siteLayout sett4))) . getNakedDir) dr2
-                        -- problem with get nacked dir 
-                        -- not relevant, the webroot is not serched
-                -- lint is triggered. perhaps should use the
-                -- non traced getDirectoryFilesIO?
-                putIOwords ["rule **/*.panrep fs2", showT fs2]
-                putIOwords ["rule **/*.panrep dr2", showT dr2]
-                putIOwords ["rule **/*.panrep dr3", showT dr3]
-
-                -- needs for the docrep but 
-                let needsmd = -- map (replaceDirectoryP bakedP doughP) .
-                            map (addFileName thisDir)
-                            . map (replaceExtension' "docrep") 
-                            $  (fs2 ++ dr3)
-                putIOwords ["rule **/*.panrep needsmd", showT needsmd]
-                needP needsmd
-                      
-            putInform debug ["rule **/*.panrep continued 2", showT out]
-
-            needs2 <- runErr2action $ bakeOneDocrep2panrep debug flags bakedFrom sett4 outP 
-            putInform debug ["rule **/*.panrep end - needs2", showT needs2]
-            need needs2 
-            putInform debug ["rule **/*.panrep continued 3 end", showT out]
-
-            -- missed the write panrep?
-            return ()            
-            
-    (toFilePath bakedP <> "**/*.docrep") %> \out -> -- insert pdfFIles1  -- here start with doughP
-        do 
-            putInform debug ["rule **/*.docrep", showT out]
-
-            let outP = makeAbsFile out :: Path Abs File
-            let bakedFrom = replaceDirectoryP  bakedP doughP $  
-                                replaceExtension'  "md" outP
-            -- putInform debug ["rule **/*.docrep - bakedFrom", showT bakedFrom]
-            -- needP [bakedFrom]
-            
-            putInform debug ["rule **/*.docrep continued", showT out]
-
-            needs2 <- runErr2action $ bakeOneMD2docrep debug flags bakedFrom sett4 outP 
-            putInform debug ["rule **/*.docrep end - needs2", showT needs2]
-            return ()
-    
 
     (toFilePath bakedP <> "/*.css")
         %> \out -> -- insert css -- no subdir

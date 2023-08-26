@@ -37,6 +37,9 @@ library
       ShakeBake.ReadSettingFile
       ShakeBake.Shake2
       ShakeBake.Shake2aux
+      ShakeBake.Shake2docrep
+      ShakeBake.Shake2html
+      ShakeBake.Shake2panrep
       ShakeBake.Shake2start
       ShakeBake.StartDainoProcess
       ShakeBake.Watch
