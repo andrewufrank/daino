@@ -212,7 +212,7 @@ getVals2html debug pubFlags bakedP ix2 = do
 
     putInform debug ["getVals2html fn", showT fn ]
     pan1 <- read8 fn panrepFileType
-    putInform debug ["getVals2html pan1", showT pan1 ]
+    -- putInform debug ["getVals2html pan1", showT pan1 ]
 
     let m = metaHtml pan1
         ix3 = ix2   { abstract = lookup7withDef ""  "abstract" m
