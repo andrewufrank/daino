@@ -89,7 +89,7 @@ collectIndex debug pubf sett4 fn dv1 = do
     let files1 = map (replaceDirectoryP doughP bakedP) files
     let dirs2 = dirs -- catMaybes $ map check2publishDirs dirs 
     files2m <- mapM check2publishFiles files1
-    let files2 = catMaybes files2m  
+    let files2 =  catMaybes files2m  
 
     -- let    mdfs = mdFiles pubf :: [Path Abs File]
     -- let dirs2 = catMaybes (map (check2publishDirs doughP mdfs) dirs)
@@ -120,7 +120,8 @@ check2publishFiles   fs = check2publish fs
 check2publish ::  Path Abs File -> ErrIO (Maybe (Path Abs File))
 check2publish inputFn = do 
     doc1 <- read8 inputFn docrepFileType
-    if (doc1 == zero) then return Nothing else return $ Just inputFn 
+    return . Just $ inputFn 
+    -- if (doc1 == zero) then return Nothing else return $ Just inputFn 
 
     -- where   t = True  -- TODO get old tests back -- fs2 `elem` mdfs
             -- fs2 = makeRelativeP doughP . removeExtension $ fs

@@ -52,7 +52,7 @@ readMarkdownFile2docrep  :: NoticeLevel -> PubFlags -> Settings ->  Path Abs Fil
 readMarkdownFile2docrep debug flags sett3 fnin = do
     -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
     -- when (inform debug) $ 
-    putInform debug 
+    putInform  NoticeLevel2 
         ["readMarkdownFile2docrep fnin", showPretty fnin]
         -- place to find PandocParseError
     p1 <- readMd2pandoc fnin

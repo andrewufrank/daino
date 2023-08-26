@@ -80,7 +80,7 @@ bakeOneDocrep2panrep :: BakeOp --  DOCREP -> PANREP
 --   add index  
 bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
     -- let debug = NoticeLevel2
-    when (inform debug) $    putIOwords
+    when (informAll debug) $    putIOwords
         [ "-----------------"
         , "bakeOneDocrep2panrep 1 inputFn"
         , showT inputFn
@@ -117,7 +117,7 @@ bakeOneMD2docrep :: BakeOp --    MD -> DOCREP
 -- process the md to pandoc format (parser)
 -- and add the refs 
 bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
-    when (inform debug) $    putIOwords
+    when (informAll debug) $    putIOwords
         [ "\n-----------------"
         , "bakeOneMD2docrep 1 fn", showT inputFn
         -- , "\n resfn2", showT resfn2

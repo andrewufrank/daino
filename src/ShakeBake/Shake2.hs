@@ -99,10 +99,8 @@ shakeMD debug sett4 flags = do
                 putInform debug ["\nrule **/*.html continued 1" , showT out]
 
                 needsFound :: [Path Abs File]<- runErr2action $ do
-                    --  getNeeds4html debug flags bakedFrom sett4 outP
                     dr1 <- read8 bakedFrom panrepFileType
                     let needsFound1 = map (addFileName bakedP . replaceExtension' "html") . getIndexFiles4meta $ dr1 
-                    -- panrep0html_fromIndex debug flags dr1
                     putInform debug ["\nrule **/*.html needsFound1" 
                             , showT needsFound1]
                     return needsFound1
@@ -123,29 +121,44 @@ shakeMD debug sett4 flags = do
             let outP = makeAbsFile out :: Path Abs File
             
             let bakedFrom = replaceExtension'  "docrep" outP
-                thisDir = makeAbsDir $ getParentDir outP :: Path Abs Dir
+
             putInform debug ["rule **/*.panrep - bakedFrom", showT bakedFrom]
             needP [bakedFrom]
-            putInform debug ["rule **/*.panrep - thisDir", showT thisDir]
 
             putInform debug ["rule **/*.panrep continued 1", showT out]
+        
+            let thisDir1 =  getParentDir outP ::FilePath
+            
+            putInform debug ["rule **/*.panrep - thisDir1", showT thisDir1]
 
-            fs2 :: [Path Rel File] <- getDirectoryFilesP thisDir ["*.md"]
-            dr2 :: [Path Rel File]  <- getDirectoryFilesP thisDir ["index.md"]
-            let dr3 = filter (not . (isInfixOf' 
-                    (t2s $ doNotBake (siteLayout sett4))) . getNakedDir) dr2
-            -- lint is triggered. perhaps should use the
-            -- non traced getDirectoryFilesIO?
-            putIOwords ["rule **/*.panrep fs2", showT fs2]
-            putIOwords ["rule **/*.panrep dr2", showT dr2]
-            putIOwords ["rule **/*.panrep dr3", showT dr3]
+            unless ("/home/frank/bakedTestSite" == thisDir1) $ do 
+                -- the case of the webroot is dealt with already  
+                -- during initialization
+                let thisDir2 = makeAbsDir $ getParentDir outP :: Path Abs Dir
+                    thisDir = replaceDirectoryP bakedP doughP  thisDir2
+                putInform debug ["rule **/*.panrep - thisDir2", showT thisDir2]
+                putInform debug ["rule **/*.panrep - thisDir", showT thisDir]
 
-            -- needs for the docrep
-            let needsmd = map (addFileName bakedP)
-                     . map (replaceExtension' "docrep") 
-                     $  (fs2 ++ dr3)
-            putIOwords ["rule **/*.panrep needsmd", showT needsmd]
-            needP needsmd
+                fs2 :: [Path Rel File] <- getDirectoryFilesP thisDir ["*.md"]
+                dr2 :: [Path Rel File]  <- getDirectoryFilesP thisDir ["index.md"]
+                let dr3 = dr2 
+                -- filter (not . (isInfixOf' 
+                        -- (t2s $ doNotBake (siteLayout sett4))) . getNakedDir) dr2
+                        -- problem with get nacked dir 
+                        -- not relevant, the webroot is not serched
+                -- lint is triggered. perhaps should use the
+                -- non traced getDirectoryFilesIO?
+                putIOwords ["rule **/*.panrep fs2", showT fs2]
+                putIOwords ["rule **/*.panrep dr2", showT dr2]
+                putIOwords ["rule **/*.panrep dr3", showT dr3]
+
+                -- needs for the docrep but 
+                let needsmd = -- map (replaceDirectoryP bakedP doughP) .
+                            map (addFileName thisDir)
+                            . map (replaceExtension' "docrep") 
+                            $  (fs2 ++ dr3)
+                putIOwords ["rule **/*.panrep needsmd", showT needsmd]
+                needP needsmd
                       
             putInform debug ["rule **/*.panrep continued 2", showT out]
 
@@ -164,8 +177,8 @@ shakeMD debug sett4 flags = do
             let outP = makeAbsFile out :: Path Abs File
             let bakedFrom = replaceDirectoryP  bakedP doughP $  
                                 replaceExtension'  "md" outP
-            putInform debug ["rule **/*.docrep - bakedFrom", showT bakedFrom]
-            needP [bakedFrom]
+            -- putInform debug ["rule **/*.docrep - bakedFrom", showT bakedFrom]
+            -- needP [bakedFrom]
             
             putInform debug ["rule **/*.docrep continued", showT out]
 

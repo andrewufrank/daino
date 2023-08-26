@@ -61,10 +61,12 @@ import Development.Shake.FilePath (makeRelative)
 --  convert meta to html and latex versions
 --  collect the index file and dirs 
 
+-- needs the docreps
+
 docrep2panrep :: NoticeLevel -> PubFlags -> Docrep -> ErrIO (Panrep, [FilePath])
 docrep2panrep debug pubf metaplus5 = do
     -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
-    when (inform debug) $
+    when (informAll debug) $
         putIOwords
             ["-------------------------docrep2panrep 1"
             --  , "metaplus: \n", showPretty metaplus5
@@ -98,20 +100,16 @@ docrep2panrep debug pubf metaplus5 = do
     let metaplus6 = metaplus5{metaHtml = htm1
                      ,metaLatex = tex1
                      , extra = extra6 }
-        -- panrep2 = Panrep y2 p1
-
-    -- putInform debug ["docrep2panrep 2"
-    --         , showT extra6
-    --             -- , "hpname", showT hpname
-    --             -- , "\nauthorReduced", authorReduced
-    --             ]
+ 
+    -- needs to read the docrep files
 
     if isIndexPage mdFile5
         then do
+            putIOwords ["\n ix2-2-----------------------docrep2panrep before collectIndex"]
             extra7 <- collectIndex NoticeLevel0 pubf sett4 mdFileDir extra6
 
             -- when (inform debug) $
-            --     putIOwords ["\n ix2-2-----------------------docrep2panrep after collectIndex"
+            putIOwords ["\n ix2-2-----------------------docrep2panrep after collectIndex"]
             --     , showPretty extra7 
             --     ]
             -- attention the dir/index is one level deeper than the files
