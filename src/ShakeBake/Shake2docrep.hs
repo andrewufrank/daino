@@ -78,12 +78,12 @@ shake2docrep debug flags sett4 bakedP  =
 -- readMarkdownFile2docrep debug flags sett3 fnin = do
     -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
     -- when (inform debug) $ 
-        putInform  NoticeLevel2 
+        putInform  NoticeLevel0 
             ["readMarkdownFile2docrep bakedFrom", showPretty bakedFrom]
             -- place to find PandocParseError
         p1 <- readMd2pandoc bakedFrom -- need posted
 
-        putInform debug ["readMarkdownFile2docrep p1", showPretty p1]
+        -- putInform debug ["readMarkdownFile2docrep p1", showPretty p1]
             
         -- check for german and process umlaut, 
         -- repeat readMd2pandoc if changed 
@@ -116,8 +116,9 @@ shake2docrep debug flags sett4 bakedP  =
             incl = includeBakeTest3docrep flags (metap mp1) 
 
         putInform debug 
-            ["readMarkdownFile2docrep end mp1", showPretty mp1]
-        putInform NoticeLevel1 ["readMarkdownFile2docrep end include", showPretty incl]
+            ["readMarkdownFile2docrep end mp1"] -- , showPretty mp1]
+        putInform NoticeLevel1 ["readMarkdownFile2docrep end include"]
+        --  showPretty incl]
         let dr4 =  if incl then mp1 else zero     
         write8 outP docrepFileType dr4
 
