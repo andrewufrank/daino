@@ -34,65 +34,26 @@ import UniformBase
 import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..)) 
 -- import Development.Shake 
 import Foundational.SettingsPage  
-import Foundational.Filetypes4sites 
+-- import Foundational.Filetypes4sites 
 import Foundational.CmdLineFlags
 import Uniform.Pandoc
-    ( addListOfDefaults,
-      getTextFromYaml6,
-      getValue4meta,
-      md2Meta_Process,
-      readMd2pandoc )
 import Uniform.Latex
 import Uniform.Shake  
 
 default (Text)
-readMarkdownFile2docrep  :: NoticeLevel -> PubFlags -> Settings ->  Path Abs File ->  ErrIO Docrep 
--- read a markdown file and convert to docrep
--- reads setting file!
-readMarkdownFile2docrep debug flags sett3 fnin = do
-    -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
-    -- when (inform debug) $ 
-    putInform  NoticeLevel2 
-        ["readMarkdownFile2docrep fnin", showPretty fnin]
-        -- place to find PandocParseError
-    p1 <- readMd2pandoc fnin
 
-    putInform debug ["readMarkdownFile2docrep p1", showPretty p1]
-        
-    -- check for german and process umlaut, 
-    -- repeat readMd2pandoc if changed 
+includeBakeTest3docrep :: PubFlags -> Meta -> Bool
+includeBakeTest3docrep pubf met2 = includeBakeTest3 pubf vers1 vis1
+    where
+        -- draftF = draftFlag pubf 
+        vers1 = getValue4meta met2 "version" 
+        vis1 = getValue4meta met2 "visibility" 
 
-    -- default values only what is used for citeproc and ??
-    -- rest can go into settings 
-    -- these are copied from previous values (OLD below)
-
-    let defs1 = [("Bibliography", "resources/BibTexLatex.bib")
-                , ("version", "publish")  -- todo should probably not be default
-                ,  ("visibility", "public") 
-                 , ("title", "Title MISSING")
-                , ("abstract", "Abstract MISSING")
-                , ("date", showT year2000)
-                , ("lang", "en")  -- todo conversion? 
-                , ("latLanguage", "english") -- for babel - todo 
-                , ("styleBiber","authoryear")
-                , ("headerShift","1")
-                , ("author", settingsAuthor sett3)
-                , ("sortOrder", "filename")
-                -- , ("indexPage", False) detect from name 'index.md'
-                ] 
-            -- "resources/webbiblio.bib")
-            -- check that defaults work? 
-            -- defaults are set in panrep2html (and 2latex??)
-    let p2 = addListOfDefaults defs1 p1
-    m1 <- md2Meta_Process p2
-    -- process citeproc
-    let mp1 = setMetaPlusInitialize sett3 fnin m1
-        incl = includeBakeTest3docrep flags (metap mp1) 
-
-    putInform debug 
-        ["readMarkdownFile2docrep end mp1", showPretty mp1]
-    putInform NoticeLevel1 ["readMarkdownFile2docrep end include", showPretty incl]
-    return $ if incl then mp1 else zero 
+includeBakeTest3  :: PubFlags -> Text -> Text -> Bool
+includeBakeTest3  pubf vers1 vis1 = 
+        (draftFlag pubf || vers1 ==   "publish") 
+        -- should be less than eq
+            && (privateFlag pubf || vis1 ==  "public")
 
 setMetaPlusInitialize :: Settings -> Path Abs File -> Meta -> DainoMetaPlus 
 -- to move the start values into the MetaPlus 
@@ -108,6 +69,57 @@ setMetaPlusInitialize sett3 fnin m1 =  zero { metap = m1
                     , dainoVersion = showT Paths_daino.version
                     , latLanguage = latexLangConversion lang 
                     , pdf2 = toFilePath $ replaceExtension2 ".pdf" relFn }
+
+
+-- readMarkdownFile2docrep  :: NoticeLevel -> PubFlags -> Settings ->  Path Abs File ->  ErrIO Docrep 
+-- -- read a markdown file and convert to docrep
+-- -- reads setting file!
+-- readMarkdownFile2docrep debug flags sett3 fnin = do
+--     -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
+--     -- when (inform debug) $ 
+--     putInform  NoticeLevel2 
+--         ["readMarkdownFile2docrep fnin", showPretty fnin]
+--         -- place to find PandocParseError
+--     p1 <- readMd2pandoc fnin
+
+--     putInform debug ["readMarkdownFile2docrep p1", showPretty p1]
+        
+--     -- check for german and process umlaut, 
+--     -- repeat readMd2pandoc if changed 
+
+--     -- default values only what is used for citeproc and ??
+--     -- rest can go into settings 
+--     -- these are copied from previous values (OLD below)
+
+--     let defs1 = [("Bibliography", "resources/BibTexLatex.bib")
+--                 , ("version", "publish")  -- todo should probably not be default
+--                 ,  ("visibility", "public") 
+--                  , ("title", "Title MISSING")
+--                 , ("abstract", "Abstract MISSING")
+--                 , ("date", showT year2000)
+--                 , ("lang", "en")  -- todo conversion? 
+--                 , ("latLanguage", "english") -- for babel - todo 
+--                 , ("styleBiber","authoryear")
+--                 , ("headerShift","1")
+--                 , ("author", settingsAuthor sett3)
+--                 , ("sortOrder", "filename")
+--                 -- , ("indexPage", False) detect from name 'index.md'
+--                 ] 
+--             -- "resources/webbiblio.bib")
+--             -- check that defaults work? 
+--             -- defaults are set in panrep2html (and 2latex??)
+--     let p2 = addListOfDefaults defs1 p1
+--     m1 <- md2Meta_Process p2
+--     -- process citeproc
+--     let mp1 = setMetaPlusInitialize sett3 fnin m1
+--         incl = includeBakeTest3docrep flags (metap mp1) 
+
+--     putInform debug 
+--         ["readMarkdownFile2docrep end mp1", showPretty mp1]
+--     putInform NoticeLevel1 ["readMarkdownFile2docrep end include", showPretty incl]
+--     return $ if incl then mp1 else zero 
+
+
              
 -- filters cannot be moved to another file, circular imports!
 
@@ -143,17 +155,5 @@ setMetaPlusInitialize sett3 fnin m1 =  zero { metap = m1
 
 -- ^ decide whether this is to be included in the bake 
 
-includeBakeTest3docrep :: PubFlags -> Meta -> Bool
-includeBakeTest3docrep pubf met2 = includeBakeTest3 pubf vers1 vis1
-    where
-        -- draftF = draftFlag pubf 
-        vers1 = getValue4meta met2 "version" 
-        vis1 = getValue4meta met2 "visibility" 
-
-includeBakeTest3  :: PubFlags -> Text -> Text -> Bool
-includeBakeTest3  pubf vers1 vis1 = 
-        (draftFlag pubf || vers1 ==   "publish") 
-        -- should be less than eq
-            && (privateFlag pubf || vis1 ==  "public")
 
 

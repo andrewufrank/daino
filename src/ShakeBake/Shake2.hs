@@ -33,13 +33,8 @@ import Foundational.CmdLineFlags
 import Uniform.Shake
  
 import Foundational.SettingsPage
-import Foundational.Filetypes4sites
-
-import ShakeBake.Bake
  
 import ShakeBake.Shake2aux
--- import Development.Shake (getDirectoryFilesIO)
-import Wave.Panrep2html  
 
 import ShakeBake.Shake2html
 import ShakeBake.Shake2panrep

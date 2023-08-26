@@ -37,14 +37,8 @@ import Uniform.Pandoc
 import Foundational.SettingsPage
 import Foundational.Filetypes4sites
 import Lib.IndexCollect
-import ShakeBake.Bake
  
-import ShakeBake.Shake2aux
 -- import Development.Shake (getDirectoryFilesIO)
-import Wave.Panrep2html  
-import Wave.Docrep2panrep 
-
-import ShakeBake.Shake2html
 import qualified Data.Map as M
 
 shake2panrep debug flags sett4 bakedP = 
@@ -52,7 +46,7 @@ shake2panrep debug flags sett4 bakedP =
          
     let layout = siteLayout sett4 
         doughP = doughDir layout -- the regular dough
-        bakedP = bakedDir layout
+        -- bakedP = bakedDir layout
 
     putInform debug ["rule **/*.panrep", showT out]
 
@@ -128,15 +122,15 @@ shake2panrep debug flags sett4 bakedP =
         --             { panyam = y1  -- meta
         --             , panpan = p1
         --             }
-        let sett4 = sett dr1
-            layout = siteLayout sett4
+        let -- sett4 = sett dr1
+            -- layout = siteLayout sett4
             meta5 = metap  dr1 -- ~ panyam 
             extra5 = extra dr1
             hpname = blogAuthorToSuppress layout
             mdFile5 = makeAbsFile $ mdFile extra5
             mdFileDir =   makeAbsDir $ getParentDir mdFile5 :: Path Abs Dir
-            doughP = doughDir layout
-            bakedP = bakedDir layout
+            -- doughP = doughDir layout
+            -- bakedP = bakedDir layout
             defaut = defaultAuthor layout
             aut1 = getTextFromYaml6 defaut "author" meta5
             bookval = getTextFromYaml6  "" "book"   meta5 
@@ -163,9 +157,9 @@ shake2panrep debug flags sett4 bakedP =
                           -- collectIndex debug pubf sett4 fn dv1 = do
                 putInform debug ["collectIndex 1", "start", showPretty mdFileDir]
 
-                let layout = siteLayout sett4 
-                    doughP = doughDir layout -- the regular dough
-                    bakedP = bakedDir layout
+                let -- layout = siteLayout sett4 
+                    -- doughP = doughDir layout -- the regular dough
+                    -- bakedP = bakedDir layout
 
                 -- (dirs, files) :: ([Path Abs Dir], [Path Abs File]) <- getDirContent2dirs_files NoticeLevel0 flags sett4 doughP  mdFileDir
 
@@ -211,18 +205,14 @@ shake2panrep debug flags sett4 bakedP =
                 -- put needs 
                 -- change to search in bakedP 
 
-                let files1 = map (replaceDirectoryP doughP bakedP) files
-                let dirs2 = dirs -- catMaybes $ map check2publishDirs dirs 
+                let files11 = map (replaceDirectoryP doughP bakedP) files
+                let dirs21 = dirs -- catMaybes $ map check2publishDirs dirs 
                 -- files2m <- mapM check2publishFiles files1
                 files2m <- mapM (\fn3 -> do 
                                             f <- read8 fn3 docrepFileType
-                                            return $ if f /= zero then Just fn3 else Nothing) files1 
+                                            return $ if f /= zero then Just fn3 else Nothing) files11 
 
-
-
-
-
-                let files2 =  catMaybes files2m  
+                let files22 =  catMaybes files2m  
 
                 -- let    mdfs = mdFiles flags :: [Path Abs File]
                 -- let dirs2 = catMaybes (map (check2publishDirs doughP mdfs) dirs)
@@ -230,8 +220,8 @@ shake2panrep debug flags sett4 bakedP =
                     -- map ((\fp -> addFileName fp (makeRelFile "index"))  . 
                             --   removeExtension . makeRelativeP doughP)   dirs 
                                     -- :: [Path Rel File]
-                let dv2 = extra6{dirEntries = map (initializeIx2dir (mdFiles flags) doughP) dirs2
-                                , fileEntries = map (initializeIx2file (mdFiles flags) doughP) files2}
+                let dv2 = extra6{dirEntries = map (initializeIx2dir (mdFiles flags) doughP) dirs21
+                                , fileEntries = map (initializeIx2file (mdFiles flags) doughP) files22}
 
                 putInform debug ["collectIndex 3"
                     , "\ndv2 dirs ixfn", showT (map ixfn . dirEntries $ dv2)
@@ -240,10 +230,6 @@ shake2panrep debug flags sett4 bakedP =
                     , "\ndv2 files link", showT (map link . fileEntries $ dv2)
                     ]
                 let extra7 = dv2
-
-
-
-
 
 
                 -- when (inform debug) $
@@ -280,8 +266,6 @@ shake2panrep debug flags sett4 bakedP =
                 ["\n-----------------", "bakeOneDocrep2panrep done produced resf2n", showT outP
                     , "\n needsFound", showT needsFound]
         return   needsFound
-
-
 
 
     putInform debug ["rule **/*.panrep end - needs2", showT needs2]

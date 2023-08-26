@@ -32,7 +32,6 @@ library
       Foundational.Filetypes4sites
       Foundational.SettingsPage
       Lib.IndexCollect
-      ShakeBake.Bake
       ShakeBake.CmdLineArgs
       ShakeBake.ReadSettingFile
       ShakeBake.Shake2
@@ -43,7 +42,6 @@ library
       ShakeBake.Shake2start
       ShakeBake.StartDainoProcess
       ShakeBake.Watch
-      Wave.Docrep2panrep
       Wave.Md2doc
       Wave.Panrep2html
       Wave.Panrep2pdf

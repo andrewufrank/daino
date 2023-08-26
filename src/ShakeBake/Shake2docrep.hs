@@ -29,20 +29,10 @@
 module ShakeBake.Shake2docrep where
 
 import UniformBase 
-import Foundational.CmdLineFlags
 import Uniform.Shake
 import Uniform.Pandoc 
 import Foundational.SettingsPage
 import Foundational.Filetypes4sites
-
-import ShakeBake.Bake
- 
-import ShakeBake.Shake2aux
--- import Development.Shake (getDirectoryFilesIO)
-import Wave.Panrep2html  
-
-import ShakeBake.Shake2html
-import ShakeBake.Shake2panrep
 import Wave.Md2doc 
 
 shake2docrep debug flags sett4 bakedP  =     
@@ -131,10 +121,6 @@ shake2docrep debug flags sett4 bakedP  =
                 , showT outP
                 ]
         return []
-
-
-
-
 
     putInform debug ["rule **/*.docrep end"] -- no  - needs2", showT needs2]
     return ()
