@@ -98,12 +98,15 @@ shakeMD debug sett4 flags = do
 
                 putInform debug ["\nrule **/*.html continued 1" , showT out]
 
-                needsFound :: [FilePath]<- runErr2action $ do
+                needsFound :: [Path Abs File]<- runErr2action $ do
                     --  getNeeds4html debug flags bakedFrom sett4 outP
                     dr1 <- read8 bakedFrom panrepFileType
-                    needsFound1 <- panrep0html debug flags dr1
+                    let needsFound1 = map (addFileName bakedP . replaceExtension' "html") . getIndexFiles4meta $ dr1 
+                    -- panrep0html_fromIndex debug flags dr1
+                    putInform debug ["\nrule **/*.html needsFound1" 
+                            , showT needsFound1]
                     return needsFound1
-                need needsFound
+                needP needsFound
 
                 putInform debug ["\nrule **/*.html continued 3", showT out]
 
@@ -120,20 +123,27 @@ shakeMD debug sett4 flags = do
             let outP = makeAbsFile out :: Path Abs File
             
             let bakedFrom = replaceExtension'  "docrep" outP
+                thisDir = makeAbsDir $ getParentDir outP :: Path Abs Dir
             putInform debug ["rule **/*.panrep - bakedFrom", showT bakedFrom]
             needP [bakedFrom]
+            putInform debug ["rule **/*.panrep - thisDir", showT thisDir]
 
             putInform debug ["rule **/*.panrep continued 1", showT out]
 
-            fs2 <- getDirectoryFilesP bakedP ["*.md"]
-            dr2 <- getDirectoryFilesP bakedP ["*/index.md"]
+            fs2 :: [Path Rel File] <- getDirectoryFilesP thisDir ["*.md"]
+            dr2 :: [Path Rel File]  <- getDirectoryFilesP thisDir ["index.md"]
+            let dr3 = filter (not . (isInfixOf' 
+                    (t2s $ doNotBake (siteLayout sett4))) . getNakedDir) dr2
             -- lint is triggered. perhaps should use the
             -- non traced getDirectoryFilesIO?
             putIOwords ["rule **/*.panrep fs2", showT fs2]
             putIOwords ["rule **/*.panrep dr2", showT dr2]
+            putIOwords ["rule **/*.panrep dr3", showT dr3]
 
             -- needs for the docrep
-            let needsmd = map (replaceExtension' "md") (fs2 ++ dr2)
+            let needsmd = map (addFileName bakedP)
+                     . map (replaceExtension' "docrep") 
+                     $  (fs2 ++ dr3)
             putIOwords ["rule **/*.panrep needsmd", showT needsmd]
             needP needsmd
                       
@@ -155,9 +165,8 @@ shakeMD debug sett4 flags = do
             let bakedFrom = replaceDirectoryP  bakedP doughP $  
                                 replaceExtension'  "md" outP
             putInform debug ["rule **/*.docrep - bakedFrom", showT bakedFrom]
-            needsFound :: [FilePath]<- runErr2action $ do 
-                    getNeeds4doc debug flags bakedFrom sett4 outP
-            need needsFound  
+            needP [bakedFrom]
+            
             putInform debug ["rule **/*.docrep continued", showT out]
 
             needs2 <- runErr2action $ bakeOneMD2docrep debug flags bakedFrom sett4 outP 

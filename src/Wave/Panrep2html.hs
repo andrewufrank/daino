@@ -43,24 +43,25 @@ import GHC.Generics (Generic)
 import Uniform.Json ( ToJSON(toJSON), Value, ErrIO )
 import Uniform.Pandoc
 import Uniform.Http ( HTMLout (HTMLout) )
+import Uniform.Shake  
 import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..))
 import Wave.Md2doc ( includeBakeTest3 ) 
 import Data.Maybe (fromMaybe)
+import Lib.IndexCollect
 import qualified Data.Map as M
 -- import Wave.Docrep2panrep
 -- import Wave.Md2doc
 -- import System.FilePath (replaceExtension)
-import Uniform.Shake  
 -- import Path (addFileExtension, addExtension)
 
 default (Integer, Double, Text)
 
 testTemplateFn = makeAbsFile "/home/frank/Workspace11/daino/tests/data/metaplusHtml.dtpl"
 
-panrep0html :: NoticeLevel -> PubFlags -> Panrep -> ErrIO [FilePath]
+panrep0html_fromIndex :: NoticeLevel -> PubFlags -> Panrep -> ErrIO [FilePath]
 -- ^ calculate the needs 
 
-panrep0html debug pubFlags  metaplus4 = do
+panrep0html_fromIndex debug pubFlags  metaplus4 = do
     -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
     let sett3 = sett metaplus4
         extra4 = extra metaplus4
@@ -71,20 +72,29 @@ panrep0html debug pubFlags  metaplus4 = do
     --if this is an index file it has files and dirs 
     -- putInform debug ["panrep1html", "extra4", showPretty extra4]
 
-    let files = fileEntries  $ extra4 :: [IndexEntry2]
-        dirs = dirEntries  $ extra4 :: [IndexEntry2]
-    putInform debug["panrep0html", "ixfn files", showT $ map ixfn files]
-    putInform debug ["panrep0html", "ixfn dirs", showT $ map ixfn dirs]
+    -- let files = fileEntries  $ extra4 :: [IndexEntry2]
+    --     dirs = dirEntries  $ extra4 :: [IndexEntry2]
+    -- putInform debug["panrep0html", "ixfn files", showT $ map ixfn files]
+    -- putInform debug ["panrep0html", "ixfn dirs", showT $ map ixfn dirs]
 
-    let fs = map (replaceExtension' "html" ) . map makeRelFile $ map ixfn (files ++ dirs) :: [Path Rel File]
+
+    let fs1 = getIndexFiles4meta metaplus4 
+        --  getIndexFiles (f1 ++ d1) 
+        -- f1 = (fileEntries .  extra  $ metaplus4)
+        -- d1 = dirEntries . extra $ metaplus4 
+        fs = map (replaceExtension' "html" )   $   fs1 :: [Path Rel File]
     let fs2needs = map (addFileName bakeP) $  fs
                         :: [Path Abs File] 
     putInform debug ["panrep0html", "fs2needs", showT fs2needs]
     return . map toFilePath $ fs2needs
 
 
-
-
+getIndexFiles4meta :: Panrep -> [Path Rel File]
+-- get the index files (for dir and files)
+getIndexFiles4meta pan = getIndexFiles (f1 ++ d1)
+    where
+        f1 = (fileEntries .  extra  $ pan)
+        d1 = dirEntries . extra $ pan 
 
 -- panrep1html :: NoticeLevel -> PubFlags -> Panrep -> ErrIO [FilePath]
 -- -- ^ calculate the needs 

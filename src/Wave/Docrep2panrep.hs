@@ -108,7 +108,7 @@ docrep2panrep debug pubf metaplus5 = do
 
     if isIndexPage mdFile5
         then do
-            extra7 <- collectIndex NoticeLevel0 pubf sett4 doughP mdFileDir extra6
+            extra7 <- collectIndex NoticeLevel0 pubf sett4 mdFileDir extra6
 
             -- when (inform debug) $
             --     putIOwords ["\n ix2-2-----------------------docrep2panrep after collectIndex"

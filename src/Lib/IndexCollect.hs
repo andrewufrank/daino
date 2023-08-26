@@ -36,28 +36,60 @@ import Foundational.SettingsPage
 import UniformBase
 
 import Uniform.Shake
+import Foundational.Filetypes4sites
 
 -- import Data.List (sortOn)
 
+getIndexFiles ::   [IndexEntry2] -> [Path Rel File]
+-- collect the index files for files and dirs (/index)
+getIndexFiles   ixs = is 
+    where 
+        is = map makeRelFile $ map ixfn ixs 
 
+filterDNB :: Text -> [Path Abs Dir] -> [Path Abs Dir]
+-- remove all directories which should not be processed 
+-- into the blog etc. 
+-- dnbString is typically: doNotBake (siteLayout sett4) 
+-- does not check for publish 
+--  (which is in the docrep construction)
+filterDNB dnbString dirs1 = dirs5 
+    where
+        dirs2 =  filter (not . (isInfixOf' dnbString). s2t 
+                . getNakedDir) dirs1
+        dirs3 = filter ( not . (isPrefixOf' resourcesName) 
+                .  getNakedDir) dirs2
+        dirs4 = filter ( not . (isPrefixOf'  templatesName) 
+                . getNakedDir) dirs3
+        dirs5 = filter ( not . (isPrefixOf' "." ) 
+                .   getNakedDir) dirs4
 
-collectIndex :: NoticeLevel -> PubFlags -> Settings -> Path Abs Dir 
+collectIndex :: NoticeLevel -> PubFlags -> Settings   
         ->   Path Abs Dir -> DainoValues -> ErrIO DainoValues
 {- ^ the top call to collect the index data into the MetaPage
 -- files and dirs 
 -- starts with dir of index
+-- searches in dough!
 -}
-collectIndex debug pubf sett4 doughP fn dv1 = do
+collectIndex debug pubf sett4 fn dv1 = do
     putInform debug ["collectIndex 1", "start", showPretty fn]
 
+    let layout = siteLayout sett4 
+        doughP = doughDir layout -- the regular dough
+        bakedP = bakedDir layout
 
     (dirs, files) :: ([Path Abs Dir], [Path Abs File]) <- getDirContent2dirs_files NoticeLevel0 pubf sett4 doughP  fn
 
-    putInform debug ["collectIndex 2", "\n dirs"
+    putInform NoticeLevel2 ["collectIndex 2 dough!", "\n dirs"
                     , showT dirs, "\n files", showT files]
 
-    let dirs2 = dirs 
-    let files2 = files   -- missing checks for inclusion 
+    -- check for publishable: test docrep not zero 
+    -- put needs 
+    -- change to search in bakedP 
+
+    let files1 = map (replaceDirectoryP doughP bakedP) files
+    let dirs2 = dirs -- catMaybes $ map check2publishDirs dirs 
+    files2m <- mapM check2publishFiles files1
+    let files2 = catMaybes files2m  
 
     -- let    mdfs = mdFiles pubf :: [Path Abs File]
     -- let dirs2 = catMaybes (map (check2publishDirs doughP mdfs) dirs)
@@ -76,19 +108,22 @@ collectIndex debug pubf sett4 doughP fn dv1 = do
         ]
     return dv2
 
--- check2publishDirs :: Path Abs File -> Maybe [Path Abs File]
--- a directory is published if the index file is set to publish 
-check2publishDirs :: Path Abs Dir -> [Path Abs File] -> Path Abs Dir -> Maybe (Path Abs Dir) 
-check2publishDirs dough mdfs ds = if t then Just ds else Nothing 
-        where t = check2publish dough mdfs ((addFileName ds) (makeRelFile "index"))  
-check2publishFiles dough mdfs fs = if check2publish dough mdfs fs 
-                                        then Just fs 
-                                        else Nothing 
+check2publishDirs :: Path Abs File -> ErrIO (Maybe (Path Abs File))
+-- -- a directory is published if the index file is set to publish 
+    -- test simply if the docrep file exists 
+check2publishDirs   ds = return $ Just ds -- if True then Just ds else Nothing 
+--         where t = check2publish dough mdfs ((addFileName ds) (makeRelFile "index"))  
+check2publishFiles ::Path Abs File -> ErrIO (Maybe (Path Abs File))
+check2publishFiles   fs = check2publish fs 
+                                      
 
-check2publish :: Path Abs Dir -> [Path Abs File] -> Path Abs File -> Bool
-check2publish doughP mdfs fs = t
-    where   t = True  -- TODO get old tests back -- fs2 `elem` mdfs
-            fs2 = makeRelativeP doughP . removeExtension $ fs
+check2publish ::  Path Abs File -> ErrIO (Maybe (Path Abs File))
+check2publish inputFn = do 
+    doc1 <- read8 inputFn docrepFileType
+    if (doc1 == zero) then return Nothing else return $ Just inputFn 
+
+    -- where   t = True  -- TODO get old tests back -- fs2 `elem` mdfs
+            -- fs2 = makeRelativeP doughP . removeExtension $ fs
 
 initializeIx2dir :: [Path Abs File] -> Path Abs Dir -> Path Abs Dir -> IndexEntry2 
 -- the dough path to make the path relative
