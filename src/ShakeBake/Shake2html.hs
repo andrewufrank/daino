@@ -67,8 +67,8 @@ shake2html debug flags sett4 bakedP  =
         putInform debug ["\nrule **/*.html continued 1" , showT out]
 
         needsFound :: [Path Abs File]<- runErr2action $ do
-            dr1 <- read8 bakedFrom panrepFileType
-            let needsFound1 = map (addFileName bakedP . replaceExtension' "html") . getIndexFiles4meta $ dr1 
+            pan0 <- read8 bakedFrom panrepFileType
+            let needsFound1 = map (addFileName bakedP . replaceExtension' "html") . getIndexFiles4meta $ pan0 
             putInform debug ["\nrule **/*.html needsFound1" 
                     , showT needsFound1]
             return needsFound1
@@ -76,87 +76,98 @@ shake2html debug flags sett4 bakedP  =
 
         putInform debug ["\nrule **/*.html continued 3", showT out]
 
-        needs2 :: [Path Abs File] <- runErr2action $ do
             -- was ist mit needs2?
             --  bakeOnePanrep2html debug flags bakedFrom sett4 outP 
             -- bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
-            when (inform debug) $    putIOwords
+        when (inform debug) $    putIOwords
                 [ "\n-----------------"
                 , "bakeOnePanrep2html 1 fn"
                 , showT bakedFrom
                 , "\n resfn2"
                 , showT outP
                 ]
-            dr1 <- read8 bakedFrom panrepFileType
+        (pan0) <- runErr2action $  read8 bakedFrom panrepFileType
         
 
-            -- (p, needsFound3, test_templatehtml) <- 
-            --  panrep2html debug  flags dr1
-            -- panrep2html debug flags  metaplus4 = do
-            -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
-            let sett3 = sett dr1
-                extra4 = extra dr1
-                mf = masterTemplateFile $ siteLayout sett3
-                masterfn = templatesDir (siteLayout sett3) </> mf
+        -- (p, needsFound3, test_templatehtml) <- 
+        --  panrep2html debug  flags pan0
+        -- panrep2html debug flags  metaplus4 = do
+        -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
+        let sett3 = sett pan0
+            extra4 = extra pan0
+            mf = masterTemplateFile $ siteLayout sett3
+            masterfn = templatesDir (siteLayout sett3) </> mf
+        let ixs0 = getIndexFiles4meta pan0 :: [Path Rel File]
 
-            putInform debug["\npanrep2html", "siteLayout sett3"
-                        , showPretty $ siteLayout sett3]
-            putInform debug ["panrep2html", "mf", showPretty mf]
-            putInform debug ["panrep2html", "masterfn", showPretty masterfn]
+    -- braucht needs fuer die panrep files
 
-            targetTempl  <- compileTemplateFile2 masterfn
-            testTempl  <- compileTemplateFile2 testTemplateFn
+                -- the rel path to index files
+        let ixs0pan = map (addFileName bakedP 
+                            . addExtension extPanrep) ixs0 :: [Path Abs File]
+        putInform debug ["panrep2html", "needs panrep ixs0pan", showT ixs0pan]
+        
+        needP ixs0pan
 
-            -- htm1 <- meta2xx writeHtml5String2 (metap dr1)
+        putInform debug["\npanrep2html", "siteLayout sett3"
+                    , showPretty $ siteLayout sett3]
+        putInform debug ["panrep2html", "mf", showPretty mf]
+        putInform debug ["panrep2html", "masterfn", showPretty masterfn]
+
+        targetTempl  <- runErr2action $ compileTemplateFile2 masterfn
+        testTempl  <- runErr2action $ compileTemplateFile2 testTemplateFn
+
+            -- htm1 <- meta2xx writeHtml5String2 (metap pan0)
 
             --if this is an index file it has files and dirs 
             -- putInform debug ["panrep2html", "extra4", showPretty extra4]
 
-            let files = fileEntries  $ extra4 :: [IndexEntry2]
-                dirs = dirEntries  $ extra4 :: [IndexEntry2]
+        let files = fileEntries  $ extra4 :: [IndexEntry2]
+            dirs = dirEntries  $ extra4 :: [IndexEntry2]
 
             -- let bakedP =   bakedDir . siteLayout $ sett3
         
-        -- braucht needs fuer die panrep files
+ 
 
-            valsDirs :: [Maybe IndexEntry2]<- mapM 
+        valsDirs :: [Maybe IndexEntry2]<- runErr2action $ mapM 
                             (getVals2html debug flags bakedP) dirs
-            valsFiles :: [Maybe IndexEntry2] <- mapM 
-                            (getVals2html debug flags bakedP) files
+        valsFiles :: [Maybe IndexEntry2] <- runErr2action $ mapM 
+                        (getVals2html debug flags bakedP) files
 
-            putInform debug["panrep2html", "valsDirs", showPretty valsDirs]
-            putInform debug ["panrep2html", "valsFiles", showPretty valsFiles]
+        putInform debug["panrep2html", "valsDirs", showPretty valsDirs]
+        putInform debug ["panrep2html", "valsFiles", showPretty valsFiles]
 
-            let extra5 = extra4{fileEntries = catMaybes valsFiles
-                                , dirEntries = catMaybes valsDirs}
-            let metaplus5 = dr1{extra = extra5}
+        let extra5 = extra4{fileEntries = catMaybes valsFiles
+                            , dirEntries = catMaybes valsDirs}
+        let metaplus5 = pan0{extra = extra5}
 
             -- putInform debug ["panrep2html", "extra5", showPretty extra5]
             -- putInform debug ["panrep2html", "metaplus5", showPretty metaplus5]
 
-            let hpl1 = renderTemplate targetTempl (toJSON metaplus5)  -- :: Doc Text
-            let ht1 = render (Just 50) hpl1  -- line length, can be Nothing
+            -- let hpl1 = renderTemplate targetTempl (toJSON metaplus5)  -- :: Doc Text
+        let ht1 = fillTemplate_render targetTempl metaplus5
 
-            let ttpl1 = renderTemplate testTempl (toJSON metaplus5)  -- :: Doc Text
-            let tt1 = render (Just 50) ttpl1  -- line length, can be Nothing
+            -- let ttpl1 = renderTemplate testTempl (toJSON metaplus5)  -- :: Doc Text
+        let test_templatehtml = fillTemplate_render testTempl metaplus5 
 
             -- putInform debug ["panrep2html render html done", "ht1",  ht1 ]
-            -- putInform debug ["panrep2html render testTemplate done", "tt1",  tt1 ]
+            -- putInform debug ["panrep2html render testTemplate done", "test_templatehtml",  test_templatehtml ]
 
             -- bakeOnePanrep2html will write to disk
             -- return (HTMLout ht1, [], tt1) -- needs are dealt with so far above
-            let (p, needsFound3, test_templatehtml) = (HTMLout ht1, [], tt1)
-
-            write8 outP htmloutFileType ( p) -- content is html style
+            -- let (p, needsFound3, test_templatehtml) = (HTMLout ht1, [], tt1)
+        runErr2action $ do 
+            write8 outP htmloutFileType ( HTMLout ht1) 
             write8 outP tthFileType test_templatehtml
-            -- write the test for filling the template always 
-            when (inform debug) $
-                putIOwords
-                    ["\n-----------------", "bakeOnePanrep2html done fn", showT outP]
-            return  needsFound3
 
-        putInform debug ["rule **/*.html - needs2", showT needs2]
+        when (inform debug) $
+            putIOwords
+                ["\n-----------------", "bakeOnePanrep2html done fn", showT outP]
+
         putInform debug ["\nrule **/*.html end continued 4", showT out]
 
-        return ()            
 
+fillTemplate_render  tpl dat = render (Just 50)
+        -- just a plausible line length of 50 
+        $  renderTemplate tpl (toJSON dat)
+    -- let ttpl1 = renderTemplate testTempl (toJSON metaplus5)  -- :: Doc Text
+    --         let test_templatehtml = render (Just 50) ttpl1  -- line length, can 

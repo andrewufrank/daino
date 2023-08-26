@@ -267,11 +267,6 @@ shake2panrep debug flags sett4 bakedP =
                     , "\n needsFound", showT needsFound]
         return   needsFound
 
-
-    putInform debug ["rule **/*.panrep end - needs2", showT needs2]
-    need needs2 
     putInform debug ["rule **/*.panrep continued 3 end", showT out]
 
-    -- missed the write panrep?
-    return ()            
     

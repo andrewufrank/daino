@@ -71,7 +71,7 @@ getIndexFiles4meta :: Panrep -> [Path Rel File]
 -- get the index files (for dir and files)
 getIndexFiles4meta pan = getIndexFiles (f1 ++ d1)
     where
-        f1 = (fileEntries .  extra  $ pan)
+        f1 = fileEntries .  extra  $ pan
         d1 = dirEntries . extra $ pan 
 
 getVals2html :: NoticeLevel -> PubFlags -> Path Abs Dir -> IndexEntry2
