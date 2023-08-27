@@ -37,6 +37,7 @@ import Wave.Panrep2html
  
 -- import Development.Shake (getDirectoryFilesIO)
 import qualified Data.Map as M
+import qualified Data.List as D
 -- import GHC.Base (indexDoubleArrayAsDoubleX2#)
 
 
@@ -56,10 +57,13 @@ indexNeeds debug doughP bakedP outP = do
 
     -- putInform debug ["rule **/*.panrep - thisDir", showT thisDir]
 
-    fs2 :: [Path Abs File] <- getDirectoryFilesFullP bakedDirP ["*.md"]
-    putInform debug ["\nrule **/*.panrep i1 getDirectoryFiles done fs"
-                , showT fs2]
+    fs2nake :: [Path Rel File] <- getDirectoryFilesP bakedDirP ["*.md"]
+    putInform debug ["\nrule **/*.panrep i1 getDirectoryFiles done fs2nake"
+                , showT fs2nake]
     -- remove the index.md file ! gives recursion in rules
+    let fs2 = map (addFileName bakedDirP) $ D.delete (makeRelFile "index.md") fs2nake   
+    putInform debug ["\nrule **/*.panrep i1 getDirectoryFiles done fs2"
+                , showT fs2]
 
     dr2 :: [Path Abs Dir]  <- getDirectoryDirsFullP bakedDirP 
     putInform debug ["\nrule **/*.panrep i1 getDirectoryDir done dr2"
