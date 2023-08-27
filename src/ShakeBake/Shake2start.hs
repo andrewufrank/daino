@@ -55,7 +55,8 @@ shakeAll debug sett3 flags causedby = do
         ]
 
     let 
-        fs4 = ["index.html"]
+        fs4 = ["index.html"
+                , "Minimal/index.md"]
         fs4htmlTemplate =   ["resources/theme/templates/static/tufte.css"
                             , "resources/theme/templates/static/tufte-extra.css"
                             , "resources/theme/templates/static/pandoc.css"
@@ -69,5 +70,5 @@ shakeAll debug sett3 flags causedby = do
                                     , map (addFileName bakedP ) $ map makeRelFile fs4htmlTemplate
                                     ]
         }
-    putIOwords ["mdFiles flags", showT $ mdFiles flags2]        
+    putInform debug ["mdFiles flags", showT $ mdFiles flags2]        
     callIO $ shakeMD NoticeLevel2 sett3  flags2   
