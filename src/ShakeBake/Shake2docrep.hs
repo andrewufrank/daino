@@ -47,11 +47,11 @@ shake2docrep debug flags sett4 bakedP  =
     let bakedFrom = replaceDirectoryP  bakedP doughP $  
                         replaceExtension'  "md" outP
     putInform debug ["rule **/*.docrep 2 - bakedFrom", showT bakedFrom
-            , "\n resfn2", showT outP ]
+            , "\n\t\t resfn2", showT outP ]
     needP [bakedFrom]  
   
     
-    putInform debug ["rule **/*.docrep 3 continued", showT out]
+    putInform debug ["rule **/*.docrep 3 continued - md need set"]
 
     _ <- runErr2action $ do -- bakeOneMD2docrep debug flags bakedFrom sett4 outP 
     -- no needs follow 
@@ -62,6 +62,7 @@ shake2docrep debug flags sett4 bakedP  =
 --            readMarkdownFile2docrep debug flags sett3 fnin = do
 
         p1 <- readMd2pandoc bakedFrom -- need posted
+        putInform NoticeLevel1 ["rule **/*.docrep 4 read", showT bakedFrom]
 
        -- check for german and process umlaut, 
         -- repeat readMd2pandoc if changed 
@@ -77,16 +78,17 @@ shake2docrep debug flags sett4 bakedP  =
         let mp1 = setMetaPlusInitialize sett4 bakedFrom m1
             incl = includeBakeTest3docrep flags (metap mp1) 
 
-        putInform NoticeLevel1 ["rule **/*.docrep 4 "]
         --  showPretty incl]
         let dr4 =  if incl then mp1 else zero     
+        putInform NoticeLevel1 ["rule **/*.docrep 5 ready to write outP"
+                            , showT outP]
         write8 outP docrepFileType dr4
 
-        putInform debug  [ "\n-- rule **/*.docrep 5 done resfn2", showT outP
+        putInform debug  [ "rule **/*.docrep 6 written outP", showT outP
                 ]
         return []
 
-    putInform debug ["rule **/*.docrep 5 end"] -- no  - needs2", showT needs2]
+    putInform debug ["rule **/*.docrep 5 end ----------------"] -- no  - needs2", showT needs2]
     return ()
     
 

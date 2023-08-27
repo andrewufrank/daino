@@ -50,38 +50,37 @@ shake2html debug flags sett4 bakedP  =
     let layout = siteLayout sett4
         doughP = doughDir layout -- the regular dough
 
-    putInform debug ["rule **/*.html", showT out]
+    putInform debug ["rule **/*.html 1 start ", showT out]
 
     let outP = makeAbsFile out :: Path Abs File
     let fromFile = doughP </> makeRelativeP bakedP outP
             -- try to see if the file exists in dough 
     fileExists <- io2bool $ doesFileExist' fromFile
-    putInform debug ["rule **/*.html - fileExist:", showT fileExists]
+    putInform debug ["rule **/*.html 2 - fileExist:", showT fileExists]
     
     if fileExists 
         then copyFileToBaked debug doughP bakedP out
         else do
         let bakedFrom = replaceExtension'  "panrep" outP
-        putInform debug ["rule **/*.html - bakedFrom", showT bakedFrom]
+        putInform debug ["rule **/*.html 3 - bakedFrom", showT bakedFrom, "\n"]
         need [toFilePath bakedFrom]
 
-        putInform debug ["\nrule **/*.html continued 1" , showT out]
+        putInform debug ["\nrule **/*.html 4 continued " , showT out]
 
         needsFound :: [Path Abs File]<- runErr2action $ do
             pan0 <- read8 bakedFrom panrepFileType
             let needsFound1 = map (addFileName bakedP . replaceExtension' "html") . getIndexFiles4meta $ pan0 
-            putInform debug ["\nrule **/*.html needsFound1" 
+            putInform debug ["\nrule **/*.html 5 needsFound1" 
                     , showT needsFound1]
             return needsFound1
         needP needsFound
 
-        putInform debug ["\nrule **/*.html continued 3", showT out]
+        putInform debug ["\nrule **/*.html 6 continued ", showT out]
 
             -- was ist mit needs2?
             --  bakeOnePanrep2html debug flags bakedFrom sett4 outP 
             -- bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
-        when (inform debug) $    putIOwords
-                [ "\n-----\nrule **/*.html 1 fn", showT bakedFrom
+        putInform debug [ "\n-----\nrule **/*.html 7 fn", showT bakedFrom
                 , "\n                    resfn2", showT outP
                 ]
         (pan0) <- runErr2action $  read8 bakedFrom panrepFileType
@@ -95,15 +94,15 @@ shake2html debug flags sett4 bakedP  =
         let ixs0 = getIndexFiles4meta pan0 :: [Path Rel File]
         let ixs0pan = map (addFileName bakedP 
                         . addExtension extPanrep) ixs0 ::[Path Abs File]
-        putInform debug ["\n-----\nrule **/*.html"
+        putInform debug ["\n-----\nrule **/*.html 8"
                     , "needs panrep ixs0pan", showT ixs0pan]
         
         needP ixs0pan
 
-        putInform debug["\n-----\nrule **/*.html", "siteLayout sett3"
+        putInform debug["\n-----rule **/*.html 9 siteLayout sett3"
                     , showT $ siteLayout sett3]
-        putInform debug ["\n-----\nrule **/*.html", "mf", showT mf]
-        putInform debug ["\n-----\nrule **/*.html", "masterfn"
+        putInform debug ["-----rule **/*.html 10 mf", showT mf]
+        putInform debug ["-----rule **/*.html 11 masterfn"
                         , showT masterfn]
 
         targetTempl  <- runErr2action $ compileTemplateFile2 masterfn
@@ -120,9 +119,9 @@ shake2html debug flags sett4 bakedP  =
         valsFiles :: [Maybe IndexEntry2] <- runErr2action $ mapM 
                         (getVals2html debug flags bakedP) files
 
-        putInform debug["\n-----\nrule **/*.html", "valsDirs"
+        putInform debug["\n-----rule **/*.html 12 valsDirs"
                     , showT valsDirs]
-        putInform debug ["\n-----\nrule **/*.html", "valsFiles", showT valsFiles]
+        putInform debug ["\n-----rule **/*.html 13 valsFiles", showT valsFiles]
 
         let extra5 = extra4{fileEntries = catMaybes valsFiles
                             , dirEntries = catMaybes valsDirs}
@@ -142,11 +141,11 @@ shake2html debug flags sett4 bakedP  =
             write8 outP tthFileType test_templatehtml
 
         when (inform debug) $ putIOwords
-            ["\n-----\nrule **/*.html", "bakeOnePanrep2html done fn"
+            ["-----rule **/*.html 14 bakeOnePanrep2html done fn"
             , showT outP]
 
-        putInform debug ["\n-----\nrule **/*.html end continued 4"
-            , showT out]
+        putInform debug ["\n-----rule **/*.html 15 end continued 4"
+            , showT out,"\n"]
 
 
 fillTemplate_render  tpl dat = render (Just 50)

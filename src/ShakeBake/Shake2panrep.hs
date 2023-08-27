@@ -49,33 +49,31 @@ shake2panrep debug flags sett4 bakedP =
         doughP = doughDir layout -- the regular dough
         -- bakedP = bakedDir layout
 
-    putInform debug ["rule **/*.panrep", showT out]
+    putInform debug ["rule **/*.panrep 1 start out", showT out]
 
     let outP = makeAbsFile out :: Path Abs File
     
     let bakedFrom = replaceExtension'  "docrep" outP
 
-    putInform debug ["rule **/*.panrep - bakedFrom", showT bakedFrom]
+    putInform debug ["rule **/*.panrep 2 - bakedFrom", showT bakedFrom]
     needP [bakedFrom]
 
-    putInform debug ["rule **/*.panrep continued 1", showT out]
+    putInform debug ["\nrule **/*.panrep 3 continued", showT out]
 
     let thisDir1 =  getParentDir outP ::FilePath
     
-    putInform debug ["rule **/*.panrep - thisDir1", showT thisDir1]
+    putInform debug ["rule **/*.panrep 4 - thisDir1", showT thisDir1]
 
     --  here the unless insert 
                 
-    putInform debug ["rule **/*.panrep continued 2", showT out]
+    putInform debug ["\nrule **/*.panrep 5 continued 2", showT out]
 
     needs2 <- runErr2action $ do
             --  bakeOneDocrep2panrep debug flags bakedFrom sett4 outP 
     --           bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
-        when (informAll debug) $    putIOwords
-            [ "-----------------"
-            , "bakeOneDocrep2panrep 1 inputFn"
-            , showT bakedFrom
-            , showT outP
+        putInform debug [ "\nrule **/*.panrep 6 bakedFrom"
+            , showT bakedFrom 
+            , "outP", showT outP
             ]
         dr1 <- read8 bakedFrom docrepFileType
 
@@ -84,9 +82,7 @@ shake2panrep debug flags sett4 bakedP =
                 -- what to do with needs?
                      -- docrep2panrep debug flags dr1 = do
         -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
-        when (informAll debug) $
-            putIOwords
-                ["-------------------------docrep2panrep 1"
+        putInform debug ["rule **/*.panrep 7"
                 --  , "metaplus: \n", showPretty dr1
                     -- , "\np1: ", showT p1
                     ]
@@ -107,12 +103,12 @@ shake2panrep debug flags sett4 bakedP =
 
         write8 outP panrepFileType dr2 -- content is html style
         putInform NoticeLevel1 
-                ["\n------bakeOneDocrep2panrep done produced resf2n", showT outP
+                ["rule **/*.panrep 8 done produced resf2n", showT outP
                     -- , "\n needsFound", showT needsFound
                 ]
         return [] --  needsFound
 
-    putInform debug ["rule **/*.panrep continued 3 end", showT out]
+    putInform debug ["rule **/*.panrep 9 end", showT out]
 
 -- for unless
    -- unless ("/home/frank/bakedTestSite" == thisDir1) $ do 

@@ -56,19 +56,22 @@ shakeAll debug sett3 flags causedby = do
 
     let 
         fs4 = ["index.html"
-                , "Minimal/index.md"]
-        fs4htmlTemplate =   ["resources/theme/templates/static/tufte.css"
-                            , "resources/theme/templates/static/tufte-extra.css"
-                            , "resources/theme/templates/static/pandoc.css"
-                            , "resources/theme/templates/static/tufte-additions.css"
-                            , "resources/img/squared16.jpg" -- add rest 
-                            , "resources/theme/templates/img/DSC04809.JPG"
-                            -- banner . siteHeader $ sett3 
-                            ]
+                , "Minimal/index.html"
+                ]  -- start with HTML! 
+        fs4htmlTemplate =   
+            ["resources/theme/templates/static/tufte.css"
+            , "resources/theme/templates/static/tufte-extra.css"
+            , "resources/theme/templates/static/pandoc.css"
+            , "resources/theme/templates/static/tufte-additions.css"
+            , "resources/img/squared16.jpg" -- add rest 
+            , "resources/theme/templates/img/DSC04809.JPG"
+            -- banner . siteHeader $ sett3 
+            ]
         flags2 = flags{mdFiles = 
             concat [map (addFileName bakedP) $ map makeRelFile fs4
                                     , map (addFileName bakedP ) $ map makeRelFile fs4htmlTemplate
                                     ]
         }
+    putInform NoticeLevel1 ["start with fs4", showT fs4, "\n"]
     putInform debug ["mdFiles flags", showT $ mdFiles flags2]        
     callIO $ shakeMD NoticeLevel2 sett3  flags2   
