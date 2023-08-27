@@ -70,34 +70,58 @@ indexNeeds debug doughP bakedP outP = do
     fs3 :: [Path Abs File] <- fmap concat $ mapM (\f -> getDirectoryFilesFullP f ["index.md"]) dr2
     putInform debug ["\nrule **/*.panrep i1 getDirectoryDir done fs3"
             , showT fs3]
-    -- let fs3compl = zipWith (addDir ) dr2compl fs3 :: [Path Abs File]
-    -- filter (not . (isInfixOf' 
-            -- (t2s $ doNotBake (siteLayout sett4))) . getNakedDir) dr2
-            -- problem with get nacked dir 
-            -- not relevant, the webroot is not serched
+
     -- lint is triggered. perhaps should use the
     -- non traced getDirectoryFilesIO?
     putIOwords ["rule **/*.panrep i2 fs2", showT fs2]
     -- let fs2a = map (addFileName thisDirP) fs2
     putIOwords ["rule **/*.panrep i2 fs3", showT fs3]
 
-    -- putIOwords ["rule **/*.panrep i3 dr2", showT dr2]
-    -- putIOwords ["rule **/*.panrep i4 dr3", showT dr3]
-
-    
-    -- needs for the docrep but 
     let needsmd = -- map (replaceDirectoryP doughP bakedP ) 
-                    (fs2 ++  fs3):: [Path Abs File]
+                    (fs2 , fs3):: ([Path Abs File], [Path Abs File])
         -- -- map (replaceDirectoryP  doughP bakedP) .
         --         map (addFileName thisDirP)
         --         . map (replaceExtension' "docrep") 
         --         $  (fs2  ) 
-                -- todo not used dirs 
     putIOwords ["rule **/*.panrep i5 needsmd", showT needsmd]
     return needsmd
  
 -- for indexpage 
--- constructIndexPages outP = do 
+
+constructFileEnry debug sett4 mdfn  = do 
+    putIOwords ["constructFileEntry for mdfn", showT mdfn ]
+
+    let layout = siteLayout sett4 
+        doughP = doughDir layout -- the regular dough
+        bakedP = bakedDir layout
+
+    let docrepFn = replaceDirectoryP doughP bakedP 
+                    . replaceExtension' "docrep" $ mdfn 
+    putIOwords ["constructFileEntry docrepFn", showT docrepFn ]
+
+    needP [docrepFn]
+    
+    dr <- runErr2action $   read8 docrepFn docrepFileType
+    putIOwords ["constructFileEntry docrep content", showT dr ]
+
+    let fileent1 = zero :: IndexEntry2
+    return fileent1 
+
+constructDirEnry debug sett4 mdfn  = do 
+    putIOwords ["constructDirEnry for mdfn", showT mdfn ]
+
+    let layout = siteLayout sett4 
+        doughP = doughDir layout -- the regular dough
+        bakedP = bakedDir layout
+
+    let docrepFn = replaceDirectoryP doughP bakedP 
+                    . replaceExtension' "docrep" $ mdfn 
+    putIOwords ["constructDirEnry docrepFn", showT docrepFn ]
+                   
+    let    dirent1 = zero :: IndexEntry2
+    return dirent1 
+
+        -- (dirsent1, fileent1) :: ([IndexEntry2], [IndexEntry2])
 
         -- (p3, needsFound) <- if isIndexPage mdFile5
         --     then do

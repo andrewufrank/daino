@@ -65,12 +65,23 @@ shake2panrep debug flags sett4 bakedP =
     
     putInform debug ["rule **/*.panrep 4 - thisDirP", showT thisDirP]
 
-    unless (thisDirP == bakedP) $ do 
+    (fileEnts, dirEnts) <- if not (thisDirP /= bakedP && isIndexPage outP) 
+        then return (zero, zero)
+        else  do 
     --  here the unless insert 
-        need4index  <- indexNeeds debug doughP bakedP outP
-                
-        putInform debug ["\nrule **/*.panrep 4a need4index", showT need4index]
-        needP need4index 
+            (files2, ind3)  <- indexNeeds debug doughP bakedP outP
+                    
+            putInform debug ["\nrule **/*.panrep 4a \n\t files", showT files2
+                        , "\n\t\t index.md for directories", showT ind3]
+            needP (files2 ++ ind3)
+
+            fileEnt1 <- mapM (constructFileEnry debug sett4) files2 
+            dirEnt1 <- mapM (constructDirEnry debug sett4) ind3 
+
+
+
+            return (fileEnt1, dirEnt1)
+
     
     putInform debug ["\nrule **/*.panrep 4x continued after unless" ]
 
