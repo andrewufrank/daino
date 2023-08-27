@@ -89,14 +89,14 @@ getVals2html debug pubFlags bakedP ix2 = do
     pan1 <- read8 fn panrepFileType
     -- putInform debug ["getVals2html pan1", showT pan1 ]
 
-    let m = metaHtml pan1
-        ix3 = ix2   { abstract = lookup7withDef ""  "abstract" m
-                    , title = lookup7withDef "TITLE MISSING" "title" m
-                    , author = lookup7withDef "" "author" m -- todo suppressed?
-                    , date = lookup7withDef "2000-01-01" "date" m
-                    , sortOrder = lookup7withDef "filename" "sortOrder" m
-                    , version = lookup7withDef "draft" "version" m
-                    , visibility = lookup7withDef "private" "visibility" m
+    let m = metap  pan1
+        ix3 = ix2   { abstract = getTextFromMeta5 ""  "abstract" m
+                    , title = getTextFromMeta5 "TITLE MISSING" "title" m
+                    , author = getTextFromMeta5 "" "author" m -- todo suppressed?
+                    , date = getTextFromMeta5 "2000-01-01" "date" m
+                    , sortOrder = getTextFromMeta5 "filename" "sortOrder" m
+                    , version = getTextFromMeta5 "draft" "version" m
+                    , visibility = getTextFromMeta5 "private" "visibility" m
                     , pdf1 = s2t $ toFilePath pdf 
                     }
 

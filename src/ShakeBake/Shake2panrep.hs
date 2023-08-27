@@ -65,6 +65,8 @@ shake2panrep debug flags sett4 bakedP =
     
     putInform debug ["rule **/*.panrep 4 - thisDirP", showT thisDirP]
 
+    let 
+
     (fileEnts, dirEnts) <- if not (thisDirP /= bakedP && isIndexPage outP) 
         then return (zero, zero)
         else  do 
@@ -76,11 +78,12 @@ shake2panrep debug flags sett4 bakedP =
             needP (files2 ++ ind3)
 
             fileEnt1 <- mapM (constructFileEnry debug sett4) files2 
-            dirEnt1 <- mapM (constructDirEnry debug sett4) ind3 
+            dirEnt1 <- mapM (constructFileEnry debug sett4) ind3 
+            -- produces the data for the index.md file
 
 
 
-            return (fileEnt1, dirEnt1)
+            return (catMaybes fileEnt1, catMaybes dirEnt1)
 
     
     putInform debug ["\nrule **/*.panrep 4x continued after unless" ]
@@ -111,14 +114,17 @@ shake2panrep debug flags sett4 bakedP =
         let -- sett4 = sett dr1
             -- layout = siteLayout sett4
             meta5 = metap  dr1 -- ~ panyam 
+            extra5 = extra dr1
             extra6 = metaSetBook sett4 dr1 
+            extra7 = extra6{dirEntries = dirEnts
+                            , fileEntries = fileEnts}
 
         htm1 <- meta2xx writeHtml5String2 meta5
         tex1  :: M.Map Text Text <- meta2xx   writeTexSnip2 meta5
 
-        let dr2 = dr1{metaHtml = htm1
-                        ,metaLatex = tex1
-                        , extra = extra6 }
+        let dr2 = dr1   { metaHtml = htm1
+                        , metaLatex = tex1
+                        , extra = extra7 }
     
         -- needs to read the docrep files
 

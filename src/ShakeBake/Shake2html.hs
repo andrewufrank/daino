@@ -65,7 +65,8 @@ shake2html debug flags sett4 bakedP  =
         putInform debug ["rule **/*.html 3 - bakedFrom", showT bakedFrom, "\n"]
         need [toFilePath bakedFrom]
 
-        putInform debug ["\nrule **/*.html 4 continued " , showT out]
+        putInform debug ["\nrule **/*.html 4 continued out" , showT out
+                , "bakedFrom", showT bakedFrom]
 
         needsFound :: [Path Abs File]<- runErr2action $ do
             pan0 <- read8 bakedFrom panrepFileType
@@ -85,6 +86,8 @@ shake2html debug flags sett4 bakedP  =
                 ]
         (pan0) <- runErr2action $  read8 bakedFrom panrepFileType
         
+        putInform debug ["\nrule **/*.html 7b panrep read ", showT pan0]
+
         let sett3 = sett pan0
             extra4 = extra pan0
             mf = masterTemplateFile $ siteLayout sett3

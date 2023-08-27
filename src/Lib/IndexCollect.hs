@@ -50,7 +50,8 @@ initializeIx2dir :: [Path Abs File] -> Path Abs Dir -> Path Abs Dir -> IndexEntr
 -- the dough path to make the path relative
 -- set the index file, not the directory itself 
 initializeIx2dir mdfs doughP fp = zero{ixfn =   relfp2
-                    , link = toFilePath relfp}
+                    -- , link = toFilePath relfp
+                    }
         where 
             -- fp3 = filter (\fn -> elem fn mdfs) $ map toFilePath fp2
             relfp2 = (toFilePath relfp) </> ("index" :: FilePath) :: FilePath 
@@ -60,12 +61,13 @@ initializeIx2dir mdfs doughP fp = zero{ixfn =   relfp2
 initializeIx2file :: [Path Abs File] -> Path Abs Dir -> Path Abs File -> IndexEntry2 
 -- the dough path to make the path relative
 initializeIx2file mdfs doughP fp = zero{ixfn = toFilePath linkfp
-                    , link = toFilePath linkfp
+                    -- , link = toFilePath linkfp
                     }
         where 
             -- fp = filter (\fn -> elem fn mdfs) relfp
             linkfp =  removeExtension relfp 
             relfp = makeRelativeP doughP $ fp
+
 -- filterDNB :: Text -> [Path Abs Dir] -> [Path Abs Dir]
 -- -- remove all directories which should not be processed 
 -- -- into the blog etc. 

@@ -120,7 +120,7 @@ texsnip2tex  debug pubFlags metaplus4 = do
                             -- eventually will be panrep again
                             -- after removing the texsnip wave 
                 . map (addDir bakedFP ) 
-                .  map link $ (dirs ++ files)
+                .  map ixfn $ (dirs ++ files)
                      :: [FilePath]
 
     putInform debug ["texsnip2tex", "\n\tneeds ", showPretty needs ]

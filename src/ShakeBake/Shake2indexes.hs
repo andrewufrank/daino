@@ -33,6 +33,7 @@ import Foundational.SettingsPage
 import Foundational.Filetypes4sites
 import Lib.IndexCollect
 import Wave.Md2doc
+import Wave.Panrep2html
  
 -- import Development.Shake (getDirectoryFilesIO)
 import qualified Data.Map as M
@@ -58,14 +59,12 @@ indexNeeds debug doughP bakedP outP = do
     fs2 :: [Path Abs File] <- getDirectoryFilesFullP bakedDirP ["*.md"]
     putInform debug ["\nrule **/*.panrep i1 getDirectoryFiles done fs"
                 , showT fs2]
-    -- let fs2compl = map (addFileName bakedDirP) fs2 :: [Path Abs File]
+    -- remove the index.md file ! gives recursion in rules
 
     dr2 :: [Path Abs Dir]  <- getDirectoryDirsFullP bakedDirP 
     putInform debug ["\nrule **/*.panrep i1 getDirectoryDir done dr2"
                 , showT dr2]
-    -- let dr2compl = map (addDir bakedDirP) dr2   :: [Path Abs Dir]
-    -- putInform debug ["\nrule **/*.panrep i1 getDirectoryDir done dr2compl"
-            -- , showT dr2compl]
+
 
     fs3 :: [Path Abs File] <- fmap concat $ mapM (\f -> getDirectoryFilesFullP f ["index.md"]) dr2
     putInform debug ["\nrule **/*.panrep i1 getDirectoryDir done fs3"
@@ -89,7 +88,7 @@ indexNeeds debug doughP bakedP outP = do
 -- for indexpage 
 
 constructFileEnry debug sett4 mdfn  = do 
-    putIOwords ["constructFileEntry for mdfn", showT mdfn ]
+    putIOwords ["constructFileEntry 1 for mdfn", showT mdfn ]
 
     let layout = siteLayout sett4 
         doughP = doughDir layout -- the regular dough
@@ -97,29 +96,45 @@ constructFileEnry debug sett4 mdfn  = do
 
     let docrepFn = replaceDirectoryP doughP bakedP 
                     . replaceExtension' "docrep" $ mdfn 
-    putIOwords ["constructFileEntry docrepFn", showT docrepFn ]
+    putIOwords ["constructFileEntry 2 docrepFn", showT docrepFn ]
 
     needP [docrepFn]
     
     dr <- runErr2action $   read8 docrepFn docrepFileType
-    putIOwords ["constructFileEntry docrep content", showT dr ]
+    let incld = dr /= zero 
+    
+    putIOwords ["constructFileEntry 3 continues docrepFn publish"
+            , showT incld,  showT docrepFn ]
+    if incld 
+      then do 
+        let ixfn1 =   removeExtension .  stripProperPrefixP bakedP $ docrepFn :: Path Rel File
+            -- link1 = getParentDir ixfn 
+            m =   metap $ dr  -- must be redone for correct html/latex encoding? 
+            ie0 = zero { ixfn = toFilePath ixfn1
+                        -- , link = link1 
+                        ,  abstract = getTextFromMeta5 ""  "abstract" m
+                        , title = getTextFromMeta5 "TITLE MISSING" "title" m
+                        , author = getTextFromMeta5 "" "author" m  
+                        -- copied form panrep2html
+                        }
+        return . Just $ ie0 
+      else return Nothing 
+ 
+-- constructDirEnry :: MonadIO m =>
+--     NoticeLevel -> Settings -> Path Abs File -> m (Maybe IndexEntry2)
+-- constructDirEnry debug sett4 mdfn  = do 
+--     putIOwords ["constructDirEnry 1 for mdfn", showT mdfn ]
 
-    let fileent1 = zero :: IndexEntry2
-    return fileent1 
+--     let layout = siteLayout sett4 
+--         doughP = doughDir layout -- the regular dough
+--         bakedP = bakedDir layout
 
-constructDirEnry debug sett4 mdfn  = do 
-    putIOwords ["constructDirEnry for mdfn", showT mdfn ]
-
-    let layout = siteLayout sett4 
-        doughP = doughDir layout -- the regular dough
-        bakedP = bakedDir layout
-
-    let docrepFn = replaceDirectoryP doughP bakedP 
-                    . replaceExtension' "docrep" $ mdfn 
-    putIOwords ["constructDirEnry docrepFn", showT docrepFn ]
+--     let docrepFn = replaceDirectoryP doughP bakedP 
+--                     . replaceExtension' "docrep" $ mdfn 
+--     putIOwords ["constructDirEnry 2 docrepFn", showT docrepFn ]
                    
-    let    dirent1 = zero :: IndexEntry2
-    return dirent1 
+--     let    dirent1 = zero :: IndexEntry2
+--     return $ Just dirent1 
 
         -- (dirsent1, fileent1) :: ([IndexEntry2], [IndexEntry2])
 
