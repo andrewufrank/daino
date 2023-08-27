@@ -70,7 +70,27 @@ setMetaPlusInitialize sett3 fnin m1 =  zero { metap = m1
                     , latLanguage = latexLangConversion lang 
                     , pdf2 = toFilePath $ replaceExtension2 ".pdf" relFn }
 
-
+metaDefaults ::  Settings -> [(Text, Text)]
+metaDefaults sett9 =  
+     [("Bibliography", "resources/BibTexLatex.bib")
+    , ("version", "publish")  -- todo should probably not be default
+    ,  ("visibility", "public") 
+    , ("title", "Title MISSING")
+    , ("abstract", "Abstract MISSING")
+    , ("date", showT year2000)
+    , ("lang", "en")  -- todo conversion? 
+    , ("latLanguage", "english") -- for babel - todo 
+    , ("styleBiber","authoryear")
+    , ("headerShift","1")
+    , ("author", settingsAuthor sett9)
+    , ("sortOrder", "filename")
+    -- , ("indexPage", False) detect from name 'index.md'
+    ] 
+-- "resources/webbiblio.bib")
+-- check that defaults work? 
+-- defaults are set in panrep2html (and 2latex??)
+  
+  
 -- readMarkdownFile2docrep  :: NoticeLevel -> PubFlags -> Settings ->  Path Abs File ->  ErrIO Docrep 
 -- -- read a markdown file and convert to docrep
 -- -- reads setting file!
