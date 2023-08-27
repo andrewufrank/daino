@@ -70,7 +70,7 @@ shake2panrep debug flags sett4 bakedP =
         need4index  <- indexNeeds debug doughP bakedP outP
                 
         putInform debug ["\nrule **/*.panrep 4a need4index", showT need4index]
-        -- needP need4index 
+        needP need4index 
     
     putInform debug ["\nrule **/*.panrep 4x continued after unless" ]
 

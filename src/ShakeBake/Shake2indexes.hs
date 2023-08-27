@@ -26,7 +26,7 @@ module ShakeBake.Shake2indexes where
 import UniformBase 
 import Foundational.CmdLineFlags
 import Uniform.Shake
-import Development.Shake.FilePath (makeRelative)
+import Development.Shake.FilePath (makeRelative, replaceDirectory)
 
 import Uniform.Pandoc
 import Foundational.SettingsPage
@@ -55,14 +55,22 @@ indexNeeds debug doughP bakedP outP = do
 
     -- putInform debug ["rule **/*.panrep - thisDir", showT thisDir]
 
-    fs2 :: [Path Rel File] <- getDirectoryFilesP bakedDirP ["*.md"]
+    fs2 :: [Path Abs File] <- getDirectoryFilesFullP bakedDirP ["*.md"]
     putInform debug ["\nrule **/*.panrep i1 getDirectoryFiles done fs"
                 , showT fs2]
+    -- let fs2compl = map (addFileName bakedDirP) fs2 :: [Path Abs File]
 
-    dr2 :: [Path Rel Dir]  <- getDirectoryDirsP bakedDirP 
+    dr2 :: [Path Abs Dir]  <- getDirectoryDirsFullP bakedDirP 
     putInform debug ["\nrule **/*.panrep i1 getDirectoryDir done dr2"
                 , showT dr2]
-    let dr3 = dr2 
+    -- let dr2compl = map (addDir bakedDirP) dr2   :: [Path Abs Dir]
+    -- putInform debug ["\nrule **/*.panrep i1 getDirectoryDir done dr2compl"
+            -- , showT dr2compl]
+
+    fs3 :: [Path Abs File] <- fmap concat $ mapM (\f -> getDirectoryFilesFullP f ["index.md"]) dr2
+    putInform debug ["\nrule **/*.panrep i1 getDirectoryDir done fs3"
+            , showT fs3]
+    -- let fs3compl = zipWith (addDir ) dr2compl fs3 :: [Path Abs File]
     -- filter (not . (isInfixOf' 
             -- (t2s $ doNotBake (siteLayout sett4))) . getNakedDir) dr2
             -- problem with get nacked dir 
@@ -70,23 +78,24 @@ indexNeeds debug doughP bakedP outP = do
     -- lint is triggered. perhaps should use the
     -- non traced getDirectoryFilesIO?
     putIOwords ["rule **/*.panrep i2 fs2", showT fs2]
-    let fs2a = map (addFileName thisDirP) fs2
-    putIOwords ["rule **/*.panrep i2 fs2a", showT fs2a]
+    -- let fs2a = map (addFileName thisDirP) fs2
+    putIOwords ["rule **/*.panrep i2 fs3", showT fs3]
 
     -- putIOwords ["rule **/*.panrep i3 dr2", showT dr2]
     -- putIOwords ["rule **/*.panrep i4 dr3", showT dr3]
 
     
     -- needs for the docrep but 
-    let needsmd = -- [] :: [Path Abs Dir]
-        -- map (replaceDirectoryP  doughP bakedP) .
-                map (addFileName thisDirP)
-                . map (replaceExtension' "docrep") 
-                $  (fs2  ) 
+    let needsmd = -- map (replaceDirectoryP doughP bakedP ) 
+                    (fs2 ++  fs3):: [Path Abs File]
+        -- -- map (replaceDirectoryP  doughP bakedP) .
+        --         map (addFileName thisDirP)
+        --         . map (replaceExtension' "docrep") 
+        --         $  (fs2  ) 
                 -- todo not used dirs 
     putIOwords ["rule **/*.panrep i5 needsmd", showT needsmd]
     return needsmd
-
+ 
 -- for indexpage 
 -- constructIndexPages outP = do 
 
