@@ -89,8 +89,25 @@ metaDefaults sett9 =
 -- "resources/webbiblio.bib")
 -- check that defaults work? 
 -- defaults are set in panrep2html (and 2latex??)
-  
-  
+
+metaSetBook :: Settings -> DainoMetaPlus -> DainoValues
+metaSetBook sett4 dr1 =  extra5{authorReduced = blankAuthorName hpname aut1
+                            ,booklet = "booklet" == bookval
+                            ,bookBig= "bookBig" == bookval
+                            ,webroot = s2t $ toFilePath doughP
+                            }
+    where 
+            aut1 = getTextFromYaml6 defaut "author" meta5
+            bookval = getTextFromYaml6  "" "book"   meta5 
+            doughP = doughDir layout -- the regular dough
+            layout = siteLayout sett4 
+            hpname = blogAuthorToSuppress layout
+            defaut = defaultAuthor layout
+            meta5 = metap  dr1 -- ~ panyam 
+            extra5 = extra dr1
+        
+        
+
 -- readMarkdownFile2docrep  :: NoticeLevel -> PubFlags -> Settings ->  Path Abs File ->  ErrIO Docrep 
 -- -- read a markdown file and convert to docrep
 -- -- reads setting file!
