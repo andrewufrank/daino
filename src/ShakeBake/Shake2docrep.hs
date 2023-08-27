@@ -88,7 +88,7 @@ shake2docrep debug flags sett4 bakedP  =
                 ]
         return []
 
-    putInform debug ["rule **/*.docrep 5 end ----------------"] -- no  - needs2", showT needs2]
+    putInform debug ["rule **/*.docrep 7 end ----------------"] -- no  - needs2", showT needs2]
     return ()
     
 

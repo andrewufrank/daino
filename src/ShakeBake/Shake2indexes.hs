@@ -2,12 +2,7 @@
 --
 -- Module Shake2 :
 ----------------------------------------------------------------------
-{- the conversion starts with the root files to produce, 
-    i.e. only index.md 
-    This triggers the rule html -> panrep 
-    and panrep2html produces the needs for *.pdf, templates, jpg and bib
-
-    for now the css, dtpl, jpg etc. are still included
+{- construct the two indexEntries 
     -}
 ----------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
@@ -26,7 +21,7 @@
 {-# HLINT ignore "Use ++" #-}
 
 
-module ShakeBake.Shake2panrep where
+module ShakeBake.Shake2indexes where
 
 import UniformBase 
 import Foundational.CmdLineFlags
@@ -38,119 +33,47 @@ import Foundational.SettingsPage
 import Foundational.Filetypes4sites
 import Lib.IndexCollect
 import Wave.Md2doc
-import ShakeBake.Shake2indexes 
-
+ 
 -- import Development.Shake (getDirectoryFilesIO)
 import qualified Data.Map as M
 
-shake2panrep debug flags sett4 bakedP = 
-    (toFilePath bakedP <> "**/*.panrep") %> \out -> do  -- insert pdfFIles1
-         
-    let layout = siteLayout sett4 
-        doughP = doughDir layout -- the regular dough
-        -- bakedP = bakedDir layout
 
-    putInform debug ["rule **/*.panrep 1 start out", showT out]
 
-    let outP = makeAbsFile out :: Path Abs File
+indexNeeds debug doughP bakedP outP = do 
+    let thisDir =   getParentDir outP  
+    let thisDirP = makeAbsDir $ getParentDir outP :: Path Abs Dir
+    putInform debug ["rule **/*.panrep - thisDir2", showT thisDirP]
+
     
-    let bakedFrom = replaceExtension'  "docrep" outP
+--    unless ("/home/frank/bakedTestSite" == thisDir1) $ do 
+    -- the case of the webroot is dealt with already  
+    -- during initialization
 
-    putInform debug ["rule **/*.panrep 2 - bakedFrom", showT bakedFrom]
-    needP [bakedFrom]
+    putInform debug ["rule **/*.panrep - thisDir", showT thisDir]
 
-    putInform debug ["\nrule **/*.panrep 3 continued", showT out]
+    fs2 :: [Path Rel File] <- getDirectoryFilesP thisDirP ["*.md"]
+    dr2 :: [Path Rel File]  <- getDirectoryFilesP thisDirP ["index.md"]
+    let dr3 = dr2 
+    -- filter (not . (isInfixOf' 
+            -- (t2s $ doNotBake (siteLayout sett4))) . getNakedDir) dr2
+            -- problem with get nacked dir 
+            -- not relevant, the webroot is not serched
+    -- lint is triggered. perhaps should use the
+    -- non traced getDirectoryFilesIO?
+    putIOwords ["rule **/*.panrep fs2", showT fs2]
+    putIOwords ["rule **/*.panrep dr2", showT dr2]
+    putIOwords ["rule **/*.panrep dr3", showT dr3]
 
-    let thisDirP =  makeAbsDir $ getParentDir outP :: Path Abs Dir
-    
-    putInform debug ["rule **/*.panrep 4 - thisDirP", showT thisDirP]
-
-    unless (thisDirP == bakedP) $ do 
-    --  here the unless insert 
-        need4index  <- indexNeeds debug doughP bakedP outP
-                
-        putInform debug ["\nrule **/*.panrep 4a need4index", showT need4index]
-        -- needP need4index 
-    
-    putInform debug ["\nrule **/*.panrep 4x continued" ]
-
-
-    -- (dirEntries, fileEntries) <- constructIndexEntries
-    putInform debug ["\nrule **/*.panrep 5 continued 2", showT out]
-
-    needs2 <- runErr2action $ do
-            --  bakeOneDocrep2panrep debug flags bakedFrom sett4 outP 
-    --           bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
-        putInform debug [ "\nrule **/*.panrep 6 bakedFrom"
-            , showT bakedFrom 
-            , "outP", showT outP
-            ]
-        dr1 <- read8 bakedFrom docrepFileType
-
-        -- (p3, needsFound) <- docrep2panrep debug flags  dr1
-                -- completes index and should process reps 
-                -- what to do with needs?
-                     -- docrep2panrep debug flags dr1 = do
-        -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
-        putInform debug ["rule **/*.panrep 7"
-                --  , "metaplus: \n", showPretty dr1
-                    -- , "\np1: ", showT p1
-                    ]
-  
-        let -- sett4 = sett dr1
-            -- layout = siteLayout sett4
-            meta5 = metap  dr1 -- ~ panyam 
-            extra6 = metaSetBook sett4 dr1 
-
-        htm1 <- meta2xx writeHtml5String2 meta5
-        tex1  :: M.Map Text Text <- meta2xx   writeTexSnip2 meta5
-
-        let dr2 = dr1{metaHtml = htm1
-                        ,metaLatex = tex1
-                        , extra = extra6 }
-    
-        -- needs to read the docrep files
-
-        write8 outP panrepFileType dr2 -- content is html style
-        putInform NoticeLevel1 
-                ["rule **/*.panrep 8 done produced resf2n", showT outP
-                    -- , "\n needsFound", showT needsFound
-                ]
-        return [] --  needsFound
-
-    putInform debug ["rule **/*.panrep 9 end", showT out]
-
--- for unless
-   -- unless ("/home/frank/bakedTestSite" == thisDir1) $ do 
-    --     -- the case of the webroot is dealt with already  
-    --     -- during initialization
-    --     let thisDir2 = makeAbsDir $ getParentDir outP :: Path Abs Dir
-    --         thisDir = replaceDirectoryP bakedP doughP  thisDir2
-    --     putInform debug ["rule **/*.panrep - thisDir2", showT thisDir2]
-    --     putInform debug ["rule **/*.panrep - thisDir", showT thisDir]
-
-    --     fs2 :: [Path Rel File] <- getDirectoryFilesP thisDir ["*.md"]
-    --     dr2 :: [Path Rel File]  <- getDirectoryFilesP thisDir ["index.md"]
-    --     let dr3 = dr2 
-    --     -- filter (not . (isInfixOf' 
-    --             -- (t2s $ doNotBake (siteLayout sett4))) . getNakedDir) dr2
-    --             -- problem with get nacked dir 
-    --             -- not relevant, the webroot is not serched
-    --     -- lint is triggered. perhaps should use the
-    --     -- non traced getDirectoryFilesIO?
-    --     putIOwords ["rule **/*.panrep fs2", showT fs2]
-    --     putIOwords ["rule **/*.panrep dr2", showT dr2]
-    --     putIOwords ["rule **/*.panrep dr3", showT dr3]
-
-    --     -- needs for the docrep but 
-    --     let needsmd = -- map (replaceDirectoryP bakedP doughP) .
-    --                 map (addFileName thisDir)
-    --                 . map (replaceExtension' "docrep") 
-    --                 $  (fs2 ++ dr3)
-    --     putIOwords ["rule **/*.panrep needsmd", showT needsmd]
-    --     needP needsmd
+    -- needs for the docrep but 
+    let needsmd = -- map (replaceDirectoryP bakedP doughP) .
+                map (addFileName thisDirP)
+                . map (replaceExtension' "docrep") 
+                $  (fs2 ++ dr3)
+    putIOwords ["rule **/*.panrep needsmd", showT needsmd]
+    return needsmd
 
 -- for indexpage 
+-- constructIndexPages outP = do 
 
         -- (p3, needsFound) <- if isIndexPage mdFile5
         --     then do
