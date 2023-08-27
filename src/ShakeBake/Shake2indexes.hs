@@ -36,23 +36,32 @@ import Wave.Md2doc
  
 -- import Development.Shake (getDirectoryFilesIO)
 import qualified Data.Map as M
+-- import GHC.Base (indexDoubleArrayAsDoubleX2#)
 
 
 
 indexNeeds debug doughP bakedP outP = do 
+    let debug = NoticeLevel2
     let thisDir =   getParentDir outP  
     let thisDirP = makeAbsDir $ getParentDir outP :: Path Abs Dir
-    putInform debug ["rule **/*.panrep - thisDir2", showT thisDirP]
+    let bakedDirP = replaceDirectoryP bakedP doughP thisDirP :: Path Abs Dir 
+    putInform debug ["rule **/*.panrep i1- thisDir2", showT thisDirP]
+    putInform debug ["rule **/*.panrep i1- bakedDirP", showT bakedDirP]
 
     
 --    unless ("/home/frank/bakedTestSite" == thisDir1) $ do 
     -- the case of the webroot is dealt with already  
     -- during initialization
 
-    putInform debug ["rule **/*.panrep - thisDir", showT thisDir]
+    -- putInform debug ["rule **/*.panrep - thisDir", showT thisDir]
 
-    fs2 :: [Path Rel File] <- getDirectoryFilesP thisDirP ["*.md"]
-    dr2 :: [Path Rel File]  <- getDirectoryFilesP thisDirP ["index.md"]
+    fs2 :: [Path Rel File] <- getDirectoryFilesP bakedDirP ["*.md"]
+    putInform debug ["\nrule **/*.panrep i1 getDirectoryFiles done fs"
+                , showT fs2]
+
+    dr2 :: [Path Rel Dir]  <- getDirectoryDirsP bakedDirP 
+    putInform debug ["\nrule **/*.panrep i1 getDirectoryDir done dr2"
+                , showT dr2]
     let dr3 = dr2 
     -- filter (not . (isInfixOf' 
             -- (t2s $ doNotBake (siteLayout sett4))) . getNakedDir) dr2
@@ -60,16 +69,22 @@ indexNeeds debug doughP bakedP outP = do
             -- not relevant, the webroot is not serched
     -- lint is triggered. perhaps should use the
     -- non traced getDirectoryFilesIO?
-    putIOwords ["rule **/*.panrep fs2", showT fs2]
-    putIOwords ["rule **/*.panrep dr2", showT dr2]
-    putIOwords ["rule **/*.panrep dr3", showT dr3]
+    putIOwords ["rule **/*.panrep i2 fs2", showT fs2]
+    let fs2a = map (addFileName thisDirP) fs2
+    putIOwords ["rule **/*.panrep i2 fs2a", showT fs2a]
 
+    -- putIOwords ["rule **/*.panrep i3 dr2", showT dr2]
+    -- putIOwords ["rule **/*.panrep i4 dr3", showT dr3]
+
+    
     -- needs for the docrep but 
-    let needsmd = -- map (replaceDirectoryP bakedP doughP) .
+    let needsmd = -- [] :: [Path Abs Dir]
+        -- map (replaceDirectoryP  doughP bakedP) .
                 map (addFileName thisDirP)
                 . map (replaceExtension' "docrep") 
-                $  (fs2 ++ dr3)
-    putIOwords ["rule **/*.panrep needsmd", showT needsmd]
+                $  (fs2  ) 
+                -- todo not used dirs 
+    putIOwords ["rule **/*.panrep i5 needsmd", showT needsmd]
     return needsmd
 
 -- for indexpage 

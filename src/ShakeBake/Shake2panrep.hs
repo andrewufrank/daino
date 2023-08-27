@@ -72,7 +72,7 @@ shake2panrep debug flags sett4 bakedP =
         putInform debug ["\nrule **/*.panrep 4a need4index", showT need4index]
         -- needP need4index 
     
-    putInform debug ["\nrule **/*.panrep 4x continued" ]
+    putInform debug ["\nrule **/*.panrep 4x continued after unless" ]
 
 
     -- (dirEntries, fileEntries) <- constructIndexEntries
