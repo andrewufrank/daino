@@ -56,7 +56,7 @@ shakeAll debug sett3 flags causedby = do
 
     let 
         fs4 = ["index.html"
-                , "Minimal/index.html"
+                -- , "Minimal/index.html"
                 -- , "Event/index.html"
                 ]  -- start with HTML! 
         fs4htmlTemplate =   
