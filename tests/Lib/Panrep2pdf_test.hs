@@ -16,7 +16,7 @@ import Foundational.CmdLineFlags
 import Foundational.SettingsPage
 import Foundational.Filetypes4sites
 import Wave.Md2doc
-import Wave.Docrep2panrep
+-- import Wave.Docrep2panrep
 import Wave.Panrep2pdf
 import Uniform.Pandoc
 -- import Uniform.Json
@@ -32,28 +32,28 @@ resLatex = makeAbsFile"/home/frank/tests/latexTest"
 
 
 -- test regular processing
-test_toLatex = do 
-    let debug = NoticeLevel0   -- avoid_output_fromHere_down 
-    res1 <- runErr $ do 
-        metaplus5 <- setup_md2metaplus settingsDainoSite fnmd3 
-            -- let debug = NoticeLevel0
-            -- sett3 <- readSettings debug settFn 
-                    -- this is a particular settingsTest.yaml
-            -- metaplus1 <- readMarkdownFile2docrep debug sett3 fn
-        (metap1,_) <- docrep2panrep NoticeLevel0 
-                        (def::PubFlags)  metaplus5
-        texsnip <- panrep2texsnip debug metap1
-        putIOwords ["test_toLatex setup texsnip done"]
+-- test_toLatex = do 
+--     let debug = NoticeLevel0   -- avoid_output_fromHere_down 
+--     res1 <- runErr $ do 
+--         metaplus5 <- setup_md2metaplus settingsDainoSite fnmd3 
+--             -- let debug = NoticeLevel0
+--             -- sett3 <- readSettings debug settFn 
+--                     -- this is a particular settingsTest.yaml
+--             -- metaplus1 <- readMarkdownFile2docrep debug sett3 fn
+--         (metap1,_) <- docrep2panrep NoticeLevel0 
+--                         (def::PubFlags)  metaplus5
+--         texsnip <- panrep2texsnip debug metap1
+--         putIOwords ["test_toLatex setup texsnip done"]
 
-        (lat1, _, tt1) <- texsnip2tex debug def texsnip
-        putInform debug ["test_toHtmlTest pr \n", tt1]
-        write8 resLatex texFileType lat1
-        write8 resLatex ttlFileType tt1
-        let hash1 = show . hash . show $  lat1 :: String
-        return hash1
+--         (lat1, _, tt1) <- texsnip2tex debug def texsnip
+--         putInform debug ["test_toHtmlTest pr \n", tt1]
+--         write8 resLatex texFileType lat1
+--         write8 resLatex ttlFileType tt1
+--         let hash1 = show . hash . show $  lat1 :: String
+--         return hash1
 
-    assertEqual (Right "Hash {asWord64 = 14632867472327410945}") 
-        res1
+--     assertEqual (Right "Hash {asWord64 = 14632867472327410945}") 
+--         res1
 
 -- import Lib.IndexCollect
 

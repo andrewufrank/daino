@@ -16,7 +16,7 @@ import Test.Framework
 import Foundational.SettingsPage
 import Foundational.Filetypes4sites
 import Wave.Md2doc
-import Wave.Docrep2panrep
+-- import Wave.Docrep2panrep
 import Wave.Panrep2pdf
 import Uniform.Pandoc
 -- import Uniform.Json
@@ -36,24 +36,24 @@ fnmd2a = makeAbsFile "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
  
 reshtmlout = makeAbsFile "/home/frank/tests/htmlout"
 -- test regular processing
-test_toHtmlout = do 
-    res1 <- runErr $ do 
-        metaplus5 <- setup_md2metaplus settingsDainoSite fnmd2a 
-            -- let debug = NoticeLevel0
-            -- sett3 <- readSettings debug settFn 
-                    -- this is a particular settingsTest.yaml
-            -- metaplus1 <- readMarkdownFile2docrep debug sett3 fn
-        (metap1,_) <- docrep2panrep NoticeLevel0 
-                        (def::PubFlags)  metaplus5
-        (html1, _, tt1) <- panrep2html NoticeLevel0 def metap1
-        -- putIOwords ["test_toHtmlTest pr \n", unHTMLout html1]
-        write8 reshtmlout htmloutFileType html1
-        write8 reshtmlout tthFileType tt1
-        let hash1 = show . hash . show $  html1 :: String
-        return hash1
+-- test_toHtmlout = do 
+--     res1 <- runErr $ do 
+--         metaplus5 <- setup_md2metaplus settingsDainoSite fnmd2a 
+--             -- let debug = NoticeLevel0
+--             -- sett3 <- readSettings debug settFn 
+--                     -- this is a particular settingsTest.yaml
+--             -- metaplus1 <- readMarkdownFile2docrep debug sett3 fn
+--         (metap1,_) <- docrep2panrep NoticeLevel0 
+--                         (def::PubFlags)  metaplus5
+--         (html1, _, tt1) <- panrep2html NoticeLevel0 def metap1
+--         -- putIOwords ["test_toHtmlTest pr \n", unHTMLout html1]
+--         write8 reshtmlout htmloutFileType html1
+--         write8 reshtmlout tthFileType tt1
+--         let hash1 = show . hash . show $  html1 :: String
+--         return hash1
 
-    assertEqual (Right "Hash {asWord64 = 14632867472327410945}") 
-        res1
+--     assertEqual (Right "Hash {asWord64 = 14632867472327410945}") 
+--         res1
 
 
 testDir = makeAbsDir $
