@@ -33,10 +33,13 @@ import Foundational.CmdLineFlags
 import Uniform.Shake
  
 import Foundational.SettingsPage
+import Foundational.Filetypes4sites
  
+import Wave.Panrep2pdf
 import ShakeBake.Shake2aux
 
 import ShakeBake.Shake2html
+import ShakeBake.Shake2latex
 import ShakeBake.Shake2panrep
 import ShakeBake.Shake2docrep
 
@@ -75,8 +78,50 @@ shakeMD debug sett4 flags = do
         needPwithoutput "initial" "md" ( mdFiles flags)
 
     shake2html debug flags sett4 bakedP       
+    shake2latex debug flags sett4 bakedP       
     shake2panrep debug flags sett4 bakedP       
     shake2docrep debug flags sett4 bakedP       
+
+    (toFilePath bakedP <> "**/*.pdf") %> \out -> -- insert pdfFIles1
+        do
+            when (inform debug) $ putIOwords ["rule **/*.pdf", showT out]
+            -- imgs <- getNeeds debug sett4 doughP bakedP "jpg" "jpg"
+            -- imgs2 <- getNeeds debug sett4 doughP bakedP "JPG" "JPG"
+            -- needP imgs
+            -- needP imgs2
+            -- why is this here necessary: failed on testSort.pdf?
+            -- was ein jpg will ?
+            -- TODO improve error from lualatex
+            -- when (inform debug) $ putIOwords ["rule **/*.pdf need", showT imgs, showT imgs2]
+
+            let outP = makeAbsFile out :: Path Abs File
+            let fromfile = doughP </> makeRelativeP bakedP outP
+            putInform debug ["rule **/*.pdf 1 fromFile", showT fromfile]
+            fileExists <- io2bool $ doesFileExist' fromfile
+            when (inform debug) $ putIOwords ["fileExist:", showT fileExists]
+            
+            if fileExists 
+                then copyFileToBaked debug doughP bakedP out
+                else do
+                    let targetP = bakedP 
+                        sourceP = bakedP 
+                        fromfilePath = sourceP </> makeRelativeP targetP outP
+                        fromfilePathExt = replaceExtension' 
+                            (s2t . unExtension $ extTex) fromfilePath 
+                    putInform debug ["rule **/*.pdf 2 fromfilePathExt"
+                            , showT fromfilePathExt]
+                    
+
+                  
+                    -- convertAny debug bakedP bakedP flags sett4 out  "convTex2pdf"
+                    -- anyop debug flags fromfilePathExt layout outP
+                    runErr2action $ tex2pdf debug fromfilePathExt outP doughP
+                    putInform debug ["rule **/*.pdf 3 produce outP (fake)"
+                        , showT outP]
+            putInform debug ["rule **/*.pdf 4 end"]
+
+-- tex2pdf :: NoticeLevel -> Path Abs File ->  Path Abs File ->  Path Abs Dir ->  ErrIO ()
+-- tex2pdf debug fn fnres doughP  =  do
 
 
     (toFilePath bakedP <> "/*.css")

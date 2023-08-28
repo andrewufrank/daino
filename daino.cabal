@@ -39,6 +39,7 @@ library
       ShakeBake.Shake2docrep
       ShakeBake.Shake2html
       ShakeBake.Shake2indexes
+      ShakeBake.Shake2latex
       ShakeBake.Shake2panrep
       ShakeBake.Shake2start
       ShakeBake.StartDainoProcess
