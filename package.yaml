@@ -112,7 +112,7 @@ library:
       - src 
 
 executables:   # file names wiwth lowercase to avoid forcing Main
-  daino6:
+  daino61:
     main: daino.hs
     source-dirs: app
     dependencies: 

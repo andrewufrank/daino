@@ -94,12 +94,13 @@ metaSetBook :: Settings -> DainoMetaPlus -> DainoValues
 metaSetBook sett4 dr1 =  extra5{authorReduced = blankAuthorName hpname aut1
                             ,booklet = "booklet" == bookval
                             ,bookBig= "bookBig" == bookval
-                            ,webroot = s2t $ toFilePath doughP
+                            ,webroot = s2t $ toFilePath bakedP
                             }
     where 
             aut1 = getTextFromYaml6 defaut "author" meta5
             bookval = getTextFromYaml6  "" "book"   meta5 
             doughP = doughDir layout -- the regular dough
+            bakedP = bakedDir layout -- the regular dough
             layout = siteLayout sett4 
             hpname = blogAuthorToSuppress layout
             defaut = defaultAuthor layout

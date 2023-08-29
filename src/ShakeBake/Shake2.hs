@@ -138,9 +138,9 @@ shakeMD debug sett4 flags = do
         -- no subdir (for now)
             copyFileToBaked debug doughP bakedP out
 
-    -- (toFilePath bakedP <> "**/*.bib")
-    --     %> \out -> copyFileToBaked debug doughP bakedP out
-    -- -- the fonts in a compressed format 
-    -- (toFilePath bakedP <> "**/*.woff")
-    --     %> \out -> copyFileToBaked debug doughP bakedP out
+    (toFilePath bakedP <> "**/*.bib")
+        %> \out -> copyFileToBaked debug doughP bakedP out
+    -- the fonts in a compressed format 
+    (toFilePath bakedP <> "**/*.woff")
+        %> \out -> copyFileToBaked debug doughP bakedP out
 

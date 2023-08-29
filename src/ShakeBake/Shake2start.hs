@@ -67,10 +67,11 @@ shakeAll debug sett3 flags causedby = do
             , "resources/img/squared16.jpg" -- add rest 
             , "resources/theme/templates/img/DSC04809.JPG"
             -- banner . siteHeader $ sett3 
+            ,"resources/BibTexLatex.bib"
             ]
         flags2 = flags{mdFiles = 
-            concat [map (addFileName bakedP) $ map makeRelFile fs4
-                                    , map (addFileName bakedP ) $ map makeRelFile fs4htmlTemplate
+            concat [ map (addFileName bakedP ) $ map makeRelFile fs4htmlTemplate
+                , map (addFileName bakedP) $ map makeRelFile fs4
                                     ]
         }
     putInform NoticeLevel1 ["start with fs4", showT fs4, "\n"]

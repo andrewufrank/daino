@@ -28,12 +28,13 @@ import UniformBase
 import Foundational.CmdLineFlags
 import Uniform.Shake
 import Uniform.TemplateStuff
-import Uniform.Http 
+-- import Uniform.Http 
 import Foundational.SettingsPage
 import Foundational.Filetypes4sites
 
 import ShakeBake.Shake2aux
-import Wave.Panrep2html  
+import Wave.Panrep2html
+    ( getIndexFiles4meta, getVals2html, testTemplateFn )  
 
  
 shake2latex :: NoticeLevel -> PubFlags -> Settings ->
@@ -125,25 +126,28 @@ shake2latex debug flags sett4 bakedP  =
         putInform debug ["\n-----rule **/*.tex 13 valsFiles", showT valsFiles]
 
         let extra5 = extra4{fileEntries = catMaybes valsFiles
-                            , dirEntries = catMaybes valsDirs}
+                            , dirEntries = catMaybes valsDirs
+                            }
         let metaplus5 = pan0{extra = extra5}
 
         -- putInform debug ["panrep2html", "extra5", showT extra5]
         -- putInform debug ["panrep2html", "metaplus5", showT metaplus5]
 
         let ht1 = fillTemplate_render targetTempl metaplus5
-        let test_templatehtml = fillTemplate_render testTempl metaplus5 
+        let test_template = fillTemplate_render testTempl metaplus5 
 
         -- putInform debug ["panrep2html render html done", "ht1",  ht1 ]
-        -- putInform debug ["panrep2html render testTemplate done", "test_templatehtml",  test_templatehtml ]
+        -- putInform debug ["panrep2html render testTemplate done", "test_template",  test_template ]
 
         runErr2action $ do 
             write8 outP texFileType ( Latex ht1) 
-            write8 outP tthFileType test_templatehtml
+            write8 outP ttlFileType test_template
 
-        when (inform debug) $ putIOwords
+        putInform debug 
             ["-----rule **/*.tex 14 bakeOnePanrep2html done fn"
             , showT outP]
+
+
 
         putInform debug ["\n-----rule **/*.tex 15 end continued 4"
             , showT out,"\n"]

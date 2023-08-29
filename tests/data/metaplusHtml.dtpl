@@ -29,7 +29,7 @@ content         $metaHtml.body$
 menu2files       $for(extra.fileEntries)$
 
     ixfn            $extra.fileEntries.ixfn$
-    link            $extra.fileEntries.link$
+$--    link            $extra.fileEntries.link$
     title           $extra.fileEntries.title$
     abstract        $extra.fileEntries.abstract$
     pdf2            $extra.fileEntries.pdf2$
@@ -39,7 +39,8 @@ menu2files       $for(extra.fileEntries)$
 
 menu2subdir     $for(extra.dirEntries)$ 
 
-    link            $extra.dirEntries.link$
+    ixfn            $extra.dirEntries.ixfn$
+$--    link            $extra.dirEntries.link$
     title           $extra.dirEntries.title$ 
     abstract        $extra.dirEntries.abstract$ 
                 $endfor$

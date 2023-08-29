@@ -147,6 +147,18 @@ shake2html debug flags sett4 bakedP  =
             ["-----rule **/*.html 14 bakeOnePanrep2html done fn"
             , showT outP]
 
+        -- needs to start the pdf production 
+        let is2pdf = map (addFileName bakedP . 
+                          addExtension extPDF) ixs0 
+                          -- to avoid pdfs extTex) ixs0 
+        let this2pdf = addExtension extTex outP 
+   
+        putInform debug 
+            ["-----rule **/*.html 15 needsfor pdf (now tex)"
+            , showT this2pdf, showT is2pdf]
+
+        needP $ this2pdf : is2pdf
+
         putInform debug ["\n-----rule **/*.html 15 end continued 4"
             , showT out,"\n"]
 
