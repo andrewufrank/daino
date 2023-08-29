@@ -8,7 +8,7 @@
         -- panrep -> html 
 ---------------------------------------------------------------------
 {-# LANGUAGE ConstraintKinds #-}
--- {-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DoAndIfThenElse #-}
 {-# LANGUAGE DuplicateRecordFields #-}
@@ -26,134 +26,235 @@
             -fno-warn-unused-imports
             -fno-warn-unused-matches #-}
 
- 
+
 module Wave.Panrep2html (
     module Wave.Panrep2html,
 ) where
 
 -- import Data.Default
-import Foundational.Filetypes4sites  
+import UniformBase
+import Foundational.Filetypes4sites
 import Foundational.SettingsPage
     -- ( Settings(siteLayout), SiteLayout(blogAuthorToSuppress) )
-import Foundational.MetaPage
-    -- ( convertLink2html,
-    --   convertLink2pdf,
-    --   IndexEntry,
-    --   MetaPage(dyIndexEntry, dyIndexSort) )
+import Foundational.CmdLineFlags ( PubFlags )
+
 import GHC.Generics (Generic)
 
 import Uniform.Json ( ToJSON(toJSON), Value, ErrIO )
-import Uniform.Pandoc  
-import Uniform.Latex 
--- import qualified Text.Pandoc.Shared as P
-import Uniform.Http ( HTMLout ) 
-import UniformBase
-
+import Uniform.Pandoc
+import Uniform.Http ( HTMLout (HTMLout) )
+import Uniform.Shake  
+import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..))
+import Wave.Md2doc ( includeBakeTest3 ) 
 import Data.Maybe (fromMaybe)
+import Lib.IndexCollect
+import qualified Data.Map as M
+-- import Wave.Docrep2panrep
+-- import Wave.Md2doc
+-- import System.FilePath (replaceExtension)
+-- import Path (addFileExtension, addExtension)
 
--- import Lib.IndexMake ( convertIndexEntries, MenuEntry )
--- import Lib.IndexCollect ( completeIndex )
-import Lib.Templating  
--- import Text.Pandoc.SideNote ( usingSideNotes )
+default (Integer, Double, Text)
+
+testTemplateFn = makeAbsFile "/home/frank/Workspace11/daino/tests/data/metaplusHtml.dtpl"
+
+lookup7 :: Text -> M.Map Text Text ->  Text
+lookup7 k m = fromJustNoteT ["lookup7 in panrep2html", k, showT m]
+            . M.lookup k $ m
+
+lookup7withDef  :: Text -> Text -> M.Map Text Text -> Text
+--get the Metavalue (with  default)
+lookup7withDef def1 key m =  fromMaybe def1 $ M.lookup key m
 
 
--- ------------------------------------ panrep2html
--- panrep2html :: Panrep -> ErrIO HTMLout
--- implements the bake
--- siteHeader (sett3, above sett3) is the content of the settingsN.yml file
--- added here the transformations to tufte sidenotes (from pandoc-sidenotes)
-panrep2html :: NoticeLevel -> Settings -> Panrep -> ErrIO HTMLout
-panrep2html debug  sett3 meta4 = do
-    let mf = masterTemplateFile $ siteLayout sett3
-    -- let mfn = templatesDir layout </> mf
-    let masterfn = templatesDir (siteLayout sett3) </> mf
-    -- let h = "0" -- maybe 0 $ M.lookup headerShift . unMeta $ meta4
-    -- when (inform debug) $
-    --     putIOwords ["\n\t---------------------------panrep2html"
-    --             , "shiftHeaderLevel"
-    --             , showT h] 
+getIndexFiles4meta :: Panrep -> [Path Rel File]
+-- get the index files (for dir and files)
+getIndexFiles4meta pan = getIndexFiles (f1 ++ d1)
+    where
+        f1 = fileEntries .  extra  $ pan
+        d1 = dirEntries . extra $ pan 
 
-    htmlTempl  <- compileTemplateFile2 masterfn
-    hres <- meta2hres htmlTempl meta4
-    putIOwords ["panrep2html meta2hres done"
-        , "hres", showT hres]
-    -- bakeOnePanrep2html will write to disk
-    return hres 
+getVals2html :: NoticeLevel -> PubFlags -> Path Abs Dir -> IndexEntry2
+                -> ErrIO (Maybe IndexEntry2)
+-- get the panrep and fill the vals 
+getVals2html debug pubFlags bakedP ix2 = do
+    putInform debug ["getVals2html  ix2", showPretty ix2]    
+    let fnix4 = (ixfn ix2) :: FilePath
+        fnix3 = addDir (toFilePath bakedP) fnix4 :: FilePath
+        fnix2 =  fnix3 <.> "panrep"  :: FilePath
+        fn = makeAbsFile fnix2
+        pdf = replaceExtension2 ".pdf" fn 
 
---     let mf = masterTemplateFile $ siteLayout sett3
---     -- let mfn = templatesDir layout </> mf
---     let masterfn = templatesDir (siteLayout sett3) </> mf
---     let h = dyHeaderShift m1
---     when (inform debug) $
---         putIOwords ["\n\t---------------------------panrep2html"
---                 , "shiftHeaderLevel"
---                 , showT h]    
---     let p2 = P.headerShift h p1
---     let p3 = usingSideNotes p2  -- :: Pandoc -> Pandoc
---     vals <- panrep2vals  debug sett3 (Panrep m1 p3)
---     p :: HTMLout <- panrep2html2 debug masterfn vals
---     return p
+    putInform debug ["getVals2html fn", showT fn ]
+    pan1 <- read8 fn panrepFileType
+    -- putInform debug ["getVals2html pan1", showT pan1 ]
 
--- panrep2vals ::  NoticeLevel -> Settings -> Panrep -> ErrIO [Value]
--- panrep2vals debug sett3 (Panrep m1 p1) = do
---     let ixe1 = dyIndexEntry m1
---     let indexSortField = Data.Maybe.fromMaybe "" (dyIndexSort m1)
+    let m = metap  pan1
+        ix3 = ix2   { abstract = getTextFromMeta5 ""  "abstract" m
+                    , title = getTextFromMeta5 "TITLE MISSING" "title" m
+                    , author = getTextFromMeta5 "" "author" m -- todo suppressed?
+                    , date = getTextFromMeta5 "2000-01-01" "date" m
+                    , sortOrder = getTextFromMeta5 "filename" "sortOrder" m
+                    , version = getTextFromMeta5 "draft" "version" m
+                    , visibility = getTextFromMeta5 "private" "visibility" m
+                    , pdf1 = s2t $ toFilePath pdf 
+                    }
 
---     when (inform debug) $
---         putIOwords ["\n\t---------------------------panrep2vals"
---                 , "AuthorOppressed"
---                 , showT (blogAuthorToSuppress . siteLayout $ sett3)]
+    return $ if includeBakeTest3 pubFlags (version ix3) (visibility ix3)
+                then Just ix3 else errorT ["getVals2html in panrep2html not included", showT ix2 ]
 
---     menu4 :: MenuEntry <- convertIndexEntries  debug (blogAuthorToSuppress.siteLayout $ sett3) indexSortField ixe1
---     html <- writeHtml5String2 p1
---     -- in uniform.Pandoc (dort noch mehr moeglicherweise duplicated)
---     p2 <-  fillContent ixe1 html
 
---     when (inform debug) $ putIOwords ["panrep2vals", "m1", showPretty m1]
---     when (inform debug) $ putIOwords ["panrep2vals", "sett3", showPretty sett3]
---     when (inform debug) $ putIOwords ["panrep2vals", "menu4", showPretty menu4]
---     when (inform debug) $ putIOwords ["panrep2vals", "p2", showPretty p2]
+-- panrep0html_fromIndex :: NoticeLevel -> PubFlags -> Panrep -> ErrIO [FilePath]
+-- -- ^ calculate the needs 
 
---     let vals = [toJSON sett3, toJSON m1, toJSON menu4, toJSON p2]
---     -- m1 is what is from the yaml meta from the file
---     -- menu4 is menu collected 
---     -- order matters left preference?
+-- panrep0html_fromIndex debug pubFlags  metaplus4 = do
+--     -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
+--     let sett3 = sett metaplus4
+--         -- extra4 = extra metaplus4
+--         bakeP =  bakedDir . siteLayout $ sett3 :: Path Abs Dir
+--         -- mf = masterTemplateFile $ siteLayout sett3
+--         -- masterfn = templatesDir (siteLayout sett3) </> mf
 
---     when (inform debug) $ putIOwords ["panrep2vals", "vals", showPretty vals]
---     return vals
+--     --if this is an index file it has files and dirs 
+--     -- putInform debug ["panrep1html", "extra4", showPretty extra4]
 
--- panrep2html2 :: NoticeLevel -- ^ 
---   -> Path Abs File -- ^ 
---   -> [Value] -- ^ 
---   -> ErrIO HTMLout
--- panrep2html2 debug masterfn vals = do
---     p :: HTMLout <- putValinMaster debug vals masterfn
---     when (inform debug) $ putIOwords ["\n panrep2html done"]
---     return p
+--     -- let files = fileEntries  $ extra4 :: [IndexEntry2]
+--     --     dirs = dirEntries  $ extra4 :: [IndexEntry2]
+--     -- putInform debug["panrep0html", "ixfn files", showT $ map ixfn files]
+--     -- putInform debug ["panrep0html", "ixfn dirs", showT $ map ixfn dirs]
 
--- fillContent :: IndexEntry -> Text -> ErrIO ContentHtml
--- fillContent ix cont = do 
---         today1 :: UTCTime <- getCurrentTimeUTC
---         let res = ContentHtml
---                 { content3 = cont 
---                 , today3 = showT today1
---                 , linkpdf3 = convertLink2pdf ix   
---                 , filename3 = convertLink2html ix
---                 }
---         return res
 
--- data ContentHtml = ContentHtml  
---         { content3 :: Text
---         , today3 :: Text 
---         , linkpdf3 :: Text 
---         , filename3 :: Text 
---         } deriving (Show, Generic)
--- -- | the record which contains the blog text in html format 
--- -- the ref to the pdf File 
--- -- todays date 
--- -- filename3 the original file name 
--- -- mit id,h1, h2,.. span und p tags 
+--     let fs1 = getIndexFiles4meta metaplus4 
+--         --  getIndexFiles (f1 ++ d1) 
+--         -- f1 = (fileEntries .  extra  $ metaplus4)
+--         -- d1 = dirEntries . extra $ metaplus4 
+--         fs = map (replaceExtension' "html" )   $   fs1 :: [Path Rel File]
+--     let fs2needs = map (addFileName bakeP) $  fs
+--                         :: [Path Abs File] 
+--     putInform debug ["panrep0html", "fs2needs", showT fs2needs]
+--     return . map toFilePath $ fs2needs
 
--- instance ToJSON ContentHtml
--- instance Zeros ContentHtml where
---   zero = ContentHtml zero zero zero zero
+
+
+-- -- panrep1html :: NoticeLevel -> PubFlags -> Panrep -> ErrIO [FilePath]
+-- -- -- ^ calculate the needs 
+
+-- -- panrep1html debug pubFlags  metaplus4 = do
+-- --     -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
+-- --     let sett3 = sett metaplus4
+-- --         extra4 = extra metaplus4
+-- --         -- mf = masterTemplateFile $ siteLayout sett3
+-- --         -- masterfn = templatesDir (siteLayout sett3) </> mf
+
+-- --     --if this is an index file it has files and dirs 
+-- --     -- putInform debug ["panrep1html", "extra4", showPretty extra4]
+
+-- --     let files = fileEntries  $ extra4 :: [IndexEntry2]
+-- --         dirs = dirEntries  $ extra4 :: [IndexEntry2]
+-- --     putInform debug["panrep1html", "ixfn files", showT $ map ixfn files]
+-- --     putInform debug ["panrep1html", "ixfn dirs", showT $ map ixfn dirs]
+
+-- --     let bakedP =   bakedDir . siteLayout $ sett3
+ 
+-- --     valsDirs :: [Maybe IndexEntry2]<- mapM 
+-- --                     (getVals2html debug pubFlags bakedP) dirs
+-- --     valsFiles :: [Maybe IndexEntry2] <- mapM 
+-- --                     (getVals2html debug pubFlags bakedP) files
+
+-- --     putInform debug["panrep1html", "valsDirs", showPretty valsDirs]
+-- --     putInform debug ["panrep1html", "valsFiles", showPretty valsFiles]
+
+-- --     -- let extra5 = extra4{fileEntries = catMaybes valsFiles
+-- --     --                     , dirEntries = catMaybes valsDirs}
+-- --     -- let metaplus5 = metaplus4{extra = extra5}
+
+-- --    -- calculate needs 
+-- --     let
+-- --         -- bakedP =   bakedDir . siteLayout $ sett3
+-- --         bakedFP = toFilePath bakedP
+-- --         allixs =  catMaybes $ valsFiles ++ valsDirs :: [IndexEntry2]
+-- --         needs = map (<.> "panrep") -- (`replaceExtension` "panrep")
+-- --                 . map (addDir bakedFP )
+-- --                 .  map ixfn $ allixs
+-- --                      :: [FilePath]
+-- --     putInform debug ["panrep1html allixs ixfn"
+-- --                     , showT .map (<.> "panrep") . map (addDir bakedFP ) . map ixfn $ allixs]
+-- --     putInform debug ["panrep1html allixs link"
+-- --                     , showT . map (addDir bakedFP ) . map (<.> "panrep") . map ixfn $ allixs]
+-- --     when ((inform debug) && (needs /= []) )$
+-- --             putIOwords ["panrep1html", "needs ", showT needs ]
+-- --     return needs
+
+
+-- -- -- ------------------------------------ panrep2html
+-- -- -- panrep2html :: Panrep -> ErrIO HTMLout
+-- -- -- implements the bake
+-- -- -- siteHeader (sett3, above sett3) is the content of the settingsN.yml file
+-- -- -- added here the transformations to tufte sidenotes (from pandoc-sidenotes)
+-- -- -- compiles the test template and fills 
+-- -- -- returns the result to be written by bake.hs
+
+-- panrep2html :: NoticeLevel -> PubFlags -> Panrep -> ErrIO (HTMLout, [FilePath], Text)
+-- panrep2html debug pubFlags  metaplus4 = do
+--     -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
+--     let sett3 = sett metaplus4
+--         extra4 = extra metaplus4
+--         mf = masterTemplateFile $ siteLayout sett3
+--         masterfn = templatesDir (siteLayout sett3) </> mf
+
+--     putInform debug["\npanrep2html", "siteLayout sett3"
+--                 , showPretty $ siteLayout sett3]
+--     putInform debug ["panrep2html", "mf", showPretty mf]
+--     putInform debug ["panrep2html", "masterfn", showPretty masterfn]
+
+--     targetTempl  <- compileTemplateFile2 masterfn
+--     testTempl  <- compileTemplateFile2 testTemplateFn
+
+--     -- htm1 <- meta2xx writeHtml5String2 (metap metaplus4)
+
+--     --if this is an index file it has files and dirs 
+--     -- putInform debug ["panrep2html", "extra4", showPretty extra4]
+
+--     let files = fileEntries  $ extra4 :: [IndexEntry2]
+--         dirs = dirEntries  $ extra4 :: [IndexEntry2]
+
+--     let bakedP =   bakedDir . siteLayout $ sett3
+ 
+--     valsDirs :: [Maybe IndexEntry2]<- mapM 
+--                     (getVals2html debug pubFlags bakedP) dirs
+--     valsFiles :: [Maybe IndexEntry2] <- mapM 
+--                     (getVals2html debug pubFlags bakedP) files
+
+--     putInform debug["panrep2html", "valsDirs", showPretty valsDirs]
+--     putInform debug ["panrep2html", "valsFiles", showPretty valsFiles]
+
+--     let extra5 = extra4{fileEntries = catMaybes valsFiles
+--                         , dirEntries = catMaybes valsDirs}
+--     let metaplus5 = metaplus4{extra = extra5}
+
+
+
+--     -- putInform debug ["panrep2html", "extra5", showPretty extra5]
+--     -- putInform debug ["panrep2html", "metaplus5", showPretty metaplus5]
+
+--     let hpl1 = renderTemplate targetTempl (toJSON metaplus5)  -- :: Doc Text
+--     let ht1 = render (Just 50) hpl1  -- line length, can be Nothing
+
+--     let ttpl1 = renderTemplate testTempl (toJSON metaplus5)  -- :: Doc Text
+--     let tt1 = render (Just 50) ttpl1  -- line length, can be Nothing
+
+--     -- putInform debug ["panrep2html render html done", "ht1",  ht1 ]
+--     -- putInform debug ["panrep2html render testTemplate done", "tt1",  tt1 ]
+
+--     -- bakeOnePanrep2html will write to disk
+--     return (HTMLout ht1, [], tt1) -- needs are dealt with so far above
+
+
+
+
+--         -- incl = includeBakeTest3 (def:PubFlags) bring down 
+--                             -- (version ix3) (visibility ix3)
+
+
+
+  

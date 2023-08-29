@@ -23,13 +23,21 @@
 module Foundational.SettingsPage
     (module Foundational.SettingsPage
     , def 
+    , toJSON, fromJSON
     ) where
 
 import UniformBase
-import Data.Default.Class ( Default(def) ) -- to define a default class for siteLayout 
-import Uniform.Json ( FromJSON, ToJSON )
+import Uniform.Json ( FromJSON, ToJSON (toJSON), fromJSON )
+import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..))
+import Uniform.Latex
 
+import qualified Data.Map as M
+import Data.Default.Class ( Default(def) ) -- to define a default class for siteLayout 
 import Path (parent)
+
+
+
+
 progName, progTitle :: Text
 progName = "daino"  
 progTitle = "constructing a static site generator" :: Text
@@ -38,6 +46,22 @@ settingsFileName :: Path Rel File
 -- ^ the yaml file in which the siteHeader are fixec
 settingsFileName = makeRelFile "settings3" -- the yaml file
 
+-- | description for each md file 
+-- todo include the flags 
+data DainoMetaPlus = DainoMetaPlus 
+        { metap :: Meta    -- ^ the pandoc meta, the file text content
+        , sett :: Settings -- ^ the data from the settingsfile
+        , extra :: DainoValues -- ^ other values to go into template
+        , metaMarkdown :: M.Map Text Text -- todo not used
+        , metaHtml ::  M.Map Text Text
+        , metaLatex ::  M.Map Text Text
+        }
+    deriving (Eq, Ord, Show, Read, Generic) -- Zeros, ToJSON, FromJSON)
+instance ToJSON DainoMetaPlus
+instance FromJSON DainoMetaPlus
+instance Zeros DainoMetaPlus where 
+        zero = DainoMetaPlus zero zero zero zero zero zero
+        
 -- | the siteHeader file with all fields 
 data Settings = Settings
     { siteLayout :: SiteLayout 
@@ -49,32 +73,73 @@ data Settings = Settings
     -- , today :: Text
     } deriving (Show, Read, Ord, Eq, Generic, Zeros)
 
+
+
 instance ToJSON Settings
 instance FromJSON Settings
 
-data SiteHeader = SiteHeader 
-    { sitename :: FilePath 
-    , byline :: Text 
-    , banner :: FilePath 
-    , bannerCaption :: Text 
-    } deriving (Show, Read, Ord, Eq, Generic, Zeros)
-instance ToJSON SiteHeader
-instance FromJSON SiteHeader
+-- the extraValues will eventually go into settings
+data DainoValues = DainoValues 
+                        { mdFile:: FilePath -- Path Abs File -- abs file path 
+                        , mdRelPath :: FilePath -- Path Rel File  -- rel file path
+                        , dirEntries :: [IndexEntry2] 
+                        , fileEntries :: [IndexEntry2] 
+                                -- only the dirs and files path
+                        , dainoVersion :: Text 
+                        , latLanguage :: Text 
+                        , authorReduced :: Text
+                        -- , extraBakedDir :: Text
+                        , bookBig :: Bool -- values, because the template system limitation
+                        , booklet :: Bool
+                        , bookprint :: Bool  -- include the empty pages for print version
+                        , webroot :: Text  -- the webroot
+                        , pdf2 :: FilePath
+                        }
+    deriving (Eq, Ord, Show, Read, Generic, Zeros)
 
-newtype MenuItems = MenuItems {menuNav:: [MenuItem]
-                            -- , menuB:: Text
-                            } deriving (Show, Read, Ord, Eq, Generic, Zeros)
-instance ToJSON MenuItems 
-instance FromJSON MenuItems 
 
-data MenuItem = MenuItem  
-    { navlink :: FilePath 
-    , navtext :: Text
-    -- , navpdf :: Text  -- for the link to the pdf 
-    -- not a good idead to put here
-    } deriving (Show, Read, Ord, Eq, Generic, Zeros)
-instance ToJSON MenuItem
-instance FromJSON MenuItem
+-- instance Zeros DainoValues where 
+--     zero = DainoValues zero  zero zero  zero zero  zero zero
+instance ToJSON DainoValues 
+instance FromJSON DainoValues 
+
+-- this was defined in uniform-latex 
+-- there renamed to indexEntryRenamed 
+
+data IndexEntry2 = IndexEntry2 
+    { -- | the rel file path, for dirs is dir/index, to be file
+            -- without extension, relative to webroot
+      ixfn :: FilePath -- Path Rel File
+    -- , -- | the link for this page (relative to web root)
+    -- -- without an extension or filename for dir}
+    --   link :: Path Rel Dir
+    , title :: Text
+    , abstract :: Text
+    , author :: Text
+    , date :: Text
+    , content :: Text   -- in latex style, only filled bevore use
+    , visibility ::   Text
+    , version ::   Text 
+    , sortOrder :: Text
+    , pdf1 :: Text
+     -- , indexPage :: Bool
+    -- , dirEntries :: [FilePath] -- [Path Abs Dir] -- [IndexEntry2] -- def []
+    -- , fileEntries :: [FilePath] -- [Path Abs File] -- [IndexEntry2] -- def []
+    , headerShift :: Int   
+    } deriving (Show, Read, Eq, Ord, Generic, Zeros)
+    --  IndexTitleSubdirs | IndexTitleFiles 
+
+-- instance Zeros IndexEntry2 where zero = IndexEntry2 [] []
+-- zero zero zero zero zero zero zero
+
+instance ToJSON IndexEntry2
+instance FromJSON IndexEntry2
+
+isIndexPage :: Path Abs File -> Bool 
+isIndexPage filename =  getNakedFileName filename == "index"
+
+
+
 
 data SiteLayout = SiteLayout
     { -- | the place of the  theme files (includes templates)
@@ -104,7 +169,7 @@ sourceDirTestDocs :: Path Abs Dir
 sourceDirTestDocs = makeAbsDir "/home/frank/daino/docs/"
 
 sourceDirTestSite :: Path Abs Dir
-sourceDirTestSite = sourceDirTestDocs </> (makeRelDir "site")
+sourceDirTestSite = sourceDirTestDocs `addDir` (makeRelDir "site")
 -- ^ the dir with the source for the test site
 
 layoutDefaults :: Path Abs Dir -> Path Abs Dir ->  SiteLayout
@@ -114,8 +179,8 @@ layoutDefaults :: Path Abs Dir -> Path Abs Dir ->  SiteLayout
 layoutDefaults dough4test homeDir1 =
     zero -- SiteLayout
         { doughDir = dough4test
-        , bakedDir = homeDir1 </> makeRelDir "bakedTestSite" :: Path Abs Dir
-        ,  themeDir = (parent (parent dough4test)) </> makeRelDir "theme"
+        , bakedDir = homeDir1 `addDir` makeRelDir "bakedTestSite" :: Path Abs Dir
+        ,  themeDir = (parent (parent dough4test)) `addDir` makeRelDir "theme"
  
         ,  masterTemplateFile = makeRelFile "master7tufte.dtpl"
         , texTemplateFile = makeRelFile "resources/theme/templates/latex7.dtpl"
@@ -138,7 +203,8 @@ templatesName = "templates"
 themeName = "theme"
 
 templatesDir :: SiteLayout -> Path Abs Dir
-templatesDir layout = themeDir layout `addFileName` (makeRelDir templatesName)
+templatesDir layout = themeDir layout 
+            `addDir` (makeRelDir templatesName)
 
 blankAuthorName :: [Text] -> Text -> Text 
 -- suppress/oppress author name, if the author name is the same as one in the first arg (AUF, Andrew U..) then set it to empty else copy 
@@ -149,5 +215,8 @@ blankAuthorName names current =
         else current 
 
 
-
+putInform :: MonadIO m => NoticeLevel -> [Text] -> m () 
+-- produce output if debug > NoticeLevel0 
+putInform debug texts = when  (inform debug)  $ 
+        putIOwords texts
 

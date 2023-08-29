@@ -61,6 +61,6 @@ main =
                         ]
                     )
                     "list flags to include"
-            -- dainoProcess NoticeLevel2 flags -- produces debug output
+            -- dainoProcess debug flags -- produces debug output
             dainoProcess NoticeLevel0 flags
         )

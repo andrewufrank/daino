@@ -13,7 +13,6 @@
 module ShakeBake.ReadSettingFile where  
 
 import Foundational.SettingsPage
--- import Uniform.Json
 import Uniform.Yaml
 import UniformBase
 
@@ -25,12 +24,12 @@ readSettings :: NoticeLevel -> Path Abs File -> ErrIO  Settings
 -}
 readSettings debug settingsfilename =
     do
-        when (inform debug) $
-            putIOwords
+        putInform debug
                 [ "readSettings"
                 , "file"
                 , showPretty settingsfilename
                 ]
         sett3 :: Settings <- readYaml2rec settingsfilename 
+        putInform debug ["settings read", showT sett3]
         return sett3 
 

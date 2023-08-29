@@ -26,7 +26,7 @@ import UniformBase
 --  for now: use the master TODO
 -- -}
 -- putValinMaster debug vals masterfn = do
---     when (inform debug) $ putIOwords ["putValinMaster", "masterfn", showT masterfn]
+--     putInform debug ["putValinMaster", "masterfn", showT masterfn]
 
 --     template2 :: Text <- readFile2 (toFilePath masterfn)
 

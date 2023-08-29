@@ -35,7 +35,7 @@ import Uniform.Shake
       toFilePath,
       errorT,
       runErr,
-      inform,
+      inform, informAll, NoticeLevel(..),
       makeAbsFile,
       unExtension,
       s2t,
@@ -51,8 +51,9 @@ import Uniform.Shake
       FileOps(doesFileExist'),
       Filenames3((</>), FileResultT),
       need,
+      (<.>),
       copyFileChangedP,
-      replaceExtension',
+    --   replaceExtension',
       runErr2action,
       Action,
       Path2nd(makeRelativeP) )
@@ -80,10 +81,11 @@ convertAny ::
     Action ()
 -- produce any (either copy available in baked or produce with anyop)
 convertAny debug sourceP targetP flags layout out anyopName = do
-    when (inform debug) $ 
-        putIOwords ["-----------------", "convertAny for", anyopName]
+    -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
+
+    putInform NoticeLevel1 ["-----------------", anyopName, "convertAny for", s2t out]
     let outP = makeAbsFile out :: Path Abs File
-    when (inform debug) $ putIOwords ["\nconvertAny 1", "\n file out", showT out]
+    putInform debug ["\nconvertAny 1", "file out", showT out]
     let (anyop, sourceExtA) = case anyopName of 
             "convMD2docrep" -> (bakeOneMD2docrep, extMD)
             "convDocrep2panrep" -> (bakeOneDocrep2panrep, extDocrep)
@@ -91,57 +93,67 @@ convertAny debug sourceP targetP flags layout out anyopName = do
             "convPanrep2html" -> (bakeOnePanrep2html, extPanrep )
             "convTex2pdf" -> (bakeOneTex2pdf, extTex )
             "convTexsnip2tex" -> (bakeOneTexsnip2tex, extTexSnip )
-            _  -> errorT ["convertAny error unknown anyopName ", anyopName]
+            _  -> errorT [anyopName, "convertAny error unknown anyopName "]
 
-    let fromfilePath = sourceP </> makeRelativeP targetP outP
-    let fromfilePathExt = replaceExtension' (s2t . unExtension $ sourceExtA) fromfilePath 
+    let from_filePath = sourceP </> makeRelativeP targetP outP :: Path Abs File
+        from_filePathExt = from_filePath <.> ( sourceExtA)
+    -- let from_filePathExt = replaceExtension' (s2t . unExtension $ sourceExtA) from_filePath 
 
-    when (inform debug) $ putIOwords 
-        ["\nconvertAny 2", anyopName
+    putInform debug 
+        ["\n", anyopeName, "convertAny 2" 
         , "extension", (s2t . unExtension $ sourceExtA)
-        ,  "\n fromfilePath", showT fromfilePath
+        ,  "\n from_filePath", showT from_filePath
         , " was causing NEED"   
-        ,  "\n fromfilePathExt", showT fromfilePathExt   
-        ,  "\n file out", showT out
+        ,  "\n from_filePathExt", showT from_filePathExt   
+        -- ,  "\n file out", showT out
         ] 
 
     fileExists <-  if sourceP == targetP 
         then return False 
-        else io2bool $ doesFileExist' fromfilePath  --targetExt
+        else io2bool $ doesFileExist' from_filePath  --targetExt
 
     when (inform debug) $
         putIOwords
-            [ "\nconvertAny - fromfile exist:"
+            [ "\n", anyopName, "convertAny - fromfile exist:"
             , showT fileExists
             -- , "\nfile"
-            -- , showT fromfilePath
+            -- , showT from_filePath
             ]
     if fileExists 
         -- gives recursion, if the file is produced in earlier run
         then do  -- copy file from source to target
-            copyFileChangedP fromfilePath outP
+            copyFileChangedP from_filePath outP
             when (inform debug) $
-                -- liftIO $
                     putIOwords
-                        ["\n convertAny  copied"
-                         ,   "\n\tfromfilePath ", showT fromfilePath, "added NEED automatically"
+                        ["\n", anyopName, "convertAny  copied"
+                        --  ,   "\n\tfrom_filePath "
+                         , showT from_filePath, "added NEED automatically"
                          ,  "\n\t  file out", showT out]
         else do
-            when (inform debug) $ putIOwords 
-                ["\nconvertAny call", anyopName
-                ,  "\n\t fromfilePathExt"
-                    ,  " cause NEED for" ,showT fromfilePathExt  
+            putInform debug 
+                ["\n", anyopName, "convertAny call" 
+                -- ,  "\n\t from_filePathExt"
+                    ,  " cause NEED for" ,showT from_filePathExt  
+                        -- should be from doughP
                 ,  "\n\t file out", showT out
+                , "\n -----------------JUMP to Need"
                 ] 
-            need [toFilePath fromfilePathExt]    
-            when (inform debug) $ putIOwords 
-                ["\nconvertAny runErr2Action", anyopName
-                ,  "\n\t fromfilePathExt",  " caused NEED which was then probably satisfied for ", showT fromfilePathExt   
+                -- this is the regular descent from html to panrep to ...
+            need [toFilePath from_filePathExt]    
+            putInform debug 
+                ["\n -------------------RETURN from Need"
+                , "\n", anyopName, "convertAny runErr2Action" 
+                -- ,  "\n\t from_filePathExt"
+                ,  " caused NEED which was then probably satisfied for ", showT from_filePathExt   
                 ,  "\n\t file out", showT out
-                ]
-            needsFound <- runErr2action $ anyop debug flags fromfilePathExt layout outP
+                ] -- these are additional files reequired before the rest of the action  (split required?)
+            needsFound <- runErr2action $ anyop debug flags from_filePathExt layout outP
+            when ((inform debug) && needsFound /= []) $ putIOwords 
+                ["\n", anyopName, "convertAny runErr2Action"
+                ,  "\n\t needs found", showT needsFound
+                ] 
             need needsFound
-    when (inform debug) $ putIOwords ["convertAny end for", anyopName]
+    putInform NoticeLevel1 ["-----------------------", anyopName, "convertAny end" , "for", s2t out]
     return ()
 
 {- | the generic copy for all the files
@@ -161,7 +173,6 @@ copyFileToBaked debug doughP bakedP out = do
     let outP = makeAbsFile out :: Path Abs File
     when (inform debug) $ liftIO $ putIOwords ["\ncopyFileToBaked outP", showT outP]
     let fromfile = doughP </> makeRelativeP bakedP outP
-    when (inform debug) $
-            putIOwords
+    putInform debug
                 ["\ncopyFileToBaked fromfile ", showT fromfile, "added NEED automatically"]
     copyFileChangedP fromfile outP

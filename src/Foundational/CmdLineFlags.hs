@@ -23,7 +23,7 @@
 module Foundational.CmdLineFlags
     (module Foundational.CmdLineFlags
     , def ) where
-
+import Uniform.Shake 
 import Data.Default.Class ( Default(..) )
 import UniformBase ( Text, Zeros(zero) ) -- to define a default class for pub flags 
 
@@ -47,11 +47,14 @@ data PubFlags = PubFlags
       , serverFlag
       , verboseFlag :: Bool
       , locationDir :: FilePath -- can be absolute or relative
+                    -- the location given on the command line
+      , mdFiles :: [Path Abs File]
+        -- experiment to calculate the list of all md files to include
     }
     deriving (Show, Eq) -- no read for path
 
 instance Zeros PubFlags where
-    zero = PubFlags zero zero zero zero zero zero zero zero zero zero
+    zero = PubFlags zero zero zero zero zero zero zero zero zero zero zero
 instance Default PubFlags where 
         def = testFlags 
 
@@ -60,7 +63,7 @@ testFlags =
     zero
         { privateFlag = False -- not including draft
         , draftFlag = False
-        , verboseFlag = True
+        , verboseFlag = False  -- sets debug
         }
 
 

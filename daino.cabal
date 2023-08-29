@@ -5,7 +5,7 @@ cabal-version: 1.12
 -- see: https://github.com/sol/hpack
 
 name:           daino
-version:        0.1.5.6.2
+version:        0.1.6.1
 synopsis:       daino is a static site generator (SSG) using shake and pandoc
 description:    A static site generator using Pandoc and other available packages on Hackage (e.g. shake, twitch, scotty), influenced by Chris Penner's [slick](https://github.com/ChrisPenner/slick#readme). It uses text files (in Markdown codes) to manage data and relies on   version management with git. Page appearances are directed with YAML headers. For each page a PDF file is produced to allow regular print output. Index pages for navigation between pages are automatically created.
 category:       Development Web
@@ -30,20 +30,20 @@ library
   exposed-modules:
       Foundational.CmdLineFlags
       Foundational.Filetypes4sites
-      Foundational.MetaPage
       Foundational.SettingsPage
-      Lib.CheckProcess
       Lib.IndexCollect
-      Lib.IndexMake
-      Lib.Templating
-      ShakeBake.Bake
       ShakeBake.CmdLineArgs
-      ShakeBake.ConvertFiles
       ShakeBake.ReadSettingFile
       ShakeBake.Shake2
+      ShakeBake.Shake2aux
+      ShakeBake.Shake2docrep
+      ShakeBake.Shake2html
+      ShakeBake.Shake2indexes
+      ShakeBake.Shake2latex
+      ShakeBake.Shake2panrep
+      ShakeBake.Shake2start
       ShakeBake.StartDainoProcess
       ShakeBake.Watch
-      Wave.Docrep2panrep
       Wave.Md2doc
       Wave.Panrep2html
       Wave.Panrep2pdf
@@ -55,30 +55,26 @@ library
       OverloadedStrings
   ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-unused-imports -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports
   build-depends:
-      ReplaceUmlaut
-    , base >4.7 && <5
+      base >4.7 && <5
     , containers
     , data-default-class
-    , deepseq
-    , dir-traverse
-    , doctemplates
     , filepath
     , path
     , path-io
+    , shake
     , uniform-cmdLineArgs >=0.1.5.1
     , uniform-http
     , uniform-json >=0.1.5.2
     , uniform-latex2pdf >=0.1.5.7
-    , uniform-pandoc >=0.1.6.2
+    , uniform-pandoc >=0.1.6.3
     , uniform-shake
     , uniform-strings >=0.1.5.1
     , uniform-watch
     , uniform-webserver
     , uniformBase >=0.1.5.1
-    , unix
   default-language: Haskell2010
 
-executable daino62
+executable daino61
   main-is: daino.hs
   other-modules:
       Paths_daino
@@ -88,26 +84,96 @@ executable daino62
       OverloadedStrings
   ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-unused-imports -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports
   build-depends:
-      ReplaceUmlaut
-    , base >4.7 && <5
+      base >4.7 && <5
     , containers
     , daino
     , data-default-class
-    , deepseq
-    , dir-traverse
-    , doctemplates
     , filepath
     , path
     , path-io
+    , shake
     , uniform-cmdLineArgs >=0.1.5.1
     , uniform-http
     , uniform-json >=0.1.5.2
     , uniform-latex2pdf >=0.1.5.7
-    , uniform-pandoc >=0.1.6.2
+    , uniform-pandoc >=0.1.6.3
     , uniform-shake
     , uniform-strings >=0.1.5.1
     , uniform-watch
     , uniform-webserver
     , uniformBase >=0.1.5.1
-    , unix
+  default-language: Haskell2010
+
+test-suite testall
+  type: exitcode-stdio-1.0
+  main-is: testing.hs
+  other-modules:
+      Lib.Docrep2panrep_test
+      Lib.Example_test
+      Lib.Md2doc_test
+      Lib.Panrep2html_test
+      Lib.Panrep2pdf_test
+      Paths_daino
+  hs-source-dirs:
+      tests
+  other-extensions:
+      OverloadedStrings
+  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-unused-imports -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      HTF
+    , base >4.7 && <5
+    , containers
+    , daino
+    , data-default-class
+    , data-hash
+    , filepath
+    , path
+    , path-io
+    , quickcheck-text
+    , shake
+    , uniform-cmdLineArgs >=0.1.5.1
+    , uniform-http
+    , uniform-json >=0.1.5.2
+    , uniform-latex2pdf >=0.1.5.7
+    , uniform-pandoc >=0.1.6.3
+    , uniform-shake
+    , uniform-strings >=0.1.5.1
+    , uniform-watch
+    , uniform-webserver
+    , uniformBase
+  default-language: Haskell2010
+
+test-suite testrun
+  type: exitcode-stdio-1.0
+  main-is: testRun.hs
+  other-modules:
+      Lib.DainoTest_test
+      Paths_daino
+  hs-source-dirs:
+      tests4run
+  other-extensions:
+      OverloadedStrings
+  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-unused-imports -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      HTF
+    , base >4.7 && <5
+    , containers
+    , daino
+    , data-default-class
+    , data-hash
+    , filepath
+    , path
+    , path-io
+    , quickcheck-text
+    , shake
+    , uniform-cmdLineArgs >=0.1.5.1
+    , uniform-http
+    , uniform-json >=0.1.5.2
+    , uniform-latex2pdf >=0.1.5.7
+    , uniform-pandoc >=0.1.6.3
+    , uniform-shake
+    , uniform-strings >=0.1.5.1
+    , uniform-watch
+    , uniform-webserver
+    , uniformBase
   default-language: Haskell2010

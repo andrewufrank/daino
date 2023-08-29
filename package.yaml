@@ -1,6 +1,6 @@
 
 name: daino
-version: 0.1.5.6.2
+version: 0.1.6.1
 license:      GPL
 license-file: LICENSE
 github:       andrewufrank/u4blog.git/daino
@@ -83,35 +83,36 @@ dependencies:
     - uniform-cmdLineArgs >= 0.1.5.1 # now from u4blog, was from u2to
     - uniform-watch  
     - uniform-webserver  # - shake
-    - uniform-pandoc >=0.1.6.2  
+    - uniform-pandoc >=0.1.6.3  
     - uniform-latex2pdf >= 0.1.5.7
     - uniform-strings >= 0.1.5.1
-    # - uniform-fileio
-    # - pandoc-types  # needed? 
-    # -- - uniform-ftp
-    # - aeson 
-    # - optparse-applicative -- does not allow value in cmdlineargs
-    - data-default-class
-    # for default values, move down 
-    - dir-traverse # for checkprocess
-    - deepseq
-    # - pandoc-sidenote
-    # - pandoc 
+    # # - uniform-fileio
+    # # - pandoc-types  # needed? 
+    # # -- - uniform-ftp
+    # # - aeson 
+    # # - optparse-applicative -- does not allow value in cmdlineargs
+    - data-default-class # for CmdLineFlags
+    # # for default values, move down 
+    # - dir-traverse # for checkprocess
+    # - deepseq
+    # # - pandoc-sidenote
+    # # - pandoc 
     - path
     - path-io
-    - unix
+    # - unix
     - filepath
     - containers
-    - doctemplates
-    - ReplaceUmlaut
-    # - system-filepath 
-    # - directory
+    # - doctemplates
+    # - ReplaceUmlaut
+    - shake
+    # # - system-filepath 
+    # # - directory
 library:
   source-dirs: 
       - src 
 
 executables:   # file names wiwth lowercase to avoid forcing Main
-  daino62:
+  daino61:
     main: daino.hs
     source-dirs: app
     dependencies: 
@@ -139,22 +140,41 @@ executables:   # file names wiwth lowercase to avoid forcing Main
   #       daino
 
  
-# tests:
-#   dainoTest:
-#     main: testing.hs
-#     source-dirs: tests
+tests:
+  testall:
+    main: testing.hs
+    source-dirs: tests
 
-#     ghc-options: 
-#       -threaded 
-#       -rtsopts 
-#       -with-rtsopts=-N    
-#     dependencies:
-#       - HTF
-#       - quickcheck-text
-#       # - uniform-strings
-#       # - uniform-http
-#       - uniformBase
-#       - uniform-convenience
-#       - daino
-#       # - shake  # from error
+    ghc-options: 
+      -threaded 
+      -rtsopts 
+      -with-rtsopts=-N    
+    dependencies:
+      - HTF
+      - quickcheck-text
+      # - uniform-strings
+      # - uniform-http
+      - uniformBase
+      # - uniform-convenience
+      - daino
+      - data-hash
+      # - shake  # from error
+  testrun:
+    main: testRun.hs
+    source-dirs: tests4run
+
+    ghc-options: 
+      -threaded 
+      -rtsopts 
+      -with-rtsopts=-N    
+    dependencies:
+      - HTF
+      - quickcheck-text
+      # - uniform-strings
+      # - uniform-http
+      - uniformBase
+      # - uniform-convenience
+      - daino
+      - data-hash
+      # - shake  # from error
     

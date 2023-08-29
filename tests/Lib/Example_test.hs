@@ -10,8 +10,17 @@
 module Lib.Example_test where
 
 import Test.Framework
-import Uniform.Test.TestHarness
+-- import UniformBase
+-- import Uniform.Test.TestHarness
 
-import Lib.Templating
 
-test_exampleTrue = assertEqual 0 0
+-- import Data.Text
+
+-- some = "some"
+-- text1 = "text1":: Text 
+
+-- two = Data.Text.concat [some, text1]
+
+
+
+test_exampleTrue = assertEqual 0 1

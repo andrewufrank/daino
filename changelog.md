@@ -66,6 +66,11 @@ used versions 9.0.2
 0.1.5.3.2  booklet and bookbig (ghc 9.2.7 with freeze)
 0.1.5.3.3  added latex support 
 
-0.1.5.6.2 using the uniform-pandoc 0.1.5.6 
+0.1.5.6.2 using the uniform-pandoc 0.1.5.6,2 
     simplification 
     docrep and panrep contain only meta
+    abandoned 
+0.1.5.6.3 using the uniform-pandoc 0.1.5.6.3
+
+0.1.6.1 using strict need, start with index.html 
+    and everthing follows
