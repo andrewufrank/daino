@@ -1,6 +1,6 @@
 
 name: daino
-version: 0.1.6.1
+version: 0.1.6.2
 license:      GPL
 license-file: LICENSE
 github:       andrewufrank/u4blog.git/daino
@@ -73,19 +73,19 @@ other-extensions:  # besides the automatically Haskell2010
 
 dependencies: 
     - base  > 4.7 && < 5
-    - uniformBase  >=0.1.5.1
-    - uniform-json  >=0.1.5.2 
+    - uniformBase   
+    - uniform-json    
           # needs fixing the version in the stack.yaml
     -  uniform-shake # >= 0.0.1.2
     - uniform-http
     # - uniform-convenience # from u2to
     # - uniform-startapp # from u2to - replace with startProg in uniform-error 
-    - uniform-cmdLineArgs >= 0.1.5.1 # now from u4blog, was from u2to
+    - uniform-cmdLineArgs   # now from u4blog, was from u2to
     - uniform-watch  
     - uniform-webserver  # - shake
-    - uniform-pandoc >=0.1.6.3  
-    - uniform-latex2pdf >= 0.1.5.7
-    - uniform-strings >= 0.1.5.1
+    - uniform-pandoc  
+    - uniform-latex2pdf  
+    - uniform-strings  
     # # - uniform-fileio
     # # - pandoc-types  # needed? 
     # # -- - uniform-ftp
