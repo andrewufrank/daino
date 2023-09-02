@@ -1,0 +1,104 @@
+
+    $-- a template to test if values are set from template 
+
+    These are all the values for daino 0.1.6.1 for to produce latex 
+
+lang            $metaLatex.lang$
+settingsAuthor  $sett.settingsAuthor$
+date            $metaLatex.date$
+keywords        $for(metaLatex.keywords)$$metaLatex.keywords$$endfor$
+page-title  missing todo 
+image           $metaLatex.image$
+imageCaption    $metaLatex.imageCaption$
+siteBanner      $sett.siteHeader.banner$
+siteBannerCaption   $sett.siteHeader.bannerCaption$
+sitename        $sett.siteHeader.sitename$
+sitebyline      $sett.siteHeader.byline$
+menuitems       $for(sett.menuitems.menuNav)$ 
+                    $sett.menuitems.menuNav.navlink$
+                    $sett.menuitems.menuNav.navtext$
+                    $endfor$
+title           $metaLatex.title$
+subtitle        $metaLatex.subtitle$ 
+author          $metaLatex.author$
+table of contents   $metaLatex.table-of-contents$
+abstract        $metaLatex.abstract$
+linkpdf         $linkpdf3$
+date   $--          $metaLatex.date$
+content         $metaLatex.body$
+menu2files       $for(extra.fileEntries)$
+
+    ixfn            $extra.fileEntries.ixfn$
+$--    link            $extra.fileEntries.link$
+    title           $extra.fileEntries.title$
+    abstract        $extra.fileEntries.abstract$
+    pdf2            $extra.fileEntries.pdf2$
+    author          $extra.fileEntries.author$
+    date            $extra.fileEntries.date$
+                $endfor$
+
+menu2subdir     $for(extra.dirEntries)$ 
+
+    ixfn            $extra.dirEntries.ixfn$
+$--    link            $extra.dirEntries.link$
+    title           $extra.dirEntries.title$ 
+    abstract        $extra.dirEntries.abstract$ 
+                $endfor$
+
+dainoversion    $extra.dainoVersion$
+visibility      $metaLatex.visibility$
+version         $metaLatex.version$
+
+-- not in thmlTufte
+
+latLanguage     $metaLatex.latLanguage$
+styleBiber      $metaLatex.styleBiber$
+mdFile          $extra.mdFile$
+localhostPort   $sett.localhostPort$
+settingsDate    $sett.settingsDate$
+siteLayout      $sett.siteLayout.bakedDir$
+blogAuthorToSuppress 
+                $for(sett.siteLayout.blogAuthorToSuppress)$
+                        $sett.siteLayout.blogAuthorToSuppress$
+                $endfor$
+
+indexEntryDirectories 
+    $for(extra.dirEntries)$
+        ixfn    $extra.dirEntries.ixfn$
+        link    $extra.dirEntries.link$
+    $endfor$
+
+indexEntryFiles 
+    $for(extra.fileEntries)$
+    ----
+            ixfn        $extra.fileEntries.ixfn$
+            link        $extra.fileEntries.link$
+            title       $extra.fileEntries.title$
+            abstract    $extra.fileEntries.abstract$
+            author      $extra.fileEntries.author$
+            date        $extra.fileEntries.date$ 
+            content     $extra.fileEntries.content$ 
+            visibility  $extra.fileEntries.visibility$ 
+            version     $extra.fileEntries.version$ 
+            sortOrder   $extra.fileEntries.sortOrder$ 
+            pdf1        $extra.fileEntries.pdf1$ 
+    $endfor$
+                        
+masterTemplateFile  $sett.siteLayout.masterTemplateFile$
+texTemplateFile     $sett.siteLayout.texTemplateFile$
+themeDir            $sett.siteLayout.themeDir$
+
+Bibliography        $metap.Bibliography.c$  
+                    
+headerShitft        $metap.headerShift$
+
+-- for tufte latex
+book                $metaLatex.book$
+pdf2                 $extra.pdf2$ $-- the pdf file name
+bookBig             $extra.bookBig$
+booklet             $extra.booklet$
+bookprint
+bakedDir~webroot    $extra.webroot$
+
+
+-- end list of values extractable from template

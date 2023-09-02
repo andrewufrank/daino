@@ -41,6 +41,9 @@
 # - ignore: {name: "Use let"}
 - ignore: {name: "Use empty"}
 - ignore: {name: "Multi Cradle: No prefixes matched"}
+- ignore: {name: "Use newtype instead of data"}
+- ignore: {name: "Avoid reverse"}
+# - ignore: {name: "Failed to run"} -- not effective
 
 
 # Specify additional command line arguments

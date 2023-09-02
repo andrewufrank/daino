@@ -13,6 +13,7 @@
  uses shake only to convert the md files
  copies all resources
  must start in dir with settings3.yaml
+ (except if run with -t or -T then uses settings3.yaml from dainoSite)
 -}
 module Main where -- must have Main (main) or Main where
 
@@ -61,6 +62,6 @@ main =
                         ]
                     )
                     "list flags to include"
-            -- dainoProcess NoticeLevel2 flags -- produces debug output
+            -- dainoProcess debug flags -- produces debug output
             dainoProcess NoticeLevel0 flags
         )
