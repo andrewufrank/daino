@@ -112,6 +112,7 @@ test-suite testall
       Lib.Example_test
       Lib.Md2doc_test
       Lib.Panrep2_test
+      Lib.Panrep2html_test
       Lib.Panrep2pdf_test
       Paths_daino
   hs-source-dirs:

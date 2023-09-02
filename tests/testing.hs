@@ -14,11 +14,7 @@ import     Test.Framework
 
 -- import    {-@ HTF_TESTS @-}        Lib.Md2doc_test
 -- import    {-@ HTF_TESTS @-}        Lib.Docrep2panrep_test
-<<<<<<< HEAD
 -- import    {-@ HTF_TESTS @-}        Lib.Panrep2_test
-=======
--- import    {-@ HTF_TESTS @-}        Lib.Panrep2html_test
->>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
 import    {-@ HTF_TESTS @-}        Lib.Panrep2pdf_test
 -- import    {-@ HTF_TESTS @-}        Lib.Template_test
 -- import    {-@ HTF_TESTS @-}        Lib.ReadSettingFile_test

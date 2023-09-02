@@ -102,28 +102,17 @@ dainoProcess debug1 flags = do
 -- put a link to theme into dough/resources
     let themeDir1 = themeDir (siteLayout sett4) :: Path Abs Dir
 
-<<<<<<< HEAD
     let target1 = themeDir1  :: Path Abs Dir
     putInform debug ["dainoProcess 3 check simlink \n    target   ", showT target1]
 
     let link1 =  doughP `addDir` (makeRelDir resourcesName) `addDir` (makeRelDir themeName) :: Path Abs Dir
-=======
-    let link1 =  doughP `addDir` (makeRelDir resourcesName) `addDir` (makeRelDir themeName) :: Path Abs Dir
-    let target1 = themeDir1  :: Path Abs Dir
-    putInform debug ["dainoProcess 3 check simlink \n    target   ",  showT target1
-                                            , "\n    linked to", showT link1]
->>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
     linkExists <- doesDirExist' link1
     targetOK <- if linkExists 
         then do
             targetNow <- getSymlinkTarget link1
             putInform debug ["dainoProcess 5 current \n    target for theme  ",  showT targetNow]
-<<<<<<< HEAD
             if (makeAbsDir targetNow) == target1 
                 then return True
-=======
-            if (makeAbsDir targetNow) == target1 then return True
->>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
                 else do 
                     removeDirLink link1
                     putIOwords ["dainoProcess remove previous link"]

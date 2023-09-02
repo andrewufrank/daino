@@ -25,7 +25,7 @@ import Lib.Md2doc_test
 import Lib.Docrep2panrep_test
 import Uniform.Http ( HTMLout (HTMLout), unHTMLout, htmloutFileType ) 
 import Data.Hash
-import Wave.Panrep2html
+import Wave.Panrep2
 import Foundational.CmdLineFlags
 -- import Lib.IndexCollect
 

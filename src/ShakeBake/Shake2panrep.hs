@@ -5,11 +5,7 @@
 {- the conversion starts with the root files to produce, 
     i.e. only index.md 
     This triggers the rule html -> panrep 
-<<<<<<< HEAD
     and Panrep2 produces the needs for *.pdf, templates, jpg and bib
-=======
-    and panrep2html produces the needs for *.pdf, templates, jpg and bib
->>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
 
     for now the css, dtpl, jpg etc. are still included
     -}
@@ -33,24 +29,14 @@
 module ShakeBake.Shake2panrep where
 
 import UniformBase 
-<<<<<<< HEAD
 -- import Foundational.CmdLineFlags
 import Uniform.Shake
 -- import Development.Shake.FilePath (makeRelative)
-=======
-import Foundational.CmdLineFlags
-import Uniform.Shake
-import Development.Shake.FilePath (makeRelative)
->>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
 
 import Uniform.Pandoc
 import Foundational.SettingsPage
 import Foundational.Filetypes4sites
-<<<<<<< HEAD
 -- import Lib.IndexCollect
-=======
-import Lib.IndexCollect
->>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
 import Wave.Md2doc
 import ShakeBake.Shake2indexes 
 
@@ -109,19 +95,10 @@ shake2panrep debug flags sett4 bakedP =
     putInform debug ["\nrule **/*.panrep 5 continued 2", showT out]
 
     needs2empty <- runErr2action $ do
-<<<<<<< HEAD
         putInform debug [ "\nrule **/*.panrep 6 bakedFrom"
                         , showT bakedFrom 
                         , "outP", showT outP
                         ]
-=======
-            --  bakeOneDocrep2panrep debug flags bakedFrom sett4 outP 
-    --           bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
-        putInform debug [ "\nrule **/*.panrep 6 bakedFrom"
-            , showT bakedFrom 
-            , "outP", showT outP
-            ]
->>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
         dr1 <- read8 bakedFrom docrepFileType
 
         -- (p3, needsFound) <- docrep2panrep debug flags  dr1
