@@ -5,7 +5,11 @@
 {- the conversion starts with the root files to produce, 
     i.e. only index.md 
     This triggers the rule html -> panrep 
+<<<<<<< HEAD
     and Panrep2 produces the needs for *.pdf, templates, jpg and bib
+=======
+    and panrep2html produces the needs for *.pdf, templates, jpg and bib
+>>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
 
     for now the css, dtpl, jpg etc. are still included
     -}

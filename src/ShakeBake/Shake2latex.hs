@@ -33,12 +33,18 @@ import Foundational.SettingsPage
 import Foundational.Filetypes4sites
 
 import ShakeBake.Shake2aux
+<<<<<<< HEAD
 import Wave.Panrep2
     ( getIndexFiles4meta, getVals2 )  
 
 latexTestTemplateFn :: Path Abs File
 latexTestTemplateFn = makeAbsFile "/home/frank/Workspace11/daino/theme/templates/latexDaino63.dtpl"
 -- "theme/templates/latexDaino63.dtpl"
+=======
+import Wave.Panrep2html
+    ( getIndexFiles4meta, getVals2html, testTemplateFn )  
+
+>>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
  
 shake2latex :: NoticeLevel -> PubFlags -> Settings ->
      Path Abs Dir -> Rules ()
@@ -80,8 +86,13 @@ shake2latex debug flags sett4 bakedP  =
         putInform debug ["\nrule **/*.tex 6 continued ", showT out]
 
             -- was ist mit needs2?
+<<<<<<< HEAD
             --  bakeOnePanrep2 debug flags bakedFrom sett4 outP 
             -- bakeOnePanrep2 debug flags inputFn sett3 resfn2 = do
+=======
+            --  bakeOnePanrep2html debug flags bakedFrom sett4 outP 
+            -- bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
+>>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
         putInform debug [ "\n-----\nrule **/*.tex 7 fn", showT bakedFrom
                 , "\n                    resfn2", showT outP
                 ]
@@ -110,19 +121,32 @@ shake2latex debug flags sett4 bakedP  =
                         , showT masterfn]
 
         targetTempl  <- runErr2action $ compileTemplateFile2 masterfn
+<<<<<<< HEAD
         testTempl <- runErr2action $ 
                     compileTemplateFile2 latexTestTemplateFn
 
             --if this is an index file it has files and dirs 
             -- putInform debug ["Panrep2", "extra4", showT extra4]
+=======
+        testTempl <- runErr2action $ compileTemplateFile2 testTemplateFn
+
+            --if this is an index file it has files and dirs 
+            -- putInform debug ["panrep2html", "extra4", showT extra4]
+>>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
 
         let files = fileEntries  $ extra4 :: [IndexEntry2]
             dirs = dirEntries  $ extra4 :: [IndexEntry2]
 
         valsDirs :: [Maybe IndexEntry2]<- runErr2action $ mapM 
+<<<<<<< HEAD
                             (getVals2 debug flags bakedP) dirs
         valsFiles :: [Maybe IndexEntry2] <- runErr2action $ mapM 
                         (getVals2 debug flags bakedP) files
+=======
+                            (getVals2html debug flags bakedP) dirs
+        valsFiles :: [Maybe IndexEntry2] <- runErr2action $ mapM 
+                        (getVals2html debug flags bakedP) files
+>>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
         -- will require one level of recursion more 
 
         putInform debug["\n-----rule **/*.tex 12 valsDirs"
@@ -134,6 +158,7 @@ shake2latex debug flags sett4 bakedP  =
                             }
         let metaplus5 = pan0{extra = extra5}
 
+<<<<<<< HEAD
         -- putInform debug ["Panrep2", "extra5", showT extra5]
         -- putInform debug ["Panrep2", "metaplus5", showT metaplus5]
 
@@ -149,6 +174,23 @@ shake2latex debug flags sett4 bakedP  =
 
         putInform debug 
             ["-----rule **/*.tex 14 bakeOnePanrep2 done fn"
+=======
+        -- putInform debug ["panrep2html", "extra5", showT extra5]
+        -- putInform debug ["panrep2html", "metaplus5", showT metaplus5]
+
+        let ht1 = fillTemplate_render targetTempl metaplus5
+        let test_template = fillTemplate_render testTempl metaplus5 
+
+        -- putInform debug ["panrep2html render html done", "ht1",  ht1 ]
+        -- putInform debug ["panrep2html render testTemplate done", "test_template",  test_template ]
+
+        runErr2action $ do 
+            write8 outP texFileType ( Latex ht1) 
+            write8 outP ttlFileType test_template
+
+        putInform debug 
+            ["-----rule **/*.tex 14 bakeOnePanrep2html done fn"
+>>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
             , showT outP]
 
 

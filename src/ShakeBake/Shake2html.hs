@@ -5,7 +5,11 @@
 {- the conversion starts with the root files to produce, 
     i.e. only index.md 
     This triggers the rule html -> panrep 
+<<<<<<< HEAD
     and Panrep2 produces the needs for *.pdf, templates, jpg and bib
+=======
+    and panrep2html produces the needs for *.pdf, templates, jpg and bib
+>>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
 
     for now the css, dtpl, jpg etc. are still included
     -}
@@ -37,9 +41,13 @@ import Foundational.SettingsPage
 import Foundational.Filetypes4sites
 
 import ShakeBake.Shake2aux
+<<<<<<< HEAD
 import Wave.Panrep2  
 htmlTestTemplateFn = makeAbsFile 
         "/home/frank/Workspace11/daino/theme/templates/Daino63.dtpl"
+=======
+import Wave.Panrep2html  
+>>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
 
  
 shake2html :: NoticeLevel -> PubFlags -> Settings ->
@@ -81,8 +89,13 @@ shake2html debug flags sett4 bakedP  =
         putInform debug ["\nrule **/*.html 6 continued ", showT out]
 
             -- was ist mit needs2?
+<<<<<<< HEAD
             --  bakeOnePanrep2 debug flags bakedFrom sett4 outP 
             -- bakeOnePanrep2 debug flags inputFn sett3 resfn2 = do
+=======
+            --  bakeOnePanrep2html debug flags bakedFrom sett4 outP 
+            -- bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
+>>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
         putInform debug [ "\n-----\nrule **/*.html 7 fn", showT bakedFrom
                 , "\n                    resfn2", showT outP
                 ]
@@ -111,19 +124,32 @@ shake2html debug flags sett4 bakedP  =
                         , showT masterfn]
 
         targetTempl  <- runErr2action $ compileTemplateFile2 masterfn
+<<<<<<< HEAD
         testTempl <- runErr2action $
                          compileTemplateFile2 htmlTestTemplateFn
 
             --if this is an index file it has files and dirs 
             -- putInform debug ["Panrep2", "extra4", showT extra4]
+=======
+        testTempl <- runErr2action $ compileTemplateFile2 testTemplateFn
+
+            --if this is an index file it has files and dirs 
+            -- putInform debug ["panrep2html", "extra4", showT extra4]
+>>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
 
         let files = fileEntries  $ extra4 :: [IndexEntry2]
             dirs = dirEntries  $ extra4 :: [IndexEntry2]
 
         valsDirs :: [Maybe IndexEntry2]<- runErr2action $ mapM 
+<<<<<<< HEAD
                             (getVals2 debug flags bakedP) dirs
         valsFiles :: [Maybe IndexEntry2] <- runErr2action $ mapM 
                         (getVals2 debug flags bakedP) files
+=======
+                            (getVals2html debug flags bakedP) dirs
+        valsFiles :: [Maybe IndexEntry2] <- runErr2action $ mapM 
+                        (getVals2html debug flags bakedP) files
+>>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
 
         putInform debug["\n-----rule **/*.html 12 valsDirs"
                     , showT valsDirs]
@@ -133,21 +159,35 @@ shake2html debug flags sett4 bakedP  =
                             , dirEntries = catMaybes valsDirs}
         let metaplus5 = pan0{extra = extra5}
 
+<<<<<<< HEAD
         -- putInform debug ["Panrep2", "extra5", showT extra5]
         -- putInform debug ["Panrep2", "metaplus5", showT metaplus5]
+=======
+        -- putInform debug ["panrep2html", "extra5", showT extra5]
+        -- putInform debug ["panrep2html", "metaplus5", showT metaplus5]
+>>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
 
         let ht1 = fillTemplate_render targetTempl metaplus5
         let test_templatehtml = fillTemplate_render testTempl metaplus5 
 
+<<<<<<< HEAD
         -- putInform debug ["Panrep2 render html done", "ht1",  ht1 ]
         -- putInform debug ["Panrep2 render testTemplate done", "test_templatehtml",  test_templatehtml ]
+=======
+        -- putInform debug ["panrep2html render html done", "ht1",  ht1 ]
+        -- putInform debug ["panrep2html render testTemplate done", "test_templatehtml",  test_templatehtml ]
+>>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
 
         runErr2action $ do 
             write8 outP htmloutFileType ( HTMLout ht1) 
             write8 outP tthFileType test_templatehtml
 
         when (inform debug) $ putIOwords
+<<<<<<< HEAD
             ["-----rule **/*.html 14 bakeOnePanrep2 done fn"
+=======
+            ["-----rule **/*.html 14 bakeOnePanrep2html done fn"
+>>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
             , showT outP]
 
         -- needs to start the pdf production 
@@ -162,7 +202,11 @@ shake2html debug flags sett4 bakedP  =
 
         needP $ this2pdf : is2pdf
 
+<<<<<<< HEAD
         putInform debug ["\n-----rule **/*.html 16 end continued 4"
+=======
+        putInform debug ["\n-----rule **/*.html 15 end continued 4"
+>>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
             , showT out,"\n"]
 
 

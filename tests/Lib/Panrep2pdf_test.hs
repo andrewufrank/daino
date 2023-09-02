@@ -21,7 +21,11 @@ import Wave.Panrep2pdf
 import Uniform.Pandoc
 -- import Uniform.Json
 import UniformBase
+<<<<<<< HEAD
 -- import Lib.Md2doc_test
+=======
+import Lib.Md2doc_test
+>>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
 import Data.Hash
 
 -- settFn = makeAbsFile 

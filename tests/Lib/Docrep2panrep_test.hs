@@ -9,7 +9,11 @@ module Lib.Docrep2panrep_test where
 import Foundational.Filetypes4sites
 import Foundational.SettingsPage
 import Lib.IndexCollect
+<<<<<<< HEAD
 -- import Lib.Md2doc_test
+=======
+import Lib.Md2doc_test
+>>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
 import Test.Framework
 import Uniform.Json
 import Uniform.Markdown

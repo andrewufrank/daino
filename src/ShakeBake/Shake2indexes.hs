@@ -33,7 +33,11 @@ import Foundational.SettingsPage
 import Foundational.Filetypes4sites
 import Lib.IndexCollect
 import Wave.Md2doc
+<<<<<<< HEAD
 import Wave.Panrep2
+=======
+import Wave.Panrep2html
+>>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
  
 -- import Development.Shake (getDirectoryFilesIO)
 import qualified Data.Map as M
@@ -146,7 +150,11 @@ constructFileEnry debug sett4 mdfn  = do
                         ,  abstract = getTextFromMeta5 ""  "abstract" m
                         , title = getTextFromMeta5 "TITLE MISSING" "title" m
                         , author = getTextFromMeta5 "" "author" m  
+<<<<<<< HEAD
                         -- copied form Panrep2
+=======
+                        -- copied form panrep2html
+>>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
                         }
         return . Just $ ie0 
       else return Nothing 
