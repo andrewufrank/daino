@@ -33,7 +33,7 @@ import Foundational.SettingsPage
 import Foundational.Filetypes4sites
 import Lib.IndexCollect
 import Wave.Md2doc
-import Wave.Panrep2html
+-- import Wave.Panrep2html
  
 -- import Development.Shake (getDirectoryFilesIO)
 import qualified Data.Map as M
@@ -140,14 +140,22 @@ constructFileEnry debug sett4 mdfn  = do
       then do 
         let ixfn1 =   removeExtension .  stripProperPrefixP bakedP $ docrepFn :: Path Rel File
             -- link1 = getParentDir ixfn 
-            m =   metap $ dr  -- must be redone for correct html/latex encoding? 
+            m = unMeta .  metap $ dr  -- must be redone for correct html/latex encoding? 
             ie0 = zero { ixfn = toFilePath ixfn1
                         -- , link = link1 
-                        ,  abstract = getTextFromMeta5 ""  "abstract" m
-                        , title = getTextFromMeta5 "TITLE MISSING" "title" m
-                        , author = getTextFromMeta5 "" "author" m  
+                        , textualMd= zero -- fillTextual m
+                        -- the text in 
+                        -- ,  abstract = getTextFromMeta5 ""  "abstract" m
+                        -- , title = getTextFromMeta5 "TITLE MISSING" "title" m
+                        -- , author = getTextFromMeta5 "" "author" m  
                         -- copied form panrep2html
                         }
         return . Just $ ie0 
       else return Nothing 
- 
+
+fillTextual :: Meta -> TextualIx
+-- | to fill the textual data from meta
+fillTextual m = zero { abstract = getTextFromMeta5 ""  "abstract" m
+                   , title = getTextFromMeta5 "TITLE MISSING" "title" m
+                   , author = getTextFromMeta5 "" "author" m   
+                   , content = zero }

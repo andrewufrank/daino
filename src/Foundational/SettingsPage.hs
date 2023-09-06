@@ -113,11 +113,15 @@ data IndexEntry2 = IndexEntry2
     -- , -- | the link for this page (relative to web root)
     -- -- without an extension or filename for dir}
     --   link :: Path Rel Dir
-    , title :: Text
-    , abstract :: Text
-    , author :: Text
+    , textualMd :: TextualIx   -- | the textual content in different reps
+    , textualPan :: TextualIx    
+    , textualHtml :: TextualIx 
+    , textualTex :: TextualIx 
+    -- , title :: Text
+    -- , abstract :: Text
+    -- , author :: Text
     , date :: Text
-    , content :: Text   -- in latex style, only filled bevore use
+    -- , content :: Text   -- in latex style, only filled bevore use
     , visibility ::   Text
     , version ::   Text 
     , sortOrder :: Text
@@ -138,7 +142,16 @@ instance FromJSON IndexEntry2
 isIndexPage :: Path Abs File -> Bool 
 isIndexPage filename =  getNakedFileName filename == "index"
 
+-- | textual content in the index in different representations, each
+data TextualIx = TextualIx 
+    { title :: Text
+    , abstract :: Text
+    , author :: Text
+    , content :: Text   -- in latex style, only filled bevore use
+    } deriving (Show, Read, Eq, Ord, Generic, Zeros)
 
+instance ToJSON TextualIx
+instance FromJSON TextualIx
 
 
 data SiteLayout = SiteLayout

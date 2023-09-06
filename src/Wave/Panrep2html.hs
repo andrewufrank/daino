@@ -49,6 +49,8 @@ import Wave.Md2doc ( includeBakeTest3 )
 import Data.Maybe (fromMaybe)
 import Lib.IndexCollect
 import qualified Data.Map as M
+import ShakeBake.Shake2indexes
+
 -- import Wave.Docrep2panrep
 -- import Wave.Md2doc
 -- import System.FilePath (replaceExtension)
@@ -90,9 +92,10 @@ getVals2html debug pubFlags bakedP ix2 = do
     -- putInform debug ["getVals2html pan1", showT pan1 ]
 
     let m = metap  pan1
-        ix3 = ix2   { abstract = getTextFromMeta5 ""  "abstract" m
-                    , title = getTextFromMeta5 "TITLE MISSING" "title" m
-                    , author = getTextFromMeta5 "" "author" m -- todo suppressed?
+        ix3 = ix2   { textualMd= zero -- fillTextual m
+                    -- , abstract = getTextFromMeta5 ""  "abstract" m
+                    -- , title = getTextFromMeta5 "TITLE MISSING" "title" m
+                    -- , author = getTextFromMeta5 "" "author" m -- todo suppressed?
                     , date = getTextFromMeta5 "2000-01-01" "date" m
                     , sortOrder = getTextFromMeta5 "filename" "sortOrder" m
                     , version = getTextFromMeta5 "draft" "version" m

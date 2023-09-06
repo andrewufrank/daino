@@ -48,6 +48,7 @@ import Foundational.SettingsPage
 import Wave.Panrep2html 
 import Wave.Md2doc ( includeBakeTest3 ) 
 import Uniform.Shake  
+import ShakeBake.Shake2indexes
 
 default (Integer, Double, Text)
 
@@ -177,9 +178,12 @@ getVals2latex debug pubFlags bakedP ix2 = do
 
     let m = metaLatex pan1  -- select latex code 
     
-        ix3 = ix2   { abstract = lookup7withDef ""  "abstract" m
-                    , title = lookup7withDef "TITLE MISSING" "title" m
-                    , author = lookup7withDef "" "author" m -- todo suppressed?
+        ix3 = ix2   { textualMd= zero -- fillTextual m
+        
+        
+                    --     abstract = lookup7withDef ""  "abstract" m
+                    -- , title = lookup7withDef "TITLE MISSING" "title" m
+                    -- , author = lookup7withDef "" "author" m -- todo suppressed?
                     , date = lookup7 "date" m
                     , sortOrder = lookup7withDef "filename" "sortOrder" m
                     , version = lookup7 "version" m
