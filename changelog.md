@@ -74,3 +74,4 @@ used versions 9.0.2
 
 0.1.6.1 using strict need, start with index.html 
     and everthing follows
+0.1.6.2 moved to ghc 9.6.2
