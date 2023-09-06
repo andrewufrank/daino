@@ -24,19 +24,19 @@
 module ShakeBake.Shake2indexes where
 
 import UniformBase 
-import Foundational.CmdLineFlags
+-- import Foundational.CmdLineFlags
 import Uniform.Shake
-import Development.Shake.FilePath (makeRelative, replaceDirectory)
+-- import Development.Shake.FilePath (makeRelative, replaceDirectory)
 
 import Uniform.Pandoc
 import Foundational.SettingsPage
 import Foundational.Filetypes4sites
 import Lib.IndexCollect
-import Wave.Md2doc
+-- import Wave.Md2doc
 -- import Wave.Panrep2html
  
 -- import Development.Shake (getDirectoryFilesIO)
-import qualified Data.Map as M
+-- import qualified Data.Map as M
 import qualified Data.List as D
 -- import GHC.Base (indexDoubleArrayAsDoubleX2#)
 

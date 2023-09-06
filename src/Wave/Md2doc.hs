@@ -31,7 +31,7 @@ module Wave.Md2doc (
 import Paths_daino (version)
 
 import UniformBase
-import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..)) 
+import Uniform.MetaPlus hiding (MetaPlus(..),   ExtraValues(..)) 
 -- import Development.Shake 
 import Foundational.SettingsPage  
 -- import Foundational.Filetypes4sites 
@@ -99,7 +99,7 @@ metaSetBook sett4 dr1 =  extra5{authorReduced = blankAuthorName hpname aut1
     where 
             aut1 = getTextFromYaml6 defaut "author" meta5
             bookval = getTextFromYaml6  "" "book"   meta5 
-            doughP = doughDir layout -- the regular dough
+            -- doughP = doughDir layout -- the regular dough
             bakedP = bakedDir layout -- the regular dough
             layout = siteLayout sett4 
             hpname = blogAuthorToSuppress layout

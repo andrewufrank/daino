@@ -44,7 +44,7 @@ import Uniform.Json ( ToJSON(toJSON), Value, ErrIO )
 import Uniform.Pandoc
 import Uniform.Http ( HTMLout (HTMLout) )
 import Uniform.Shake  
-import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..))
+import Uniform.MetaPlus hiding (MetaPlus(..) , ExtraValues(..))
 import Wave.Md2doc ( includeBakeTest3 ) 
 import Data.Maybe (fromMaybe)
 import Lib.IndexCollect

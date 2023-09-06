@@ -38,7 +38,7 @@ import GHC.Generics (Generic)
 import Uniform.Json ( ToJSON(toJSON), Value, ErrIO )
 import Uniform.Pandoc
 import Uniform.Http ( HTMLout (HTMLout) )
-import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..))
+import Uniform.MetaPlus hiding (MetaPlus(..),   ExtraValues(..))
 import Foundational.CmdLineFlags
 
 import Data.Maybe (fromMaybe)
@@ -168,7 +168,7 @@ getVals2latex debug pubFlags bakedP ix2 = do
         fnix3 = addDir (toFilePath bakedP) fnix4 :: FilePath
         fnix2 =  fnix3 <.> "panrep"  :: FilePath
         fn = makeAbsFile fnix2
-        pdf = replaceExtension2 ".pdf" fn 
+        -- pdf = replaceExtension2 ".pdf" fn 
         
     -- let fn = makeAbsFile $ addDir (toFilePath bakedP) (link ix2)  :: Path Abs File
 
