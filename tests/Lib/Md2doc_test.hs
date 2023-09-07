@@ -51,6 +51,20 @@ test_md2docrep = do
         let hash1 = show . hash . show $  dr :: String
         return hash1
 
-    assertEqual (Right "Hash {asWord64 = 12292783405107631022}") 
+    assertEqual (Right "Hash {asWord64 = 15933632981836880692}") 
         res1
 
+-- test with reference to check citeproc
+
+fn3 = makeAbsFile "/home/frank/Workspace11/daino/tests/data/ReadMe/03tree.md"
+res3 = makeAbsFile"/home/frank/tests/docrep3"
+
+test_md3 = do 
+    res1 <- runErr $ do 
+        dr <- setup_md2metaplus settingsLocal fn3 
+        write8 res3 docrepFileType dr
+        let hash1 = show . hash . show $  dr :: String
+        return hash1
+
+    assertEqual (Right "Hash {asWord64 = 15933632981836880692}") 
+        res1
