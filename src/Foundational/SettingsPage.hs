@@ -24,11 +24,12 @@ module Foundational.SettingsPage
     (module Foundational.SettingsPage
     , def 
     , toJSON, fromJSON
+    , MetaPlus (..)
     ) where
 
 import UniformBase
 import Uniform.Json ( FromJSON, ToJSON (toJSON), fromJSON )
-import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..))
+import Uniform.MetaPlus  
 import Uniform.Latex
 
 import qualified Data.Map as M
@@ -48,19 +49,20 @@ settingsFileName = makeRelFile "settings3" -- the yaml file
 
 -- | description for each md file 
 -- todo include the flags 
-data DainoMetaPlus = DainoMetaPlus 
-        { metap :: Meta    -- ^ the pandoc meta, the file text content
-        , sett :: Settings -- ^ the data from the settingsfile
-        , extra :: DainoValues -- ^ other values to go into template
-        , metaMarkdown :: M.Map Text Text -- todo not used
-        , metaHtml ::  M.Map Text Text
-        , metaLatex ::  M.Map Text Text
-        }
-    deriving (Eq, Ord, Show, Read, Generic) -- Zeros, ToJSON, FromJSON)
-instance ToJSON DainoMetaPlus
-instance FromJSON DainoMetaPlus
-instance Zeros DainoMetaPlus where 
-        zero = DainoMetaPlus zero zero zero zero zero zero
+type DainoMetaPlus = MetaPlus Settings DainoValues
+-- data DainoMetaPlus = DainoMetaPlus 
+--         { metap :: Meta    -- ^ the pandoc meta, the file text content
+--         , sett :: Settings -- ^ the data from the settingsfile
+--         , extra :: DainoValues -- ^ other values to go into template
+--         , metaMarkdown :: M.Map Text Text -- todo not used
+--         , metaHtml ::  M.Map Text Text
+--         , metaLatex ::  M.Map Text Text
+--         }
+--     deriving (Eq, Ord, Show, Read, Generic) -- Zeros, ToJSON, FromJSON)
+-- instance ToJSON DainoMetaPlus
+-- instance FromJSON DainoMetaPlus
+-- instance Zeros (MetaPlus Settings DainoValues) where 
+--         zero = MetaPlus zero zero zero zero zero zero
         
 -- | the siteHeader file with all fields 
 data Settings = Settings
@@ -71,10 +73,9 @@ data Settings = Settings
     , siteHeader :: SiteHeader 
     , menuitems :: MenuItems
     -- , today :: Text
-    } deriving (Show, Read, Ord, Eq, Generic, Zeros)
+    } deriving (Show, Read, Ord, Eq, Generic)
 
-
-
+instance Zeros Settings where zero = Settings zero zero zero zero zero zero
 instance ToJSON Settings
 instance FromJSON Settings
 

@@ -31,7 +31,7 @@ import Uniform.Shake
 import Uniform.Pandoc
 import Foundational.SettingsPage
 import Foundational.Filetypes4sites
-import Lib.IndexCollect
+-- import Lib.IndexCollect
 -- import Wave.Md2doc
 -- import Wave.Panrep2html
  

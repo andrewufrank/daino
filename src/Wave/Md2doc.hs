@@ -31,7 +31,7 @@ module Wave.Md2doc (
 import Paths_daino (version)
 
 import UniformBase
-import Uniform.MetaPlus hiding (MetaPlus(..),   ExtraValues(..)) 
+import Uniform.MetaPlus  
 -- import Development.Shake 
 import Foundational.SettingsPage  
 -- import Foundational.Filetypes4sites 
@@ -55,11 +55,15 @@ includeBakeTest3  pubf vers1 vis1 =
         -- should be less than eq
             && (privateFlag pubf || vis1 ==  "public")
 
-setMetaPlusInitialize :: Settings -> Path Abs File -> Meta -> DainoMetaPlus 
+setMetaPlusInitialize :: Settings -> Path Abs File -> Meta 
+            -> (MetaPlus Settings DainoValues)
+            -- -> DainoMetaPlus 
 -- to move the start values into the MetaPlus 
-setMetaPlusInitialize sett3 fnin m1 =  zero { metap = m1
-                                , sett = sett3
-                                , extra = x1}
+setMetaPlusInitialize sett3 fnin m1 =  
+        (zero:: MetaPlus Settings DainoValues) 
+        { metap = m1
+        , sett = sett3
+        , extra = x1}  :: MetaPlus Settings DainoValues
     where 
         doughP = doughDir . siteLayout $ sett3
         relFn = makeRelativeP doughP fnin

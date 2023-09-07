@@ -38,7 +38,7 @@ import GHC.Generics (Generic)
 import Uniform.Json ( ToJSON(toJSON), Value, ErrIO )
 import Uniform.Pandoc
 import Uniform.Http ( HTMLout (HTMLout) )
-import Uniform.MetaPlus hiding (MetaPlus(..),   ExtraValues(..))
+import Uniform.MetaPlus  
 import Foundational.CmdLineFlags
 
 import Data.Maybe (fromMaybe)

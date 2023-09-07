@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------
 --
--- Module Shake2 :
+-- Module Shake2 docrep
 ----------------------------------------------------------------------
 {- the conversion starts with the root files to produce, 
     i.e. only index.md 
@@ -8,6 +8,11 @@
     and panrep2html produces the needs for *.pdf, templates, jpg and bib
 
     for now the css, dtpl, jpg etc. are still included
+
+    docrep includes all pandoc processing
+        citeproc for the references
+        conversion from markdown to pandoc internal rep
+                    to latex and html 
     -}
 ----------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
@@ -73,9 +78,13 @@ shake2docrep debug flags sett4 bakedP  =
 
     
         let p2 = addListOfDefaults (metaDefaults sett4) p1
-        m1 <- md2Meta_Process p2
-        -- process citeproc
-        let mp1 = setMetaPlusInitialize sett4 bakedFrom m1
+        m1 <- md2Meta_Process p2 -- includes process citeproc
+        m2 <- completeMetaPlus m1  -- converts the body to tex and html
+
+        let mp1 = setMetaPlusInitialize sett4 bakedFrom m2
+                -- pushes all what is further needed into metaplus
+
+                -- todo include the values for which will be used for index
             incl = includeBakeTest3docrep flags (metap mp1) 
 
         --  showPretty incl]
