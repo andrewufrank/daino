@@ -93,17 +93,17 @@ shake2html debug flags sett4 bakedP  =
             mf = masterTemplateFile $ siteLayout sett3
             masterfn = templatesDir (siteLayout sett3) </> mf
 
-    -- braucht needs fuer die panrep files
+    -- -- braucht needs fuer die panrep files
         let ixs0 = getIndexFiles4meta pan0 :: [Path Rel File]
-        let ixs0pan = map (addFileName bakedP 
-                        . addExtension extPanrep) ixs0 ::[Path Abs File]
-        putInform debug ["\n-----\nrule **/*.html 8"
-                    , "needs panrep ixs0pan", showT ixs0pan]
+    --     let ixs0pan = map (addFileName bakedP 
+    --                     . addExtension extPanrep) ixs0 ::[Path Abs File]
+    --     putInform debug ["\n-----\nrule **/*.html 8"
+    --                 , "needs panrep ixs0pan", showT ixs0pan]
         
-        needP ixs0pan
+    --     needP ixs0pan
 
-        putInform debug["\n-----rule **/*.html 9 siteLayout sett3"
-                    , showT $ siteLayout sett3]
+    --     putInform debug["\n-----rule **/*.html 9 siteLayout sett3"
+    --                 , showT $ siteLayout sett3]
         putInform debug ["-----rule **/*.html 10 mf", showT mf]
         putInform debug ["-----rule **/*.html 11 masterfn"
                         , showT masterfn]
@@ -114,21 +114,22 @@ shake2html debug flags sett4 bakedP  =
             --if this is an index file it has files and dirs 
             -- putInform debug ["panrep2html", "extra4", showT extra4]
 
-        let files = fileEntries  $ extra4 :: [IndexEntry2]
-            dirs = dirEntries  $ extra4 :: [IndexEntry2]
+        -- let files = fileEntries  $ extra4 :: [IndexEntry2]
+        --     dirs = dirEntries  $ extra4 :: [IndexEntry2]
 
-        valsDirs :: [Maybe IndexEntry2]<- runErr2action $ mapM 
-                            (getVals2html debug flags bakedP) dirs
-        valsFiles :: [Maybe IndexEntry2] <- runErr2action $ mapM 
-                        (getVals2html debug flags bakedP) files
+        -- the values are already set (in panrep)
+        -- valsDirs :: [Maybe IndexEntry2]<- runErr2action $ mapM 
+        --                     (getVals2html debug flags bakedP) dirs
+        -- valsFiles :: [Maybe IndexEntry2] <- runErr2action $ mapM 
+        --                 (getVals2html debug flags bakedP) files
 
-        putInform debug["\n-----rule **/*.html 12 valsDirs"
-                    , showT valsDirs]
-        putInform debug ["\n-----rule **/*.html 13 valsFiles", showT valsFiles]
+        -- putInform debug["\n-----rule **/*.html 12 valsDirs"
+        --             , showT valsDirs]
+        -- putInform debug ["\n-----rule **/*.html 13 valsFiles", showT valsFiles]
 
-        let extra5 = extra4{fileEntries = catMaybes valsFiles
-                            , dirEntries = catMaybes valsDirs}
-        let metaplus5 = pan0{extra = extra5}
+        -- let extra5 = extra4{fileEntries = catMaybes valsFiles
+        --                     , dirEntries = catMaybes valsDirs}
+        let metaplus5 = pan0  -- {extra = extra5}
 
         -- putInform debug ["panrep2html", "extra5", showT extra5]
         -- putInform debug ["panrep2html", "metaplus5", showT metaplus5]
