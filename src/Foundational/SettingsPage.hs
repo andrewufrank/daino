@@ -30,7 +30,7 @@ module Foundational.SettingsPage
 import UniformBase
 import Uniform.Json ( FromJSON, ToJSON (toJSON), fromJSON )
 import Uniform.MetaPlus  
-import Uniform.Latex
+-- import Uniform.Latex
 import Uniform.Pandoc 
 
 import qualified Data.Map as M
@@ -117,7 +117,7 @@ data IndexEntry2 = IndexEntry2
     -- -- without an extension or filename for dir}
     --   link :: Path Rel Dir
     , textualPan :: TextualIx MetaValue    
-    , textualMd :: TextualIx Text   -- | the textual content in different reps
+    -- , textualMd :: TextualIx Text   -- | the textual content in different reps
     , textualHtml :: TextualIx Text
     , textualTex :: TextualIx Text
     -- , title :: Text
@@ -151,7 +151,7 @@ data TextualIx v = TextualIx
     { title :: v
     , abstract :: v
     , author :: v
-    , content :: v   -- in latex style, only filled bevore use
+    -- , content :: v   -- in latex style, only filled bevore use
     } deriving (Show, Read, Eq, Ord, Generic, Zeros)
 
 instance ToJSON v => ToJSON (TextualIx v)

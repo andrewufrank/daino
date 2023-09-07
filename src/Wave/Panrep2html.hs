@@ -92,11 +92,12 @@ getVals2html debug pubFlags bakedP ix2 = do
     -- putInform debug ["getVals2html pan1", showT pan1 ]
 
     let m = metap  pan1
-        ix3 = ix2   { textualMd= zero -- fillTextual m
+        ix3 = ix2   {
+                    --  textualMd= zero -- fillTextual m
                     -- , abstract = getTextFromMeta5 ""  "abstract" m
                     -- , title = getTextFromMeta5 "TITLE MISSING" "title" m
                     -- , author = getTextFromMeta5 "" "author" m -- todo suppressed?
-                    , date = getTextFromMeta5 "2000-01-01" "date" m
+                     date = getTextFromMeta5 "2000-01-01" "date" m
                     , sortOrder = getTextFromMeta5 "filename" "sortOrder" m
                     , version = getTextFromMeta5 "draft" "version" m
                     , visibility = getTextFromMeta5 "private" "visibility" m

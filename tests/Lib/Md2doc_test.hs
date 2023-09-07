@@ -16,7 +16,7 @@ import Test.Framework
 import Foundational.SettingsPage
 import Foundational.Filetypes4sites
 import Wave.Md2doc
-import Uniform.Markdown
+-- import Uniform.Markdown
 import Uniform.Pandoc
 -- import Uniform.MetaPlus
 import UniformBase
@@ -24,6 +24,7 @@ import UniformBase
 import ShakeBake.ReadSettingFile
 import Data.Hash
 
+setup_md2metaplus :: Path Abs File -> Path Abs File -> ExceptT Text IO DainoMetaPlus
 setup_md2metaplus settingsFn fn = do 
         let debug = NoticeLevel0   -- avoid_output_fromHere_down
         sett4 <- readSettings debug settingsFn 
@@ -51,7 +52,7 @@ test_md2docrep = do
         let hash1 = show . hash . show $  dr :: String
         return hash1
 
-    assertEqual (Right "Hash {asWord64 = 15933632981836880692}") 
+    assertEqual (Right "Hash {asWord64 = 13054358789450343661}") 
         res1
 
 -- test with reference to check citeproc
@@ -66,5 +67,5 @@ test_md3 = do
         let hash1 = show . hash . show $  dr :: String
         return hash1
 
-    assertEqual (Right "Hash {asWord64 = 15933632981836880692}") 
+    assertEqual (Right "Hash {asWord64 = 2823712893252530503}") 
         res1

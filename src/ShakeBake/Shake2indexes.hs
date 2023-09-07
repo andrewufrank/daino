@@ -140,72 +140,46 @@ constructFileEnry debug sett4 mdfn  = do
     if incld 
       then do 
         let ixfn1 =   removeExtension .  stripProperPrefixP bakedP $ docrepFn :: Path Rel File
-            -- link1 = getParentDir ixfn 
-            m = unMeta .  metap $ dr  -- must be redone for correct html/latex encoding? 
-            ie0 = zero { ixfn = toFilePath ixfn1
-                        -- , link = link1 
-                        , textualMd= zero -- fillTextual m
-                        -- the text in 
-                        -- ,  abstract = getTextFromMeta5 ""  "abstract" m
-                        -- , title = getTextFromMeta5 "TITLE MISSING" "title" m
-                        -- , author = getTextFromMeta5 "" "author" m  
-                        -- copied form panrep2html
-                        }
+            m = unMeta .  metap $ dr  
+            ie0 = zero { ixfn = toFilePath ixfn1 }
         return . Just $ ie0 
       else return Nothing 
 
--- fillTextual :: Meta -> TextualIx MetaValue
--- -- | to fill the textual data from meta
--- --  this gives the pandoc internal rep 
--- fillTextual m = zero 
--- { abstract = maybe (MetaString "ABSTRACT MISSING") id $ Pandoc.lookupMeta "abstract" m
---                 --    , title = getTextFromMeta5 "TITLE MISSING" "title" m
---                 --    , author = getTextFromMeta5 "" "author" m   
---                    , content = zero }
 
--- convertTextualIx :: Block -> Text  
--- is block2xx 
 
 fillTextual4MP :: DainoMetaPlus -> DainoMetaPlus 
 -- | copy the values into textual 
+-- the defaults are set before with metaDefaults
 fillTextual4MP mp = mp{extra = x2}
     where 
         m1 =  metap mp
-        pan1 = zero
+        pan1 = (zero :: TextualIx MetaValue)
             { abstract = fromMaybe (MetaString "XX") $ Pandoc.lookupMeta "abstract" m1
             , title = fromMaybe (MetaString "Missing TITLE") $ Pandoc.lookupMeta "title" m1 
             , author = fromMaybe (MetaString "Missing AUTHOR") $ Pandoc.lookupMeta "author" m1 
             -- could add content here?
             }
         h1 = metaHtml  mp ::M.Map Text Text
-        htm1 = zero 
+        htm1 = (zero :: TextualIx Text)  
             { abstract = fromMaybe ( "XX") $ M.lookup "abstract" h1
             , title = fromMaybe ( "Missing TITLE") $ M.lookup "title" h1
             , author = fromMaybe ( "Missing AUTHOR") $ M.lookup "author" h1 
             -- could add content here?
             }
         t1 = metaLatex  mp ::M.Map Text Text
-        tex1 = zero 
-            { abstract = fromMaybe ( "XX") $ M.lookup "abstract" t1
+        tex1 = (zero :: TextualIx Text) 
+            { abstract = fromMaybe ( "Missing ABSTRACT") $ M.lookup "abstract" t1
             , title = fromMaybe ( "Missing TITLE") $ M.lookup "title" t1
             , author = fromMaybe ( "Missing AUTHOR") $ M.lookup "author" t1 
             -- could add content here?
             }
 
         x1 = extra mp 
-    --     pan1 = fillTextual m1 
-    --     md1 = 
-
-    -- -- md1 <- block2xx writeToMarkdown  [pan1] -- (metap metapl1)
-    -- -- htm1 <- meta2xx writeHtml5String2 pan1
-    -- -- lat1 <- meta2xx writeTexSnip2 pan1
         x2 = x1 { textual0pan = pan1 
                 , textual0html = htm1 
-                -- , textual0md = md1
                 , textual0tex = tex1
                 } :: DainoValues 
 
-    -- return mp -- {extra = x2}
      
 
  
