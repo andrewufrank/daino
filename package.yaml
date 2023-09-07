@@ -105,6 +105,7 @@ dependencies:
     # - doctemplates
     # - ReplaceUmlaut
     - shake
+    - pandoc-types
     # # - system-filepath 
     # # - directory
 library:

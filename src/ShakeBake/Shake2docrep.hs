@@ -38,8 +38,13 @@ import Uniform.Shake
 import Uniform.Pandoc 
 import Foundational.SettingsPage
 import Foundational.Filetypes4sites
+import Foundational.CmdLineFlags
 import Wave.Md2doc 
+-- import Uniform.MetaPlus
+-- import ShakeBake.Shake2indexes (fillTextual4MP)
 
+-- shake2docrep :: NoticeLevel ->  PubFlags -> Settings -> Path Abs Dir -> Rules ()
+shake2docrep :: NoticeLevel -> PubFlags -> Settings -> Path Abs Dir -> Rules ()
 shake2docrep debug flags sett4 bakedP  =     
     (toFilePath bakedP <> "**/*.docrep") %> \out -> do 
             -- insert pdfFIles1  -- here start with doughP
@@ -66,7 +71,7 @@ shake2docrep debug flags sett4 bakedP  =
 --         -- dr4 <- addRefs debug dr3
 --            readMarkdownFile2docrep debug flags sett3 fnin = do
 
-        p1 <- readMd2pandoc bakedFrom -- need posted
+        pandoc1 <- readMd2pandoc bakedFrom -- need posted
         putInform NoticeLevel1 ["rule **/*.docrep 4 read", showT bakedFrom]
 
        -- check for german and process umlaut, 
@@ -75,20 +80,23 @@ shake2docrep debug flags sett4 bakedP  =
         -- default values only what is used for citeproc and ??
         -- rest can go into settings 
         -- these are copied from previous values (OLD below)
-
+        
+        mp3 <- pandoc2metaplus sett4 bakedFrom pandoc1 
     
-        let p2 = addListOfDefaults (metaDefaults sett4) p1
-        m1 <- md2Meta_Process p2 -- includes process citeproc
-        m2 <- completeMetaPlus m1  -- converts the body to tex and html
+        -- let p2 = addListOfDefaults (metaDefaults sett4) p1
+        -- meta1 <- md2Meta_Process p2 -- includes process citeproc
 
-        let mp1 = setMetaPlusInitialize sett4 bakedFrom m2
-                -- pushes all what is further needed into metaplus
+        --         -- pushes all what is further needed into metaplus
+        -- let mp1 = setMetaPlusInitialize sett4 bakedFrom meta1
+
+        -- mp2 <- completeMetaPlus mp1  -- converts the body to tex and html
+        -- let mp3 = fillTextual4MP mp2 
 
                 -- todo include the values for which will be used for index
-            incl = includeBakeTest3docrep flags (metap mp1) 
 
+        let incl = includeBakeTest3docrep flags (metap mp3) 
         --  showPretty incl]
-        let dr4 =  if incl then mp1 else zero     
+        let dr4 =  if incl then mp3 else zero     
         putInform NoticeLevel1 ["rule **/*.docrep 5 ready to write outP"
                             , showT outP]
         write8 outP docrepFileType dr4

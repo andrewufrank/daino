@@ -31,12 +31,11 @@ import UniformBase
 import Uniform.Json ( FromJSON, ToJSON (toJSON), fromJSON )
 import Uniform.MetaPlus  
 import Uniform.Latex
+import Uniform.Pandoc 
 
 import qualified Data.Map as M
 import Data.Default.Class ( Default(def) ) -- to define a default class for siteLayout 
 import Path (parent)
-
-
 
 
 progName, progTitle :: Text
@@ -59,10 +58,6 @@ type DainoMetaPlus = MetaPlus Settings DainoValues
 --         , metaLatex ::  M.Map Text Text
 --         }
 --     deriving (Eq, Ord, Show, Read, Generic) -- Zeros, ToJSON, FromJSON)
--- instance ToJSON DainoMetaPlus
--- instance FromJSON DainoMetaPlus
--- instance Zeros (MetaPlus Settings DainoValues) where 
---         zero = MetaPlus zero zero zero zero zero zero
         
 -- | the siteHeader file with all fields 
 data Settings = Settings
@@ -80,22 +75,29 @@ instance ToJSON Settings
 instance FromJSON Settings
 
 -- the extraValues will eventually go into settings
-data DainoValues = DainoValues 
-                        { mdFile:: FilePath -- Path Abs File -- abs file path 
-                        , mdRelPath :: FilePath -- Path Rel File  -- rel file path
-                        , dirEntries :: [IndexEntry2] 
-                        , fileEntries :: [IndexEntry2] 
-                                -- only the dirs and files path
-                        , dainoVersion :: Text 
-                        , latLanguage :: Text 
-                        , authorReduced :: Text
-                        -- , extraBakedDir :: Text
-                        , bookBig :: Bool -- values, because the template system limitation
-                        , booklet :: Bool
-                        , bookprint :: Bool  -- include the empty pages for print version
-                        , webroot :: Text  -- the webroot
-                        , pdf2 :: FilePath
-                        }
+data DainoValues = 
+    DainoValues 
+            { mdFile:: FilePath -- Path Abs File -- abs file path 
+            , mdRelPath :: FilePath -- Path Rel File  -- rel file path
+            , textual0md :: TextualIx Text  -- | the textual content in different reps for this file
+            , textual0pan :: TextualIx Block   
+            , textual0html :: TextualIx Text
+            , textual0tex :: TextualIx Text
+            -- index entries are for subordinated dirs and files
+            -- filled in docrep2panrep
+            , dirEntries :: [IndexEntry2] 
+            , fileEntries :: [IndexEntry2] 
+                    -- only the dirs and files path
+            , dainoVersion :: Text 
+            , latLanguage :: Text 
+            , authorReduced :: Text
+            -- , extraBakedDir :: Text
+            , bookBig :: Bool -- values, because the template system limitation
+            , booklet :: Bool
+            , bookprint :: Bool  -- include the empty pages for print version
+            , webroot :: Text  -- the webroot
+            , pdf2 :: FilePath
+            }
     deriving (Eq, Ord, Show, Read, Generic, Zeros)
 
 
@@ -114,10 +116,10 @@ data IndexEntry2 = IndexEntry2
     -- , -- | the link for this page (relative to web root)
     -- -- without an extension or filename for dir}
     --   link :: Path Rel Dir
-    , textualMd :: TextualIx   -- | the textual content in different reps
-    , textualPan :: TextualIx    
-    , textualHtml :: TextualIx 
-    , textualTex :: TextualIx 
+    , textualPan :: TextualIx Block    
+    , textualMd :: TextualIx Text   -- | the textual content in different reps
+    , textualHtml :: TextualIx Text
+    , textualTex :: TextualIx Text
     -- , title :: Text
     -- , abstract :: Text
     -- , author :: Text
@@ -136,7 +138,7 @@ data IndexEntry2 = IndexEntry2
 
 -- instance Zeros IndexEntry2 where zero = IndexEntry2 [] []
 -- zero zero zero zero zero zero zero
-
+instance Zeros Block where zero = Plain []
 instance ToJSON IndexEntry2
 instance FromJSON IndexEntry2
 
@@ -144,15 +146,15 @@ isIndexPage :: Path Abs File -> Bool
 isIndexPage filename =  getNakedFileName filename == "index"
 
 -- | textual content in the index in different representations, each
-data TextualIx = TextualIx 
-    { title :: Text
-    , abstract :: Text
-    , author :: Text
-    , content :: Text   -- in latex style, only filled bevore use
+data TextualIx v = TextualIx 
+    { title :: v
+    , abstract :: v
+    , author :: v
+    , content :: v   -- in latex style, only filled bevore use
     } deriving (Show, Read, Eq, Ord, Generic, Zeros)
 
-instance ToJSON TextualIx
-instance FromJSON TextualIx
+instance ToJSON v => ToJSON (TextualIx v)
+instance FromJSON v => FromJSON (TextualIx v)
 
 
 data SiteLayout = SiteLayout

@@ -23,29 +23,34 @@ import UniformBase
 -- import Lib.IndexCollect
 import ShakeBake.ReadSettingFile
 import Data.Hash
--- setup_md2metaplus settingsFn fn = do 
---         let debug = NoticeLevel0   -- avoid_output_fromHere_down
---         sett3 <- readSettings debug settingsFn 
---         metaplus1 <- readMarkdownFile2docrep debug sett3 fn
---         return metaplus1
+
+setup_md2metaplus settingsFn fn = do 
+        let debug = NoticeLevel0   -- avoid_output_fromHere_down
+        sett4 <- readSettings debug settingsFn 
+        pandoc1 <- readMd2pandoc fn 
+        mp3 <- pandoc2metaplus sett4 fn pandoc1
+
+        -- metaplus1 <- readMarkdownFile2docrep debug sett3 fn
+        return mp3
 
 
--- settingsLocal = makeAbsFile 
+settingsLocal = makeAbsFile "/home/frank/Workspace11/daino/tests/data/settingsTest.yaml"
+
 --     "/home/frank/Workspace11/daino/settingsTest.yaml"
 -- settingsDainoSite = makeAbsFile "/home/frank/Workspace11/dainoSite/settings3.yaml"
 
 
--- fnmd = makeAbsFile "/home/frank/Workspace11/daino/tests/data/ReadMe/index.md"
--- resdocrep = makeAbsFile"/home/frank/tests/docrep1"
+fnmd = makeAbsFile "/home/frank/Workspace11/daino/tests/data/ReadMe/index.md"
+resdocrep = makeAbsFile"/home/frank/tests/docrep1"
 
--- -- test md2docrep with local settings and local file 
--- test_md2docrep = do 
---     res1 <- runErr $ do 
---         dr <- setup_md2metaplus settingsLocal fnmd 
---         write8 resdocrep docrepFileType dr
---         let hash1 = show . hash . show $  dr :: String
---         return hash1
+-- test md2docrep with local settings and local file 
+test_md2docrep = do 
+    res1 <- runErr $ do 
+        dr <- setup_md2metaplus settingsLocal fnmd 
+        write8 resdocrep docrepFileType dr
+        let hash1 = show . hash . show $  dr :: String
+        return hash1
 
---     assertEqual (Right "Hash {asWord64 = 12292783405107631022}") 
---         res1
+    assertEqual (Right "Hash {asWord64 = 12292783405107631022}") 
+        res1
 

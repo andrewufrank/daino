@@ -59,6 +59,7 @@ library
     , containers
     , data-default-class
     , filepath
+    , pandoc-types
     , path
     , path-io
     , shake
@@ -89,6 +90,7 @@ executable daino62
     , daino
     , data-default-class
     , filepath
+    , pandoc-types
     , path
     , path-io
     , shake
@@ -127,6 +129,7 @@ test-suite testall
     , data-default-class
     , data-hash
     , filepath
+    , pandoc-types
     , path
     , path-io
     , quickcheck-text
@@ -162,6 +165,7 @@ test-suite testrun
     , data-default-class
     , data-hash
     , filepath
+    , pandoc-types
     , path
     , path-io
     , quickcheck-text

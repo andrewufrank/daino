@@ -29,6 +29,7 @@ import Uniform.Shake
 -- import Development.Shake.FilePath (makeRelative, replaceDirectory)
 
 import Uniform.Pandoc
+import Text.Pandoc.Definition as Pandoc
 import Foundational.SettingsPage
 import Foundational.Filetypes4sites
 -- import Lib.IndexCollect
@@ -153,9 +154,36 @@ constructFileEnry debug sett4 mdfn  = do
         return . Just $ ie0 
       else return Nothing 
 
-fillTextual :: Meta -> TextualIx
--- | to fill the textual data from meta
-fillTextual m = zero { abstract = getTextFromMeta5 ""  "abstract" m
-                   , title = getTextFromMeta5 "TITLE MISSING" "title" m
-                   , author = getTextFromMeta5 "" "author" m   
-                   , content = zero }
+-- fillTextual :: Meta -> TextualIx MetaValue
+-- -- | to fill the textual data from meta
+-- --  this gives the pandoc internal rep 
+-- fillTextual m = zero 
+-- { abstract = maybe (MetaString "ABSTRACT MISSING") id $ Pandoc.lookupMeta "abstract" m
+--                 --    , title = getTextFromMeta5 "TITLE MISSING" "title" m
+--                 --    , author = getTextFromMeta5 "" "author" m   
+--                    , content = zero }
+
+-- convertTextualIx :: Block -> Text  
+-- is block2xx 
+
+-- fillTextual4MP :: DainoMetaPlus -> DainoMetaPlus 
+-- -- | copy the values into textual 
+-- fillTextual4MP mp = mp
+    -- let m1 = metap mp 
+    --     x1 = extra mp 
+    --     pan1 = fillTextual m1 
+    --     md1 = 
+
+    -- -- md1 <- block2xx writeToMarkdown  [pan1] -- (metap metapl1)
+    -- -- htm1 <- meta2xx writeHtml5String2 pan1
+    -- -- lat1 <- meta2xx writeTexSnip2 pan1
+    -- -- let x2 = x1 { textual0pan = pan1 
+    -- --             -- , textual0html = htm1 
+    -- --             , textual0md = md1
+    -- --             -- , textual0tex = md1
+    -- --             } :: DainoValues 
+
+    -- return mp -- {extra = x2}
+     
+
+ 

@@ -39,8 +39,25 @@ import Foundational.CmdLineFlags
 import Uniform.Pandoc
 import Uniform.Latex
 import Uniform.Shake  
+-- import Uniform.MetaPlus
+-- import ShakeBake.Shake2indexes (fillTextual4MP)
 
 default (Text)
+
+-- the conversion in shake2docrep
+pandoc2metaplus :: Settings -> Path Abs File -> Pandoc -> ErrIO DainoMetaPlus
+pandoc2metaplus sett4 bakedFrom p1 = do 
+    let p2 = addListOfDefaults (metaDefaults sett4) p1
+    meta1 <- md2Meta_Process p2 -- includes process citeproc
+
+            -- pushes all what is further needed into metaplus
+    let mp1 = setMetaPlusInitialize sett4 bakedFrom meta1
+
+    mp2 <- completeMetaPlus mp1  -- converts the body to tex and html
+    let mp3 = mp2 -- fillTextual4MP mp2 
+
+    return mp3
+
 
 includeBakeTest3docrep :: PubFlags -> Meta -> Bool
 includeBakeTest3docrep pubf met2 = includeBakeTest3 pubf vers1 vis1
