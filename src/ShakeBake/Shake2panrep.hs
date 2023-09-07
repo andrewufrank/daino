@@ -36,9 +36,9 @@ import Uniform.Shake
 
 -- import Uniform.Pandoc
 import Foundational.SettingsPage
--- import Foundational.Filetypes4sites
+import Foundational.Filetypes4sites
 -- import Lib.IndexCollect
--- import Wave.Md2doc
+import Wave.Md2doc
 import ShakeBake.Shake2indexes 
 
 -- import Development.Shake (getDirectoryFilesIO)
@@ -96,48 +96,51 @@ shake2panrep debug flags sett4 bakedP =
     -- (dirEntries, fileEntries) <- constructIndexEntries
     putInform debug ["\nrule **/*.panrep 5 continued 2", showT out]
 
-    -- needs2empty <- runErr2action $ do
-    --         --  bakeOneDocrep2panrep debug flags bakedFrom sett4 outP 
-    -- --           bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
-    --     putInform debug [ "\nrule **/*.panrep 6 bakedFrom"
-    --         , showT bakedFrom 
-    --         , "outP", showT outP
-    --         ]
-    --     dr1 <- read8 bakedFrom docrepFileType
+    needs2empty <- runErr2action $ do
+            --  bakeOneDocrep2panrep debug flags bakedFrom sett4 outP 
+    --           bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
+        putInform debug [ "\nrule **/*.panrep 6 bakedFrom"
+            , showT bakedFrom 
+            , "outP", showT outP
+            ]
+        dr1 <- read8 bakedFrom docrepFileType
 
-    --     -- (p3, needsFound) <- docrep2panrep debug flags  dr1
-    --             -- completes index and should process reps 
-    --             -- what to do with needs?
-    --                  -- docrep2panrep debug flags dr1 = do
-    --     -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
-    --     putInform debug ["rule **/*.panrep 7"
-    --             --  , "metaplus: \n", showPretty dr1
-    --                 -- , "\np1: ", showT p1
-    --                 ]
+        -- (p3, needsFound) <- docrep2panrep debug flags  dr1
+                -- completes index and should process reps 
+                -- what to do with needs?
+                     -- docrep2panrep debug flags dr1 = do
+        -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
+        putInform debug ["rule **/*.panrep 7"
+                --  , "metaplus: \n", showPretty dr1
+                    -- , "\np1: ", showT p1
+                    ]
   
-    --     let -- sett4 = sett dr1
-    --         -- layout = siteLayout sett4
-    --         meta5 = metap  dr1 -- ~ panyam 
-    --         -- extra5 = extra dr1
-    --         extra6 = metaSetBook sett4 dr1 
-    --         extra7 = extra6{dirEntries = dirEnts
-    --                         , fileEntries = fileEnts}
+        let -- sett4 = sett dr1
+            -- layout = siteLayout sett4
+            -- meta5 = metap  dr1 -- ~ panyam 
+            -- extra5 = extra dr1
+            extra6 = metaSetBook sett4 dr1 
+            extra7 = extra6{dirEntries = dirEnts
+                            , fileEntries = fileEnts}
 
-    --     htm1 <- meta2xx writeHtml5String2 meta5
-    --     tex1  :: M.Map Text Text <- meta2xx   writeTexSnip2 meta5
+        -- htm1 <- meta2xx writeHtml5String2 meta5
+        -- tex1  :: M.Map Text Text <- meta2xx   writeTexSnip2 meta5
 
-    --     let dr2 = dr1   { metaHtml = htm1
-    --                     , metaLatex = tex1
-    --                     , extra = extra7 }
+        let dr2 = dr1   {
+                            --  metaHtml = htm1
+                        -- , metaLatex = tex1
+                         extra = extra7 }
     
-    --     -- needs to read the docrep files
+        -- -- needs to read the docrep files
 
-    --     write8 outP panrepFileType dr2 -- content is html style
-    --     putInform NoticeLevel1 
-    --             ["rule **/*.panrep 8 done produced resf2n", showT outP
-    --                 -- , "\n needsFound", showT needsFound
-    --             ]
-    --     return [] --  needsFound
+        -- write8 outP panrepFileType dr2 -- content is html style
+        write8 outP panrepFileType dr2 -- set only dirEntries
+
+        putInform NoticeLevel1 
+                ["rule **/*.panrep 8 done produced resf2n", showT outP
+                    -- , "\n needsFound", showT needsFound
+                ]
+        return [] --  needsFound
 
     putInform debug ["rule **/*.panrep 9 end", showT out]
 

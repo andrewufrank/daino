@@ -167,13 +167,13 @@ fillTextual4MP :: DainoMetaPlus -> DainoMetaPlus
 -- the defaults are set before with metaDefaults
 fillTextual4MP mp = mp{extra = x2}
     where 
-        m1 =  metap mp
-        pan1 = (zero :: TextualIx MetaValue)
-            { abstract = fromMaybe (MetaString "XX") $ Pandoc.lookupMeta "abstract" m1
-            , title = fromMaybe (MetaString "Missing TITLE") $ Pandoc.lookupMeta "title" m1 
-            , author = fromMaybe (MetaString "Missing AUTHOR") $ Pandoc.lookupMeta "author" m1 
-            -- could add content here?
-            }
+        -- m1 =  metap mp
+        -- pan1 = (zero :: TextualIx MetaValue)
+        --     { abstract = fromMaybe (MetaString "XX") $ Pandoc.lookupMeta "abstract" m1
+        --     , title = fromMaybe (MetaString "Missing TITLE") $ Pandoc.lookupMeta "title" m1 
+        --     , author = fromMaybe (MetaString "Missing AUTHOR") $ Pandoc.lookupMeta "author" m1 
+        --     -- could add content here?
+        --     }
         h1 = metaHtml  mp ::M.Map Text Text
         htm1 = (zero :: TextualIx Text)  
             { abstract = fromMaybe ( "XX") $ M.lookup "abstract" h1
@@ -190,8 +190,9 @@ fillTextual4MP mp = mp{extra = x2}
             }
 
         x1 = extra mp 
-        x2 = x1 { textual0pan = pan1 
-                , textual0html = htm1 
+        x2 = x1 { 
+            -- textual0pan = pan1 
+                 textual0html = htm1 
                 , textual0tex = tex1
                 } :: DainoValues 
 

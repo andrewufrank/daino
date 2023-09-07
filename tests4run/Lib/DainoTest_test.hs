@@ -16,15 +16,6 @@ import ShakeBake.StartDainoProcess ( dainoProcess )
 -- import Uniform.Test.TestHarness
 
 
--- import Data.Text
-
--- some = "some"
--- text1 = "text1":: Text 
-
--- two = Data.Text.concat [some, text1]
-
-
-
 test_DainoTest = do 
     res1 <- runErr $ do 
         dainoProcess NoticeLevel0 testFlags
