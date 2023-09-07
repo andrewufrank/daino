@@ -29,7 +29,7 @@
 module ShakeBake.Shake2panrep where
 
 import UniformBase 
--- import Foundational.CmdLineFlags
+import Foundational.CmdLineFlags
 import Uniform.Shake
 -- import Development.Shake.FilePath (makeRelative)
 
@@ -44,6 +44,7 @@ import ShakeBake.Shake2indexes
 -- import Development.Shake (getDirectoryFilesIO)
 -- import qualified Data.Map as M
 
+shake2panrep :: NoticeLevel -> PubFlags -> Settings -> Path Abs Dir -> Rules ()
 shake2panrep debug flags sett4 bakedP = 
     (toFilePath bakedP <> "**/*.panrep") %> \out -> do  -- insert pdfFIles1
          

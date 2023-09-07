@@ -32,6 +32,7 @@ import Uniform.Pandoc
 import Text.Pandoc.Definition as Pandoc
 import Foundational.SettingsPage
 import Foundational.Filetypes4sites
+-- import Foundational.CmdLineFlags
 -- import Lib.IndexCollect
 -- import Wave.Md2doc
 -- import Wave.Panrep2html
@@ -43,6 +44,7 @@ import qualified Data.List as D
 
 
 
+indexNeeds ::  NoticeLevel -> Settings -> Path Abs Dir -> Path Abs Dir -> Path Abs File -> Action ([Path Abs File], [Path Abs File])
 indexNeeds debug sett4 doughP bakedP outP = do 
     let debug = NoticeLevel2
     putInform debug ["rule **/*.panrep i1- outP", showT outP]
@@ -119,6 +121,7 @@ dnbFilter sett4 dirs1 =  (filter (not . (isInfixOf' dnbString). s2t
             dnbString = doNotBake (siteLayout sett4) :: Text
 -- for indexpage 
 
+constructFileEnry :: NoticeLevel -> Settings -> Path Abs File -> Action (Maybe IndexEntry2)
 constructFileEnry debug sett4 mdfn  = do 
     putIOwords ["constructFileEntry 1 for mdfn", showT mdfn ]
 
@@ -140,15 +143,27 @@ constructFileEnry debug sett4 mdfn  = do
     if incld 
       then do 
         let ixfn1 =   removeExtension .  stripProperPrefixP bakedP $ docrepFn :: Path Rel File
-            m = unMeta .  metap $ dr  
-            ie0 = zero { ixfn = toFilePath ixfn1 }
+            m =   metap $ dr 
+            x = extra dr
+            pdfFn = replaceExtension2 ".pdf" docrepFn 
+ 
+            ie0 = zero { ixfn = toFilePath ixfn1
+                    , date = getTextFromMeta5 "2000-01-01" "date" m
+                    , sortOrder = getTextFromMeta5 "filename" "sortOrder" m
+                    , version = getTextFromMeta5 "draft" "version" m
+                    , visibility = getTextFromMeta5 "private" "visibility" m
+                    , pdf1 = s2t $ toFilePath pdfFn
+                    , textualHtml = textual0html x
+                    , textualTex = textual0tex x 
+                    }
         return . Just $ ie0 
       else return Nothing 
 
 
 
 fillTextual4MP :: DainoMetaPlus -> DainoMetaPlus 
--- | copy the values into textual 
+-- | copy the values into textual during the reading of md files
+--      into the docrep
 -- the defaults are set before with metaDefaults
 fillTextual4MP mp = mp{extra = x2}
     where 

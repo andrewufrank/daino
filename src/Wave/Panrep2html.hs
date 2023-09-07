@@ -44,12 +44,12 @@ import Uniform.Json ( ToJSON(toJSON), Value, ErrIO )
 import Uniform.Pandoc
 import Uniform.Http ( HTMLout (HTMLout) )
 import Uniform.Shake  
-import Uniform.MetaPlus  
+-- import Uniform.MetaPlus  
 import Wave.Md2doc ( includeBakeTest3 ) 
 import Data.Maybe (fromMaybe)
 import Lib.IndexCollect
 import qualified Data.Map as M
-import ShakeBake.Shake2indexes
+-- import ShakeBake.Shake2indexes
 
 -- import Wave.Docrep2panrep
 -- import Wave.Md2doc

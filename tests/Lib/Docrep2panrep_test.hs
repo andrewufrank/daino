@@ -26,21 +26,21 @@ fnmd2 = makeAbsFile "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
 resdocrep = makeAbsFile "/home/frank/tests/docrep1"
 respanrep = makeAbsFile "/home/frank/tests/panrep1"
 
--- settingsDainoSite = makeAbsFile "/home/frank/Workspace11/dainoSite/settings3.yaml"
+settingsDainoSite = makeAbsFile "/home/frank/Workspace11/dainoSite/settings3.yaml"
 -- test regular docrep2panrep with files from dainoSite
--- test_toPanrep = do 
---     res1 <- runErr $ do 
---         metaplus5 <- setup_md2metaplus settingsDainoSite fnmd2 
+test_toPanrep = do 
+    res1 <- runErr $ do 
+        metaplus5 <- setup_md2metaplus settingsDainoSite fnmd2 
 
---         pr@(m1,n1) <- docrep2panrep NoticeLevel0 (def::PubFlags) metaplus5
---         putIOwords ["test_toPanrep pr \n", showPretty  $ m1]
---         putIOwords ["test_toPanrep extra \n", showPretty . extra $ m1]
---         write8 respanrep panrepFileType  m1
---         let hash1 = show . hash . show $  pr :: String
---         return hash1
+        pr@(m1,n1) <- docrep2panrep NoticeLevel0 (def::PubFlags) metaplus5
+        putIOwords ["test_toPanrep pr \n", showPretty  $ m1]
+        putIOwords ["test_toPanrep extra \n", showPretty . extra $ m1]
+        write8 respanrep panrepFileType  m1
+        let hash1 = show . hash . show $  pr :: String
+        return hash1
 
---     assertEqual (Right "Hash {asWord64 = 4759121937026287653}") 
---         res1
+    assertEqual (Right "Hash {asWord64 = 4759121937026287653}") 
+        res1
 
 
 -- test_toPanrep extra 
