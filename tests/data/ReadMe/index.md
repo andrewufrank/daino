@@ -1,6 +1,6 @@
 ---
-title: ix-Title
-abstract: ix-Abstract
+title: ix-**Title**
+abstract: ix-*Abstract*
 bibliography: "resources/BibTexLatex.bib"
 keywords: exampleKeyword exampleKeyword2
 # reference-section-title: Reference

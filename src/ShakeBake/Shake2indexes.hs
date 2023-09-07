@@ -37,7 +37,7 @@ import Foundational.Filetypes4sites
 -- import Wave.Panrep2html
  
 -- import Development.Shake (getDirectoryFilesIO)
--- import qualified Data.Map as M
+import qualified Data.Map as M
 import qualified Data.List as D
 -- import GHC.Base (indexDoubleArrayAsDoubleX2#)
 
@@ -166,22 +166,44 @@ constructFileEnry debug sett4 mdfn  = do
 -- convertTextualIx :: Block -> Text  
 -- is block2xx 
 
--- fillTextual4MP :: DainoMetaPlus -> DainoMetaPlus 
--- -- | copy the values into textual 
--- fillTextual4MP mp = mp
-    -- let m1 = metap mp 
-    --     x1 = extra mp 
+fillTextual4MP :: DainoMetaPlus -> DainoMetaPlus 
+-- | copy the values into textual 
+fillTextual4MP mp = mp{extra = x2}
+    where 
+        m1 =  metap mp
+        pan1 = zero
+            { abstract = fromMaybe (MetaString "XX") $ Pandoc.lookupMeta "abstract" m1
+            , title = fromMaybe (MetaString "Missing TITLE") $ Pandoc.lookupMeta "title" m1 
+            , author = fromMaybe (MetaString "Missing AUTHOR") $ Pandoc.lookupMeta "author" m1 
+            -- could add content here?
+            }
+        h1 = metaHtml  mp ::M.Map Text Text
+        htm1 = zero 
+            { abstract = fromMaybe ( "XX") $ M.lookup "abstract" h1
+            , title = fromMaybe ( "Missing TITLE") $ M.lookup "title" h1
+            , author = fromMaybe ( "Missing AUTHOR") $ M.lookup "author" h1 
+            -- could add content here?
+            }
+        t1 = metaLatex  mp ::M.Map Text Text
+        tex1 = zero 
+            { abstract = fromMaybe ( "XX") $ M.lookup "abstract" t1
+            , title = fromMaybe ( "Missing TITLE") $ M.lookup "title" t1
+            , author = fromMaybe ( "Missing AUTHOR") $ M.lookup "author" t1 
+            -- could add content here?
+            }
+
+        x1 = extra mp 
     --     pan1 = fillTextual m1 
     --     md1 = 
 
     -- -- md1 <- block2xx writeToMarkdown  [pan1] -- (metap metapl1)
     -- -- htm1 <- meta2xx writeHtml5String2 pan1
     -- -- lat1 <- meta2xx writeTexSnip2 pan1
-    -- -- let x2 = x1 { textual0pan = pan1 
-    -- --             -- , textual0html = htm1 
-    -- --             , textual0md = md1
-    -- --             -- , textual0tex = md1
-    -- --             } :: DainoValues 
+        x2 = x1 { textual0pan = pan1 
+                , textual0html = htm1 
+                -- , textual0md = md1
+                , textual0tex = tex1
+                } :: DainoValues 
 
     -- return mp -- {extra = x2}
      

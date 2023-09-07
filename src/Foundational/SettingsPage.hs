@@ -80,7 +80,7 @@ data DainoValues =
             { mdFile:: FilePath -- Path Abs File -- abs file path 
             , mdRelPath :: FilePath -- Path Rel File  -- rel file path
             , textual0md :: TextualIx Text  -- | the textual content in different reps for this file
-            , textual0pan :: TextualIx Block   
+            , textual0pan :: TextualIx MetaValue   
             , textual0html :: TextualIx Text
             , textual0tex :: TextualIx Text
             -- index entries are for subordinated dirs and files
@@ -116,7 +116,7 @@ data IndexEntry2 = IndexEntry2
     -- , -- | the link for this page (relative to web root)
     -- -- without an extension or filename for dir}
     --   link :: Path Rel Dir
-    , textualPan :: TextualIx Block    
+    , textualPan :: TextualIx MetaValue    
     , textualMd :: TextualIx Text   -- | the textual content in different reps
     , textualHtml :: TextualIx Text
     , textualTex :: TextualIx Text
@@ -139,6 +139,7 @@ data IndexEntry2 = IndexEntry2
 -- instance Zeros IndexEntry2 where zero = IndexEntry2 [] []
 -- zero zero zero zero zero zero zero
 instance Zeros Block where zero = Plain []
+instance Zeros MetaValue where zero = MetaString "zero"
 instance ToJSON IndexEntry2
 instance FromJSON IndexEntry2
 

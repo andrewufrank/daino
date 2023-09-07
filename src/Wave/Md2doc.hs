@@ -40,7 +40,7 @@ import Uniform.Pandoc
 import Uniform.Latex
 import Uniform.Shake  
 -- import Uniform.MetaPlus
--- import ShakeBake.Shake2indexes (fillTextual4MP)
+import ShakeBake.Shake2indexes (fillTextual4MP)
 
 default (Text)
 
@@ -54,7 +54,7 @@ pandoc2metaplus sett4 bakedFrom p1 = do
     let mp1 = setMetaPlusInitialize sett4 bakedFrom meta1
 
     mp2 <- completeMetaPlus mp1  -- converts the body to tex and html
-    let mp3 = mp2 -- fillTextual4MP mp2 
+    let mp3 = fillTextual4MP mp2 
 
     return mp3
 
