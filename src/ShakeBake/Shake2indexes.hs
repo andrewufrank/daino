@@ -29,7 +29,7 @@ import Uniform.Shake
 -- import Development.Shake.FilePath (makeRelative, replaceDirectory)
 
 import Uniform.Pandoc
-import Text.Pandoc.Definition as Pandoc
+-- import Text.Pandoc.Definition as Pandoc
 import Foundational.SettingsPage
 import Foundational.Filetypes4sites
 -- import Foundational.CmdLineFlags

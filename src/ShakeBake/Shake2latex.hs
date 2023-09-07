@@ -34,7 +34,7 @@ import Foundational.Filetypes4sites
 
 import ShakeBake.Shake2aux
 import Wave.Panrep2html
-    ( getIndexFiles4meta, getVals2html, testTemplateFn )  
+    -- ( getIndexFiles4meta, getVals2html, testTemplateFn )  
 
  
 shake2latex :: NoticeLevel -> PubFlags -> Settings ->
@@ -87,7 +87,7 @@ shake2latex debug flags sett4 bakedP  =
         putInform debug ["\nrule **/*.tex 7b panrep read ", showT pan0]
 
         let sett3 = sett pan0
-            extra4 = extra pan0
+            -- extra4 = extra pan0
             mf = texTemplateFile $ siteLayout sett3
             masterfn = templatesDir (siteLayout sett3) </> mf
 
@@ -112,23 +112,24 @@ shake2latex debug flags sett4 bakedP  =
             --if this is an index file it has files and dirs 
             -- putInform debug ["panrep2html", "extra4", showT extra4]
 
-        let files = fileEntries  $ extra4 :: [IndexEntry2]
-            dirs = dirEntries  $ extra4 :: [IndexEntry2]
+    -- the indexentries are produced in panrep
+        -- let files = fileEntries  $ extra4 :: [IndexEntry2]
+        --     dirs = dirEntries  $ extra4 :: [IndexEntry2]
 
-        valsDirs :: [Maybe IndexEntry2]<- runErr2action $ mapM 
-                            (getVals2html debug flags bakedP) dirs
-        valsFiles :: [Maybe IndexEntry2] <- runErr2action $ mapM 
-                        (getVals2html debug flags bakedP) files
-        -- will require one level of recursion more 
+        -- valsDirs :: [Maybe IndexEntry2]<- runErr2action $ mapM 
+        --                     (getVals2html debug flags bakedP) dirs
+        -- valsFiles :: [Maybe IndexEntry2] <- runErr2action $ mapM 
+        --                 (getVals2html debug flags bakedP) files
+        -- -- will require one level of recursion more 
 
-        putInform debug["\n-----rule **/*.tex 12 valsDirs"
-                    , showT valsDirs]
-        putInform debug ["\n-----rule **/*.tex 13 valsFiles", showT valsFiles]
+        -- putInform debug["\n-----rule **/*.tex 12 valsDirs"
+        --             , showT valsDirs]
+        -- putInform debug ["\n-----rule **/*.tex 13 valsFiles", showT valsFiles]
 
-        let extra5 = extra4{fileEntries = catMaybes valsFiles
-                            , dirEntries = catMaybes valsDirs
-                            }
-        let metaplus5 = pan0{extra = extra5}
+        -- let extra5 = extra4{fileEntries = catMaybes valsFiles
+        --                     , dirEntries = catMaybes valsDirs
+        --                     }
+        let metaplus5 = pan0 -- {extra = extra5}
 
         -- putInform debug ["panrep2html", "extra5", showT extra5]
         -- putInform debug ["panrep2html", "metaplus5", showT metaplus5]

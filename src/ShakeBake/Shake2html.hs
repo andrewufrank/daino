@@ -89,7 +89,7 @@ shake2html debug flags sett4 bakedP  =
         putInform debug ["\nrule **/*.html 7b panrep read ", showT pan0]
 
         let sett3 = sett pan0
-            extra4 = extra pan0
+            -- extra4 = extra pan0
             mf = masterTemplateFile $ siteLayout sett3
             masterfn = templatesDir (siteLayout sett3) </> mf
 
