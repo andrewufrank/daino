@@ -1,7 +1,7 @@
 
     $-- a template to test if values are set from template for latex
 
-    These are all the values for daino 0.1.6.1
+    These are all the values for daino 0.1.6.2 latex
 
 lang            $metaLatex.lang$
 settingsAuthor  $sett.settingsAuthor$
@@ -18,32 +18,16 @@ menuitems       $for(sett.menuitems.menuNav)$
                     $sett.menuitems.menuNav.navlink$
                     $sett.menuitems.menuNav.navtext$
                     $endfor$
-title           $metaLatex.title$
-subtitle        $metaLatex.subtitle$ 
-author          $metaLatex.author$
-table of contents   $metaLatex.table-of-contents$
-abstract        $metaLatex.abstract$
-linkpdf         $linkpdf3$
-date            $metaLatex.date$
-content         $metaLatex.body$
-menu2files       $for(extra.fileEntries)$
 
-    ixfn            $extra.fileEntries.ixfn$
-$--    link            $extra.fileEntries.link$
-    title           $extra.fileEntries.textual0tex.title$
-    abstract        $extra.fileEntries.textual0tex.abstract$
-    pdf2            $extra.fileEntries.pdf2$
-    author          $extra.fileEntries.textual0tex.author$
-    date            $extra.fileEntries.date$
-                $endfor$
-
-menu2subdir     $for(extra.dirEntries)$ 
-
-    ixfn            $extra.dirEntries.ixfn$
-$--    link            $extra.dirEntries.link$
-    title           $extra.dirEntries.textualTex.title$ 
-    abstract        $extra.dirEntries.textualTex.abstract$ 
-                $endfor$
+the Yaml of this file: 
+title           $extra.textual0tex.title$
+$-- subtitle        $metaHtml.textual0tex.subtitle$ 
+abstract        $extra.textual0tex.abstract$
+author          $extra.textual0tex.author$
+$-- table of contents   $metaHtml.table-of-contents$
+linkpdf         $extra.pdf1$
+date            $extra.date$
+$-- content         $metaHtml.body$
 
 dainoversion    $extra.dainoVersion$
 visibility      $metaLatex.visibility$
@@ -80,10 +64,11 @@ $--            link        $extra.fileEntries.link$
             abstract    $extra.fileEntries.textualTex.abstract$
             author      $extra.fileEntries.textualTex.author$
             date        $extra.fileEntries.date$ 
-            content     $extra.fileEntries.content$ 
+$--            content     $extra.fileEntries.content$ 
             visibility  $extra.fileEntries.visibility$ 
             version     $extra.fileEntries.version$ 
             sortOrder   $extra.fileEntries.sortOrder$ 
+            headerShift $extra.fileEntries.headerShift$ 
             pdf1        $extra.fileEntries.pdf1$ 
     $endfor$
                         
@@ -97,7 +82,7 @@ headerShitft        $metap.headerShift$
 
 -- for tufte latex
 book                $metaLatex.book$
-pdf2                 $extra.pdf2$ $-- the pdf file name
+pdf2                $extra.pdf2$ $-- the pdf file name
 bookBig             $extra.bookBig$
 booklet             $extra.booklet$
 bookprint

@@ -1,13 +1,13 @@
 
     $-- a template to test if values are set from template in html
 
-    These are all the values for daino 0.1.6.1
+    These are all the values for daino 0.1.6.2 html
 
 lang            $metaHtml.lang$
 settingsAuthor  $sett.settingsAuthor$
 date            $metaHtml.date$
 keywords        $for(metaHtml.keywords)$$metaHtml.keywords$$endfor$
-page-title  missing todo 
+$--page-title      missing todo 
 image           $metaHtml.image$
 imageCaption    $metaHtml.imageCaption$
 siteBanner      $sett.siteHeader.banner$
@@ -18,38 +18,22 @@ menuitems       $for(sett.menuitems.menuNav)$
                     $sett.menuitems.menuNav.navlink$
                     $sett.menuitems.menuNav.navtext$
                     $endfor$
-title           $metaHtml.texttual0html.title$
-$-- subtitle        $metaHtml.texttual0html.subtitle$ 
-author          $metaHtml.texttual0html.author$
-table of contents   $metaHtml.table-of-contents$
-abstract        $metaHtml.texttual0html.abstract$
-linkpdf         $linkpdf3$
-date            $metaHtml.date$
-content         $metaHtml.body$
-menu2files       $for(extra.fileEntries)$
 
-    ixfn            $extra.fileEntries.ixfn$
-$--    link            $extra.fileEntries.link$
-    title           $extra.fileEntries.title$
-    abstract        $extra.fileEntries.abstract$
-    pdf2            $extra.fileEntries.pdf2$
-    author          $extra.fileEntries.author$
-    date            $extra.fileEntries.date$
-                $endfor$
-
-menu2subdir     $for(extra.dirEntries)$ 
-
-    ixfn            $extra.dirEntries.ixfn$
-$--    link            $extra.dirEntries.link$
-    title           $extra.dirEntries.title$ 
-    abstract        $extra.dirEntries.abstract$ 
-                $endfor$
+the Yaml of this file: 
+title           $extra.textual0html.title$
+$-- subtitle        $metaHtml.textual0html.subtitle$ 
+abstract        $extra.textual0html.abstract$
+author          $extra.textual0html.author$
+$-- table of contents   $metaHtml.table-of-contents$
+linkpdf         $extra.pdf1$
+date            $extra.date$
+$-- content         $metaHtml.body$
 
 dainoversion    $extra.dainoVersion$
 visibility      $metaHtml.visibility$
 version         $metaHtml.version$
 
--- not in thmlTufte
+-- not in htmlTufte
 
 latLanguage     $metaHtml.latLanguage$
 styleBiber      $metaHtml.styleBiber$
@@ -70,19 +54,20 @@ $--        link    $extra.dirEntries.link$
         abstract   $extra.dirEntries.textualHtml.abstract$
     $endfor$
 
-indexEntryFiles 
+indexEntryFiles:       
     $for(extra.fileEntries)$
-    ----
+    
             ixfn        $extra.fileEntries.ixfn$
 $--            link        $extra.fileEntries.link$
             title       $extra.fileEntries.textualHtml.title$
             abstract    $extra.fileEntries.textualHtml.abstract$
             author      $extra.fileEntries.textualHtml.author$
             date        $extra.fileEntries.date$ 
-            content     $extra.fileEntries.content$ 
+$--            content     $extra.fileEntries.content$ 
             visibility  $extra.fileEntries.visibility$ 
             version     $extra.fileEntries.version$ 
             sortOrder   $extra.fileEntries.sortOrder$ 
+            headerShift $extra.fileEntries.headerShift$ 
             pdf1        $extra.fileEntries.pdf1$ 
     $endfor$
                         
@@ -96,7 +81,7 @@ headerShitft        $metap.headerShift$
 
 -- for tufte latex
 book                $metaHtml.book$
-pdf2                 $extra.pdf2$ $-- the pdf file name
+pdf2                $extra.pdf2$ $-- the pdf file name
 bookBig             $extra.bookBig$
 booklet             $extra.booklet$
 bookprint

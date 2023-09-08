@@ -128,7 +128,7 @@ data IndexEntry2 = IndexEntry2
     , visibility ::   Text
     , version ::   Text 
     , sortOrder :: Text
-    , pdf1 :: Text
+    , pdf1 :: Text  -- where is this used?
      -- , indexPage :: Bool
     -- , dirEntries :: [FilePath] -- [Path Abs Dir] -- [IndexEntry2] -- def []
     -- , fileEntries :: [FilePath] -- [Path Abs File] -- [IndexEntry2] -- def []
