@@ -36,7 +36,7 @@ import ShakeBake.Shake2aux
 import Wave.Panrep2html
     -- ( getIndexFiles4meta, getVals2html, testTemplateFn )  
 
- 
+latexTestTemplateFN = makeAbsFile "/home/frank/Workspace11/daino/theme/templates/latexDaino63.dtpl"
 shake2latex :: NoticeLevel -> PubFlags -> Settings ->
      Path Abs Dir -> Rules ()
 shake2latex debug flags sett4 bakedP  =    
@@ -107,7 +107,7 @@ shake2latex debug flags sett4 bakedP  =
                         , showT masterfn]
 
         targetTempl  <- runErr2action $ compileTemplateFile2 masterfn
-        testTempl <- runErr2action $ compileTemplateFile2 testTemplateFn
+        testTempl <- runErr2action $ compileTemplateFile2 latexTestTemplateFN
 
             --if this is an index file it has files and dirs 
             -- putInform debug ["panrep2html", "extra4", showT extra4]

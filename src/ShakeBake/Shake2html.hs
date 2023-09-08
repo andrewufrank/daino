@@ -39,7 +39,7 @@ import Foundational.Filetypes4sites
 import ShakeBake.Shake2aux
 import Wave.Panrep2html  
 
- 
+htmlTestTemplateFn = makeAbsFile "/home/frank/Workspace11/daino/theme/templates/htmlDaino63.dtpl"
 shake2html :: NoticeLevel -> PubFlags -> Settings ->
      Path Abs Dir -> Rules ()
 shake2html debug flags sett4 bakedP  =    
@@ -109,7 +109,7 @@ shake2html debug flags sett4 bakedP  =
                         , showT masterfn]
 
         targetTempl  <- runErr2action $ compileTemplateFile2 masterfn
-        testTempl <- runErr2action $ compileTemplateFile2 testTemplateFn
+        testTempl <- runErr2action $ compileTemplateFile2 htmlTestTemplateFn
 
             --if this is an index file it has files and dirs 
             -- putInform debug ["panrep2html", "extra4", showT extra4]
