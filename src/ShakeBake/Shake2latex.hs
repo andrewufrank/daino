@@ -36,7 +36,10 @@ import ShakeBake.Shake2aux
 import Wave.Panrep2html
     -- ( getIndexFiles4meta, getVals2html, testTemplateFn )  
 
-latexTestTemplateFN = makeAbsFile "/home/frank/Workspace11/daino/theme/templates/latexDaino63.dtpl"
+latexTestTemplateFN = makeAbsFile 
+    "/home/frank/Workspace11/daino/theme/templates/test63latex.dtpl"
+    -- "/home/frank/Workspace11/daino/theme/templates/latexDaino63.dtpl"
+    
 shake2latex :: NoticeLevel -> PubFlags -> Settings ->
      Path Abs Dir -> Rules ()
 shake2latex debug flags sett4 bakedP  =    

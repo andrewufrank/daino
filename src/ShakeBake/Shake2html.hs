@@ -39,7 +39,9 @@ import Foundational.Filetypes4sites
 import ShakeBake.Shake2aux
 import Wave.Panrep2html  
 
-htmlTestTemplateFn = makeAbsFile "/home/frank/Workspace11/daino/theme/templates/htmlDaino63.dtpl"
+htmlTestTemplateFn = makeAbsFile 
+    "/home/frank/Workspace11/daino/theme/templates/test63html.dtpl"
+    
 shake2html :: NoticeLevel -> PubFlags -> Settings ->
      Path Abs Dir -> Rules ()
 shake2html debug flags sett4 bakedP  =    

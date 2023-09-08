@@ -64,18 +64,21 @@ blogAuthorToSuppress
 
 indexEntryDirectories 
     $for(extra.dirEntries)$
-        ixfn    $extra.dirEntries.ixfn$
-        link    $extra.dirEntries.link$
+        ixfn       $extra.dirEntries.ixfn$
+$--        link    $extra.dirEntries.link$
+        title      $extra.dirEntries.textualTex.title$
+        abstract   $extra.dirEntries.textualTex.abstract$    
+        
     $endfor$
 
 indexEntryFiles 
     $for(extra.fileEntries)$
     ----
             ixfn        $extra.fileEntries.ixfn$
-            link        $extra.fileEntries.link$
-            title       $extra.fileEntries.title$
-            abstract    $extra.fileEntries.abstract$
-            author      $extra.fileEntries.author$
+$--            link        $extra.fileEntries.link$
+            title       $extra.fileEntries.textualTex.title$
+            abstract    $extra.fileEntries.textualTex.abstract$
+            author      $extra.fileEntries.textualTex.author$
             date        $extra.fileEntries.date$ 
             content     $extra.fileEntries.content$ 
             visibility  $extra.fileEntries.visibility$ 

@@ -216,9 +216,9 @@ tex2pdf debug fn fnres doughP  =  do
     -- refDir must be the place where biblio is place (or searched from - best ) - i.e. the root for dough 
     putInform debug ["\n tex2pdf refDir", showT refDir]
     texf <- read8 fn texFileType
-    putInform debug ["\n tex2pdf texf content", showT texf]
-    writePDF2 debug  fn fnres refDir
+    putInform debug ["\n tex2pdf texf content faked", showT texf]
+    -- writePDF2 debug  fn fnres refDir
     -- for debug put only the file unprocessed
-    -- write8 fnres pdfFileType (PDFfile . unLatex $ texf)
+    write8 fnres pdfFileType (PDFfile . unLatex $ texf)
     putInform debug ["\n tex2pdf done"]
     return ()

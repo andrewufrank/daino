@@ -178,11 +178,11 @@
         <ul class="w3-ul w3-hoverable">
                 $for(extra.fileEntries)$ 
                     <li>     <!-- list item menu2files:  -->
-                    <a href=/$extra.fileEntries.ixfn$.html><em>$extra.fileEntries.title$ </em></a>
-                    $if(extra.fileEntries.abstract)$<br>$extra.fileEntries.abstract$
+                    <a href=/$extra.fileEntries.ixfn$.html><em>$extra.fileEntries.textualHtml.title$ </em></a>
+                    $if(extra.fileEntries.textualHtml.abstract)$<br>$extra.fileEntries.textualHtml.abstract$
                     <a href=/$extra.fileEntries.pdf1$>  (pdf)</a>
                     $endif$		     
-                    <span class="af-tiny">$extra.fileEntries.author$ $extra.fileEntries.date$ 
+                    <span class="af-tiny">$extra.fileEntries.textualHtml.author$ $extra.fileEntries.date$ 
                         </span>
                     </li>
                 $endfor$ 
@@ -193,8 +193,8 @@
         <ul class="w3-ul w3-hoverable">
                     $for(extra.dirEntries)$ 
                     <li> 
-                        <a href=/$extra.dirEntries.ixfn$.html><em>$extra.dirEntries.title$</em></a>
-                    $if(extra.dirEntries.abstract)$<br>$extra.dirEntries.abstract$$endif$		
+                        <a href=/$extra.dirEntries.ixfn$.html><em>$extra.dirEntries.textualHtml.title$</em></a>
+                    $if(extra.dirEntries.textualHtml.abstract)$<br>$extra.dirEntries.textualHtml.abstract$$endif$		
                         
                     </li>
                     $endfor$

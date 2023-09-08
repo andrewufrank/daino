@@ -1,5 +1,5 @@
 
-    $-- a template to test if values are set from template 
+    $-- a template to test if values are set from template in html
 
     These are all the values for daino 0.1.6.1
 
@@ -65,14 +65,16 @@ blogAuthorToSuppress
 indexEntryDirectories 
     $for(extra.dirEntries)$
         ixfn    $extra.dirEntries.ixfn$
-        link    $extra.dirEntries.link$
+$--        link    $extra.dirEntries.link$
+        title   $extra.dirEntries.textualHtml.title$
+        abstract   $extra.dirEntries.textualHtml.abstract$
     $endfor$
 
 indexEntryFiles 
     $for(extra.fileEntries)$
     ----
             ixfn        $extra.fileEntries.ixfn$
-            link        $extra.fileEntries.link$
+$--            link        $extra.fileEntries.link$
             title       $extra.fileEntries.textualHtml.title$
             abstract    $extra.fileEntries.textualHtml.abstract$
             author      $extra.fileEntries.textualHtml.author$

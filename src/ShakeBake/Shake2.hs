@@ -115,6 +115,7 @@ shakeMD debug sett4 flags = do
                   
                     -- convertAny debug bakedP bakedP flags sett4 out  "convTex2pdf"
                     -- anyop debug flags fromfilePathExt layout outP
+                     
                     runErr2action $ tex2pdf debug fromfilePathExt outP doughP
                     putInform debug ["rule **/*.pdf 3 produce outP (fake)"
                         , showT outP]
