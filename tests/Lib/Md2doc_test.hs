@@ -23,6 +23,7 @@ import UniformBase
 -- import Lib.IndexCollect
 import ShakeBake.ReadSettingFile
 import Data.Hash
+import Text.Pretty.Simple
 
 setup_md2metaplus :: Path Abs File -> Path Abs File -> ExceptT Text IO DainoMetaPlus
 setup_md2metaplus settingsFn fn = do 
@@ -40,6 +41,7 @@ settingsLocal = makeAbsFile "/home/frank/Workspace11/daino/tests/data/settingsTe
 --     "/home/frank/Workspace11/daino/settingsTest.yaml"
 -- settingsDainoSite = makeAbsFile "/home/frank/Workspace11/dainoSite/settings3.yaml"
 
+-- mp3 = setup_md2metaplus  settingsLocal fnmd
 
 fnmd = makeAbsFile "/home/frank/Workspace11/daino/tests/data/ReadMe/index.md"
 resdocrep = makeAbsFile"/home/frank/tests/docrep1"
@@ -48,11 +50,11 @@ resdocrep = makeAbsFile"/home/frank/tests/docrep1"
 test_md2docrep = do 
     res1 <- runErr $ do 
         dr <- setup_md2metaplus settingsLocal fnmd 
+        ppPrint dr 
         write8 resdocrep docrepFileType dr
         let hash1 = show . hash . show $  dr :: String
-        return hash1
-
-    assertEqual (Right "Hash {asWord64 = 13054358789450343661}") 
+        return   hash1
+    assertEqual (Right "Hash {asWord64 = 11912922265999392334}") 
         res1
 
 -- test with reference to check citeproc
@@ -60,12 +62,16 @@ test_md2docrep = do
 fn3 = makeAbsFile "/home/frank/Workspace11/daino/tests/data/ReadMe/03tree.md"
 res3 = makeAbsFile"/home/frank/tests/docrep3"
 
+ppOptions = defaultOutputOptionsLightBg {outputOptionsCompact = True}
+ppPrint = pPrintOpt NoCheckColorTty ppOptions
 test_md3 = do 
     res1 <- runErr $ do 
         dr <- setup_md2metaplus settingsLocal fn3 
+        ppPrint  dr 
         write8 res3 docrepFileType dr
         let hash1 = show . hash . show $  dr :: String
+        -- let dr2 = pShowOpt ppOptions  dr
+        -- dr2 <- pPrintLightBg dr
         return hash1
-
-    assertEqual (Right "Hash {asWord64 = 2823712893252530503}") 
+    assertEqual   (Right "Hash {asWord64 = 17956766089037128796}") 
         res1

@@ -106,6 +106,7 @@ dependencies:
     # - ReplaceUmlaut
     - shake
     - pandoc-types
+    - pretty-simple
     # # - system-filepath 
     # # - directory
 library:

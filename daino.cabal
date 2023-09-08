@@ -62,6 +62,7 @@ library
     , pandoc-types
     , path
     , path-io
+    , pretty-simple
     , shake
     , uniform-cmdLineArgs
     , uniform-http
@@ -93,6 +94,7 @@ executable daino62
     , pandoc-types
     , path
     , path-io
+    , pretty-simple
     , shake
     , uniform-cmdLineArgs
     , uniform-http
@@ -132,6 +134,7 @@ test-suite testall
     , pandoc-types
     , path
     , path-io
+    , pretty-simple
     , quickcheck-text
     , shake
     , uniform-cmdLineArgs
@@ -168,6 +171,7 @@ test-suite testrun
     , pandoc-types
     , path
     , path-io
+    , pretty-simple
     , quickcheck-text
     , shake
     , uniform-cmdLineArgs
