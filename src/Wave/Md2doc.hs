@@ -44,17 +44,40 @@ import Uniform.Shake
 import ShakeBake.Shake2indexes (fillTextual4MP)
 import Text.Pandoc.Walk
 import Text.Pandoc.Definition
+import Lib.OneMDfile
+import Lib.FileHandling
 default (Text)
 
-panTestTemplateFn = makeAbsFile 
-    "/home/frank/Workspace11/daino/theme/templates/test63pan.dtpl"
 
 -- the conversion in shake2docrep
 -- it produces for debuggin the pandoc values in a ttp file
-pandoc2metaplus :: Settings -> Path Abs File ->   Pandoc -> ErrIO DainoMetaPlus
-pandoc2metaplus sett4 bakedFrom  p1 = do 
-    let p2 = addListOfDefaults (metaDefaults sett4) p1
-    let p3 = walk lf2LineBreak p2
+pandoc2metaplus :: NoticeLevel -> Settings -> Path Abs File ->    ErrIO DainoMetaPlus
+pandoc2metaplus debug sett4 bakedFrom  = do
+
+    pandoc1 <- readMd2pandoc bakedFrom -- need posted
+    -- apply the umlaut conversion first 
+    -- treat the .md file and reread it if changed
+    let langCode = latexLangConversion 
+            . getTextFromYaml5 "" "language" $ pandoc1
+        debugReplace = inform debug 
+    pandoc2 <- if langCode == "ngerman"
+        then do
+            erl1 :: [Text] <- readErlaubt (replaceErlaubtFile . siteLayout $ sett4)
+            let addErl = words' . getTextFromYaml5 "" "DoNotReplace" $ pandoc1
+                -- allow additions to the list in the YAML header
+                -- addErl2 = fromJustNote "sdfwer" $ splitOn' addErl ","
+                erl2 = addErl ++ erl1
+            changed <- applyReplace debugReplace erl2   bakedFrom 
+            if (changed && (not debugReplace)) 
+                then readMd2pandoc bakedFrom 
+                -- then readMarkdownFile2docrep debug  sett4 bakedFrom 
+                -- when debug true then changed files are not written 
+                else return pandoc1
+        else return pandoc1
+
+
+    let p2 = addListOfDefaults (metaDefaults sett4) pandoc2
+    let p3 = walk lf2LineBreak p3
     -- to convert the /lf/ marks in hard LineBreak
     meta1 <- md2Meta_Process p3 -- includes process citeproc
 
@@ -64,11 +87,6 @@ pandoc2metaplus sett4 bakedFrom  p1 = do
     mp2 <- completeMetaPlus mp1  -- converts the body to tex and html
     let mp3 = fillTextual4MP mp2 
 
-    -- only for debugging - can be commented out
-    -- testTempl <-  compileTemplateFile2 panTestTemplateFn
-    -- let test_pan = fillTemplate_render testTempl p2 
-    -- write8 outP ttpFileType test_pan
-
     return mp3
 
 lf2LineBreak :: Inline -> Inline
@@ -76,6 +94,17 @@ lf2LineBreak :: Inline -> Inline
 lf2LineBreak (Str "/lf/")= LineBreak 
 lf2LineBreak a = a
 
+applyReplace :: Bool -> [Text] -> Path Abs File -> ErrIO Bool 
+-- apply the replace for german 
+-- if any change true; needs rereading 
+applyReplace debugReplace erl2 fnin = do 
+    when debugReplace $ putIOwords 
+        ["applyReplace fnin", showPretty fnin
+        , "\t erlaubt:", showT erl2]
+    res <- procMd1 debugReplace erl2 fnin
+    when debugReplace $ putIOwords ["applyReplace done. Changed:", showT res ]
+
+    return res 
 
 includeBakeTest3docrep :: PubFlags -> Meta -> Bool
 includeBakeTest3docrep pubf met2 = includeBakeTest3 pubf vers1 vis1
@@ -130,6 +159,7 @@ metaDefaults sett9 =
 -- defaults are set in panrep2html (and 2latex??)
 
 metaSetBook :: Settings -> DainoMetaPlus -> DainoValues
+-- | set 2 values to allow boolean tests in templates
 metaSetBook sett4 dr1 =  extra5{authorReduced = blankAuthorName hpname aut1
                             ,booklet = "booklet" == bookval
                             ,bookBig= "bookBig" == bookval

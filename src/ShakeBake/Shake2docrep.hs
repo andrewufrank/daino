@@ -66,14 +66,14 @@ shake2docrep debug flags sett4 bakedP  =
     _ <- runErr2action $ do -- bakeOneMD2docrep debug flags bakedFrom sett4 outP 
     -- no needs ? 
 
-        pandoc1 <- readMd2pandoc bakedFrom -- need posted
         putInform NoticeLevel1 ["rule **/*.docrep 4 read", showT bakedFrom]
+        -- pandoc1 <- readMd2pandoc bakedFrom -- need posted
 
        -- check for german and process umlaut, 
         -- repeat readMd2pandoc if changed 
 
         
-        mp3 <- pandoc2metaplus sett4 bakedFrom pandoc1 
+        mp3 <- pandoc2metaplus debug sett4 bakedFrom 
     
 
         let incl = includeBakeTest3docrep flags (metap mp3) 
