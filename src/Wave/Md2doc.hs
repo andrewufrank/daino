@@ -34,7 +34,7 @@ import UniformBase
 import Uniform.MetaPlus  
 -- import Development.Shake 
 import Foundational.SettingsPage  
-import Foundational.Filetypes4sites 
+-- import Foundational.Filetypes4sites 
 import Foundational.CmdLineFlags
 import Uniform.Pandoc
 import Uniform.Latex
@@ -53,39 +53,51 @@ default (Text)
 -- it produces for debuggin the pandoc values in a ttp file
 pandoc2metaplus :: NoticeLevel -> Settings -> Path Abs File ->    ErrIO DainoMetaPlus
 pandoc2metaplus debug sett4 bakedFrom  = do
+    putInform debug ["pandoc2metaplus 1 start ", showT bakedFrom]
 
     pandoc1 <- readMd2pandoc bakedFrom -- need posted
     -- apply the umlaut conversion first 
     -- treat the .md file and reread it if changed
     let langCode = latexLangConversion 
             . getTextFromYaml5 "" "language" $ pandoc1
-        debugReplace = inform debug 
+        debugReplace = False -- otherwise not new file written 
+                    -- inform debug 
     pandoc2 <- if langCode == "ngerman"
         then do
+            putInform debug ["pandoc2metaplus 2 "]
             erl1 :: [Text] <- readErlaubt (replaceErlaubtFile . siteLayout $ sett4)
             let addErl = words' . getTextFromYaml5 "" "DoNotReplace" $ pandoc1
+            let addErl2 = words' . getTextFromYaml5 "" "doNotReplace" $ pandoc1
                 -- allow additions to the list in the YAML header
+                -- with or without capital D
                 -- addErl2 = fromJustNote "sdfwer" $ splitOn' addErl ","
-                erl2 = addErl ++ erl1
+                erl2 = addErl ++ addErl2 ++ erl1
+            putInform debug ["pandoc2metaplus 3 "]
             changed <- applyReplace debugReplace erl2   bakedFrom 
-            if (changed && (not debugReplace)) 
-                then readMd2pandoc bakedFrom 
-                -- then readMarkdownFile2docrep debug  sett4 bakedFrom 
+            if changed -- && (not debugReplace)
+                then do 
+                        pan2 <- readMd2pandoc bakedFrom 
+                        putInform debug ["pandoc2metaplus 4 "]
+                        return pan2
+                    -- then readMarkdownFile2docrep debug  sett4 bakedFrom 
                 -- when debug true then changed files are not written 
                 else return pandoc1
         else return pandoc1
 
+    putInform debug ["pandoc2metaplus 5 umlaut done "]
 
     let p2 = addListOfDefaults (metaDefaults sett4) pandoc2
-    let p3 = walk lf2LineBreak p3
+    let p3 = walk lf2LineBreak p2
     -- to convert the /lf/ marks in hard LineBreak
     meta1 <- md2Meta_Process p3 -- includes process citeproc
+    putInform debug ["pandoc2metaplus 6 citeproc done "]
 
             -- pushes all what is further needed into metaplus
     let mp1 = setMetaPlusInitialize sett4 bakedFrom meta1
 
     mp2 <- completeMetaPlus mp1  -- converts the body to tex and html
     let mp3 = fillTextual4MP mp2 
+    putInform debug ["pandoc2metaplus 7 end "]
 
     return mp3
 

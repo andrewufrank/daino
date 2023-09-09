@@ -73,7 +73,7 @@ shake2docrep debug flags sett4 bakedP  =
         -- repeat readMd2pandoc if changed 
 
         
-        mp3 <- pandoc2metaplus debug sett4 bakedFrom 
+        mp3 <- pandoc2metaplus NoticeLevel1 sett4 bakedFrom 
     
 
         let incl = includeBakeTest3docrep flags (metap mp3) 

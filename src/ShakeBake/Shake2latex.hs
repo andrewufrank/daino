@@ -87,7 +87,7 @@ shake2latex debug flags sett4 bakedP  =
                 ]
         (pan0) <- runErr2action $  read8 bakedFrom panrepFileType
         
-        putInform debug ["\nrule **/*.tex 7b panrep read ", showT pan0]
+        putInform debug ["\nrule **/*.tex 7b panrep read " ]
 
         let sett3 = sett pan0
             -- extra4 = extra pan0
