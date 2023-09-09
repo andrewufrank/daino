@@ -51,8 +51,8 @@ panTestTemplateFn = makeAbsFile
 
 -- the conversion in shake2docrep
 -- it produces for debuggin the pandoc values in a ttp file
-pandoc2metaplus :: Settings -> Path Abs File -> Path Abs File -> Pandoc -> ErrIO DainoMetaPlus
-pandoc2metaplus sett4 bakedFrom outP p1 = do 
+pandoc2metaplus :: Settings -> Path Abs File ->   Pandoc -> ErrIO DainoMetaPlus
+pandoc2metaplus sett4 bakedFrom  p1 = do 
     let p2 = addListOfDefaults (metaDefaults sett4) p1
     let p3 = walk lf2LineBreak p2
     -- to convert the /lf/ marks in hard LineBreak
@@ -65,9 +65,9 @@ pandoc2metaplus sett4 bakedFrom outP p1 = do
     let mp3 = fillTextual4MP mp2 
 
     -- only for debugging - can be commented out
-    testTempl <-  compileTemplateFile2 panTestTemplateFn
-    let test_pan = fillTemplate_render testTempl p2 
-    write8 outP ttpFileType test_pan
+    -- testTempl <-  compileTemplateFile2 panTestTemplateFn
+    -- let test_pan = fillTemplate_render testTempl p2 
+    -- write8 outP ttpFileType test_pan
 
     return mp3
 
