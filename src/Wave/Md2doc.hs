@@ -34,21 +34,29 @@ import UniformBase
 import Uniform.MetaPlus  
 -- import Development.Shake 
 import Foundational.SettingsPage  
--- import Foundational.Filetypes4sites 
+import Foundational.Filetypes4sites 
 import Foundational.CmdLineFlags
 import Uniform.Pandoc
 import Uniform.Latex
+-- import Uniform.TemplateStuff
 import Uniform.Shake  
 -- import Uniform.MetaPlus
 import ShakeBake.Shake2indexes (fillTextual4MP)
-
+import Text.Pandoc.Walk
+import Text.Pandoc.Definition
 default (Text)
 
+panTestTemplateFn = makeAbsFile 
+    "/home/frank/Workspace11/daino/theme/templates/test63pan.dtpl"
+
 -- the conversion in shake2docrep
-pandoc2metaplus :: Settings -> Path Abs File -> Pandoc -> ErrIO DainoMetaPlus
-pandoc2metaplus sett4 bakedFrom p1 = do 
+-- it produces for debuggin the pandoc values in a ttp file
+pandoc2metaplus :: Settings -> Path Abs File -> Path Abs File -> Pandoc -> ErrIO DainoMetaPlus
+pandoc2metaplus sett4 bakedFrom outP p1 = do 
     let p2 = addListOfDefaults (metaDefaults sett4) p1
-    meta1 <- md2Meta_Process p2 -- includes process citeproc
+    let p3 = walk lf2LineBreak p2
+    -- to convert the /lf/ marks in hard LineBreak
+    meta1 <- md2Meta_Process p3 -- includes process citeproc
 
             -- pushes all what is further needed into metaplus
     let mp1 = setMetaPlusInitialize sett4 bakedFrom meta1
@@ -56,7 +64,17 @@ pandoc2metaplus sett4 bakedFrom p1 = do
     mp2 <- completeMetaPlus mp1  -- converts the body to tex and html
     let mp3 = fillTextual4MP mp2 
 
+    -- only for debugging - can be commented out
+    testTempl <-  compileTemplateFile2 panTestTemplateFn
+    let test_pan = fillTemplate_render testTempl p2 
+    write8 outP ttpFileType test_pan
+
     return mp3
+
+lf2LineBreak :: Inline -> Inline
+-- | converts a "/lf/" string in a hard linebreak
+lf2LineBreak (Str "/lf/")= LineBreak 
+lf2LineBreak a = a
 
 
 includeBakeTest3docrep :: PubFlags -> Meta -> Bool
@@ -128,7 +146,10 @@ metaSetBook sett4 dr1 =  extra5{authorReduced = blankAuthorName hpname aut1
             meta5 = metap  dr1 -- ~ panyam 
             extra5 = extra dr1
         
-        
+
+fillTemplate_render  tpl dat = render (Just 50)
+        -- just a plausible line length of 50 
+        $  renderTemplate tpl (toJSON dat)        
 
 -- readMarkdownFile2docrep  :: NoticeLevel -> PubFlags -> Settings ->  Path Abs File ->  ErrIO Docrep 
 -- -- read a markdown file and convert to docrep
