@@ -65,7 +65,11 @@ shake2html debug flags sett4 bakedP  =
         else do
         let bakedFrom = replaceExtension'  "panrep" outP
         putInform debug ["rule **/*.html 3 - bakedFrom", showT bakedFrom, "\n"]
-        need [toFilePath bakedFrom]
+        needP [bakedFrom]
+
+        let pdfNeeded = replaceExtension' "pdf" outP
+        putInform debug ["rule **/*.html 3b - pdfNeeded", showT pdfNeeded, "\n"]
+        needP [pdfNeeded]
 
         putInform debug ["\nrule **/*.html 4 continued out" , showT out
                 , "bakedFrom", showT bakedFrom]

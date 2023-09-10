@@ -110,6 +110,7 @@ shakeMD debug sett4 flags = do
                             (s2t . unExtension $ extTex) fromfilePath 
                     putInform debug ["rule **/*.pdf 2 fromfilePathExt"
                             , showT fromfilePathExt]
+                    needP [fromfilePathExt]
                     
 
                   
@@ -143,5 +144,12 @@ shakeMD debug sett4 flags = do
         %> \out -> copyFileToBaked debug doughP bakedP out
     -- the fonts in a compressed format 
     (toFilePath bakedP <> "**/*.woff")
+        %> \out -> copyFileToBaked debug doughP bakedP out
+
+    (toFilePath bakedP <> "**/*.sty")
+    -- a style for verbatim in latex (and similar)
+        %> \out -> copyFileToBaked debug doughP bakedP out
+    (toFilePath bakedP <> "**/*.csl")
+    -- the formats for the csl biblio output
         %> \out -> copyFileToBaked debug doughP bakedP out
 

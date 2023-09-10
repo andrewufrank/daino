@@ -59,13 +59,19 @@ shakeAll debug sett3 flags causedby = do
                 -- , "Minimal/index.html"
                 -- , "Event/index.html"
                 ]  -- start with HTML! 
-        fs4htmlTemplate =   
-            ["resources/theme/templates/static/tufte.css"
+        fs4htmlTemplate =    
+            -- should contain all what is in theme
+            -- and what is in settings  
+            [ "resources/theme/templates/static/tufte.css"
             , "resources/theme/templates/static/tufte-extra.css"
             , "resources/theme/templates/static/pandoc.css"
             , "resources/theme/templates/static/tufte-additions.css"
             , "resources/img/squared16.jpg" -- add rest 
+            , "resources/img/squared16.jpg" -- add rest 
+            , "resources/img/squared16.jpg" -- add rest 
             , "resources/theme/templates/img/DSC04809.JPG"
+            , "resources/theme/templates/chicago-fullnote-bibliography.csl"
+            , "resources/theme/templates/fancyvrb.sty"
             -- banner . siteHeader $ sett3 
             ,"resources/BibTexLatex.bib"
             ]
