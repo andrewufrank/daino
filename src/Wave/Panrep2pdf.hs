@@ -217,9 +217,13 @@ tex2pdf debug fn fnres doughP  =  do
     putInform debug ["\n tex2pdf refDir", showT refDir]
     texf <- read8 fn texFileType
 
-    putInform debug ["\n tex2pdf texf content faked"]
-    -- writePDF2 debug  fn fnres refDir
-    -- for debug put only the file unprocessed
-    write8 fnres pdfFileType (PDFfile . unLatex $ texf)
+    putInform debug ["\n tex2pdf texf content not faked"]
+    let faked = False
+    if faked then 
+            write8 fnres pdfFileType (PDFfile . unLatex $ texf)
+        -- for debug put only the file unprocessed
+        -- to satisfy shake 
+        else 
+            writePDF2 debug  fn fnres refDir
     putInform debug ["\n tex2pdf done"]
     return ()
