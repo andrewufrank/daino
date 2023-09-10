@@ -1,15 +1,20 @@
 $-- template to produce a latex file with the tufte style fixed notes-in-notes
-% template used tufte633latex.dtpl 
-% for use with Uniform.MetaPlus from u4blog v 0.1.6.3 for citeproc
+% template tufte633latex.dtpl 
+% for use with Uniform.MetaPlus from u4blog v 0.1.6.4 for citeproc
+% uses pandco 3.1.8 - specialized for luatex and not beamer
+% see the default.latex template from https://github.com/jgm/pandoc-templates/blob/master/default.latex
 
 % requires removed limiation on subsubpara in tufte-common.def 
- 
+
+\PassOptionsToPackage{unicode$for(hyperrefoptions)$,$hyperrefoptions$$endfor$}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+
 \documentclass[a4paper,openany,nobib] %openright to force parts and chapter to start right
         $if(extra.bookBig)$ {tufte-book}  %testbook $latBookBig$
         $elseif(extra.booklet)$ {tufte-book}  %testbooklet $latBooklet$
         $else$ {tufte-handout}  
         $endif$
-% produced with latext8tufte v1
+
 
 $-- not used: 
 %testhandout $extra.bookBig$ testzwei $extra.booklet$
@@ -25,8 +30,10 @@ $-- not used:
   []% after the title body
   
 \usepackage{fontspec}
+\usepackage{unicode-math}
 \usepackage{csquotes}  $-- required for babel 
-\usepackage[$metaLatex.latLanguage$]{babel}
+\usepackage[$metaLatex.latLanguage$,bibi=basic]{babel}
+
 $-- \renewcaptionname{ngerman}{\bibname}{Literatur}   %Bibliography
 $-- \renewcaptionname{$latLanguage$}{\bibname}{$latBiblioTitle$}   %Bibliography
 $-- automatical adaption
@@ -53,14 +60,27 @@ $-- \setcounter{secnumdepth}{\subsubsectionnumdepth} % numbering for subsubsecti
 
 
 \usepackage{graphicx}
-$--          \setkeys{Gin}{width=.75\linewidth,keepaspectratio}
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+% see my own later  
+%\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+%another solution?       \setkeys{Gin}{width=.75\linewidth,keepaspectratio}
     \setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
 \graphicspath{{$extra.webroot$}}
+
+\usepackage{luacolor}
+%\usepackage[soul]{lua-ul} % should this be used?
 
 \usepackage{longtable}
 \usepackage{booktabs}
 
 \makeatletter       % the code to avoid footnote-in-footnotes from citations
+        % perhaps not required with fancyvrb.sty?
 \renewcommand\@footnotetext[2][0pt]{%
   \marginpar{%
     \hbox{}\vspace*{#1}%
@@ -83,10 +103,31 @@ $--          \setkeys{Gin}{width=.75\linewidth,keepaspectratio}
 \makeatother
 
 \usepackage{fancyvrb}   % to define Verbatim environment 
-%\VerbatimFootnotes      % allow footnotes inside 
+\VerbatimFootnotes      % allow footnotes inside 
                         % creates missing fancyvrb.sty
 
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
 \usepackage{makeidx}
+\usepackage{selnolig}  % disable illegal ligatures in lualatex
+
+% Make \paragraph and \subparagraph free-standing
+% see https://github.com/jgm/pandoc/issues/5365
+% discussion of levels 4 and 5 headings 
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+$if(pagestyle)$
+\pagestyle{$pagestyle$}
+$endif$
 
 % definitions for citeproc citations
 \NewDocumentCommand\citeproctext{}{}
@@ -122,7 +163,7 @@ $--          \setkeys{Gin}{width=.75\linewidth,keepaspectratio}
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
-\makeatother
+
 
 % to add the chapter and part in the header
 % seems to produced problems
@@ -141,11 +182,10 @@ $--          \setkeys{Gin}{width=.75\linewidth,keepaspectratio}
 
 \setcounter{tocdepth}{4}  %to make several levels in table of content, works
 
-\providecommand{\tightlist}{%
-\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
 
 $-- \usepackage[colorlinks]{hyperref}
-\usepackage{xcolor}
+\usepackage{xcolor}  % others in default.latex
 \hypersetup{
     colorlinks,
     linkcolor={red!50!black},
@@ -163,8 +203,7 @@ $-- content descriptionm
 
 % -- -- --- ----------  ----             ----        ---------------
 \begin{document}
-% \pagestyle{mystyle} % to use mystyle 
-
+ 
 %\frontmatter  %not defined in tufte-latex?
 
 $if(bookprint)$ % bookprint line 71
