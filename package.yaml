@@ -1,6 +1,6 @@
 
 name: daino
-version: 0.1.6.2
+version: 0.1.6.4
 license:      GPL
 license-file: LICENSE
 github:       andrewufrank/u4blog.git/daino
@@ -83,11 +83,10 @@ dependencies:
     - uniform-cmdLineArgs   # now from u4blog, was from u2to
     - uniform-watch  
     - uniform-webserver  # - shake
-    - uniform-pandoc  
+    - uniform-pandoc >=0.1.6.4 
     - uniform-latex2pdf  
     - uniform-strings  
     # # - uniform-fileio
-    # # - pandoc-types  # needed? 
     # # -- - uniform-ftp
     # # - aeson 
     # # - optparse-applicative -- does not allow value in cmdlineargs
@@ -105,7 +104,7 @@ dependencies:
     # - doctemplates
     - ReplaceUmlaut
     - shake
-    - pandoc-types
+    - pandoc-types >=1.23.1
     - pretty-simple
     # # - system-filepath 
     # # - directory
