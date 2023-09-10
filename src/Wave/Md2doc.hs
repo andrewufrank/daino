@@ -160,7 +160,8 @@ metaDefaults sett9 =
     , ("date", showT year2000)
     , ("lang", "en")  -- todo conversion? 
     , ("latLanguage", "english") -- for babel - todo 
-    , ("styleBiber","authoryear")
+    -- , ("styleBiber","authoryear")
+    , ("csl", "resources/theme/templates/chicago-fullnote-bibliography.csl")
     , ("headerShift","1")
     , ("author", settingsAuthor sett9)
     , ("sortOrder", "filename")

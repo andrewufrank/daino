@@ -29,10 +29,11 @@ $-- not used:
   {}% before the title body
   []% after the title body
   
-\usepackage{fontspec}
 \usepackage{unicode-math}
 \usepackage{csquotes}  $-- required for babel 
-\usepackage[$metaLatex.latLanguage$,bibi=basic]{babel}
+\usepackage[$metaLatex.latLanguage$,bidi=basic]{babel}
+% issues left with importing babel fonts? 
+\usepackage{fontspec}  % perhaps resolved with loading fontspec after babel
 
 $-- \renewcaptionname{ngerman}{\bibname}{Literatur}   %Bibliography
 $-- \renewcaptionname{$latLanguage$}{\bibname}{$latBiblioTitle$}   %Bibliography
@@ -78,6 +79,7 @@ $-- \setcounter{secnumdepth}{\subsubsectionnumdepth} % numbering for subsubsecti
 
 \usepackage{longtable}
 \usepackage{booktabs}
+\providetoggle{blx@footnote}
 
 \makeatletter       % the code to avoid footnote-in-footnotes from citations
         % perhaps not required with fancyvrb.sty?
@@ -103,8 +105,9 @@ $-- \setcounter{secnumdepth}{\subsubsectionnumdepth} % numbering for subsubsecti
 \makeatother
 
 \usepackage{fancyvrb}   % to define Verbatim environment 
-\VerbatimFootnotes      % allow footnotes inside 
+%\VerbatimFootnotes      % allow footnotes inside 
                         % creates missing fancyvrb.sty
+                        % or missing number
 
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
@@ -267,9 +270,9 @@ $else$
     %\begin{titlepage}
         %\centering
         %\includegraphics[width=0.15\textwidth]{example-image-1x1}\par\vspace{1cm}
-        %{\textsc{$metaLatex.title$}  }
+        %{\textsc{metaLatex.title add dollar!!}  }
         %\vspace{1cm}
-        %\Large \textsc{$metaLatex.title$} 
+        %\Large \textsc{metaLatex.title DOLLAR!!} 
         \vspace{1.5cm}
         {\huge\bfseries{$metaLatex.title$} \par}
         \vspace{1cm}
