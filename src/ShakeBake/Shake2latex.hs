@@ -144,11 +144,12 @@ shake2latex debug flags sett4 bakedP  =
         -- putInform debug ["panrep2html render testTemplate done", "test_template",  test_template ]
 
         runErr2action $ do 
-            write8 outP texFileType ( Latex ht1) 
+            unless (quickFlag flags) $ 
+                write8 outP texFileType ( Latex ht1) 
             write8 outP ttlFileType test_template
 
         putInform debug 
-            ["-----rule **/*.tex 14 bakeOnePanrep2html done fn"
+            ["-----rule **/*.tex 14  done fn"
             , showT outP]
 
 

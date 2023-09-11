@@ -3,7 +3,7 @@
 -- Module Shake2 :
 ----------------------------------------------------------------------
 {- the conversion starts with the root files to produce, 
-    i.e. only index.md 
+    it starts with the needs for the *.html
     This triggers the rule html -> panrep 
     and panrep2html produces the needs for *.pdf, templates, jpg and bib
 
@@ -66,10 +66,10 @@ shake2html debug flags sett4 bakedP  =
         let bakedFrom = replaceExtension'  "panrep" outP
         putInform debug ["rule **/*.html 3 - bakedFrom", showT bakedFrom, "\n"]
         needP [bakedFrom]
-
-        let pdfNeeded = replaceExtension' "pdf" outP
-        putInform debug ["rule **/*.html 3b - pdfNeeded", showT pdfNeeded, "\n"]
-        needP [pdfNeeded]
+        unless (quickFlag flags) $ do 
+            let pdfNeeded = replaceExtension' "pdf" outP
+            putInform debug ["rule **/*.html 3b - pdfNeeded", showT pdfNeeded, "\n"]
+            needP [pdfNeeded]
 
         putInform debug ["\nrule **/*.html 4 continued out" , showT out
                 , "bakedFrom", showT bakedFrom]
@@ -154,17 +154,18 @@ shake2html debug flags sett4 bakedP  =
             ["-----rule **/*.html 14 bakeOnePanrep2html done fn"
             , showT outP]
 
-        -- needs to start the pdf production 
-        let is2pdf = map (addFileName bakedP . 
-                          addExtension extPDF) ixs0 
-                          -- to avoid pdfs extTex) ixs0 
-        let this2pdf = addExtension extTex outP 
-   
-        putInform debug 
-            ["-----rule **/*.html 15 needsfor pdf (now tex)"
-            , showT this2pdf, showT is2pdf]
+        unless (quickFlag flags) $ do 
+            -- needs to start the pdf production 
+            let is2pdf = map (addFileName bakedP . 
+                            addExtension extPDF) ixs0 
+                            -- to avoid pdfs extTex) ixs0 
+            let this2pdf = addExtension extTex outP 
+    
+            putInform debug 
+                ["-----rule **/*.html 15 needsfor pdf (now tex)"
+                , showT this2pdf, showT is2pdf]
 
-        needP $ this2pdf : is2pdf
+            needP $ this2pdf : is2pdf
 
         putInform debug ["\n-----rule **/*.html 15 end continued 4"
             , showT out,"\n"]

@@ -341,10 +341,10 @@ $for(extra.dirEntries)$   % bookbig level of collections
 
 
     $for(extra.fileEntries)$   % -- the files in the parts in bookbig
-        \chapter{$extra.fileEntries.textualTex.title$}
+        \chapter{$extra.dirEntries.fileEntries.textualTex.title$}
         \begin{mdframed}\sloppy\medskip
-        $extra.fileEntries.textualTex.abstract$\end{mdframed}
-        $extra.fileEntries.textualTex.content$
+        $extra.dirEntries.fileEntries.textualTex.abstract$\end{mdframed}
+        $extra.dirEntries.fileEntries.textualTex.content$
     $endfor$
 
 $endfor$

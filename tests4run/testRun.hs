@@ -77,9 +77,7 @@ main4qT :: IO ()
 -- start s in separate process 
 main4qT = do 
     putIOwords ["test to publish all html dainoSite files"]
-    p <- ru
-
-    
+    p <- runErr $ do 
             dainoProcess NoticeLevel0 testFlags
                 {testFlag = True 
                 , testNewFlag = True -- T 

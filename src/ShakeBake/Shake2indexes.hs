@@ -184,7 +184,8 @@ fillTextual4MP mp = mp{extra = x2}
         t1 = metaLatex  mp ::M.Map Text Text
         tex1 = (zero :: TextualIx Text) 
             { abstract = fromMaybe ( "Missing ABSTRACT") $ M.lookup "abstract" t1
-            , title = fromMaybe ( "Missing TITLE") $ M.lookup "title" t1
+            , title = removeChar '\n' . 
+                    fromMaybe ( "Missing TITLE") $ M.lookup "title" t1
             , author = fromMaybe ( "Missing AUTHOR") $ M.lookup "author" t1 
             , content = fromMaybe ("Missing CONTENT") $ M.lookup "body" t1
             -- could add content here?
@@ -198,6 +199,7 @@ fillTextual4MP mp = mp{extra = x2}
                 , textual0tex = tex1
                 } :: DainoValues 
 
-     
+        -- latexTitle =   fromMaybe ( "Missing TITLE") $ M.lookup "title" t1
+        -- latexTitle2 =  removeChar' '\n' latexTitle
 
  

@@ -4,10 +4,8 @@
 ----------------------------------------------------------------------
 {- the conversion starts with the root files to produce, 
     i.e. only index.md 
-    This triggers the rule html -> panrep 
-    and panrep2html produces the needs for *.pdf, templates, jpg and bib
-
-    for now the css, dtpl, jpg etc. are still included
+   
+    it needs the *.md file 
 
     docrep includes all pandoc processing
         citeproc for the references
@@ -40,10 +38,7 @@ import Foundational.SettingsPage
 import Foundational.Filetypes4sites
 import Foundational.CmdLineFlags
 import Wave.Md2doc 
--- import Uniform.MetaPlus
--- import ShakeBake.Shake2indexes (fillTextual4MP)
-
--- shake2docrep :: NoticeLevel ->  PubFlags -> Settings -> Path Abs Dir -> Rules ()
+ 
 shake2docrep :: NoticeLevel -> PubFlags -> Settings -> Path Abs Dir -> Rules ()
 shake2docrep debug flags sett4 bakedP  =     
     (toFilePath bakedP <> "**/*.docrep") %> \out -> do 
@@ -70,9 +65,11 @@ shake2docrep debug flags sett4 bakedP  =
         -- pandoc1 <- readMd2pandoc bakedFrom -- need posted
 
        -- check for german and process umlaut, 
-        -- repeat readMd2pandoc if changed 
-
-        
+        -- repeat readMd2pandoc if changed   
+            -- then add list of defaults
+            -- walk to replace /lf/ 
+            -- apply citeproc
+            -- fill body and convert to html and latex
         mp3 <- pandoc2metaplus NoticeLevel1 sett4 bakedFrom 
     
 
