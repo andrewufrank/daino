@@ -49,6 +49,7 @@ mainTest        -- with tests in other modules
 main4t :: IO () 
 -- | run just the test for changed 
 -- start s in separate process 
+-- does not build pdf's if not previously done
 main4t = do 
     putIOwords ["test to re-publish the changed dainoSite files"]
     p <- runErr $ do 

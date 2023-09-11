@@ -94,7 +94,7 @@ dependencies:
     # # for default values, move down 
     # - dir-traverse # for checkprocess
     # - deepseq
-    # # - pandoc-sidenote
+    - pandoc-sidenote
     # # - pandoc 
     - path
     - path-io
