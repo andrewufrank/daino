@@ -5,6 +5,7 @@
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-} 
 {-# LANGUAGE PackageImports     #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 -- the main for the systematic tests A to B 
 module Main where      -- must have Main (main) or Main where
@@ -26,6 +27,11 @@ import     Test.Framework
 import    {-@ HTF_TESTS @-}        Lib.DainoTest_test
         -- braucht doc2html zuerst
 
+import UniformBase 
+import Foundational.CmdLineFlags
+import ShakeBake.StartDainoProcess ( dainoProcess )
+
+default (Text)
 
 main :: IO ()
 main = mainTest  -- for a different function name (main is in daino)
@@ -40,95 +46,45 @@ mainTest        -- with tests in other modules
       ("HTF end ExampleTest.hs test:\n" ++ show p ++ "\nEND HTF ExampleTest")
     return ()
 
--------------------OLD ----------------------------
--- OLD --
--- import {-@ HTF_TESTS @-} Lib.Shake2_test 
--- tests shake for test dough
--- issue with rule not producing file
+main4t :: IO () 
+-- | run just the test for changed 
+-- start s in separate process 
+main4t = do 
+    putIOwords ["test to re-publish the changed dainoSite files"]
+    p <- runErr $ do 
+            dainoProcess NoticeLevel0 testFlags
+                {testFlag = True 
+                -- , testNewFlag = True -- T 
+                -- , quickFlag = True   -- q 
+                }
+    putIOwords ["main4t end", showT p]
 
--- import {-@ HTF_TESTS @-} ShakeStartTests
--- -- must run first because it produces the test values used later
--- -- uses def, not settings2.yaml
--- -- test dir must be ~/.daino  -- the program name in foundation
+main4T :: IO () 
+-- | run just the test for changed 
+-- start s in separate process 
+main4T = do 
+    putIOwords ["test publish all dainoSite files"]
+    p <- runErr $ do 
+            dainoProcess NoticeLevel0 testFlags
+                {testFlag = True 
+                , testNewFlag = True -- T 
+                -- , quickFlag = True   -- q 
+                }
+    putIOwords ["main4T end", showT p]
 
--- ordinary tests (run without shakeStartTest)
-
--- import   {-@ HTF_TESTS @-}        Foundational.SettingsPage_test  
-                        -- sets pageFn 
--- import    {-@ HTF_TESTS @-}       Lib.CheckInputs_test
--- -- -- ----    -- writes A : testLayout
--- -- -- ----    --  pageFn :: abs pandoc filenames
--- -- import   {-@ HTF_TESTS @-}        Lib.Pandoc_test
--- -- --             --  -> AD markdownToPandoc
--- -- --             -- -> AF pandocToContentHtml
--- -- --             -- -> AG (docValToAllVal)
--- -- -- --    -- test_pandoc_pageFn_pageMd_1 - pageFn -> pageMd : MarkdownText
--- -- -- --    -- AK :: MarkdownText -> BE  DocValue
--- -- -- --    -- Md ->AD :: Pandoc
--- -- -- --    -- AD -> AF :: DocValue
--- -- -- --import {-@ HTF_TESTS @-} Lib.ReadSettingFile_test
--- import {-@ HTF_TESTS @-} Lib.IndexCollect_test
--- import  {-@ HTF_TESTS @-}         Lib.IndexMake_test
--- -- import    {-@ HTF_TESTS @-}       Lib.Templating_test  -- AG -> EG 
--- -- import Uniform.Ftp 
--- -- import Lib.Startdainoprocess
--- -- -- --import {-@ HTF_TESTS @-} Lib.BibTex_test
-
---     ---- for dainoCheck
--- import {-@ HTF_TESTS @-} Lib.CheckProcess_test  -- (res11)
--- import Lib.CheckProcess        -- for direct calls 
---
--- import {-@ HTF_TESTS @-} Lib.Bake_test
--- import   {-@ HTF_TESTS @-}  Lib.Shake2_test  -- AG -> EG 
-
---
----- main =  do  -- the local tests only
-----     putStrLn "HTF ExampleTest.hs:\n"
-----     r <- htfMain htf_thisModulesTests
-----     putStrLn ("HTF end ExampleTesting.hs test:\n" ++ show r)
-----     return ()
---------------END OLD 
--- main2 :: IO ()
--- main2      -- just a simple bake for test
---    = do
---     putStrLn "main2"
---     runErrorVoid  $ do
---             res <-  res11  -- from checkProcess_test
---             putIOwords [s2t "res11", showT $ res] 
---             return ()
---     return ()
-
--- mainCheck :: IO ()
--- mainCheck      -- just a simple bake for test
---                 -- checks the completeness of labels 
---    = do
---     putStrLn "mainCheck"
---     runErrorVoid  $ do
---         -- sitefn :: FilePath 
---         let sitefn = "/home/frank/Workspace11/daino/docs/site/dough/settings2" 
---         res <-  checkProcess True sitefn 
---         putIOwords [s2t "res11", showT $ res] 
---         return ()
---     return ()
+main4qT :: IO () 
+-- | run just the test for changed 
+-- start s in separate process 
+main4qT = do 
+    putIOwords ["test to publish all html dainoSite files"]
+    p <- ru
 
     
--- defs = zero { testFlag = True
---                  , publishFlag = True
---                  , serverFlag = True
---                  , watchFlag = True
---                  , settingsFile = testSettingsFileName  
---                  , uploadFlag = False
---                  }
-
--- main3 = runErrorVoid $ do 
---     (a,s)  <- runStateT  
---                  (ftpUploadDirsRecurse test1 (bakedDir testLayout) 
---                       (makeAbsDir "/test.gerastree.at/"))
---                  ftp0
-                 
---     return () 
-
--- lastUpload = read "2019-04-11 12:00:00 UTC" :: UTCTime
--- test1 = testNewerModTime lastUpload 
-
--- main4 = runErrorVoid $ dainoProcess testFlags
+            dainoProcess NoticeLevel0 testFlags
+                {testFlag = True 
+                , testNewFlag = True -- T 
+                , quickFlag = True   -- q 
+                }
+    putIOwords ["main4qT end", showT p]
+    
+        

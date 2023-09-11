@@ -3,6 +3,8 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE OverloadedStrings #-}
+
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# OPTIONS -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-unused-imports #-}
@@ -24,3 +26,4 @@ test_DainoTest = do
             -- , quickFlag = True   -- q 
             }
     assertEqual (Right zero) res1
+
