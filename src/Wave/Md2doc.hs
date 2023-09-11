@@ -161,7 +161,7 @@ metaDefaults sett9 =
     , ("lang", "en")  -- todo conversion? 
     , ("latLanguage", "english") -- for babel - todo 
     -- , ("styleBiber","authoryear")
-    , ("csl", "resources/theme/templates/chicago-fullnote-bibliography.csl")
+    -- , ("csl", "resources/theme/templates/chicago-fullnote-bibliography.csl")
     , ("headerShift","1")
     , ("author", settingsAuthor sett9)
     , ("sortOrder", "filename")

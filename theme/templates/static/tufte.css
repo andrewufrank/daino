@@ -290,6 +290,8 @@ img {
     max-width: 100%;
 }
 
+.citation,
+.footnotes,
 .sidenote,
 .marginnote {
     float: right;
