@@ -178,13 +178,9 @@ $endif$
 	\fancyhead[R]{\smallcaps{\newlinetospace{\rightmark}}\quad\thepage}%
 }
 
-
-
-
 \makeindex
 
 \setcounter{tocdepth}{4}  %to make several levels in table of content, works
-
 
 
 $-- \usepackage[colorlinks]{hyperref}
@@ -330,25 +326,25 @@ $metaLatex.body$
 %testtestContentende--------
 
 $for(extra.fileEntries)$   % booklet level of collections
-    \chapter{$it.title$}
+    \chapter{$it.textualTex.title$}
     \begin{mdframed}\sloppy\medskip
-    $it.abstract$\end{mdframed}
-    $it.content$
+    $it.textualTex.textualTex.abstract$\end{mdframed}
+    $it.textualTex.content$
 $endfor$
 
 
 $for(extra.dirEntries)$   % bookbig level of collections
-    \part{$latIndex.dirEntries.title$}
+    \part{$extra.dirEntries.textualTex.title$}
     \begin{mdframed}\sloppy\medskip
-    $extra.dirEntries.abstract$\end{mdframed}
-    $extra.dirEntries.content$
+    $extra.dirEntries.textualTex.abstract$\end{mdframed}
+    $extra.dirEntries.textualTex.content$
 
 
-    $for(extra.dirEntries.fileEntries)$   % -- the files in the parts in bookbig
-        \chapter{$extra.dirEntries.fileEntries.title$}
+    $for(extra.fileEntries)$   % -- the files in the parts in bookbig
+        \chapter{$extra.fileEntries.textualTex.title$}
         \begin{mdframed}\sloppy\medskip
-        $extra.dirEntries.fileEntries.abstract$\end{mdframed}
-        $extra.dirEntries.fileEntries.content$
+        $extra.fileEntries.textualTex.abstract$\end{mdframed}
+        $extra.fileEntries.textualTex.content$
     $endfor$
 
 $endfor$
@@ -358,7 +354,7 @@ $endfor$
 
 
 
-% where do references go?
+% where do biblio references go?
 \printindex
 
 \vspace*{\fill}

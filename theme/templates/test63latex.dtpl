@@ -33,7 +33,7 @@ dainoversion    $extra.dainoVersion$
 visibility      $metaLatex.visibility$
 version         $metaLatex.version$
 
--- not in thmlTufte
+-- not in htmlTufte
 
 latLanguage     $metaLatex.latLanguage$
 styleBiber      $metaLatex.styleBiber$
@@ -51,7 +51,8 @@ indexEntryDirectories
         ixfn       $extra.dirEntries.ixfn$
 $--        link    $extra.dirEntries.link$
         title      $extra.dirEntries.textualTex.title$
-        abstract   $extra.dirEntries.textualTex.abstract$    
+        abstract   $extra.dirEntries.textualTex.abstract$ 
+        content    $extra.dirEntries.textualTex.content$   
         
     $endfor$
 
@@ -64,7 +65,7 @@ $--            link        $extra.fileEntries.link$
             abstract    $extra.fileEntries.textualTex.abstract$
             author      $extra.fileEntries.textualTex.author$
             date        $extra.fileEntries.date$ 
-$--            content     $extra.fileEntries.content$ 
+            content     $extra.fileEntries.textualTex.content$ 
             visibility  $extra.fileEntries.visibility$ 
             version     $extra.fileEntries.version$ 
             sortOrder   $extra.fileEntries.sortOrder$ 

@@ -35,7 +35,7 @@ module ShakeBake.Shake2docrep where
 
 import UniformBase 
 import Uniform.Shake
-import Uniform.Pandoc 
+-- import Uniform.Pandoc 
 import Foundational.SettingsPage
 import Foundational.Filetypes4sites
 import Foundational.CmdLineFlags

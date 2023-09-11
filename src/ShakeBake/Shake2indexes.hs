@@ -179,14 +179,16 @@ fillTextual4MP mp = mp{extra = x2}
             { abstract = fromMaybe ( "XX") $ M.lookup "abstract" h1
             , title = fromMaybe ( "Missing TITLE") $ M.lookup "title" h1
             , author = fromMaybe ( "Missing AUTHOR") $ M.lookup "author" h1 
-            -- could add content here?
+            -- -- for html  content not used
             }
         t1 = metaLatex  mp ::M.Map Text Text
         tex1 = (zero :: TextualIx Text) 
             { abstract = fromMaybe ( "Missing ABSTRACT") $ M.lookup "abstract" t1
             , title = fromMaybe ( "Missing TITLE") $ M.lookup "title" t1
             , author = fromMaybe ( "Missing AUTHOR") $ M.lookup "author" t1 
+            , content = fromMaybe ("Missing CONTENT") $ M.lookup "body" t1
             -- could add content here?
+            -- for html not used
             }
 
         x1 = extra mp 

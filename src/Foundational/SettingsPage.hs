@@ -151,7 +151,7 @@ data TextualIx v = TextualIx
     { title :: v
     , abstract :: v
     , author :: v
-    -- , content :: v   -- in latex style, only filled bevore use
+    , content :: v   -- in latex style, only filled bevore use
     } deriving (Show, Read, Eq, Ord, Generic, Zeros)
 
 instance ToJSON v => ToJSON (TextualIx v)

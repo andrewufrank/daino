@@ -116,11 +116,12 @@ shakeMD debug sett4 flags = do
                   
                     -- convertAny debug bakedP bakedP flags sett4 out  "convTex2pdf"
                     -- anyop debug flags fromfilePathExt layout outP
+                    putInform debug ["rule **/*.pdf 3 need satisfied"]
                      
                     runErr2action $ tex2pdf debug fromfilePathExt outP doughP
-                    putInform debug ["rule **/*.pdf 3 produce outP (fake)"
+                    putInform debug ["rule **/*.pdf 4 produce outP (perhaps just fake)"
                         , showT outP]
-            putInform debug ["rule **/*.pdf 4 end"]
+            putInform debug ["rule **/*.pdf 5 end"]
 
 -- tex2pdf :: NoticeLevel -> Path Abs File ->  Path Abs File ->  Path Abs Dir ->  ErrIO ()
 -- tex2pdf debug fn fnres doughP  =  do
