@@ -1,4 +1,24 @@
 <!DOCTYPE html>
+<!-- the master template for `pandoc64html.dtpl`  
+      baseline:   produces html output, not in tufte style
+
+ copied much from  tufte64html.dtpl v_1   for tufte
+ for use with Uniform.MetaPlus from u4blog v 0.1.6.4
+
+ and daino v 0.1.6.4 and citeproc. pandoc 3.1.8
+   
+    master for the pandoc templating mechanism (putValInMaster in Templating.hs)
+	needs page-title, page-title-postfix
+		author date and keywords for IndexCollectlect
+    contentHtml, beforeContent, afterContent to wrap htmlcontent 
+    
+	refs in the menus are relative to the web root
+	(absolute web, inserted a / in the template)
+    removed highlighting-css and css to load 
+    files available are tufte.css and w3c.css not used
+
+	-->
+
 <html xmlns="http://www.w3.org/1999/xhtml" lang="$lang$" xml:lang="$metaLatex.lang$"$if(dir)$ dir="$dir$"$endif$>
 <head>
   <meta charset="utf-8" />
@@ -280,7 +300,7 @@ $endif$
         <img class="centerImage" src=$metaHtml.image$  style="object-fit: contain; max-height: 400px; height: auto; width: auto; "  
             alt="$metaHtml.imageCaption$">  $-- the image put into index.md
     $else$      $--   no image in head 
-        <img class="" src=$sett.siteHeader.banner$ style="object-fit: contain;"
+        <img class="centerImage" src=$sett.siteHeader.banner$ style="object-fit: contain; max-height: 400px; height: auto; width: auto;"
             alt="$sett.siteHeader.bannerCaption$">  $-- the image put in the settings.yml
 
     <div class="bottomleft w3-text-light-grey";  $--  w3-padding-large w3-text-light-grey
@@ -340,7 +360,7 @@ $endif$
 $table-of-contents$
 </nav>
 $endif$
-$metaHtml.body$
+$-- $metaHtml.body$
 $for(include-after)$
 $include-after$
 $endfor$
