@@ -27,7 +27,8 @@ author          $extra.textual0html.author$
 $-- table of contents   $metaHtml.table-of-contents$
 linkpdf         $extra.pdf1$
 date            $extra.date$
-$-- content         $metaHtml.bodyHtml$
+content (Base   $metaHtml.bodyBase$
+content (tufte) $metaHtml.bodyTufte$
 
 dainoversion    $extra.dainoVersion$
 visibility      $metaHtml.visibility$

@@ -162,7 +162,7 @@
     <!-- end title of entry -->
 
     <section>   $-- necessary for sidenotes to work
-        $metaHtml.body$  <!--content-from-panrep-blocks which is the content of the index.md -->
+        $metaHtml.bodyTufte$  <!--content-from-panrep-blocks which is the content of the index.md -->
         <!-- <div id="refs">
             <h2>ReferencesTitle</h2>
             $-- here should be the refs see https://github.com/jgm/pandoc/issues/7969

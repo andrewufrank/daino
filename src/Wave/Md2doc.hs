@@ -98,7 +98,7 @@ pandoc2metaplus debug sett4 bakedFrom  = do
     pan4@(Pandoc m4 p4) <- mdCiteproc p3 
     putInform debug ["pandoc2metaplus 6 citeproc done "]
 
-    let (Pandoc m5 p5) = usingSideNotes pan4 
+    let (Pandoc _ p5) = usingSideNotes pan4 
         -- changed the body (p5) to prepare for tufte style
 
     -- move the body and then converts to html and latex 
