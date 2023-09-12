@@ -89,7 +89,7 @@ pandoc2metaplus debug sett4 bakedFrom  = do
     let p2 = addListOfDefaults (metaDefaults sett4) pandoc2
     let p3 = walk lf2LineBreak p2
     -- to convert the /lf/ marks in hard LineBreak
-    meta1 <- return zero -- TODO md2Meta_Process p3 -- includes process citeproc
+    meta1 <- md2Meta_Process p3 -- includes process citeproc
     putInform debug ["pandoc2metaplus 6 citeproc done "]
 
             -- pushes all what is further needed into metaplus

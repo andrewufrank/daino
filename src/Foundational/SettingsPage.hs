@@ -158,6 +158,8 @@ instance ToJSON v => ToJSON (TextualIx v)
 instance FromJSON v => FromJSON (TextualIx v)
 
 
+
+
 data SiteLayout = SiteLayout
     { -- | the place of the  theme files (includes templates)
       themeDir :: Path Abs Dir
@@ -165,8 +167,10 @@ data SiteLayout = SiteLayout
       doughDir :: Path Abs Dir
     , -- | the webroot, the dir with all the produced files
       bakedDir :: Path Abs Dir
-    , masterTemplateFile :: Path Rel File  -- for html
-    , texTemplateFile :: Path Rel File   -- for latex 
+    , htmlTemplateFile :: Path Rel File  -- for html
+    , latexTemplateFile :: Path Rel File   -- for latex 
+    , tufteHtmlTemplateFile :: Path Rel File -- for tufte html
+    , tufteLatexTemplateFile :: Path Rel File -- for tufte latex
     , doNotBake :: Text 
     -- todo probably not used
     , blogAuthorToSuppress :: [Text]
@@ -192,15 +196,18 @@ sourceDirTestSite = sourceDirTestDocs `addDir` (makeRelDir "site")
 layoutDefaults :: Path Abs Dir -> Path Abs Dir ->  SiteLayout
 -- used for finding the test cases
 -- must correspond to the settings3.yaml in source code repository
--- fix this later for use in testing todo 
+-- is not currently used in normal processing 
 layoutDefaults dough4test homeDir1 =
     zero -- SiteLayout
         { doughDir = dough4test
         , bakedDir = homeDir1 `addDir` makeRelDir "bakedTestSite" :: Path Abs Dir
         ,  themeDir = (parent (parent dough4test)) `addDir` makeRelDir "theme"
- 
-        ,  masterTemplateFile = makeRelFile "master7tufte.dtpl"
-        , texTemplateFile = makeRelFile "resources/theme/templates/latex7.dtpl"
+        , htmlTemplateFile = makeRelFile "pandoc64html.dtpl" 
+        , latexTemplateFile = makeRelFile "pandoc64latex.dtpl"
+        , tufteHtmlTemplateFile = makeRelFile "tufte64html.dtpl"
+        , tufteLatexTemplateFile = makeRelFile "tufte64latex.dtpl"
+        -- ,  masterTemplateFile = makeRelFile "master7tufte.dtpl"
+        -- , texTemplateFile = makeRelFile "resources/theme/templates/latex7.dtpl"
         ,  doNotBake = "DNB"
         -- included in filenames (and directories) to exclude from bake process
         , blogAuthorToSuppress = []
@@ -208,6 +215,11 @@ layoutDefaults dough4test homeDir1 =
         , replaceErlaubtFile = makeAbsFile "/home/frank/Workspace11/replaceUmlaut/nichtUmlaute.txt"
         -- , defaultBibliography = "resources/BibTexLatex.bib"
         }
+
+    -- htmlTemplateFile: pandoc64html.dtpl  # from default.html5
+    -- latexTemplateFile: pandoc64latex.dtpl  # from default319latex
+    -- tufteHtmlTemplateFile:  tufte64html.dtpl
+    -- tufteLatexTemplateFile: tufte64latex.dtpl
 
 -- instance Default SiteLayout where 
 --         def = layoutDefaults

@@ -94,7 +94,10 @@ texsnip2tex  debug pubFlags metaplus4 = do
     let sett3 = sett metaplus4
         extra4 = extra metaplus4
         -- mf = masterTemplateFile $ siteLayout sett3
-        mf = texTemplateFile $ siteLayout sett3 -- change to latex template
+        mf = if tufteFlag pubFlags 
+            then tufteLatexTemplateFile $ siteLayout sett3
+            else latexTemplateFile $ siteLayout sett3 
+            
         masterfn = templatesDir (siteLayout sett3) </> mf
 
     putInform debug ["\ntexsnip2tex", "siteLayout sett3"

@@ -71,6 +71,8 @@ shakeAll debug sett3 flags causedby = do
             , "resources/img/squared16.jpg" -- add rest 
             , "resources/theme/templates/img/DSC04809.JPG"
             , "resources/theme/templates/chicago-fullnote-bibliography.csl"
+            , "resources/theme/templates/styles.html"
+            -- default style for pandoc64html
             -- , "resources/theme/templates/locales-en-US.csl"
             , "resources/theme/templates/fancyvrb.sty"
             -- banner . siteHeader $ sett3 

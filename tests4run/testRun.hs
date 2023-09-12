@@ -87,4 +87,17 @@ main4qT = do
                 }
     putIOwords ["main4qT end", showT p]
     
-        
+    main4qT :: IO () 
+
+-- | run just the test for changed 
+-- start s here  - do not close terminal later
+main4st = do 
+    putIOwords ["test to publish all html dainoSite files"]
+    p <- runErr $ do 
+            dainoProcess NoticeLevel0 testFlags
+                {testFlag = True 
+                , serverFlag = True -- s
+                -- , testNewFlag = True -- T 
+                -- , pdfFlag = True   -- n 
+                }
+    putIOwords ["main4qT end", showT p]    

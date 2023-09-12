@@ -91,7 +91,9 @@ shake2latex debug flags sett4 bakedP  =
 
         let sett3 = sett pan0
             -- extra4 = extra pan0
-            mf = texTemplateFile $ siteLayout sett3
+            mf = if (tufteFlag flags)
+                then tufteLatexTemplateFile $ siteLayout sett3 
+                else latexTemplateFile $ siteLayout sett3
             masterfn = templatesDir (siteLayout sett3) </> mf
 
     -- braucht needs fuer die panrep files

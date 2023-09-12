@@ -96,8 +96,10 @@ shake2html debug flags sett4 bakedP  =
 
         let sett3 = sett pan0
             -- extra4 = extra pan0
-            mf = masterTemplateFile $ siteLayout sett3
-            masterfn = templatesDir (siteLayout sett3) </> mf
+            mf = if tufteFlag flags 
+                then tufteHtmlTemplateFile $ siteLayout sett3 
+                else htmlTemplateFile $ siteLayout sett3
+            htmlTemplateFn = templatesDir (siteLayout sett3) </> mf
 
     -- -- braucht needs fuer die panrep files
         let ixs0 = getIndexFiles4meta pan0 :: [Path Rel File]
@@ -112,9 +114,9 @@ shake2html debug flags sett4 bakedP  =
     --                 , showT $ siteLayout sett3]
         putInform debug ["-----rule **/*.html 10 mf", showT mf]
         putInform debug ["-----rule **/*.html 11 masterfn"
-                        , showT masterfn]
+                        , showT htmlTemplateFn]
 
-        targetTempl  <- runErr2action $ compileTemplateFile2 masterfn
+        targetTempl  <- runErr2action $ compileTemplateFile2 htmlTemplateFn
         testTempl <- runErr2action $ compileTemplateFile2 htmlTestTemplateFn
 
             --if this is an index file it has files and dirs 
