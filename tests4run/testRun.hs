@@ -62,7 +62,7 @@ main4t = do
     putIOwords ["main4t end", showT p]
 
 main4T :: IO () 
--- | run just the test for changed 
+-- | run the test site from a fresh start 
 -- start s in separate process 
 main4T = do 
     putIOwords ["test publish all dainoSite files"]
@@ -70,6 +70,20 @@ main4T = do
             dainoProcess NoticeLevel0 testFlags
                 {testFlag = True 
                 , testNewFlag = True -- T 
+                -- , pdfFlag = True   -- q 
+                }
+    putIOwords ["main4T end", showT p]
+
+main4Te :: IO () 
+-- | run the test stie for tufte from fresh start 
+-- start s in separate process 
+main4Te = do 
+    putIOwords ["test publish all dainoSite files"]
+    p <- runErr $ do 
+            dainoProcess NoticeLevel0 testFlags
+                {testFlag = True 
+                , testNewFlag = True -- T 
+                , tufteFlag = True
                 -- , pdfFlag = True   -- q 
                 }
     putIOwords ["main4T end", showT p]

@@ -92,7 +92,7 @@ pandoc2metaplus debug sett4 bakedFrom  = do
     meta1 <- md2Meta_Process p3 -- includes process citeproc
     putInform debug ["pandoc2metaplus 6 citeproc done "]
 
-            -- pushes all what is further needed into metaplus
+            -- pushes all what is further needed into metaplus extra
     let mp1 = setMetaPlusInitialize sett4 bakedFrom meta1
 
     mp2 <- completeMetaPlus mp1  -- converts the body to tex and html
