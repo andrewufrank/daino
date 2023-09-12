@@ -46,6 +46,11 @@ import Text.Pandoc.Walk
 import Text.Pandoc.Definition
 import Lib.OneMDfile
 import Lib.FileHandling
+
+import Text.Pandoc.SideNote ( usingSideNotes )
+-- i assume this is only useful for html output 
+-- but now done for the body before translation to html or latex
+import qualified Data.Map as M
 default (Text)
 
 
@@ -89,17 +94,48 @@ pandoc2metaplus debug sett4 bakedFrom  = do
     let p2 = addListOfDefaults (metaDefaults sett4) pandoc2
     let p3 = walk lf2LineBreak p2
     -- to convert the /lf/ marks in hard LineBreak
-    meta1 <- md2Meta_Process p3 -- includes process citeproc
+    -- meta1 <- md2Meta_Process p3 -- includes process citeproc
+    pan4@(Pandoc m4 p4) <- mdCiteproc p3 
+    let meta2latex = Meta $ M.insert "bodyLat" (MetaBlocks p4) (unMeta m4)
     putInform debug ["pandoc2metaplus 6 citeproc done "]
 
-            -- pushes all what is further needed into metaplus extra
-    let mp1 = setMetaPlusInitialize sett4 bakedFrom meta1
+    let (Pandoc m5 p5) = usingSideNotes pan4 
+    -- move the body and then converts to html and latex 
+    let meta2  = Meta $ M.insert "bodyHtml" (MetaBlocks p5) (unMeta meta2latex)
+    
+    htm1 <-  writeHtml5String2 (p5)
+    lat1 <-   writeTexSnip2 (p4)
 
-    mp2 <- completeMetaPlus mp1  -- converts the body to tex and html
+    let mp1 = setMetaPlusInitialize sett4 bakedFrom meta2
+    let mp2 = mp1 { metaHtml = htm1
+                    , metaLatex = lat1}
+    putInform debug ["pandoc2metaplus 6a usingSidenotes done "]
+
+    -- for tufte style, apply pandoc-sidenotes
+
+            -- pushes all what is further needed into metaplus
+
+    -- mp2 <- completeMetaPlus mp1  -- converts the body to tex and html
     let mp3 = fillTextual4MP mp2 
     putInform debug ["pandoc2metaplus 7 end "]
 
     return mp3
+
+
+--   -- fill the three meta fields for the output
+-- completeMetaPlus :: MetaPlus sett extra -> ErrIO (MetaPlus sett extra) 
+-- completeMetaPlus metapl1 = do 
+--     -- md1 <- meta2xx writeToMarkdown  (metap metapl1)
+--     htm1 <- meta2xx writeHtml5String2 (metap metapl1)
+--     lat1 <- meta2xx writeTexSnip2 (metap metapl1)
+--     -- uses biblatex
+--     let metap2 = metapl1  { 
+--                         -- metaMarkdown = md1
+--                       metaHtml = htm1
+--                     , metaLatex = lat1}
+--                     -- sind je M.Map Text Text
+--     -- putIOwords ["completeMetaPlus \n", showT metap2]
+--     return metap2 
 
 lf2LineBreak :: Inline -> Inline
 -- | converts a "/lf/" string in a hard linebreak
