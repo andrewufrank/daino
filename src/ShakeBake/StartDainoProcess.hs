@@ -29,7 +29,7 @@ import ShakeBake.Watch (mainWatch)
 import Uniform.WebServer (runScotty)
 import Foundational.SettingsPage
 import Foundational.CmdLineFlags
-import Paths_daino  
+-- import Paths_daino  
 import UniformBase
 import qualified Path.Posix as Path
 import qualified System.FilePath.Posix as P
@@ -136,7 +136,7 @@ dainoProcess debug1 flags = do
     if watchFlag flags -- implies server
         then mainWatch debug sett4 flags 
         else do
-            when (testNewFlag flags || restartFlag flags) $ do
+            when (testNewFlag flags || newStartFlag flags) $ do
                 let bakedP = bakedDir (siteLayout sett4)
                 deleteDirRecursive bakedP 
             shakeAll debug sett4 flags ""

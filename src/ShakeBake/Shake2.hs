@@ -82,6 +82,7 @@ shakeMD debug sett4 flags = do
     shake2panrep debug flags sett4 bakedP       
     shake2docrep debug flags sett4 bakedP       
 
+    
     (toFilePath bakedP <> "**/*.pdf") %> \out -> -- insert pdfFIles1
         do
             when (inform debug) $ putIOwords ["rule **/*.pdf", showT out]
@@ -102,7 +103,9 @@ shakeMD debug sett4 flags = do
             
             if fileExists 
                 then copyFileToBaked debug doughP bakedP out
-                else do
+                else 
+                  unless (pdfFlag flags) $ do 
+        -- this makes all needs of pdf to fail do
                     let targetP = bakedP 
                         sourceP = bakedP 
                         fromfilePath = sourceP </> makeRelativeP targetP outP
