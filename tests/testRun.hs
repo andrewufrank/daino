@@ -62,7 +62,7 @@ main4t = do
     putIOwords ["main4t end", showT p]
 
 main4T :: IO () 
--- | run the test site from a fresh start 
+-- | run the test  site base from a fresh start 
 -- start s in separate process 
 main4T = do 
     putIOwords ["test publish all dainoSite files"]
@@ -113,5 +113,18 @@ main4st = do
                 , serverFlag = True -- s
                 -- , testNewFlag = True -- T 
                 -- , pdfFlag = True   -- n 
+                }
+    putIOwords ["main4qT end", showT p]    
+
+-- | run just the test for changed 
+-- start s here  - do not close terminal later
+main4Tn = do 
+    putIOwords ["test to publish all html dainoSite files"]
+    p <- runErr $ do 
+            dainoProcess NoticeLevel0 testFlags
+                {testFlag = True 
+                -- , serverFlag = True -- s
+                , testNewFlag = True -- T 
+                , pdfFlag = True   -- n 
                 }
     putIOwords ["main4qT end", showT p]    

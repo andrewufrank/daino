@@ -104,7 +104,7 @@ shakeMD debug sett4 flags = do
             if fileExists 
                 then copyFileToBaked debug doughP bakedP out
                 else 
-                  unless (pdfFlag flags) $ do 
+                  when (pdfFlag flags) $ do 
         -- this makes all needs of pdf to fail do
                     let targetP = bakedP 
                         sourceP = bakedP 

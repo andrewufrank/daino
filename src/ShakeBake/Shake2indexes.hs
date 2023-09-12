@@ -187,7 +187,7 @@ fillTextual4MP mp = mp{extra = x2}
             , title = removeChar '\n' . 
                     fromMaybe ( "Missing TITLE") $ M.lookup "title" t1
             , author = fromMaybe ( "Missing AUTHOR") $ M.lookup "author" t1 
-            , content = fromMaybe ("Missing CONTENT") $ M.lookup "body" t1
+            , content = fromMaybe ("Missing CONTENT") $ M.lookup "bodyBase" t1
             -- could add content here?
             -- for html not used
             }

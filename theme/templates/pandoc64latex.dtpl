@@ -1,3 +1,6 @@
+% pandoc64latex.dtpl for daino 0.1.5.3 base for pdf 
+%
+%
 % Options for packages loaded elsewhere
 \PassOptionsToPackage{unicode$for(hyperrefoptions)$,$hyperrefoptions$$endfor$}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
@@ -8,7 +11,8 @@ $if(CJKmainfont)$
 \PassOptionsToPackage{space}{xeCJK}
 $endif$
 %
-\documentclass[
+\documentclass[a4paper,openany,nobib
+%copied from tufte
 $if(fontsize)$
   $fontsize$,
 $endif$
@@ -27,7 +31,14 @@ $endif$
 $for(classoption)$
   $classoption$$sep$,
 $endfor$
-]{$documentclass$}
+]
+% logic from tufte64latex
+        $if(extra.bookBig)$ {book}  %testbook $latBookBig$
+        $elseif(extra.booklet)$ {book}  %testbooklet $latBooklet$
+        $else$ {article}  
+        $endif$
+
+%  {$metaLatex.documentclass$}
 $if(beamer)$
 $if(background-image)$
 \usebackgroundtemplate{%
@@ -84,7 +95,7 @@ $endif$
 $if(beamerarticle)$
 \usepackage{beamerarticle} % needs to be loaded first
 $endif$
-\usepackage{amsmath,amssymb}
+$-- TODO ?? \usepackage{amsmath,amssymb}
 $if(linestretch)$
 \usepackage{setspace}
 $endif$
@@ -334,7 +345,7 @@ $endif$
 $if(pagestyle)$
 \pagestyle{$pagestyle$}
 $endif$
-$if(csl-refs)$
+$if(metaLatex.csl-refs)$
 % definitions for citeproc citations
 \NewDocumentCommand\citeproctext{}{}
 \NewDocumentCommand\citeproc{mm}{%
@@ -376,7 +387,7 @@ $if(lang)$
 \usepackage[bidi=default]{babel}
 \fi
 $if(babel-lang)$
-\babelprovide[main,import]{$babel-lang$}
+\babelprovide[main,import]{$metaLatex.lang$}
 $if(mainfont)$
 \ifPDFTeX
 \else
@@ -436,20 +447,20 @@ $if(verbatim-in-note)$
 \VerbatimFootnotes % allow verbatim text in footnotes
 $endif$
 \hypersetup{
-$if(title-meta)$
-  pdftitle={$title-meta$},
+$if(extra.textual0tex.title)$
+  pdftitle={$extra.textual0tex.title$},
 $endif$
-$if(author-meta)$
-  pdfauthor={$author-meta$},
+$if(extra.textual0tex.author)$
+  pdfauthor={$extra.textual0tex.author$},
 $endif$
-$if(lang)$
-  pdflang={$lang$},
+$if(metaLatex.lang)$
+  pdflang={$metaLatex.lang$},
 $endif$
 $if(subject)$
   pdfsubject={$subject$},
 $endif$
-$if(keywords)$
-  pdfkeywords={$for(keywords)$$keywords$$sep$, $endfor$},
+$if(metaLatex.keywords)$
+  pdfkeywords={$for(metaLatex.keywords)$$metaLatex.keywords$$sep$, $endfor$},
 $endif$
 $if(colorlinks)$
   colorlinks=true,
@@ -465,8 +476,8 @@ $endif$
 $endif$
   pdfcreator={LaTeX via pandoc}}
 
-$if(title)$
-\title{$title$$if(thanks)$\thanks{$thanks$}$endif$}
+$if(extra.textual0tex.title)$
+\title{$extra.textual0tex.title$$if(thanks)$\thanks{$thanks$}$endif$}
 $endif$
 $if(subtitle)$
 $if(beamer)$
@@ -498,15 +509,15 @@ $endif$
 $if(has-frontmatter)$
 \frontmatter
 $endif$
-$if(title)$
+$if(extra.textual0tex.title)$
 $if(beamer)$
 \frame{\titlepage}
 $else$
 \maketitle
 $endif$
-$if(abstract)$
+$if(extra.textual0tex.abstract)$
 \begin{abstract}
-$abstract$
+$extra.textual0tex.abstract$
 \end{abstract}
 $endif$
 $endif$
@@ -548,8 +559,33 @@ $endif$
 $if(has-frontmatter)$
 \mainmatter
 $endif$
-$body$
+$metaLatex.bodyBase$
+% --------------- after body
+$for(extra.fileEntries)$   % booklet level of collections
+    \chapter{$it.textualTex.title$}
+    \begin{mdframed}\sloppy\medskip
+    $it.textualTex.textualTex.abstract$\end{mdframed}
+    $it.textualTex.content$
+$endfor$
 
+
+$for(extra.dirEntries)$   % bookbig level of collections
+    \part{$extra.dirEntries.textualTex.title$}
+    \begin{mdframed}\sloppy\medskip
+    $extra.dirEntries.textualTex.abstract$\end{mdframed}
+    $extra.dirEntries.textualTex.content$
+
+
+    $for(extra.fileEntries)$   % -- the files in the parts in bookbig
+        \chapter{$extra.dirEntries.fileEntries.textualTex.title$}
+        \begin{mdframed}\sloppy\medskip
+        $extra.dirEntries.fileEntries.textualTex.abstract$\end{mdframed}
+        $extra.dirEntries.fileEntries.textualTex.content$
+    $endfor$
+
+$endfor$
+
+% backmatter
 $if(has-frontmatter)$
 \backmatter
 $endif$

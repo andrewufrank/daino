@@ -21,13 +21,15 @@ menuitems       $for(sett.menuitems.menuNav)$
 
 the Yaml of this file: 
 title           $extra.textual0tex.title$
-$-- subtitle        $metaHtml.textual0tex.subtitle$ 
+$-- subtitle        $metaLatex.textual0tex.subtitle$ 
 abstract        $extra.textual0tex.abstract$
 author          $extra.textual0tex.author$
-$-- table of contents   $metaHtml.table-of-contents$
+$-- table of contents   $metaLatex.table-of-contents$
 linkpdf         $extra.pdf1$
 date            $extra.date$
-$-- content         $metaHtml.bodyLat$
+content         $metaLatex.bodyBase$
+documentclass   $metaLatex.documentclass$
+csl-refs        $metaLatex.csl-refs$
 
 dainoversion    $extra.dainoVersion$
 visibility      $metaLatex.visibility$
