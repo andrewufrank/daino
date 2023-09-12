@@ -144,7 +144,7 @@ shake2latex debug flags sett4 bakedP  =
         -- putInform debug ["panrep2html render testTemplate done", "test_template",  test_template ]
 
         runErr2action $ do 
-            unless (quickFlag flags) $ 
+            when (pdfFlag flags) $ 
                 write8 outP texFileType ( Latex ht1) 
             write8 outP ttlFileType test_template
 

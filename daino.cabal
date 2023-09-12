@@ -60,6 +60,7 @@ library
     , containers
     , data-default-class
     , filepath
+    , pandoc-sidenote
     , pandoc-types >=1.23.1
     , path
     , path-io
@@ -93,6 +94,7 @@ executable daino62
     , daino
     , data-default-class
     , filepath
+    , pandoc-sidenote
     , pandoc-types >=1.23.1
     , path
     , path-io
@@ -134,6 +136,7 @@ test-suite testall
     , data-default-class
     , data-hash
     , filepath
+    , pandoc-sidenote
     , pandoc-types >=1.23.1
     , path
     , path-io
@@ -172,6 +175,7 @@ test-suite testrun
     , data-default-class
     , data-hash
     , filepath
+    , pandoc-sidenote
     , pandoc-types >=1.23.1
     , path
     , path-io

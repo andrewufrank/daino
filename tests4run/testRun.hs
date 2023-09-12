@@ -39,6 +39,7 @@ main = mainTest  -- for a different function name (main is in daino)
 mainTest        -- with tests in other modules
   = do
     putStrLn "HTF ExampleTest.hs:\n"
+    putIOwords ["baseline test for DainoSite fresh start"]
     -- runErrorVoid $ createDirIfMissing' "/home/frank/.daino"
     -- is in siteHeader.yaml testDir  - must correspond
     p <- htfMain htf_importedTests
@@ -56,7 +57,7 @@ main4t = do
             dainoProcess NoticeLevel0 testFlags
                 {testFlag = True 
                 -- , testNewFlag = True -- T 
-                -- , quickFlag = True   -- q 
+                -- , pdfFlag = True   -- q 
                 }
     putIOwords ["main4t end", showT p]
 
@@ -69,7 +70,7 @@ main4T = do
             dainoProcess NoticeLevel0 testFlags
                 {testFlag = True 
                 , testNewFlag = True -- T 
-                -- , quickFlag = True   -- q 
+                -- , pdfFlag = True   -- q 
                 }
     putIOwords ["main4T end", showT p]
 
@@ -82,7 +83,7 @@ main4qT = do
             dainoProcess NoticeLevel0 testFlags
                 {testFlag = True 
                 , testNewFlag = True -- T 
-                , quickFlag = True   -- q 
+                -- , pdfFlag = True   -- n 
                 }
     putIOwords ["main4qT end", showT p]
     

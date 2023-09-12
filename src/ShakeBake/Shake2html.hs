@@ -66,7 +66,7 @@ shake2html debug flags sett4 bakedP  =
         let bakedFrom = replaceExtension'  "panrep" outP
         putInform debug ["rule **/*.html 3 - bakedFrom", showT bakedFrom, "\n"]
         needP [bakedFrom]
-        unless (quickFlag flags) $ do 
+        when (pdfFlag flags) $ do 
             let pdfNeeded = replaceExtension' "pdf" outP
             putInform debug ["rule **/*.html 3b - pdfNeeded", showT pdfNeeded, "\n"]
             needP [pdfNeeded]
@@ -154,7 +154,7 @@ shake2html debug flags sett4 bakedP  =
             ["-----rule **/*.html 14 bakeOnePanrep2html done fn"
             , showT outP]
 
-        unless (quickFlag flags) $ do 
+        when (pdfFlag flags) $ do 
             -- needs to start the pdf production 
             let is2pdf = map (addFileName bakedP . 
                             addExtension extPDF) ixs0 
