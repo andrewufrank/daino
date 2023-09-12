@@ -249,7 +249,11 @@ $-- partial is not found, copied here
             margin-left: 2em;
             }
 $endif$
+    $-- two w3c related stylesheets before the tufte one  
 
+      <link rel="stylesheet" href="/resources/theme/templates/static/w3c.css" type="text/css">   
+    $--  <link rel="stylesheet" href="/resources/theme/templates/static/daino_ext_w3c.css" type="text/css">   
+    <link rel="stylesheet" href="/resources/theme/templates/static/pandoc.css"/>
 $--  </style>
  
 $for(css)$
@@ -270,6 +274,41 @@ $endif$
 </head>
 
 <body>
+​<!-- Head   under ribbon on top-->  $-- height limited to 300, how to adapt?
+<header class="w3-display-container">
+    $if(metaHtml.image)$   $-- image in md yaml 
+        <img class="centerImage" src=$metaHtml.image$  style="object-fit: contain; max-height: 400px; height: auto; width: auto; "  
+            alt="$metaHtml.imageCaption$">  $-- the image put into index.md
+    $else$      $--   no image in head 
+        <img class="" src=$sett.siteHeader.banner$ style="object-fit: contain;"
+            alt="$sett.siteHeader.bannerCaption$">  $-- the image put in the settings.yml
+
+    <div class="bottomleft w3-text-light-grey";  $--  w3-padding-large w3-text-light-grey
+        display: flex;
+        align-items:flex-start;>
+        <a href="/index.html"><h1 class="w3-hide-medium w3-hide-small w3-xxxlarge" style="color: white; position: relative; z-index: 1">$sett.siteHeader.sitename$</h1></a>
+        <a href="/index.html"><h2 class="w3-hide-large" style="color: white; position: relative; z-index: 1">$sett.siteHeader.sitename$</h2></a>
+        <h3 class="w3-hide-medium w3-hide-small" style="color: white">$sett.siteHeader.byline$</h3> 
+                $-- byline is not shown on small screens
+                $-- could be p.byline see pandoc.css
+      </div>
+    $endif$
+</header>
+
+<!-- Navbar ribbon (sits on top) -->
+<div class="sticky light-background" >
+    <div class="w3-bar">  $-- removed w3-button
+        <a href="/index.html" class=" w3-bar-item ">$sitename$</a>
+        <!-- Float links to the right. Hide them on small screens -->
+      <div class="w3-right w3-hide-small">
+        $for(sett.menuitems.menuNav)$  $-- removed w3-button
+        <a href=/$sett.menuitems.menuNav.navlink$ class="w3-bar-item">$sett.menuitems.menuNav.navtext$</a>
+        $endfor$
+      </div>
+    </div>
+</div>
+
+
 $for(include-before)$
 $include-before$
 $endfor$
@@ -305,5 +344,101 @@ $metaHtml.body$
 $for(include-after)$
 $include-after$
 $endfor$
+
+<!-- content -->
+<!-- <section class="w3-container w3-content content"> $-- content  -->
+    <!-- <section  class="w3-grey"  style="max-width:900px">  title section  -->
+
+        <!-- here starts the tufte styled content  --------------------------------------------  -->
+<article class="group"> 
+        $if(metaHtml.title)$
+                <h1 id="tufte-css" >$metaHtml.title$</h1> $-- removed w3-padding
+            $if(metaHtml.subtitle)$
+                <p class="subtitle">$metaHtml.subtitle$</p>
+            $endif$
+            $if(metaHtml.author)$ 
+                <p class="subtitle">$metaHtml.author$</p>   
+            $endif$
+       $endif$
+
+        <!-- <section  style="padding-left: 40px;" >  $-- abstracts and tableof contente after 
+            title   -->
+        $-- <section>
+            $if(toc)$
+                <nav id="$idprefix$TOC">
+                $metaHtml.table-of-contents$
+                </nav>
+            $endif$
+
+            $beforeContent$
+                
+            $if(metaHtml.abstract)$
+                <p>
+                    <a>$metaHtml.abstract$</a>
+                    <a href=/$webroot$$extra.pdf2$>  (pdf1)</a>
+                </p>
+            $endif$
+            $if(metaHtml.date)$ 
+                <p class="subtitle">$metaHtml.date$</p>   
+            $endif$
+         $-- </section> 
+    <!-- end title of entry -->
+
+    <section>   $-- necessary for sidenotes to work
+        $metaHtml.body$  <!--content-from-panrep-blocks which is the content of the index.md -->
+        <!-- <div id="refs">
+            <h2>ReferencesTitle</h2>
+            $-- here should be the refs see https://github.com/jgm/pandoc/issues/7969
+        </div> -->
+    $afterContent$
+
+    $for(include-after)$
+        $include-after$includeAfterX
+    $endfor$
+    </section> 
+    <section> 
+        <!-- menu section  -->
+        <ul class="w3-ul w3-hoverable">
+                $for(extra.fileEntries)$ 
+                    <li>     <!-- list item menu2files:  -->
+                    <a href=/$extra.fileEntries.ixfn$.html><em>$extra.fileEntries.textualHtml.title$ </em></a>
+                    $if(extra.fileEntries.textualHtml.abstract)$<br>$extra.fileEntries.textualHtml.abstract$
+                    <a href=/$extra.fileEntries.pdf1$>  (pdf)</a>
+                    $endif$		     
+                    <span class="af-tiny">$extra.fileEntries.textualHtml.author$ $extra.fileEntries.date$ 
+                        </span>
+                    </li>
+                $endfor$ 
+        </ul>
+                 
+        $if(extra.dirEntries)$ 
+        <p>Directories with more related texts:</p>
+        <ul class="w3-ul w3-hoverable">
+                    $for(extra.dirEntries)$ 
+                    <li> 
+                        <a href=/$extra.dirEntries.ixfn$.html><em>$extra.dirEntries.textualHtml.title$</em></a>
+                    $if(extra.dirEntries.textualHtml.abstract)$<br>$extra.dirEntries.textualHtml.abstract$$endif$		
+                        
+                    </li>
+                    $endfor$
+        $endif$
+        </ul>
+
+    </section>
+</article>
+
+$-- footer, copied from tufte
+<!-- footer -->
+<div class=" w3-container af-tiny light-background" style="margin-top:24px;padding-right:58px ">  
+    <div class="w3-left">  <!--  not including data, but version -->
+        <a>Produced with `daino` $extra.dainoversion$ from $extra.mdFile$ ($metaHtml.visibility$, $metaHtml.version$) with $sett.siteLayout.masterTemplateFile$.</a>  
+    </div>
+    <div class="w3-right">
+        <a><Rationale: consult</a>
+            <a href="http://frank.gerastree.at/Essays/dainodesign/index.html" target="
+            _blank">daino</a> and
+            <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank">w3.css</a>
+    </div>
+</div>
 </body>
 </html>
