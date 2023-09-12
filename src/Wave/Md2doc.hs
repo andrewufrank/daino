@@ -96,26 +96,25 @@ pandoc2metaplus debug sett4 bakedFrom  = do
     -- to convert the /lf/ marks in hard LineBreak
     -- meta1 <- md2Meta_Process p3 -- includes process citeproc
     pan4@(Pandoc m4 p4) <- mdCiteproc p3 
-    let meta2latex = Meta $ M.insert "bodyLat" (MetaBlocks p4) (unMeta m4)
     putInform debug ["pandoc2metaplus 6 citeproc done "]
 
     let (Pandoc m5 p5) = usingSideNotes pan4 
-    -- move the body and then converts to html and latex 
-    let meta2  = Meta $ M.insert "bodyHtml" (MetaBlocks p5) (unMeta meta2latex)
-    
-    htm1 <-  writeHtml5String2 (p5)
-    lat1 <-   writeTexSnip2 (p4)
+        -- changed the body (p5) to prepare for tufte style
 
-    let mp1 = setMetaPlusInitialize sett4 bakedFrom meta2
-    let mp2 = mp1 { metaHtml = htm1
-                    , metaLatex = lat1}
+    -- move the body and then converts to html and latex 
+    let meta4base = Meta $ M.insert "bodyBase" (MetaBlocks p4) (unMeta m4)
+    let meta5tufte = Meta $ M.insert "bodyTufte" (MetaBlocks p5) (unMeta meta4base)
+     
+    let mp1 = setMetaPlusInitialize sett4 bakedFrom meta5tufte
+    -- let mp2 = mp1 { metaHtml = meta5tufte  -- 2 versions of body
+    --                 , metaLatex = meta4base}  -- one only
     putInform debug ["pandoc2metaplus 6a usingSidenotes done "]
 
     -- for tufte style, apply pandoc-sidenotes
 
             -- pushes all what is further needed into metaplus
 
-    -- mp2 <- completeMetaPlus mp1  -- converts the body to tex and html
+    mp2 <- completeMetaPlus mp1  -- converts the body to tex and html
     let mp3 = fillTextual4MP mp2 
     putInform debug ["pandoc2metaplus 7 end "]
 
