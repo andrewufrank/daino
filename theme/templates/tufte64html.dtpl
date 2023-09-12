@@ -188,7 +188,7 @@
                 $endfor$ 
         </ul>
                  
-        $if(extra.dirEntries)$ 
+        $for(extra.dirEntries)$ 
         <p>Directories with more related texts:</p>
         <ul class="w3-ul w3-hoverable">
                     $for(extra.dirEntries)$ 
@@ -198,7 +198,7 @@
                         
                     </li>
                     $endfor$
-        $endif$
+        $endfor$
         </ul>
 
     </section>

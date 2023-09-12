@@ -1,5 +1,5 @@
 $-- template to produce a latex file with the tufte style fixed notes-in-notes
-% template tufte633latex.dtpl 
+% template tufte64latex.dtpl v1
 % for use with Uniform.MetaPlus from u4blog v 0.1.6.4 for citeproc
 % uses pandco 3.1.8 - specialized for luatex and not beamer
 % see the default.latex template from https://github.com/jgm/pandoc-templates/blob/master/default.latex
@@ -328,7 +328,7 @@ $metaLatex.body$
 $for(extra.fileEntries)$   % booklet level of collections
     \chapter{$it.textualTex.title$}
     \begin{mdframed}\sloppy\medskip
-    $it.textualTex.textualTex.abstract$\end{mdframed}
+    $it.textualTex.abstract$\end{mdframed}
     $it.textualTex.content$
 $endfor$
 
