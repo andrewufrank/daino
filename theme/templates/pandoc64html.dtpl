@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="$lang$" xml:lang="$lang$"$if(dir)$ dir="$dir$"$endif$>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="$lang$" xml:lang="$metaLatex.lang$"$if(dir)$ dir="$dir$"$endif$>
 <head>
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
 $for(author-meta)$
-  <meta name="author" content="$author-meta$" />
+  <meta name="author" content="$sett.settingsAuthor$" />
 $endfor$
 $if(date-meta)$
-  <meta name="dcterms.date" content="$date-meta$" />
+  <meta name="dcterms.date" content="$metaLatex.date$" />
 $endif$
-$if(keywords)$
-  <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
+$if(metaLatex.keywords)$
+  <meta name="keywords" content="$for(metaLatex.keywords)$$metaLatex.keywords$$sep$, $endfor$" />
 $endif$
 $if(description-meta)$
   <meta name="description" content="$description-meta$" />
 $endif$
-  <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
+  <title>$if(title-prefix)$$title-prefix$ – $endif$$extra.textual0html.title$</title>
 $--  <style> 
 $--    $styles.html()$
     $if(document-css)$
@@ -224,6 +224,7 @@ $--    $styles.html()$
     $endif$
     $if(csl-css)$
 $--    $styles.citations.html()$
+$-- partial is not found, copied here
             /* CSS for citations */
             div.csl-bib-body { }
             div.csl-entry {
@@ -267,26 +268,27 @@ $endif$
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
 </head>
+
 <body>
 $for(include-before)$
 $include-before$
 $endfor$
-$if(title)$
+$if(extra.textual0html.title)$
 <header id="title-block-header">
-<h1 class="title">$title$</h1>
+<h1 class="title">$extra.textual0html.title$</h1>
 $if(subtitle)$
 <p class="subtitle">$subtitle$</p>
 $endif$
-$for(author)$
-<p class="author">$author$</p>
+$for(extra.textual0html.author)$
+<p class="author">$extra.textual0html.author$</p>
 $endfor$
 $if(date)$
 <p class="date">$date$</p>
 $endif$
-$if(abstract)$
+$if(extra.textual0html.abstract)$
 <div class="abstract">
 <div class="abstract-title">$abstract-title$</div>
-$abstract$
+$extra.textual0html.abstract$
 </div>
 $endif$
 </header>
