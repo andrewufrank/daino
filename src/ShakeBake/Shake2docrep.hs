@@ -64,6 +64,7 @@ shake2docrep debug flags sett4 bakedP  =
         putInform NoticeLevel1 ["rule **/*.docrep 4 read", showT bakedFrom]
 
        -- check for german and process umlaut, 
+       --       this is done, even if the file is not include later
         -- repeat readMd2pandoc if changed   
             -- then add list of defaults
             -- walk to replace /lf/ 

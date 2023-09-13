@@ -64,10 +64,9 @@ shake2panrep debug flags sett4 bakedP =
     putInform debug ["\nrule **/*.panrep 3 continued", showT out]
 
     let thisDirP =  makeAbsDir $ getParentDir outP :: Path Abs Dir
+
     
     putInform debug ["rule **/*.panrep 4 - thisDirP", showT thisDirP]
-
-    let 
 
     (fileEnts, dirEnts) <- 
         if not (isIndexPage outP) 
@@ -85,13 +84,9 @@ shake2panrep debug flags sett4 bakedP =
             dirEnt1 <- mapM (constructFileEnry debug sett4) ind3 
             -- produces the data for the index.md file
 
-
-
             return (catMaybes fileEnt1, catMaybes dirEnt1)
-
     
     putInform debug ["\nrule **/*.panrep 4x continued after unless" ]
-
 
     -- (dirEntries, fileEntries) <- constructIndexEntries
     putInform debug ["\nrule **/*.panrep 5 continued 2", showT out]

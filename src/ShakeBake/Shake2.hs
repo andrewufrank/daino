@@ -86,10 +86,10 @@ shakeMD debug sett4 flags = do
     (toFilePath bakedP <> "**/*.pdf") %> \out -> -- insert pdfFIles1
         do
             when (inform debug) $ putIOwords ["rule **/*.pdf", showT out]
-            -- imgs <- getNeeds debug sett4 doughP bakedP "jpg" "jpg"
-            -- imgs2 <- getNeeds debug sett4 doughP bakedP "JPG" "JPG"
-            -- needP imgs
-            -- needP imgs2
+            imgs <- getNeeds debug sett4 doughP bakedP "jpg" "jpg"
+            imgs2 <- getNeeds debug sett4 doughP bakedP "JPG" "JPG"
+            needP imgs
+            needP imgs2
             -- why is this here necessary: failed on testSort.pdf?
             -- was ein jpg will ?
             -- TODO improve error from lualatex
@@ -157,3 +157,56 @@ shakeMD debug sett4 flags = do
     -- the formats for the csl biblio output
         %> \out -> copyFileToBaked debug doughP bakedP out
 
+getNeeds ::
+    NoticeLevel 
+    -> Settings -- ^ the site layout etc
+    -> Path Abs Dir  -- ^ source dir
+    -> Path Abs Dir  -- ^ target dir
+    -> Text  -- ^ extension source
+    -> Text  -- ^ extension target
+    -> Action [Path Abs File]
+{- ^ find the files which are needed (generic)
+  from source with extension ext
+  does not include directory DNB (do not bake)
+-}
+getNeeds debug  sett4 sourceP targetP extSource extTarget = do
+    let sameExt = extSource == extTarget
+    putInform debug 
+            [ "===================\ngetNeeds extSource"
+            , extSource
+            , "extTarget"
+            , extSource
+            , "sameExt"
+            , showT sameExt
+            , "\ndebug", showT debug
+            ]
+
+    filesWithSource :: [Path Rel File] <- -- getDirectoryFilesP
+        getFilesToBake
+            (doNotBake  (siteLayout sett4)) -- exclude files containing
+            sourceP
+            ["**/*." <> t2s extSource]
+    -- subdirs
+    let filesWithTarget =
+            if sameExt
+                then [targetP </> c | c <- filesWithSource]
+                else
+                    map
+                        (replaceExtension' extTarget . (targetP </>))
+                         filesWithSource  
+                                :: [Path Abs File]
+    putInform debug 
+            [ "===================\ngetNeeds -  source files 1"
+            , "for ext"
+            , extSource
+            , "files\n"
+            , showT filesWithSource
+            ]
+    putInform debug 
+            [ "\nbakePDF -  target files 2"
+            , "for ext"
+            , extTarget
+            , "files\n"
+            , showT filesWithTarget
+            ]
+    return filesWithTarget
