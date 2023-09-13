@@ -66,6 +66,7 @@ library
     , path-io
     , pretty-simple
     , shake
+    , text
     , uniform-cmdLineArgs
     , uniform-http
     , uniform-json
@@ -78,7 +79,7 @@ library
     , uniformBase
   default-language: Haskell2010
 
-executable daino62
+executable daino64
   main-is: daino.hs
   other-modules:
       Paths_daino
@@ -100,6 +101,7 @@ executable daino62
     , path-io
     , pretty-simple
     , shake
+    , text
     , uniform-cmdLineArgs
     , uniform-http
     , uniform-json
@@ -144,6 +146,7 @@ test-suite testall
     , pretty-simple
     , quickcheck-text
     , shake
+    , text
     , uniform-cmdLineArgs
     , uniform-http
     , uniform-json
@@ -188,6 +191,7 @@ test-suite testrun
     , pretty-simple
     , quickcheck-text
     , shake
+    , text
     , uniform-cmdLineArgs
     , uniform-http
     , uniform-json

@@ -12,6 +12,8 @@ module Main where      -- must have Main (main) or Main where
   -- but file name be lower case 
 
 import     Test.Framework
+import Text.Pretty.Simple
+import qualified Data.Text.Lazy as L
 
 -- import    {-@ HTF_TESTS @-}        Lib.Md2doc_test
 -- import    {-@ HTF_TESTS @-}        Lib.Docrep2panrep_test
@@ -142,4 +144,4 @@ main4Tne = do
                 }
     p <- runErr $ do 
             dainoProcess NoticeLevel0 tf
-    putIOwords ["main4Tne end", showT p, showT tf]    
+    putIOwords ["main4Tne end", L.toStrict $ pShow p, showT tf]    
