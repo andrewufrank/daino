@@ -30,7 +30,7 @@ setup_md2metaplus settingsFn fn = do
         let debug = NoticeLevel0   -- avoid_output_fromHere_down
         sett4 <- readSettings debug settingsFn 
         -- pandoc1 <- readMd2pandoc fn 
-        mp3 <- pandoc2metaplus debug sett4 fn  
+        mp3 <- md2doc debug sett4 fn  
 
         -- metaplus1 <- readMarkdownFile2docrep debug sett3 fn
         return mp3

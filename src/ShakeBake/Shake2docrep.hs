@@ -58,11 +58,10 @@ shake2docrep debug flags sett4 bakedP  =
     
     putInform debug ["rule **/*.docrep 3 continued - md need set"]
 
-    _ <- runErr2action $ do -- bakeOneMD2docrep debug flags bakedFrom sett4 outP 
-    -- no needs ? 
+    _ <- runErr2action $ do -- no needs added here 
+                    --  (because not certain that included) 
 
         putInform NoticeLevel1 ["rule **/*.docrep 4 read", showT bakedFrom]
-        -- pandoc1 <- readMd2pandoc bakedFrom -- need posted
 
        -- check for german and process umlaut, 
         -- repeat readMd2pandoc if changed   
@@ -70,9 +69,8 @@ shake2docrep debug flags sett4 bakedP  =
             -- walk to replace /lf/ 
             -- apply citeproc
             -- fill body and convert to html and latex
-        mp3 <- pandoc2metaplus NoticeLevel1 sett4 bakedFrom 
+        mp3 <- md2doc NoticeLevel1 sett4 bakedFrom 
     
-
         let incl = includeBakeTest3docrep flags (metap mp3) 
     
         let dr4 =  if incl then mp3 else zero     

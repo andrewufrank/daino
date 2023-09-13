@@ -29,11 +29,11 @@
 module ShakeBake.Shake2 where
 
 import UniformBase 
+import Foundational.SettingsPage
+import Foundational.Filetypes4sites
 import Foundational.CmdLineFlags
 import Uniform.Shake
  
-import Foundational.SettingsPage
-import Foundational.Filetypes4sites
  
 import Wave.Panrep2pdf
 import ShakeBake.Shake2aux

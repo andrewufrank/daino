@@ -30,111 +30,89 @@ module Wave.Md2doc (
 
 import Paths_daino (version)
 
-import UniformBase
-import Uniform.MetaPlus  
--- import Development.Shake 
 import Foundational.SettingsPage  
--- import Foundational.Filetypes4sites 
 import Foundational.CmdLineFlags
-import Uniform.Pandoc
-import Uniform.Latex
--- import Uniform.TemplateStuff
-import Uniform.Shake  
--- import Uniform.MetaPlus
 import ShakeBake.Shake2indexes (fillTextual4MP)
-import Text.Pandoc.Walk
-import Text.Pandoc.Definition
 import Lib.OneMDfile
 import Lib.FileHandling
 
-import Text.Pandoc.SideNote ( usingSideNotes )
--- i assume this is only useful for html output 
--- but now done for the body before translation to html or latex
-import qualified Data.Map as M
+import UniformBase
+import Uniform.MetaPlus  
+import Uniform.PandocImports
+import Uniform.Markdown 
+import Uniform.MetaStuff
+import Uniform.TemplateStuff
+import Uniform.Latex
+import Uniform.Shake  
+
 default (Text)
 
 
 -- the conversion in shake2docrep
 -- it produces for debuggin the pandoc values in a ttp file
-pandoc2metaplus :: NoticeLevel -> Settings -> Path Abs File ->    ErrIO DainoMetaPlus
-pandoc2metaplus debug sett4 bakedFrom  = do
-    putInform debug ["pandoc2metaplus 1 start ", showT bakedFrom]
+md2doc :: NoticeLevel -> Settings -> Path Abs File ->    ErrIO DainoMetaPlus
+-- must not added needs (because test for inclusion follows later)
+md2doc debug sett4 bakedFrom  = do
+    putInform debug ["md2doc 1 start ", showT bakedFrom]
 
-    pandoc1 <- readMd2pandoc bakedFrom -- need posted
+    pandoc1 <- readMd2pandoc bakedFrom  
     -- apply the umlaut conversion first 
     -- treat the .md file and reread it if changed
     let langCode = latexLangConversion 
             . getTextFromYaml5 "" "language" $ pandoc1
-        debugReplace = False -- otherwise not new file written 
+        debugReplace = False 
+        -- with debug not new file written in umlautconversin
                     -- inform debug 
     pandoc2 <- if langCode == "ngerman"
         then do
-            putInform debug ["pandoc2metaplus 2 "]
+            putInform debug ["md2doc 2 "]
             erl1 :: [Text] <- readErlaubt (replaceErlaubtFile . siteLayout $ sett4)
             let addErl = words' . getTextFromYaml5 "" "DoNotReplace" $ pandoc1
             let addErl2 = words' . getTextFromYaml5 "" "doNotReplace" $ pandoc1
                 -- allow additions to the list in the YAML header
                 -- with or without capital D
-                -- addErl2 = fromJustNote "sdfwer" $ splitOn' addErl ","
                 erl2 = addErl ++ addErl2 ++ erl1
-            putInform debug ["pandoc2metaplus 3 "]
+            putInform debug ["md2doc 3 "]
             changed <- applyReplace debugReplace erl2   bakedFrom 
             if changed -- && (not debugReplace)
                 then do 
                         pan2 <- readMd2pandoc bakedFrom 
-                        putInform debug ["pandoc2metaplus 4 "]
+                        putInform debug ["md2doc 4 "]
                         return pan2
                     -- then readMarkdownFile2docrep debug  sett4 bakedFrom 
                 -- when debug true then changed files are not written 
                 else return pandoc1
         else return pandoc1
 
-    putInform debug ["pandoc2metaplus 5 umlaut done "]
+    putInform debug ["md2doc 5 umlaut done "]
 
     let p2 = addListOfDefaults (metaDefaults sett4) pandoc2
-    let p3 = walk lf2LineBreak p2
+    let p3 = walkPandoc lf2LineBreak p2
     -- to convert the /lf/ marks in hard LineBreak
-    -- meta1 <- md2Meta_Process p3 -- includes process citeproc
     pan4@(Pandoc m4 p4) <- mdCiteproc p3 
-    putInform debug ["pandoc2metaplus 6 citeproc done "]
+    putInform debug ["md2doc 6 citeproc done "]
 
     let (Pandoc _ p5) = usingSideNotes pan4 
         -- changed the body (p5) to prepare for tufte style
 
     -- move the body and then converts to html and latex 
-    let meta4base = Meta $ M.insert "bodyBase" (MetaBlocks p4) (unMeta m4)
-    let meta5tufte = Meta $ M.insert "bodyTufte" (MetaBlocks p5) (unMeta meta4base)
+    let meta4base = setBlocks2meta "bodyBase" ( p4) m4
+    let meta5tufte = setBlocks2meta "bodyTufte" ( p5) meta4base
+    -- let meta4base = Meta $ M.insert "bodyBase" (MetaBlocks p4) (unMeta m4)
+    -- let meta5tufte = Meta $ M.insert "bodyTufte" (MetaBlocks p5) (unMeta meta4base)
      
     let mp1 = setMetaPlusInitialize sett4 bakedFrom meta5tufte
     -- let mp2 = mp1 { metaHtml = meta5tufte  -- 2 versions of body
     --                 , metaLatex = meta4base}  -- one only
-    putInform debug ["pandoc2metaplus 6a usingSidenotes done "]
-
-    -- for tufte style, apply pandoc-sidenotes
+    putInform debug ["md2doc 6a usingSidenotes done "]
 
             -- pushes all what is further needed into metaplus
-
     mp2 <- completeMetaPlus mp1  -- converts the body to tex and html
     let mp3 = fillTextual4MP mp2 
-    putInform debug ["pandoc2metaplus 7 end "]
+    putInform debug ["md2doc 7 end "]
 
     return mp3
 
-
---   -- fill the three meta fields for the output
--- completeMetaPlus :: MetaPlus sett extra -> ErrIO (MetaPlus sett extra) 
--- completeMetaPlus metapl1 = do 
---     -- md1 <- meta2xx writeToMarkdown  (metap metapl1)
---     htm1 <- meta2xx writeHtml5String2 (metap metapl1)
---     lat1 <- meta2xx writeTexSnip2 (metap metapl1)
---     -- uses biblatex
---     let metap2 = metapl1  { 
---                         -- metaMarkdown = md1
---                       metaHtml = htm1
---                     , metaLatex = lat1}
---                     -- sind je M.Map Text Text
---     -- putIOwords ["completeMetaPlus \n", showT metap2]
---     return metap2 
 
 lf2LineBreak :: Inline -> Inline
 -- | converts a "/lf/" string in a hard linebreak
@@ -229,89 +207,6 @@ fillTemplate_render  tpl dat = render (Just 50)
         -- just a plausible line length of 50 
         $  renderTemplate tpl (toJSON dat)        
 
--- readMarkdownFile2docrep  :: NoticeLevel -> PubFlags -> Settings ->  Path Abs File ->  ErrIO Docrep 
--- -- read a markdown file and convert to docrep
--- -- reads setting file!
--- readMarkdownFile2docrep debug flags sett3 fnin = do
---     -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
---     -- when (inform debug) $ 
---     putInform  NoticeLevel2 
---         ["readMarkdownFile2docrep fnin", showPretty fnin]
---         -- place to find PandocParseError
---     p1 <- readMd2pandoc fnin
-
---     putInform debug ["readMarkdownFile2docrep p1", showPretty p1]
-        
---     -- check for german and process umlaut, 
---     -- repeat readMd2pandoc if changed 
-
---     -- default values only what is used for citeproc and ??
---     -- rest can go into settings 
---     -- these are copied from previous values (OLD below)
-
---     let defs1 = [("Bibliography", "resources/BibTexLatex.bib")
---                 , ("version", "publish")  -- todo should probably not be default
---                 ,  ("visibility", "public") 
---                  , ("title", "Title MISSING")
---                 , ("abstract", "Abstract MISSING")
---                 , ("date", showT year2000)
---                 , ("lang", "en")  -- todo conversion? 
---                 , ("latLanguage", "english") -- for babel - todo 
---                 , ("styleBiber","authoryear")
---                 , ("headerShift","1")
---                 , ("author", settingsAuthor sett3)
---                 , ("sortOrder", "filename")
---                 -- , ("indexPage", False) detect from name 'index.md'
---                 ] 
---             -- "resources/webbiblio.bib")
---             -- check that defaults work? 
---             -- defaults are set in panrep2html (and 2latex??)
---     let p2 = addListOfDefaults defs1 p1
---     m1 <- md2Meta_Process p2
---     -- process citeproc
---     let mp1 = setMetaPlusInitialize sett3 fnin m1
---         incl = includeBakeTest3docrep flags (metap mp1) 
-
---     putInform debug 
---         ["readMarkdownFile2docrep end mp1", showPretty mp1]
---     putInform NoticeLevel1 ["readMarkdownFile2docrep end include", showPretty incl]
---     return $ if incl then mp1 else zero 
-
-
-             
--- filters cannot be moved to another file, circular imports!
-
--- filterNeeds :: NoticeLevel -> PubFlags -> Settings -> Path Rel File -> ErrIO(Maybe (Path Abs File))
--- -- ^ for md check the flags
--- -- md given as rel file, completes with dir from sitelayout
-
--- filterNeeds debug pubf sett4 fn =  do 
---     -- let debug = NoticeLevel2   -- avoid_output_fromHere_down
---     putInform debug ["filterNeeds", "\nPubFlags", showT pubf ]
---     let doughP = doughDir . siteLayout $ sett4 :: Path Abs Dir 
---     let fn2 = doughP </> fn :: Path Abs File 
---     filterNeeds2 debug pubf sett4 fn2 
- 
-
--- filterNeeds2 :: NoticeLevel -> PubFlags -> Settings -> Path Abs File -> ErrIO(Maybe (Path Abs File))
--- -- check if file should be included (version > privateFlag)
--- filterNeeds2 debug pubf sett4 fn2 =  do 
---     -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
---     -- when (inform debug) $ 
---         -- putIOwords ["filterNeeds2", "\nPubFlags", showT pubf ]
---     putInform debug ["filterNeeds2", "\nPubFlags", showT pubf ]
-    
---     d1 <- readMarkdownFile2docrep debug sett4  fn2 
---     putInform debug ["filterNeeds2", "\nMeta", showT ( d1) ]
-
---     let t = includeBakeTest3docrep pubf (metap $ d1)
---     putInform debug ["filterNeeds3 ", "\n t", showT t ]
---     return $ if t then Just fn2 else Nothing
-
-
--- includeBakeTest3docrep :: PubFlags -> MetaPage -> Bool 
-
--- ^ decide whether this is to be included in the bake 
 
 
 

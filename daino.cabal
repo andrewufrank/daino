@@ -60,8 +60,6 @@ library
     , containers
     , data-default-class
     , filepath
-    , pandoc-sidenote
-    , pandoc-types >=1.23.1
     , path
     , path-io
     , pretty-simple
@@ -87,7 +85,7 @@ executable daino64
       app
   other-extensions:
       OverloadedStrings
-  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-unused-imports -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports
+  ghc-options: -Wall -fno-warn-unused-binds -fno-warn-deprecations -fno-warn-unused-do-bind -fno-warn-unused-imports -fno-warn-missing-signatures -fno-warn-orphans -fno-warn-type-defaults -fno-warn-unused-matches -fno-warn-warnings-deprecations -fno-warn-missing-methods -fno-warn-missing-home-modules -fno-warn-duplicate-exports -threaded
   build-depends:
       ReplaceUmlaut
     , base >4.7 && <5
@@ -95,8 +93,6 @@ executable daino64
     , daino
     , data-default-class
     , filepath
-    , pandoc-sidenote
-    , pandoc-types >=1.23.1
     , path
     , path-io
     , pretty-simple
@@ -139,8 +135,6 @@ test-suite testall
     , data-default-class
     , data-hash
     , filepath
-    , pandoc-sidenote
-    , pandoc-types >=1.23.1
     , path
     , path-io
     , pretty-simple
@@ -184,8 +178,6 @@ test-suite testrun
     , data-default-class
     , data-hash
     , filepath
-    , pandoc-sidenote
-    , pandoc-types >=1.23.1
     , path
     , path-io
     , pretty-simple

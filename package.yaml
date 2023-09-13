@@ -94,8 +94,9 @@ dependencies:
     # # for default values, move down 
     # - dir-traverse # for checkprocess
     # - deepseq
-    - pandoc-sidenote
+    # - pandoc-sidenote
     # # - pandoc 
+    # - pandoc-types >=1.23.1
     - path
     - path-io
     # - unix
@@ -104,7 +105,6 @@ dependencies:
     # - doctemplates
     - ReplaceUmlaut
     - shake
-    - pandoc-types >=1.23.1
     - pretty-simple
     - text
     # # - system-filepath 
@@ -117,6 +117,10 @@ executables:   # file names wiwth lowercase to avoid forcing Main
   daino64:
     main: daino.hs
     source-dirs: app
+    ghc-options: 
+      -threaded 
+      # -rtsopts 
+      # -with-rtsopts=-N  
     dependencies: 
     - daino
     # - uniform-webserver

@@ -23,24 +23,14 @@
 
 module ShakeBake.Shake2indexes where
 
-import UniformBase 
--- import Foundational.CmdLineFlags
-import Uniform.Shake
--- import Development.Shake.FilePath (makeRelative, replaceDirectory)
-
-import Uniform.Pandoc
--- import Text.Pandoc.Definition as Pandoc
 import Foundational.SettingsPage
 import Foundational.Filetypes4sites
--- import Foundational.CmdLineFlags
--- import Lib.IndexCollect
--- import Wave.Md2doc
--- import Wave.Panrep2html
- 
--- import Development.Shake (getDirectoryFilesIO)
+import UniformBase 
+import Uniform.Shake
+import Uniform.Pandoc
+
 import qualified Data.Map as M
 import qualified Data.List as D
--- import GHC.Base (indexDoubleArrayAsDoubleX2#)
 
 
 
@@ -176,18 +166,19 @@ fillTextual4MP mp = mp{extra = x2}
         --     }
         h1 = metaHtml  mp ::M.Map Text Text
         htm1 = (zero :: TextualIx Text)  
-            { abstract = fromMaybe ( "XX") $ M.lookup "abstract" h1
-            , title = fromMaybe ( "Missing TITLE") $ M.lookup "title" h1
-            , author = fromMaybe ( "Missing AUTHOR") $ M.lookup "author" h1 
+            { abstract = getTextFromMap ( "XX")   "abstract" h1
+            , title = getTextFromMap ( "Missing TITLE")   "title" h1
+            , author = getTextFromMap ( "Missing AUTHOR")  "author" h1 
             -- -- for html  content not used
             }
         t1 = metaLatex  mp ::M.Map Text Text
         tex1 = (zero :: TextualIx Text) 
-            { abstract = fromMaybe ( "Missing ABSTRACT") $ M.lookup "abstract" t1
-            , title = removeChar '\n' . 
-                    fromMaybe ( "Missing TITLE") $ M.lookup "title" t1
-            , author = fromMaybe ( "Missing AUTHOR") $ M.lookup "author" t1 
-            , content = fromMaybe ("Missing CONTENT") $ M.lookup "bodyBase" t1
+            { abstract = getTextFromMap ( "Missing ABSTRACT")  "abstract" t1
+            , title = removeChar '\n' $ 
+                    getTextFromMap ( "Missing TITLE")   "title" t1
+            , author = getTextFromMap ( "Missing AUTHOR") "author" t1 
+            -- , content = fromMaybe ("Missing CONTENT") $ M.lookup "bodyBase" t1
+            , content = getTextFromMap ("Missing CONTENT") "bodyBase" t1
             -- could add content here?
             -- for html not used
             }
@@ -202,4 +193,9 @@ fillTextual4MP mp = mp{extra = x2}
         -- latexTitle =   fromMaybe ( "Missing TITLE") $ M.lookup "title" t1
         -- latexTitle2 =  removeChar' '\n' latexTitle
 
+getTextFromMap :: Text -> Text -> M.Map Text Text ->  Text
+--get the Metavalue (with  default)
+getTextFromMap def1 key m =
+       fromMaybe def1
+        $ M.lookup key m
  
