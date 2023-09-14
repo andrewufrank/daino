@@ -25,7 +25,8 @@ $-- subtitle        $metaLatex.textual0tex.subtitle$
 abstract        $extra.textual0tex.abstract$
 author          $extra.textual0tex.author$
 $-- table of contents   $metaLatex.table-of-contents$
-linkpdf         $extra.pdf1$
+link_pdf1       $extra.pdf1$
+link_pdf2       $extra.pdf2$
 date            $extra.date$
 content         $metaLatex.bodyBase$
 documentclass   $metaLatex.documentclass$
@@ -64,7 +65,7 @@ $--        link    $extra.dirEntries.link$
             abstract  $extra.dirEntries.fileEntries.textualTex.abstract$
             content   $extra.dirEntries.fileEntries.textualTex.content$
     $endfor$
-    
+
 indexEntryFiles 
     
     $for(extra.fileEntries)$

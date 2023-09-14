@@ -395,7 +395,7 @@ $endfor$
             $if(metaHtml.abstract)$
                 <p>
                     <a>$metaHtml.abstract$</a>
-                    <a href=/$webroot$$extra.pdf2$>  (pdf1)</a>
+                    <a href=/$webroot$$extra.pdf2$>  (pdf)</a>
                 </p>
             $endif$
             $if(metaHtml.date)$ 
@@ -423,7 +423,7 @@ $endfor$
                     <li>     <!-- list item menu2files:  -->
                     <a href=/$extra.fileEntries.ixfn$.html><em>$extra.fileEntries.textualHtml.title$ </em></a>
                     $if(extra.fileEntries.textualHtml.abstract)$<br>$extra.fileEntries.textualHtml.abstract$
-                    <a href=/$extra.fileEntries.pdf1$>  (pdf)</a>
+                    <a href=/$extra.fileEntries.ixfn$>  (pdf)</a>
                     $endif$		     
                     <span class="af-tiny">$extra.fileEntries.textualHtml.author$ $extra.fileEntries.date$ 
                         </span>

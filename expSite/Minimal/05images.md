@@ -15,7 +15,7 @@ version: publish
 ---
 use `resources/img...` both for the image in the YAML header as for images in the text, as the following experiment shows. 
 
-The \graphicspath{{$extra.webroot$}} is set and webroot is `/home/frank/bakedExperiment/` but none is shown in tufte.html
+The \graphicspath{extra.webroot}} is set and webroot is `/home/frank/bakedExperiment/` but none is shown in tufte.html
  
 The 1st image: ![example absolute reference - error in PDF, shown in HTML](/Minimal/resources/1IMG.JPG)  is referenced absolutely with `/Minimal/resources/1IMG.JPG` shows in html, but not pdf.
 
