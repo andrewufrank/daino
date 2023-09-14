@@ -58,7 +58,15 @@ $--        link    $extra.dirEntries.link$
         
     $endfor$
 
+-- fileEntries for chapters in bookbig
+    $for(extra.dirEntries.fileEntries)$
+    chapter title $extra.dirEntries.fileEntries.textualTex.title$
+            abstract  $extra.dirEntries.fileEntries.textualTex.abstract$
+            content   $extra.dirEntries.fileEntries.textualTex.content$
+    $endfor$
+    
 indexEntryFiles 
+    
     $for(extra.fileEntries)$
     ----
             ixfn        $extra.fileEntries.ixfn$

@@ -178,7 +178,7 @@ $endif$
 	\fancyhead[R]{\smallcaps{\newlinetospace{\rightmark}}\quad\thepage}%
 }
 
-\makeindex
+% noindex \makeindex
 
 \setcounter{tocdepth}{4}  %to make several levels in table of content, works
 
@@ -193,8 +193,8 @@ $-- \usepackage[colorlinks]{hyperref}
 }
 \urlstyle{same}% uses the style from where it is used
 
-$-- content descriptionm
-\title{$mateLatex.title$}
+$-- content description
+\title{$metaLatex.title$}
 \author{$metaLatex.author$}
 \date{$metaLatex.date$}  $-- no date??
 \publisher{Gerastree editions}
@@ -245,9 +245,9 @@ $if(bookprint)$ % bookprint line 88
     \end{fullwidth}
 $endif$
 
-%\listoffigures
+% noindex %\listoffigures
 
-%\listoftables
+% noindex %\listoftables
 
 $if(bookprint)$ % bookprint line 115
     % r.7 dedication
@@ -319,10 +319,13 @@ $elseif(extra.booklet)$
     \vspace{2cm}
 $endif$
 
-% testtestContentanfang--------
+% testtestContentanfang------------------------------------------
 %\mainmatter
-$metaLatex.body$
-
+%BODY TUFTE -- footnotes give /stru ??
+$-- $metaLatex.bodyTufte$
+%BODY BASE
+$metaLatex.bodyBase$
+%END 
 %testtestContentende--------
 
 $for(extra.fileEntries)$   % booklet level of collections
@@ -335,13 +338,15 @@ $endfor$
 
 $for(extra.dirEntries)$   % bookbig level of collections
     \part{$extra.dirEntries.textualTex.title$}
+    TITLE PART extra.dirEntries.textualTex.title
     \begin{mdframed}\sloppy\medskip
     $extra.dirEntries.textualTex.abstract$\end{mdframed}
     $extra.dirEntries.textualTex.content$
 
 
-    $for(extra.fileEntries)$   % -- the files in the parts in bookbig
+    $for(extra.dirEntries.fileEntries)$   % -- the files in the parts in bookbig
         \chapter{$extra.dirEntries.fileEntries.textualTex.title$}
+        TITLE CHAPTER extra.dirEntries.fileEntries.textualTex.title
         \begin{mdframed}\sloppy\medskip
         $extra.dirEntries.fileEntries.textualTex.abstract$\end{mdframed}
         $extra.dirEntries.fileEntries.textualTex.content$
@@ -355,7 +360,7 @@ $endfor$
 
 
 % where do biblio references go?
-\printindex
+% noindex \printindex
 
 \vspace*{\fill}
 \scriptsize Produced with `daino' ($extra.dainoVersion$) from \url{$extra.mdFile$} with latexTufte81.dtpl 

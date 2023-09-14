@@ -1,6 +1,6 @@
 ---
 title: 
-    title02 **02alltext bold** <br> broken 
+    title02 02alltext bold <br> broken 
 abstract: >
     abstract02 folded block
     with two spaces  

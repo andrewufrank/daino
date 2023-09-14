@@ -15,6 +15,8 @@ import     Test.Framework
 import Foundational.CmdLineFlags
 import UniformBase
 import ShakeBake.StartDainoProcess
+import Text.Pretty.Simple
+import qualified Data.Text.Lazy as L
 import    {-@ HTF_TESTS @-}        Lib.Md2doc_test
 import    {-@ HTF_TESTS @-}        Lib.Docrep2panrep_test
 
@@ -58,6 +60,20 @@ main4Re  = do
     putIOwords ["test publish all dainoSite files"]
     p <- runErr $ dainoProcess NoticeLevel0 flagRe
     putIOwords ["main4Re end", showT p]
+
+main4Ren  = do 
+    putIOwords ["pdf and tufte - test publish all dainoSite files"]
+    p <- runErr $ do 
+        dainoProcess NoticeLevel0 (testFlags {tufteFlag = True
+                                , pdfFlag = True
+                                , newStartFlag = True}) 
+    putIOwords ["main4 server runs! end", L.toStrict $ pShow p]
+main4en  = do 
+    putIOwords ["pdf and tufte - test publish all dainoSite files"]
+    p <- runErr $ do 
+        dainoProcess NoticeLevel0 (testFlags {tufteFlag = True
+                                , pdfFlag = True }) 
+    putIOwords ["main4 server runs! end", L.toStrict $ pShow p]
 flags = testFlags
                 {
                 serverFlag = True  
