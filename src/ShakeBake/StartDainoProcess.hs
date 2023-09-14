@@ -29,39 +29,34 @@ import ShakeBake.Watch (mainWatch)
 import Uniform.WebServer (runScotty)
 import Foundational.SettingsPage
 import Foundational.CmdLineFlags
--- import Paths_daino  
 import UniformBase
 import qualified Path.Posix as Path
 import qualified System.FilePath.Posix as P
--- import System.Directory (canonicalizePath)
--- import Filesystem.Path.CurrentOS (decodeString, encodeString, collapse)
 
 import Path.IO (resolveDir, getHomeDir)
--- , createDirLink, getSymlinkTarget, removeDirLink) -- now in fileio
--- import System.Posix.Files (readSymbolicLink,createSymbolicLink)
 
 dainoProcess :: NoticeLevel -> PubFlags -> ErrIO ()
 dainoProcess debug1 flags = do
     -- let debug1 = NoticeLevel2
-    putIOwords ["dainoProcess 0 debug flags", showT debug1, showT flags]
+    putInformOne debug1 ["dainoProcess 0 debug flags", showT debug1, showT flags]
     let useTestSite = (testFlag flags || testNewFlag flags)
-    putIOwords ["dainoProcess 1 useTestSite", showT useTestSite]
+    putInformOne debug1 ["dainoProcess 1 useTestSite", showT useTestSite]
     currDir :: Path Abs Dir  <- currentDir 
     let relSettingsFile :: Path Rel File = makeRelFile "settings3.yaml"
     let debug = if verboseFlag flags then NoticeLevel1 else debug1
     sett4dir <- if useTestSite 
         then do
-            putInform debug ["dainoProcess 2 test useTestSite"]
+            putInformOne debug ["dainoProcess 2 test useTestSite"]
             return $   makeAbsDir "/home/frank/Workspace11/dainoSite"  
             -- return $ (Path.parent currDir) </> makeRelDir "dainoSite"  
   
         else if (P.isAbsolute (locationDir flags)) 
             then do 
-                putIOwords ["dainoProcess 2 test location abs dir",  showT (locationDir flags)]
+                putInformOne debug ["dainoProcess 2 test location abs dir",  showT (locationDir flags)]
                 return $  (makeAbsDir . locationDir $ flags)  
             else if (P.isRelative (locationDir flags))
                 then do 
-                    putIOwords ["dainoProcess 5 location relative",  showT (locationDir flags)]
+                    putInformOne debug ["dainoProcess 5 location relative",  showT (locationDir flags)]
                     absdir <- resolveDir currDir (locationDir flags)
                     -- problem initial .. bad hack!
                      
@@ -76,9 +71,9 @@ dainoProcess debug1 flags = do
             else 
                 errorT ["dainoProcess 5 location not valid",  showT $ locationDir flags]
                  
-    putInform debug ["dainoProcess 5 dir of settings file",  showT sett4dir]
+    putInformOne debug  ["dainoProcess 5 dir of settings file",  showT sett4dir]
     let sett4file = sett4dir </> relSettingsFile 
-    putInform debug ["dainoProcess 5  settings file",  showT sett4file]
+    putInformOne debug  ["dainoProcess 5  settings file",  showT sett4file]
  
     existSett <- doesFileExist' (sett4file) 
     sett4 <- if existSett 
@@ -102,13 +97,13 @@ dainoProcess debug1 flags = do
 
     let link1 =  resourcesP `addDir` (makeRelDir themeName) :: Path Abs Dir
     let target1 = themeDir1  :: Path Abs Dir
-    putInform debug ["dainoProcess 3 check simlink \n    target   ",  showT target1
+    putInformOne debug ["dainoProcess 3 check simlink \n    target   ",  showT target1
                                             , "\n    linked to", showT link1]
     linkExists <- doesDirExist' link1
     targetOK <- if linkExists 
         then do
             targetNow <- getSymlinkTarget link1
-            putInform debug ["dainoProcess 5 current \n    target for theme  ",  showT targetNow]
+            putInformOne debug ["dainoProcess 5 current \n    target for theme  ",  showT targetNow]
             if (makeAbsDir targetNow) == target1 then return True
                 else do 
                     removeDirLink link1
@@ -120,17 +115,17 @@ dainoProcess debug1 flags = do
             return False 
 
     unless targetOK $ do 
-            putIOwords ["dainoProcess 4 create simlink \n    target   ",  showT target1
+            putInformOne debug ["dainoProcess 4 create simlink \n    target   ",  showT target1
                                             , "\n    link put into to", showT link1]
             createDirLink  ( target1) ( link1)
 
 
 -- set the currentWorkingDir CWD to doughDir
 
-    putIOwords ["\n dainoProcess"
+    putInformOne debug ["\n dainoProcess"
         , "currDir is doughP", showT currDir
         ]
-    putInform debug ["\ndainoProcess starts baking with"
+    putInformOne debug ["\ndainoProcess starts baking with"
         , "siteLayout" , showT (siteLayout sett4) 
         ]
     setCurrentDir doughP
@@ -153,8 +148,8 @@ dainoProcess debug1 flags = do
 
 -- return the dir as set before
     setCurrentDir currDir
-    putInform debug ["dainoProcess", "again currDir as before", showT currDir, "\nwas doughP", showT doughP] 
-    putInform debug ["dainoProcess done"]
+    putInformOne debug ["dainoProcess", "again currDir as before", showT currDir, "\nwas doughP", showT doughP] 
+    putInformOne debug ["dainoProcess done"]
     return ()
 
 -- settingsFileName :: Path Rel File

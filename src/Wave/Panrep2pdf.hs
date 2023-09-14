@@ -63,11 +63,11 @@ panrep2texsnip debug metaplus3 = do
     return metaplus5
 
  
-    -- putInform debug ["\n panrep2texsnip start"]
+    -- putInformOne debug ["\n panrep2texsnip start"]
     -- res1 <- writeTexSnip2 p
-    -- putInform debug ["\n panrep2texsnip res1", showT res1]
+    -- putInformOne debug ["\n panrep2texsnip res1", showT res1]
     -- let res = (TexSnip y res1)
-    -- putInform debug ["\n panrep2texsnip done"]
+    -- putInformOne debug ["\n panrep2texsnip done"]
 
 
 -- text2absFile :: Path Abs Dir -> Text -> Path Abs File 
@@ -89,7 +89,7 @@ texsnip2tex :: NoticeLevel
     -> ExceptT Text IO (Latex, [FilePath], Text)
 texsnip2tex  debug pubFlags metaplus4 = do 
 -- debug doughP bakedP metaplus4 latexDtpl = do
-    putInform debug ["\n texsnip2tex start"]
+    putInformOne debug ["\n texsnip2tex start"]
 
     let sett3 = sett metaplus4
         extra4 = extra metaplus4
@@ -100,10 +100,10 @@ texsnip2tex  debug pubFlags metaplus4 = do
             
         masterfn = templatesDir (siteLayout sett3) </> mf
 
-    putInform debug ["\ntexsnip2tex", "siteLayout sett3"
+    putInformOne debug ["\ntexsnip2tex", "siteLayout sett3"
                 , showPretty $ siteLayout sett3]
-    putInform debug ["texsnip2tex", "mf", showPretty mf]
-    putInform debug ["texsnip2tex", "masterfn", showPretty masterfn]
+    putInformOne debug ["texsnip2tex", "mf", showPretty mf]
+    putInformOne debug ["texsnip2tex", "masterfn", showPretty masterfn]
 
     targetTempl  <- compileTemplateFile2 masterfn
     testTempl  <- compileTemplateFile2 testTemplateFn
@@ -111,7 +111,7 @@ texsnip2tex  debug pubFlags metaplus4 = do
     -- htm1 <- meta2xx writeHtml5String2 (metap metaplus4)
 
     --if this is an index file it has files and dirs 
-    putInform debug ["texsnip2tex", "extra4", showPretty extra4]
+    putInformOne debug ["texsnip2tex", "extra4", showPretty extra4]
 
     let files = fileEntries  $ extra4 :: [IndexEntry2]
         dirs = dirEntries  $ extra4 :: [IndexEntry2]
@@ -127,25 +127,25 @@ texsnip2tex  debug pubFlags metaplus4 = do
                 .  map ixfn $ (dirs ++ files)
                      :: [FilePath]
 
-    putInform debug ["texsnip2tex", "\n\tneeds ", showPretty needs ]
+    putInformOne debug ["texsnip2tex", "\n\tneeds ", showPretty needs ]
 
     valsDirs :: [Maybe IndexEntry2]<- 
             mapM (getVals2latex debug pubFlags bakedP) dirs
     valsFiles :: [Maybe IndexEntry2] <- 
             mapM (getVals2latex debug pubFlags bakedP) files
 
-    putInform debug ["texsnip2tex 1"  ]
+    putInformOne debug ["texsnip2tex 1"  ]
 
-    putInform debug["texsnip2tex", "valsDirs", showT valsDirs]
+    putInformOne debug["texsnip2tex", "valsDirs", showT valsDirs]
             -- putIOwords ["texsnip2tex", "valsFiles", showT valsFiles]
-    putInform debug ["texsnip2tex 2"  ]
+    putInformOne debug ["texsnip2tex 2"  ]
 
     let extra5 = extra4{fileEntries = catMaybes valsFiles
                         , dirEntries = catMaybes valsDirs}
                         -- uses the same record selectors as html
                         -- but started with an empty slate?
     let metaplus5 = metaplus4{extra = extra5}
-    putInform debug ["texsnip2tex", "extra5", showPretty extra5]
+    putInformOne debug ["texsnip2tex", "extra5", showPretty extra5]
     when (inform debug) $ 
             putIOwords ["texsnip2tex", "metaplus5", showPretty metaplus5]
 
@@ -155,8 +155,8 @@ texsnip2tex  debug pubFlags metaplus4 = do
     let ttpl1 = renderTemplate testTempl (toJSON metaplus5)  -- :: Doc Text
     let tt1 = render (Just 50) ttpl1  -- line length, can be Nothing
 
-    putInform debug ["texsnip2tex render html done", "ht1",  ht1 ]
-    putInform debug ["texsnip2tex render testTemplate done", "tt1", tt1 ]
+    putInformOne debug ["texsnip2tex render html done", "ht1",  ht1 ]
+    putInformOne debug ["texsnip2tex render testTemplate done", "tt1", tt1 ]
     
     -- bakeOnetexsnip2tex will write to disk
     return (Latex ht1, needs, tt1)
@@ -165,7 +165,7 @@ texsnip2tex  debug pubFlags metaplus4 = do
                 -- -> ErrIO (Maybe IndexEntry2)
 -- get the panrep and fill the vals 
 getVals2latex debug pubFlags bakedP ix2 = do
-    putInform debug ["GetVals2 latex ix2", showPretty ix2]
+    putInformOne debug ["GetVals2 latex ix2", showPretty ix2]
     let 
         fnix4 = (ixfn ix2) :: FilePath
         fnix3 = addDir (toFilePath bakedP) fnix4 :: FilePath
@@ -175,9 +175,9 @@ getVals2latex debug pubFlags bakedP ix2 = do
         
     -- let fn = makeAbsFile $ addDir (toFilePath bakedP) (link ix2)  :: Path Abs File
 
-    putInform debug ["getVals2latex fn", showT fn ]
+    putInformOne debug ["getVals2latex fn", showT fn ]
     pan1 <- read8 fn panrepFileType
-    putInform debug ["getVals2latex pan1", showT pan1 ]
+    putInformOne debug ["getVals2latex pan1", showT pan1 ]
 
     let m = metaLatex pan1  -- select latex code 
     
@@ -194,7 +194,7 @@ getVals2latex debug pubFlags bakedP ix2 = do
                     , visibility = lookup7 "visibility" m
                     }
 
-    putInform debug ["getVals2latex end"]
+    putInformOne debug ["getVals2latex end"]
     
     return $ if includeBakeTest3 pubFlags (version ix3) (visibility ix3)
                 then Just ix3 else errorT ["getVals2 in panrep2html not included", showT ix2 ]
@@ -210,17 +210,17 @@ getVals2latex debug pubFlags bakedP ix2 = do
 -- this is fnres - just the doughPath
 tex2pdf :: NoticeLevel -> Path Abs File ->  Path Abs File ->  Path Abs Dir ->  ErrIO ()
 tex2pdf debug fn fnres doughP  =  do
-    putInform debug ["\n tex2pdf start for", showT fn]
+    putInformOne debug ["\n tex2pdf start for", showT fn]
 
     let refDir = -- makeAbsDir "/home/frank/bakedTestSite"
                     -- dough does not work either
                     -- must be local dir of file to process
             makeAbsDir . getParentDir . toFilePath $ fn :: Path Abs Dir
     -- refDir must be the place where biblio is place (or searched from - best ) - i.e. the root for dough 
-    putInform debug ["\n tex2pdf refDir", showT refDir]
+    putInformOne debug ["\n tex2pdf refDir", showT refDir]
     texf <- read8 fn texFileType
 
-    putInform debug ["\n tex2pdf texf content not faked"]
+    putInformOne debug ["\n tex2pdf texf content not faked"]
     let faked = False
     if faked then 
             write8 fnres pdfFileType (PDFfile . unLatex $ texf)
@@ -228,5 +228,5 @@ tex2pdf debug fn fnres doughP  =  do
         -- to satisfy shake 
         else 
             writePDF2 debug  fn fnres refDir
-    putInform debug ["\n tex2pdf done"]
+    putInformOne debug ["\n tex2pdf done"]
     return ()

@@ -42,7 +42,7 @@ shakeAll debug sett3 flags causedby = do
         doughP = doughDir layout :: Path Abs Dir -- the regular dough
         bakedP = bakedDir layout :: Path Abs Dir
         themeP = themeDir layout :: Path Abs Dir
-    putIOwords
+    putInformOne debug
         [ "\n\n===================================== shakeAll start"
         , "\n flags", showPretty flags
         , "\ncaused by", s2t causedby, "."
@@ -83,6 +83,6 @@ shakeAll debug sett3 flags causedby = do
                 , map (addFileName bakedP) $ map makeRelFile fs4
                                     ]
         }
-    putInform NoticeLevel1 ["start with fs4", showT fs4, "\n"]
-    putInform debug ["mdFiles flags", showT $ mdFiles flags2]        
-    callIO $ shakeMD NoticeLevel2 sett3  flags2   
+    putInformOne debug ["start with fs4", showT fs4, "\n"]
+    putInformOne debug ["mdFiles flags", showT $ mdFiles flags2]        
+    callIO $ shakeMD debug sett3  flags2   

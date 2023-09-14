@@ -18,18 +18,11 @@ module Main where -- must have Main (main) or Main where
 
 import ShakeBake.CmdLineArgs ( parseArgs2input )  
 import Foundational.CmdLineFlags ( PubFlags, progName, progTitle  )
--- import Foundational.SettingsPage (sourceDirTestSite )  
 
 import ShakeBake.StartDainoProcess ( dainoProcess )  
--- import Uniform.StartApp ( startProgWithTitle )  
 import UniformBase 
--- ( Text, NoticeLevel(NoticeLevel0), unlinesT )  
-import Data.Version
 import Paths_daino (version)
 
--- programName, progTitle :: Text
--- programName = "daino" :: Text
--- progTitle = "constructing a static site generator" :: Text
 progVersion = showT version  -- "0.1.5.2":: Text
 
 -- the process is centered on the current working dir

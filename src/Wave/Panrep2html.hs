@@ -80,16 +80,16 @@ getVals2html :: NoticeLevel -> PubFlags -> Path Abs Dir -> IndexEntry2
                 -> ErrIO (Maybe IndexEntry2)
 -- get the panrep and fill the vals 
 getVals2html debug pubFlags bakedP ix2 = do
-    putInform debug ["getVals2html  ix2", showPretty ix2]    
+    putInformOne debug ["getVals2html  ix2", showPretty ix2]    
     let fnix4 = (ixfn ix2) :: FilePath
         fnix3 = addDir (toFilePath bakedP) fnix4 :: FilePath
         fnix2 =  fnix3 <.> "panrep"  :: FilePath
         fn = makeAbsFile fnix2
         pdf = replaceExtension2 ".pdf" fn 
 
-    putInform debug ["getVals2html fn", showT fn ]
+    putInformOne debug ["getVals2html fn", showT fn ]
     pan1 <- read8 fn panrepFileType
-    -- putInform debug ["getVals2html pan1", showT pan1 ]
+    -- putInformOne debug ["getVals2html pan1", showT pan1 ]
 
     let m = metap  pan1
         ix3 = ix2   {
@@ -120,12 +120,12 @@ getVals2html debug pubFlags bakedP ix2 = do
 --         -- masterfn = templatesDir (siteLayout sett3) </> mf
 
 --     --if this is an index file it has files and dirs 
---     -- putInform debug ["panrep1html", "extra4", showPretty extra4]
+--     -- putInformOne debug ["panrep1html", "extra4", showPretty extra4]
 
 --     -- let files = fileEntries  $ extra4 :: [IndexEntry2]
 --     --     dirs = dirEntries  $ extra4 :: [IndexEntry2]
---     -- putInform debug["panrep0html", "ixfn files", showT $ map ixfn files]
---     -- putInform debug ["panrep0html", "ixfn dirs", showT $ map ixfn dirs]
+--     -- putInformOne debug["panrep0html", "ixfn files", showT $ map ixfn files]
+--     -- putInformOne debug ["panrep0html", "ixfn dirs", showT $ map ixfn dirs]
 
 
 --     let fs1 = getIndexFiles4meta metaplus4 
@@ -135,7 +135,7 @@ getVals2html debug pubFlags bakedP ix2 = do
 --         fs = map (replaceExtension' "html" )   $   fs1 :: [Path Rel File]
 --     let fs2needs = map (addFileName bakeP) $  fs
 --                         :: [Path Abs File] 
---     putInform debug ["panrep0html", "fs2needs", showT fs2needs]
+--     putInformOne debug ["panrep0html", "fs2needs", showT fs2needs]
 --     return . map toFilePath $ fs2needs
 
 
@@ -151,12 +151,12 @@ getVals2html debug pubFlags bakedP ix2 = do
 -- --         -- masterfn = templatesDir (siteLayout sett3) </> mf
 
 -- --     --if this is an index file it has files and dirs 
--- --     -- putInform debug ["panrep1html", "extra4", showPretty extra4]
+-- --     -- putInformOne debug ["panrep1html", "extra4", showPretty extra4]
 
 -- --     let files = fileEntries  $ extra4 :: [IndexEntry2]
 -- --         dirs = dirEntries  $ extra4 :: [IndexEntry2]
--- --     putInform debug["panrep1html", "ixfn files", showT $ map ixfn files]
--- --     putInform debug ["panrep1html", "ixfn dirs", showT $ map ixfn dirs]
+-- --     putInformOne debug["panrep1html", "ixfn files", showT $ map ixfn files]
+-- --     putInformOne debug ["panrep1html", "ixfn dirs", showT $ map ixfn dirs]
 
 -- --     let bakedP =   bakedDir . siteLayout $ sett3
  
@@ -165,8 +165,8 @@ getVals2html debug pubFlags bakedP ix2 = do
 -- --     valsFiles :: [Maybe IndexEntry2] <- mapM 
 -- --                     (getVals2html debug pubFlags bakedP) files
 
--- --     putInform debug["panrep1html", "valsDirs", showPretty valsDirs]
--- --     putInform debug ["panrep1html", "valsFiles", showPretty valsFiles]
+-- --     putInformOne debug["panrep1html", "valsDirs", showPretty valsDirs]
+-- --     putInformOne debug ["panrep1html", "valsFiles", showPretty valsFiles]
 
 -- --     -- let extra5 = extra4{fileEntries = catMaybes valsFiles
 -- --     --                     , dirEntries = catMaybes valsDirs}
@@ -181,9 +181,9 @@ getVals2html debug pubFlags bakedP ix2 = do
 -- --                 . map (addDir bakedFP )
 -- --                 .  map ixfn $ allixs
 -- --                      :: [FilePath]
--- --     putInform debug ["panrep1html allixs ixfn"
+-- --     putInformOne debug ["panrep1html allixs ixfn"
 -- --                     , showT .map (<.> "panrep") . map (addDir bakedFP ) . map ixfn $ allixs]
--- --     putInform debug ["panrep1html allixs link"
+-- --     putInformOne debug ["panrep1html allixs link"
 -- --                     , showT . map (addDir bakedFP ) . map (<.> "panrep") . map ixfn $ allixs]
 -- --     when ((inform debug) && (needs /= []) )$
 -- --             putIOwords ["panrep1html", "needs ", showT needs ]
@@ -206,10 +206,10 @@ getVals2html debug pubFlags bakedP ix2 = do
 --         mf = masterTemplateFile $ siteLayout sett3
 --         masterfn = templatesDir (siteLayout sett3) </> mf
 
---     putInform debug["\npanrep2html", "siteLayout sett3"
+--     putInformOne debug["\npanrep2html", "siteLayout sett3"
 --                 , showPretty $ siteLayout sett3]
---     putInform debug ["panrep2html", "mf", showPretty mf]
---     putInform debug ["panrep2html", "masterfn", showPretty masterfn]
+--     putInformOne debug ["panrep2html", "mf", showPretty mf]
+--     putInformOne debug ["panrep2html", "masterfn", showPretty masterfn]
 
 --     targetTempl  <- compileTemplateFile2 masterfn
 --     testTempl  <- compileTemplateFile2 testTemplateFn
@@ -217,7 +217,7 @@ getVals2html debug pubFlags bakedP ix2 = do
 --     -- htm1 <- meta2xx writeHtml5String2 (metap metaplus4)
 
 --     --if this is an index file it has files and dirs 
---     -- putInform debug ["panrep2html", "extra4", showPretty extra4]
+--     -- putInformOne debug ["panrep2html", "extra4", showPretty extra4]
 
 --     let files = fileEntries  $ extra4 :: [IndexEntry2]
 --         dirs = dirEntries  $ extra4 :: [IndexEntry2]
@@ -229,8 +229,8 @@ getVals2html debug pubFlags bakedP ix2 = do
 --     valsFiles :: [Maybe IndexEntry2] <- mapM 
 --                     (getVals2html debug pubFlags bakedP) files
 
---     putInform debug["panrep2html", "valsDirs", showPretty valsDirs]
---     putInform debug ["panrep2html", "valsFiles", showPretty valsFiles]
+--     putInformOne debug["panrep2html", "valsDirs", showPretty valsDirs]
+--     putInformOne debug ["panrep2html", "valsFiles", showPretty valsFiles]
 
 --     let extra5 = extra4{fileEntries = catMaybes valsFiles
 --                         , dirEntries = catMaybes valsDirs}
@@ -238,8 +238,8 @@ getVals2html debug pubFlags bakedP ix2 = do
 
 
 
---     -- putInform debug ["panrep2html", "extra5", showPretty extra5]
---     -- putInform debug ["panrep2html", "metaplus5", showPretty metaplus5]
+--     -- putInformOne debug ["panrep2html", "extra5", showPretty extra5]
+--     -- putInformOne debug ["panrep2html", "metaplus5", showPretty metaplus5]
 
 --     let hpl1 = renderTemplate targetTempl (toJSON metaplus5)  -- :: Doc Text
 --     let ht1 = render (Just 50) hpl1  -- line length, can be Nothing
@@ -247,8 +247,8 @@ getVals2html debug pubFlags bakedP ix2 = do
 --     let ttpl1 = renderTemplate testTempl (toJSON metaplus5)  -- :: Doc Text
 --     let tt1 = render (Just 50) ttpl1  -- line length, can be Nothing
 
---     -- putInform debug ["panrep2html render html done", "ht1",  ht1 ]
---     -- putInform debug ["panrep2html render testTemplate done", "tt1",  tt1 ]
+--     -- putInformOne debug ["panrep2html render html done", "ht1",  ht1 ]
+--     -- putInformOne debug ["panrep2html render testTemplate done", "tt1",  tt1 ]
 
 --     -- bakeOnePanrep2html will write to disk
 --     return (HTMLout ht1, [], tt1) -- needs are dealt with so far above

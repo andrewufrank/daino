@@ -53,7 +53,7 @@ default (Text)
 md2doc :: NoticeLevel -> Settings -> Path Abs File ->    ErrIO DainoMetaPlus
 -- must not added needs (because test for inclusion follows later)
 md2doc debug sett4 bakedFrom  = do
-    putInform debug ["md2doc 1 start ", showT bakedFrom]
+    putInformOne debug ["md2doc 1 start ", showT bakedFrom]
 
     pandoc1 <- readMd2pandoc bakedFrom  
     -- apply the umlaut conversion first 
@@ -65,32 +65,32 @@ md2doc debug sett4 bakedFrom  = do
                     -- inform debug 
     pandoc2 <- if langCode == "ngerman"
         then do
-            putInform debug ["md2doc 2 "]
+            putInformOne debug ["md2doc 2 "]
             erl1 :: [Text] <- readErlaubt (replaceErlaubtFile . siteLayout $ sett4)
             let addErl = words' . getTextFromYaml5 "" "DoNotReplace" $ pandoc1
             let addErl2 = words' . getTextFromYaml5 "" "doNotReplace" $ pandoc1
                 -- allow additions to the list in the YAML header
                 -- with or without capital D
                 erl2 = addErl ++ addErl2 ++ erl1
-            putInform debug ["md2doc 3 "]
+            putInformOne debug ["md2doc 3 "]
             changed <- applyReplace debugReplace erl2   bakedFrom 
             if changed -- && (not debugReplace)
                 then do 
                         pan2 <- readMd2pandoc bakedFrom 
-                        putInform debug ["md2doc 4 "]
+                        putInformOne debug ["md2doc 4 "]
                         return pan2
                     -- then readMarkdownFile2docrep debug  sett4 bakedFrom 
                 -- when debug true then changed files are not written 
                 else return pandoc1
         else return pandoc1
 
-    putInform debug ["md2doc 5 umlaut done "]
+    putInformOne debug ["md2doc 5 umlaut done "]
 
     let p2 = addListOfDefaults (metaDefaults sett4) pandoc2
     let p3 = walkPandoc lf2LineBreak p2
     -- to convert the /lf/ marks in hard LineBreak
     pan4@(Pandoc m4 p4) <- mdCiteproc p3 
-    putInform debug ["md2doc 6 citeproc done "]
+    putInformOne debug ["md2doc 6 citeproc done "]
 
     let (Pandoc _ p5) = usingSideNotes pan4 
         -- changed the body (p5) to prepare for tufte style
@@ -104,12 +104,12 @@ md2doc debug sett4 bakedFrom  = do
     let mp1 = setMetaPlusInitialize sett4 bakedFrom meta5tufte
     -- let mp2 = mp1 { metaHtml = meta5tufte  -- 2 versions of body
     --                 , metaLatex = meta4base}  -- one only
-    putInform debug ["md2doc 6a usingSidenotes done "]
+    putInformOne debug ["md2doc 6a usingSidenotes done "]
 
             -- pushes all what is further needed into metaplus
     mp2 <- completeMetaPlus mp1  -- converts the body to tex and html
     let mp3 = fillTextual4MP mp2 
-    putInform debug ["md2doc 7 end "]
+    putInformOne debug ["md2doc 7 end "]
 
     return mp3
 

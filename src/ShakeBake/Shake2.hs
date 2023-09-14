@@ -58,9 +58,9 @@ shakeMD debug sett4 flags = do
         bakedP = bakedDir layout
     -- themeP = themeDir layout
 
-  shakeArgs2 bakedP $ do
+  shakeArgs2 debug bakedP $ do
 
-    -- putInform debug [ "\nshakeMD dirs\n"
+    -- putInformOne debug [ "\nshakeMD dirs\n"
     --     , "\tbakedP", showT bakedP
     --     , "\n\tdoughP", showT doughP
     --     , "\ndebug", showT debug]
@@ -75,11 +75,11 @@ shakeMD debug sett4 flags = do
         -- put a link to the themplates folder into dough/resources
         -- otherwise confusion with copying the files from two places
 
-        needPwithoutput "initial" "md" ( mdFiles flags)
+        needPwithoutput debug "initial" "md" ( mdFiles flags)
         -- copy all jpg because not otherwise easy to find 
         imgs <- getNeeds debug sett4 doughP bakedP "jpg" "jpg"
         imgs2 <- getNeeds debug sett4 doughP bakedP "JPG" "JPG"
-        putIOwords ["Needs jpg", showT imgs, showT imgs2]
+        putInformOne debug ["Needs jpg", showT imgs, showT imgs2]
         needP imgs
         needP imgs2
 
@@ -100,7 +100,7 @@ shakeMD debug sett4 flags = do
 
             let outP = makeAbsFile out :: Path Abs File
             let fromfile = doughP </> makeRelativeP bakedP outP
-            putInform debug ["rule **/*.pdf 1 fromFile", showT fromfile]
+            putInformOne debug ["rule **/*.pdf 1 fromFile", showT fromfile]
             fileExists <- io2bool $ doesFileExist' fromfile
             when (inform debug) $ putIOwords ["fileExist:", showT fileExists]
             
@@ -114,7 +114,7 @@ shakeMD debug sett4 flags = do
                         fromfilePath = sourceP </> makeRelativeP targetP outP
                         fromfilePathExt = replaceExtension' 
                             (s2t . unExtension $ extTex) fromfilePath 
-                    putInform debug ["rule **/*.pdf 2 fromfilePathExt"
+                    putInformOne debug ["rule **/*.pdf 2 fromfilePathExt"
                             , showT fromfilePathExt]
                     needP [fromfilePathExt]
                     
@@ -122,12 +122,12 @@ shakeMD debug sett4 flags = do
                   
                     -- convertAny debug bakedP bakedP flags sett4 out  "convTex2pdf"
                     -- anyop debug flags fromfilePathExt layout outP
-                    putInform debug ["rule **/*.pdf 3 need satisfied"]
+                    putInformOne debug ["rule **/*.pdf 3 need satisfied"]
                      
                     runErr2action $ tex2pdf debug fromfilePathExt outP doughP
-                    putInform debug ["rule **/*.pdf 4 produce outP (perhaps just fake)"
+                    putInformOne debug ["rule **/*.pdf 4 produce outP (perhaps just fake)"
                         , showT outP]
-            putInform debug ["rule **/*.pdf 5 end"]
+            putInformOne debug ["rule **/*.pdf 5 end"]
 
 -- tex2pdf :: NoticeLevel -> Path Abs File ->  Path Abs File ->  Path Abs Dir ->  ErrIO ()
 -- tex2pdf debug fn fnres doughP  =  do
@@ -174,7 +174,7 @@ getNeeds ::
 -}
 getNeeds debug  sett4 sourceP targetP extSource extTarget = do
     let sameExt = extSource == extTarget
-    putInform debug 
+    putInformOne debug 
             [ "===================\ngetNeeds extSource"
             , extSource
             , "extTarget"
@@ -198,14 +198,14 @@ getNeeds debug  sett4 sourceP targetP extSource extTarget = do
                         (replaceExtension' extTarget . (targetP </>))
                          filesWithSource  
                                 :: [Path Abs File]
-    putInform debug
+    putInformOne debug
             [ "===================\ngetNeeds -  source files 1"
             , "for ext"
             , extSource
             , "files\n"
             , showT filesWithSource
             ]
-    putInform debug 
+    putInformOne debug 
             [ "\nbakePDF -  target files 2"
             , "for ext"
             , extTarget

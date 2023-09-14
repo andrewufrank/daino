@@ -52,21 +52,21 @@ shake2panrep debug flags sett4 bakedP =
         doughP = doughDir layout -- the regular dough
         -- bakedP = bakedDir layout
 
-    putInform debug ["rule **/*.panrep 1 start out", showT out]
+    putInformOne debug ["rule **/*.panrep 1 start out", showT out]
 
     let outP = makeAbsFile out :: Path Abs File
     
     let bakedFrom = replaceExtension'  "docrep" outP
 
-    putInform debug ["rule **/*.panrep 2 - bakedFrom", showT bakedFrom]
+    putInformOne debug ["rule **/*.panrep 2 - bakedFrom", showT bakedFrom]
     needP [bakedFrom]
 
-    putInform debug ["\nrule **/*.panrep 3 continued", showT out]
+    putInformOne debug ["\nrule **/*.panrep 3 continued", showT out]
 
     let thisDirP =  makeAbsDir $ getParentDir outP :: Path Abs Dir
 
     
-    putInform debug ["rule **/*.panrep 4 - thisDirP", showT thisDirP]
+    putInformOne debug ["rule **/*.panrep 4 - thisDirP", showT thisDirP]
 
     (fileEnts, dirEnts) <- 
         if not (isIndexPage outP) 
@@ -76,7 +76,7 @@ shake2panrep debug flags sett4 bakedP =
     --  here the unless insert 
             (files2, ind3)  <- indexNeeds debug sett4 doughP bakedP outP
                     
-            putInform debug ["\nrule **/*.panrep 4a \n\t files", showT files2
+            putInformOne debug ["\nrule **/*.panrep 4a \n\t files", showT files2
                         , "\n\t\t index.md for directories", showT ind3]
             needP (files2 ++ ind3)
 
@@ -86,15 +86,15 @@ shake2panrep debug flags sett4 bakedP =
 
             return (catMaybes fileEnt1, catMaybes dirEnt1)
     
-    putInform debug ["\nrule **/*.panrep 4x continued after unless" ]
+    putInformOne debug ["\nrule **/*.panrep 4x continued after unless" ]
 
     -- (dirEntries, fileEntries) <- constructIndexEntries
-    putInform debug ["\nrule **/*.panrep 5 continued 2", showT out]
+    putInformOne debug ["\nrule **/*.panrep 5 continued 2", showT out]
 
     needs2empty <- runErr2action $ do
             --  bakeOneDocrep2panrep debug flags bakedFrom sett4 outP 
     --           bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
-        putInform debug [ "\nrule **/*.panrep 6 bakedFrom"
+        putInformOne debug [ "\nrule **/*.panrep 6 bakedFrom"
             , showT bakedFrom 
             , "outP", showT outP
             ]
@@ -105,7 +105,7 @@ shake2panrep debug flags sett4 bakedP =
                 -- what to do with needs?
                      -- docrep2panrep debug flags dr1 = do
         -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
-        putInform debug ["rule **/*.panrep 7"
+        putInformOne debug ["rule **/*.panrep 7"
                 --  , "metaplus: \n", showPretty dr1
                     -- , "\np1: ", showT p1
                     ]
@@ -131,11 +131,11 @@ shake2panrep debug flags sett4 bakedP =
         -- write8 outP panrepFileType dr2 -- content is html style
         write8 outP panrepFileType dr2 -- set only dirEntries
 
-        putInform NoticeLevel1 
+        putInformOne debug 
                 ["rule **/*.panrep 8 done produced resf2n", showT outP
                     -- , "\n needsFound", showT needsFound
                 ]
         return [] --  needsFound
 
-    putInform debug ["rule **/*.panrep 9 end", showT out]
+    putInformOne debug ["rule **/*.panrep 9 end", showT out]
 
