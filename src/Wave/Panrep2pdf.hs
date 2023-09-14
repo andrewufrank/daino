@@ -227,6 +227,6 @@ tex2pdf debug fn fnres doughP  =  do
         -- for debug put only the file unprocessed
         -- to satisfy shake 
         else 
-            writePDF2 debug  fn fnres refDir
+            writePDF2 NoticeLevel1  fn fnres refDir
     putInformOne debug ["\n tex2pdf done"]
     return ()

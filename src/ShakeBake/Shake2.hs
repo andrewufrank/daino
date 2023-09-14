@@ -129,10 +129,6 @@ shakeMD debug sett4 flags = do
                         , showT outP]
             putInformOne debug ["rule **/*.pdf 5 end"]
 
--- tex2pdf :: NoticeLevel -> Path Abs File ->  Path Abs File ->  Path Abs Dir ->  ErrIO ()
--- tex2pdf debug fn fnres doughP  =  do
-
-
     (toFilePath bakedP <> "/*.css")
         %> \out -> -- insert css -- no subdir
             copyFileToBaked debug doughP bakedP out
