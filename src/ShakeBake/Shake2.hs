@@ -76,6 +76,12 @@ shakeMD debug sett4 flags = do
         -- otherwise confusion with copying the files from two places
 
         needPwithoutput "initial" "md" ( mdFiles flags)
+        -- copy all jpg because not otherwise easy to find 
+        imgs <- getNeeds debug sett4 doughP bakedP "jpg" "jpg"
+        imgs2 <- getNeeds debug sett4 doughP bakedP "JPG" "JPG"
+        putIOwords ["Needs jpg", showT imgs, showT imgs2]
+        needP imgs
+        needP imgs2
 
     shake2html debug flags sett4 bakedP       
     shake2latex debug flags sett4 bakedP       
@@ -86,10 +92,7 @@ shakeMD debug sett4 flags = do
     (toFilePath bakedP <> "**/*.pdf") %> \out -> -- insert pdfFIles1
         do
             when (inform debug) $ putIOwords ["rule **/*.pdf", showT out]
-            imgs <- getNeeds debug sett4 doughP bakedP "jpg" "jpg"
-            imgs2 <- getNeeds debug sett4 doughP bakedP "JPG" "JPG"
-            needP imgs
-            needP imgs2
+
             -- why is this here necessary: failed on testSort.pdf?
             -- was ein jpg will ?
             -- TODO improve error from lualatex
@@ -195,7 +198,7 @@ getNeeds debug  sett4 sourceP targetP extSource extTarget = do
                         (replaceExtension' extTarget . (targetP </>))
                          filesWithSource  
                                 :: [Path Abs File]
-    putInform debug 
+    putInform debug
             [ "===================\ngetNeeds -  source files 1"
             , "for ext"
             , extSource

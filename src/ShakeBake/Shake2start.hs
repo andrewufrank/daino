@@ -66,10 +66,10 @@ shakeAll debug sett3 flags causedby = do
             , "resources/theme/templates/static/tufte-extra.css"
             , "resources/theme/templates/static/pandoc.css"
             , "resources/theme/templates/static/tufte-additions.css"
-            , "resources/img/squared16.jpg" -- add rest 
-            , "resources/img/squared16.jpg" -- add rest 
-            , "resources/img/squared16.jpg" -- add rest 
-            , "resources/theme/templates/img/DSC04809.JPG"
+            -- , "resources/img/squared16.jpg" -- add rest 
+            -- , "resources/img/squared16.jpg" -- add rest 
+            -- , "resources/img/squared16.jpg" -- add rest 
+            -- , "resources/DSC04809.JPG"
             , "resources/theme/templates/chicago-fullnote-bibliography.csl"
             , "resources/theme/templates/styles.html"
             -- default style for pandoc64html

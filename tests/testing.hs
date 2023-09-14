@@ -4,6 +4,7 @@
 -- insert {-@ HTF_TESTS @-} for each import
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-} 
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE PackageImports     #-}
 
 -- the main for the systematic tests A to B 
@@ -11,9 +12,13 @@ module Main where      -- must have Main (main) or Main where
   -- but file name be lower case 
 
 import     Test.Framework
-
+import Foundational.CmdLineFlags
+import UniformBase
+import ShakeBake.StartDainoProcess
 import    {-@ HTF_TESTS @-}        Lib.Md2doc_test
 import    {-@ HTF_TESTS @-}        Lib.Docrep2panrep_test
+
+default (Text)
 -- import    {-@ HTF_TESTS @-}        Lib.Panrep2html_test
 -- import    {-@ HTF_TESTS @-}        Lib.Panrep2pdf_test
 -- import    {-@ HTF_TESTS @-}        Lib.Template_test
@@ -39,3 +44,32 @@ mainTest        -- with tests in other modules
     putStrLn
       ("HTF end ExampleTest.hs test:\n" ++ show p ++ "\nEND HTF ExampleTest")
     return ()
+
+main4 :: IO () 
+-- | run the experiment site base from a fresh start 
+-- start s in separate process 
+main4  = do 
+    putIOwords ["test publish all dainoSite files"]
+    p <- runErr $ do 
+        dainoProcess NoticeLevel0 (testFlags {serverFlag = True}) 
+    putIOwords ["main4 server runs! end", showT p]
+
+main4Re  = do 
+    putIOwords ["test publish all dainoSite files"]
+    p <- runErr $ dainoProcess NoticeLevel0 flagRe
+    putIOwords ["main4Re end", showT p]
+flags = testFlags
+                {
+                serverFlag = True  
+                }
+flagsR = testFlags
+                {
+                serverFlag = True 
+                , newStartFlag = True -- R
+                -- , pdfFlag = True   -- q 
+                }
+flagRe = testFlags
+                {  newStartFlag = True -- R
+                , tufteFlag = True -- e 
+                -- , pdfFlag = True   -- q 
+                }

@@ -51,13 +51,13 @@ dainoProcess debug1 flags = do
     let debug = if verboseFlag flags then NoticeLevel1 else debug1
     sett4dir <- if useTestSite 
         then do
-            putInform debug ["dainoProcess 2test useTestSite"]
+            putInform debug ["dainoProcess 2 test useTestSite"]
             return $   makeAbsDir "/home/frank/Workspace11/dainoSite"  
             -- return $ (Path.parent currDir) </> makeRelDir "dainoSite"  
   
         else if (P.isAbsolute (locationDir flags)) 
             then do 
-                putIOwords ["dainoProcess 2test location abs dir",  showT (locationDir flags)]
+                putIOwords ["dainoProcess 2 test location abs dir",  showT (locationDir flags)]
                 return $  (makeAbsDir . locationDir $ flags)  
             else if (P.isRelative (locationDir flags))
                 then do 
@@ -96,9 +96,11 @@ dainoProcess debug1 flags = do
     unless doughExist $
             errorT ["dainoProcess 2", "error dough not present", "install dainoSite with `git clone https://github.com/andrewufrank/dainoSite.git"]
 
+    let resourcesP = ( doughP) `addDir` (makeRelDir resourcesName):: Path Abs Dir
+    createDirIfMissing' resourcesP
 
 
-    let link1 =  doughP `addDir` (makeRelDir resourcesName) `addDir` (makeRelDir themeName) :: Path Abs Dir
+    let link1 =  resourcesP `addDir` (makeRelDir themeName) :: Path Abs Dir
     let target1 = themeDir1  :: Path Abs Dir
     putInform debug ["dainoProcess 3 check simlink \n    target   ",  showT target1
                                             , "\n    linked to", showT link1]
@@ -119,7 +121,7 @@ dainoProcess debug1 flags = do
 
     unless targetOK $ do 
             putIOwords ["dainoProcess 4 create simlink \n    target   ",  showT target1
-                                            , "\n    linked to", showT link1]
+                                            , "\n    link put into to", showT link1]
             createDirLink  ( target1) ( link1)
 
 
