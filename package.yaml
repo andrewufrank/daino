@@ -1,6 +1,6 @@
 
 name: daino
-version: 0.1.6.2
+version: 0.1.6.5
 license:      GPL
 license-file: LICENSE
 github:       andrewufrank/u4blog.git/daino
@@ -83,11 +83,10 @@ dependencies:
     - uniform-cmdLineArgs   # now from u4blog, was from u2to
     - uniform-watch  
     - uniform-webserver  # - shake
-    - uniform-pandoc  
+    - uniform-pandoc 
     - uniform-latex2pdf  
     - uniform-strings  
     # # - uniform-fileio
-    # # - pandoc-types  # needed? 
     # # -- - uniform-ftp
     # # - aeson 
     # # - optparse-applicative -- does not allow value in cmdlineargs
@@ -95,16 +94,19 @@ dependencies:
     # # for default values, move down 
     # - dir-traverse # for checkprocess
     # - deepseq
-    # # - pandoc-sidenote
+    # - pandoc-sidenote
     # # - pandoc 
+    # - pandoc-types >=1.23.1
     - path
     - path-io
     # - unix
     - filepath
     - containers
     # - doctemplates
-    # - ReplaceUmlaut
+    - ReplaceUmlaut
     - shake
+    - pretty-simple
+    - text
     # # - system-filepath 
     # # - directory
 library:
@@ -112,9 +114,13 @@ library:
       - src 
 
 executables:   # file names wiwth lowercase to avoid forcing Main
-  daino61:
+  daino64:
     main: daino.hs
     source-dirs: app
+    ghc-options: 
+      -threaded 
+      # -rtsopts 
+      # -with-rtsopts=-N  
     dependencies: 
     - daino
     # - uniform-webserver
@@ -161,7 +167,7 @@ tests:
       # - shake  # from error
   testrun:
     main: testRun.hs
-    source-dirs: tests4run
+    source-dirs: tests
 
     ghc-options: 
       -threaded 

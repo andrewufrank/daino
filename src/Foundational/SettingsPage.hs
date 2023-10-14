@@ -24,18 +24,18 @@ module Foundational.SettingsPage
     (module Foundational.SettingsPage
     , def 
     , toJSON, fromJSON
+    , MetaPlus (..)
     ) where
 
 import UniformBase
 import Uniform.Json ( FromJSON, ToJSON (toJSON), fromJSON )
-import Uniform.MetaPlus hiding (MetaPlus(..), Settings(..), ExtraValues(..))
-import Uniform.Latex
+import Uniform.MetaPlus  
+-- import Uniform.Latex
+import Uniform.Pandoc 
 
 import qualified Data.Map as M
 import Data.Default.Class ( Default(def) ) -- to define a default class for siteLayout 
 import Path (parent)
-
-
 
 
 progName, progTitle :: Text
@@ -48,19 +48,16 @@ settingsFileName = makeRelFile "settings3" -- the yaml file
 
 -- | description for each md file 
 -- todo include the flags 
-data DainoMetaPlus = DainoMetaPlus 
-        { metap :: Meta    -- ^ the pandoc meta, the file text content
-        , sett :: Settings -- ^ the data from the settingsfile
-        , extra :: DainoValues -- ^ other values to go into template
-        , metaMarkdown :: M.Map Text Text -- todo not used
-        , metaHtml ::  M.Map Text Text
-        , metaLatex ::  M.Map Text Text
-        }
-    deriving (Eq, Ord, Show, Read, Generic) -- Zeros, ToJSON, FromJSON)
-instance ToJSON DainoMetaPlus
-instance FromJSON DainoMetaPlus
-instance Zeros DainoMetaPlus where 
-        zero = DainoMetaPlus zero zero zero zero zero zero
+type DainoMetaPlus = MetaPlus Settings DainoValues
+-- data DainoMetaPlus = DainoMetaPlus 
+--         { metap :: Meta    -- ^ the pandoc meta, the file text content
+--         , sett :: Settings -- ^ the data from the settingsfile
+--         , extra :: DainoValues -- ^ other values to go into template
+--         , metaMarkdown :: M.Map Text Text -- todo not used
+--         , metaHtml ::  M.Map Text Text
+--         , metaLatex ::  M.Map Text Text
+--         }
+--     deriving (Eq, Ord, Show, Read, Generic) -- Zeros, ToJSON, FromJSON)
         
 -- | the siteHeader file with all fields 
 data Settings = Settings
@@ -71,30 +68,36 @@ data Settings = Settings
     , siteHeader :: SiteHeader 
     , menuitems :: MenuItems
     -- , today :: Text
-    } deriving (Show, Read, Ord, Eq, Generic, Zeros)
+    } deriving (Show, Read, Ord, Eq, Generic)
 
-
-
+instance Zeros Settings where zero = Settings zero zero zero zero zero zero
 instance ToJSON Settings
 instance FromJSON Settings
 
 -- the extraValues will eventually go into settings
-data DainoValues = DainoValues 
-                        { mdFile:: FilePath -- Path Abs File -- abs file path 
-                        , mdRelPath :: FilePath -- Path Rel File  -- rel file path
-                        , dirEntries :: [IndexEntry2] 
-                        , fileEntries :: [IndexEntry2] 
-                                -- only the dirs and files path
-                        , dainoVersion :: Text 
-                        , latLanguage :: Text 
-                        , authorReduced :: Text
-                        -- , extraBakedDir :: Text
-                        , bookBig :: Bool -- values, because the template system limitation
-                        , booklet :: Bool
-                        , bookprint :: Bool  -- include the empty pages for print version
-                        , webroot :: Text  -- the webroot
-                        , pdf2 :: FilePath
-                        }
+data DainoValues = 
+    DainoValues 
+            { mdFile:: FilePath -- Path Abs File -- abs file path 
+            , mdRelPath :: FilePath -- Path Rel File  -- rel file path
+            -- , textual0md :: TextualIx Text  -- | the textual content in different reps for this file
+            -- , textual0pan :: TextualIx MetaValue   
+            , textual0html :: TextualIx Text
+            , textual0tex :: TextualIx Text
+            -- index entries are for subordinated dirs and files
+            -- filled in docrep2panrep
+            , dirEntries :: [IndexEntry2] 
+            , fileEntries :: [IndexEntry2] 
+                    -- only the dirs and files path
+            , dainoVersion :: Text 
+            , latLanguage :: Text 
+            , authorReduced :: Text
+            -- , extraBakedDir :: Text
+            , bookBig :: Bool -- values, because the template system limitation
+            , booklet :: Bool
+            , bookprint :: Bool  -- include the empty pages for print version
+            , webroot :: Text  -- the webroot
+            , pdf2 :: FilePath
+            }
     deriving (Eq, Ord, Show, Read, Generic, Zeros)
 
 
@@ -113,15 +116,19 @@ data IndexEntry2 = IndexEntry2
     -- , -- | the link for this page (relative to web root)
     -- -- without an extension or filename for dir}
     --   link :: Path Rel Dir
-    , title :: Text
-    , abstract :: Text
-    , author :: Text
+    -- , textualPan :: TextualIx MetaValue    
+    -- , textualMd :: TextualIx Text   -- | the textual content in different reps
+    , textualHtml :: TextualIx Text
+    , textualTex :: TextualIx Text
+    -- , title :: Text
+    -- , abstract :: Text
+    -- , author :: Text
     , date :: Text
-    , content :: Text   -- in latex style, only filled bevore use
+    -- , content :: Text   -- in latex style, only filled bevore use
     , visibility ::   Text
     , version ::   Text 
     , sortOrder :: Text
-    , pdf1 :: Text
+    , pdf1 :: Text  -- where is this used?
      -- , indexPage :: Bool
     -- , dirEntries :: [FilePath] -- [Path Abs Dir] -- [IndexEntry2] -- def []
     -- , fileEntries :: [FilePath] -- [Path Abs File] -- [IndexEntry2] -- def []
@@ -131,12 +138,24 @@ data IndexEntry2 = IndexEntry2
 
 -- instance Zeros IndexEntry2 where zero = IndexEntry2 [] []
 -- zero zero zero zero zero zero zero
-
+instance Zeros Block where zero = Plain []
+instance Zeros MetaValue where zero = MetaString "zero"
 instance ToJSON IndexEntry2
 instance FromJSON IndexEntry2
 
 isIndexPage :: Path Abs File -> Bool 
 isIndexPage filename =  getNakedFileName filename == "index"
+
+-- | textual content in the index in different representations, each
+data TextualIx v = TextualIx 
+    { title :: v
+    , abstract :: v
+    , author :: v
+    , content :: v   -- in latex style, only filled bevore use
+    } deriving (Show, Read, Eq, Ord, Generic, Zeros)
+
+instance ToJSON v => ToJSON (TextualIx v)
+instance FromJSON v => FromJSON (TextualIx v)
 
 
 
@@ -148,8 +167,10 @@ data SiteLayout = SiteLayout
       doughDir :: Path Abs Dir
     , -- | the webroot, the dir with all the produced files
       bakedDir :: Path Abs Dir
-    , masterTemplateFile :: Path Rel File  -- for html
-    , texTemplateFile :: Path Rel File   -- for latex 
+    , htmlTemplateFile :: Path Rel File  -- for html
+    , latexTemplateFile :: Path Rel File   -- for latex 
+    , tufteHtmlTemplateFile :: Path Rel File -- for tufte html
+    , tufteLatexTemplateFile :: Path Rel File -- for tufte latex
     , doNotBake :: Text 
     -- todo probably not used
     , blogAuthorToSuppress :: [Text]
@@ -175,15 +196,18 @@ sourceDirTestSite = sourceDirTestDocs `addDir` (makeRelDir "site")
 layoutDefaults :: Path Abs Dir -> Path Abs Dir ->  SiteLayout
 -- used for finding the test cases
 -- must correspond to the settings3.yaml in source code repository
--- fix this later for use in testing todo 
+-- is not currently used in normal processing 
 layoutDefaults dough4test homeDir1 =
     zero -- SiteLayout
         { doughDir = dough4test
         , bakedDir = homeDir1 `addDir` makeRelDir "bakedTestSite" :: Path Abs Dir
         ,  themeDir = (parent (parent dough4test)) `addDir` makeRelDir "theme"
- 
-        ,  masterTemplateFile = makeRelFile "master7tufte.dtpl"
-        , texTemplateFile = makeRelFile "resources/theme/templates/latex7.dtpl"
+        , htmlTemplateFile = makeRelFile "pandoc64html.dtpl" 
+        , latexTemplateFile = makeRelFile "pandoc64latex.dtpl"
+        , tufteHtmlTemplateFile = makeRelFile "tufte64html.dtpl"
+        , tufteLatexTemplateFile = makeRelFile "tufte64latex.dtpl"
+        -- ,  masterTemplateFile = makeRelFile "master7tufte.dtpl"
+        -- , texTemplateFile = makeRelFile "resources/theme/templates/latex7.dtpl"
         ,  doNotBake = "DNB"
         -- included in filenames (and directories) to exclude from bake process
         , blogAuthorToSuppress = []
@@ -191,6 +215,11 @@ layoutDefaults dough4test homeDir1 =
         , replaceErlaubtFile = makeAbsFile "/home/frank/Workspace11/replaceUmlaut/nichtUmlaute.txt"
         -- , defaultBibliography = "resources/BibTexLatex.bib"
         }
+
+    -- htmlTemplateFile: pandoc64html.dtpl  # from default.html5
+    -- latexTemplateFile: pandoc64latex.dtpl  # from default319latex
+    -- tufteHtmlTemplateFile:  tufte64html.dtpl
+    -- tufteLatexTemplateFile: tufte64latex.dtpl
 
 -- instance Default SiteLayout where 
 --         def = layoutDefaults
@@ -215,8 +244,4 @@ blankAuthorName names current =
         else current 
 
 
-putInform :: MonadIO m => NoticeLevel -> [Text] -> m () 
--- produce output if debug > NoticeLevel0 
-putInform debug texts = when  (inform debug)  $ 
-        putIOwords texts
 

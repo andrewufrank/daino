@@ -5,11 +5,7 @@
 {- the conversion starts with the root files to produce, 
     i.e. only index.md 
     This triggers the rule html -> panrep 
-<<<<<<< HEAD
-    and Panrep2 produces the needs for *.pdf, templates, jpg and bib
-=======
     and panrep2html produces the needs for *.pdf, templates, jpg and bib
->>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
 
     for now the css, dtpl, jpg etc. are still included
     -}
@@ -33,11 +29,11 @@
 module ShakeBake.Shake2 where
 
 import UniformBase 
+import Foundational.SettingsPage
+import Foundational.Filetypes4sites
 import Foundational.CmdLineFlags
 import Uniform.Shake
  
-import Foundational.SettingsPage
-import Foundational.Filetypes4sites
  
 import Wave.Panrep2pdf
 import ShakeBake.Shake2aux
@@ -62,9 +58,9 @@ shakeMD debug sett4 flags = do
         bakedP = bakedDir layout
     -- themeP = themeDir layout
 
-  shakeArgs2 bakedP $ do
+  shakeArgs2 debug bakedP $ do
 
-    -- putInform debug [ "\nshakeMD dirs\n"
+    -- putInformOne debug [ "\nshakeMD dirs\n"
     --     , "\tbakedP", showT bakedP
     --     , "\n\tdoughP", showT doughP
     --     , "\ndebug", showT debug]
@@ -79,20 +75,24 @@ shakeMD debug sett4 flags = do
         -- put a link to the themplates folder into dough/resources
         -- otherwise confusion with copying the files from two places
 
-        needPwithoutput "initial" "md" ( mdFiles flags)
+        needPwithoutput debug "initial" "md" ( mdFiles flags)
+        -- copy all jpg because not otherwise easy to find 
+        imgs <- getNeeds debug sett4 doughP bakedP "jpg" "jpg"
+        imgs2 <- getNeeds debug sett4 doughP bakedP "JPG" "JPG"
+        putInformOne debug ["Needs jpg", showT imgs, showT imgs2]
+        needP imgs
+        needP imgs2
 
     shake2html debug flags sett4 bakedP       
     shake2latex debug flags sett4 bakedP       
     shake2panrep debug flags sett4 bakedP       
     shake2docrep debug flags sett4 bakedP       
 
+    
     (toFilePath bakedP <> "**/*.pdf") %> \out -> -- insert pdfFIles1
         do
             when (inform debug) $ putIOwords ["rule **/*.pdf", showT out]
-            -- imgs <- getNeeds debug sett4 doughP bakedP "jpg" "jpg"
-            -- imgs2 <- getNeeds debug sett4 doughP bakedP "JPG" "JPG"
-            -- needP imgs
-            -- needP imgs2
+
             -- why is this here necessary: failed on testSort.pdf?
             -- was ein jpg will ?
             -- TODO improve error from lualatex
@@ -100,33 +100,34 @@ shakeMD debug sett4 flags = do
 
             let outP = makeAbsFile out :: Path Abs File
             let fromfile = doughP </> makeRelativeP bakedP outP
-            putInform debug ["rule **/*.pdf 1 fromFile", showT fromfile]
+            putInformOne debug ["rule **/*.pdf 1 fromFile", showT fromfile]
             fileExists <- io2bool $ doesFileExist' fromfile
             when (inform debug) $ putIOwords ["fileExist:", showT fileExists]
             
             if fileExists 
                 then copyFileToBaked debug doughP bakedP out
-                else do
+                else 
+                  when (pdfFlag flags) $ do 
+        -- this makes all needs of pdf to fail do
                     let targetP = bakedP 
                         sourceP = bakedP 
                         fromfilePath = sourceP </> makeRelativeP targetP outP
                         fromfilePathExt = replaceExtension' 
                             (s2t . unExtension $ extTex) fromfilePath 
-                    putInform debug ["rule **/*.pdf 2 fromfilePathExt"
+                    putInformOne debug ["rule **/*.pdf 2 fromfilePathExt"
                             , showT fromfilePathExt]
+                    needP [fromfilePathExt]
                     
 
                   
                     -- convertAny debug bakedP bakedP flags sett4 out  "convTex2pdf"
                     -- anyop debug flags fromfilePathExt layout outP
+                    putInformOne debug ["rule **/*.pdf 3 need satisfied"]
+                     
                     runErr2action $ tex2pdf debug fromfilePathExt outP doughP
-                    putInform debug ["rule **/*.pdf 3 produce outP (fake)"
+                    putInformOne debug ["rule **/*.pdf 4 produce outP (perhaps just fake)"
                         , showT outP]
-            putInform debug ["rule **/*.pdf 4 end"]
-
--- tex2pdf :: NoticeLevel -> Path Abs File ->  Path Abs File ->  Path Abs Dir ->  ErrIO ()
--- tex2pdf debug fn fnres doughP  =  do
-
+            putInformOne debug ["rule **/*.pdf 5 end"]
 
     (toFilePath bakedP <> "/*.css")
         %> \out -> -- insert css -- no subdir
@@ -148,3 +149,63 @@ shakeMD debug sett4 flags = do
     (toFilePath bakedP <> "**/*.woff")
         %> \out -> copyFileToBaked debug doughP bakedP out
 
+    (toFilePath bakedP <> "**/*.sty")
+    -- a style for verbatim in latex (and similar)
+        %> \out -> copyFileToBaked debug doughP bakedP out
+    (toFilePath bakedP <> "**/*.csl")
+    -- the formats for the csl biblio output
+        %> \out -> copyFileToBaked debug doughP bakedP out
+
+getNeeds ::
+    NoticeLevel 
+    -> Settings -- ^ the site layout etc
+    -> Path Abs Dir  -- ^ source dir
+    -> Path Abs Dir  -- ^ target dir
+    -> Text  -- ^ extension source
+    -> Text  -- ^ extension target
+    -> Action [Path Abs File]
+{- ^ find the files which are needed (generic)
+  from source with extension ext
+  does not include directory DNB (do not bake)
+-}
+getNeeds debug  sett4 sourceP targetP extSource extTarget = do
+    let sameExt = extSource == extTarget
+    putInformOne debug 
+            [ "===================\ngetNeeds extSource"
+            , extSource
+            , "extTarget"
+            , extSource
+            , "sameExt"
+            , showT sameExt
+            , "\ndebug", showT debug
+            ]
+
+    filesWithSource :: [Path Rel File] <- -- getDirectoryFilesP
+        getFilesToBake
+            (doNotBake  (siteLayout sett4)) -- exclude files containing
+            sourceP
+            ["**/*." <> t2s extSource]
+    -- subdirs
+    let filesWithTarget =
+            if sameExt
+                then [targetP </> c | c <- filesWithSource]
+                else
+                    map
+                        (replaceExtension' extTarget . (targetP </>))
+                         filesWithSource  
+                                :: [Path Abs File]
+    putInformOne debug
+            [ "===================\ngetNeeds -  source files 1"
+            , "for ext"
+            , extSource
+            , "files\n"
+            , showT filesWithSource
+            ]
+    putInformOne debug 
+            [ "\nbakePDF -  target files 2"
+            , "for ext"
+            , extTarget
+            , "files\n"
+            , showT filesWithTarget
+            ]
+    return filesWithTarget

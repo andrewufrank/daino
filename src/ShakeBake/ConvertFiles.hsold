@@ -90,7 +90,7 @@ convertAny debug sourceP targetP flags layout out anyopName = do
             "convMD2docrep" -> (bakeOneMD2docrep, extMD)
             "convDocrep2panrep" -> (bakeOneDocrep2panrep, extDocrep)
             "convPanrep2texsnip" -> (bakeOnePanrep2texsnip, extPanrep )
-            "convPanrep2" -> (bakeOnePanrep2, extPanrep )
+            "convPanrep2html" -> (bakeOnePanrep2html, extPanrep )
             "convTex2pdf" -> (bakeOneTex2pdf, extTex )
             "convTexsnip2tex" -> (bakeOneTexsnip2tex, extTexSnip )
             _  -> errorT [anyopName, "convertAny error unknown anyopName "]

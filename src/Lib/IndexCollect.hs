@@ -93,7 +93,7 @@ initializeIx2file mdfs doughP fp = zero{ixfn = toFilePath linkfp
 -- -- searches in dough!
 -- -}
 -- collectIndex debug pubf sett4 fn dv1 = do
---     putInform debug ["collectIndex 1", "start", showPretty fn]
+--     putInformOne debug ["collectIndex 1", "start", showPretty fn]
 
 --     let layout = siteLayout sett4 
 --         doughP = doughDir layout -- the regular dough
@@ -101,7 +101,7 @@ initializeIx2file mdfs doughP fp = zero{ixfn = toFilePath linkfp
 
 --     (dirs, files) :: ([Path Abs Dir], [Path Abs File]) <- getDirContent2dirs_files NoticeLevel0 pubf sett4 doughP  fn
 
---     putInform NoticeLevel2 ["collectIndex 2 dough!", "\n dirs"
+--     putInformOne NoticeLevel2 ["collectIndex 2 dough!", "\n dirs"
 --                     , showT dirs, "\n files", showT files]
 
 --     -- check for publishable: test docrep not zero 
@@ -122,7 +122,7 @@ initializeIx2file mdfs doughP fp = zero{ixfn = toFilePath linkfp
 --     let dv2 = dv1{dirEntries = map (initializeIx2dir (mdFiles pubf) doughP) dirs2
 --                     , fileEntries = map (initializeIx2file (mdFiles pubf) doughP) files2}
 
---     putInform debug ["collectIndex 3"
+--     putInformOne debug ["collectIndex 3"
 --         , "\ndv2 dirs ixfn", showT (map ixfn . dirEntries $ dv2)
 --         , "\ndv2 dirs link", showT (map link . dirEntries $ dv2)
 --         , "\ndv2 files ixfn", showT (map ixfn . fileEntries $ dv2)
@@ -159,10 +159,10 @@ initializeIx2file mdfs doughP fp = zero{ixfn = toFilePath linkfp
 -- -- get the dirs and files, exclude based on filename
 -- -- but not checked for inclusion 
 -- getDirContent2dirs_files debug pubf sett4 doughP   indexDir = do
---     putInform debug ["getDirContent2dirs_files for", showPretty indexDir]
+--     putInformOne debug ["getDirContent2dirs_files for", showPretty indexDir]
 --     -- let pageFn = makeAbsDir $ getParentDir indexpageFn :: Path Abs Dir
 --     -- -- get the dir in which the index file is embedded
---     -- putInform debug ["getDirContent2dirs_files pageFn", showPretty pageFn]
+--     -- putInformOne debug ["getDirContent2dirs_files pageFn", showPretty pageFn]
 
 --     dirs1 :: [Path Abs Dir] <- getDirectoryDirs' indexDir
 --     let dirs2 =  filter (not . isInfixOf' (doNotBake (siteLayout sett4)). s2t . getNakedDir) dirs1
@@ -172,22 +172,22 @@ initializeIx2file mdfs doughP fp = zero{ixfn = toFilePath linkfp
 --     -- TODO may need extension (change to list of excluded)
 --     -- build from constants in foundation
 
---     putInform debug ["\ngetDirContent2dirs_files dirs4", showPretty dirs5]
+--     putInformOne debug ["\ngetDirContent2dirs_files dirs4", showPretty dirs5]
 --     let ixdirs = dirs5
 
 --     files1 :: [Path Abs File] <- getDirContentFiles indexDir
 
---     putInform debug ["getDirContent2dirs_files files1", showPretty files1]
+--     putInformOne debug ["getDirContent2dirs_files files1", showPretty files1]
  
 --     let files2 =
 --             filter (("index" /=) . getNakedFileName) -- should not exclude all index pages but has only this one in this dir?
 --                 . filter (hasExtension extMD)  
 --                 . filter (not . isInfixOf' (doNotBake (siteLayout sett4)) . s2t. toFilePath)
 --                 $ files1
---     putInform debug ["getDirContent2dirs files2", showPretty files2]
+--     putInformOne debug ["getDirContent2dirs files2", showPretty files2]
 --     let ixfiles = files2
 
---     putInform debug ["getDirContent2dirs xfiles", showPretty ixfiles, "\n ixdirs", showPretty ixdirs]
+--     putInformOne debug ["getDirContent2dirs xfiles", showPretty ixfiles, "\n ixdirs", showPretty ixdirs]
 
 --     return ( ixdirs,  ixfiles)
 

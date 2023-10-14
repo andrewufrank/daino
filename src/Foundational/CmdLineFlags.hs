@@ -36,25 +36,29 @@ progTitle = "constructing a static site generator" :: Text
 -- | the flags represent the switches from CmdLineArgs
 -- see there for meaning
 data PubFlags = PubFlags
-    { privateFlag
-      , draftFlag
-    --   , oldFlag
-      , testFlag
-      , testNewFlag 
-      , restartFlag
-      , quickFlag
-      , watchFlag
-      , serverFlag
+    { privateFlag  -- ^ p
+      , draftFlag  -- ^ d
+    --   , oldFlag  -- ^ o
+      , testFlag   -- ^ t
+      , testNewFlag  -- ^ T
+      , newStartFlag  -- ^ R 
+      , tufteFlag    -- ^ e
+      , pdfFlag      -- ^ n
+      , watchFlag    -- ^ w
+      , serverFlag   -- ^ s
       , verboseFlag :: Bool
       , locationDir :: FilePath -- can be absolute or relative
                     -- the location given on the command line
       , mdFiles :: [Path Abs File]
-        -- experiment to calculate the list of all md files to include
+        --  the list of files to start shake with
+        -- set in shake2start
+
     }
     deriving (Show, Eq) -- no read for path
 
 instance Zeros PubFlags where
-    zero = PubFlags zero zero zero zero zero zero zero zero zero zero zero
+    zero = PubFlags zero zero zero zero zero zero zero 
+            zero zero zero zero zero
 instance Default PubFlags where 
         def = testFlags 
 

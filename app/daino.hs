@@ -13,24 +13,16 @@
  uses shake only to convert the md files
  copies all resources
  must start in dir with settings3.yaml
- (except if run with -t or -T then uses settings3.yaml from dainoSite)
 -}
 module Main where -- must have Main (main) or Main where
 
 import ShakeBake.CmdLineArgs ( parseArgs2input )  
 import Foundational.CmdLineFlags ( PubFlags, progName, progTitle  )
--- import Foundational.SettingsPage (sourceDirTestSite )  
 
 import ShakeBake.StartDainoProcess ( dainoProcess )  
--- import Uniform.StartApp ( startProgWithTitle )  
 import UniformBase 
--- ( Text, NoticeLevel(NoticeLevel0), unlinesT )  
-import Data.Version
 import Paths_daino (version)
 
--- programName, progTitle :: Text
--- programName = "daino" :: Text
--- progTitle = "constructing a static site generator" :: Text
 progVersion = showT version  -- "0.1.5.2":: Text
 
 -- the process is centered on the current working dir
@@ -45,17 +37,21 @@ main =
                     -- sourceDirTestSite 
                     --  add a delete flag
                     ( unlinesT
-                        [ "the flags to select what is included:"
+                        [ "no flags give baseline, add"
+                        , "\n -e for edward tufte style"
+                        , "\n -n for nice pdf output"
+                        , "\nthe flags to select what is included:"
                         , "default is publish and public included"
                         , "\n -p private"
                         , "\n -d drafts"
                         -- , "\n -o old"
-                        , "\n -t test (use data in dainoSite (in current directory), continue)"
-                        , "\n -T test (use data in dainoSite (in current directory), fresh start)"
-                        , "\n -q quick (not producing the pdfs, which is slow)"
+                        , "\n -t test (use data in dainoSite, continue)"
+                        , "\n -T test (use data in dainoSite, fresh start)"
+                        , "\n -R to start fresh start with local directory"
+                        -- , "\n -q quick (not producing the pdfs, which is slow)"
                         , "\n -w start to watch the files for changes and rebake (implies -s)"
                         , "\n -s start local server (port is fixed in siteHeader)"
-                        , "\n -v make processing more verbose)"
+                        , "\n -v make processing more verbose"
 
                         , "\n -l location of settingsFile"
                         -- , "\n -u upload to external server (not yet implemented"

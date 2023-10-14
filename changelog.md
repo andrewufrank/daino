@@ -75,3 +75,12 @@ used versions 9.0.2
 0.1.6.1 using strict need, start with index.html 
     and everthing follows
 0.1.6.2 moved to ghc 9.6.2
+0.1.6.4 uses uniform-pandoc 0.1.6.4 (with pandoc 3.1.8, pandoc-types 1.23.1)
+    adapted for citeproc templates
+    and new(?) version of tufte-latex
+0.1.6.5 start using for myHomepage (wo_3.0for64)
+    known bugs: 
+    - title with bold (and similar) fail in tufte-latex
+    - the book construction seems not yet ok
+    - problem with sort order of files in list
+    - runs latex only once, indexed switched off

@@ -21,7 +21,7 @@ import Wave.Panrep2pdf
 import Uniform.Pandoc
 -- import Uniform.Json
 import UniformBase
--- import Lib.Md2doc_test
+import Lib.Md2doc_test
 import Data.Hash
 
 -- settFn = makeAbsFile 
@@ -46,7 +46,7 @@ resLatex = makeAbsFile"/home/frank/tests/latexTest"
 --         putIOwords ["test_toLatex setup texsnip done"]
 
 --         (lat1, _, tt1) <- texsnip2tex debug def texsnip
---         putInform debug ["test_toHtmlTest pr \n", tt1]
+--         putInformOne debug ["test_toHtmlTest pr \n", tt1]
 --         write8 resLatex texFileType lat1
 --         write8 resLatex ttlFileType tt1
 --         let hash1 = show . hash . show $  lat1 :: String

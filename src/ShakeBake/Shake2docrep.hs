@@ -1,17 +1,16 @@
 ----------------------------------------------------------------------
 --
--- Module Shake2 :
+-- Module Shake2 docrep
 ----------------------------------------------------------------------
 {- the conversion starts with the root files to produce, 
     i.e. only index.md 
-    This triggers the rule html -> panrep 
-<<<<<<< HEAD
-    and Panrep2 produces the needs for *.pdf, templates, jpg and bib
-=======
-    and panrep2html produces the needs for *.pdf, templates, jpg and bib
->>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
+   
+    it needs the *.md file 
 
-    for now the css, dtpl, jpg etc. are still included
+    docrep includes all pandoc processing
+        citeproc for the references
+        conversion from markdown to pandoc internal rep
+                    to latex and html 
     -}
 ----------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
@@ -34,15 +33,17 @@ module ShakeBake.Shake2docrep where
 
 import UniformBase 
 import Uniform.Shake
-import Uniform.Pandoc 
+-- import Uniform.Pandoc 
 import Foundational.SettingsPage
 import Foundational.Filetypes4sites
+import Foundational.CmdLineFlags
 import Wave.Md2doc 
-
+ 
+shake2docrep :: NoticeLevel -> PubFlags -> Settings -> Path Abs Dir -> Rules ()
 shake2docrep debug flags sett4 bakedP  =     
     (toFilePath bakedP <> "**/*.docrep") %> \out -> do 
             -- insert pdfFIles1  -- here start with doughP
-    putInform debug ["rule **/*.docrep 1", showT out]
+    putInformOne debug ["rule **/*.docrep 1", showT out]
 
     let layout = siteLayout sett4 
         doughP = doughDir layout -- the regular dough
@@ -50,49 +51,39 @@ shake2docrep debug flags sett4 bakedP  =
     let outP = makeAbsFile out :: Path Abs File
     let bakedFrom = replaceDirectoryP  bakedP doughP $  
                         replaceExtension'  "md" outP
-    putInform debug ["rule **/*.docrep 2 - bakedFrom", showT bakedFrom
+    putInformOne debug ["rule **/*.docrep 2 - bakedFrom", showT bakedFrom
             , "\n\t\t resfn2", showT outP ]
     needP [bakedFrom]  
   
     
-    putInform debug ["rule **/*.docrep 3 continued - md need set"]
+    putInformOne debug ["rule **/*.docrep 3 continued - md need set"]
 
-    _ <- runErr2action $ do -- bakeOneMD2docrep debug flags bakedFrom sett4 outP 
-    -- no needs follow 
--- bakeOneMD2docrep debug flags inputFn sett3 resfn2 = do
-  
---     dr4 <- readMarkdownFile2docrep NoticeLevel0 flags sett4  bakedFrom 
---         -- dr4 <- addRefs debug dr3
---            readMarkdownFile2docrep debug flags sett3 fnin = do
+    _ <- runErr2action $ do -- no needs added here 
+                    --  (because not certain that included) 
 
-        p1 <- readMd2pandoc bakedFrom -- need posted
-        putInform NoticeLevel1 ["rule **/*.docrep 4 read", showT bakedFrom]
+        putInformOne debug ["rule **/*.docrep 4 read", showT bakedFrom]
 
        -- check for german and process umlaut, 
-        -- repeat readMd2pandoc if changed 
-
-        -- default values only what is used for citeproc and ??
-        -- rest can go into settings 
-        -- these are copied from previous values (OLD below)
-
+       --       this is done, even if the file is not include later
+        -- repeat readMd2pandoc if changed   
+            -- then add list of defaults
+            -- walk to replace /lf/ 
+            -- apply citeproc
+            -- fill body and convert to html and latex
+        mp3 <- md2doc debug sett4 bakedFrom 
     
-        let p2 = addListOfDefaults (metaDefaults sett4) p1
-        m1 <- md2Meta_Process p2
-        -- process citeproc
-        let mp1 = setMetaPlusInitialize sett4 bakedFrom m1
-            incl = includeBakeTest3docrep flags (metap mp1) 
-
-        --  showPretty incl]
-        let dr4 =  if incl then mp1 else zero     
-        putInform NoticeLevel1 ["rule **/*.docrep 5 ready to write outP"
-                            , showT outP]
+        let incl = includeBakeTest3docrep flags (metap mp3) 
+    
+        let dr4 =  if incl then mp3 else zero     
+        putInformOne debug ["rule **/*.docrep 5 ready to write outP"
+                            , showT outP, "incl", showT incl]
         write8 outP docrepFileType dr4
 
-        putInform debug  [ "rule **/*.docrep 6 written outP", showT outP
+        putInformOne debug  [ "rule **/*.docrep 6 written outP", showT outP
                 ]
         return []
 
-    putInform debug ["rule **/*.docrep 7 end ----------------"] -- no  - needs2", showT needs2]
+    putInformOne debug ["rule **/*.docrep 7 end ----------------"] -- no  - needs2", showT needs2]
     return ()
     
 

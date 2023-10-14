@@ -9,7 +9,7 @@ module Lib.Docrep2panrep_test where
 import Foundational.Filetypes4sites
 import Foundational.SettingsPage
 import Lib.IndexCollect
--- import Lib.Md2doc_test
+import Lib.Md2doc_test
 import Test.Framework
 import Uniform.Json
 import Uniform.Markdown
@@ -26,7 +26,7 @@ fnmd2 = makeAbsFile "/home/frank/Workspace11/dainoSite/ReadMe/index.md"
 resdocrep = makeAbsFile "/home/frank/tests/docrep1"
 respanrep = makeAbsFile "/home/frank/tests/panrep1"
 
--- settingsDainoSite = makeAbsFile "/home/frank/Workspace11/dainoSite/settings3.yaml"
+settingsDainoSite = makeAbsFile "/home/frank/Workspace11/dainoSite/settings3.yaml"
 -- test regular docrep2panrep with files from dainoSite
 -- test_toPanrep = do 
 --     res1 <- runErr $ do 

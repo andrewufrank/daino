@@ -29,42 +29,35 @@ import ShakeBake.Watch (mainWatch)
 import Uniform.WebServer (runScotty)
 import Foundational.SettingsPage
 import Foundational.CmdLineFlags
-import Paths_daino  
 import UniformBase
 import qualified Path.Posix as Path
 import qualified System.FilePath.Posix as P
--- import System.Directory (canonicalizePath)
--- import Filesystem.Path.CurrentOS (decodeString, encodeString, collapse)
 
 import Path.IO (resolveDir, getHomeDir)
--- , createDirLink, getSymlinkTarget, removeDirLink) -- now in fileio
--- import System.Posix.Files (readSymbolicLink,createSymbolicLink)
 
 dainoProcess :: NoticeLevel -> PubFlags -> ErrIO ()
 dainoProcess debug1 flags = do
     -- let debug1 = NoticeLevel2
-    putIOwords ["dainoProcess 0 debug flags", showT debug1, showT flags]
+    putInformOne debug1 ["dainoProcess 0 debug flags", showT debug1, showT flags]
     let useTestSite = (testFlag flags || testNewFlag flags)
-    putIOwords ["dainoProcess 1 useTestSite", showT useTestSite]
+    putInformOne debug1 ["dainoProcess 1 useTestSite", showT useTestSite]
     currDir :: Path Abs Dir  <- currentDir 
     let relSettingsFile :: Path Rel File = makeRelFile "settings3.yaml"
     let debug = if verboseFlag flags then NoticeLevel1 else debug1
     sett4dir <- if useTestSite 
         then do
-            putInform debug ["dainoProcess 2test useTestSite"]
+            putInformOne debug ["dainoProcess 2 test useTestSite"]
             return $   makeAbsDir "/home/frank/Workspace11/dainoSite"  
             -- return $ (Path.parent currDir) </> makeRelDir "dainoSite"  
   
         else if (P.isAbsolute (locationDir flags)) 
             then do 
-                putIOwords ["dainoProcess to test location abs dir",  showT (locationDir flags)]
+                putInformOne debug ["dainoProcess 2 test location abs dir",  showT (locationDir flags)]
                 return $  (makeAbsDir . locationDir $ flags)  
             else if (P.isRelative (locationDir flags))
                 then do 
-                    putIOwords ["dainoProcess 5 location relative",  showT (locationDir flags)]
+                    putInformOne debug ["dainoProcess 5 location relative",  showT (locationDir flags)]
                     absdir <- resolveDir currDir (locationDir flags)
-                    -- probably not relevant now
-                
                     -- problem initial .. bad hack!
                      
                     -- canonFP <- liftIO $ canonicalizePath (locationDir flags)
@@ -78,9 +71,9 @@ dainoProcess debug1 flags = do
             else 
                 errorT ["dainoProcess 5 location not valid",  showT $ locationDir flags]
                  
-    putInform debug ["dainoProcess 5 dir of settings file",  showT sett4dir]
+    putInformOne debug  ["dainoProcess 5 dir of settings file",  showT sett4dir]
     let sett4file = sett4dir </> relSettingsFile 
-    putInform debug ["dainoProcess 5  settings file",  showT sett4file]
+    putInformOne debug  ["dainoProcess 5  settings file",  showT sett4file]
  
     existSett <- doesFileExist' (sett4file) 
     sett4 <- if existSett 
@@ -90,29 +83,28 @@ dainoProcess debug1 flags = do
                     , "perhaps need install dainoSite with `git clone https://github.com/andrewufrank/dainoSite.git"]            
 
 
+-- put a link to theme into dough/resources
+    let themeDir1 = themeDir (siteLayout sett4) :: Path Abs Dir
     let doughP = doughDir (siteLayout sett4) :: Path Abs Dir
 
     doughExist <- doesDirExist' doughP
     unless doughExist $
             errorT ["dainoProcess 2", "error dough not present", "install dainoSite with `git clone https://github.com/andrewufrank/dainoSite.git"]
 
+    let resourcesP = ( doughP) `addDir` (makeRelDir resourcesName):: Path Abs Dir
+    createDirIfMissing' resourcesP
 
--- this was an idea to copy theme automatically
--- theme is now stored in daino (not in uniform-pandoc)
--- put a link to theme into dough/resources
-    let themeDir1 = themeDir (siteLayout sett4) :: Path Abs Dir
 
+    let link1 =  resourcesP `addDir` (makeRelDir themeName) :: Path Abs Dir
     let target1 = themeDir1  :: Path Abs Dir
-    putInform debug ["dainoProcess 3 check simlink \n    target   ", showT target1]
-
-    let link1 =  doughP `addDir` (makeRelDir resourcesName) `addDir` (makeRelDir themeName) :: Path Abs Dir
+    putInformOne debug ["dainoProcess 3 check simlink \n    target   ",  showT target1
+                                            , "\n    linked to", showT link1]
     linkExists <- doesDirExist' link1
     targetOK <- if linkExists 
         then do
             targetNow <- getSymlinkTarget link1
-            putInform debug ["dainoProcess 5 current \n    target for theme  ",  showT targetNow]
-            if (makeAbsDir targetNow) == target1 
-                then return True
+            putInformOne debug ["dainoProcess 5 current \n    target for theme  ",  showT targetNow]
+            if (makeAbsDir targetNow) == target1 then return True
                 else do 
                     removeDirLink link1
                     putIOwords ["dainoProcess remove previous link"]
@@ -123,17 +115,17 @@ dainoProcess debug1 flags = do
             return False 
 
     unless targetOK $ do 
-            putIOwords ["dainoProcess 4 create simlink \n    target   ",  showT target1
-                                            , "\n    linked to", showT link1]
+            putInformOne debug ["dainoProcess 4 create simlink \n    target   ",  showT target1
+                                            , "\n    link put into to", showT link1]
             createDirLink  ( target1) ( link1)
 
 
 -- set the currentWorkingDir CWD to doughDir
 
-    putIOwords ["\n dainoProcess"
+    putInformOne debug ["\n dainoProcess"
         , "currDir is doughP", showT currDir
         ]
-    putInform debug ["\ndainoProcess starts baking with"
+    putInformOne debug ["\ndainoProcess starts baking with"
         , "siteLayout" , showT (siteLayout sett4) 
         ]
     setCurrentDir doughP
@@ -141,7 +133,7 @@ dainoProcess debug1 flags = do
     if watchFlag flags -- implies server
         then mainWatch debug sett4 flags 
         else do
-            when (testNewFlag flags || restartFlag flags) $ do
+            when (testNewFlag flags || newStartFlag flags) $ do
                 let bakedP = bakedDir (siteLayout sett4)
                 deleteDirRecursive bakedP 
             shakeAll debug sett4 flags ""
@@ -156,8 +148,8 @@ dainoProcess debug1 flags = do
 
 -- return the dir as set before
     setCurrentDir currDir
-    putInform debug ["dainoProcess", "again currDir as before", showT currDir, "\nwas doughP", showT doughP] 
-    putInform debug ["dainoProcess done"]
+    putInformOne debug ["dainoProcess", "again currDir as before", showT currDir, "\nwas doughP", showT doughP] 
+    putInformOne debug ["dainoProcess done"]
     return ()
 
 -- settingsFileName :: Path Rel File
@@ -193,5 +185,3 @@ dainoProcess debug1 flags = do
     --     currentTime <- getCurrentTimeUTC
     --     writeFile2 testLastUploadFileName (show currentTime)
 
-
--- comment 2023 could be done with shake? 

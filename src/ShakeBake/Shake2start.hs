@@ -5,11 +5,7 @@
 {- the conversion starts with the root files to produce, 
     i.e. only index.md 
     This triggers the rule html -> panrep 
-<<<<<<< HEAD
-    and Panrep2 produces the needs for *.pdf, templates, jpg and bib
-=======
     and panrep2html produces the needs for *.pdf, templates, jpg and bib
->>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
 
     for now the css, dtpl, jpg etc. are still included
     -}
@@ -46,7 +42,7 @@ shakeAll debug sett3 flags causedby = do
         doughP = doughDir layout :: Path Abs Dir -- the regular dough
         bakedP = bakedDir layout :: Path Abs Dir
         themeP = themeDir layout :: Path Abs Dir
-    putIOwords
+    putInformOne debug
         [ "\n\n===================================== shakeAll start"
         , "\n flags", showPretty flags
         , "\ncaused by", s2t causedby, "."
@@ -63,13 +59,22 @@ shakeAll debug sett3 flags causedby = do
                 -- , "Minimal/index.html"
                 -- , "Event/index.html"
                 ]  -- start with HTML! 
-        fs4htmlTemplate =   
-            ["resources/theme/templates/static/tufte.css"
+        fs4htmlTemplate =    
+            -- should contain all what is in theme
+            -- and what is in settings  
+            [ "resources/theme/templates/static/tufte.css"
             , "resources/theme/templates/static/tufte-extra.css"
             , "resources/theme/templates/static/pandoc.css"
             , "resources/theme/templates/static/tufte-additions.css"
-            , "resources/img/squared16.jpg" -- add rest 
-            , "resources/theme/templates/img/DSC04809.JPG"
+            -- , "resources/img/squared16.jpg" -- add rest 
+            -- , "resources/img/squared16.jpg" -- add rest 
+            -- , "resources/img/squared16.jpg" -- add rest 
+            -- , "resources/DSC04809.JPG"
+            , "resources/theme/templates/chicago-fullnote-bibliography.csl"
+            , "resources/theme/templates/styles.html"
+            -- default style for pandoc64html
+            -- , "resources/theme/templates/locales-en-US.csl"
+            , "resources/theme/templates/fancyvrb.sty"
             -- banner . siteHeader $ sett3 
             ,"resources/BibTexLatex.bib"
             ]
@@ -78,6 +83,6 @@ shakeAll debug sett3 flags causedby = do
                 , map (addFileName bakedP) $ map makeRelFile fs4
                                     ]
         }
-    putInform NoticeLevel1 ["start with fs4", showT fs4, "\n"]
-    putInform debug ["mdFiles flags", showT $ mdFiles flags2]        
-    callIO $ shakeMD NoticeLevel2 sett3  flags2   
+    putInformOne debug ["start with fs4", showT fs4, "\n"]
+    putInformOne debug ["mdFiles flags", showT $ mdFiles flags2]        
+    callIO $ shakeMD debug sett3  flags2   

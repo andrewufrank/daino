@@ -29,7 +29,7 @@ content         $metaHtml.body$
 menu2files       $for(extra.fileEntries)$
 
     ixfn            $extra.fileEntries.ixfn$
-$--    link            $extra.fileEntries.link$
+    link            $extra.fileEntries.link$
     title           $extra.fileEntries.title$
     abstract        $extra.fileEntries.abstract$
     pdf2            $extra.fileEntries.pdf2$
@@ -39,8 +39,7 @@ $--    link            $extra.fileEntries.link$
 
 menu2subdir     $for(extra.dirEntries)$ 
 
-    ixfn            $extra.dirEntries.ixfn$
-$--    link            $extra.dirEntries.link$
+    link            $extra.dirEntries.link$
     title           $extra.dirEntries.title$ 
     abstract        $extra.dirEntries.abstract$ 
                 $endfor$
@@ -64,8 +63,7 @@ blogAuthorToSuppress
 
 indexEntryDirectories 
     $for(extra.dirEntries)$
-        ixfn    $extra.dirEntries.ixfn$
-        link    $extra.dirEntries.link$
+            $extra.dirEntries$
     $endfor$
 
 indexEntryFiles 
@@ -81,20 +79,18 @@ indexEntryFiles
             visibility  $extra.fileEntries.visibility$ 
             version     $extra.fileEntries.version$ 
             sortOrder   $extra.fileEntries.sortOrder$ 
-            pdf1        $extra.fileEntries.pdf1$ 
     $endfor$
                         
 masterTemplateFile  $sett.siteLayout.masterTemplateFile$
 texTemplateFile     $sett.siteLayout.texTemplateFile$
 themeDir            $sett.siteLayout.themeDir$
 
-Bibliography        $metap.Bibliography.c$  
+Bibliography        $metap.Bibliography.c$
                     
 headerShitft        $metap.headerShift$
 
 -- for tufte latex
 book                $metaHtml.book$
-pdf2                 $extra.pdf2$ $-- the pdf file name
 bookBig             $extra.bookBig$
 booklet             $extra.booklet$
 bookprint

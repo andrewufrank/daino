@@ -24,11 +24,7 @@ import Foundational.CmdLineFlags
 import Foundational.Filetypes4sites
 import Uniform.Http
 import Uniform.Shake
-<<<<<<< HEAD
-import Wave.Panrep2  
-=======
 import Wave.Panrep2html  
->>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
 -- import Development.Shake (getDirectoryContents)
 
 
@@ -43,19 +39,11 @@ type BakeOp =
 
  
 
-<<<<<<< HEAD
--- bakeOnePanrep2 :: BakeOp -- PANREP -> HTML  -- TODO
--- bakeOnePanrep2 debug flags inputFn sett3 resfn2 = do
---     when (inform debug) $    putIOwords
---         [ "\n-----------------"
---         , "bakeOnePanrep2 1 fn"
-=======
 -- bakeOnePanrep2html :: BakeOp -- PANREP -> HTML  -- TODO
 -- bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
 --     when (inform debug) $    putIOwords
 --         [ "\n-----------------"
 --         , "bakeOnePanrep2html 1 fn"
->>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
 --         , showT inputFn
 --         , "\n resfn2"
 --         , showT resfn2
@@ -63,22 +51,14 @@ type BakeOp =
 --     dr1 <- read8 inputFn panrepFileType
  
 
-<<<<<<< HEAD
---     (p, needsFound, test_templatehtml) <- Panrep2 debug  flags dr1
-=======
 --     (p, needsFound, test_templatehtml) <- panrep2html debug  flags dr1
->>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
 
 --     write8 resfn2 htmloutFileType ( p) -- content is html style
 --     write8 resfn2 tthFileType test_templatehtml
 --     -- write the test for filling the template always 
 --     when (inform debug) $
 --         putIOwords
-<<<<<<< HEAD
---             ["\n-----------------", "bakeOnePanrep2 done fn", showT resfn2]
-=======
 --             ["\n-----------------", "bakeOnePanrep2html done fn", showT resfn2]
->>>>>>> 73f6a93f6bf536704377ab4ef59a887eead704b3
 --     return  needsFound
 
 -- getNeeds4pan :: BakeOp

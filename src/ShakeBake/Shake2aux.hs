@@ -24,21 +24,22 @@
 module ShakeBake.Shake2aux where
 
 import           Uniform.Shake
-import Foundational.SettingsPage
+-- import Foundational.SettingsPage
 -- import Foundational.CmdLineFlags
 -- import ShakeBake.Bake
 
-shakeArgs2 :: Path b t -> Rules () -> IO ()
+shakeArgs2 :: NoticeLevel -> Path b t -> Rules () -> IO ()
 {- | set the options for shake
  called in shakeMD
 -}
-shakeArgs2 bakedP = do
+shakeArgs2 debug bakedP = do
     -- putIOwords ["shakeArgs2", "bakedP", s2t . toFilePath $ bakedP]
     res <-
         shake
             shakeOptions
                 { shakeFiles = toFilePath bakedP  -- where should the shake files to into baked?
-                , shakeVerbosity = Verbose --  Loud Info -- 
+                , shakeVerbosity = verbose debug 
+                -- , shakeVerbosity = Verbose --  Loud Info -- 
                         -- verbose gives a single line for each file processed
                         --          plus info for copying
                         -- info gives nothing in normal process 
@@ -46,8 +47,10 @@ shakeArgs2 bakedP = do
                 }
     return res
 
-needPwithoutput t1 t2 files = do 
-        putInform NoticeLevel1 ["\nneeds set", t1, t2, showT files]
+verbose debug = if inform debug then Verbose else Info
+
+needPwithoutput debug t1 t2 files = do 
+        putInformOne debug ["\nneeds set", t1, t2, showT files]
         needP files 
 
 
@@ -77,6 +80,6 @@ copyFileToBaked debug doughP bakedP out = do
     let outP = makeAbsFile out :: Path Abs File
     when (inform debug) $ liftIO $ putIOwords ["copyFileToBaked outP", showT outP, "\n"]
     let fromfile = doughP </> makeRelativeP bakedP outP
-    -- putInform debug
+    -- putInformOne debug
     --             ["\ncopyFileToBaked fromfile ", showT fromfile, "added NEED automatically"]
     copyFileChangedP fromfile outP

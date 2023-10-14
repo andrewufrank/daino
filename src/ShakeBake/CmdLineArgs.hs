@@ -30,14 +30,14 @@ import Foundational.CmdLineFlags
 data LitArgs = LitArgs
   {
    draftSwitch -- x^ d
-  , privateSwitch -- x^ v
---   , publishSwitch  -- x^ p
---   , oldSwitch -- x^ o
+  , privateSwitch -- x^ p
+  , tufteSwitch  -- x^ e
+  , pdfSwitch -- x^ o
 --   , finishedSwitch -- x^ f 
   , testSwitch  -- x^ t
   , testNewSwitch -- x^ T -- test after delete to create all new
-  , restartSwitch -- x^ R   -- delete all site and reconstruct (compare T)
-  , quickSwitch -- x^ q
+  , newstartSwitch -- x^ R   -- delete all site and reconstruct (compare T)
+--   , quickSwitch -- x^ q
   , serverSwitch -- x^ s 
   , watchSwitch -- x^ w 
   , verboseSwitch --x^ v  -- set debug level to 2 
@@ -58,10 +58,14 @@ cmdArgs  =
           (long "private" <> short 'p' <> help
             "include the private data, else only public"
           )
-    -- <$> switch
-    --       (long "publish" <> short 'p' <> help
-    --         "include material ready to publish"
-    --       )
+    <*> switch
+          (long "tufte" <> short 'e' <> help
+            "produce edward tufte style output"
+          )
+    <*> switch
+          (long "nice pdf output" <> short 'n' <> help
+            "produce pdf for nice output"
+          )
     -- <*> switch (long "old" <> short 'o' <> help "include old material")
     <*> switch
           (long "test" <> short 't' <> help
@@ -75,10 +79,10 @@ cmdArgs  =
           (long "restart site generation" <> short 'R' <> help
             "delete the current site"
           )
-    <*> switch
-          (long "quick" <> short 'q' 
-            <> help "produce only html, but not the (slower) pdf's"
-          )
+    -- <*> switch
+    --       (long "quick" <> short 'q' 
+    --         <> help "produce only html, but not the (slower) pdf's"
+    --       )
     <*> switch
           (long "server" <> short 's' 
                 -- <> value True   -- not working
@@ -121,8 +125,9 @@ parseArgs2input   t1 t2 = do
                          , privateFlag  = privateSwitch args1
                          , testFlag     = testSwitch args1
                          , testNewFlag = testNewSwitch args1
-                         , quickFlag    = quickSwitch args1
-                         , restartFlag    = restartSwitch args1
+                         , pdfFlag    = pdfSwitch args1
+                         , tufteFlag = tufteSwitch args1
+                         , newStartFlag    = newstartSwitch args1
                          , serverFlag   = serverSwitch args1
                          , watchFlag    = watchSwitch args1
                          , verboseFlag = verboseSwitch args1
