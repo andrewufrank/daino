@@ -187,18 +187,17 @@
                     </li>
                 $endfor$ 
         </ul>
-                 
-        $for(extra.dirEntries)$ 
+
+        $if(extra.dirEntries)$         
         <p>Directories with more related texts:</p>
         <ul class="w3-ul w3-hoverable">
-                    $for(extra.dirEntries)$ 
-                    <li> 
-                        <a href=/$extra.dirEntries.ixfn$.html><em>$extra.dirEntries.textualHtml.title$</em></a>
-                    $if(extra.dirEntries.textualHtml.abstract)$<br>$extra.dirEntries.textualHtml.abstract$$endif$		
-                        
-                    </li>
-                    $endfor$
-        $endfor$
+            $for(extra.dirEntries)$ 
+                <li> 
+                <a href=/$extra.dirEntries.ixfn$.html><em>$extra.dirEntries.textualHtml.title$</em></a>
+                $if(extra.dirEntries.textualHtml.abstract)$<br>$extra.dirEntries.textualHtml.abstract$$endif$		
+                </li>
+            $endfor$
+        $endif$
         </ul>
 
     </section>
