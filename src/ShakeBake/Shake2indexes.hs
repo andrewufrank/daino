@@ -32,8 +32,6 @@ import Uniform.Pandoc
 import qualified Data.Map as M
 import qualified Data.List as D
 
-
-
 indexNeeds ::  NoticeLevel -> Settings -> Path Abs Dir -> Path Abs Dir -> Path Abs File -> Action ([Path Abs File], [Path Abs File])
 indexNeeds debug sett4 doughP bakedP outP = do 
     -- let debug = NoticeLevel2
@@ -157,16 +155,9 @@ fillTextual4MP :: DainoMetaPlus -> DainoMetaPlus
 -- the defaults are set before with metaDefaults
 fillTextual4MP mp = mp{extra = x2}
     where 
-        -- m1 =  metap mp
-        -- pan1 = (zero :: TextualIx MetaValue)
-        --     { abstract = fromMaybe (MetaString "XX") $ Pandoc.lookupMeta "abstract" m1
-        --     , title = fromMaybe (MetaString "Missing TITLE") $ Pandoc.lookupMeta "title" m1 
-        --     , author = fromMaybe (MetaString "Missing AUTHOR") $ Pandoc.lookupMeta "author" m1 
-        --     -- could add content here?
-        --     }
         h1 = metaHtml  mp ::M.Map Text Text
         htm1 = (zero :: TextualIx Text)  
-            { abstract = getTextFromMap ( "XX")   "abstract" h1
+            { abstract = getTextFromMap ( "Missing Abstract")   "abstract" h1
             , title = getTextFromMap ( "Missing TITLE")   "title" h1
             , author = getTextFromMap ( "Missing AUTHOR")  "author" h1 
             -- -- for html  content not used
@@ -177,21 +168,15 @@ fillTextual4MP mp = mp{extra = x2}
             , title = removeChar '\n' $ 
                     getTextFromMap ( "Missing TITLE")   "title" t1
             , author = getTextFromMap ( "Missing AUTHOR") "author" t1 
-            -- , content = fromMaybe ("Missing CONTENT") $ M.lookup "bodyBase" t1
             , content = getTextFromMap ("Missing CONTENT") "bodyBase" t1
-            -- could add content here?
-            -- for html not used
             }
 
         x1 = extra mp 
         x2 = x1 { 
-            -- textual0pan = pan1 
                  textual0html = htm1 
                 , textual0tex = tex1
                 } :: DainoValues 
 
-        -- latexTitle =   fromMaybe ( "Missing TITLE") $ M.lookup "title" t1
-        -- latexTitle2 =  removeChar' '\n' latexTitle
 
 getTextFromMap :: Text -> Text -> M.Map Text Text ->  Text
 --get the Metavalue (with  default)
