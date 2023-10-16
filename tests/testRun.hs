@@ -54,7 +54,7 @@ main4t :: IO ()
 -- start s in separate process 
 -- does not build pdf's if not previously done
 main4t = do 
-    putIOwords ["test to re-publish the changed dainoSite files"]
+    putIOwords ["test t - to re-publish the changed dainoSite files"]
     p <- runErr $ do 
             dainoProcess NoticeLevel0 testFlags
                 {testFlag = True 
@@ -67,7 +67,7 @@ main4T :: IO ()
 -- | run the test  site base from a fresh start 
 -- start s in separate process 
 main4T = do 
-    putIOwords ["test publish all dainoSite files"]
+    putIOwords ["test T publish the danioSite files html"]
     p <- runErr $ do 
             dainoProcess NoticeLevel0 testFlags
                 {testFlag = True 
@@ -80,7 +80,7 @@ main4Te :: IO ()
 -- | run the test stie for tufte from fresh start 
 -- start s in separate process 
 main4Te = do 
-    putIOwords ["test publish all dainoSite files"]
+    putIOwords ["test Te"]
     p <- runErr $ do 
             dainoProcess NoticeLevel0 testFlags
                 {testFlag = True 
@@ -88,13 +88,13 @@ main4Te = do
                 , tufteFlag = True
                 -- , pdfFlag = True   -- q 
                 }
-    putIOwords ["main4T end", showT p]
+    putIOwords ["main4Te end", showT p]
 
 main4qT :: IO () 
 -- | run just the test for changed 
 -- start s in separate process 
 main4qT = do 
-    putIOwords ["test to publish all html dainoSite files"]
+    putIOwords ["test qT"]
     p <- runErr $ do 
             dainoProcess NoticeLevel0 testFlags
                 {testFlag = True 
@@ -108,7 +108,7 @@ main4qT = do
 -- | run just the test for changed 
 -- start s here  - do not close terminal later
 main4st = do 
-    putIOwords ["test to publish all html dainoSite files"]
+    putIOwords ["test st"]
     p <- runErr $ do 
             dainoProcess NoticeLevel0 testFlags
                 {testFlag = True 
@@ -116,12 +116,12 @@ main4st = do
                 -- , testNewFlag = True -- T 
                 -- , pdfFlag = True   -- n 
                 }
-    putIOwords ["main4qT end", showT p]    
+    putIOwords ["main4st end", showT p]    
 
 -- | run all from fresh to produce base html and pdf 
 --  
 main4Tn = do 
-    putIOwords ["test to publish all html dainoSite files"]
+    putIOwords ["test Tn"]
     p <- runErr $ do 
             dainoProcess NoticeLevel0 testFlags
                 {testFlag = True 
@@ -129,12 +129,12 @@ main4Tn = do
                 , testNewFlag = True -- T 
                 , pdfFlag = True   -- n 
                 }
-    putIOwords ["main4qT end", showT p] 
+    putIOwords ["main4Tn end", showT p] 
       
 -- | run all from fresh to produce tufte html and pdf 
 --  
 main4Tne = do 
-    putIOwords ["test to publish all html dainoSite files"]
+    putIOwords ["test Tne - test all produce pdf for tufte"]
     let tf = testFlags
                 {testFlag = True 
                 -- , serverFlag = True -- s
