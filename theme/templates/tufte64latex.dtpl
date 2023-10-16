@@ -205,7 +205,7 @@ $-- content description
  
 %\frontmatter  %not defined in tufte-latex?
 
-$if(bookprint)$ % bookprint line 71
+$if(extra.bookprint)$ % bookprint line 71
     % r.1 blank page
     \blankpage
     % v.2 epigraphs
@@ -222,7 +222,7 @@ $if(references)$ % references in md file
   \end{filecontents}
 $endif$
 
-$if(bookprint)$ % bookprint line 88
+$if(extra.bookprint)$ % bookprint line 88
     % r.3 full title page
     \maketitle
 
@@ -249,7 +249,7 @@ $endif$
 
 % noindex %\listoftables
 
-$if(bookprint)$ % bookprint line 115
+$if(extra.bookprint)$ % bookprint line 115
     % r.7 dedication
     \cleardoublepage
     ~\vfill

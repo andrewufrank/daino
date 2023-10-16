@@ -2,6 +2,7 @@
 --
 -- Module      :   a test for HTF framework
 -- insert {-@ HTF_TESTS @-} for each import
+-- run with crepl testRun, then eg main4Tne
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-} 
 {-# LANGUAGE PackageImports     #-}

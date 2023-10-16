@@ -85,7 +85,7 @@ book                $metaHtml.book$
 pdf2                $extra.pdf2$ $-- the pdf file name
 bookBig             $extra.bookBig$
 booklet             $extra.booklet$
-bookprint
+bookprint           $extra.bookprint$
 bakedDir~webroot    $extra.webroot$
 
 
