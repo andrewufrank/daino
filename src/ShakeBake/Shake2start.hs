@@ -33,8 +33,6 @@ import Foundational.SettingsPage
 import Foundational.CmdLineFlags
 import ShakeBake.Shake2
 
-
-
 shakeAll :: NoticeLevel -> Settings -> PubFlags -> FilePath -> ErrIO ()
 -- ^ calls shake in the IO monade. this is in the ErrIO
 shakeAll debug sett3 flags causedby = do

@@ -178,6 +178,7 @@ metaDefaults sett9 =
     , ("headerShift","1")
     , ("author", settingsAuthor sett9)
     , ("sortOrder", "filename")
+    -- should book have a default of ""
     -- , ("indexPage", False) detect from name 'index.md'
     ] 
 -- "resources/webbiblio.bib")
@@ -188,12 +189,12 @@ metaSetBook :: Settings -> DainoMetaPlus -> DainoValues
 -- | set 2 values to allow boolean tests in templates
 metaSetBook sett4 dr1 =  extra5{authorReduced = blankAuthorName hpname aut1
                             ,booklet = "booklet" == bookval
-                            ,bookBig= "bookBig" == bookval
+                            ,bookBig= "bookbig" == bookval
                             ,webroot = s2t $ toFilePath bakedP
                             }
     where 
             aut1 = getTextFromYaml6 defaut "author" meta5
-            bookval = getTextFromYaml6  "" "book"   meta5 
+            bookval = toLower' $ getTextFromYaml6  "" "book"   meta5 
             -- doughP = doughDir layout -- the regular dough
             bakedP = bakedDir layout -- the regular dough
             layout = siteLayout sett4 
