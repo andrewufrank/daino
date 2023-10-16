@@ -56,14 +56,15 @@ $--        link    $extra.dirEntries.link$
         title      $extra.dirEntries.textualTex.title$
         abstract   $extra.dirEntries.textualTex.abstract$ 
         content    $extra.dirEntries.textualTex.content$   
-        
+           c---
     $endfor$
 
--- fileEntries for chapters in bookbig
+fileEntries for chapters in bookbig
     $for(extra.dirEntries.fileEntries)$
     chapter title $extra.dirEntries.fileEntries.textualTex.title$
             abstract  $extra.dirEntries.fileEntries.textualTex.abstract$
             content   $extra.dirEntries.fileEntries.textualTex.content$
+               c---
     $endfor$
 
 indexEntryFiles 
@@ -77,6 +78,7 @@ $--            link        $extra.fileEntries.link$
             author      $extra.fileEntries.textualTex.author$
             date        $extra.fileEntries.date$ 
             content     $extra.fileEntries.textualTex.content$ 
+               c---
             visibility  $extra.fileEntries.visibility$ 
             version     $extra.fileEntries.version$ 
             sortOrder   $extra.fileEntries.sortOrder$ 
