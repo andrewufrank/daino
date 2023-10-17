@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------
 --
--- Module Shake2 :
+-- Module Shake2 html :
 ----------------------------------------------------------------------
 {- the conversion starts with the root files to produce, 
     it starts with the needs for the *.html
@@ -66,7 +66,8 @@ shake2html debug flags sett4 bakedP  =
         let bakedFrom = replaceExtension'  "panrep" outP
         putInformOne debug ["rule **/*.html 3 - bakedFrom", showT bakedFrom, "\n"]
         needP [bakedFrom]
-        when (pdfFlag flags) $ do 
+        -- when (pdfFlag flags) $ do 
+        when True  $ do 
             let pdfNeeded = replaceExtension' "pdf" outP
             putInformOne debug ["rule **/*.html 3b - pdfNeeded", showT pdfNeeded, "\n"]
             needP [pdfNeeded]
@@ -119,28 +120,10 @@ shake2html debug flags sett4 bakedP  =
         targetTempl  <- runErr2action $ compileTemplateFile2 htmlTemplateFn
         testTempl <- runErr2action $ compileTemplateFile2 htmlTestTemplateFn
 
-            --if this is an index file it has files and dirs 
-            -- putInformOne debug ["panrep2html", "extra4", showT extra4]
-
-        -- let files = fileEntries  $ extra4 :: [IndexEntry2]
-        --     dirs = dirEntries  $ extra4 :: [IndexEntry2]
-
-        -- the values are already set (in panrep)
-        -- valsDirs :: [Maybe IndexEntry2]<- runErr2action $ mapM 
-        --                     (getVals2html debug flags bakedP) dirs
-        -- valsFiles :: [Maybe IndexEntry2] <- runErr2action $ mapM 
-        --                 (getVals2html debug flags bakedP) files
-
-        -- putInformOne debug["\n-----rule **/*.html 12 valsDirs"
-        --             , showT valsDirs]
-        -- putInformOne debug ["\n-----rule **/*.html 13 valsFiles", showT valsFiles]
-
-        -- let extra5 = extra4{fileEntries = catMaybes valsFiles
-        --                     , dirEntries = catMaybes valsDirs}
         let metaplus5 = pan0  -- {extra = extra5}
 
-        -- putInformOne debug ["panrep2html", "extra5", showT extra5]
-        -- putInformOne debug ["panrep2html", "metaplus5", showT metaplus5]
+        -- putInformOne debug ["-----rule **/*.html 12", "extra5", showT extra]
+        putInformOne debug ["-----rule **/*.html 13", "metaplus5", showT metaplus5]
 
         let ht1 = fillTemplate_render targetTempl metaplus5
         let test_templatehtml = fillTemplate_render testTempl metaplus5 
@@ -156,7 +139,8 @@ shake2html debug flags sett4 bakedP  =
             ["-----rule **/*.html 14 bakeOnePanrep2html done fn"
             , showT outP]
 
-        when (pdfFlag flags) $ do 
+        -- when (pdfFlag flags) $ do 
+        when True $ do 
             -- needs to start the pdf production 
             let is2pdf = map (addFileName bakedP . 
                             addExtension extPDF) ixs0 

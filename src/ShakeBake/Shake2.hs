@@ -107,7 +107,8 @@ shakeMD debug sett4 flags = do
             if fileExists 
                 then copyFileToBaked debug doughP bakedP out
                 else 
-                  when (pdfFlag flags) $ do 
+                --   when (pdfFlag flags) $ do 
+                  when True $ do   
         -- this makes all needs of pdf to fail do
                     let targetP = bakedP 
                         sourceP = bakedP 
@@ -124,7 +125,7 @@ shakeMD debug sett4 flags = do
                     -- anyop debug flags fromfilePathExt layout outP
                     putInformOne debug ["rule **/*.pdf 3 need satisfied"]
                      
-                    runErr2action $ tex2pdf debug fromfilePathExt outP doughP
+                    runErr2action $ tex2pdf debug flags fromfilePathExt outP doughP
                     putInformOne debug ["rule **/*.pdf 4 produce outP (perhaps just fake)"
                         , showT outP]
             putInformOne debug ["rule **/*.pdf 5 end"]
