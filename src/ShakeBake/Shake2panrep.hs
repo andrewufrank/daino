@@ -31,7 +31,6 @@ module ShakeBake.Shake2panrep where
 import UniformBase 
 import Foundational.CmdLineFlags
 import Uniform.Shake
-import Uniform.TemplateStuff
 import Foundational.SettingsPage
 import Foundational.Filetypes4sites
 import Wave.Md2doc
@@ -43,6 +42,7 @@ import ShakeBake.Shake2indexes
 shake2panrep :: NoticeLevel -> PubFlags -> Settings -> Path Abs Dir -> Rules ()
 shake2panrep debug flags sett4 bakedP = 
     (toFilePath bakedP <> "**/*.panrep") %> \out -> do  -- insert pdfFIles1
+    let debug = NoticeLevel2
          
     let layout = siteLayout sett4 
         doughP = doughDir layout -- the regular dough
@@ -70,16 +70,20 @@ shake2panrep debug flags sett4 bakedP =
         then return (zero, zero)
         else   do -- construct index entries 
     --  here the unless insert 
-            (files2, ind3, file4)  <- indexNeeds debug sett4 doughP bakedP outP
+            (files2, ind3)  <- indexNeeds debug sett4 doughP bakedP outP
                     
-            putInformOne debug ["\nrule **/*.panrep 4a \n\t files", showT files2
-                        , "\n\t\t index.md for directories", showT ind3]
+            putInformOne debug 
+                ["\nrule **/*.panrep 4a \n\t files", showT files2
+                    , "\n\t\t index.md for directories", showT ind3]
             needP (files2 ++ ind3)
 
             fileEnt1 <- mapM (constructFileEnry debug sett4) files2 
             dirEnt1 <- mapM (constructFileEnry debug sett4) ind3 
             -- produces the data for the index.md file
             -- one level
+            putInformOne debug 
+                ["\nrule **/*.panrep 4b \n fileEntries", showT fileEnt1
+                    , "\n dirEntries", showT dirEnt1]
 
             return (catMaybes fileEnt1, catMaybes dirEnt1)
     
@@ -89,47 +93,25 @@ shake2panrep debug flags sett4 bakedP =
     putInformOne debug ["\nrule **/*.panrep 5 continued 2", showT out]
 
     needs2empty <- runErr2action $ do
-            --  bakeOneDocrep2panrep debug flags bakedFrom sett4 outP 
-    --           bakeOneDocrep2panrep debug flags inputFn sett3 resfn2 = do
         putInformOne debug [ "\nrule **/*.panrep 6 bakedFrom"
             , showT bakedFrom 
             , "outP", showT outP
             ]
         dr1 :: DainoMetaPlus <- read8 bakedFrom docrepFileType
-
-        -- (p3, needsFound) <- docrep2panrep debug flags  dr1
-                -- completes index and should process reps 
-                -- what to do with needs?
-                     -- docrep2panrep debug flags dr1 = do
-        -- let debug = NoticeLevel0   -- avoid_output_fromHere_down
+ 
         putInformOne debug ["rule **/*.panrep 7"
-                --  , "metaplus: \n", showPretty dr1
-                    -- , "\np1: ", showT p1
                     ]
-  
-        let -- sett4 = sett dr1
-            -- layout = siteLayout sett4
-            -- meta5 = metap  dr1 -- ~ panyam 
-            -- extra5 = extra dr1
+        let 
             extra6 = metaSetBook sett4 dr1 
-            extra7 = extra6{dirEntries = dirEnts
+            extra7 = extra6{  dirEntries = dirEnts
                             , fileEntries = fileEnts}
-
-        -- htm1 <- meta2xx writeHtml5String2 meta5
-        -- tex1  :: M.Map Text Text <- meta2xx   writeTexSnip2 meta5
-
         let dr2 = dr1   {
-                            --  metaHtml = htm1
-                        -- , metaLatex = tex1
                          extra = extra7 }
-    
-        -- -- needs to read the docrep files
-
-        -- write8 outP panrepFileType dr2 -- content is html style
         write8 outP panrepFileType dr2 -- set only dirEntries
 
         putInformOne debug 
                 ["rule **/*.panrep 8 done produced resf2n", showT outP
+                    , "/n dirEntries", showT dirEnts 
                     -- , "\n needsFound", showT needsFound
                 ]
         return [] --  needsFound

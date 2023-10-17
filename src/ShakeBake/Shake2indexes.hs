@@ -34,14 +34,39 @@ import qualified Data.List as D
 
 indexNeeds ::  NoticeLevel ->  Settings -> Path Abs Dir 
         -> Path Abs Dir -> Path Abs File 
-        -> Action ([Path Abs File], [Path Abs File], [Path Abs File])
+        -> Action ([Path Abs File], [Path Abs File])
 indexNeeds debug  sett4 doughP bakedP outP = do 
-    -- let debug = NoticeLevel2
+    let debug = NoticeLevel2
     putInformOne debug ["rule **/*.panrep i1- outP", showT outP]
     let bakedoutP = replaceDirectoryP bakedP doughP outP 
     putInformOne debug ["rule **/*.panrep i1- bakedoutP", showT bakedoutP]
     let bakedDirP = makeAbsDir $ getParentDir bakedoutP :: Path Abs Dir
     putInformOne debug ["rule **/*.panrep i1- bakedDirP", showT bakedDirP]
+
+
+    fs2filtered <- needsFiles2 debug sett4 bakedDirP 
+        -- return fs2filtered for md files in dir 
+    fs3filtered <- needsDirs3 debug sett4 bakedDirP 
+    
+    -- let bookDirP = zero :: [Path Abs Dir]
+    -- let bookDirP = fs3filtered
+    -- fs4filteredAll <- mapM (needsFiles2 debug sett4) bookDirP
+    -- let fs4filtered =  zero 
+        -- if ("bookbig" == bookval sett4) 
+            -- should only be done if bookbig 
+
+    let needsmd =  -- md files , dirs as dir/index.md
+            (fs2filtered , fs3filtered)
+                        :: ([Path Abs File], [Path Abs File])
+        -- -- map (replaceDirectoryP  doughP bakedP) .
+        --         map (addFileName thisDirP)
+        --         . map (replaceExtension' "docrep") 
+        --         $  (fs2  ) 
+    putInformOne debug ["rule **/*.panrep i8 needsmd", showT needsmd]
+
+    return needsmd
+needsFiles2 :: NoticeLevel -> Settings -> Path Abs Dir -> Action [Path Abs File]
+needsFiles2 debug sett4 bakedDirP = do 
 
     fs2nake :: [Path Rel File] <- getDirectoryFilesP bakedDirP ["*.md"]
     -- all md files, without dir
@@ -61,9 +86,9 @@ indexNeeds debug  sett4 doughP bakedP outP = do
     putInformOne debug  
         ["\nrule **/*.panrep i3 getDirectoryFiles done fs2filtered"
                 , showT fs2filtered]
+    return fs2filtered
 
-        -- return fs2filtered for md files in dir 
-
+needsDirs3 debug sett4 bakedDirP = do 
     dr2 :: [Path Abs Dir]  <- getDirectoryDirsFullP bakedDirP 
     putInformOne debug ["\nrule **/*.panrep i4 getDirectoryDir done dr2"
                 , showT dr2]
@@ -72,7 +97,7 @@ indexNeeds debug  sett4 doughP bakedP outP = do
                 , showT dr2filtered]
 
                     -- get the index file for each dir 
-                    -- to check publish
+                    -- to check publish -- not done yet ??
     fs3 :: [Path Abs File] <- fmap concat $ 
         mapM (\f -> getDirectoryFilesFullP f ["index.md"]) dr2
     putInformOne debug ["\nrule **/*.panrep i5 getDirectoryDir done fs3"
@@ -85,25 +110,9 @@ indexNeeds debug  sett4 doughP bakedP outP = do
     putInformOne debug ["rule **/*.panrep i7 fs3", showT fs3]
     let fs3filtered =  (dnbFilter sett4) fs3 
     putInformOne debug ["rule **/*.panrep i7 fs3filtered", showT fs3filtered]
+    return fs3filtered
 
-    let fs4filtered =  zero 
-        -- if ("bookbig" == bookval sett4) 
-            -- should only be done if bookbig 
-
-    let needsmd =  -- md files , dirs as dir/index.md
-            (fs2filtered , fs3filtered, fs4filtered)
-                        :: ([Path Abs File], [Path Abs File], [Path Abs File])
-        -- -- map (replaceDirectoryP  doughP bakedP) .
-        --         map (addFileName thisDirP)
-        --         . map (replaceExtension' "docrep") 
-        --         $  (fs2  ) 
-    putInformOne debug ["rule **/*.panrep i8 needsmd", showT needsmd]
-    
-    return needsmd
-
--- replaceDirectoryP2 pref newpref old = 
-        -- if pref == newpref then newpref </> rem1 
---         where rem1 = stripProperPrefixP pref old
+-- index4secondLevel debug sett4 
 
 dnbFilter ::  Settings -> [Path Abs a] -> [Path Abs a]
 dnbFilter sett4 dirs1 =  (filter (not . (isInfixOf' dnbString). s2t 
@@ -121,15 +130,33 @@ constructFileEnry debug sett4 mdfn  = do
         doughP = doughDir layout -- the regular dough
         bakedP = bakedDir layout
 
-    let docrepFn = replaceDirectoryP doughP bakedP 
+    let docrepFn = replaceDirectoryP doughP bakedP  
                     . replaceExtension' "docrep" $ mdfn 
-    putInformOne debug ["constructFileEntry 2 docrepFn", showT docrepFn ]
+    let panrepFn = replaceExtension' "panrep" docrepFn
+    putInformOne debug ["constructFileEntry 1a docrepFn", showT docrepFn ]
+    putInformOne debug ["constructFileEntry 1b panrepFn", showT panrepFn ]
 
-    needP [docrepFn]
+    needP [docrepFn, panrepFn] -- needs extension!
     
     dr <- runErr2action $   read8 docrepFn docrepFileType
     let incld = dr /= zero 
     
+    -- subdir index files 
+    entries4 <- if isIndexPage mdfn 
+        then do  
+            putInformOne debug 
+                ["constructFileEntry 2a  indexpage"
+                , showT mdfn ]
+            pan1 :: DainoMetaPlus  
+                    <- runErr2action $ read8 panrepFn panrepFileType 
+            putInformOne debug 
+                ["constructFileEntry 2b  panrep fileentries"
+                , showT . fileEntries . extra $ pan1
+                    ]
+            return . fileEntries . extra $ pan1
+        else do 
+            return []
+
     putInformOne debug ["constructFileEntry 3 continues docrepFn publish"
             , showT incld,  showT docrepFn ]
     if incld 
@@ -148,6 +175,7 @@ constructFileEnry debug sett4 mdfn  = do
                     , pdf1 = s2t $ toFilePath pdfFn
                     , textualHtml = textual0html x
                     , textualTex = textual0tex x 
+                    , fileEntries2 = entries4
                     }
         return . Just $ ie0 
       else return Nothing 

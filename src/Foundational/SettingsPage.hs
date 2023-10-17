@@ -106,7 +106,8 @@ data IndexEntry2 = IndexEntry2
             -- without extension, relative to webroot
       ixfn :: FilePath -- Path Rel File
     -- , -- | the link for this page (relative to web root)
-    -- -- without an extension or filename for dir}
+    -- -- without an extension or but index for dir}
+    -- , dirfn :: FilePath -- (only for dirEntries)
     --   link :: Path Rel Dir
     , textualHtml :: TextualIx Text
     , textualTex :: TextualIx Text

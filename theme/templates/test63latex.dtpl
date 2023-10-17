@@ -76,16 +76,16 @@ $--        link    $extra.dirEntries.link$
         abstract   $extra.dirEntries.textualTex.abstract$ 
         content    $extra.dirEntries.textualTex.content$   
            c---
-    $endfor$
+    
 
-fileEntries2 for chapters in bookbig (second level)
-    $for(extra.dirEntries.fileEntries2)$
-    chapter title $extra.dirEntries.fileEntries2.textualTex.title$
-            abstract  $extra.dirEntries.fileEntries2.textualTex.abstract$
-            content   $extra.dirEntries.fileEntries2.textualTex.content$
-               c---
-    $endfor$
-
+    fileEntries2 for chapters in bookbig (second level)
+        $for(extra.dirEntries.fileEntries2)$
+        chapter title $extra.dirEntries.fileEntries2.textualTex.title$
+                abstract  $extra.dirEntries.fileEntries2.textualTex.abstract$
+                content   $extra.dirEntries.fileEntries2.textualTex.content$
+                c---
+        $endfor$
+$endfor$
                         
 masterTemplateFile  $sett.siteLayout.masterTemplateFile$
 texTemplateFile     $sett.siteLayout.texTemplateFile$
