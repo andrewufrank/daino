@@ -79,6 +79,8 @@ used versions 9.0.2
     adapted for citeproc templates
     and new(?) version of tufte-latex
 0.1.6.5 start using for myHomepage (wo_3.0for64)
+    change to produce the tex files (but not pdf) always
+        (a single tex file can be converted with textstudio)
     known bugs: 
     - title with bold (and similar) fail in tufte-latex
     - the book construction seems not yet ok

@@ -115,8 +115,6 @@ shake2latex debug flags sett4 bakedP  =
         targetTempl  <- runErr2action $ compileTemplateFile2 masterfn
         testTempl <- runErr2action $ compileTemplateFile2 latexTestTemplateFN
 
-
-        --                     }
         let metaplus5 = pan0 -- {extra = extra5}
 
         -- putInformOne debug ["-----rule **/*.tex 12", "extra5", showT extra]
@@ -129,20 +127,15 @@ shake2latex debug flags sett4 bakedP  =
         -- putInformOne debug ["panrep2html render testTemplate done", "test_template",  test_template ]
 
         runErr2action $ do 
-            -- when (pdfFlag flags) $ 
             write8 outP texFileType ( Latex ht1) 
             write8 outP ttlFileType test_template
-                -- the file with test is alweays written!
 
         putInformOne debug 
             ["-----rule **/*.tex 14  done fn"
             , showT outP]
 
-
-
         putInformOne debug ["\n-----rule **/*.tex 15 end continued 4"
             , showT out,"\n"]
-
 
 fillTemplate_render  tpl dat = render (Just 50)
         -- just a plausible line length of 50 

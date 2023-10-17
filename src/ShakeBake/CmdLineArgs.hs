@@ -64,7 +64,8 @@ cmdArgs  =
           )
     <*> switch
           (long "nice pdf output" <> short 'n' <> help
-            "produce pdf for nice output"
+            "produce pdf for nice output for all html"
+            -- tex is always produced and can be converted with textstudio
           )
     -- <*> switch (long "old" <> short 'o' <> help "include old material")
     <*> switch

@@ -77,8 +77,8 @@ data DainoValues =
             , textual0tex :: TextualIx Text
             -- index entries are for subordinated dirs and files
             -- filled in docrep2panrep
-            , dirEntries :: [IndexEntry2] 
             , fileEntries :: [IndexEntry2] 
+            , dirEntries :: [IndexEntry2] 
                     -- only the dirs and files path
             , dainoVersion :: Text 
             , latLanguage :: Text 
@@ -117,7 +117,7 @@ data IndexEntry2 = IndexEntry2
     , pdf1 :: Text  -- where is this used?
      -- , indexPage :: Bool
     -- , dirEntries :: [FilePath] -- [Path Abs Dir] -- [IndexEntry2] -- def []
-    -- , fileEntries :: [FilePath] -- [Path Abs File] -- [IndexEntry2] -- def []
+    , fileEntries2 :: [IndexEntry2] -- for the files in the book (second level)
     , headerShift :: Int   
     } deriving (Show, Read, Eq, Ord, Generic, Zeros)
     --  IndexTitleSubdirs | IndexTitleFiles 

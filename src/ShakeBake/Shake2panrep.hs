@@ -31,13 +31,9 @@ module ShakeBake.Shake2panrep where
 import UniformBase 
 import Foundational.CmdLineFlags
 import Uniform.Shake
--- import Development.Shake.FilePath (makeRelative)
-
-
--- import Uniform.Pandoc
+import Uniform.TemplateStuff
 import Foundational.SettingsPage
 import Foundational.Filetypes4sites
--- import Lib.IndexCollect
 import Wave.Md2doc
 import ShakeBake.Shake2indexes 
 
@@ -74,7 +70,7 @@ shake2panrep debug flags sett4 bakedP =
         then return (zero, zero)
         else   do -- construct index entries 
     --  here the unless insert 
-            (files2, ind3)  <- indexNeeds debug sett4 doughP bakedP outP
+            (files2, ind3, file4)  <- indexNeeds debug sett4 doughP bakedP outP
                     
             putInformOne debug ["\nrule **/*.panrep 4a \n\t files", showT files2
                         , "\n\t\t index.md for directories", showT ind3]
@@ -83,6 +79,7 @@ shake2panrep debug flags sett4 bakedP =
             fileEnt1 <- mapM (constructFileEnry debug sett4) files2 
             dirEnt1 <- mapM (constructFileEnry debug sett4) ind3 
             -- produces the data for the index.md file
+            -- one level
 
             return (catMaybes fileEnt1, catMaybes dirEnt1)
     
@@ -98,7 +95,7 @@ shake2panrep debug flags sett4 bakedP =
             , showT bakedFrom 
             , "outP", showT outP
             ]
-        dr1 <- read8 bakedFrom docrepFileType
+        dr1 :: DainoMetaPlus <- read8 bakedFrom docrepFileType
 
         -- (p3, needsFound) <- docrep2panrep debug flags  dr1
                 -- completes index and should process reps 

@@ -187,10 +187,13 @@ metaDefaults sett9 =
 
 metaSetBook :: Settings -> DainoMetaPlus -> DainoValues
 -- | set 2 values to allow boolean tests in templates
+--    and set bookprint to false
+--    and webroot 
 metaSetBook sett4 dr1 =  extra5{authorReduced = blankAuthorName hpname aut1
-                            ,booklet = "booklet" == bookval
-                            ,bookBig= "bookbig" == bookval
-                            ,webroot = s2t $ toFilePath bakedP
+                            , booklet = "booklet" == bookval
+                            , bookBig= "bookbig" == bookval
+                            , bookprint = False
+                            , webroot = s2t $ toFilePath bakedP
                             }
     where 
             aut1 = getTextFromYaml6 defaut "author" meta5

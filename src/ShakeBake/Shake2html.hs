@@ -66,11 +66,9 @@ shake2html debug flags sett4 bakedP  =
         let bakedFrom = replaceExtension'  "panrep" outP
         putInformOne debug ["rule **/*.html 3 - bakedFrom", showT bakedFrom, "\n"]
         needP [bakedFrom]
-        -- when (pdfFlag flags) $ do 
-        when True  $ do 
-            let pdfNeeded = replaceExtension' "pdf" outP
-            putInformOne debug ["rule **/*.html 3b - pdfNeeded", showT pdfNeeded, "\n"]
-            needP [pdfNeeded]
+        let pdfNeeded = replaceExtension' "pdf" outP
+        putInformOne debug ["rule **/*.html 3b - pdfNeeded", showT pdfNeeded, "\n"]
+        needP [pdfNeeded]
 
         putInformOne debug ["\nrule **/*.html 4 continued out" , showT out
                 , "bakedFrom", showT bakedFrom]
@@ -139,19 +137,18 @@ shake2html debug flags sett4 bakedP  =
             ["-----rule **/*.html 14 bakeOnePanrep2html done fn"
             , showT outP]
 
-        -- when (pdfFlag flags) $ do 
-        when True $ do 
-            -- needs to start the pdf production 
-            let is2pdf = map (addFileName bakedP . 
-                            addExtension extPDF) ixs0 
-                            -- to avoid pdfs extTex) ixs0 
-            let this2pdf = addExtension extTex outP 
-    
-            putInformOne debug 
-                ["-----rule **/*.html 15 needsfor pdf (now tex)"
-                , showT this2pdf, showT is2pdf]
+        
+        -- needs to start the pdf production 
+        let is2pdf = map (addFileName bakedP . 
+                        addExtension extPDF) ixs0 
+                        -- to avoid pdfs extTex) ixs0 
+        let this2pdf = addExtension extTex outP 
 
-            needP $ this2pdf : is2pdf
+        putInformOne debug 
+            ["-----rule **/*.html 15 needsfor pdf (now tex)"
+            , showT this2pdf, showT is2pdf]
+
+        needP $ this2pdf : is2pdf
 
         putInformOne debug ["\n-----rule **/*.html 15 end continued 4"
             , showT out,"\n"]
