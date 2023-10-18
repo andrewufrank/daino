@@ -338,7 +338,7 @@ $endfor$
 
 $for(extra.dirEntries)$   % bookbig level of collections
     \part{$extra.dirEntries.textualTex.title$}
-    TITLE PART extra.dirEntries.textualTex.title
+$--    TITLE PART extra.dirEntries.textualTex.title
     \begin{mdframed}\sloppy\medskip
     $extra.dirEntries.textualTex.abstract$\end{mdframed}
     $extra.dirEntries.textualTex.content$
@@ -346,7 +346,7 @@ $for(extra.dirEntries)$   % bookbig level of collections
 
     $for(extra.dirEntries.fileEntries2)$   % -- the files in the parts in bookbig
         \chapter{$extra.dirEntries.fileEntries2.textualTex.title$}
-        TITLE CHAPTER extra.dirEntries.fileEntries2.textualTex.title
+$--        TITLE CHAPTER extra.dirEntries.fileEntries2.textualTex.title
         \begin{mdframed}\sloppy\medskip
         $extra.dirEntries.fileEntries2.textualTex.abstract$\end{mdframed}
         $extra.dirEntries.fileEntries2.textualTex.content$
