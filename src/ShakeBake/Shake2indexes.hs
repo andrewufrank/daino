@@ -36,7 +36,7 @@ indexNeeds ::  NoticeLevel ->  Settings -> Path Abs Dir
         -> Path Abs Dir -> Path Abs File 
         -> Action ([Path Abs File], [Path Abs File])
 indexNeeds debug  sett4 doughP bakedP outP = do 
-    let debug = NoticeLevel2
+    -- let debug = NoticeLevel2
     putInformOne debug ["rule **/*.panrep i1- outP", showT outP]
     let bakedoutP = replaceDirectoryP bakedP doughP outP 
     putInformOne debug ["rule **/*.panrep i1- bakedoutP", showT bakedoutP]

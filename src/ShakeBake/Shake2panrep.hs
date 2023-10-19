@@ -42,7 +42,7 @@ import ShakeBake.Shake2indexes
 shake2panrep :: NoticeLevel -> PubFlags -> Settings -> Path Abs Dir -> Rules ()
 shake2panrep debug flags sett4 bakedP = 
     (toFilePath bakedP <> "**/*.panrep") %> \out -> do  -- insert pdfFIles1
-    let debug = NoticeLevel2
+    -- let debug = NoticeLevel2r
          
     let layout = siteLayout sett4 
         doughP = doughDir layout -- the regular dough
