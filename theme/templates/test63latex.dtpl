@@ -35,6 +35,7 @@ csl-refs        $metaLatex.csl-refs$
 dainoversion    $extra.dainoVersion$
 visibility      $metaLatex.visibility$
 version         $metaLatex.version$
+allContent      $metap.abstractOnly$
 
 -- not in htmlTufte
 

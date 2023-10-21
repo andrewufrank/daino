@@ -331,8 +331,8 @@ $metaLatex.bodyBase$
 $for(extra.fileEntries)$   % booklet level of collections
     \chapter{$it.textualTex.title$}
     \begin{mdframed}\sloppy\medskip
-    $it.textualTex.abstract$\end{mdframed}
-    $it.textualTex.content$
+    abstract1 $it.textualTex.abstract$\end{mdframed}
+    $if(metap.allContent)$content1 $it.textualTex.content$ $endif$
 $endfor$
 
 
@@ -340,16 +340,16 @@ $for(extra.dirEntries)$   % bookbig level of collections
     \part{$extra.dirEntries.textualTex.title$}
 $--    TITLE PART extra.dirEntries.textualTex.title
     \begin{mdframed}\sloppy\medskip
-    $extra.dirEntries.textualTex.abstract$\end{mdframed}
-    $extra.dirEntries.textualTex.content$
+    abstract2 $extra.dirEntries.textualTex.abstract$\end{mdframed}
+    $if(metap.allContent)$ content2 $extra.dirEntries.textualTex.content$ $endif$
 
 
     $for(extra.dirEntries.fileEntries2)$   % -- the files in the parts in bookbig
         \chapter{$extra.dirEntries.fileEntries2.textualTex.title$}
 $--        TITLE CHAPTER extra.dirEntries.fileEntries2.textualTex.title
         \begin{mdframed}\sloppy\medskip
-        $extra.dirEntries.fileEntries2.textualTex.abstract$\end{mdframed}
-        $extra.dirEntries.fileEntries2.textualTex.content$
+        abstract3 $extra.dirEntries.fileEntries2.textualTex.abstract$\end{mdframed}
+        $if(metap.allContent)$ content3 $extra.dirEntries.fileEntries2.textualTex.content$ $endif$
     $endfor$
 
 $endfor$
@@ -365,7 +365,7 @@ $endfor$
 \vspace*{\fill}
 \scriptsize Produced with `daino' ($extra.dainoVersion$) from \url{$extra.mdFile$} with latexTufte81.dtpl 
 
-\scriptsize arguments bookBig: $extra.bookBig$ booklet: $extra.booklet$ 
+\scriptsize arguments bookBig: $extra.bookBig$ booklet: $extra.booklet$ allContent: $metap.allContent$
 $-- book: $book$ 
 
 
