@@ -163,7 +163,7 @@ constructFileEnry debug sett4 mdfn  = do
       then do 
         let ixfn1 =   removeExtension 
                 .  stripProperPrefixP bakedP $ docrepFn :: Path Rel File
-            m =   metap $ dr 
+            m = metap $ dr 
             x = extra dr
             pdfFn = replaceExtension2 ".pdf" docrepFn 
  

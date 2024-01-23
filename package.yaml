@@ -1,6 +1,6 @@
 
 name: daino
-version: 0.1.6.5
+version: 0.1.6.6
 license:      GPL
 license-file: LICENSE
 github:       andrewufrank/u4blog.git/daino
@@ -114,7 +114,7 @@ library:
       - src 
 
 executables:   # file names wiwth lowercase to avoid forcing Main
-  daino65:
+  daino66:
     main: daino.hs
     source-dirs: app
     ghc-options: 

@@ -1,0 +1,376 @@
+this is my ".bash_aliases" file in "Data" v2
+frank@santafe:~/Workspace11/daino$ cabal build 
+Warning: The package list for 'hackage.haskell.org' is 98 days old.
+Run 'cabal update' to get the latest list of available packages.
+Resolving dependencies...
+Build profile: -w ghc-9.6.2 -O1
+In order, the following will be built (use -v for more details):
+ - daino-0.1.6.5 (lib) (configuration changed)
+ - daino-0.1.6.5 (test:testrun) (configuration changed)
+ - daino-0.1.6.5 (test:testall) (configuration changed)
+ - daino-0.1.6.5 (exe:daino65) (first run)
+Configuring library for daino-0.1.6.5..
+^CError: cabal-3.10.1.0: ghc-pkg dump failed: dieVerbatim: user error (Error:
+cabal-3.10.1.0: '/home/frank/.ghcup/ghc/9.6.2/bin/ghc-pkg-9.6.2' exited
+with an error:
+ghc-pkg-9.6.2: interrupted
+)
+
+
+frank@santafe:~/Workspace11/daino$ cabal update
+Downloading the latest package list from hackage.haskell.org
+Package list of hackage.haskell.org has been updated.
+The index-state is set to 2024-01-22T18:36:52Z.
+To revert to previous state run:
+    cabal v2-update 'hackage.haskell.org,2023-10-15T21:18:44Z'
+frank@santafe:~/Workspace11/daino$ ^[[200~cabal -v --installed list base~^C
+frank@santafe:~/Workspace11/daino$ cabal -v --installed list base
+Reading available packages of hackage.haskell.org...
+Using most recent state specified from most recent cabal update
+index-state(hackage.haskell.org) = 2024-01-22T18:36:52Z
+* base
+    Synopsis: Basic libraries
+    Default available version: 4.19.0.0
+    Installed versions: 4.18.0.0
+    License:  BSD-3-Clause
+
+frank@santafe:~/Workspace11/daino$ cbuild
+daino.cabal is up-to-date
+Resolving dependencies...
+Build profile: -w ghc-9.6.2 -O1
+In order, the following will be built (use -v for more details):
+ - Diff-0.5 (lib) (requires download & build)
+ - pandoc-3.1.8 (lib) (requires build)
+ - uniform-error-0.1.5.1 (lib) (configuration changed)
+ - HTF-0.15.0.1 (lib:HTF) (requires build)
+ - uniform-time-0.1.5.1 (lib) (configuration changed)
+ - uniform-fileio-0.1.5.2 (lib) (configuration changed)
+ - uniformBase-0.1.5.1 (lib) (configuration changed)
+ - uniform-webserver-0.1.5.1 (lib) (configuration changed)
+ - uniform-watch-0.1.5.1 (lib) (configuration changed)
+ - uniform-json-0.1.5.2 (lib) (configuration changed)
+ - uniform-cmdLineArgs-0.1.5.1 (lib) (configuration changed)
+ - uniform-shake-0.1.5.2 (lib) (configuration changed)
+ - uniform-latex2pdf-0.1.5.7 (lib) (configuration changed)
+ - uniform-http-0.1.5.1 (lib) (configuration changed)
+ - uniform-pandoc-0.1.6.5 (lib) (configuration changed)
+ - ReplaceUmlaut-0.1.5.3 (lib) (configuration changed)
+ - daino-0.1.6.5 (lib) (configuration changed)
+ - daino-0.1.6.5 (test:testrun) (configuration changed)
+ - daino-0.1.6.5 (test:testall) (configuration changed)
+ - daino-0.1.6.5 (exe:daino65) (first run)
+Downloading  Diff-0.5
+Configuring library for uniform-error-0.1.5.1..
+Downloaded   Diff-0.5
+Starting     Diff-0.5 (lib)
+Starting     pandoc-3.1.8 (lib)
+Preprocessing library for uniform-error-0.1.5.1..
+Building library for uniform-error-0.1.5.1..
+[1 of 3] Compiling Paths_uniform_error ( /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-error-0.1.5.1/build/autogen/Paths_uniform_error.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-error-0.1.5.1/build/Paths_uniform_error.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-error-0.1.5.1/build/Paths_uniform_error.dyn_o ) [/home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-error-0.1.5.1/build/autogen/cabal_macros.h changed]
+Building     Diff-0.5 (lib)
+[2 of 3] Compiling Uniform.NoticeLevel ( Uniform/NoticeLevel.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-error-0.1.5.1/build/Uniform/NoticeLevel.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-error-0.1.5.1/build/Uniform/NoticeLevel.dyn_o ) [Uniform.Strings package changed]
+[3 of 3] Compiling Uniform.Error    ( Uniform/Error.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-error-0.1.5.1/build/Uniform/Error.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-error-0.1.5.1/build/Uniform/Error.dyn_o ) [Safe package changed]
+Building     pandoc-3.1.8 (lib)
+Configuring library for uniform-time-0.1.5.1..
+Installing   Diff-0.5 (lib)
+Completed    Diff-0.5 (lib)
+Starting     HTF-0.15.0.1 (all, legacy fallback)
+Preprocessing library for uniform-time-0.1.5.1..
+Building library for uniform-time-0.1.5.1..
+[2 of 2] Compiling Uniform.Time     ( Uniform/Time.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-time-0.1.5.1/build/Uniform/Time.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-time-0.1.5.1/build/Uniform/Time.dyn_o ) [Data.Convertible package changed]
+Configuring library for uniform-fileio-0.1.5.2..
+Preprocessing library for uniform-fileio-0.1.5.2..
+Building library for uniform-fileio-0.1.5.2..
+[1 of 9] Compiling Paths_uniform_fileio ( /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-fileio-0.1.5.2/build/autogen/Paths_uniform_fileio.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-fileio-0.1.5.2/build/Paths_uniform_fileio.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-fileio-0.1.5.2/build/Paths_uniform_fileio.dyn_o ) [/home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-fileio-0.1.5.2/build/autogen/cabal_macros.h changed]
+[2 of 9] Compiling Uniform.PathShowCase ( Uniform/PathShowCase.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-fileio-0.1.5.2/build/Uniform/PathShowCase.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-fileio-0.1.5.2/build/Uniform/PathShowCase.dyn_o ) [Path package changed]
+[3 of 9] Compiling Uniform.Filenames ( Uniform/Filenames.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-fileio-0.1.5.2/build/Uniform/Filenames.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-fileio-0.1.5.2/build/Uniform/Filenames.dyn_o ) [Path package changed]
+[4 of 9] Compiling Uniform.FileStatus ( Uniform/FileStatus.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-fileio-0.1.5.2/build/Uniform/FileStatus.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-fileio-0.1.5.2/build/Uniform/FileStatus.dyn_o ) [Uniform.Strings package changed]
+[5 of 9] Compiling Uniform.FileIOalgebra ( Uniform/FileIOalgebra.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-fileio-0.1.5.2/build/Uniform/FileIOalgebra.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-fileio-0.1.5.2/build/Uniform/FileIOalgebra.dyn_o ) [Uniform.Strings package changed]
+[6 of 9] Compiling Uniform.FileStrings ( Uniform/FileStrings.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-fileio-0.1.5.2/build/Uniform/FileStrings.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-fileio-0.1.5.2/build/Uniform/FileStrings.dyn_o ) [Path package changed]
+[7 of 9] Compiling Uniform.Piped    ( Uniform/Piped.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-fileio-0.1.5.2/build/Uniform/Piped.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-fileio-0.1.5.2/build/Uniform/Piped.dyn_o ) [Path.IO package changed]
+[8 of 9] Compiling Uniform.TypedFile ( Uniform/TypedFile.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-fileio-0.1.5.2/build/Uniform/TypedFile.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-fileio-0.1.5.2/build/Uniform/TypedFile.dyn_o ) [Path.IO package changed]
+[9 of 9] Compiling Uniform.FileIO   ( Uniform/FileIO.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-fileio-0.1.5.2/build/Uniform/FileIO.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-fileio-0.1.5.2/build/Uniform/FileIO.dyn_o ) [Path.IO package changed]
+Building     HTF-0.15.0.1 (all, legacy fallback)
+Configuring library for uniformBase-0.1.5.1..
+Preprocessing library for uniformBase-0.1.5.1..
+Building library for uniformBase-0.1.5.1..
+[2 of 2] Compiling UniformBase      ( src/UniformBase.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniformBase-0.1.5.1/build/UniformBase.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniformBase-0.1.5.1/build/UniformBase.dyn_o ) [Uniform.Strings package changed]
+Configuring library for uniform-webserver-0.1.5.1..
+Configuring library for uniform-watch-0.1.5.1..
+Preprocessing library for uniform-watch-0.1.5.1..
+Building library for uniform-watch-0.1.5.1..
+Preprocessing library for uniform-webserver-0.1.5.1..
+Building library for uniform-webserver-0.1.5.1..
+[1 of 3] Compiling ExampleMain      ( src/ExampleMain.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-webserver-0.1.5.1/build/ExampleMain.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-webserver-0.1.5.1/build/ExampleMain.dyn_o ) [UniformBase changed]
+[2 of 2] Compiling Uniform.Watch    ( src/Uniform/Watch.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-watch-0.1.5.1/build/Uniform/Watch.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-watch-0.1.5.1/build/Uniform/Watch.dyn_o ) [Twitch package changed]
+[2 of 3] Compiling Paths_uniform_webserver ( /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-webserver-0.1.5.1/build/autogen/Paths_uniform_webserver.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-webserver-0.1.5.1/build/Paths_uniform_webserver.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-webserver-0.1.5.1/build/Paths_uniform_webserver.dyn_o ) [/home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-webserver-0.1.5.1/build/autogen/cabal_macros.h changed]
+[3 of 3] Compiling Uniform.WebServer ( Uniform/WebServer.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-webserver-0.1.5.1/build/Uniform/WebServer.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-webserver-0.1.5.1/build/Uniform/WebServer.dyn_o ) [Web.Scotty package changed]
+Configuring library for uniform-json-0.1.5.2..
+Configuring library for uniform-cmdLineArgs-0.1.5.1..
+Preprocessing library for uniform-json-0.1.5.2..
+Building library for uniform-json-0.1.5.2..
+[1 of 3] Compiling Paths_uniform_json ( /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-json-0.1.5.2/build/autogen/Paths_uniform_json.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-json-0.1.5.2/build/Paths_uniform_json.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-json-0.1.5.2/build/Paths_uniform_json.dyn_o ) [/home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-json-0.1.5.2/build/autogen/cabal_macros.h changed]
+[2 of 3] Compiling Uniform.Json     ( src/Uniform/Json.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-json-0.1.5.2/build/Uniform/Json.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-json-0.1.5.2/build/Uniform/Json.dyn_o ) [Data.Aeson.KeyMap package changed]
+Preprocessing library for uniform-cmdLineArgs-0.1.5.1..
+Building library for uniform-cmdLineArgs-0.1.5.1..
+[2 of 3] Compiling Uniform.CmdLineArgs ( src/Uniform/CmdLineArgs.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-cmdLineArgs-0.1.5.1/build/Uniform/CmdLineArgs.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-cmdLineArgs-0.1.5.1/build/Uniform/CmdLineArgs.dyn_o ) [Options.Applicative.Builder package changed]
+[3 of 3] Compiling CmdLineArgsExample ( src/CmdLineArgsExample.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-cmdLineArgs-0.1.5.1/build/CmdLineArgsExample.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-cmdLineArgs-0.1.5.1/build/CmdLineArgsExample.dyn_o ) [Uniform.CmdLineArgs changed]
+[3 of 3] Compiling Uniform.Yaml     ( src/Uniform/Yaml.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-json-0.1.5.2/build/Uniform/Yaml.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-json-0.1.5.2/build/Uniform/Yaml.dyn_o ) [Data.Aeson.Types package changed]
+Configuring library for uniform-shake-0.1.5.2..
+Configuring library for uniform-latex2pdf-0.1.5.7..
+Preprocessing library for uniform-latex2pdf-0.1.5.7..
+Building library for uniform-latex2pdf-0.1.5.7..
+Preprocessing library for uniform-shake-0.1.5.2..
+Building library for uniform-shake-0.1.5.2..
+[2 of 6] Compiling Uniform.AssWritePDF ( src/Uniform/AssWritePDF.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-latex2pdf-0.1.5.7/build/Uniform/AssWritePDF.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-latex2pdf-0.1.5.7/build/Uniform/AssWritePDF.dyn_o ) [Uniform.Error changed]
+[1 of 3] Compiling Paths_uniform_shake ( /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-shake-0.1.5.2/build/autogen/Paths_uniform_shake.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-shake-0.1.5.2/build/Paths_uniform_shake.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-shake-0.1.5.2/build/Paths_uniform_shake.dyn_o ) [/home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-shake-0.1.5.2/build/autogen/cabal_macros.h changed]
+[2 of 3] Compiling Uniform.Shake.Path ( src/Uniform/Shake/Path.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-shake-0.1.5.2/build/Uniform/Shake/Path.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-shake-0.1.5.2/build/Uniform/Shake/Path.dyn_o ) [Development.Shake package changed]
+[3 of 6] Compiling Uniform.Latex    ( src/Uniform/Latex.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-latex2pdf-0.1.5.7/build/Uniform/Latex.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-latex2pdf-0.1.5.7/build/Uniform/Latex.dyn_o ) [Data.Aeson package changed]
+[3 of 3] Compiling Uniform.Shake    ( src/Uniform/Shake.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-shake-0.1.5.2/build/Uniform/Shake.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-shake-0.1.5.2/build/Uniform/Shake.dyn_o ) [Development.Shake.FilePath package changed]
+[4 of 6] Compiling Uniform.Latexmk  ( src/Uniform/Latexmk.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-latex2pdf-0.1.5.7/build/Uniform/Latexmk.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-latex2pdf-0.1.5.7/build/Uniform/Latexmk.dyn_o ) [Uniform.Error changed]
+[5 of 6] Compiling Uniform.TexFileTypes ( src/Uniform/TexFileTypes.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-latex2pdf-0.1.5.7/build/Uniform/TexFileTypes.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-latex2pdf-0.1.5.7/build/Uniform/TexFileTypes.dyn_o ) [Data.Aeson package changed]
+[6 of 6] Compiling Uniform.WritePDF ( src/Uniform/WritePDF.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-latex2pdf-0.1.5.7/build/Uniform/WritePDF.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-latex2pdf-0.1.5.7/build/Uniform/WritePDF.dyn_o ) [Uniform.Error changed]
+Configuring library for uniform-http-0.1.5.1..
+Installing   HTF-0.15.0.1 (all, legacy fallback)
+Preprocessing library for uniform-http-0.1.5.1..
+Building library for uniform-http-0.1.5.1..
+[1 of 5] Compiling Paths_uniform_http ( /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-http-0.1.5.1/build/autogen/Paths_uniform_http.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-http-0.1.5.1/build/Paths_uniform_http.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-http-0.1.5.1/build/Paths_uniform_http.dyn_o ) [/home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-http-0.1.5.1/build/autogen/cabal_macros.h changed]
+Completed    HTF-0.15.0.1 (all, legacy fallback)
+[2 of 5] Compiling Uniform.HttpFiles ( src/Uniform/HttpFiles.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-http-0.1.5.1/build/Uniform/HttpFiles.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-http-0.1.5.1/build/Uniform/HttpFiles.dyn_o ) [Uniform.Filenames changed]
+[3 of 5] Compiling Uniform.HttpURI  ( src/Uniform/HttpURI.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-http-0.1.5.1/build/Uniform/HttpURI.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-http-0.1.5.1/build/Uniform/HttpURI.dyn_o ) [Uniform.Error changed]
+[4 of 5] Compiling Uniform.HttpCall ( src/Uniform/HttpCall.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-http-0.1.5.1/build/Uniform/HttpCall.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-http-0.1.5.1/build/Uniform/HttpCall.dyn_o ) [Network.HTTP.Conduit package changed]
+
+src/Uniform/HttpCall.hs:171:10: warning: [GHC-06201] [-Wmissing-methods]
+    • No explicit implementation for
+        ‘showNice’
+    • In the instance declaration for ‘NiceStrings TimeOutSec’
+    |
+171 | instance NiceStrings TimeOutSec where
+    |          ^^^^^^^^^^^^^^^^^^^^^^
+[5 of 5] Compiling Uniform.Http     ( src/Uniform/Http.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-http-0.1.5.1/build/Uniform/Http.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-http-0.1.5.1/build/Uniform/Http.dyn_o ) [Uniform.HttpCall changed]
+Installing   pandoc-3.1.8 (lib)
+Completed    pandoc-3.1.8 (lib)
+Configuring library for uniform-pandoc-0.1.6.5..
+Preprocessing library for uniform-pandoc-0.1.6.5..
+Building library for uniform-pandoc-0.1.6.5..
+[ 2 of 12] Compiling Uniform.HTMLout  ( src/Uniform/HTMLout.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-pandoc-0.1.6.5/build/Uniform/HTMLout.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-pandoc-0.1.6.5/build/Uniform/HTMLout.dyn_o ) [Uniform.Filenames changed]
+[ 3 of 12] Compiling Uniform.PandocImports ( src/Uniform/PandocImports.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-pandoc-0.1.6.5/build/Uniform/PandocImports.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-pandoc-0.1.6.5/build/Uniform/PandocImports.dyn_o ) [Text.Pandoc package changed]
+[ 4 of 12] Compiling Uniform.PandocHTMLwriter ( src/Uniform/PandocHTMLwriter.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-pandoc-0.1.6.5/build/Uniform/PandocHTMLwriter.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-pandoc-0.1.6.5/build/Uniform/PandocHTMLwriter.dyn_o ) [Text.Pandoc package changed]
+[ 5 of 12] Compiling Uniform.Markdown ( src/Uniform/Markdown.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-pandoc-0.1.6.5/build/Uniform/Markdown.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-pandoc-0.1.6.5/build/Uniform/Markdown.dyn_o ) [Text.Pandoc.Error package changed]
+[ 6 of 12] Compiling Uniform.BibTex   ( src/Uniform/BibTex.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-pandoc-0.1.6.5/build/Uniform/BibTex.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-pandoc-0.1.6.5/build/Uniform/BibTex.dyn_o ) [Text.Pandoc.Citeproc package changed]
+[ 7 of 12] Compiling Uniform.TemplateStuff ( src/Uniform/TemplateStuff.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-pandoc-0.1.6.5/build/Uniform/TemplateStuff.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-pandoc-0.1.6.5/build/Uniform/TemplateStuff.dyn_o ) [Text.DocLayout package changed]
+[ 8 of 12] Compiling Uniform.MetaStuff ( src/Uniform/MetaStuff.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-pandoc-0.1.6.5/build/Uniform/MetaStuff.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-pandoc-0.1.6.5/build/Uniform/MetaStuff.dyn_o ) [Text.DocTemplates package changed]
+[ 9 of 12] Compiling Uniform.TemplatesStuff ( src/Uniform/TemplatesStuff.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-pandoc-0.1.6.5/build/Uniform/TemplatesStuff.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-pandoc-0.1.6.5/build/Uniform/TemplatesStuff.dyn_o ) [Text.DocLayout package changed]
+[10 of 12] Compiling Uniform.TexWriter ( src/Uniform/TexWriter.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-pandoc-0.1.6.5/build/Uniform/TexWriter.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-pandoc-0.1.6.5/build/Uniform/TexWriter.dyn_o ) [Text.DocTemplates package changed]
+[11 of 12] Compiling Uniform.Pandoc   ( src/Uniform/Pandoc.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-pandoc-0.1.6.5/build/Uniform/Pandoc.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-pandoc-0.1.6.5/build/Uniform/Pandoc.dyn_o ) [Text.Pandoc package changed]
+[12 of 12] Compiling Uniform.MetaPlus ( src/Uniform/MetaPlus.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-pandoc-0.1.6.5/build/Uniform/MetaPlus.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/uniform-pandoc-0.1.6.5/build/Uniform/MetaPlus.dyn_o ) [Text.Pandoc.Definition package changed]
+Configuring library for ReplaceUmlaut-0.1.5.3..
+Preprocessing library for ReplaceUmlaut-0.1.5.3..
+Building library for ReplaceUmlaut-0.1.5.3..
+[1 of 8] Compiling Lib.FileHandling ( src/Lib/FileHandling.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/ReplaceUmlaut-0.1.5.3/build/Lib/FileHandling.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/ReplaceUmlaut-0.1.5.3/build/Lib/FileHandling.dyn_o ) [Uniform.Error changed]
+[2 of 8] Compiling Lib.ProcWord     ( src/Lib/ProcWord.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/ReplaceUmlaut-0.1.5.3/build/Lib/ProcWord.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/ReplaceUmlaut-0.1.5.3/build/Lib/ProcWord.dyn_o ) [UniformBase changed]
+[3 of 8] Compiling Lib.ProcTxt      ( src/Lib/ProcTxt.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/ReplaceUmlaut-0.1.5.3/build/Lib/ProcTxt.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/ReplaceUmlaut-0.1.5.3/build/Lib/ProcTxt.dyn_o ) [Lib.FileHandling changed]
+[4 of 8] Compiling Lib.ProcTextFile ( src/Lib/ProcTextFile.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/ReplaceUmlaut-0.1.5.3/build/Lib/ProcTextFile.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/ReplaceUmlaut-0.1.5.3/build/Lib/ProcTextFile.dyn_o ) [Lib.FileHandling changed]
+[5 of 8] Compiling Lib.ProcDirMD    ( src/Lib/ProcDirMD.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/ReplaceUmlaut-0.1.5.3/build/Lib/ProcDirMD.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/ReplaceUmlaut-0.1.5.3/build/Lib/ProcDirMD.dyn_o ) [Lib.FileHandling changed]
+[6 of 8] Compiling Lib.OneMDfile    ( src/Lib/OneMDfile.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/ReplaceUmlaut-0.1.5.3/build/Lib/OneMDfile.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/ReplaceUmlaut-0.1.5.3/build/Lib/OneMDfile.dyn_o ) [Lib.FileHandling changed]
+[8 of 8] Compiling ReplaceUmlaut    ( src/ReplaceUmlaut.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/ReplaceUmlaut-0.1.5.3/build/ReplaceUmlaut.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/ReplaceUmlaut-0.1.5.3/build/ReplaceUmlaut.dyn_o ) [Options.Applicative package changed]
+Configuring library for daino-0.1.6.5..
+Preprocessing library for daino-0.1.6.5..
+Building library for daino-0.1.6.5..
+[ 1 of 20] Compiling Foundational.CmdLineFlags ( src/Foundational/CmdLineFlags.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/Foundational/CmdLineFlags.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/Foundational/CmdLineFlags.dyn_o ) [Uniform.Shake changed]
+[ 2 of 20] Compiling Foundational.SettingsPage ( src/Foundational/SettingsPage.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/Foundational/SettingsPage.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/Foundational/SettingsPage.dyn_o ) [Path package changed]
+[ 3 of 20] Compiling Foundational.Filetypes4sites ( src/Foundational/Filetypes4sites.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/Foundational/Filetypes4sites.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/Foundational/Filetypes4sites.dyn_o ) [Foundational.SettingsPage changed]
+[ 4 of 20] Compiling Lib.IndexCollect ( src/Lib/IndexCollect.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/Lib/IndexCollect.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/Lib/IndexCollect.dyn_o ) [Foundational.SettingsPage changed]
+[ 5 of 20] Compiling Paths_daino      ( /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/autogen/Paths_daino.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/Paths_daino.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/Paths_daino.dyn_o ) [/home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/autogen/cabal_macros.h changed]
+[ 6 of 20] Compiling ShakeBake.CmdLineArgs ( src/ShakeBake/CmdLineArgs.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/ShakeBake/CmdLineArgs.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/ShakeBake/CmdLineArgs.dyn_o ) [Foundational.CmdLineFlags changed]
+[ 7 of 20] Compiling ShakeBake.ReadSettingFile ( src/ShakeBake/ReadSettingFile.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/ShakeBake/ReadSettingFile.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/ShakeBake/ReadSettingFile.dyn_o ) [Foundational.SettingsPage changed]
+[ 8 of 20] Compiling ShakeBake.Shake2aux ( src/ShakeBake/Shake2aux.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/ShakeBake/Shake2aux.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/ShakeBake/Shake2aux.dyn_o ) [Uniform.Error changed]
+[ 9 of 20] Compiling ShakeBake.Shake2indexes ( src/ShakeBake/Shake2indexes.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/ShakeBake/Shake2indexes.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/ShakeBake/Shake2indexes.dyn_o ) [Foundational.Filetypes4sites changed]
+[10 of 20] Compiling Wave.Md2doc      ( src/Wave/Md2doc.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/Wave/Md2doc.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/Wave/Md2doc.dyn_o ) [Lib.FileHandling changed]
+[11 of 20] Compiling ShakeBake.Shake2panrep ( src/ShakeBake/Shake2panrep.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/ShakeBake/Shake2panrep.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/ShakeBake/Shake2panrep.dyn_o ) [Foundational.CmdLineFlags changed]
+
+src/ShakeBake/Shake2panrep.hs:43:20: warning: [-Wunused-matches]
+    Defined but not used: ‘flags’
+   |
+43 | shake2panrep debug flags sett4 bakedP = 
+   |                    ^^^^^
+
+src/ShakeBake/Shake2panrep.hs:95:5: warning: [-Wunused-matches]
+    Defined but not used: ‘needs2empty’
+   |
+95 |     needs2empty <- runErr2action $ do
+   |     ^^^^^^^^^^^
+[12 of 20] Compiling ShakeBake.Shake2docrep ( src/ShakeBake/Shake2docrep.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/ShakeBake/Shake2docrep.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/ShakeBake/Shake2docrep.dyn_o ) [Foundational.CmdLineFlags changed]
+[13 of 20] Compiling Wave.Panrep2html ( src/Wave/Panrep2html.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/Wave/Panrep2html.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/Wave/Panrep2html.dyn_o ) [Foundational.CmdLineFlags changed]
+[14 of 20] Compiling ShakeBake.Shake2latex ( src/ShakeBake/Shake2latex.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/ShakeBake/Shake2latex.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/ShakeBake/Shake2latex.dyn_o ) [Foundational.CmdLineFlags changed]
+[15 of 20] Compiling ShakeBake.Shake2html ( src/ShakeBake/Shake2html.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/ShakeBake/Shake2html.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/ShakeBake/Shake2html.dyn_o ) [Foundational.CmdLineFlags changed]
+[16 of 20] Compiling Wave.Panrep2pdf  ( src/Wave/Panrep2pdf.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/Wave/Panrep2pdf.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/Wave/Panrep2pdf.dyn_o ) [Foundational.CmdLineFlags changed]
+[17 of 20] Compiling ShakeBake.Shake2 ( src/ShakeBake/Shake2.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/ShakeBake/Shake2.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/ShakeBake/Shake2.dyn_o ) [Foundational.CmdLineFlags changed]
+[18 of 20] Compiling ShakeBake.Shake2start ( src/ShakeBake/Shake2start.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/ShakeBake/Shake2start.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/ShakeBake/Shake2start.dyn_o ) [Foundational.CmdLineFlags changed]
+[19 of 20] Compiling ShakeBake.Watch  ( src/ShakeBake/Watch.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/ShakeBake/Watch.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/ShakeBake/Watch.dyn_o ) [Foundational.CmdLineFlags changed]
+[20 of 20] Compiling ShakeBake.StartDainoProcess ( src/ShakeBake/StartDainoProcess.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/ShakeBake/StartDainoProcess.o, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/build/ShakeBake/StartDainoProcess.dyn_o ) [Path.Posix package changed]
+Configuring test suite 'testrun' for daino-0.1.6.5..
+Configuring test suite 'testall' for daino-0.1.6.5..
+Configuring executable 'daino65' for daino-0.1.6.5..
+Preprocessing executable 'daino65' for daino-0.1.6.5..
+Building executable 'daino65' for daino-0.1.6.5..
+Preprocessing test suite 'testall' for daino-0.1.6.5..
+Building test suite 'testall' for daino-0.1.6.5..
+Preprocessing test suite 'testrun' for daino-0.1.6.5..
+Building test suite 'testrun' for daino-0.1.6.5..
+[1 of 2] Compiling Paths_daino      ( /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/x/daino65/build/daino65/autogen/Paths_daino.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/x/daino65/build/daino65/daino65-tmp/Paths_daino.o )
+[2 of 2] Compiling Main             ( app/daino.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/x/daino65/build/daino65/daino65-tmp/Main.o )
+[1 of 8] Compiling Lib.DainoTest_test ( tests/Lib/DainoTest_test.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/t/testrun/build/testrun/testrun-tmp/Lib/DainoTest_test.o ) [Test.Framework package changed]
+[1 of 8] Compiling Lib.DainoTest_test ( tests/Lib/DainoTest_test.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/t/testall/build/testall/testall-tmp/Lib/DainoTest_test.o ) [Test.Framework package changed]
+[2 of 8] Compiling Lib.Example_test ( tests/Lib/Example_test.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/t/testall/build/testall/testall-tmp/Lib/Example_test.o ) [Test.Framework package changed]
+[2 of 8] Compiling Lib.Example_test ( tests/Lib/Example_test.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/t/testrun/build/testrun/testrun-tmp/Lib/Example_test.o ) [Test.Framework package changed]
+[3 of 8] Compiling Lib.Md2doc_test  ( tests/Lib/Md2doc_test.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/t/testall/build/testall/testall-tmp/Lib/Md2doc_test.o ) [Test.Framework package changed]
+[3 of 8] Compiling Lib.Md2doc_test  ( tests/Lib/Md2doc_test.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/t/testrun/build/testrun/testrun-tmp/Lib/Md2doc_test.o ) [Test.Framework package changed]
+[3 of 3] Linking /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/x/daino65/build/daino65/daino65
+[4 of 8] Compiling Lib.Docrep2panrep_test ( tests/Lib/Docrep2panrep_test.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/t/testall/build/testall/testall-tmp/Lib/Docrep2panrep_test.o ) [Test.Framework package changed]
+[4 of 8] Compiling Lib.Docrep2panrep_test ( tests/Lib/Docrep2panrep_test.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/t/testrun/build/testrun/testrun-tmp/Lib/Docrep2panrep_test.o ) [Test.Framework package changed]
+[5 of 8] Compiling Lib.Panrep2html_test ( tests/Lib/Panrep2html_test.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/t/testall/build/testall/testall-tmp/Lib/Panrep2html_test.o ) [Test.Framework package changed]
+[5 of 8] Compiling Lib.Panrep2html_test ( tests/Lib/Panrep2html_test.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/t/testrun/build/testrun/testrun-tmp/Lib/Panrep2html_test.o ) [Test.Framework package changed]
+[6 of 8] Compiling Lib.Panrep2pdf_test ( tests/Lib/Panrep2pdf_test.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/t/testall/build/testall/testall-tmp/Lib/Panrep2pdf_test.o ) [Test.Framework package changed]
+[6 of 8] Compiling Lib.Panrep2pdf_test ( tests/Lib/Panrep2pdf_test.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/t/testrun/build/testrun/testrun-tmp/Lib/Panrep2pdf_test.o ) [Test.Framework package changed]
+[7 of 8] Compiling Main             ( tests/testing.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/t/testall/build/testall/testall-tmp/Main.o ) [Test.Framework package changed]
+[7 of 8] Compiling Main             ( tests/testRun.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/t/testrun/build/testrun/testrun-tmp/Main.o ) [Test.Framework package changed]
+[8 of 8] Compiling Paths_daino      ( /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/t/testall/build/testall/autogen/Paths_daino.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/t/testall/build/testall/testall-tmp/Paths_daino.o ) [/home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/t/testall/build/testall/autogen/cabal_macros.h changed]
+[8 of 8] Compiling Paths_daino      ( /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/t/testrun/build/testrun/autogen/Paths_daino.hs, /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/t/testrun/build/testrun/testrun-tmp/Paths_daino.o ) [/home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/t/testrun/build/testrun/autogen/cabal_macros.h changed]
+[9 of 9] Linking /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/t/testall/build/testall/testall [Objects changed]
+[9 of 9] Linking /home/frank/Workspace11/daino/dist-newstyle/build/x86_64-linux/ghc-9.6.2/daino-0.1.6.5/t/testrun/build/testrun/testrun [Objects changed]
+frank@santafe:~/Workspace11/daino$ c
+Display all 142 possibilities? (y or n)
+frank@santafe:~/Workspace11/daino$ cl
+clear          clear_console  cluster        
+frank@santafe:~/Workspace11/daino$ cinstall 
+daino.cabal is up-to-date
+Wrote tarball sdist to
+/home/frank/Workspace11/daino/dist-newstyle/sdist/daino-0.1.6.5.tar.gz
+Wrote tarball sdist to
+/home/frank/Workspace11/daino/dist-newstyle/sdist/uniform-error-0.1.5.1.tar.gz
+Wrote tarball sdist to
+/home/frank/Workspace11/daino/dist-newstyle/sdist/uniform-fileio-0.1.5.2.tar.gz
+Wrote tarball sdist to
+/home/frank/Workspace11/daino/dist-newstyle/sdist/uniform-json-0.1.5.2.tar.gz
+Wrote tarball sdist to
+/home/frank/Workspace11/daino/dist-newstyle/sdist/uniform-latex2pdf-0.1.5.7.tar.gz
+Wrote tarball sdist to
+/home/frank/Workspace11/daino/dist-newstyle/sdist/uniform-shake-0.1.5.2.tar.gz
+Wrote tarball sdist to
+/home/frank/Workspace11/daino/dist-newstyle/sdist/uniform-pandoc-0.1.6.5.tar.gz
+Wrote tarball sdist to
+/home/frank/Workspace11/daino/dist-newstyle/sdist/uniform-convenience-0.1.5.1.tar.gz
+Wrote tarball sdist to
+/home/frank/Workspace11/daino/dist-newstyle/sdist/uniform-cmdLineArgs-0.1.5.1.tar.gz
+Resolving dependencies...
+Build profile: -w ghc-9.6.2 -O1
+In order, the following will be built (use -v for more details):
+ - uniform-error-0.1.5.1 (lib) (requires build)
+ - uniform-time-0.1.5.1 (lib) (requires build)
+ - uniform-fileio-0.1.5.2 (lib) (requires build)
+ - uniformBase-0.1.5.1 (lib) (requires build)
+ - uniform-webserver-0.1.5.1 (lib) (requires build)
+ - uniform-watch-0.1.5.1 (lib) (requires build)
+ - uniform-json-0.1.5.2 (lib) (requires build)
+ - uniform-cmdLineArgs-0.1.5.1 (lib) (requires build)
+ - uniform-shake-0.1.5.2 (lib) (requires build)
+ - uniform-latex2pdf-0.1.5.7 (lib) (requires build)
+ - uniform-http-0.1.5.1 (lib) (requires build)
+ - uniform-pandoc-0.1.6.5 (lib) (requires build)
+ - ReplaceUmlaut-0.1.5.3 (lib) (requires build)
+ - daino-0.1.6.5 (lib) (requires build)
+ - daino-0.1.6.5 (exe:daino65) (requires build)
+Starting     uniform-error-0.1.5.1 (lib)
+Building     uniform-error-0.1.5.1 (lib)
+Installing   uniform-error-0.1.5.1 (lib)
+Completed    uniform-error-0.1.5.1 (lib)
+Starting     uniform-time-0.1.5.1 (lib)
+Building     uniform-time-0.1.5.1 (lib)
+Installing   uniform-time-0.1.5.1 (lib)
+Completed    uniform-time-0.1.5.1 (lib)
+Starting     uniform-fileio-0.1.5.2 (lib)
+Building     uniform-fileio-0.1.5.2 (lib)
+Installing   uniform-fileio-0.1.5.2 (lib)
+Completed    uniform-fileio-0.1.5.2 (lib)
+Starting     uniformBase-0.1.5.1 (lib)
+Building     uniformBase-0.1.5.1 (lib)
+Installing   uniformBase-0.1.5.1 (lib)
+Completed    uniformBase-0.1.5.1 (lib)
+Starting     uniform-webserver-0.1.5.1 (lib)
+Starting     uniform-watch-0.1.5.1 (lib)
+Starting     uniform-cmdLineArgs-0.1.5.1 (lib)
+Starting     uniform-json-0.1.5.2 (lib)
+Building     uniform-webserver-0.1.5.1 (lib)
+Building     uniform-json-0.1.5.2 (lib)
+Building     uniform-cmdLineArgs-0.1.5.1 (lib)
+Building     uniform-watch-0.1.5.1 (lib)
+Installing   uniform-webserver-0.1.5.1 (lib)
+Installing   uniform-cmdLineArgs-0.1.5.1 (lib)
+Installing   uniform-watch-0.1.5.1 (lib)
+Installing   uniform-json-0.1.5.2 (lib)
+Completed    uniform-webserver-0.1.5.1 (lib)
+Completed    uniform-cmdLineArgs-0.1.5.1 (lib)
+Completed    uniform-watch-0.1.5.1 (lib)
+Completed    uniform-json-0.1.5.2 (lib)
+Starting     uniform-http-0.1.5.1 (lib)
+Starting     uniform-shake-0.1.5.2 (lib)
+Starting     uniform-latex2pdf-0.1.5.7 (lib)
+Building     uniform-shake-0.1.5.2 (lib)
+Building     uniform-http-0.1.5.1 (lib)
+Building     uniform-latex2pdf-0.1.5.7 (lib)
+Installing   uniform-shake-0.1.5.2 (lib)
+Completed    uniform-shake-0.1.5.2 (lib)
+Installing   uniform-http-0.1.5.1 (lib)
+Installing   uniform-latex2pdf-0.1.5.7 (lib)
+Completed    uniform-http-0.1.5.1 (lib)
+Completed    uniform-latex2pdf-0.1.5.7 (lib)
+Starting     uniform-pandoc-0.1.6.5 (lib)
+Building     uniform-pandoc-0.1.6.5 (lib)
+Installing   uniform-pandoc-0.1.6.5 (lib)
+Completed    uniform-pandoc-0.1.6.5 (lib)
+Starting     ReplaceUmlaut-0.1.5.3 (lib)
+Building     ReplaceUmlaut-0.1.5.3 (lib)
+Installing   ReplaceUmlaut-0.1.5.3 (lib)
+Completed    ReplaceUmlaut-0.1.5.3 (lib)
+Starting     daino-0.1.6.5 (lib)
+Building     daino-0.1.6.5 (lib)
+
+Failed to build daino-0.1.6.5.
+Build log (
+/home/frank/.cabal/logs/ghc-9.6.2/daino-0.1.6.5-576a3354d7dae570eecd967c36751aa7722a82622bb549ed6d025ef6c0ce8f58.log
+):
+Configuring library for daino-0.1.6.5..
+Preprocessing library for daino-0.1.6.5..
+Building library for daino-0.1.6.5..
+[ 1 of 20] Compiling Foundational.CmdLineFlags ( src/Foundational/CmdLineFlags.hs, dist/build/Foundational/CmdLineFlags.o, dist/build/Foundational/CmdLineFlags.dyn_o )
+[ 2 of 20] Compiling Foundational.SettingsPage ( src/Foundational/SettingsPage.hs, dist/build/Foundational/SettingsPage.o, dist/build/Foundational/SettingsPage.dyn_o )
+[ 3 of 20] Compiling Foundational.Filetypes4sites ( src/Foundational/Filetypes4sites.hs, dist/build/Foundational/Filetypes4sites.o, dist/build/Foundational/Filetypes4sites.dyn_o )
+[ 4 of 20] Compiling Lib.IndexCollect ( src/Lib/IndexCollect.hs, dist/build/Lib/IndexCollect.o, dist/build/Lib/IndexCollect.dyn_o )
+[ 5 of 20] Compiling Paths_daino      ( dist/build/autogen/Paths_daino.hs, dist/build/Paths_daino.o, dist/build/Paths_daino.dyn_o )
+[ 6 of 20] Compiling ShakeBake.CmdLineArgs ( src/ShakeBake/CmdLineArgs.hs, dist/build/ShakeBake/CmdLineArgs.o, dist/build/ShakeBake/CmdLineArgs.dyn_o )
+[ 7 of 20] Compiling ShakeBake.ReadSettingFile ( src/ShakeBake/ReadSettingFile.hs, dist/build/ShakeBake/ReadSettingFile.o, dist/build/ShakeBake/ReadSettingFile.dyn_o )
+[ 8 of 20] Compiling ShakeBake.Shake2aux ( src/ShakeBake/Shake2aux.hs, dist/build/ShakeBake/Shake2aux.o, dist/build/ShakeBake/Shake2aux.dyn_o )
+[ 9 of 20] Compiling ShakeBake.Shake2indexes ( src/ShakeBake/Shake2indexes.hs, dist/build/ShakeBake/Shake2indexes.o, dist/build/ShakeBake/Shake2indexes.dyn_o )
+
+src/ShakeBake/Shake2indexes.hs:209:18: error: [GHC-76037]
+    Not in scope: ‘textual0html’
+    Suggested fix:
+      Perhaps use ‘textualHtml’ (imported from Foundational.SettingsPage)
+    |
+209 |                  textual0html = htm1 
+    |                  ^^^^^^^^^^^^
+
+src/ShakeBake/Shake2indexes.hs:210:19: error: [GHC-76037]
+    Not in scope: ‘textual0tex’
+    Suggested fix:
+      Perhaps use one of these:
+        ‘textualTex’ (imported from Foundational.SettingsPage),
+        ‘textualHtml’ (imported from Foundational.SettingsPage)
+    |
+210 |                 , textual0tex = tex1
+    |                   ^^^^^^^^^^^
+Error: cabal: Failed to build daino-0.1.6.5 (which is required by exe:daino65
+from daino-0.1.6.5). See the build log above for details.
+
+frank@santafe:~/Workspace11/daino$ 

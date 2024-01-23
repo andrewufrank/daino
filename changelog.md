@@ -86,3 +86,5 @@ used versions 9.0.2
     - the book construction seems not yet ok
     - problem with sort order of files in list
     - runs latex only once, indexed switched off
+0.1.6.6 fixing remaining problems 
+        to produce homepage and WO (2024-01-23)
