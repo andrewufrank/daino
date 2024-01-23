@@ -21,6 +21,7 @@ import UniformBase
 import Uniform.CmdLineArgs   -- from u2to 
   
 import Foundational.CmdLineFlags 
+import Foundational.CmdLineFlags (testFlags, PubFlags (testNewFlag))
 -- import Foundational.SettingsPage 
 -- import Options.Applicative.Builder()
 
@@ -129,7 +130,9 @@ parseArgs2input   t1 t2 = do
                          , pdfFlag    = pdfSwitch args1
                          , tufteFlag = tufteSwitch args1
                          , newStartFlag    = newstartSwitch args1
-                         , serverFlag   = serverSwitch args1
+                         , serverFlag   = serverSwitch args1 ||
+                                            testSwitch args1 ||
+                                            testNewSwitch args1 
                          , watchFlag    = watchSwitch args1
                          , verboseFlag = verboseSwitch args1
                          , locationDir = locationDirArg args1
