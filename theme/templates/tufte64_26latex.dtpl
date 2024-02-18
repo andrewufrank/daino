@@ -1,0 +1,374 @@
+$-- template to produce a latex file with the tufte style fixed notes-in-notes
+% template tufte64latex.dtpl v1
+% for use with Uniform.MetaPlus from u4blog v 0.1.6.4 for citeproc
+% uses pandco 3.1.8 - specialized for luatex and not beamer
+% see the default.latex template from https://github.com/jgm/pandoc-templates/blob/master/default.latex
+
+% requires removed limiation on subsubpara in tufte-common.def 
+
+\PassOptionsToPackage{unicode$for(hyperrefoptions)$,$hyperrefoptions$$endfor$}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+
+\documentclass[afBook,openany,nobib,showframe] %openright to force parts and chapter to start right
+        $if(extra.bookBig)$ {tufte-book}  %testbook $latBookBig$
+        $elseif(extra.booklet)$ {tufte-book}  %testbooklet $latBooklet$
+        $else$ {tufte-handout}  
+        $endif$
+
+
+$-- not used: 
+%testhandout $extra.bookBig$ testzwei $extra.booklet$
+% $metaLatex.book$  % should be true for bookbig and booklet
+
+\titleclass{\subsubsection}{straight}
+\titleformat{\subsubsection}%
+  [hang]% shape
+  {\normalfont\large\itshape}% format applied to label+text
+  {\thesubsubsection}% label
+  {1em}% horizontal separation between label and title body
+  {}% before the title body
+  []% after the title body
+  
+\usepackage{unicode-math}
+\usepackage{csquotes}  $-- required for babel 
+\usepackage[$metaLatex.latLanguage$,bidi=basic]{babel}
+% issues left with importing babel fonts? 
+\usepackage{fontspec}  % perhaps resolved with loading fontspec after babel
+
+$-- \renewcaptionname{ngerman}{\bibname}{Literatur}   %Bibliography
+$-- \renewcaptionname{$latLanguage$}{\bibname}{$latBiblioTitle$}   %Bibliography
+$-- automatical adaption
+
+\usepackage{microtype} 
+\renewcommand{\allcapsspacing}[1]{\textls[200]{#1}}% 
+\renewcommand{\smallcapsspacing}[1]{\textls[50]{#1}}%
+\renewcommand{\textsc}[1]{\smallcapsspacing{\textsmallcaps{#1}}}
+
+$-- copied from tufte-common.def, change ## to # 
+% \renewcommand{\allcapsspacing}[1]{\textls[200]{##1}}%
+%  \renewcommand{\smallcapsspacing}[1]{\textls[50]{##1}}%
+  \renewcommand{\allcaps}[1]{\allcapsspacing{\MakeTextUppercase{#1}}}%
+  \renewcommand{\smallcaps}[1]{\smallcapsspacing{\scshape\MakeTextLowercase{#1}}}%
+%  \renewcommand{\textsc}[1]{\smallcapsspacing{\textsmallcaps{##1}}}%
+$--setc
+$-- \usepackage{bookmark}
+
+$-- numbering thru all of the book
+$-- \counterwithin{chapter}{part}
+$-- \counterwithin{section}{chapter}
+$-- \renewcommand{\thepart}{\arabic{part}}
+$-- \setcounter{secnumdepth}{\subsubsectionnumdepth} % numbering for subsubsections
+
+
+\usepackage{graphicx}
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+% see my own later  
+%\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+%another solution?       \setkeys{Gin}{width=.75\linewidth,keepaspectratio}
+    \setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+\graphicspath{{$extra.webroot$}}
+
+\usepackage{luacolor}
+%\usepackage[soul]{lua-ul} % should this be used?
+
+\usepackage{longtable}
+\usepackage{booktabs}
+\providetoggle{blx@footnote}
+
+\makeatletter       % the code to avoid footnote-in-footnotes from citations
+        % perhaps not required with fancyvrb.sty?
+\renewcommand\@footnotetext[2][0pt]{%
+  \marginpar{%
+    \hbox{}\vspace*{#1}%
+    \def\baselinestretch {\setspace@singlespace}%
+    \reset@font\footnotesize%
+    \@tufte@margin@par% use parindent and parskip settings for marginal text
+    \vspace*{-1\baselineskip}\noindent%
+    \protected@edef\@currentlabel{%
+       \csname p@footnote\endcsname\@thefnmark%
+    }%
+    \color@begingroup%
+       \@makefntext{%
+         \toggletrue{blx@footnote}%
+         \ignorespaces #2%
+       }%
+    \color@endgroup%
+  }%
+}%
+
+\makeatother
+
+\usepackage{fancyvrb}   % to define Verbatim environment 
+%\VerbatimFootnotes      % allow footnotes inside 
+                        % creates missing fancyvrb.sty
+                        % or missing number
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\usepackage{makeidx}
+\usepackage{selnolig}  % disable illegal ligatures in lualatex
+
+% Make \paragraph and \subparagraph free-standing
+% see https://github.com/jgm/pandoc/issues/5365
+% discussion of levels 4 and 5 headings 
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+$if(pagestyle)$
+\pagestyle{$pagestyle$}
+$endif$
+
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
+
+
+% to add the chapter and part in the header
+% seems to produced problems
+\fancypagestyle{mystyle}{%
+	\fancyhf{}%
+	\renewcommand{\chaptermark}[1]{\markboth{##1}{}}%
+	\renewcommand{\sectionmark}[1]{\markleft{##1}{}}%
+	\fancyhead[L]{\thepage\quad\smallcaps{\newlinetospace{\leftmark}}}% 
+	\fancyhead[R]{\smallcaps{\newlinetospace{\rightmark}}\quad\thepage}%
+}
+
+% noindex \makeindex
+
+\setcounter{tocdepth}{4}  %to make several levels in table of content, works
+
+
+$-- \usepackage[colorlinks]{hyperref}
+\usepackage{xcolor}  % others in default.latex
+\hypersetup{
+    colorlinks,
+    linkcolor={red!50!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+\urlstyle{same}% uses the style from where it is used
+
+$-- content description
+\title{$metaLatex.title$}
+\author{$metaLatex.author$}
+\date{$metaLatex.date$}  $-- no date??
+\publisher{Gerastree editions}
+\usepackage[]{mdframed}
+
+% -- -- --- ----------  ----             ----        ---------------
+\begin{document}
+ 
+%\frontmatter  %not defined in tufte-latex?
+
+$if(extra.bookprint)$ % bookprint line 71
+    % r.1 blank page
+    \blankpage
+    % v.2 epigraphs
+    \openepigraph{SomeText}
+                {AF%, {\itshape My Works}
+    }
+    \vfill
+    \newpage\thispagestyle{empty}
+$endif$
+
+$if(references)$ % references in md file
+  \usepackage{filecontents}
+  \begin{filecontents}{\local.bib}$references$
+  \end{filecontents}
+$endif$
+
+$if(extra.bookprint)$ % bookprint line 88
+    % r.3 full title page
+    \maketitle
+
+    % v.4 copyright page
+    \newpage
+    \begin{fullwidth}
+    ~\vfill
+    \thispagestyle{empty}
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{\baselineskip}
+    Copyright \copyright\ \the\year\ \thanklessauthor
+
+    \par\smallcaps{Published by \thanklesspublisher}
+
+    \par\smallcaps{daino.gerastree.at}
+
+    \par Licensed under the Apache License, Version 2.0\index{license}
+
+    \par\textit{First printing, \monthyear}
+    \end{fullwidth}
+$endif$
+
+% noindex %\listoffigures
+
+% noindex %\listoftables
+
+$if(extra.bookprint)$ % bookprint line 115
+    % r.7 dedication
+    \cleardoublepage
+    ~\vfill
+    \begin{doublespace}
+    \noindent\fontsize{18}{22}\selectfont\itshape
+    \nohyphenation
+    Dedicated to my friends.
+    \end{doublespace}
+    \vfill
+    \vfill
+    % r.9 introduction
+    \cleardoublepage
+$else$ 
+    %\begin{titlepage}
+        %\centering
+        %\includegraphics[width=0.15\textwidth]{example-image-1x1}\par\vspace{1cm}
+        %{\textsc{metaLatex.title add dollar!!}  }
+        %\vspace{1cm}
+        %\Large \textsc{metaLatex.title DOLLAR!!} 
+        \vspace{1.5cm}
+        {\huge\bfseries{$metaLatex.title$} \par}
+        \vspace{1cm}
+        $if(metaLatex.author)${\Large\itshape $metaLatex.author$ \par}$endif$
+        %\vfill
+        %supervised by\par
+        %Dr.~Mark \textsc{Brown}
+        %\vfill
+
+        $if(metaLatex.abstract)$  % lat abstract
+            \begin{mdframed}\sloppy
+            \medskip
+            $metaLatex.abstract$
+            \medskip
+            \end{mdframed}
+        $endif$
+
+        % Bottom of the page
+        {\large \today\par}
+    %\end{titlepage}
+$endif$
+
+% testest -- begingroup
+$if(extra.bookBig)$
+    \clearpage
+    \tableofcontents
+$elseif(extra.booklet)$
+    \begingroup
+    \let\clearpage\relax
+    \tableofcontents
+    \endgroup
+$else$
+    \begingroup
+    \let\clearpage\relax
+    \tableofcontents
+    \vspace{2cm}
+    \endgroup
+$endif$
+
+% testest -- begingroup
+
+$-- \tableofcontents  add page break if requred
+
+$if(extra.bookBig)$
+    \newpage         % -- testtest bookbig newpage -- 
+$elseif(extra.booklet)$
+    %\newpage    % -- testtest booklet newpage 
+    \vspace{2cm}
+$endif$
+
+% testtestContentanfang------------------------------------------
+%\mainmatter
+%BODY TUFTE -- footnotes give /stru ??
+$-- $metaLatex.bodyTufte$
+%BODY BASE
+$metaLatex.bodyBase$
+%END 
+%testtestContentende--------
+
+$for(extra.fileEntries)$   % booklet level of collections
+    \chapter{$it.textualTex.title$}
+    \begin{mdframed}\sloppy\medskip
+    $it.textualTex.abstract$\end{mdframed}
+    $if(metap.allContent)$$it.textualTex.content$ $endif$
+$endfor$
+
+
+$for(extra.dirEntries)$   % bookbig level of collections
+    \part{$extra.dirEntries.textualTex.title$}
+$--    TITLE PART extra.dirEntries.textualTex.title
+    \begin{mdframed}\sloppy\medskip
+    $extra.dirEntries.textualTex.abstract$\end{mdframed}
+    $if(metap.allContent)$$extra.dirEntries.textualTex.content$ $endif$
+
+
+    $for(extra.dirEntries.fileEntries2)$   % -- the files in the parts in bookbig
+        \chapter{$extra.dirEntries.fileEntries2.textualTex.title$}
+$--        TITLE CHAPTER extra.dirEntries.fileEntries2.textualTex.title
+        \begin{mdframed}\sloppy\medskip
+        $extra.dirEntries.fileEntries2.textualTex.abstract$\end{mdframed}
+        $if(metap.allContent)$$extra.dirEntries.fileEntries2.textualTex.content$ $endif$
+    $endfor$
+
+$endfor$
+
+%\backmatter
+% ====================== endcontentTestTest
+
+
+
+% where do biblio references go?
+% noindex \printindex
+
+\vspace*{\fill}
+\scriptsize Produced with `daino' ($extra.dainoVersion$) from \url{$extra.mdFile$} with latexTufte81.dtpl 
+
+\scriptsize arguments bookBig: $extra.bookBig$ booklet: $extra.booklet$ allContent: $metap.allContent$
+$-- book: $book$ 
+
+
+% ===================== enddocument testtest
+
+\end{document}

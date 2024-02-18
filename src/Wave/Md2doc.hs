@@ -50,11 +50,13 @@ default (Text)
 
 -- the conversion in shake2docrep
 -- it produces for debuggin the pandoc values in a ttp file
+-- includes the processing of the citations (citeproc)
 md2doc :: NoticeLevel -> Settings -> Path Abs File ->    ErrIO DainoMetaPlus
 -- must not added needs (because test for inclusion follows later)
 md2doc debug sett4 bakedFrom  = do
     putInformOne debug ["md2doc 1 start ", showT bakedFrom]
-
+    putIOwords ["--- processing \t", showT bakedFrom]
+            -- to mark the following errors with the source file name
     pandoc1 <- readMd2pandoc bakedFrom  
     -- apply the umlaut conversion first 
     -- treat the .md file and reread it if changed
