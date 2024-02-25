@@ -7,17 +7,14 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
--- {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeFamilies #-}
 
-{- | the defintion for a layout and a flags type
+{- | the defintion for a layout 
   which carry info from the command line and the siteHeader file
- the defaults for flags are set up for testing  are overridden
  the defaults for layout must correspond to what is set in the test siteHeader file.
  layout defaults are used in testing
-
  content dirs are those, which have *.md files
 -}
 module Foundational.SettingsPage
@@ -30,17 +27,11 @@ module Foundational.SettingsPage
 import UniformBase
 import Uniform.Json ( FromJSON, ToJSON (toJSON), fromJSON )
 import Uniform.MetaPlus  
--- import Uniform.Latex
 import Uniform.Pandoc 
 
 import qualified Data.Map as M
 import Data.Default.Class ( Default(def) ) -- to define a default class for siteLayout 
 import Path (parent)
-
-
-progName, progTitle :: Text
-progName = "daino"  
-progTitle = "constructing a static site generator" :: Text
 
 settingsFileName :: Path Rel File
 -- ^ the yaml file in which the siteHeader are fixec
@@ -49,15 +40,16 @@ settingsFileName = makeRelFile "settings3" -- the yaml file
 -- | description for each md file 
 -- todo include the flags 
 type DainoMetaPlus = MetaPlus Settings DainoValues
--- data DainoMetaPlus = DainoMetaPlus 
---         { metap :: Meta    -- ^ the pandoc meta, the file text content
---         , sett :: Settings -- ^ the data from the settingsfile
---         , extra :: DainoValues -- ^ other values to go into template
---         , metaMarkdown :: M.Map Text Text -- todo not used
---         , metaHtml ::  M.Map Text Text
---         , metaLatex ::  M.Map Text Text
---         }
---     deriving (Eq, Ord, Show, Read, Generic) -- Zeros, ToJSON, FromJSON)
+-- pro memoria (copied from MetaPlus.hs)
+-- data MetaPlus sett extra = MetaPlus
+--                 { metap :: Meta    -- ^ the pandoc meta 
+--                             -- in pandoc format
+--                 , sett :: sett -- ^ the data from the settingsfile
+--                 , extra :: extra -- ^ other values to go into template
+--                 , metaHtml ::  M.Map Text Text
+--                 , metaLatex ::  M.Map Text Text
+--                 }
+ 
         
 -- | the siteHeader file with all fields 
 data Settings = Settings
@@ -85,8 +77,8 @@ data DainoValues =
             , textual0tex :: TextualIx Text
             -- index entries are for subordinated dirs and files
             -- filled in docrep2panrep
-            , dirEntries :: [IndexEntry2] 
             , fileEntries :: [IndexEntry2] 
+            , dirEntries :: [IndexEntry2] 
                     -- only the dirs and files path
             , dainoVersion :: Text 
             , latLanguage :: Text 
@@ -114,24 +106,19 @@ data IndexEntry2 = IndexEntry2
             -- without extension, relative to webroot
       ixfn :: FilePath -- Path Rel File
     -- , -- | the link for this page (relative to web root)
-    -- -- without an extension or filename for dir}
+    -- -- without an extension or but index for dir}
+    -- , dirfn :: FilePath -- (only for dirEntries)
     --   link :: Path Rel Dir
-    -- , textualPan :: TextualIx MetaValue    
-    -- , textualMd :: TextualIx Text   -- | the textual content in different reps
     , textualHtml :: TextualIx Text
     , textualTex :: TextualIx Text
-    -- , title :: Text
-    -- , abstract :: Text
-    -- , author :: Text
     , date :: Text
-    -- , content :: Text   -- in latex style, only filled bevore use
     , visibility ::   Text
     , version ::   Text 
     , sortOrder :: Text
     , pdf1 :: Text  -- where is this used?
      -- , indexPage :: Bool
     -- , dirEntries :: [FilePath] -- [Path Abs Dir] -- [IndexEntry2] -- def []
-    -- , fileEntries :: [FilePath] -- [Path Abs File] -- [IndexEntry2] -- def []
+    , fileEntries2 :: [IndexEntry2] -- for the files in the book (second level)
     , headerShift :: Int   
     } deriving (Show, Read, Eq, Ord, Generic, Zeros)
     --  IndexTitleSubdirs | IndexTitleFiles 
@@ -158,8 +145,6 @@ instance ToJSON v => ToJSON (TextualIx v)
 instance FromJSON v => FromJSON (TextualIx v)
 
 
-
-
 data SiteLayout = SiteLayout
     { -- | the place of the  theme files (includes templates)
       themeDir :: Path Abs Dir
@@ -176,7 +161,7 @@ data SiteLayout = SiteLayout
     , blogAuthorToSuppress :: [Text]
     , defaultAuthor :: Text
     , replaceErlaubtFile :: Path Abs File
-    -- the list of permitted (not to replace)
+    -- the list of permitted (not to replace) words
     
     -- , defaultBibliography:: Text
     -- cannot be defaulted, value must be read by pandoc 
@@ -215,17 +200,6 @@ layoutDefaults dough4test homeDir1 =
         , replaceErlaubtFile = makeAbsFile "/home/frank/Workspace11/replaceUmlaut/nichtUmlaute.txt"
         -- , defaultBibliography = "resources/BibTexLatex.bib"
         }
-
-    -- htmlTemplateFile: pandoc64html.dtpl  # from default.html5
-    -- latexTemplateFile: pandoc64latex.dtpl  # from default319latex
-    -- tufteHtmlTemplateFile:  tufte64html.dtpl
-    -- tufteLatexTemplateFile: tufte64latex.dtpl
-
--- instance Default SiteLayout where 
---         def = layoutDefaults
-
--- notDNB :: SiteLayout -> FilePath -> Bool 
--- notDNB siteLayout = not . isInfixOf' (t2s $ doNotPublish siteLayout)
 
 resourcesName =  "resources"
 templatesName = "templates"

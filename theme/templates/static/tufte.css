@@ -187,6 +187,9 @@ blockquote footer {
     text-align: right;
 }
 
+section > h1, 
+/*addition af to limit h1 to remain left 
+alternativ change h1 to h2 in text */
 section > h2,
 section > h3,
 section > h4,

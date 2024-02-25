@@ -19,7 +19,7 @@ siteLayout:
     htmlTemplateFile: pandoc64html.dtpl  # from default.html5
     latexTemplateFile: pandoc64latex.dtpl  # from default319latex
     tufteHtmlTemplateFile:  tufte64html.dtpl
-    tufteLatexTemplateFile: tufte64latex.dtpl
+    tufteLatexTemplateFile: guard agains: wrong file tufte64latex.dtpl
       # latexTufte63.dtpl
     # texTemplateFile: latex7.dtpl # for non-tufte layout 
          # (footnotes at bottom of page)

@@ -1,5 +1,5 @@
 $-- template to produce a latex file with the tufte style fixed notes-in-notes
-% template tufte64latex.dtpl v1
+% template tufte64_26latex.dtpl v1 - for book 21x26.5cm 
 % for use with Uniform.MetaPlus from u4blog v 0.1.6.4 for citeproc
 % uses pandco 3.1.8 - specialized for luatex and not beamer
 % see the default.latex template from https://github.com/jgm/pandoc-templates/blob/master/default.latex
@@ -9,16 +9,20 @@ $-- template to produce a latex file with the tufte style fixed notes-in-notes
 \PassOptionsToPackage{unicode$for(hyperrefoptions)$,$hyperrefoptions$$endfor$}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
 
-\documentclass[a4paper,openany,nobib] %openright to force parts and chapter to start right
-        $if(extra.bookBig)$ {tufte-book}  %testbook $latBookBig$
-        $elseif(extra.booklet)$ {tufte-book}  %testbooklet $latBooklet$
-        $else$ {tufte-handout}  
+\documentclass[afBook,openany,nobib,showframe,twoside] %openright to force parts and chapter to start right
+        $if(extra.bookBig)$ {af-tufte-book}  %testbook $latBookBig$
+        $elseif(extra.booklet)$ {af-tufte-book}  %testbooklet $latBooklet$
+        $else$ {af-tufte-handout}  
         $endif$
-
+            %search in current working dir (which is where the tex file is) or 
+            % in ~/texmf/tex/latex/ and run sudo texhash
 
 $-- not used: 
 %testhandout $extra.bookBig$ testzwei $extra.booklet$
 % $metaLatex.book$  % should be true for bookbig and booklet
+
+\usepackage[cross,a4,center]{crop}
+\usepackage{printlen}
 
 \titleclass{\subsubsection}{straight}
 \titleformat{\subsubsection}%

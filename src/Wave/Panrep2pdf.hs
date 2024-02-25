@@ -208,8 +208,10 @@ getVals2latex debug pubFlags bakedP ix2 = do
 -- biblio etc start - seems not correct
 -- the refdir is where the intermediate files are put
 -- this is fnres - just the doughPath
-tex2pdf :: NoticeLevel -> Path Abs File ->  Path Abs File ->  Path Abs Dir ->  ErrIO ()
-tex2pdf debug fn fnres doughP  =  do
+-- tex2pdf :: NoticeLevel -> Path Abs File ->  Path Abs File ->  Path Abs Dir ->  ErrIO ()
+tex2pdf :: NoticeLevel -> PubFlags -> Path Abs File -> Path Abs File 
+            -> Path Abs Dir -> ExceptT Text IO ()
+tex2pdf debug flags fn fnres doughP  =  do
     putInformOne debug ["\n tex2pdf start for", showT fn]
 
     let refDir = -- makeAbsDir "/home/frank/bakedTestSite"
@@ -221,12 +223,13 @@ tex2pdf debug fn fnres doughP  =  do
     texf <- read8 fn texFileType
 
     putInformOne debug ["\n tex2pdf texf content not faked"]
-    let faked = False
-    if faked then 
-            write8 fnres pdfFileType (PDFfile . unLatex $ texf)
+    -- let faked = False
+    if pdfFlag flags then 
+            writePDF2 NoticeLevel1  fn fnres refDir
+        else 
+            write8 fnres pdfFileType (PDFfile . unLatex $ zero) -- $ texf)
         -- for debug put only the file unprocessed
         -- to satisfy shake 
-        else 
-            writePDF2 NoticeLevel1  fn fnres refDir
+        -- better produce null file 
     putInformOne debug ["\n tex2pdf done"]
     return ()

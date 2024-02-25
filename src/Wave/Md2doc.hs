@@ -50,11 +50,13 @@ default (Text)
 
 -- the conversion in shake2docrep
 -- it produces for debuggin the pandoc values in a ttp file
+-- includes the processing of the citations (citeproc)
 md2doc :: NoticeLevel -> Settings -> Path Abs File ->    ErrIO DainoMetaPlus
 -- must not added needs (because test for inclusion follows later)
 md2doc debug sett4 bakedFrom  = do
     putInformOne debug ["md2doc 1 start ", showT bakedFrom]
-
+    putIOwords ["--- processing \t", showT bakedFrom]
+            -- to mark the following errors with the source file name
     pandoc1 <- readMd2pandoc bakedFrom  
     -- apply the umlaut conversion first 
     -- treat the .md file and reread it if changed
@@ -178,6 +180,7 @@ metaDefaults sett9 =
     , ("headerShift","1")
     , ("author", settingsAuthor sett9)
     , ("sortOrder", "filename")
+    -- should book have a default of ""
     -- , ("indexPage", False) detect from name 'index.md'
     ] 
 -- "resources/webbiblio.bib")
@@ -186,14 +189,17 @@ metaDefaults sett9 =
 
 metaSetBook :: Settings -> DainoMetaPlus -> DainoValues
 -- | set 2 values to allow boolean tests in templates
+--    and set bookprint to false
+--    and webroot 
 metaSetBook sett4 dr1 =  extra5{authorReduced = blankAuthorName hpname aut1
-                            ,booklet = "booklet" == bookval
-                            ,bookBig= "bookBig" == bookval
-                            ,webroot = s2t $ toFilePath bakedP
+                            , booklet = "booklet" == bookval
+                            , bookBig= "bookbig" == bookval
+                            , bookprint = False
+                            , webroot = s2t $ toFilePath bakedP
                             }
     where 
             aut1 = getTextFromYaml6 defaut "author" meta5
-            bookval = getTextFromYaml6  "" "book"   meta5 
+            bookval = toLower' $ getTextFromYaml6  "" "book"   meta5 
             -- doughP = doughDir layout -- the regular dough
             bakedP = bakedDir layout -- the regular dough
             layout = siteLayout sett4 

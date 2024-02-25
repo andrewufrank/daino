@@ -92,12 +92,7 @@ shakeMD debug sett4 flags = do
     (toFilePath bakedP <> "**/*.pdf") %> \out -> -- insert pdfFIles1
         do
             when (inform debug) $ putIOwords ["rule **/*.pdf", showT out]
-
-            -- why is this here necessary: failed on testSort.pdf?
-            -- was ein jpg will ?
-            -- TODO improve error from lualatex
-            -- when (inform debug) $ putIOwords ["rule **/*.pdf need", showT imgs, showT imgs2]
-
+            
             let outP = makeAbsFile out :: Path Abs File
             let fromfile = doughP </> makeRelativeP bakedP outP
             putInformOne debug ["rule **/*.pdf 1 fromFile", showT fromfile]
@@ -106,8 +101,7 @@ shakeMD debug sett4 flags = do
             
             if fileExists 
                 then copyFileToBaked debug doughP bakedP out
-                else 
-                  when (pdfFlag flags) $ do 
+                else do   
         -- this makes all needs of pdf to fail do
                     let targetP = bakedP 
                         sourceP = bakedP 
@@ -117,14 +111,10 @@ shakeMD debug sett4 flags = do
                     putInformOne debug ["rule **/*.pdf 2 fromfilePathExt"
                             , showT fromfilePathExt]
                     needP [fromfilePathExt]
-                    
 
-                  
-                    -- convertAny debug bakedP bakedP flags sett4 out  "convTex2pdf"
-                    -- anyop debug flags fromfilePathExt layout outP
                     putInformOne debug ["rule **/*.pdf 3 need satisfied"]
                      
-                    runErr2action $ tex2pdf debug fromfilePathExt outP doughP
+                    runErr2action $ tex2pdf debug flags fromfilePathExt outP doughP
                     putInformOne debug ["rule **/*.pdf 4 produce outP (perhaps just fake)"
                         , showT outP]
             putInformOne debug ["rule **/*.pdf 5 end"]

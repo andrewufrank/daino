@@ -109,6 +109,7 @@
 %%
 % `symmetric' option -- puts marginpar space to the outside edge of the page
 %  Note: this option forces the twoside option (see the .cls files)
+% af: but does not set left/inner right/outer different for left and right
 \newboolean{@tufte@symmetric}
 \DeclareOptionX[tufte]<common>{symmetric}{
   \setboolean{@tufte@symmetric}{true}
@@ -646,6 +647,24 @@
   }
 }{}
 
+%%af new paper size for afBook
+\ifthenelse{\boolean{@tufte@afBook}}{%
+  \geometry{
+    paperwidth=216mm,
+    paperheight=265mm,
+    left=15mm,
+    right=30mm,
+%    bindingoffset=8mm,
+    top=27.4mm,
+%    headsep=2\baselineskip,
+%    textwidth=78mm, % gives 84mm
+    marginparsep=8.2mm,
+    marginparwidth=78.4mm,
+    ignoremp=false,  %fasle = textwidth not including marginparwidth
+    textheight=44\baselineskip,
+    headheight=\baselineskip
+  }
+}{}
 
 \ifthenelse{\boolean{@tufte@bfivepaper}}{%
   \geometry{
@@ -663,7 +682,8 @@
 
 \ifthenelse{\boolean{@tufte@symmetric}}{}{%
   % Forces internal LaTeX `twoside'
-  \geometry{asymmetric}
+%  \geometry{asymmetric} % scheint mir falsch
+  \geometry{twoside}  % vertauscht die raender
 }
 
 %%

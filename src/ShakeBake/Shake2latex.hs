@@ -2,8 +2,13 @@
 --
 -- Module Shake2 latex :
 ----------------------------------------------------------------------
-{- produce the texsnip and tex files 
-    texsnip are probably not used at all 
+{-the conversion starts with the root files to produce, 
+    it starts with the needs for the *.pdf
+    This triggers the rule pdf -> tex -> panrep 
+
+    texsnip are likely not used anymore 
+
+    for now the css, dtpl, jpg etc. are still included
     -}
 ----------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
@@ -28,7 +33,6 @@ import UniformBase
 import Foundational.CmdLineFlags
 import Uniform.Shake
 import Uniform.TemplateStuff
--- import Uniform.Http 
 import Foundational.SettingsPage
 import Foundational.Filetypes4sites
 
@@ -44,9 +48,6 @@ shake2latex :: NoticeLevel -> PubFlags -> Settings ->
      Path Abs Dir -> Rules ()
 shake2latex debug flags sett4 bakedP  =    
     (toFilePath bakedP <> "**/*.tex") %> \out -> do  -- from Panrep
-    -- calls the copy html if a html exist in dough 
-        -- not covered, but can remain for later
-            -- pushes a need for *.pandoc 
 
     let layout = siteLayout sett4
         doughP = doughDir layout -- the regular dough
@@ -114,30 +115,10 @@ shake2latex debug flags sett4 bakedP  =
         targetTempl  <- runErr2action $ compileTemplateFile2 masterfn
         testTempl <- runErr2action $ compileTemplateFile2 latexTestTemplateFN
 
-            --if this is an index file it has files and dirs 
-            -- putInformOne debug ["panrep2html", "extra4", showT extra4]
-
-    -- the indexentries are produced in panrep
-        -- let files = fileEntries  $ extra4 :: [IndexEntry2]
-        --     dirs = dirEntries  $ extra4 :: [IndexEntry2]
-
-        -- valsDirs :: [Maybe IndexEntry2]<- runErr2action $ mapM 
-        --                     (getVals2html debug flags bakedP) dirs
-        -- valsFiles :: [Maybe IndexEntry2] <- runErr2action $ mapM 
-        --                 (getVals2html debug flags bakedP) files
-        -- -- will require one level of recursion more 
-
-        -- putInformOne debug["\n-----rule **/*.tex 12 valsDirs"
-        --             , showT valsDirs]
-        -- putInformOne debug ["\n-----rule **/*.tex 13 valsFiles", showT valsFiles]
-
-        -- let extra5 = extra4{fileEntries = catMaybes valsFiles
-        --                     , dirEntries = catMaybes valsDirs
-        --                     }
         let metaplus5 = pan0 -- {extra = extra5}
 
-        -- putInformOne debug ["panrep2html", "extra5", showT extra5]
-        -- putInformOne debug ["panrep2html", "metaplus5", showT metaplus5]
+        -- putInformOne debug ["-----rule **/*.tex 12", "extra5", showT extra]
+        putInformOne debug ["-----rule **/*.tex 13", "metaplus5", showT metaplus5]
 
         let ht1 = fillTemplate_render targetTempl metaplus5
         let test_template = fillTemplate_render testTempl metaplus5 
@@ -146,19 +127,15 @@ shake2latex debug flags sett4 bakedP  =
         -- putInformOne debug ["panrep2html render testTemplate done", "test_template",  test_template ]
 
         runErr2action $ do 
-            when (pdfFlag flags) $ 
-                write8 outP texFileType ( Latex ht1) 
+            write8 outP texFileType ( Latex ht1) 
             write8 outP ttlFileType test_template
 
         putInformOne debug 
             ["-----rule **/*.tex 14  done fn"
             , showT outP]
 
-
-
         putInformOne debug ["\n-----rule **/*.tex 15 end continued 4"
             , showT out,"\n"]
-
 
 fillTemplate_render  tpl dat = render (Just 50)
         -- just a plausible line length of 50 

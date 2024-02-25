@@ -3,6 +3,7 @@
       baseline:   produces html output, not in tufte style
 
  copied much from  tufte64html.dtpl v_1   for tufte
+ - tufte64 contains fixes not yet inlcuded here!
  for use with Uniform.MetaPlus from u4blog v 0.1.6.4
 
  and daino v 0.1.6.4 and citeproc. pandoc 3.1.8

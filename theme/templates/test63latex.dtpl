@@ -35,6 +35,7 @@ csl-refs        $metaLatex.csl-refs$
 dainoversion    $extra.dainoVersion$
 visibility      $metaLatex.visibility$
 version         $metaLatex.version$
+allContent      $metap.abstractOnly$
 
 -- not in htmlTufte
 
@@ -49,25 +50,8 @@ blogAuthorToSuppress
                         $sett.siteLayout.blogAuthorToSuppress$
                 $endfor$
 
-indexEntryDirectories 
-    $for(extra.dirEntries)$
-        ixfn       $extra.dirEntries.ixfn$
-$--        link    $extra.dirEntries.link$
-        title      $extra.dirEntries.textualTex.title$
-        abstract   $extra.dirEntries.textualTex.abstract$ 
-        content    $extra.dirEntries.textualTex.content$   
-        
-    $endfor$
-
--- fileEntries for chapters in bookbig
-    $for(extra.dirEntries.fileEntries)$
-    chapter title $extra.dirEntries.fileEntries.textualTex.title$
-            abstract  $extra.dirEntries.fileEntries.textualTex.abstract$
-            content   $extra.dirEntries.fileEntries.textualTex.content$
-    $endfor$
-
 indexEntryFiles 
-    
+ 
     $for(extra.fileEntries)$
     ----
             ixfn        $extra.fileEntries.ixfn$
@@ -77,12 +61,32 @@ $--            link        $extra.fileEntries.link$
             author      $extra.fileEntries.textualTex.author$
             date        $extra.fileEntries.date$ 
             content     $extra.fileEntries.textualTex.content$ 
+               c---
             visibility  $extra.fileEntries.visibility$ 
             version     $extra.fileEntries.version$ 
             sortOrder   $extra.fileEntries.sortOrder$ 
             headerShift $extra.fileEntries.headerShift$ 
             pdf1        $extra.fileEntries.pdf1$ 
     $endfor$
+
+indexEntryDirectories 
+    $for(extra.dirEntries)$
+        ixfn       $extra.dirEntries.ixfn$
+$--        link    $extra.dirEntries.link$
+        title      $extra.dirEntries.textualTex.title$
+        abstract   $extra.dirEntries.textualTex.abstract$ 
+        content    $extra.dirEntries.textualTex.content$   
+           c---
+    
+
+    fileEntries2 for chapters in bookbig (second level)
+        $for(extra.dirEntries.fileEntries2)$
+        chapter title $extra.dirEntries.fileEntries2.textualTex.title$
+                abstract  $extra.dirEntries.fileEntries2.textualTex.abstract$
+                content   $extra.dirEntries.fileEntries2.textualTex.content$
+                c---
+        $endfor$
+$endfor$
                         
 masterTemplateFile  $sett.siteLayout.masterTemplateFile$
 texTemplateFile     $sett.siteLayout.texTemplateFile$
@@ -97,7 +101,7 @@ book                $metaLatex.book$
 pdf2                $extra.pdf2$ $-- the pdf file name
 bookBig             $extra.bookBig$
 booklet             $extra.booklet$
-bookprint
+bookprint           $extra.bookprint$
 bakedDir~webroot    $extra.webroot$
 
 

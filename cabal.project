@@ -1,5 +1,7 @@
--- index-state: 2023-06-05T00:16:01Z 
+-- index-state(hackage.haskell.org) = 2024-01-22T18:36:52Z
 -- obtained with cabal -v --installed list base
+-- was index-state: 2023-06-05T00:16:01Z 
+--  cabal v2-update 'hackage.haskell.org,2023-10-15T21:18:44Z
 -- previous cabal v2-update 'hackage.haskell.org,2023-08-09T22:19:16Z'
 
 tests: True

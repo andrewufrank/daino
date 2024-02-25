@@ -21,6 +21,7 @@ import UniformBase
 import Uniform.CmdLineArgs   -- from u2to 
   
 import Foundational.CmdLineFlags 
+import Foundational.CmdLineFlags (testFlags, PubFlags (testNewFlag))
 -- import Foundational.SettingsPage 
 -- import Options.Applicative.Builder()
 
@@ -64,7 +65,8 @@ cmdArgs  =
           )
     <*> switch
           (long "nice pdf output" <> short 'n' <> help
-            "produce pdf for nice output"
+            "produce pdf for nice output for all html"
+            -- tex is always produced and can be converted with textstudio
           )
     -- <*> switch (long "old" <> short 'o' <> help "include old material")
     <*> switch
@@ -128,7 +130,9 @@ parseArgs2input   t1 t2 = do
                          , pdfFlag    = pdfSwitch args1
                          , tufteFlag = tufteSwitch args1
                          , newStartFlag    = newstartSwitch args1
-                         , serverFlag   = serverSwitch args1
+                         , serverFlag   = serverSwitch args1 ||
+                                            testSwitch args1 ||
+                                            testNewSwitch args1 
                          , watchFlag    = watchSwitch args1
                          , verboseFlag = verboseSwitch args1
                          , locationDir = locationDirArg args1
