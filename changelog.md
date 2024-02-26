@@ -88,3 +88,6 @@ used versions 9.0.2
     - runs latex only once, indexed switched off
 0.1.6.6 fixing remaining problems 
         to produce homepage and WO (2024-01-23)
+0.1.6.7 new formate with two equal columns
+        change to commonmark 
+0.1.6.8 revert to pandoc markdown (with inline footnotes)

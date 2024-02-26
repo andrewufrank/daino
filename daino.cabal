@@ -5,7 +5,7 @@ cabal-version: 1.12
 -- see: https://github.com/sol/hpack
 
 name:           daino
-version:        0.1.6.6
+version:        0.1.6.8
 synopsis:       daino is a static site generator (SSG) using shake and pandoc
 description:    A static site generator using Pandoc and other available packages on Hackage (e.g. shake, twitch, scotty), influenced by Chris Penner's [slick](https://github.com/ChrisPenner/slick#readme). It uses text files (in Markdown codes) to manage data and relies on   version management with git. Page appearances are directed with YAML headers. For each page a PDF file is produced to allow regular print output. Index pages for navigation between pages are automatically created.
                    updated 0.1.6.6
@@ -70,7 +70,7 @@ library
     , uniform-http
     , uniform-json
     , uniform-latex2pdf
-    , uniform-pandoc
+    , uniform-pandoc >=0.1.6.7
     , uniform-shake
     , uniform-strings
     , uniform-watch
@@ -78,7 +78,7 @@ library
     , uniformBase
   default-language: Haskell2010
 
-executable daino66
+executable daino67
   main-is: daino.hs
   other-modules:
       Paths_daino
@@ -103,7 +103,7 @@ executable daino66
     , uniform-http
     , uniform-json
     , uniform-latex2pdf
-    , uniform-pandoc
+    , uniform-pandoc >=0.1.6.7
     , uniform-shake
     , uniform-strings
     , uniform-watch
@@ -146,7 +146,7 @@ test-suite testall
     , uniform-http
     , uniform-json
     , uniform-latex2pdf
-    , uniform-pandoc
+    , uniform-pandoc >=0.1.6.7
     , uniform-shake
     , uniform-strings
     , uniform-watch
@@ -189,7 +189,7 @@ test-suite testrun
     , uniform-http
     , uniform-json
     , uniform-latex2pdf
-    , uniform-pandoc
+    , uniform-pandoc >=0.1.6.7
     , uniform-shake
     , uniform-strings
     , uniform-watch
