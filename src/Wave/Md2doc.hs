@@ -65,6 +65,9 @@ md2doc debug sett4 bakedFrom  = do
         debugReplace = False 
         -- with debug not new file written in umlautconversin
                     -- inform debug 
+    putInformOne def ["md2doc 2 file read" 
+            , showT pandoc1, "\n"]
+
     pandoc2 <- if langCode == "ngerman"
         then do
             putInformOne debug ["md2doc 2 "]
@@ -86,26 +89,38 @@ md2doc debug sett4 bakedFrom  = do
                 else return pandoc1
         else return pandoc1
 
-    putInformOne def ["md2doc 5 umlaut done "
-            , showT pandoc1]
+    putInformOne def ["md2doc 3 umlaut done "
+            , showT pandoc2, "\n"]
 
-    let p2 = addListOfDefaults (metaDefaults sett4) pandoc2
+    -- let p2 = addListOfDefaults (metaDefaults sett4) pandoc2
     -- set defaults , will be overwritten later ??
-    let p3 = walkPandoc lf2LineBreak p2
+    -- removed
+    let pandoc3 = walkPandoc lf2LineBreak pandoc2
     -- to convert the /lf/ marks in hard LineBreak
-    pan4@(Pandoc m4 p4) <- mdCiteproc p3 
-    putInformOne def ["md2doc 6 citeproc done "
-            ,showT p2 ]
+    putInformOne def ["md2doc 4 lf done "
+            , showT pandoc3, "\n"]
+
+    pan4@(Pandoc m4 p4) <- mdCiteproc pandoc3 
+    putInformOne def ["md2doc 5 citeproc  done "
+            ,"m4 \n", showT m4
+            ,"p4", showT pan4 , "\n"]
 
     let (Pandoc _ p5) = usingSideNotes pan4 
         -- changed the body (p5) to prepare for tufte style
+
+    putInformOne def ["md2doc 6 usingSideNotes  done p5"
+            ,showT p5 , "\n"]
 
     -- move the body and then converts to html and latex 
     let meta4base = setBlocks2meta "bodyBase" ( p4) m4
     let meta5tufte = setBlocks2meta "bodyTufte" ( p5) meta4base
     -- let meta4base = Meta $ M.insert "bodyBase" (MetaBlocks p4) (unMeta m4)
     -- let meta5tufte = Meta $ M.insert "bodyTufte" (MetaBlocks p5) (unMeta meta4base)
-     
+
+    putInformOne def ["md2doc 7 setBlocks2meta meta5tufte \n"
+                , showT meta5tufte, "\n"]
+
+
     let mp1 = setMetaPlusInitialize sett4 bakedFrom meta5tufte
     -- here set the values found in file 
     -- but the file values are in extra only
@@ -114,14 +129,14 @@ md2doc debug sett4 bakedFrom  = do
 
     -- let mp2 = mp1 { metaHtml = meta5tufte  -- 2 versions of body
     --                 , metaLatex = meta4base}  -- one only
-    putInformOne def ["md2doc 6a usingSidenotes done "
-                , showT mp1]
+    putInformOne def ["md2doc 8 meta5tufte mp1\n"
+                , showT mp1, "\n"]
     
             -- pushes all what is further needed into metaplus
             -- but takes only meta?
     mp2 <- completeMetaPlus mp1  -- converts the body to tex and html
     let mp3 = fillTextual4MP mp2 
-    putInformOne def ["md2doc 7 end ", showT mp3]
+    putInformOne def ["md2doc 9 end ", showT mp3, "\n"]
 
     return mp3
 

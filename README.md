@@ -30,3 +30,12 @@ The example site [shown here](https://daino.gerastree.at) can be downloaded or c
 # Running your own site
 Copying the folder `dainoSite` to a suitable directory and edit the `settinsNN.yaml` file found there is enough to start your own site with running `daino -qs` in this directory. The `ReadMe` shown in a browser with `localhost:3000` includes detailed instructions! 
 
+# Hints for development
+
+`testRun` is set to run the active code to convert the dainoSite texts - either completely (`testNewFlag = True`) or only incrementally (`testNewFlag = False`).
+
+    crepl testRun 
+    :r
+    main4Tne  
+
+    
