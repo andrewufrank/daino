@@ -91,13 +91,13 @@ shakeMD debug sett4 flags = do
     
     (toFilePath bakedP <> "**/*.pdf") %> \out -> -- insert pdfFIles1
         do
-            putInformOne def ["rule **/*.pdf", showT out]
+            putInformOne debug ["rule **/*.pdf", showT out]
             
             let outP = makeAbsFile out :: Path Abs File
             let fromfile = doughP </> makeRelativeP bakedP outP
-            putInformOne def ["rule **/*.pdf 1 fromFile", showT fromfile]
+            putInformOne debug ["rule **/*.pdf 1 fromFile", showT fromfile]
             fileExists <- io2bool $ doesFileExist' fromfile
-            putInformOne def ["fileExist:", showT fileExists]
+            putInformOne debug ["fileExist:", showT fileExists]
             
             if fileExists 
                 then copyFileToBaked debug doughP bakedP out
@@ -108,16 +108,16 @@ shakeMD debug sett4 flags = do
                         fromfilePath = sourceP </> makeRelativeP targetP outP
                         fromfilePathExt = replaceExtension' 
                             (s2t . unExtension $ extTex) fromfilePath 
-                    putInformOne def ["rule **/*.pdf 2 fromfilePathExt"
+                    putInformOne debug ["rule **/*.pdf 2 fromfilePathExt"
                             , showT fromfilePathExt]
                     needP [fromfilePathExt]
 
-                    putInformOne def ["rule **/*.pdf 3 need satisfied"]
+                    putInformOne debug ["rule **/*.pdf 3 need satisfied"]
                      
                     runErr2action $ tex2pdf debug flags fromfilePathExt outP doughP
-                    putInformOne def ["rule **/*.pdf 4 produce outP (perhaps just fake)"
+                    putInformOne debug ["rule **/*.pdf 4 produce outP (perhaps just fake)"
                         , showT outP]
-            putInformOne def ["rule **/*.pdf 5 end"]
+            putInformOne debug ["rule **/*.pdf 5 end"]
 
     (toFilePath bakedP <> "/*.css")
         %> \out -> -- insert css -- no subdir

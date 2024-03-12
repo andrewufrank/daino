@@ -58,14 +58,14 @@ md2doc debug sett4 bakedFrom  = do
     putIOwords ["--- processing \t", showT bakedFrom]
             -- to mark the following errors with the source file name
     pandoc1 <- readMd2pandoc bakedFrom  
-    putInformOne def ["md2doc 2 file read" 
+    putInformOne debug ["md2doc 2 file read" 
             , showT pandoc1, "\n"]
 
     -- apply the umlaut conversion first 
     -- treat the .md file -- reread it if changed !!
     pandoc2 <- doUmlaut debug  bakedFrom  sett4 pandoc1
 
-    putInformOne def ["md2doc 3 umlaut done "
+    putInformOne debug ["md2doc 3 umlaut done "
             , showT pandoc2, "\n"]
 
     let pandoc2a = addListOfDefaults (metaDefaults sett4) pandoc2
@@ -73,18 +73,18 @@ md2doc debug sett4 bakedFrom  = do
     -- removed
     let pandoc3 = walkPandoc lf2LineBreak pandoc2a
     -- to convert the /lf/ marks in hard LineBreak
-    putInformOne def ["md2doc 4 lf done "
+    putInformOne debug ["md2doc 4 lf done "
             , showT pandoc3, "\n"]
 
     pan4@(Pandoc m4 p4) <- mdCiteproc pandoc3 
-    putInformOne def ["md2doc 5 citeproc  done "
+    putInformOne debug ["md2doc 5 citeproc  done "
             ,"m4 \n", showT m4, "\n"
             ,"p4", showT pan4 , "\n"]
 
     let (Pandoc _ p5) = usingSideNotes pan4 
         -- changed the body (p5) to prepare for tufte style
 
-    putInformOne def ["md2doc 6 usingSideNotes  done p5"
+    putInformOne debug ["md2doc 6 usingSideNotes  done p5"
             ,showT p5 , "\n"]
 
     -- move the body and then converts to html and latex 
@@ -93,7 +93,7 @@ md2doc debug sett4 bakedFrom  = do
     -- let meta4base = Meta $ M.insert "bodyBase" (MetaBlocks p4) (unMeta m4)
     -- let meta5tufte = Meta $ M.insert "bodyTufte" (MetaBlocks p5) (unMeta meta4base)
 
-    putInformOne def ["md2doc 7 setBlocks2meta meta5tufte \n"
+    putInformOne debug ["md2doc 7 setBlocks2meta meta5tufte \n"
                 , showT meta5tufte, "\n"]
 
 
@@ -105,14 +105,14 @@ md2doc debug sett4 bakedFrom  = do
 
     -- let mp2 = mp1 { metaHtml = meta5tufte  -- 2 versions of body
     --                 , metaLatex = meta4base}  -- one only
-    putInformOne def ["md2doc 8 meta5tufte mp1\n"
+    putInformOne debug ["md2doc 8 meta5tufte mp1\n"
                 , showT mp1, "\n"]
     
             -- pushes all what is further needed into metaplus
             -- but takes only meta?
     mp2 <- completeMetaPlus mp1  -- converts the body to tex and html
     let mp3 = fillTextual4MP mp2 
-    putInformOne def ["md2doc 9 end ", showT mp3, "\n"]
+    putInformOne debug ["md2doc 9 end ", showT mp3, "\n"]
 
     return mp3
 

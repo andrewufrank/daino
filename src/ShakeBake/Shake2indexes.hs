@@ -37,7 +37,7 @@ indexNeeds ::  NoticeLevel ->  Settings -> Path Abs Dir
         -> Action ([Path Abs File], [Path Abs File])
 indexNeeds debug  sett4 doughP bakedP outP = do 
     -- let debug = NoticeLevel2
-    putInformOne def ["rule **/*.panrep i1- outP", showT outP]
+    putInformOne debug ["rule **/*.panrep i1- outP", showT outP]
     let bakedoutP = replaceDirectoryP bakedP doughP outP 
     putInformOne debug ["rule **/*.panrep i1- bakedoutP", showT bakedoutP]
     let bakedDirP = makeAbsDir $ getParentDir bakedoutP :: Path Abs Dir
@@ -124,7 +124,7 @@ dnbFilter sett4 dirs1 =  (filter (not . (isInfixOf' dnbString). s2t
 constructFileEnry :: NoticeLevel -> Settings -> Path Abs File 
         -> Action (Maybe IndexEntry2)
 constructFileEnry debug sett4 mdfn  = do 
-    putInformOne def ["constructFileEntry 1 for mdfn", showT mdfn ]
+    putInformOne debug ["constructFileEntry 1 for mdfn", showT mdfn ]
 
     let layout = siteLayout sett4 
         doughP = doughDir layout -- the regular dough
@@ -133,8 +133,8 @@ constructFileEnry debug sett4 mdfn  = do
     let docrepFn = replaceDirectoryP doughP bakedP  
                     . replaceExtension' "docrep" $ mdfn 
     let panrepFn = replaceExtension' "panrep" docrepFn
-    putInformOne def ["constructFileEntry 1a docrepFn", showT docrepFn ]
-    putInformOne def ["constructFileEntry 1b panrepFn", showT panrepFn ]
+    putInformOne debug ["constructFileEntry 1a docrepFn", showT docrepFn ]
+    putInformOne debug ["constructFileEntry 1b panrepFn", showT panrepFn ]
 
     needP [docrepFn, panrepFn] -- needs extension!
     
@@ -144,12 +144,12 @@ constructFileEnry debug sett4 mdfn  = do
     -- subdir index files 
     entries4 <- if isIndexPage mdfn 
         then do  
-            putInformOne def 
+            putInformOne debug 
                 ["constructFileEntry 2a  indexpage"
                 , showT mdfn ]
             pan1 :: DainoMetaPlus  
                     <- runErr2action $ read8 panrepFn panrepFileType 
-            putInformOne def 
+            putInformOne debug 
                 ["constructFileEntry 2b  panrep fileentries"
                 , showT . fileEntries . extra $ pan1
                     ]
@@ -157,7 +157,7 @@ constructFileEnry debug sett4 mdfn  = do
         else do 
             return []
 
-    putInformOne def ["constructFileEntry 3 continues docrepFn publish"
+    putInformOne debug ["constructFileEntry 3 continues docrepFn publish"
             , showT incld,  showT docrepFn ]
     if incld 
       then do 

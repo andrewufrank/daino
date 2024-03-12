@@ -43,7 +43,7 @@ shake2docrep :: NoticeLevel -> PubFlags -> Settings -> Path Abs Dir -> Rules ()
 shake2docrep debug flags sett4 bakedP  =     
     (toFilePath bakedP <> "**/*.docrep") %> \out -> do 
             -- insert pdfFIles1  -- here start with doughP
-    putInformOne def ["rule **/*.docrep 1", showT out]
+    putInformOne debug ["rule **/*.docrep 1", showT out]
 
     let layout = siteLayout sett4 
         doughP = doughDir layout -- the regular dough
@@ -71,20 +71,20 @@ shake2docrep debug flags sett4 bakedP  =
             -- apply citeproc
             -- fill body and convert to html and latex
         mp3 <- md2doc debug sett4 bakedFrom 
-        putInformOne def  [ "rule **/*.docrep 4a read mp3", showT mp3]  
+        putInformOne debug  [ "rule **/*.docrep 4a read mp3", showT mp3]  
 
         let incl = includeBakeTest3docrep flags (metap mp3) 
     
         let dr4 =  if incl then mp3 else zero     
-        putInformOne def ["rule **/*.docrep 5 ready to write outP"
+        putInformOne debug ["rule **/*.docrep 5 ready to write outP"
                             , showT outP, "incl", showT incl]
         write8 outP docrepFileType dr4
 
-        putInformOne def  [ "rule **/*.docrep 6 written outP", showT outP
+        putInformOne debug  [ "rule **/*.docrep 6 written outP", showT outP
                 , "dr4\n", showT dr4]
         return []
 
-    putInformOne def ["rule **/*.docrep 7 end ----------------"] -- no  - needs2", showT needs2]
+    putInformOne debug ["rule **/*.docrep 7 end ----------------"] -- no  - needs2", showT needs2]
     return ()
     
 

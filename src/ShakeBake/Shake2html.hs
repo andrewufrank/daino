@@ -52,46 +52,46 @@ shake2html debug flags sett4 bakedP  =
     let layout = siteLayout sett4
         doughP = doughDir layout -- the regular dough
 
-    putInformOne def ["rule **/*.html 1 start ", showT out]
+    putInformOne debug ["rule **/*.html 1 start ", showT out]
 
     let outP = makeAbsFile out :: Path Abs File
     let fromFile = doughP </> makeRelativeP bakedP outP
             -- try to see if the file exists in dough 
     fileExists <- io2bool $ doesFileExist' fromFile
-    putInformOne def ["rule **/*.html 2 - fileExist:", showT fileExists]
+    putInformOne debug ["rule **/*.html 2 - fileExist:", showT fileExists]
     
     if fileExists 
         then copyFileToBaked debug doughP bakedP out
         else do
         let bakedFrom = replaceExtension'  "panrep" outP
-        putInformOne def ["rule **/*.html 3 - bakedFrom", showT bakedFrom, "\n"]
+        putInformOne debug ["rule **/*.html 3 - bakedFrom", showT bakedFrom, "\n"]
         needP [bakedFrom]
         let pdfNeeded = replaceExtension' "pdf" outP
-        putInformOne def ["rule **/*.html 3b - pdfNeeded", showT pdfNeeded, "\n"]
+        putInformOne debug ["rule **/*.html 3b - pdfNeeded", showT pdfNeeded, "\n"]
         needP [pdfNeeded]
 
-        putInformOne def ["\nrule **/*.html 4 continued out" , showT out
+        putInformOne debug ["\nrule **/*.html 4 continued out" , showT out
                 , "bakedFrom", showT bakedFrom]
 
         needsFound :: [Path Abs File]<- runErr2action $ do
             pan0 <- read8 bakedFrom panrepFileType
             let needsFound1 = map (addFileName bakedP . replaceExtension' "html") . getIndexFiles4meta $ pan0 
-            putInformOne def ["\nrule **/*.html 5 needsFound1" 
+            putInformOne debug ["\nrule **/*.html 5 needsFound1" 
                     , showT needsFound1]
             return needsFound1
         needP needsFound
 
-        putInformOne def ["\nrule **/*.html 6 continued ", showT out]
+        putInformOne debug ["\nrule **/*.html 6 continued ", showT out]
 
             -- was ist mit needs2?
             --  bakeOnePanrep2html debug flags bakedFrom sett4 outP 
             -- bakeOnePanrep2html debug flags inputFn sett3 resfn2 = do
-        putInformOne def [ "\n-----\nrule **/*.html 7 fn", showT bakedFrom
+        putInformOne debug [ "\n-----\nrule **/*.html 7 fn", showT bakedFrom
                 , "\n                    resfn2", showT outP
                 ]
         (pan0) <- runErr2action $  read8 bakedFrom panrepFileType
         
-        putInformOne def ["\nrule **/*.html 7b panrep read "
+        putInformOne debug ["\nrule **/*.html 7b panrep read "
                         , "bakedFrom", showT bakedFrom, "\n"
                         , showT pan0, "\n"
                         , showT (sett pan0)]
@@ -114,8 +114,8 @@ shake2html debug flags sett4 bakedP  =
 
     --     putInformOne debug["\n-----rule **/*.html 9 siteLayout sett3"
     --                 , showT $ siteLayout sett3]
-        putInformOne def ["-----rule **/*.html 10 mf", showT mf]
-        putInformOne def ["-----rule **/*.html 11 masterfn"
+        putInformOne debug ["-----rule **/*.html 10 mf", showT mf]
+        putInformOne debug ["-----rule **/*.html 11 masterfn"
                         , showT htmlTemplateFn]
 
         targetTempl  <- runErr2action $ compileTemplateFile2 htmlTemplateFn
@@ -153,7 +153,7 @@ shake2html debug flags sett4 bakedP  =
 
         needP $ this2pdf : is2pdf
 
-        putInformOne def ["\n-----rule **/*.html 15 end continued 4"
+        putInformOne debug ["\n-----rule **/*.html 15 end continued 4"
             , showT out,"\n"]
 
 
