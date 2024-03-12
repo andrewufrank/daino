@@ -58,52 +58,27 @@ md2doc debug sett4 bakedFrom  = do
     putIOwords ["--- processing \t", showT bakedFrom]
             -- to mark the following errors with the source file name
     pandoc1 <- readMd2pandoc bakedFrom  
-    -- apply the umlaut conversion first 
-    -- treat the .md file and reread it if changed
-    let langCode = latexLangConversion 
-            . getTextFromYaml5 "" "language" $ pandoc1
-        debugReplace = False 
-        -- with debug not new file written in umlautconversin
-
     putInformOne def ["md2doc 2 file read" 
             , showT pandoc1, "\n"]
 
-    pandoc2 <- doUmlaut debug debugReplace bakedFrom langCode sett4 pandoc1
-        -- if langCode == "ngerman"
-        -- then do
-        --     putInformOne debug ["md2doc 2 "]
-        --     erl1 :: [Text] <- readErlaubt (replaceErlaubtFile . siteLayout $ sett4)
-        --     let addErl = words' . getTextFromYaml5 "" "DoNotReplace" $ pandoc1
-        --     let addErl2 = words' . getTextFromYaml5 "" "doNotReplace" $ pandoc1
-        --         -- allow additions to the list in the YAML header
-        --         -- with or without capital D
-        --         erl2 = addErl ++ addErl2 ++ erl1
-        --     putInformOne debug ["md2doc 3 "]
-        --     changed <- applyReplace debugReplace erl2   bakedFrom 
-        --     if changed -- && (not debugReplace)
-        --         then do 
-        --                 pan2 <- readMd2pandoc bakedFrom 
-        --                 putInformOne debug ["md2doc 4 "]
-        --                 return pan2
-        --             -- then readMarkdownFile2docrep debug  sett4 bakedFrom 
-        --         -- when debug true then changed files are not written 
-        --         else return pandoc1
-        -- else return pandoc1
+    -- apply the umlaut conversion first 
+    -- treat the .md file -- reread it if changed !!
+    pandoc2 <- doUmlaut debug  bakedFrom  sett4 pandoc1
 
     putInformOne def ["md2doc 3 umlaut done "
             , showT pandoc2, "\n"]
 
-    -- let p2 = addListOfDefaults (metaDefaults sett4) pandoc2
+    let pandoc2a = addListOfDefaults (metaDefaults sett4) pandoc2
     -- set defaults , will be overwritten later ??
     -- removed
-    let pandoc3 = walkPandoc lf2LineBreak pandoc2
+    let pandoc3 = walkPandoc lf2LineBreak pandoc2a
     -- to convert the /lf/ marks in hard LineBreak
     putInformOne def ["md2doc 4 lf done "
             , showT pandoc3, "\n"]
 
     pan4@(Pandoc m4 p4) <- mdCiteproc pandoc3 
     putInformOne def ["md2doc 5 citeproc  done "
-            ,"m4 \n", showT m4
+            ,"m4 \n", showT m4, "\n"
             ,"p4", showT pan4 , "\n"]
 
     let (Pandoc _ p5) = usingSideNotes pan4 
@@ -141,22 +116,32 @@ md2doc debug sett4 bakedFrom  = do
 
     return mp3
 
-doUmlaut debug debugReplace bakedFrom langCode sett4 pandoc1 = do
+doUmlaut :: NoticeLevel -> Path Abs File -> Settings -> Pandoc -> ExceptT Text IO Pandoc
+-- | do the conversion of umlauts in the file (if language de_xx)
+-- the converted file is written back and reread
+-- to avoid repeated conversion (and repeated corrections)
+-- add to doNotReplace in header of file
+doUmlaut debug  bakedFrom  sett4 pandoc1 = do
+    let langCode = latexLangConversion 
+            . getTextFromYaml5 "" "language" $ pandoc1
+        debugReplace = False 
+        -- with debug not new file written in umlautconversin
+
     pandoc2 <- if langCode == "ngerman"
         then do
-            putInformOne debug ["md2doc 2 "]
+            putInformOne debug ["md2doc doUmlaut 2 "]
             erl1 :: [Text] <- readErlaubt (replaceErlaubtFile . siteLayout $ sett4)
             let addErl = words' . getTextFromYaml5 "" "DoNotReplace" $ pandoc1
             let addErl2 = words' . getTextFromYaml5 "" "doNotReplace" $ pandoc1
                 -- allow additions to the list in the YAML header
                 -- with or without capital D
                 erl2 = addErl ++ addErl2 ++ erl1
-            putInformOne debug ["md2doc 3 "]
+            putInformOne debug ["md2doc doUmlaut 3 "]
             changed <- applyReplace debugReplace erl2   bakedFrom 
             if changed -- && (not debugReplace)
                 then do 
                         pan2 <- readMd2pandoc bakedFrom 
-                        putInformOne debug ["md2doc 4 "]
+                        putInformOne debug ["md2doc doUmlaut 4 "]
                         return pan2
                     -- then readMarkdownFile2docrep debug  sett4 bakedFrom 
                 -- when debug true then changed files are not written 
@@ -206,7 +191,7 @@ setMetaPlusInitialize sett3 fnin m1 =
     where 
         doughP = doughDir . siteLayout $ sett3
         relFn = makeRelativeP doughP fnin
-        lang2 = getTextFromYaml6 "en-UK" "language"  m1 :: Text
+        lang2 = getTextFromYaml6 "en-Default" "language"  m1 :: Text
         x1 = zero   { mdFile = toFilePath fnin
                     , mdRelPath =toFilePath $  relFn
                     , dainoVersion = showT Paths_daino.version
@@ -215,14 +200,17 @@ setMetaPlusInitialize sett3 fnin m1 =
 
 metaDefaults ::  Settings -> [(Text, Text)]
 metaDefaults sett9 =  
-     [("Bibliography", "resources/BibTexLatex.bib")
-    , ("version", "publish")  -- todo should probably not be default
+     [
+        --  ("Bibliography", "resources/BibTexLatex.bib")
+        -- is used as signal to process biblio
+      ("version", "publish")  -- todo should probably not be default
     ,  ("visibility", "public") 
     , ("title", "Title MISSING")
     , ("abstract", "Abstract MISSING")
     , ("date", showT year2000)
-    , ("lang", "en")  -- todo conversion? 
-    , ("latLanguage", "english(Default)") -- for babel - todo 
+    -- language default is set when asking in setMetaPlusInitialize
+    -- , ("lang", "en")  -- todo conversion? 
+    -- , ("latLanguage", "english(Default)") -- for babel - todo 
     -- , ("styleBiber","authoryear")
     -- , ("csl", "resources/theme/templates/chicago-fullnote-bibliography.csl")
     , ("headerShift","1")
@@ -239,20 +227,23 @@ metaSetBook :: Settings -> DainoMetaPlus -> DainoValues
 -- | set 2 values to allow boolean tests in templates
 --    and set bookprint to false
 --    and webroot 
-metaSetBook sett4 dr1 =  extra5{authorReduced = blankAuthorName hpname aut1
-                            , booklet = "booklet" == bookval
-                            , bookBig= "bookbig" == bookval
-                            , bookprint = False
-                            , webroot = s2t $ toFilePath bakedP
-                            }
+metaSetBook sett4 dr1 =  extra5
+            {authorReduced = blankAuthorName 
+                (blogAuthorToSuppress layout) 
+                (getTextFromYaml6 (defaultAuthor layout) "author" meta5)
+            , booklet = "booklet" == bookval
+            , bookBig= "bookbig" == bookval
+            , bookprint = False
+            , webroot = s2t $ toFilePath bakedP
+            }
     where 
-            aut1 = getTextFromYaml6 default0 "author" meta5
+            -- aut1 = getTextFromYaml6 (defaultAuthor layout) "author" meta5
             bookval = toLower' $ getTextFromYaml6  "" "book"   meta5 
             -- doughP = doughDir layout -- the regular dough
             bakedP = bakedDir layout -- the regular dough
             layout = siteLayout sett4 
-            hpname = blogAuthorToSuppress layout
-            default0 = defaultAuthor layout
+            -- hpname = blogAuthorToSuppress layout
+            -- default0 = defaultAuthor layout
             meta5 = metap  dr1 -- ~ panyam 
             extra5 = extra dr1
         

@@ -38,4 +38,8 @@ Copying the folder `dainoSite` to a suitable directory and edit the `settinsNN.y
     :r
     main4Tne  
 
-    
+`crun` runs active code (i.e. compiles before execution)
+    crun daino67 -- -enT   note: dash dash blank dash enT 
+
+the double dash makes the following the arguemnt for daino67 
+here produe tufte forma, nice (i.e. pdf) and start fresh 

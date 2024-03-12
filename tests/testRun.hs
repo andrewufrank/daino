@@ -121,14 +121,16 @@ main4st = do
 
 -- | run all from fresh to produce base html and pdf 
 --  
-main4Tn = do 
-    putIOwords ["test Tn"]
+main4TneN = do 
+    putIOwords ["test TneN"]
     p <- runErr $ do 
             dainoProcess NoticeLevel0 testFlags
-                {testFlag = True 
+                {testFlag = True -- T
                 -- , serverFlag = True -- s
-                , testNewFlag = True -- T 
+                , testNewFlag = True -- N
                 , pdfFlag = True   -- n 
+                , tufteFlag = True   -- e 
+
                 }
     putIOwords ["main4Tn end", showT p] 
       
@@ -137,9 +139,9 @@ main4Tn = do
 main4Tne = do 
     putIOwords ["test Tne - test all produce pdf for tufte"]
     let tf = testFlags
-                {testFlag = True 
+                {testFlag = True  -- T
                 -- , serverFlag = True -- s
-                , testNewFlag = False -- T 
+                , testNewFlag = False -- N 
                 , pdfFlag = True   -- n 
                 , tufteFlag = True   -- e 
                 }
