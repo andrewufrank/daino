@@ -31,7 +31,7 @@ $-- not used:
   
 \usepackage{unicode-math}
 \usepackage{csquotes}  $-- required for babel 
-\usepackage[$metaLatex.latLanguage$,bidi=basic]{babel}
+\usepackage[$extra.latLanguage$,bidi=basic]{babel}
 % issues left with importing babel fonts? 
 \usepackage{fontspec}  % perhaps resolved with loading fontspec after babel
 

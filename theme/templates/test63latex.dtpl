@@ -39,8 +39,8 @@ allContent      $metap.abstractOnly$
 
 -- not in htmlTufte
 
-latLanguage     $metaLatex.latLanguage$
-styleBiber      $metaLatex.styleBiber$
+latLanguage     $extra.latLanguage$
+$-- styleBiber      $metaLatex.styleBiber$
 mdFile          $extra.mdFile$
 localhostPort   $sett.localhostPort$
 settingsDate    $sett.settingsDate$
@@ -49,6 +49,7 @@ blogAuthorToSuppress
                 $for(sett.siteLayout.blogAuthorToSuppress)$
                         $sett.siteLayout.blogAuthorToSuppress$
                 $endfor$
+
 
 indexEntryFiles 
  

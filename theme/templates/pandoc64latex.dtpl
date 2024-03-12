@@ -387,7 +387,7 @@ $if(lang)$
 \usepackage[bidi=default]{babel}
 \fi
 $if(babel-lang)$
-\babelprovide[main,import]{$metaLatex.lang$}
+\babelprovide[main,import]{$extra.latLanguage$}
 $if(mainfont)$
 \ifPDFTeX
 \else
