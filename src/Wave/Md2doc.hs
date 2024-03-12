@@ -41,7 +41,7 @@ import Uniform.MetaPlus
 import Uniform.PandocImports
 import Uniform.Markdown 
 import Uniform.MetaStuff
-import Uniform.TemplateStuff
+-- import Uniform.TemplateStuff
 import Uniform.Latex
 import Uniform.Shake  
 
@@ -64,30 +64,31 @@ md2doc debug sett4 bakedFrom  = do
             . getTextFromYaml5 "" "language" $ pandoc1
         debugReplace = False 
         -- with debug not new file written in umlautconversin
-                    -- inform debug 
+
     putInformOne def ["md2doc 2 file read" 
             , showT pandoc1, "\n"]
 
-    pandoc2 <- if langCode == "ngerman"
-        then do
-            putInformOne debug ["md2doc 2 "]
-            erl1 :: [Text] <- readErlaubt (replaceErlaubtFile . siteLayout $ sett4)
-            let addErl = words' . getTextFromYaml5 "" "DoNotReplace" $ pandoc1
-            let addErl2 = words' . getTextFromYaml5 "" "doNotReplace" $ pandoc1
-                -- allow additions to the list in the YAML header
-                -- with or without capital D
-                erl2 = addErl ++ addErl2 ++ erl1
-            putInformOne debug ["md2doc 3 "]
-            changed <- applyReplace debugReplace erl2   bakedFrom 
-            if changed -- && (not debugReplace)
-                then do 
-                        pan2 <- readMd2pandoc bakedFrom 
-                        putInformOne debug ["md2doc 4 "]
-                        return pan2
-                    -- then readMarkdownFile2docrep debug  sett4 bakedFrom 
-                -- when debug true then changed files are not written 
-                else return pandoc1
-        else return pandoc1
+    pandoc2 <- doUmlaut debug debugReplace bakedFrom langCode sett4 pandoc1
+        -- if langCode == "ngerman"
+        -- then do
+        --     putInformOne debug ["md2doc 2 "]
+        --     erl1 :: [Text] <- readErlaubt (replaceErlaubtFile . siteLayout $ sett4)
+        --     let addErl = words' . getTextFromYaml5 "" "DoNotReplace" $ pandoc1
+        --     let addErl2 = words' . getTextFromYaml5 "" "doNotReplace" $ pandoc1
+        --         -- allow additions to the list in the YAML header
+        --         -- with or without capital D
+        --         erl2 = addErl ++ addErl2 ++ erl1
+        --     putInformOne debug ["md2doc 3 "]
+        --     changed <- applyReplace debugReplace erl2   bakedFrom 
+        --     if changed -- && (not debugReplace)
+        --         then do 
+        --                 pan2 <- readMd2pandoc bakedFrom 
+        --                 putInformOne debug ["md2doc 4 "]
+        --                 return pan2
+        --             -- then readMarkdownFile2docrep debug  sett4 bakedFrom 
+        --         -- when debug true then changed files are not written 
+        --         else return pandoc1
+        -- else return pandoc1
 
     putInformOne def ["md2doc 3 umlaut done "
             , showT pandoc2, "\n"]
@@ -140,6 +141,28 @@ md2doc debug sett4 bakedFrom  = do
 
     return mp3
 
+doUmlaut debug debugReplace bakedFrom langCode sett4 pandoc1 = do
+    pandoc2 <- if langCode == "ngerman"
+        then do
+            putInformOne debug ["md2doc 2 "]
+            erl1 :: [Text] <- readErlaubt (replaceErlaubtFile . siteLayout $ sett4)
+            let addErl = words' . getTextFromYaml5 "" "DoNotReplace" $ pandoc1
+            let addErl2 = words' . getTextFromYaml5 "" "doNotReplace" $ pandoc1
+                -- allow additions to the list in the YAML header
+                -- with or without capital D
+                erl2 = addErl ++ addErl2 ++ erl1
+            putInformOne debug ["md2doc 3 "]
+            changed <- applyReplace debugReplace erl2   bakedFrom 
+            if changed -- && (not debugReplace)
+                then do 
+                        pan2 <- readMd2pandoc bakedFrom 
+                        putInformOne debug ["md2doc 4 "]
+                        return pan2
+                    -- then readMarkdownFile2docrep debug  sett4 bakedFrom 
+                -- when debug true then changed files are not written 
+                else return pandoc1
+        else return pandoc1
+    return pandoc2
 
 lf2LineBreak :: Inline -> Inline
 -- | converts a "/lf/" string in a hard linebreak
@@ -234,9 +257,9 @@ metaSetBook sett4 dr1 =  extra5{authorReduced = blankAuthorName hpname aut1
             extra5 = extra dr1
         
 
-fillTemplate_render  tpl dat = render (Just 50)
-        -- just a plausible line length of 50 
-        $  renderTemplate tpl (toJSON dat)        
+-- fillTemplate_render  tpl dat = render (Just 50)
+--         -- just a plausible line length of 50 
+--         $  renderTemplate tpl (toJSON dat)        
 
 
 
