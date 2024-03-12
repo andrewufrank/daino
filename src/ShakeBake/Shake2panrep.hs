@@ -48,7 +48,7 @@ shake2panrep debug flags sett4 bakedP =
         doughP = doughDir layout -- the regular dough
         -- bakedP = bakedDir layout
 
-    putInformOne debug ["rule **/*.panrep 1 start out", showT out]
+    putInformOne def ["rule **/*.panrep 1 start out", showT out]
 
     let outP = makeAbsFile out :: Path Abs File
     
@@ -57,12 +57,12 @@ shake2panrep debug flags sett4 bakedP =
     putInformOne debug ["rule **/*.panrep 2 - bakedFrom", showT bakedFrom]
     needP [bakedFrom]
 
-    putInformOne debug ["\nrule **/*.panrep 3 continued", showT out]
+    putInformOne def ["\nrule **/*.panrep 3 continued", showT out]
 
     let thisDirP =  makeAbsDir $ getParentDir outP :: Path Abs Dir
 
     
-    putInformOne debug ["rule **/*.panrep 4 - thisDirP", showT thisDirP]
+    putInformOne def ["rule **/*.panrep 4 - thisDirP", showT thisDirP]
 
     (fileEnts, dirEnts) <- 
         if not (isIndexPage outP) 
@@ -72,7 +72,7 @@ shake2panrep debug flags sett4 bakedP =
     --  here the unless insert 
             (files2, ind3)  <- indexNeeds debug sett4 doughP bakedP outP
                     
-            putInformOne debug 
+            putInformOne def 
                 ["\nrule **/*.panrep 4a \n\t files", showT files2
                     , "\n\t\t index.md for directories", showT ind3]
             needP (files2 ++ ind3)
@@ -81,25 +81,25 @@ shake2panrep debug flags sett4 bakedP =
             dirEnt1 <- mapM (constructFileEnry debug sett4) ind3 
             -- produces the data for the index.md file
             -- one level
-            putInformOne debug 
+            putInformOne def 
                 ["\nrule **/*.panrep 4b \n fileEntries", showT fileEnt1
                     , "\n dirEntries", showT dirEnt1]
 
             return (catMaybes fileEnt1, catMaybes dirEnt1)
     
-    putInformOne debug ["\nrule **/*.panrep 4x continued after unless" ]
+    putInformOne def ["\nrule **/*.panrep 4x continued after unless" ]
 
     -- (dirEntries, fileEntries) <- constructIndexEntries
-    putInformOne debug ["\nrule **/*.panrep 5 continued 2", showT out]
+    putInformOne def ["\nrule **/*.panrep 5 continued 2", showT out]
 
     needs2empty <- runErr2action $ do
-        putInformOne debug [ "\nrule **/*.panrep 6 bakedFrom"
+        putInformOne def [ "\nrule **/*.panrep 6 bakedFrom"
             , showT bakedFrom 
             , "outP", showT outP
             ]
         dr1 :: DainoMetaPlus <- read8 bakedFrom docrepFileType
  
-        putInformOne debug ["rule **/*.panrep 7"
+        putInformOne def ["rule **/*.panrep 7"
                     ]
         let 
             extra6 = metaSetBook sett4 dr1 
@@ -109,12 +109,12 @@ shake2panrep debug flags sett4 bakedP =
                          extra = extra7 }
         write8 outP panrepFileType dr2 -- set only dirEntries
 
-        putInformOne debug 
+        putInformOne def 
                 ["rule **/*.panrep 8 done produced resf2n", showT outP
                     , "/n dirEntries", showT dirEnts 
                     -- , "\n needsFound", showT needsFound
                 ]
         return [] --  needsFound
 
-    putInformOne debug ["rule **/*.panrep 9 end", showT out]
+    putInformOne def ["rule **/*.panrep 9 end", showT out]
 

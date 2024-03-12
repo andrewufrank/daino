@@ -91,13 +91,13 @@ shakeMD debug sett4 flags = do
     
     (toFilePath bakedP <> "**/*.pdf") %> \out -> -- insert pdfFIles1
         do
-            when (inform debug) $ putIOwords ["rule **/*.pdf", showT out]
+            putInformOne def ["rule **/*.pdf", showT out]
             
             let outP = makeAbsFile out :: Path Abs File
             let fromfile = doughP </> makeRelativeP bakedP outP
-            putInformOne debug ["rule **/*.pdf 1 fromFile", showT fromfile]
+            putInformOne def ["rule **/*.pdf 1 fromFile", showT fromfile]
             fileExists <- io2bool $ doesFileExist' fromfile
-            when (inform debug) $ putIOwords ["fileExist:", showT fileExists]
+            putInformOne def ["fileExist:", showT fileExists]
             
             if fileExists 
                 then copyFileToBaked debug doughP bakedP out
@@ -108,16 +108,16 @@ shakeMD debug sett4 flags = do
                         fromfilePath = sourceP </> makeRelativeP targetP outP
                         fromfilePathExt = replaceExtension' 
                             (s2t . unExtension $ extTex) fromfilePath 
-                    putInformOne debug ["rule **/*.pdf 2 fromfilePathExt"
+                    putInformOne def ["rule **/*.pdf 2 fromfilePathExt"
                             , showT fromfilePathExt]
                     needP [fromfilePathExt]
 
-                    putInformOne debug ["rule **/*.pdf 3 need satisfied"]
+                    putInformOne def ["rule **/*.pdf 3 need satisfied"]
                      
                     runErr2action $ tex2pdf debug flags fromfilePathExt outP doughP
-                    putInformOne debug ["rule **/*.pdf 4 produce outP (perhaps just fake)"
+                    putInformOne def ["rule **/*.pdf 4 produce outP (perhaps just fake)"
                         , showT outP]
-            putInformOne debug ["rule **/*.pdf 5 end"]
+            putInformOne def ["rule **/*.pdf 5 end"]
 
     (toFilePath bakedP <> "/*.css")
         %> \out -> -- insert css -- no subdir

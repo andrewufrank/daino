@@ -52,7 +52,7 @@ shake2latex debug flags sett4 bakedP  =
     let layout = siteLayout sett4
         doughP = doughDir layout -- the regular dough
 
-    putInformOne debug ["rule **/*.tex 1 start ", showT out]
+    putInformOne def ["rule **/*.tex 1 start ", showT out]
 
     let outP = makeAbsFile out :: Path Abs File
     let fromFile = doughP </> makeRelativeP bakedP outP
