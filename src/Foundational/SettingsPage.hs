@@ -67,6 +67,7 @@ instance ToJSON Settings
 instance FromJSON Settings
 
 -- the extraValues will eventually go into settings
+-- see later as metalatex.xx
 data DainoValues = 
     DainoValues 
             { mdFile:: FilePath -- Path Abs File -- abs file path 

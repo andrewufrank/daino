@@ -99,7 +99,7 @@ main4qT = do
     p <- runErr $ do 
             dainoProcess NoticeLevel0 testFlags
                 {testFlag = True 
-                , testNewFlag = True -- T 
+                -- , testNewFlag = True -- T 
                 -- , pdfFlag = True   -- n 
                 }
     putIOwords ["main4qT end", showT p]
@@ -139,7 +139,7 @@ main4Tne = do
     let tf = testFlags
                 {testFlag = True 
                 -- , serverFlag = True -- s
-                , testNewFlag = True -- T 
+                , testNewFlag = False -- T 
                 , pdfFlag = True   -- n 
                 , tufteFlag = True   -- e 
                 }

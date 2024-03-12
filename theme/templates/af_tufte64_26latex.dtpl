@@ -9,7 +9,7 @@ $-- template to produce a latex file with the tufte style fixed notes-in-notes
 \PassOptionsToPackage{unicode$for(hyperrefoptions)$,$hyperrefoptions$$endfor$}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
 
-\documentclass[afBook,openany,nobib,showframe] %openright to force parts and chapter to start right
+\documentclass[afBook,openany,nobib] %,showframe] %openright to force parts and chapter to start right
         $if(extra.bookBig)$ {tufte-book}  %testbook $latBookBig$
         $elseif(extra.booklet)$ {tufte-book}  %testbooklet $latBooklet$
         $else$ {tufte-handout}  

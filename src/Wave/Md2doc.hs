@@ -86,13 +86,16 @@ md2doc debug sett4 bakedFrom  = do
                 else return pandoc1
         else return pandoc1
 
-    putInformOne debug ["md2doc 5 umlaut done "]
+    putInformOne def ["md2doc 5 umlaut done "
+            , showT pandoc1]
 
     let p2 = addListOfDefaults (metaDefaults sett4) pandoc2
+    -- set defaults , will be overwritten later ??
     let p3 = walkPandoc lf2LineBreak p2
     -- to convert the /lf/ marks in hard LineBreak
     pan4@(Pandoc m4 p4) <- mdCiteproc p3 
-    putInformOne debug ["md2doc 6 citeproc done "]
+    putInformOne def ["md2doc 6 citeproc done "
+            ,showT p2 ]
 
     let (Pandoc _ p5) = usingSideNotes pan4 
         -- changed the body (p5) to prepare for tufte style
@@ -104,14 +107,21 @@ md2doc debug sett4 bakedFrom  = do
     -- let meta5tufte = Meta $ M.insert "bodyTufte" (MetaBlocks p5) (unMeta meta4base)
      
     let mp1 = setMetaPlusInitialize sett4 bakedFrom meta5tufte
+    -- here set the values found in file 
+    -- but the file values are in extra only
+    -- the defaults are in meta
+    -- needs step to replace the extra values in meta
+
     -- let mp2 = mp1 { metaHtml = meta5tufte  -- 2 versions of body
     --                 , metaLatex = meta4base}  -- one only
-    putInformOne debug ["md2doc 6a usingSidenotes done "]
-
+    putInformOne def ["md2doc 6a usingSidenotes done "
+                , showT mp1]
+    
             -- pushes all what is further needed into metaplus
+            -- but takes only meta?
     mp2 <- completeMetaPlus mp1  -- converts the body to tex and html
     let mp3 = fillTextual4MP mp2 
-    putInformOne debug ["md2doc 7 end "]
+    putInformOne def ["md2doc 7 end ", showT mp3]
 
     return mp3
 
@@ -158,11 +168,11 @@ setMetaPlusInitialize sett3 fnin m1 =
     where 
         doughP = doughDir . siteLayout $ sett3
         relFn = makeRelativeP doughP fnin
-        lang = getTextFromYaml6 "lang" "en-US" m1 :: Text
+        lang2 = getTextFromYaml6 "en-UK" "language"  m1 :: Text
         x1 = zero   { mdFile = toFilePath fnin
                     , mdRelPath =toFilePath $  relFn
                     , dainoVersion = showT Paths_daino.version
-                    , latLanguage = latexLangConversion lang 
+                    , latLanguage = latexLangConversion lang2 
                     , pdf2 = toFilePath $ replaceExtension2 ".pdf" relFn }
 
 metaDefaults ::  Settings -> [(Text, Text)]
@@ -174,7 +184,7 @@ metaDefaults sett9 =
     , ("abstract", "Abstract MISSING")
     , ("date", showT year2000)
     , ("lang", "en")  -- todo conversion? 
-    , ("latLanguage", "english") -- for babel - todo 
+    , ("latLanguage", "english(Default)") -- for babel - todo 
     -- , ("styleBiber","authoryear")
     -- , ("csl", "resources/theme/templates/chicago-fullnote-bibliography.csl")
     , ("headerShift","1")
@@ -198,13 +208,13 @@ metaSetBook sett4 dr1 =  extra5{authorReduced = blankAuthorName hpname aut1
                             , webroot = s2t $ toFilePath bakedP
                             }
     where 
-            aut1 = getTextFromYaml6 defaut "author" meta5
+            aut1 = getTextFromYaml6 default0 "author" meta5
             bookval = toLower' $ getTextFromYaml6  "" "book"   meta5 
             -- doughP = doughDir layout -- the regular dough
             bakedP = bakedDir layout -- the regular dough
             layout = siteLayout sett4 
             hpname = blogAuthorToSuppress layout
-            defaut = defaultAuthor layout
+            default0 = defaultAuthor layout
             meta5 = metap  dr1 -- ~ panyam 
             extra5 = extra dr1
         
