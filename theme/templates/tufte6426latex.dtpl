@@ -9,7 +9,7 @@ $-- template to produce a latex file with the tufte style fixed notes-in-notes
 \PassOptionsToPackage{unicode$for(hyperrefoptions)$,$hyperrefoptions$$endfor$}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
 
-\documentclass[afBook,openany,nobib,showframe,twoside] %openright to force parts and chapter to start right
+\documentclass[afBook,openany,nobib,oneside] %twoside,showframe %openright to force parts and chapter to start right
         $if(extra.bookBig)$ {af-tufte-book}  %testbook $latBookBig$
         $elseif(extra.booklet)$ {af-tufte-book}  %testbooklet $latBooklet$
         $else$ {af-tufte-handout}  
@@ -298,7 +298,9 @@ $endif$
 % testest -- begingroup
 $if(extra.bookBig)$
     \clearpage
+    \begin{fullwidth}
     \tableofcontents
+    \end{fullwidth}
 $elseif(extra.booklet)$
     \begingroup
     \let\clearpage\relax
@@ -367,7 +369,7 @@ $endfor$
 % noindex \printindex
 
 \vspace*{\fill}
-\scriptsize Produced with `daino' ($extra.dainoVersion$) from \url{$extra.mdFile$} with latexTufte81.dtpl 
+\scriptsize Produced with `daino' ($extra.dainoVersion$) from \url{$extra.mdFile$} with $sett.siteLayout.tufteLatexTemplateFile$
 
 \scriptsize arguments bookBig: $extra.bookBig$ booklet: $extra.booklet$ allContent: $metap.allContent$
 $-- book: $book$ 

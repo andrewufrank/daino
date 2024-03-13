@@ -90,7 +90,9 @@ $--        link    $extra.dirEntries.link$
 $endfor$
                         
 masterTemplateFile  $sett.siteLayout.masterTemplateFile$
-texTemplateFile     $sett.siteLayout.texTemplateFile$
+latexTemplateFile     $sett.siteLayout.latexTemplateFile$
+tufteLatexTemplateFile 
+                    $sett.siteLayout.tufteLatexTemplateFile$
 themeDir            $sett.siteLayout.themeDir$
 
 Bibliography        $metap.Bibliography.c$  

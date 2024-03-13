@@ -363,7 +363,7 @@ $endfor$
 % noindex \printindex
 
 \vspace*{\fill}
-\scriptsize Produced with `daino' ($extra.dainoVersion$) from \url{$extra.mdFile$} with latexTufte81.dtpl 
+\scriptsize Produced with `daino' ($extra.dainoVersion$) from \url{$extra.mdFile$} with $ 
 
 \scriptsize arguments bookBig: $extra.bookBig$ booklet: $extra.booklet$ allContent: $metap.allContent$
 $-- book: $book$ 
