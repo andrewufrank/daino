@@ -78,7 +78,7 @@ library
     , uniformBase
   default-language: Haskell2010
 
-executable daino67
+executable daino68
   main-is: daino.hs
   other-modules:
       Paths_daino

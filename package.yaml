@@ -114,7 +114,7 @@ library:
       - src 
 
 executables:   # file names wiwth lowercase to avoid forcing Main
-  daino67:
+  daino68:
     main: daino.hs
     source-dirs: app
     ghc-options: 
