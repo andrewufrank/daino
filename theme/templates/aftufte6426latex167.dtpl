@@ -1,5 +1,6 @@
 $-- template to produce a latex file with the tufte style fixed notes-in-notes
-% template tufte64_26latex.dtpl v1 - for book 21x26.5cm 
+% template aftufte6426latex167.dtpl v3
+% for the world order book v 3.5, dainoSite 0.1.6.7
 % for use with Uniform.MetaPlus from u4blog v 0.1.6.4 for citeproc
 % uses pandco 3.1.8 - specialized for luatex and not beamer
 % see the default.latex template from https://github.com/jgm/pandoc-templates/blob/master/default.latex
@@ -9,20 +10,16 @@ $-- template to produce a latex file with the tufte style fixed notes-in-notes
 \PassOptionsToPackage{unicode$for(hyperrefoptions)$,$hyperrefoptions$$endfor$}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
 
-\documentclass[afBook,openany,nobib,oneside] %twoside,showframe %openright to force parts and chapter to start right
-        $if(extra.bookBig)$ {af-tufte-book}  %testbook $latBookBig$
-        $elseif(extra.booklet)$ {af-tufte-book}  %testbooklet $latBooklet$
-        $else$ {af-tufte-handout}  
+\documentclass[afBook,openany,nobib, oneside] %,showframe] %openright to force parts and chapter to start right
+        $if(extra.bookBig)$ {tufte-book}  %testbook $latBookBig$
+        $elseif(extra.booklet)$ {tufte-book}  %testbooklet $latBooklet$
+        $else$ {tufte-handout}  
         $endif$
-            %search in current working dir (which is where the tex file is) or 
-            % in ~/texmf/tex/latex/ and run sudo texhash
+
 
 $-- not used: 
 %testhandout $extra.bookBig$ testzwei $extra.booklet$
 % $metaLatex.book$  % should be true for bookbig and booklet
-
-\usepackage[cross,a4,center]{crop}
-\usepackage{printlen}
 
 \titleclass{\subsubsection}{straight}
 \titleformat{\subsubsection}%
@@ -38,6 +35,7 @@ $-- not used:
 \usepackage[$extra.latLanguage$,bidi=basic]{babel}
 % issues left with importing babel fonts? 
 \usepackage{fontspec}  % perhaps resolved with loading fontspec after babel
+\usepackage{placeins}  % to use floatBarrier
 
 $-- \renewcaptionname{ngerman}{\bibname}{Literatur}   %Bibliography
 $-- \renewcaptionname{$latLanguage$}{\bibname}{$latBiblioTitle$}   %Bibliography
@@ -117,7 +115,7 @@ $-- \setcounter{secnumdepth}{\subsubsectionnumdepth} % numbering for subsubsecti
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
-\usepackage{makeidx}
+% \usepackage{makeidx}
 \usepackage{selnolig}  % disable illegal ligatures in lualatex
 
 % Make \paragraph and \subparagraph free-standing
@@ -182,7 +180,9 @@ $endif$
 	\fancyhead[R]{\smallcaps{\newlinetospace{\rightmark}}\quad\thepage}%
 }
 
-% noindex \makeindex
+% noindex - to make an index insert
+\usepackage{imakeidx}
+\makeindex
 
 \setcounter{tocdepth}{4}  %to make several levels in table of content, works
 
@@ -298,9 +298,7 @@ $endif$
 % testest -- begingroup
 $if(extra.bookBig)$
     \clearpage
-    \begin{fullwidth}
     \tableofcontents
-    \end{fullwidth}
 $elseif(extra.booklet)$
     \begingroup
     \let\clearpage\relax
@@ -366,7 +364,9 @@ $endfor$
 
 
 % where do biblio references go?
-% noindex \printindex
+% noindex to have an index include, insert
+% The index should be printed here: 
+\printindex
 
 \vspace*{\fill}
 \scriptsize Produced with `daino' ($extra.dainoVersion$) from \url{$extra.mdFile$} with $sett.siteLayout.tufteLatexTemplateFile$
