@@ -1,5 +1,5 @@
 $-- template to produce a latex file with the tufte style fixed notes-in-notes
-% template tufte64latex.dtpl v1
+% template aftufte6426latex.dtpl v3
 % for use with Uniform.MetaPlus from u4blog v 0.1.6.4 for citeproc
 % uses pandco 3.1.8 - specialized for luatex and not beamer
 % see the default.latex template from https://github.com/jgm/pandoc-templates/blob/master/default.latex
@@ -9,7 +9,7 @@ $-- template to produce a latex file with the tufte style fixed notes-in-notes
 \PassOptionsToPackage{unicode$for(hyperrefoptions)$,$hyperrefoptions$$endfor$}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
 
-\documentclass[afBook,openany,nobib] %,showframe] %openright to force parts and chapter to start right
+\documentclass[afBook,openany,nobib, oneside] %,showframe] %openright to force parts and chapter to start right
         $if(extra.bookBig)$ {tufte-book}  %testbook $latBookBig$
         $elseif(extra.booklet)$ {tufte-book}  %testbooklet $latBooklet$
         $else$ {tufte-handout}  
@@ -31,9 +31,10 @@ $-- not used:
   
 \usepackage{unicode-math}
 \usepackage{csquotes}  $-- required for babel 
-\usepackage[$metaLatex.latLanguage$,bidi=basic]{babel}
+\usepackage[$extra.latLanguage$,bidi=basic]{babel}
 % issues left with importing babel fonts? 
 \usepackage{fontspec}  % perhaps resolved with loading fontspec after babel
+\usepackage{placeins}  % to use floatBarrier
 
 $-- \renewcaptionname{ngerman}{\bibname}{Literatur}   %Bibliography
 $-- \renewcaptionname{$latLanguage$}{\bibname}{$latBiblioTitle$}   %Bibliography
@@ -113,7 +114,7 @@ $-- \setcounter{secnumdepth}{\subsubsectionnumdepth} % numbering for subsubsecti
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
-\usepackage{makeidx}
+% \usepackage{makeidx}
 \usepackage{selnolig}  % disable illegal ligatures in lualatex
 
 % Make \paragraph and \subparagraph free-standing
@@ -178,7 +179,9 @@ $endif$
 	\fancyhead[R]{\smallcaps{\newlinetospace{\rightmark}}\quad\thepage}%
 }
 
-% noindex \makeindex
+% noindex - to make an index insert
+\usepackage{imakeidx}
+\makeindex
 
 \setcounter{tocdepth}{4}  %to make several levels in table of content, works
 
@@ -360,10 +363,12 @@ $endfor$
 
 
 % where do biblio references go?
-% noindex \printindex
+% noindex to have an index include, insert
+% The index should be printed here: 
+\printindex
 
 \vspace*{\fill}
-\scriptsize Produced with `daino' ($extra.dainoVersion$) from \url{$extra.mdFile$} with $ 
+\scriptsize Produced with `daino' ($extra.dainoVersion$) from \url{$extra.mdFile$} with $sett.siteLayout.tufteLatexTemplateFile$
 
 \scriptsize arguments bookBig: $extra.bookBig$ booklet: $extra.booklet$ allContent: $metap.allContent$
 $-- book: $book$ 
